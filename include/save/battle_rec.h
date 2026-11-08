@@ -130,8 +130,8 @@ typedef struct {
     u16 trainerClass;
     u16 items[4];
     u16 name[16];
-    PMSData unk30;
-    PMSData unk38;
+    PMSData winWords;
+    PMSData loseWords;
 } BattleRecTrainer;
 
 enum {
@@ -143,7 +143,8 @@ enum {
 // A client of the battle: a player, whose info the setup has, or a trainer, BATTLE_REC_CLIENT_*
 typedef struct {
     u16 type;
-    u16 unk2;
+    // The setup carries this Chatter effect as u8; the record keeps its original u16 storage.
+    u16 chatterEffect;
     union {
         PlayerInfo player;
         BattleRecTrainer trainer;
@@ -158,12 +159,13 @@ typedef struct {
     u16 bgm;
     // The music that plays when the battle is won
     u16 winBgm;
+    // The still-opaque BtlSetup.unkA2 value, separate from the trainer's win words.
     u16 unk30;
     u8 battleType : 5;
-    u8 unk32_5 : 3;
+    u8 playerClientId : 3;
     u8 battleStyle : 4;
-    u8 unk33_4 : 3;
-    u8 unk33_7 : 1;
+    u8 multiMode : 3;
+    u8 launcherEnabled : 1;
 } BattleRecSetup;
 
 // The magic number of a video's header and body

@@ -238,7 +238,7 @@ static void *BrMain_BattleCreateParam(HeapID heapId, void *work, u32 preID) {
 
     BtlSetup_InitForRecord(setup, wk->param->gameData, heapId);
     BattleRec_LoadToolOverlay();
-    BattleRecTool_LoadSetup(setup, 0, heapId);
+    BattleRecTool_LoadSetup(setup, BATTLE_REC_TOOL_SOURCE_VIDEO, heapId);
     BattleRec_UnloadToolOverlay();
     GFL_SndBGMSetPaused(TRUE);
     GFL_SndBGMPush();

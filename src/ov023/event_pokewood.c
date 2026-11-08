@@ -418,7 +418,7 @@ static BtlSetup *EventPokewood_LoadDownloadedSetup(GameSystem *gsys, Field *fiel
         BtlSetup_InitForRecord(setup, gameData, heapId);
         BattleRec_LoadToolOverlay();
         movie = Pokewood_GetLoadedMovieField(POKEWOOD_BLOCK_FIELD_MOVIE, 0);
-        BattleRecTool_LoadSetup(setup, 1, heapId);
+        BattleRecTool_LoadSetup(setup, BATTLE_REC_TOOL_SOURCE_POKEWOOD, heapId);
         BattleRec_UnloadToolOverlay();
         EventPokewood_FinishWatchSetup(gameData, setup, movie, heapId);
         return setup;
@@ -435,7 +435,7 @@ static BtlSetup *EventPokewood_LoadBlockSetup(GameSystem *gsys, Field *field, He
     BtlSetup_Reset(setup);
     BtlSetup_InitForRecord(setup, gameData, heapId);
     BattleRec_LoadToolOverlay();
-    BattleRecTool_LoadSetup(setup, 1, heapId);
+    BattleRecTool_LoadSetup(setup, BATTLE_REC_TOOL_SOURCE_POKEWOOD, heapId);
     BattleRec_UnloadToolOverlay();
     EventPokewood_FinishWatchSetup(gameData, setup, setup->studioMovie, heapId);
     return setup;

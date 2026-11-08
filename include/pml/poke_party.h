@@ -8,6 +8,14 @@
 #include "pml/mail.h"
 #include "struct_decls.h"
 
+// Logical Pokemon data blocks, before the PID chooses their physical buffer offsets
+enum {
+    PKM_DATA_BLOCK_A = 0,
+    PKM_DATA_BLOCK_B = 1,
+    PKM_DATA_BLOCK_C = 2,
+    PKM_DATA_BLOCK_D = 3,
+};
+
 // A Pokémon's data, encrypted unless decrypted for a series of reads and writes. Names from swan
 typedef struct {
     u8 rawData[32];
