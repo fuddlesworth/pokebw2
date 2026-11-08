@@ -122,7 +122,7 @@ MusShotPhoto *MusShotPhoto_Create(MusicalShot *shot, HeapID heapId) {
         for (j = 0; j < 8; j++) {
             u8 equip = shot->pokes[i].equips[j].pos;
 
-            if (equip != 10) {
+            if (equip != MUSICAL_SAVED_EQUIP_NONE) {
                 photo->pokes[i]->equips[equip].itemId = shot->pokes[i].equips[j].itemId;
                 photo->pokes[i]->equips[equip].rotation = shot->pokes[i].equips[j].rotation;
                 photo->pokes[i]->equips[equip].slot = j;

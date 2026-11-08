@@ -1,7 +1,9 @@
 #include "types.h"
+#include "app/musical/mus_poke_draw.h"
 #include "app/musical/mus_shot_info.h"
 #include "app/musical/mus_shot_photo.h"
 #include "app/musical/musical_shot_sys.h"
+#include "app/musical/musical_system.h"
 #include "constants/species.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
@@ -17,6 +19,7 @@
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "nitro/rtc.h"
+#include "save/musical_savedata.h"
 #include "save/save_control.h"
 #include "system/wipe.h"
 
@@ -103,16 +106,16 @@ static BOOL MusicalShotSys_Init(GameProc *proc, u32 *state, void *param, void *w
             shot->pokes[i].name[4] = 0xff11 + i;
             shot->pokes[i].name[5] = 0;
             for (j = 0; j < 8; j++) {
-                shot->pokes[i].equips[j].itemId = 0xff;
+                shot->pokes[i].equips[j].itemId = MUSICAL_ITEM_NONE;
                 shot->pokes[i].equips[j].rotation = 0;
-                shot->pokes[i].equips[j].pos = 10;
+                shot->pokes[i].equips[j].pos = MUSICAL_SAVED_EQUIP_NONE;
             }
             shot->pokes[i].equips[0].itemId = 11;
             shot->pokes[i].equips[0].rotation = 0;
-            shot->pokes[i].equips[0].pos = 7;
+            shot->pokes[i].equips[0].pos = MUS_POKE_DRAW_EQUIP_HAND_R;
             shot->pokes[i].equips[1].itemId = 11;
             shot->pokes[i].equips[1].rotation = 0;
-            shot->pokes[i].equips[1].pos = 8;
+            shot->pokes[i].equips[1].pos = MUS_POKE_DRAW_EQUIP_HAND_L;
             shot->pokes[i].equips[2].itemId = 11;
             shot->pokes[i].equips[2].rotation = 0;
             shot->pokes[i].equips[2].pos = 6;

@@ -9,6 +9,16 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
+// An empty prop slot
+#define MUSICAL_ITEM_NONE 0xff
+
+// The program's sound-file pointer and size-header slots
+enum {
+    MUSICAL_SOUND_SEQUENCE = 0,
+    MUSICAL_SOUND_BANK = 1,
+    MUSICAL_SOUND_WAVE_ARCHIVE = 2,
+};
+
 // The musical's data
 struct Ov210Work {
     // The program: 0 to 3 for the built-in ones, 4 or more for the downloaded one

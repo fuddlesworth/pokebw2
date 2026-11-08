@@ -4,6 +4,9 @@
 #include "types.h"
 #include "struct_decls.h"
 
+// An unused prop record in MusicalShotEquip or MusicalSaveEquip
+#define MUSICAL_SAVED_EQUIP_NONE 10
+
 // The musical's save block 0x2a (swan's getAddressOfMusicalDataInfo): the photo of the last finale, the props
 // owned and the ones not yet looked at, and the musical's counters
 

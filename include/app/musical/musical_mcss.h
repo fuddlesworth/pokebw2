@@ -11,6 +11,13 @@
 #include "struct_decls.h"
 #include "system/mcss.h"
 
+// The marker cells: two of kinds 4 and 5, and one for each prop position from kind 7
+enum {
+    MUS_POKE_DRAW_CELL_MARK4 = 4,
+    MUS_POKE_DRAW_CELL_MARK5,
+    MUS_POKE_DRAW_CELL_EQUIP = 7,
+};
+
 // Where a marker cell of a sprite was drawn this frame, as a draw callback gets it
 typedef struct {
     // The sprite's position, y up

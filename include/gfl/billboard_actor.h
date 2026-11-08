@@ -9,6 +9,14 @@
 #include "nitro/gx.h"
 #include "nnsys/gfd.h"
 
+// Common packed texture dimensions: width in bits 4-6 and height in bits 0-2
+enum {
+    BILLBOARD_ACTOR_TEXSIZE_32X32 = 0x22,
+    BILLBOARD_ACTOR_TEXSIZE_32X64 = 0x23,
+    BILLBOARD_ACTOR_TEXSIZE_64X32 = 0x32,
+    BILLBOARD_ACTOR_TEXSIZE_64X64 = 0x33,
+};
+
 // Billboard actors: textured quads drawn facing the camera, each showing one face of its material's texture, which
 // holds the faces in rows. Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0) in English: swan's
 // BlAct is BillboardActor
@@ -113,8 +121,8 @@ void BillboardActorScene_SetColEmissive(BillboardActorScene *scene, const GXRgb 
 void BillboardActorScene_SetBasePolyID(BillboardActorScene *scene, const u8 *id);
 void BillboardActorScene_SetGeomOrigin(BillboardActorScene *scene, u8 origin);
 void BillboardActorScene_SetTexcoordOffset(BillboardActorScene *scene, s16 s, s16 t);
-// The width and height of a texture of a billboard actor size, its width's GX_TEXSIZE_S* in bits 4 to 6 and its height's in
-// bits 0 to 2
+// The width and height of a texture of a billboard actor size, its width's GX_TEXSIZE_S* in bits 4 to 6 and its
+// height's in bits 0 to 2
 void BillboardActor_GetTexDimensions(int size, u16 *width, u16 *height);
 
 // Add a material of a texture resource, of one read from an archive, or of a texture already in VRAM, faceWidth by

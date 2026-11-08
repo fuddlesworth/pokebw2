@@ -16,6 +16,9 @@
 #include "pml/poke_graphic.h"
 #include "system/mcss.h"
 
+// The terminator of a cell's marker list, not a prop ID
+#define MUSICAL_MCSS_MARK_END 0xff
+
 // Overlay 209's musical_mcss.c: the musical's copy of MCSS. Each sprite is a multi-cell animation whose cells are drawn
 // as textured quads of one image in texture VRAM, described by the sprite's bin file: for each cell, one or two quads
 // and the marker cells that it carries. A marker cell is not drawn but reported to the draw callback, which places the
@@ -358,7 +361,7 @@ void MusicalMcss_DrawSystem(MusicalMcssSys *sys, MusicalMcssCellCallback callbac
                 fx32 scaleY;
 
                 mark = cell->marks[k];
-                if (mark == 0xff) {
+                if (mark == MUSICAL_MCSS_MARK_END) {
                     break;
                 }
                 rot = (u16)(mcSrt.rotZ + cellSrt.rotZ);
@@ -389,7 +392,7 @@ void MusicalMcss_DrawSystem(MusicalMcssSys *sys, MusicalMcssCellCallback callbac
                 info.scale = mcss->scale;
                 info.cellRotation = rot + mcss->marks[mark].rotation * 0x800;
                 callback((u8)mcss->marks[mark].kind, &info, mcss->work);
-                if (mcss->marks[mark].kind == 5) {
+                if (mcss->marks[mark].kind == MUS_POKE_DRAW_CELL_MARK5) {
                     VEC_Set(&mcss->center, info.offset.x, info.offset.y, 0);
                 }
             }
