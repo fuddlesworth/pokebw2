@@ -43,6 +43,15 @@
 #define WBT_DOWNLOAD_FILE_SIZE 0xd8f4
 #define WBT_DOWNLOAD_BUFFER_SIZE 0xe000
 
+// The version value accepted in a received tournament.
+#define WBT_DOWNLOAD_TOURNAMENT_VERSION 2
+
+// Selects the frame characters loaded for main BG 1 or BG 2.
+enum {
+    WBT_DOWNLOAD_FRAME_BG1 = 0,
+    WBT_DOWNLOAD_FRAME_BG2 = 1,
+};
+
 // The messages of text bank 404
 #define WBT_DOWNLOAD_MSG_CONNECTING 0xd
 #define WBT_DOWNLOAD_MSG_RECEIVED 0x16
@@ -556,7 +565,7 @@ static BOOL WbtDownloadNet_Init(GameProc *proc, u32 *state, void *param, void *w
     GFL_NetSetIconScreen(TRUE, HEAPID_WBT_DOWNLOAD_NET);
     wk->message = WbtDownloadMessage_Create(1, 1, 0x13, 0x1e, 4, 0xc, wk->font, HEAPID_WBT_DOWNLOAD_NET);
     WbtDownloadMessage_SetColor(wk->message, PRINT_COLOR(1, 2, 15));
-    WbtDownloadMessage_DrawFrame(wk->message, WbtDownloadNetBG_GetFrameChars(&wk->bg, 0), 0xd);
+    WbtDownloadMessage_DrawFrame(wk->message, WbtDownloadNetBG_GetFrameChars(&wk->bg, WBT_DOWNLOAD_FRAME_BG1), 0xd);
     WbtDownloadMessage_PrintMsg(wk->message, wk->msgData, WBT_DOWNLOAD_MSG_CONNECTING, WBT_DOWNLOAD_MSG_PRINT_WAIT);
     wk->stack = WbtDownloadStack_Create(5, wk, WbtDownloadNet_FirstStep, HEAPID_WBT_DOWNLOAD_NET);
     return TRUE;
@@ -592,7 +601,7 @@ static BOOL WbtDownloadNet_Main(GameProc *proc, u32 *state, void *param, void *w
         NetCommonDownload_ResetUpdate(wk->download);
         return FALSE;
     case NET_COMMON_DOWNLOAD_UPDATE_ERROR:
-        wk->param->result = 1;
+        wk->param->result = WBT_DOWNLOAD_NET_RESULT_RETRY_LOGIN;
         return TRUE;
     }
     NetCommonDownload_Start(wk->download);
@@ -665,8 +674,8 @@ static inline BOOL WbtDownloadTournament_IsChecksumValid(const WbtDownloadTourna
 }
 
 static inline BOOL WbtDownloadTournament_IsValid(const WbtDownloadTournament *tournament) {
-    if (tournament->name != 0 && WbtDownloadTournament_IsForThisVersion(tournament->kind) && tournament->version == 2 &&
-        WbtDownloadTournament_IsChecksumValid(tournament)) {
+    if (tournament->name != 0 && WbtDownloadTournament_IsForThisVersion(tournament->kind) &&
+        tournament->version == WBT_DOWNLOAD_TOURNAMENT_VERSION && WbtDownloadTournament_IsChecksumValid(tournament)) {
         return TRUE;
     }
     return FALSE;
@@ -744,9 +753,9 @@ static void WbtDownloadNet_DownloadStep(WbtDownloadStack *stack, u32 *state, voi
             break;
         }
         if (success) {
-            wk->param->result = 0;
+            wk->param->result = WBT_DOWNLOAD_NET_RESULT_VALID_FILE;
         } else {
-            wk->param->result = 2;
+            wk->param->result = WBT_DOWNLOAD_NET_RESULT_NO_VALID_FILE;
         }
         (*state)++;
         break;
@@ -874,9 +883,9 @@ static void WbtDownloadNetBG_Unload(WbtDownloadBG *bg) {
 
 static u32 WbtDownloadNetBG_GetFrameChars(WbtDownloadBG *bg, u32 which) {
     switch (which) {
-    case 0:
+    case WBT_DOWNLOAD_FRAME_BG1:
         return (u16)bg->frameChars1;
-    case 1:
+    case WBT_DOWNLOAD_FRAME_BG2:
         return (u16)bg->frameChars2;
     default:
         return 0;
