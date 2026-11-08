@@ -129,7 +129,7 @@ u16 NameInputWordTable_Find(const NameInputWordTable *table, const u16 *str) {
             return i;
         }
     }
-    return 0xffff;
+    return NAME_INPUT_WORD_NOT_FOUND;
 }
 
 static BOOL NameInputData_WordMatches(const u16 *word, const u16 *str) {

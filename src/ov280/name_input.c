@@ -149,10 +149,10 @@ enum {
 enum {
     KEY_KIND_NONE,
     KEY_KIND_CHAR,
-    KEY_KIND_TYPE_0,
-    KEY_KIND_TYPE_1,
-    KEY_KIND_TYPE_2,
-    KEY_KIND_TYPE_3,
+    KEY_KIND_TYPE_UPPERCASE,
+    KEY_KIND_TYPE_LOWERCASE,
+    KEY_KIND_TYPE_SYMBOLS,
+    KEY_KIND_TYPE_QWERTY,
     KEY_KIND_BACKSPACE,
     KEY_KIND_OK,
     KEY_KIND_SWITCH_PAGE,
@@ -163,10 +163,10 @@ enum {
 
 // The keyboard types
 enum {
-    KEYBOARD_TYPE_0,
-    KEYBOARD_TYPE_1,
-    KEYBOARD_TYPE_2,
-    KEYBOARD_TYPE_KANA,
+    KEYBOARD_TYPE_UPPERCASE,
+    KEYBOARD_TYPE_LOWERCASE,
+    KEYBOARD_TYPE_SYMBOLS,
+    KEYBOARD_TYPE_QWERTY,
 };
 
 // What an icon shows
@@ -216,7 +216,7 @@ typedef struct KeyHighlight {
     KeyRect rect;
     u32 mode;
     BOOL active;
-    u32 kanaPage;
+    u32 qwertyPage;
     u32 type;
     ClActor *actors[2];
     ClActorPos pos[2];
@@ -277,8 +277,8 @@ typedef struct Keyboard {
     u16 lastChar;
     u16 heapId;
     u32 type;
-    u32 kanaPage;
-    u8 kanaGroup;
+    u32 qwertyPage;
+    u8 qwertyGroup;
     u16 slideFrame;
     u16 slideStage;
     BOOL sliding;
@@ -380,7 +380,7 @@ static void NameEntryObjs_Free(NameEntryObjs *objs);
 static ClActor *NameEntryObjs_Get(NameEntryObjs *objs, u32 index);
 static void KeyHighlight_Init(KeyHighlight *highlight, u32 type, NameEntryObjs *objs, HeapID heapId);
 static void KeyHighlight_Clear(KeyHighlight *highlight);
-static void KeyHighlight_Set(KeyHighlight *highlight, u32 mode, const KeyRect *rect, u32 kanaPage, u32 type);
+static void KeyHighlight_Set(KeyHighlight *highlight, u32 mode, const KeyRect *rect, u32 qwertyPage, u32 type);
 static void KeyHighlight_Update(KeyHighlight *highlight, u32 type, const KeyRect *rect);
 static BOOL KeyHighlight_BlendColor(u16 *color, u16 *phase, u16 step, u32 palette, u8 index, u16 from, u16 to);
 static void NameBox_Init(NameBox *box, StrBuf *name, u8 maxLength, Font *font, PrintQueue *queue, NameEntryObjs *objs,
@@ -417,18 +417,18 @@ static BOOL KeyLayout_GetRect(const KeyLayout *layout, const KeyPos *pos, KeyRec
 static BOOL KeyLayout_FindKind(const KeyLayout *layout, int kind, KeyPos *found);
 static void KeyLayout_ConvertPos(KeyPos *pos, u32 from, u32 to);
 static BOOL AlphaLayout_GetRect(const KeyPos *pos, KeyRect *rect);
-static BOOL KanaLayout_GetRect(const KeyPos *pos, KeyRect *rect);
+static BOOL QwertyLayout_GetRect(const KeyPos *pos, KeyRect *rect);
 static void AlphaLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory);
-static void KanaLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory);
+static void QwertyLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory);
 static int AlphaLayout_GetKindDefault(const KeyPos *pos, KeyPos *cell);
 static int AlphaLayout_GetKind(const KeyPos *pos, KeyPos *cell);
-static int KanaLayout_GetKind(const KeyPos *pos, KeyPos *cell);
+static int QwertyLayout_GetKind(const KeyPos *pos, KeyPos *cell);
 static void Keyboard_Init(Keyboard *kb, u32 type, Font *font, PrintQueue *queue, NameInputKeyboardSet *keyboards,
                           NameEntryObjs *objs, HeapID heapId);
 static void Keyboard_Free(Keyboard *kb);
 static void Keyboard_Update(Keyboard *kb, NameBox *box);
 static int Keyboard_GetResult(Keyboard *kb, u16 *c);
-static u32 Keyboard_GetKanaPage(Keyboard *kb);
+static u32 Keyboard_GetQwertyPage(Keyboard *kb);
 static BOOL Keyboard_IsPrintDone(Keyboard *kb);
 static u32 Keyboard_GetType(Keyboard *kb);
 static void Keyboard_SetLocked(Keyboard *kb, BOOL locked);
@@ -436,7 +436,7 @@ static u32 NameEntry_GetLayoutIndex(u32 type, u32 page, u8 group);
 static BOOL Keyboard_StartSwitch(Keyboard *kb, u32 type);
 static BOOL Keyboard_UpdateSlide(Keyboard *kb);
 static void Keyboard_ApplyType(Keyboard *kb, u32 type);
-static void Keyboard_SetKanaPage(Keyboard *kb, u32 page, u32 group);
+static void Keyboard_SetQwertyPage(Keyboard *kb, u32 page, u32 group);
 static BOOL Keyboard_HandleKeys(Keyboard *kb, KeyInput *input);
 static BOOL Keyboard_HandleButtons(Keyboard *kb, KeyInput *input);
 static BOOL Keyboard_HandleTouch(Keyboard *kb, KeyInput *input);
@@ -488,9 +488,9 @@ static void NameEntryTask_Input(NameEntryTask *task, u32 *state, NameEntryWork *
 static void NameEntryTask_SaveKeyboardType(NameEntryTask *task, u32 *state, NameEntryWork *work);
 static void NameEntryTask_PauseSave(NameEntryTask *task, u32 *state, NameEntryWork *work);
 
-// The kana keyboard's rows: where each starts and its top
-static const u32 sKanaRowLeft[3] = { 5, 6, 7 };
-static const u32 sKanaRowTop[3] = { 8, 12, 16 };
+// The QWERTY keyboard's rows: where each starts and its top
+static const u32 sQwertyRowLeft[3] = { 5, 6, 7 };
+static const u32 sQwertyRowTop[3] = { 8, 12, 16 };
 
 // The palette of the icon of each type
 static const u8 sIconPalettes[16] = { 2, 3, 6, 5, 4, 5, 2, 0, 1, 3, 6, 5, 4, 7, 7, 0 };
@@ -511,7 +511,7 @@ static u32 sKeyBlinkStep = 0x51e;
 BOOL NameEntry_ProcInit(GameProc *proc, u32 *state, void *arg, void *unused) {
     NameEntryParam *param = arg;
     NameEntryWork *work;
-    int keyboardType = 0;
+    int keyboardType = KEYBOARD_TYPE_UPPERCASE;
     u32 slot;
     u16 species;
     ClActUnit *unit;
@@ -531,7 +531,7 @@ BOOL NameEntry_ProcInit(GameProc *proc, u32 *state, void *arg, void *unused) {
         }
         keyboardType = TrainerGameInfo_GetKeyboardType(param->gameInfo, slot);
         if (keyboardType >= 5) {
-            keyboardType = 0;
+            keyboardType = KEYBOARD_TYPE_UPPERCASE;
         }
     }
 
@@ -550,7 +550,7 @@ BOOL NameEntry_ProcInit(GameProc *proc, u32 *state, void *arg, void *unused) {
     work->msgData =
         GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, HEAPID_NAME_INPUT);
     work->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_NAME_INPUT);
-    work->graphic = NameInputGraphic_Create(0, HEAPID_NAME_INPUT);
+    work->graphic = NameInputGraphic_Create(GX_DISP_SELECT_SUB_MAIN, HEAPID_NAME_INPUT);
     work->bmpOam = BmpOam_Init(HEAPID_NAME_INPUT, NameInputGraphic_GetClActUnit(work->graphic));
     NameEntry_LoadBgGraphics(&work->bgs, HEAPID_NAME_INPUT);
     unit = NameInputGraphic_GetClActUnit(work->graphic);
@@ -746,17 +746,17 @@ static void KeyHighlight_Clear(KeyHighlight *highlight) {
     MI_CpuFill8(highlight, 0, sizeof(KeyHighlight));
 }
 
-static void KeyHighlight_Set(KeyHighlight *highlight, u32 mode, const KeyRect *rect, u32 kanaPage, u32 type) {
+static void KeyHighlight_Set(KeyHighlight *highlight, u32 mode, const KeyRect *rect, u32 qwertyPage, u32 type) {
     int palette;
     s16 y;
 
     highlight->active = FALSE;
     highlight->mode = mode;
-    highlight->kanaPage = kanaPage;
+    highlight->qwertyPage = qwertyPage;
     highlight->type = type;
     GFL_BGSysSetScrPaletteNo(2, 0, 0, 32, 24, 1);
     GFL_BGSysSetScrPaletteNo(1, 0, 0, 32, 24, 1);
-    if (kanaPage && type == KEYBOARD_TYPE_KANA) {
+    if (qwertyPage && type == KEYBOARD_TYPE_QWERTY) {
         GFL_BGSysSetScrPaletteNo(1, 3, 16, 4, 3, 4);
         GFL_BGSysSetScrPaletteNo(1, 23, 16, 4, 3, 4);
     }
@@ -815,9 +815,9 @@ static void KeyHighlight_Update(KeyHighlight *highlight, u32 type, const KeyRect
             step = 0x1999;
             if (highlight->timer++ > 10) {
                 if (!GCTX_HIDIsUsingTouch()) {
-                    KeyHighlight_Set(highlight, HIGHLIGHT_BLINK, rect, highlight->kanaPage, type);
+                    KeyHighlight_Set(highlight, HIGHLIGHT_BLINK, rect, highlight->qwertyPage, type);
                 } else {
-                    KeyHighlight_Set(highlight, HIGHLIGHT_OFF, rect, highlight->kanaPage, type);
+                    KeyHighlight_Set(highlight, HIGHLIGHT_OFF, rect, highlight->qwertyPage, type);
                 }
             }
             break;
@@ -836,9 +836,9 @@ static void KeyHighlight_Update(KeyHighlight *highlight, u32 type, const KeyRect
     ClActor_SetSurfacePos(highlight->actors[1], &pos, 0);
     if (highlight->type != type) {
         if (!GCTX_HIDIsUsingTouch()) {
-            KeyHighlight_Set(highlight, HIGHLIGHT_BLINK, &highlight->rect, highlight->kanaPage, type);
+            KeyHighlight_Set(highlight, HIGHLIGHT_BLINK, &highlight->rect, highlight->qwertyPage, type);
         } else {
-            KeyHighlight_Set(highlight, HIGHLIGHT_OFF, &highlight->rect, highlight->kanaPage, type);
+            KeyHighlight_Set(highlight, HIGHLIGHT_OFF, &highlight->rect, highlight->qwertyPage, type);
         }
     }
 }
@@ -1088,7 +1088,7 @@ static BOOL NameBox_Compose(NameBox *box, int which) {
     }
     if (box->length != 0) {
         index = NameInputWordTable_Find(table, &box->text[box->length - 1]);
-        if (index != 0xffff) {
+        if (index != NAME_INPUT_WORD_NOT_FOUND) {
             if (NameInputWordTable_GetForm1(table, index, added, 4, &addCount)) {
                 NameInputWordTable_GetForm0(table, index, removed, 4, &removeCount);
                 for (i = 0; i < removeCount; i++) {
@@ -1205,7 +1205,7 @@ static BOOL NameBox_ComposeAll(NameBox *box, int set) {
     }
     for (i = 0; i < box->pendingLength; i++) {
         index = NameInputWordTable_Find(box->words[NAME_INPUT_WORD_TABLE_COMPOSE], &box->pending[i]);
-        if (index != 0xffff) {
+        if (index != NAME_INPUT_WORD_NOT_FOUND) {
             for (j = 0; j < i; j++) {
                 NameBox_AddChar(box, box->pending[j]);
             }
@@ -1287,16 +1287,16 @@ static void KeyLayout_Init(KeyLayout *layout, u32 type, u32 index, const NameInp
     MI_CpuFill8(layout, 0, sizeof(KeyLayout));
     layout->keyboard = NameInputData_GetKeyboard(keyboards, index);
     switch (type) {
-    case KEYBOARD_TYPE_KANA:
+    case KEYBOARD_TYPE_QWERTY:
         layout->width = 11;
         layout->height = 4;
-        layout->getRect = KanaLayout_GetRect;
-        layout->move = KanaLayout_Move;
-        layout->getKind = KanaLayout_GetKind;
+        layout->getRect = QwertyLayout_GetRect;
+        layout->move = QwertyLayout_Move;
+        layout->getKind = QwertyLayout_GetKind;
         break;
-    case KEYBOARD_TYPE_0:
-    case KEYBOARD_TYPE_1:
-    case KEYBOARD_TYPE_2:
+    case KEYBOARD_TYPE_UPPERCASE:
+    case KEYBOARD_TYPE_LOWERCASE:
+    case KEYBOARD_TYPE_SYMBOLS:
         layout->width = 13;
         layout->height = 6;
         layout->getRect = AlphaLayout_GetRect;
@@ -1427,14 +1427,14 @@ static void KeyLayout_ConvertPos(KeyPos *pos, u32 from, u32 to) {
     int kind;
     KeyPos next;
 
-    if (from == KEYBOARD_TYPE_KANA) {
-        oldKind = KanaLayout_GetKind;
+    if (from == KEYBOARD_TYPE_QWERTY) {
+        oldKind = QwertyLayout_GetKind;
         newKind = AlphaLayout_GetKindDefault;
         width = 13;
         height = 5;
-    } else if (to == KEYBOARD_TYPE_KANA) {
+    } else if (to == KEYBOARD_TYPE_QWERTY) {
         oldKind = AlphaLayout_GetKindDefault;
-        newKind = KanaLayout_GetKind;
+        newKind = QwertyLayout_GetKind;
         width = 11;
         height = 4;
     }
@@ -1461,10 +1461,10 @@ static BOOL AlphaLayout_GetRect(const KeyPos *pos, KeyRect *rect) {
         rect->right = rect->left + 2;
         rect->bottom = rect->top + 3;
         break;
-    case KEY_KIND_TYPE_0:
-    case KEY_KIND_TYPE_1:
-    case KEY_KIND_TYPE_2:
-    case KEY_KIND_TYPE_3:
+    case KEY_KIND_TYPE_UPPERCASE:
+    case KEY_KIND_TYPE_LOWERCASE:
+    case KEY_KIND_TYPE_SYMBOLS:
+    case KEY_KIND_TYPE_QWERTY:
         rect->left = (pos->x + 1) * 3;
         rect->top = pos->y * 3 + 5;
         rect->right = rect->left + 3;
@@ -1491,20 +1491,20 @@ static BOOL AlphaLayout_GetRect(const KeyPos *pos, KeyRect *rect) {
     return TRUE;
 }
 
-static BOOL KanaLayout_GetRect(const KeyPos *pos, KeyRect *rect) {
+static BOOL QwertyLayout_GetRect(const KeyPos *pos, KeyRect *rect) {
     KeyPos cell;
 
-    switch (KanaLayout_GetKind(pos, &cell)) {
+    switch (QwertyLayout_GetKind(pos, &cell)) {
     case KEY_KIND_CHAR:
-        rect->left = sKanaRowLeft[cell.y] + cell.x * 2;
-        rect->top = sKanaRowTop[cell.y];
+        rect->left = sQwertyRowLeft[cell.y] + cell.x * 2;
+        rect->top = sQwertyRowTop[cell.y];
         rect->right = rect->left + 2;
         rect->bottom = rect->top + 3;
         break;
-    case KEY_KIND_TYPE_0:
-    case KEY_KIND_TYPE_1:
-    case KEY_KIND_TYPE_2:
-    case KEY_KIND_TYPE_3:
+    case KEY_KIND_TYPE_UPPERCASE:
+    case KEY_KIND_TYPE_LOWERCASE:
+    case KEY_KIND_TYPE_SYMBOLS:
+    case KEY_KIND_TYPE_QWERTY:
         rect->left = (pos->x + 1) * 3;
         rect->top = 20;
         rect->right = rect->left + 3;
@@ -1680,7 +1680,7 @@ static void AlphaLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory) {
     }
 }
 
-static void KanaLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory) {
+static void QwertyLayout_Move(KeyPos *pos, const KeyPos *delta, u8 *memory) {
     int clamped;
     int x;
     int y;
@@ -2008,12 +2008,12 @@ static int AlphaLayout_GetKind(const KeyPos *pos, KeyPos *cell) {
         return KEY_KIND_CHAR;
     }
     if (pos->x <= 5) {
-        return pos->x + 2;
+        return pos->x + KEY_KIND_TYPE_UPPERCASE;
     }
     return KEY_KIND_NONE;
 }
 
-static int KanaLayout_GetKind(const KeyPos *pos, KeyPos *cell) {
+static int QwertyLayout_GetKind(const KeyPos *pos, KeyPos *cell) {
     int kind = KEY_KIND_NONE;
     KeyPos found;
 
@@ -2046,7 +2046,7 @@ static int KanaLayout_GetKind(const KeyPos *pos, KeyPos *cell) {
     case 3:
         kind = KEY_KIND_SPACE;
         if (pos->x != 4) {
-            kind = pos->x + KEY_KIND_TYPE_0;
+            kind = pos->x + KEY_KIND_TYPE_UPPERCASE;
         }
         break;
     }
@@ -2075,7 +2075,7 @@ static void Keyboard_Init(Keyboard *kb, u32 type, Font *font, PrintQueue *queue,
     kb->keyboards = keyboards;
     kb->screenData[0] = GFL_G2DIOReadNSCR(ARCID_NAME_INPUT_GRAPHIC, 10, FALSE, &kb->screens[0], heapId);
     kb->screenData[1] = GFL_G2DIOReadNSCR(ARCID_NAME_INPUT_GRAPHIC, 5, FALSE, &kb->screens[1], heapId);
-    if (type == KEYBOARD_TYPE_KANA) {
+    if (type == KEYBOARD_TYPE_QWERTY) {
         GFL_BGSysBufferScrDefault(1, kb->screens[0]->rawData, 0x800);
         GFL_BGSysSetBGEnabled(2, FALSE);
     } else {
@@ -2084,8 +2084,8 @@ static void Keyboard_Init(Keyboard *kb, u32 type, Font *font, PrintQueue *queue,
     }
     GFL_BGSysLoadScr(1);
     KeyHighlight_Init(&kb->highlight, type, objs, heapId);
-    KeyLayout_Init(&kb->layout, type, NameEntry_GetLayoutIndex(kb->type, kb->kanaPage, kb->kanaGroup), kb->keyboards,
-                   heapId);
+    KeyLayout_Init(&kb->layout, type, NameEntry_GetLayoutIndex(kb->type, kb->qwertyPage, kb->qwertyGroup),
+                   kb->keyboards, heapId);
     window = BmpWin_CreateDynamic(3, 3, 5, 26, 15, 15, TRUE);
     kb->window = window;
     BmpWin_FlushChar(window);
@@ -2096,11 +2096,11 @@ static void Keyboard_Init(Keyboard *kb, u32 type, Font *font, PrintQueue *queue,
     KeyLayout_PrintKeys(&kb->layout, &kb->print, queue, font, heapId);
     if (!GCTX_HIDIsUsingTouch()) {
         if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
-            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
         }
     } else {
         if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
-            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_OFF, &rect, kb->kanaPage, kb->type);
+            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_OFF, &rect, kb->qwertyPage, kb->type);
         }
     }
 }
@@ -2176,8 +2176,8 @@ static int Keyboard_GetResult(Keyboard *kb, u16 *c) {
     return kb->result;
 }
 
-static u32 Keyboard_GetKanaPage(Keyboard *kb) {
-    return kb->kanaPage;
+static u32 Keyboard_GetQwertyPage(Keyboard *kb) {
+    return kb->qwertyPage;
 }
 
 static BOOL Keyboard_IsPrintDone(Keyboard *kb) {
@@ -2204,7 +2204,7 @@ static void Keyboard_SetLocked(Keyboard *kb, BOOL locked) {
 }
 
 static u32 NameEntry_GetLayoutIndex(u32 type, u32 page, u8 group) {
-    if (type == KEYBOARD_TYPE_KANA) {
+    if (type == KEYBOARD_TYPE_QWERTY) {
         return type + group * 2 + page;
     }
     return type;
@@ -2218,9 +2218,9 @@ static BOOL Keyboard_StartSwitch(Keyboard *kb, u32 type) {
         kb->nextType = type;
         hasUpperLayer = FALSE;
         kb->slideFrame = 0;
-        kb->slideStage = 0;
+        kb->slideStage = SLIDE_STAGE_OUT;
         kb->sliding = TRUE;
-        if (type == KEYBOARD_TYPE_KANA || kb->type == KEYBOARD_TYPE_KANA) {
+        if (type == KEYBOARD_TYPE_QWERTY || kb->type == KEYBOARD_TYPE_QWERTY) {
             hasUpperLayer = TRUE;
         }
         kb->hasUpperLayer = hasUpperLayer;
@@ -2293,7 +2293,7 @@ static BOOL Keyboard_UpdateSlide(Keyboard *kb) {
             kb->slideStage = SLIDE_STAGE_IN;
             GFL_BGSysSetBGEnabled(keyBg, TRUE);
             GFL_BGSysSetBGEnabled(labelBg, TRUE);
-            if (kb->type != KEYBOARD_TYPE_KANA) {
+            if (kb->type != KEYBOARD_TYPE_QWERTY) {
                 GFL_BGSysSetBGEnabled(upperBg, TRUE);
             }
             reg_G2_BLDALPHA = 1 << 12;
@@ -2328,38 +2328,38 @@ static BOOL Keyboard_UpdateSlide(Keyboard *kb) {
 static void Keyboard_ApplyType(Keyboard *kb, u32 type) {
     if (kb->type != type) {
         KeyLayout_Clear(&kb->layout);
-        KeyLayout_Init(&kb->layout, type, NameEntry_GetLayoutIndex(type, kb->kanaPage, kb->kanaGroup), kb->keyboards,
-                       kb->heapId);
+        KeyLayout_Init(&kb->layout, type, NameEntry_GetLayoutIndex(type, kb->qwertyPage, kb->qwertyGroup),
+                       kb->keyboards, kb->heapId);
         GFL_BitmapFill(BmpWin_GetBitmap(kb->window), 0);
         KeyLayout_PrintKeys(&kb->layout, &kb->print, kb->queue, kb->font, kb->heapId);
-        if (type == KEYBOARD_TYPE_KANA) {
+        if (type == KEYBOARD_TYPE_QWERTY) {
             GFL_BGSysBufferScrDefault(1, kb->screens[0]->rawData, 0x800);
             GFL_BGSysSetBGEnabled(2, FALSE);
         } else {
             GFL_BGSysBufferScrDefault(1, kb->screens[1]->rawData, 0x800);
         }
         GFL_BGSysLoadScr(1);
-        if (type == KEYBOARD_TYPE_KANA || kb->type == KEYBOARD_TYPE_KANA) {
+        if (type == KEYBOARD_TYPE_QWERTY || kb->type == KEYBOARD_TYPE_QWERTY) {
             KeyLayout_ConvertPos(&kb->pos, kb->type, type);
         }
         kb->type = type;
     }
 }
 
-static inline BOOL Keyboard_IsKana(const Keyboard *kb) {
-    return kb->type == KEYBOARD_TYPE_KANA;
+static inline BOOL Keyboard_IsQwerty(const Keyboard *kb) {
+    return kb->type == KEYBOARD_TYPE_QWERTY;
 }
 
-static void Keyboard_SetKanaPage(Keyboard *kb, u32 page, u32 group) {
-    if (Keyboard_IsKana(kb)) {
-        if (kb->kanaGroup == group && kb->kanaPage == page) {
+static void Keyboard_SetQwertyPage(Keyboard *kb, u32 page, u32 group) {
+    if (Keyboard_IsQwerty(kb)) {
+        if (kb->qwertyGroup == group && kb->qwertyPage == page) {
             return;
         }
         KeyLayout_SetKeyboard(&kb->layout, NameEntry_GetLayoutIndex(kb->type, page, group), kb->keyboards);
         GFL_BitmapFill(BmpWin_GetBitmap(kb->window), 0);
         KeyLayout_PrintKeys(&kb->layout, &kb->print, kb->queue, kb->font, kb->heapId);
-        kb->kanaPage = page;
-        kb->kanaGroup = group;
+        kb->qwertyPage = page;
+        kb->qwertyGroup = group;
     }
 }
 
@@ -2395,14 +2395,14 @@ static BOOL Keyboard_HandleKeys(Keyboard *kb, KeyInput *input) {
         if (GCTX_HIDIsUsingTouch() == TRUE) {
             if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
                 GCTX_HIDSetUsingTouch(FALSE);
-                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
             }
         } else {
             KeyLayout_Move(&kb->layout, &kb->pos, &delta);
             if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
-                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
             }
         }
     }
@@ -2424,9 +2424,9 @@ static BOOL Keyboard_HandleButtons(Keyboard *kb, KeyInput *input) {
         acted = TRUE;
     }
     if (GCTX_HIDGetPressedKeys() == PAD_BUTTON_SELECT) {
-        input->button = kb->type + KEY_KIND_TYPE_1;
-        if (input->button > KEY_KIND_TYPE_3) {
-            input->button = KEY_KIND_TYPE_0;
+        input->button = kb->type + KEY_KIND_TYPE_LOWERCASE;
+        if (input->button > KEY_KIND_TYPE_QWERTY) {
+            input->button = KEY_KIND_TYPE_UPPERCASE;
         }
         KeyLayout_FindKind(&kb->layout, input->button, &kb->pos);
         input->pos = kb->pos;
@@ -2440,7 +2440,7 @@ static BOOL Keyboard_HandleButtons(Keyboard *kb, KeyInput *input) {
         if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             GCTX_HIDSetUsingTouch(FALSE);
-            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+            KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
             return FALSE;
         }
     }
@@ -2488,15 +2488,15 @@ static void Keyboard_Select(Keyboard *kb, KeyInput *input) {
         kb->result = KEY_RESULT_SPACE;
         kb->state = KEYBOARD_STATE_CHECK_FULL;
         break;
-    case KEY_KIND_TYPE_0:
-    case KEY_KIND_TYPE_1:
-    case KEY_KIND_TYPE_2:
-    case KEY_KIND_TYPE_3:
+    case KEY_KIND_TYPE_UPPERCASE:
+    case KEY_KIND_TYPE_LOWERCASE:
+    case KEY_KIND_TYPE_SYMBOLS:
+    case KEY_KIND_TYPE_QWERTY:
         if (kb->locked) {
             GFL_SndSEPlay(SEQ_SE_BEEP);
             break;
         }
-        if (Keyboard_StartSwitch(kb, kind - KEY_KIND_TYPE_0)) {
+        if (Keyboard_StartSwitch(kb, kind - KEY_KIND_TYPE_UPPERCASE)) {
             GFL_SndSEPlay(SEQ_SE_SYS_12);
             kb->state = KEYBOARD_STATE_SLIDE;
             kb->result = KEY_RESULT_CLEAR_COMPOSE;
@@ -2511,7 +2511,7 @@ static void Keyboard_Select(Keyboard *kb, KeyInput *input) {
     case KEY_KIND_SWITCH_PAGE:
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         kb->result = KEY_RESULT_SWITCH_PAGE;
-        Keyboard_SetKanaPage(kb, kb->kanaPage ^ 1, kb->kanaGroup);
+        Keyboard_SetQwertyPage(kb, kb->qwertyPage ^ 1, kb->qwertyGroup);
         break;
     case KEY_KIND_DAKUTEN:
         kb->result = KEY_RESULT_DAKUTEN;
@@ -2521,7 +2521,7 @@ static void Keyboard_Select(Keyboard *kb, KeyInput *input) {
         break;
     }
     if (KeyLayout_GetRect(&kb->layout, &input->pos, &rect)) {
-        KeyHighlight_Set(&kb->highlight, HIGHLIGHT_PRESSED, &rect, kb->kanaPage, kb->type);
+        KeyHighlight_Set(&kb->highlight, HIGHLIGHT_PRESSED, &rect, kb->qwertyPage, kb->type);
     }
 }
 
@@ -2555,18 +2555,19 @@ static BOOL Keyboard_HandleKeysSlide(Keyboard *kb, KeyInput *input) {
         pos = kb->pos;
         KeyLayout_Move(&kb->layout, &pos, &delta);
         kind = KeyLayout_GetChar(&kb->layout, &pos, NULL);
-        if (kind == KEY_KIND_TYPE_0 || kind == KEY_KIND_TYPE_1 || kind == KEY_KIND_TYPE_2 || kind == KEY_KIND_TYPE_3) {
+        if (kind == KEY_KIND_TYPE_UPPERCASE || kind == KEY_KIND_TYPE_LOWERCASE || kind == KEY_KIND_TYPE_SYMBOLS ||
+            kind == KEY_KIND_TYPE_QWERTY) {
             if (GCTX_HIDIsUsingTouch() == TRUE) {
                 if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
                     GFL_SndSEPlay(SEQ_SE_SELECT1);
                     GCTX_HIDSetUsingTouch(FALSE);
-                    KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+                    KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
                 }
             } else {
                 KeyLayout_Move(&kb->layout, &kb->pos, &delta);
                 if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
                     GFL_SndSEPlay(SEQ_SE_SELECT1);
-                    KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+                    KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
                 }
             }
         }
@@ -2585,9 +2586,9 @@ static BOOL Keyboard_HandleButtonsSlide(Keyboard *kb, KeyInput *input) {
             input->moved = TRUE;
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_SELECT) {
-            input->button = kb->type + KEY_KIND_TYPE_1;
-            if (input->button > KEY_KIND_TYPE_3) {
-                input->button = KEY_KIND_TYPE_0;
+            input->button = kb->type + KEY_KIND_TYPE_LOWERCASE;
+            if (input->button > KEY_KIND_TYPE_QWERTY) {
+                input->button = KEY_KIND_TYPE_UPPERCASE;
             }
             KeyLayout_FindKind(&kb->layout, input->button, &kb->pos);
             input->pos = kb->pos;
@@ -2597,7 +2598,7 @@ static BOOL Keyboard_HandleButtonsSlide(Keyboard *kb, KeyInput *input) {
             if (KeyLayout_GetRect(&kb->layout, &kb->pos, &rect)) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
                 GCTX_HIDSetUsingTouch(FALSE);
-                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->kanaPage, kb->type);
+                KeyHighlight_Set(&kb->highlight, HIGHLIGHT_BLINK, &rect, kb->qwertyPage, kb->type);
                 return FALSE;
             }
         }
@@ -2619,8 +2620,8 @@ static BOOL Keyboard_HandleTouchSlide(Keyboard *kb, KeyInput *input) {
             touch.y = touchY;
             if (KeyLayout_FindAtTouch(&kb->layout, &touch, &kb->pos)) {
                 kind = KeyLayout_GetChar(&kb->layout, &kb->pos, NULL);
-                if (kind == KEY_KIND_TYPE_0 || kind == KEY_KIND_TYPE_1 || kind == KEY_KIND_TYPE_2 ||
-                    kind == KEY_KIND_TYPE_3) {
+                if (kind == KEY_KIND_TYPE_UPPERCASE || kind == KEY_KIND_TYPE_LOWERCASE ||
+                    kind == KEY_KIND_TYPE_SYMBOLS || kind == KEY_KIND_TYPE_QWERTY) {
                     x = kb->pos.x;
                     y = kb->pos.y;
                     input->pos.y = y;
@@ -2645,11 +2646,11 @@ static void Keyboard_SelectSlide(Keyboard *kb, KeyInput *input) {
         kind = input->button;
     }
     switch (kind) {
-    case KEY_KIND_TYPE_0:
-    case KEY_KIND_TYPE_1:
-    case KEY_KIND_TYPE_2:
-    case KEY_KIND_TYPE_3:
-        if (Keyboard_StartSwitch(kb, kind - KEY_KIND_TYPE_0)) {
+    case KEY_KIND_TYPE_UPPERCASE:
+    case KEY_KIND_TYPE_LOWERCASE:
+    case KEY_KIND_TYPE_SYMBOLS:
+    case KEY_KIND_TYPE_QWERTY:
+        if (Keyboard_StartSwitch(kb, kind - KEY_KIND_TYPE_UPPERCASE)) {
             GFL_SndSEPlay(SEQ_SE_SYS_12);
             kb->state = KEYBOARD_STATE_SLIDE;
             kb->result = KEY_RESULT_CLEAR_COMPOSE;
@@ -2657,7 +2658,7 @@ static void Keyboard_SelectSlide(Keyboard *kb, KeyInput *input) {
         break;
     }
     if (KeyLayout_GetRect(&kb->layout, &input->pos, &rect)) {
-        KeyHighlight_Set(&kb->highlight, HIGHLIGHT_PRESSED, &rect, kb->kanaPage, kb->type);
+        KeyHighlight_Set(&kb->highlight, HIGHLIGHT_PRESSED, &rect, kb->qwertyPage, kb->type);
     }
 }
 
@@ -2819,13 +2820,13 @@ static void NameEntryIcon_Init(NameEntryIcon *icon, u32 type, u32 species, u32 f
         charsFile = species + 49;
         cellFile = 65;
         animFile = 66;
-        sex = species >= 8 ? 1 : 0;
+        sex = species >= 8 ? GENDER_FEMALE : GENDER_MALE;
         break;
     case ICON_TYPE_POKEMON:
     case ICON_TYPE_POKEMON_NO_LABEL:
         hasLabel = TRUE;
         sex = (form & 0xff00) >> 8;
-        if (sex == 2) {
+        if (sex == GENDER_UNKNOWN) {
             hasLabel = FALSE;
         }
         if (type == ICON_TYPE_POKEMON_NO_LABEL) {
@@ -2877,7 +2878,7 @@ static void NameEntryIcon_Init(NameEntryIcon *icon, u32 type, u32 species, u32 f
     ClActor_SetAutoAnim(icon->actor, TRUE);
     switch (type) {
     case ICON_TYPE_PLAYER:
-        if (species == 0) {
+        if (species == GENDER_MALE) {
             NsbtxToClwk_LoadTexture(icon->actor, 48, 209, 3, 4, 4, 0, 0, heapId);
         } else {
             NsbtxToClwk_LoadTexture(icon->actor, 48, 218, 3, 4, 4, 0, 0, heapId);
@@ -2923,7 +2924,7 @@ static void NameEntryIcon_Init(NameEntryIcon *icon, u32 type, u32 species, u32 f
         labelSetup.bgPriority = 0;
         labelSetup.paletteOffset = 0;
         icon->labelActor = BmpOam_ActorAdd(bmpOam, &labelSetup);
-        if (sex == 1) {
+        if (sex == GENDER_FEMALE) {
             messageId = AbilityHandlersBtlMain_Text_Empty_6;
             color = 50 << 6;
         } else {
@@ -3044,7 +3045,7 @@ static u32 NameEntry_GetIconType(u32 mode, u32 species) {
     case NAME_ENTRY_RIVAL:
         return ICON_TYPE_RIVAL;
     case NAME_ENTRY_FRIEND:
-        if (species == 0xffff) {
+        if (species == NAME_ENTRY_FRIEND_KEY_ICON) {
             return ICON_TYPE_KEY;
         }
         return ICON_TYPE_FRIEND;
@@ -3288,16 +3289,16 @@ static void NameEntryTask_WaitDraw(NameEntryTask *task, u32 *state, NameEntryWor
 
 static void NameEntryTask_FadeIn(NameEntryTask *task, u32 *state, NameEntryWork *work) {
     switch (*state) {
-    case 0:
+    case FADE_SEQ_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
-        *state = 1;
+        *state = FADE_SEQ_WAIT;
         break;
-    case 1:
+    case FADE_SEQ_WAIT:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = FADE_SEQ_END;
         }
         break;
-    case 2:
+    case FADE_SEQ_END:
         NameEntryTask_SetFunc(task, NameEntryTask_Input);
         break;
     }
@@ -3305,16 +3306,16 @@ static void NameEntryTask_FadeIn(NameEntryTask *task, u32 *state, NameEntryWork 
 
 static void NameEntryTask_FadeOut(NameEntryTask *task, u32 *state, NameEntryWork *work) {
     switch (*state) {
-    case 0:
+    case FADE_SEQ_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
-        *state = 1;
+        *state = FADE_SEQ_WAIT;
         break;
-    case 1:
+    case FADE_SEQ_WAIT:
         if (!GFL_FadeIsRunning()) {
-            *state = 2;
+            *state = FADE_SEQ_END;
         }
         break;
-    case 2:
+    case FADE_SEQ_END:
         NameEntryTask_SetFunc(task, NameEntryTask_SaveKeyboardType);
         break;
     }
@@ -3324,7 +3325,7 @@ static void NameEntryTask_Talk(NameEntryTask *task, u32 *state, NameEntryWork *w
     NameEntryTalk *talk = &work->talk;
 
     switch (*state) {
-    case 0:
+    case TALK_SEQ_PRINT:
         GFL_TCBExMgrUpdate(talk->tcbManager);
         switch (PrintStream_GetState(talk->stream)) {
         case PRINT_STREAM_RUNNING:
@@ -3338,7 +3339,7 @@ static void NameEntryTask_Talk(NameEntryTask *task, u32 *state, NameEntryWork *w
             }
             break;
         case PRINT_STREAM_DONE:
-            *state = 1;
+            *state = TALK_SEQ_WAIT;
             break;
         case PRINT_STREAM_PAUSED:
             if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
@@ -3352,14 +3353,14 @@ static void NameEntryTask_Talk(NameEntryTask *task, u32 *state, NameEntryWork *w
             break;
         }
         break;
-    case 1:
+    case TALK_SEQ_WAIT:
         if (talk->frame >= talk->waitFrames) {
-            *state = 2;
+            *state = TALK_SEQ_END;
         } else {
             talk->frame++;
         }
         break;
-    case 2:
+    case TALK_SEQ_END:
         NameEntryTask_SetFunc(task, talk->next);
         break;
     }
@@ -3374,9 +3375,10 @@ static void NameEntryTask_Input(NameEntryTask *task, u32 *state, NameEntryWork *
     int which;
 
     result = Keyboard_GetResult(&work->keyboard, &c);
-    page = Keyboard_GetKanaPage(&work->keyboard);
+    page = Keyboard_GetQwertyPage(&work->keyboard);
     if (work->messagePending == TRUE) {
-        if (result != 0 || NameEntryIcon_WasTouched(&work->icon) || (GCTX_HIDGetPressedKeys() & ~PAD_BUTTON_A) != 0) {
+        if (result != KEY_RESULT_NONE || NameEntryIcon_WasTouched(&work->icon) ||
+            (GCTX_HIDGetPressedKeys() & ~PAD_BUTTON_A) != 0) {
             if (work->param->mode == NAME_ENTRY_POKEMON) {
                 if (work->param->pkm == NULL) {
                     NameEntryMessage_PrintSpecies(&work->message, work->param->mode, work->param->gender,
@@ -3466,11 +3468,12 @@ static void NameEntryTask_Input(NameEntryTask *task, u32 *state, NameEntryWork *
                 work->messagePending = TRUE;
                 break;
             }
-            if (!(work->param->skipChecks & 2) && ProfWord_Check(work->profWord, work->box.text, HEAPID_NAME_INPUT)) {
+            if (!(work->param->skipChecks & NAME_ENTRY_SKIP_PROFANITY_CHECK) &&
+                ProfWord_Check(work->profWord, work->box.text, HEAPID_NAME_INPUT)) {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
                 break;
             }
-            if (!(work->param->skipChecks & 1) &&
+            if (!(work->param->skipChecks & NAME_ENTRY_SKIP_DIGIT_LIMIT) &&
                 ProfWord_HasManyDigits(work->box.text, work->box.length, HEAPID_NAME_INPUT)) {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
                 NameEntryMessage_Print(&work->message, AbilityHandlersBtlMain_Text_NumbersMayContainOnly);
@@ -3558,11 +3561,11 @@ static void NameEntryTask_SaveKeyboardType(NameEntryTask *task, u32 *state, Name
 
 static void NameEntryTask_PauseSave(NameEntryTask *task, u32 *state, NameEntryWork *work) {
     switch (*state) {
-    case 0:
+    case PAUSE_SEQ_START:
         SaveControlIntr_Pause(work->param->saveTask);
-        *state = 1;
+        *state = PAUSE_SEQ_WAIT;
         break;
-    case 1:
+    case PAUSE_SEQ_WAIT:
         if (SaveControlIntr_IsPausedOrDone(work->param->saveTask) == TRUE) {
             NameEntryTask_Finish(task);
         }

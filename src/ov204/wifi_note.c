@@ -2782,7 +2782,7 @@ static NameEntryParam *WifiNoteCodeIn_CreateNameParam(WifiNoteCodeIn *codeIn, Wi
     NameEntryParam *param;
 
     if (isNew == TRUE || gender == WIFI_LIST_GENDER_UNKNOWN) {
-        param = setupNameEntry(heapId, NAME_ENTRY_FRIEND, 0xffff, 0, 7, NULL, gameInfo);
+        param = setupNameEntry(heapId, NAME_ENTRY_FRIEND, NAME_ENTRY_FRIEND_KEY_ICON, 0, 7, NULL, gameInfo);
     } else {
         param = setupNameEntry(heapId, NAME_ENTRY_FRIEND,
                                WifiList_GetFriendParam(wifiList, index, WIFI_LIST_FRIEND_TRAINER_VIEW), 0, 7, NULL,

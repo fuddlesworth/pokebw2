@@ -10,6 +10,8 @@
 // The characters that can be entered are in keyboards, a grid each. 0x3000 (an ideographic space) fills the unused
 // places of a grid, a word or a row
 #define NAME_INPUT_EMPTY_CHAR 0x3000
+// No matching word in a word table.
+#define NAME_INPUT_WORD_NOT_FOUND 0xffff
 // The most characters of one of a word's spellings
 #define NAME_INPUT_WORD_CHARS 3
 #define NAME_INPUT_KEYBOARD_COUNT 5
@@ -66,7 +68,7 @@ void NameInputWordTable_GetForm0(const NameInputWordTable *table, u32 index, u16
 BOOL NameInputWordTable_GetForm1(const NameInputWordTable *table, u32 index, u16 *dest, u32 n, u8 *len);
 BOOL NameInputWordTable_GetForm2(const NameInputWordTable *table, u32 index, u16 *dest, u32 n, u8 *len);
 BOOL NameInputWordTable_GetForm3(const NameInputWordTable *table, u32 index, u16 *dest, u32 n, u8 *len);
-// The index of the word whose first spelling is str, or 0xffff
+// The index of the word whose first spelling is str, or NAME_INPUT_WORD_NOT_FOUND
 u16 NameInputWordTable_Find(const NameInputWordTable *table, const u16 *str);
 
 NameInputConvTable *NameInputData_LoadConvTable(HeapID heapId);

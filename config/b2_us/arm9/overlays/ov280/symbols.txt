@@ -43,17 +43,17 @@ KeyLayout_GetRect kind:function(thumb,size=0xe) addr:0x021dac04
 KeyLayout_FindKind kind:function(thumb,size=0x5c) addr:0x021dac14
 KeyLayout_ConvertPos kind:function(thumb,size=0x78) addr:0x021dac70
 AlphaLayout_GetRect kind:function(thumb,size=0x9e) addr:0x021dace8
-KanaLayout_GetRect kind:function(thumb,size=0xec) addr:0x021dad88
+QwertyLayout_GetRect kind:function(thumb,size=0xec) addr:0x021dad88
 AlphaLayout_Move kind:function(thumb,size=0x13e) addr:0x021dae74
-KanaLayout_Move kind:function(thumb,size=0x398) addr:0x021dafb4
+QwertyLayout_Move kind:function(thumb,size=0x398) addr:0x021dafb4
 AlphaLayout_GetKindDefault kind:function(thumb,size=0x8) addr:0x021db34c
 AlphaLayout_GetKind kind:function(thumb,size=0x22) addr:0x021db354
-KanaLayout_GetKind kind:function(thumb,size=0x7a) addr:0x021db378
+QwertyLayout_GetKind kind:function(thumb,size=0x7a) addr:0x021db378
 Keyboard_Init kind:function(thumb,size=0x1ae) addr:0x021db3f4
 Keyboard_Free kind:function(thumb,size=0x3a) addr:0x021db5a4
 Keyboard_Update kind:function(thumb,size=0xe4) addr:0x021db5e0
 Keyboard_GetResult kind:function(thumb,size=0x24) addr:0x021db6c4
-Keyboard_GetKanaPage kind:function(thumb,size=0x8) addr:0x021db6e8
+Keyboard_GetQwertyPage kind:function(thumb,size=0x8) addr:0x021db6e8
 Keyboard_IsPrintDone kind:function(thumb,size=0x4a) addr:0x021db6f0
 Keyboard_GetType kind:function(thumb,size=0x8) addr:0x021db73c
 Keyboard_SetLocked kind:function(thumb,size=0x8) addr:0x021db744
@@ -61,7 +61,7 @@ NameEntry_GetLayoutIndex kind:function(thumb,size=0xc) addr:0x021db74c
 Keyboard_StartSwitch kind:function(thumb,size=0x5c) addr:0x021db758
 Keyboard_UpdateSlide kind:function(thumb,size=0x1e8) addr:0x021db7b4
 Keyboard_ApplyType kind:function(thumb,size=0xc2) addr:0x021db99c
-Keyboard_SetKanaPage kind:function(thumb,size=0x7a) addr:0x021dba60
+Keyboard_SetQwertyPage kind:function(thumb,size=0x7a) addr:0x021dba60
 Keyboard_HandleKeys kind:function(thumb,size=0x104) addr:0x021dbadc
 Keyboard_HandleButtons kind:function(thumb,size=0xe0) addr:0x021dbbe0
 Keyboard_HandleTouch kind:function(thumb,size=0x50) addr:0x021dbcc0
@@ -146,18 +146,18 @@ NameInputData_ConvTableCount kind:function(thumb,size=0x4) addr:0x021dd710
 NameInputData_ConvTableGet kind:function(thumb,size=0xe) addr:0x021dd714
 NameInputConvTable_GetNext kind:function(thumb,size=0x88) addr:0x021dd724
 NameInputData_IsNameValid kind:function(thumb,size=0x138) addr:0x021dd7ac
-data_ov280_021dd904 kind:data(any) addr:0x021dd904
-data_ov280_021dd910 kind:data(any) addr:0x021dd910
-data_ov280_021dd91c kind:data(any) addr:0x021dd91c
-data_ov280_021dd929 kind:data(any) addr:0x021dd929
+sQwertyRowLeft kind:data(any) addr:0x021dd904
+sQwertyRowTop kind:data(any) addr:0x021dd910
+sDefaultKeyMemory kind:data(any) addr:0x021dd91c
+sIconPalettes kind:data(any) addr:0x021dd929
 NAME_ENTRY_SOUND_COUNT kind:data(any) addr:0x021dd93c ambiguous
 NAME_ENTRY_PROC_FUNCTIONS kind:data(any) addr:0x021dd940 ambiguous
 NAME_ENTRY_SOUNDS kind:data(any) addr:0x021dd94c ambiguous
-data_ov280_021dd964 kind:data(any) addr:0x021dd964
+sGameSyncIdChars kind:data(any) addr:0x021dd964
 sLCDConfig kind:data(any) addr:0x021dd9a4
 sClActSysSetup kind:data(any) addr:0x021dd9b4
 sVRAMConfig kind:data(any) addr:0x021dd9d0
 sBGSetups kind:data(any) addr:0x021dda00
-data_ov280_021ddb80 kind:data(any) addr:0x021ddb80
+sKeyBlinkStep kind:data(any) addr:0x021ddb80
 data_ov280_021ddb84 kind:data(any) addr:0x021ddb84
 data_ov280_021ddb98 kind:data(any) addr:0x021ddb98
