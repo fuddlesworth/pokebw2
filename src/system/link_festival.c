@@ -202,7 +202,7 @@ u32 LinkFestival_GetNormalChangeBGMID(LinkFestival *festival) {
     GameCommSys_SetInFunfestMission(GSYS_GetGameCommSystem(festival->gsys), FALSE);
     ClearLinkFestivalData(festival);
     if (GameData_GetNowBGM(festival->gameData) != SEQ_BGM_FES) {
-        return 0xffffffff;
+        return LINK_FESTIVAL_BGM_NO_CHANGE;
     }
     zoneId = PlayerState_GetZoneID(GameData_GetPlayerState(festival->gameData));
     return GetMapBGMIDByPlayerState2(festival->gameData, zoneId, GameData_GetSeason(festival->gameData));

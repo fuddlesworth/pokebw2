@@ -27,7 +27,7 @@ struct FishingEventWork {
     u8 faceDirection;
     u8 isPhenomenon;
     u8 noFishing;
-    u8 flag5B;
+    u8 hideReflection;
     s32 timer;
     u32 elapsed;
     BtlSetup *battleSetup;

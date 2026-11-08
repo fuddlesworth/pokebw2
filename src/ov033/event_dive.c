@@ -21,7 +21,7 @@ enum {
     DIVE_IN_STEP_WAIT_SINK,
     DIVE_IN_STEP_WAIT_SOUND,
     DIVE_IN_STEP_MAP_CHANGE,
-    DIVE_IN_STEP_WAIT_ANIME,
+    DIVE_IN_STEP_WAIT_ANIMATION,
 };
 
 GameEventReturnCode EventDiveIn_Callback(GameEvent *event, u32 *state, void *eventData) {
@@ -65,7 +65,7 @@ GameEventReturnCode EventDiveIn_Callback(GameEvent *event, u32 *state, void *eve
         FldAct_SetAcmd(FieldPlayer_GetActor(Field_GetPlayer(data->field)), 8);
         (*state)++;
         break;
-    case DIVE_IN_STEP_WAIT_ANIME:
+    case DIVE_IN_STEP_WAIT_ANIMATION:
         if (FldAct_CheckAcmdEnd(FieldPlayer_GetActor(Field_GetPlayer(data->field)))) {
             return GAMEEVENT_DONE;
         }
@@ -94,7 +94,7 @@ GameEventReturnCode EventDiveOut_Callback(GameEvent *event, u32 *state, void *ev
     case DIVE_OUT_STEP_START:
         GFL_SndSEPlay(SEQ_SE_FLD_123);
         data->timer = 0x18;
-        if (data->param != 0) {
+        if (data->showSpinAndFog != 0) {
             fog = Field_GetFog(data->field);
             accelTask = FieldActorSpinTask_CreatePlayerAccel(data->field, 0x14, 3);
             spinTask = FieldActorSpinTask_CreatePlayer(data->field, 0xc, 3);
@@ -129,11 +129,11 @@ GameEvent *EventDiveIn_Create(GameSystem *gsys, Field *field) {
     data = GameEvent_GetData(event);
     data->gsys = gsys;
     data->field = field;
-    data->param = 0;
+    data->showSpinAndFog = 0;
     return event;
 }
 
-GameEvent *CreateDiveOutEvent(GameSystem *gsys, Field *field, u32 param) {
+GameEvent *CreateDiveOutEvent(GameSystem *gsys, Field *field, u32 showSpinAndFog) {
     GameEvent *event;
     DiveEventData *data;
 
@@ -141,7 +141,7 @@ GameEvent *CreateDiveOutEvent(GameSystem *gsys, Field *field, u32 param) {
     data = GameEvent_GetData(event);
     data->gsys = gsys;
     data->field = field;
-    data->param = param;
+    data->showSpinAndFog = showSpinAndFog;
     return event;
 }
 

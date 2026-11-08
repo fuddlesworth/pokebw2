@@ -362,4 +362,7 @@ s8 doesNatureAffectStat(PartyPkm *pkm, u32 stat);
 u8 getHiddenPowerType(PartyPkm *pkm);
 u32 getHiddenPowerBasePwr(PartyPkm *pkm);
 
+// LearnMove and LearnMoveTutor found no free move slot, distinct from the next-level NO_SLOT flag.
+#define LEARN_MOVE_FULL 0xffff
+
 #endif // POKEBW2_PML_POKE_PARTY_H

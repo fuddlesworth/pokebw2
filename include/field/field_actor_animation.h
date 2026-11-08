@@ -19,7 +19,7 @@ struct FieldActorAnmProc {
     VecFx32 pos;
     u8 unk198;
     u8 animation;
-    u8 finished;
+    u8 isPlaying;
     u8 unk19b;
     HeapID heapId;
 };
@@ -27,7 +27,7 @@ struct FieldActorAnmProc {
 FieldActorAnmProc *FieldActorAnmProc_Create(Field *field, u16 actorId, const VecFx32 *pos, HeapID heapId);
 void FieldActorAnmProc_Free(FieldActorAnmProc *proc);
 void FieldActorAnmProc_Play(FieldActorAnmProc *proc, u16 animation);
-BOOL FieldActorAnmProc_IsPlaying(FieldActorAnmProc *proc);
+BOOL FieldActorAnmProc_IsFinished(FieldActorAnmProc *proc);
 void FieldActorAnmProc_Update(FieldAsyncProc *asyncProc, Field *field, void *data);
 void FieldActorAnmProc_Draw(FieldAsyncProc *asyncProc, Field *field, void *data);
 void FieldActorAnmProc_CommitTransform(G3DCurve *curve, FieldActor *actor, VecFx32 *pos);

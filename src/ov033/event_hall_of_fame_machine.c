@@ -38,12 +38,20 @@ GameEvent *EventHallOfFameMachine_Create(GameSystem *gsys, GameEvent *parent) {
     return event;
 }
 
+// The balls and the Hall of Fame machine animations.
+enum {
+    HOF_MACHINE_STEP_SPAWN_BALLS = 0,
+    HOF_MACHINE_STEP_START_ANIMATIONS = 1,
+    HOF_MACHINE_STEP_WAIT_ANIMATIONS = 2,
+    HOF_MACHINE_STEP_FINISH = 3,
+};
+
 GameEventReturnCode EventHallOfFameMachine_Callback(GameEvent *event, u32 *state, void *data) {
     EventHallOfFameMachineData *work;
 
     work = data;
     switch (*state) {
-    case 0:
+    case HOF_MACHINE_STEP_SPAWN_BALLS:
         if (work->frameCounter % 20 == 0) {
             EventHallOfFameMachine_SpawnMonsBall(work);
             if (work->ballCount <= work->spawnedCount) {
@@ -52,19 +60,19 @@ GameEventReturnCode EventHallOfFameMachine_Callback(GameEvent *event, u32 *state
             }
         }
         break;
-    case 1:
+    case HOF_MACHINE_STEP_START_ANIMATIONS:
         if (work->frameCounter > 10) {
             EventHallOfFameMachine_StartAnimations(work);
             (*state)++;
             work->frameCounter = 0;
         }
         break;
-    case 2:
+    case HOF_MACHINE_STEP_WAIT_ANIMATIONS:
         if (EventHallOfFameMachine_IsAnimationDone(work)) {
             (*state)++;
         }
         break;
-    case 3:
+    case HOF_MACHINE_STEP_FINISH:
         EventHallOfFameMachine_End(work);
         return GAMEEVENT_DONE;
     }

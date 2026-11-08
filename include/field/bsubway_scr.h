@@ -262,4 +262,11 @@ typedef struct {
     u16 max;
 } BSubwayTrainerRange;
 
+// Operations of BsubwayScr_UpdateStageRank.
+enum {
+    BSUBWAY_RANK_GET = 0,
+    BSUBWAY_RANK_PROMOTE = 3,
+    BSUBWAY_RANK_CHECK_DEMOTION = 4,
+};
+
 #endif // POKEBW2_FIELD_BSUBWAY_SCR_H

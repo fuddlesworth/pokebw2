@@ -15,8 +15,8 @@ struct EventActorAnmProcWaitWork {
     FieldActorAnmProc *proc;
 };
 
-// Whether the actor can move again when each animation ends
-static const u32 FIELD_ACTOR_ANM_IS_ALLOW_MOVE_ON_END[6] = { TRUE, FALSE, FALSE, FALSE, FALSE, TRUE };
+// Whether to clear the animation's shadow-hiding flag when its curve ends
+static const u32 FIELD_ACTOR_ANM_RESTORE_SHADOW_ON_END[6] = { TRUE, FALSE, FALSE, FALSE, FALSE, TRUE };
 
 static const FieldAsyncProcDef FIELD_ACTOR_ANM_ASYNC_PROC_TEMPLATE = {
     0, 0x1a0, NULL, NULL, FieldActorAnmProc_Update, FieldActorAnmProc_Draw,
@@ -53,7 +53,7 @@ BOOL Scrcmd_FieldActorAnimation_ActorAnimationPlay(VM *vm, FieldScriptEnv *env) 
 GameEventReturnCode EventActorAnmProcWait_Callback(GameEvent *event, u32 *state, void *data) {
     EventActorAnmProcWaitWork *work = data;
 
-    return FieldActorAnmProc_IsPlaying(work->proc) == TRUE ? GAMEEVENT_DONE : GAMEEVENT_CONTINUE;
+    return FieldActorAnmProc_IsFinished(work->proc) == TRUE ? GAMEEVENT_DONE : GAMEEVENT_CONTINUE;
 }
 
 BOOL Scrcmd_FieldActorAnimation_ActorAnimationWait(VM *vm, FieldScriptEnv *env) {
@@ -87,20 +87,20 @@ void FieldActorAnmProc_Free(FieldActorAnmProc *proc) {
 void FieldActorAnmProc_Play(FieldActorAnmProc *proc, u16 animation) {
     proc->curve = GFL_G3DCurveCreateToLoadBuffer(proc->heapId, ARCID_FIELD_ACTOR_ANIMATION, animation, 0xa,
                                                  proc->curveBuffer, sizeof(proc->curveBuffer));
-    proc->finished = TRUE;
+    proc->isPlaying = TRUE;
     proc->animation = animation;
     FieldActorAnmProc_CommitTransform(proc->curve, proc->actor, &proc->pos);
     SetActorMovementFlag(proc->actor, ACTOR_MOVEMENT_FLAG_HIDE_SHADOW);
 }
 
-BOOL FieldActorAnmProc_IsPlaying(FieldActorAnmProc *proc) {
-    return proc->finished == 0;
+BOOL FieldActorAnmProc_IsFinished(FieldActorAnmProc *proc) {
+    return proc->isPlaying == 0;
 }
 
 void FieldActorAnmProc_Update(FieldAsyncProc *asyncProc, Field *field, void *data) {
     FieldActorAnmProc *work = data;
 
-    if (work->finished != 0 && work->finished == 1) {
+    if (work->isPlaying != 0 && work->isPlaying == 1) {
         if (GFL_G3DCurveFrameStepLoop(work->curve, FX32_ONE) == 0) {
             FieldActorAnmProc_CommitTransform(work->curve, work->actor, &work->pos);
         } else {
@@ -108,10 +108,10 @@ void FieldActorAnmProc_Update(FieldAsyncProc *asyncProc, Field *field, void *dat
 
             GFL_G3DCurveFree(work->curve);
             work->curve = NULL;
-            work->finished = 0;
+            work->isPlaying = 0;
             CopyActorWPos(work->actor, &pos);
             SetActorWPosAll(work->actor, &pos, GetActorFaceDir(work->actor));
-            if (FIELD_ACTOR_ANM_IS_ALLOW_MOVE_ON_END[work->animation] != 0) {
+            if (FIELD_ACTOR_ANM_RESTORE_SHADOW_ON_END[work->animation] != 0) {
                 ClearActorMovementFlag(work->actor, ACTOR_MOVEMENT_FLAG_HIDE_SHADOW);
             }
         }

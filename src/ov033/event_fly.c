@@ -49,6 +49,21 @@ GameEvent *EventFly_CreateMapChangeEvent(GameSystem *gsys, Field *field, u32 zon
     return event;
 }
 
+// The takeoff, map change, landing effect and camera restoration.
+enum {
+    FLY_STEP_PREPARE_TAKEOFF = 0,
+    FLY_STEP_START_TAKEOFF_CAMERA = 1,
+    FLY_STEP_PLAY_TAKEOFF_EFFECT = 2,
+    FLY_STEP_FADE_OUT = 3,
+    FLY_STEP_CHANGE_MAP = 4,
+    FLY_STEP_PREPARE_LANDING = 5,
+    FLY_STEP_START_LANDING_CAMERA = 6,
+    FLY_STEP_PREPARE_LANDING_SURFACE = 7,
+    FLY_STEP_PLAY_LANDING_EFFECT = 8,
+    FLY_STEP_RETURN_CAMERA = 9,
+    FLY_STEP_WAIT_RETURN_CAMERA = 10,
+};
+
 GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) {
     FlyEventWork *work = data;
     Field *field = GSYS_GetField(work->gsys);
@@ -60,13 +75,13 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
     u32 enabled;
 
     switch (*state) {
-    case 0:
+    case FLY_STEP_PREPARE_TAKEOFF:
         FieldCamera_SetUseBoundaryEnable(camera, FALSE);
         work->bind = FieldCamera_GetBind(camera);
         FieldCamera_FinishDelay(camera);
         (*state)++;
         break;
-    case 1: {
+    case FLY_STEP_START_TAKEOFF_CAMERA: {
         VecFx32 takeoffPosition;
         FieldEvCameraAnimationSetup takeoffSetup;
 
@@ -94,7 +109,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         FieldCameraAnm_SetAnimation(camera, &takeoffSetup, 10);
         (*state)++;
     }
-    case 2:
+    case FLY_STEP_PLAY_TAKEOFF_EFFECT:
         if (FieldCamera_IsAnimating(camera)) {
             break;
         }
@@ -105,7 +120,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         }
         (*state)++;
         break;
-    case 3:
+    case FLY_STEP_FADE_OUT:
         EnableAllActorsMovement(Field_GetActorSystem(field));
         SetActorHidden(FieldPlayer_GetActor(Field_GetPlayer(field)), TRUE);
         FieldCameraAnm_EVCameraEnd(camera);
@@ -113,17 +128,17 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
                             EventGameTransition_CreateFadeOutEvent(work->gsys, field, FIELD_TRANSITION_FADE_BLACK, 0));
         (*state)++;
         break;
-    case 4:
+    case FLY_STEP_CHANGE_MAP:
         GameEvent_ChainNext(event, EventMapChange_CreateForFly(work->gsys, field, (u16)work->zoneId, &work->spawn, 1));
         (*state)++;
         break;
-    case 5:
+    case FLY_STEP_PREPARE_LANDING:
         PlaceName_Cancel(Field_GetPlaceName(field));
         work->bind = FieldCamera_GetBind(camera);
         FieldCamera_FinishDelay(camera);
         (*state)++;
         break;
-    case 6: {
+    case FLY_STEP_START_LANDING_CAMERA: {
         VecFx32 landingPosition;
         FieldEvCameraAnimationSetup landingSetup;
 
@@ -152,7 +167,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         FieldCameraAnm_SetAnimation(camera, &landingSetup, 1);
         (*state)++;
     }
-    case 7:
+    case FLY_STEP_PREPARE_LANDING_SURFACE:
         if (FieldCamera_IsAnimating(camera)) {
             break;
         }
@@ -163,7 +178,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         FieldG2D_Prepare3DSurface(field);
         (*state)++;
         break;
-    case 8:
+    case FLY_STEP_PLAY_LANDING_EFFECT:
         DisableAllActorsMovement(Field_GetActorSystem(field));
         next = EventFieldEffect_Create(work->gsys, g3dCi, work->effectIn);
         if (next != NULL) {
@@ -177,7 +192,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         }
         (*state)++;
         break;
-    case 9: {
+    case FLY_STEP_RETURN_CAMERA: {
         FieldEvCameraAnimationFlags returnFlags;
 
         EnableAllActorsMovement(Field_GetActorSystem(field));
@@ -191,7 +206,7 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
         FieldCameraAnm_SetReturnAnimation(camera, &returnFlags, 10);
         (*state)++;
     }
-    case 10:
+    case FLY_STEP_WAIT_RETURN_CAMERA:
         if (FieldCamera_IsAnimating(camera)) {
             break;
         }
@@ -207,17 +222,23 @@ GameEventReturnCode EventFly_Callback(GameEvent *event, u32 *state, void *data) 
     return GAMEEVENT_CONTINUE;
 }
 
+// The fallback fade when the landing effect could not be created.
+enum {
+    FLY_FALLBACK_FADE_STEP_START = 0,
+    FLY_FALLBACK_FADE_STEP_WAIT = 1,
+};
+
 GameEventReturnCode EventFly_FadeOutEventMain(GameEvent *event, u32 *state, void *data) {
     GameSystem *gsys;
 
     gsys = GameEvent_GetGameSystem(event);
     GSYS_GetField(gsys);
     switch (*state) {
-    case 0:
+    case FLY_FALLBACK_FADE_STEP_START:
         GFL_FadeSet(3, 16, 0, 0);
         ++*state;
         break;
-    case 1:
+    case FLY_FALLBACK_FADE_STEP_WAIT:
         if (!GFL_FadeIsRunning()) {
             return GAMEEVENT_DONE;
         }

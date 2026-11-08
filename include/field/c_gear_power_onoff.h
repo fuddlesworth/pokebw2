@@ -18,4 +18,9 @@ void CGearPowerOnOff_Free(CGearPowerOnOff *work);
 // active is unused
 void CGearPowerOnOff_Update(CGearPowerOnOff *work, BOOL active);
 
+// Saved return marker when any power prompt finishes, including No or disabled wireless.
+enum {
+    CGEAR_POWER_ONOFF_DONE = 14,
+};
+
 #endif // POKEBW2_FIELD_C_GEAR_POWER_ONOFF_H

@@ -33,37 +33,46 @@ GameEvent *EventPokeCenHeal_Create(GameSystem *gsys, GameEvent *parent, u8 ballC
     return event;
 }
 
+// The healing-machine animations and restoration of the field music.
+enum {
+    POKECEN_HEAL_STEP_SPAWN_BALLS = 0,
+    POKECEN_HEAL_STEP_START_ANIMATIONS = 1,
+    POKECEN_HEAL_STEP_WAIT_ANIMATIONS = 2,
+    POKECEN_HEAL_STEP_RESTORE_BGM = 3,
+    POKECEN_HEAL_STEP_FINISH = 4,
+};
+
 GameEventReturnCode EventPokeCenHeal_Callback(GameEvent *event, u32 *state, void *data) {
     EventPokeCenHealData *work;
 
     work = data;
     switch (*state) {
-    case 0:
+    case POKECEN_HEAL_STEP_SPAWN_BALLS:
         if (work->frameCounter % 15 == 0) {
             EventPokeCenHeal_SpawnMonsBall(work);
             if (work->ballCount <= work->animationCount) {
-                EventPokeCenHeal_ChangeState(work, state, 1);
+                EventPokeCenHeal_ChangeState(work, state, POKECEN_HEAL_STEP_START_ANIMATIONS);
             }
         }
         break;
-    case 1:
+    case POKECEN_HEAL_STEP_START_ANIMATIONS:
         if (work->frameCounter > 10) {
             EventPokeCenHeal_StartAnimations(work);
             GameEvent_ChainNext(event, EventMEPlay_Create(Field_GetGameSystem(work->field), 0x514));
-            EventPokeCenHeal_ChangeState(work, state, 2);
+            EventPokeCenHeal_ChangeState(work, state, POKECEN_HEAL_STEP_WAIT_ANIMATIONS);
         }
         break;
-    case 2:
+    case POKECEN_HEAL_STEP_WAIT_ANIMATIONS:
         if (EventPokeCenHeal_IsAnimationDone(work)) {
             EventPokeCenHeal_PauseAnimation(work);
-            EventPokeCenHeal_ChangeState(work, state, 3);
+            EventPokeCenHeal_ChangeState(work, state, POKECEN_HEAL_STEP_RESTORE_BGM);
         }
         break;
-    case 3:
+    case POKECEN_HEAL_STEP_RESTORE_BGM:
         GameEvent_ChainNext(event, EventPushBGMFinish_Create(Field_GetGameSystem(work->field), 0, 6));
-        EventPokeCenHeal_ChangeState(work, state, 4);
+        EventPokeCenHeal_ChangeState(work, state, POKECEN_HEAL_STEP_FINISH);
         break;
-    case 4:
+    case POKECEN_HEAL_STEP_FINISH:
         EventPokeCenHeal_End(work);
         return GAMEEVENT_DONE;
     }

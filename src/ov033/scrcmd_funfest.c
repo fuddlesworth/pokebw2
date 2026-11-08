@@ -1,4 +1,6 @@
 #include "types.h"
+#include "constants/items.h"
+#include "constants/species.h"
 #include "field/entree_scripts.h"
 #include "field/event_funfest_mission.h"
 #include "field/event_mapchange.h"
@@ -29,7 +31,7 @@ BOOL Scrcmd_Funfest_FunfestBGMReturn(VM *vm, FieldScriptEnv *env) {
     }
     FesGimmick_EndMission(gimmick);
     bgm = LinkFestival_GetNormalChangeBGMID(festival);
-    if (bgm != 0xffffffff) {
+    if (bgm != LINK_FESTIVAL_BGM_NO_CHANGE) {
         ScriptWork_CallEvent(scriptWork, EventBGMPlay_Create(gsys, bgm));
     }
     return TRUE;
@@ -81,16 +83,17 @@ BOOL Scrcmd_Funfest_FunfestGetItemExchangeInfo(VM *vm, FieldScriptEnv *env) {
     ScriptWork *scriptWork = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     FesGimmick *gimmick = Field_GetFesGimmick(GSYS_GetField(gsys));
-    u16 arg0 = ScriptReadAny(vm, env);
-    u16 arg1 = ScriptReadAny(vm, env);
+    u16 firstItemSlot = ScriptReadAny(vm, env);
+    u16 secondItemSlot = ScriptReadAny(vm, env);
     u16 *out0 = ScriptReadVar(vm, env);
     u16 *out1 = ScriptReadVar(vm, env);
 
     if (!FesGimmick_IsCurrent(gimmick, 5)) {
-        *out0 = *out1 = 0x11;
+        *out0 = *out1 = ITEM_POTION;
         return TRUE;
     }
-    FesMissionGimmick_GetItemExchangeInfo(gimmick, ScriptWork_GetParentActor(scriptWork), arg0, arg1, out0, out1);
+    FesMissionGimmick_GetItemExchangeInfo(gimmick, ScriptWork_GetParentActor(scriptWork), firstItemSlot, secondItemSlot,
+                                          out0, out1);
     return TRUE;
 }
 
@@ -102,7 +105,7 @@ BOOL Scrcmd_Funfest_FunfestGetItemSaleInfo(VM *vm, FieldScriptEnv *env) {
     u16 *out1 = ScriptReadVar(vm, env);
 
     if (!FesGimmick_IsCurrent(gimmick, 5)) {
-        *out0 = 0x11;
+        *out0 = ITEM_POTION;
         *out1 = 0x270f;
         return TRUE;
     }
@@ -146,7 +149,7 @@ BOOL Scrcmd_Funfest_FunfestGetPokemonQuizSpecies(VM *vm, FieldScriptEnv *env) {
     result = ScriptReadVar(vm, env);
 
     if (!FesGimmick_IsCurrent(gimmick, 5)) {
-        *result = 0x1f8 + index;
+        *result = SPECIES_PATRAT + index;
         return TRUE;
     }
     *result = FesMissionGimmick_GetQuizSpecies(gimmick, (u8)index);
@@ -166,7 +169,7 @@ BOOL Scrcmd_Funfest_FunfestGetPokemonQuizBogusSpecies(VM *vm, FieldScriptEnv *en
     result = ScriptReadVar(vm, env);
 
     if (!FesGimmick_IsCurrent(gimmick, 5)) {
-        *result = 0x1f8 + index;
+        *result = SPECIES_PATRAT + index;
         return TRUE;
     }
     *result = FesMissionGimmick_GetQuizChoice(gimmick, (u8)index);

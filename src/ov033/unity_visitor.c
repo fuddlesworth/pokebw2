@@ -70,7 +70,8 @@ u32 Scrcmd_GetPartnerCandidateHistoryIndex(UnityTowerFloor *output, u32 index) {
     return result;
 }
 
-u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTowerFloor *save, s32 index, u32 param) {
+u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTowerFloor *save, s32 index,
+                                     u32 useBaseGreeting) {
     GameData *gameData;
     UnityTowerSurveySave *surveySave;
     PlayerInfo *visitor;
@@ -95,10 +96,10 @@ u32 Scrcmd_GetPartnerGreetingMessage(WordSet *wordSet, GameSystem *gsys, UnityTo
     if (CountryHasProvinces(GameData_GetUnityTowerSave(gameData)->floor) != 0) {
         hasProvince = 1;
     }
-    return Scrcmd_CalcPartnerGreetingIndex(gender, id, ratingLevel, param, hasProvince);
+    return Scrcmd_CalcPartnerGreetingIndex(gender, id, ratingLevel, useBaseGreeting, hasProvince);
 }
 
-u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 a3, u32 hasProvince) {
+u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 useBaseGreeting, u32 hasProvince) {
     u32 messageId;
 
     if (hasProvince != 0) {
@@ -112,7 +113,7 @@ u32 Scrcmd_CalcPartnerGreetingIndex(u32 gender, u32 id, u32 ratingLevel, u32 a3,
     if (gender != 0) {
         messageId += 6;
     }
-    if (a3 == 0) {
+    if (useBaseGreeting == 0) {
         messageId++;
         messageId += (u32)(_u32_div_f(id, 5) >> 32);
     }

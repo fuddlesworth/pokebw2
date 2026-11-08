@@ -221,7 +221,7 @@ void CGearPowerOnOff_Free(CGearPowerOnOff *work) {
 
 void CGearPowerOnOff_Update(CGearPowerOnOff *work, BOOL active) {
     if (!work->finished && sSeqFuncs[work->mode](work)) {
-        FieldSubscreen_SaveReturnSubscreen(work->subscreen, 14);
+        FieldSubscreen_SaveReturnSubscreen(work->subscreen, CGEAR_POWER_ONOFF_DONE);
         work->finished = TRUE;
     }
     PrintQueue_Main(work->printQueue);

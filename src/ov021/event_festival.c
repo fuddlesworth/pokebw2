@@ -84,11 +84,11 @@ GameEventReturnCode EventFestival_Callback(GameEvent *event, u32 *state, void *d
         }
         break;
     case STEP_PLAY_BGM: {
-        u32 bgm = -1;
+        u32 bgm = LINK_FESTIVAL_BGM_NO_CHANGE;
         if (work->mode == FMISSION_APP_MODE_RESULT) {
             bgm = LinkFestival_GetNormalChangeBGMID(GSYS_GetLinkFestival(work->gsys));
         }
-        if (bgm != (u32)-1) {
+        if (bgm != LINK_FESTIVAL_BGM_NO_CHANGE) {
             GameEvent_ChainNext(event, EventBGMPlay_Create(work->gsys, bgm));
         }
         (*state)++;

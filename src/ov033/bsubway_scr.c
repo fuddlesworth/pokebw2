@@ -1,4 +1,5 @@
 #include "types.h"
+#include "app/pokelist.h"
 #include "battle/btl_setup.h"
 #include "constants/pokemon.h"
 #include "field/battle_facility.h"
@@ -348,7 +349,8 @@ u16 BsubwayScr_SetSelectedMembers(BSubwayScrWork *bsw, GameSystem *gsys) {
     PartyPkm *pkm;
     u16 i;
 
-    if (bsw->pokeSelectResult != 0 || bsw->pokeSelectIndex == 7 || bsw->pokeSelectIndex == 8) {
+    if (bsw->pokeSelectResult != POKELIST_RESULT_DONE || bsw->pokeSelectIndex == POKELIST_CURSOR_CANCEL ||
+        bsw->pokeSelectIndex == POKELIST_CURSOR_CLOSE) {
         return 0;
     }
     party = BsubwayScr_GetParty(bsw);
@@ -435,23 +437,23 @@ u16 BsubwayScr_UpdateStageRank(BSubwayScoreData *score, GameSystem *gsys, u32 op
 
     value = BSubwayScoreData_GetWifiRank(score);
     switch (op) {
-    case 0:
+    case BSUBWAY_RANK_GET:
         return value;
-    case 3:
+    case BSUBWAY_RANK_PROMOTE:
         BSubwayScoreData_SetFlag(score, 0, BSUBWAY_FLAG_RESET);
-        if (value == 10) {
+        if (value == BSUBWAY_WIFI_RANK_MAX) {
             return 0;
         }
         BSubwayScoreData_IncWifiRank(score);
         return 1;
-    case 4:
-        limit = BSubwayScoreData_SetWifiLoseCount(score, 3);
+    case BSUBWAY_RANK_CHECK_DEMOTION:
+        limit = BSubwayScoreData_SetWifiLoseCount(score, BSUBWAY_FLAG_INC);
         if (value == 1) {
             return 0;
         }
         if (limit >= sWifiRankLoseLimits[value - 1]) {
             BSubwayScoreData_DecWifiRank(score);
-            BSubwayScoreData_SetWifiLoseCount(score, 2);
+            BSubwayScoreData_SetWifiLoseCount(score, BSUBWAY_FLAG_RESET);
             BSubwayScoreData_SetFlag(score, 0, BSUBWAY_FLAG_RESET);
             return 1;
         }

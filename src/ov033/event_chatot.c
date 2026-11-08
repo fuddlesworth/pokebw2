@@ -35,12 +35,12 @@
 // The sprite of the Chatot
 static const ClActorSetup sSpriteSetup = { 128, 72, 0, 0, 0 };
 
-GameEvent *EventPerapRecord_Create(GameSystem *gsys, Field *field, u8 partyIndex) {
+GameEvent *EventChatotRecord_Create(GameSystem *gsys, Field *field, u8 partyIndex) {
     GameEvent *event;
     ChatotEventWork *work;
     PokeParty *party;
 
-    event = GameEvent_Create(gsys, NULL, EventPerapRecord_Main, sizeof(ChatotEventWork));
+    event = GameEvent_Create(gsys, NULL, EventChatotRecord_Main, sizeof(ChatotEventWork));
     work = GameEvent_GetData(event);
     MI_CpuFill8(work, 0, sizeof(ChatotEventWork));
     work->gsys = gsys;
@@ -56,73 +56,92 @@ GameEvent *EventPerapRecord_Create(GameSystem *gsys, Field *field, u8 partyIndex
     return event;
 }
 
-GameEventReturnCode EventPerapRecord_Main(GameEvent *event, u32 *state, void *data) {
+// The overwrite prompt, microphone recording, playback and cleanup.
+enum {
+    CHATOT_RECORD_STEP_PAUSE_ACTORS = 0,
+    CHATOT_RECORD_STEP_OPEN_PROMPT = 1,
+    CHATOT_RECORD_STEP_WAIT_OVERWRITE_PROMPT = 2,
+    CHATOT_RECORD_STEP_CHECK_OVERWRITE_ANSWER = 3,
+    CHATOT_RECORD_STEP_WAIT_RECORD_PROMPT = 4,
+    CHATOT_RECORD_STEP_WAIT_MIC_READY = 5,
+    CHATOT_RECORD_STEP_START_RECORDING = 6,
+    CHATOT_RECORD_STEP_WAIT_RECORDING = 7,
+    CHATOT_RECORD_STEP_ANIMATE_ICON = 8,
+    CHATOT_RECORD_STEP_WAIT_RECORDED_MESSAGE = 9,
+    CHATOT_RECORD_STEP_PLAY_RECORDING = 10,
+    CHATOT_RECORD_STEP_WAIT_PLAYBACK = 11,
+    CHATOT_RECORD_STEP_WAIT_ERROR_MESSAGE = 12,
+    CHATOT_RECORD_STEP_CLEANUP = 13,
+    CHATOT_RECORD_STEP_RESUME_ACTORS = 14,
+};
+
+GameEventReturnCode EventChatotRecord_Main(GameEvent *event, u32 *state, void *data) {
     ChatotEventWork *work = data;
     StrBuf *message;
     PokeVoiceChatterInfo chatterInfo;
 
     switch (*state) {
-    case 0:
-        EventPerapRecord_PauseActors(work);
-        *state = 1;
+    case CHATOT_RECORD_STEP_PAUSE_ACTORS:
+        EventChatotRecord_PauseActors(work);
+        *state = CHATOT_RECORD_STEP_OPEN_PROMPT;
         break;
-    case 1:
+    case CHATOT_RECORD_STEP_OPEN_PROMPT:
         work->msgData = MsgBGPrinter_CreateMsgData(work->msgBGSys, 0x6c);
         work->talkWindow = MsgBGPrinter_CreateBottomSysWin(work->msgBGSys, work->msgData);
         work->wordSet = GFL_WordSetSystemCreateDefault(21);
         work->strbuf = GFL_StrBufCreate(0x400, 21);
-        EventPerapRecord_SetupWindow(work);
+        EventChatotRecord_SetupWindow(work);
         if (doesChatotExist(work->chatter) == TRUE) {
             MsgBGPrinter_SysWinPrintMsg(work->talkWindow, 0, 0, 0);
-            *state = 2;
+            *state = CHATOT_RECORD_STEP_WAIT_OVERWRITE_PROMPT;
         } else {
             MsgBGPrinter_SysWinPrintMsg(work->talkWindow, 0, 0, 6);
-            *state = 4;
+            *state = CHATOT_RECORD_STEP_WAIT_RECORD_PROMPT;
         }
         break;
-    case 2:
+    case CHATOT_RECORD_STEP_WAIT_OVERWRITE_PROMPT:
         if (MsgBGPrinter_SysWinMain(work->talkWindow) == TRUE) {
             work->yesNo = MsgBGPrinter_CreateYesNoMenu(work->msgBGSys, 0);
-            *state = 3;
+            *state = CHATOT_RECORD_STEP_CHECK_OVERWRITE_ANSWER;
         }
         break;
-    case 3:
+    case CHATOT_RECORD_STEP_CHECK_OVERWRITE_ANSWER:
         switch (MsgBGPrinter_YesNoMenuMain(work->yesNo)) {
-        case 0:
+        case MSGBG_YES_NO_YES:
             MsgBGPrinter_DeleteMenuFunc(work->yesNo);
             MsgBGPrinter_ClearSysWin(work->talkWindow);
             MsgBGPrinter_SysWinPrintMsg(work->talkWindow, 0, 0, 6);
-            *state = 4;
+            *state = CHATOT_RECORD_STEP_WAIT_RECORD_PROMPT;
             break;
-        case 1:
+        case MSGBG_YES_NO_NO:
             MsgBGPrinter_DeleteMenuFunc(work->yesNo);
-            *state = 13;
+            *state = CHATOT_RECORD_STEP_CLEANUP;
             break;
         }
         break;
-    case 4:
+    case CHATOT_RECORD_STEP_WAIT_RECORD_PROMPT:
         if (MsgBGPrinter_SysWinMain(work->talkWindow) == TRUE) {
             GCTX_HIDBlockSleep(8);
             setupMic(21);
             work->waitIcon =
                 WaitIcon_Create(GFL_VBlankGetTCBMgr(), MsgBGPrinter_GetSysWinBmpWin(work->talkWindow), 15, 16, 21);
-            *state = 5;
+            *state = CHATOT_RECORD_STEP_WAIT_MIC_READY;
         }
         break;
-    case 5:
+    case CHATOT_RECORD_STEP_WAIT_MIC_READY:
         SndMic_AddCount(2);
         if (SndMic_IsOverLimit() == TRUE) {
             WaitIcon_Free(work->waitIcon);
             MsgBGPrinter_ClearSysWin(work->talkWindow);
             MsgBGPrinter_SysWinPrintMsg(work->talkWindow, 0, 0, 1);
             GameEvent_ChainNext(event, EventBGMPushWait_Create(work->gsys, 6));
-            *state = 6;
+            *state = CHATOT_RECORD_STEP_START_RECORDING;
         }
         break;
-    case 6:
+    case CHATOT_RECORD_STEP_START_RECORDING:
         if (MsgBGPrinter_SysWinMain(work->talkWindow) == TRUE) {
-            if (SndMic_StartRecording(EventPerapRecord_OnRecorded, &work->recorded) == 0) {
-                *state = 7;
+            if (SndMic_StartRecording(EventChatotRecord_OnRecorded, &work->recorded) == 0) {
+                *state = CHATOT_RECORD_STEP_WAIT_RECORDING;
             } else {
                 message = GFL_MsgDataLoadStrbufNew(work->msgData, 3);
                 loadPokemonNicknameToStrbuf(work->wordSet, 0, work->pkm);
@@ -133,78 +152,78 @@ GameEventReturnCode EventPerapRecord_Main(GameEvent *event, u32 *state, void *da
                 ampOffFreeBlocks();
                 GCTX_HIDUnblockSleep(8);
                 GameEvent_ChainNext(event, EventPushBGMFinish_Create(work->gsys, 0, 30));
-                *state = 12;
+                *state = CHATOT_RECORD_STEP_WAIT_ERROR_MESSAGE;
             }
         }
         break;
-    case 7:
+    case CHATOT_RECORD_STEP_WAIT_RECORDING:
         if (work->recorded == TRUE) {
             SndMic_EncodeChatter(work->chatter);
             ampOffFreeBlocks();
             GCTX_HIDUnblockSleep(8);
             GameEvent_ChainNext(event, EventPushBGMFinish_Create(work->gsys, 0, 30));
-            *state = 8;
+            *state = CHATOT_RECORD_STEP_ANIMATE_ICON;
         }
         break;
-    case 8:
-        if (!EventPerapRecord_HopPokeIcon(work)) {
+    case CHATOT_RECORD_STEP_ANIMATE_ICON:
+        if (!EventChatotRecord_HopPokeIcon(work)) {
             message = GFL_MsgDataLoadStrbufNew(work->msgData, 2);
             loadPokemonNicknameToStrbuf(work->wordSet, 0, work->pkm);
             GFL_WordSetFormatStrbuf(work->wordSet, work->strbuf, message);
             GFL_StrBufFree(message);
             MsgBGPrinter_ClearSysWin(work->talkWindow);
             MsgBGPrinter_SysWinPrintStr(work->talkWindow, 0, 0, work->strbuf);
-            *state = 9;
+            *state = CHATOT_RECORD_STEP_WAIT_RECORDED_MESSAGE;
         }
         break;
-    case 9:
+    case CHATOT_RECORD_STEP_WAIT_RECORDED_MESSAGE:
         if (MsgBGPrinter_SysWinMain(work->talkWindow) == TRUE) {
-            *state = 10;
+            *state = CHATOT_RECORD_STEP_PLAY_RECORDING;
         }
         break;
-    case 10:
+    case CHATOT_RECORD_STEP_PLAY_RECORDING:
         PokeVoice_CreateChatterInfo(&chatterInfo);
         work->voice = PokeVoice_Play(SPECIES_CHATOT, 0, 64, 0, 0, 0, 0, &chatterInfo);
-        *state = 11;
+        *state = CHATOT_RECORD_STEP_WAIT_PLAYBACK;
         break;
-    case 11:
+    case CHATOT_RECORD_STEP_WAIT_PLAYBACK:
         if (!PokeVoice_IsPlaying(work->voice)) {
-            *state = 13;
+            *state = CHATOT_RECORD_STEP_CLEANUP;
         }
         break;
-    case 12:
+    case CHATOT_RECORD_STEP_WAIT_ERROR_MESSAGE:
         if (MsgBGPrinter_SysWinMain(work->talkWindow) == TRUE) {
-            *state = 13;
+            *state = CHATOT_RECORD_STEP_CLEANUP;
         }
         break;
-    case 13:
-        EventPerapRecord_Cleanup(work);
+    case CHATOT_RECORD_STEP_CLEANUP:
+        EventChatotRecord_Cleanup(work);
         GFL_StrBufFree(work->strbuf);
         GFL_WordSetSystemFree(work->wordSet);
         MsgBGPrinter_DeleteSysWin(work->talkWindow);
         MsgBGPrinter_DeleteMsgData(work->msgData);
-        *state = 14;
+        *state = CHATOT_RECORD_STEP_RESUME_ACTORS;
         break;
-    case 14:
-        EventPerapRecord_ResumeActors(work);
+    case CHATOT_RECORD_STEP_RESUME_ACTORS:
+        EventChatotRecord_ResumeActors(work);
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
 }
 
-void EventPerapRecord_OnRecorded(u32 result, u32 *done) {
+void EventChatotRecord_OnRecorded(u32 result, u32 *done) {
     *done = TRUE;
 }
 
-void EventPerapRecord_PauseActors(ChatotEventWork *work) {
+void EventChatotRecord_PauseActors(ChatotEventWork *work) {
     DisableAllActorsMovement(Field_GetActorSystem(GSYS_GetField(work->gsys)));
 }
 
-void EventPerapRecord_ResumeActors(ChatotEventWork *work) {
+void EventChatotRecord_ResumeActors(ChatotEventWork *work) {
     EnableAllActorsMovement(Field_GetActorSystem(GSYS_GetField(work->gsys)));
 }
 
-void EventPerapRecord_CreatePokeIcon(ChatotEventWork *work) {
+void EventChatotRecord_CreatePokeIcon(ChatotEventWork *work) {
     BoxPkm *pkm;
     ArcTool *arc;
     BOOL encrypted;
@@ -223,7 +242,7 @@ void EventPerapRecord_CreatePokeIcon(ChatotEventWork *work) {
     work->sprite = ClActor_Create(work->unit, work->chars, work->palette, work->cellAnims, &setup, 0, 21);
 }
 
-void EventPerapRecord_DeletePokeIcon(ChatotEventWork *work) {
+void EventChatotRecord_DeletePokeIcon(ChatotEventWork *work) {
     ClActor_Delete(work->sprite);
     ClActSys_FreeChars(work->chars);
     ClActSys_FreePltt(work->palette);
@@ -231,7 +250,7 @@ void EventPerapRecord_DeletePokeIcon(ChatotEventWork *work) {
     ClActUnit_Delete(work->unit);
 }
 
-u32 EventPerapRecord_HopPokeIcon(ChatotEventWork *work) {
+u32 EventChatotRecord_HopPokeIcon(ChatotEventWork *work) {
     ClActorPos position;
 
     if (work->animFrame == 0) {
@@ -251,7 +270,7 @@ u32 EventPerapRecord_HopPokeIcon(ChatotEventWork *work) {
     return 1;
 }
 
-void EventPerapRecord_SetupWindow(ChatotEventWork *work) {
+void EventChatotRecord_SetupWindow(ChatotEventWork *work) {
     u32 paletteId;
     GFLBitmap *bitmap;
 
@@ -263,11 +282,11 @@ void EventPerapRecord_SetupWindow(ChatotEventWork *work) {
     BmpWin_FlushChar(work->window);
     BmpWin_FlushMap(work->window);
     BmpWin_DrawFrame(work->window, WINFRAME_TRANSFER_VBLANK, 1, 0);
-    EventPerapRecord_CreatePokeIcon(work);
+    EventChatotRecord_CreatePokeIcon(work);
 }
 
-void EventPerapRecord_Cleanup(ChatotEventWork *work) {
-    EventPerapRecord_DeletePokeIcon(work);
+void EventChatotRecord_Cleanup(ChatotEventWork *work) {
+    EventChatotRecord_DeletePokeIcon(work);
     BmpWin_ClearFrame(work->window, WINFRAME_TRANSFER_VBLANK);
     BmpWin_Free(work->window);
 }

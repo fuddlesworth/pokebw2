@@ -6,12 +6,12 @@
 struct DiveEventData {
     GameSystem *gsys;
     Field *field;
-    u32 param;
+    u32 showSpinAndFog;
     s32 timer;
 };
 
 GameEvent *EventDiveIn_Create(GameSystem *gsys, Field *field);
-GameEvent *CreateDiveOutEvent(GameSystem *gsys, Field *field, u32 param);
+GameEvent *CreateDiveOutEvent(GameSystem *gsys, Field *field, u32 showSpinAndFog);
 GameEventReturnCode EventDiveIn_Callback(GameEvent *event, u32 *state, void *data);
 GameEventReturnCode EventDiveOut_Callback(GameEvent *event, u32 *state, void *data);
 GameEvent *EventRailSlipdown_CreatePlayer(GameSystem *gsys, Field *field, u16 direction);

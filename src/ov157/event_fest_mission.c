@@ -464,7 +464,7 @@ static GameEventReturnCode EventFestMissionEnd_Callback(GameEvent *event, u32 *s
     case END_STEP_RESTORE_MUSIC:
         FesGimmick_EndMission(Field_GetFesGimmick(work->field));
         bgm = LinkFestival_GetNormalChangeBGMID(work->festival);
-        if (bgm != (u32)-1) {
+        if (bgm != LINK_FESTIVAL_BGM_NO_CHANGE) {
             GameEvent_ChainNext(event, EventBGMChange_Create(work->gsys, bgm, 60, 60));
         }
         (*state)++;
