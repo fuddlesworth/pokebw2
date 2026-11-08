@@ -9,6 +9,15 @@
 #include "system/app_printsys_common.h"
 #include "system/printsys.h"
 
+// Whether the focused power can be received; unavailable also covers equipped powers and empty rows
+enum {
+    MONOLITH_POWER_RECEIVABLE = 0,
+    MONOLITH_POWER_UNAVAILABLE = 1,
+};
+
+// No mission
+#define MONOLITH_MISSION_INFO_NONE 0xff
+
 // The Entralink monolith's work (monolith_main.c, a guessed name), which its screens share: the graphics, text and
 // actors, and the block that each screen's procs get as their param
 
@@ -71,11 +80,11 @@ typedef struct {
     u8 unk0;
     // The pass power or mission that the cursor is on, or HIGH_LINK_POWER_NONE
     u8 focusPower;
-    // 0 when it can be used, 1 when it is locked or already equipped
-    u8 focusPowerState;
+    // MONOLITH_POWER_RECEIVABLE or MONOLITH_POWER_UNAVAILABLE
+    u8 focusPowerAvailability;
     // Set when the equipped pass powers change
     u8 equipChanged;
-    // The mission chosen, 0xff for none, and its level
+    // The mission chosen, MONOLITH_MISSION_INFO_NONE for none, and its level
     u8 missionIndex;
     u8 missionLevel;
     // Where the menu's cursor returns

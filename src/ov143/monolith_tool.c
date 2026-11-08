@@ -184,7 +184,7 @@ void MonolithTool_SetTextCursor(MonolithScreenParam *param, MonolithTextActor *t
             ClActor_SetPalette(texts[i].frame, 0, TRUE);
         }
     }
-    if (cursor == 0xff) {
+    if (cursor == MONOLITH_TEXT_CURSOR_NONE) {
         MonolithTool_SetPanelMode(param, PANEL_MODE_NONE, panel);
     }
 }
@@ -296,14 +296,14 @@ static void MonolithTool_SetPanelMode(MonolithScreenParam *param, u8 mode, int r
 // The panels of PaletteFade buffers 0 and 1 (the BGs) blend colors 0x32 to 0x34 toward 0x42 to 0x44, those of 2 and 3
 // (the actors) 0x12 to 0x14 toward 0x22 to 0x24
 static u32 MonolithTool_GetPanelColorPos(u32 req) {
-    if (req <= 1) {
+    if (req <= PALFADE_BUFFER_SUB_BG) {
         return 0x32;
     }
     return 0x12;
 }
 
 static u32 MonolithTool_GetPanelTargetPos(u32 req) {
-    if (req <= 1) {
+    if (req <= PALFADE_BUFFER_SUB_BG) {
         return 0x42;
     }
     return 0x22;
@@ -428,7 +428,7 @@ AppTaskMenu *MonolithTool_CreateReturnPowerMenu(MonolithScreenParam *param, Mono
     int i;
 
     for (i = 0; i < 4; i++) {
-        if (i != 3) {
+        if (i != MONOLITH_RETURN_POWER_MENU_CANCEL) {
             PassPowerData *powers = wk->passPowerData;
 
             items[i].str = GFL_MsgDataLoadStrbufNew(wk->msgPowerNames, powers[param->state->equipped[i]].name);

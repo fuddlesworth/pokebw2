@@ -25,6 +25,22 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// The window slots, shared by their bitmap and print-window arrays
+enum {
+    MONOLITH_RECORD_WINDOW_TITLE = 0,
+    MONOLITH_RECORD_WINDOW_HOSTED = 1,
+    MONOLITH_RECORD_WINDOW_JOINED = 2,
+    MONOLITH_RECORD_WINDOW_COMPLETED = 3,
+    MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS = 4,
+    MONOLITH_RECORD_WINDOW_TOP_SCORES = 5,
+};
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_RECORD_INIT_SETUP = 0,
+    MONOLITH_RECORD_INIT_WAIT_PRINT = 1,
+};
+
 // The BGs of the records' text and of their background
 #define MONOLITH_RECORD_BG_TEXT 4
 #define MONOLITH_RECORD_BG 6
@@ -103,7 +119,7 @@ static BOOL MonolithRecord_Init(GameProc *proc, u32 *state, void *param, void *w
     int i;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_RECORD_INIT_SETUP:
         rw = GFL_ProcInitSubsystem(proc, sizeof(MonolithRecordWork), HEAPID_MONOLITH);
         MI_CpuFill8(rw, 0, sizeof(MonolithRecordWork));
         MonolithRecord_CreateBGs();
@@ -113,7 +129,7 @@ static BOOL MonolithRecord_Init(GameProc *proc, u32 *state, void *param, void *w
         MonolithRecord_Draw(screen, screen->work, rw);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_RECORD_INIT_WAIT_PRINT:
         rw = work;
         printing = FALSE;
         for (i = 0; i < MONOLITH_RECORD_WINDOW_COUNT; i++) {
@@ -209,24 +225,27 @@ static void MonolithRecord_LoadScreen(MonolithWork *wk) {
 static void MonolithRecord_CreateWindows(MonolithWork *wk, MonolithRecordWork *rw) {
     int i;
 
-    rw->windows[0] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 0, 30, 3, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[0]);
-    BmpWin_FlushMap(rw->windows[0]);
-    rw->windows[1] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 5, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[1]);
-    BmpWin_FlushMap(rw->windows[1]);
-    rw->windows[2] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 7, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[2]);
-    BmpWin_FlushMap(rw->windows[2]);
-    rw->windows[3] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 9, 30, 4, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[3]);
-    BmpWin_FlushMap(rw->windows[3]);
-    rw->windows[4] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 14, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[4]);
-    BmpWin_FlushMap(rw->windows[4]);
-    rw->windows[5] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 16, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(rw->windows[5]);
-    BmpWin_FlushMap(rw->windows[5]);
+    rw->windows[MONOLITH_RECORD_WINDOW_TITLE] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 0, 30, 3, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_TITLE]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_TITLE]);
+    rw->windows[MONOLITH_RECORD_WINDOW_HOSTED] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 5, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_HOSTED]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_HOSTED]);
+    rw->windows[MONOLITH_RECORD_WINDOW_JOINED] = BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 7, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_JOINED]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_JOINED]);
+    rw->windows[MONOLITH_RECORD_WINDOW_COMPLETED] =
+        BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 9, 30, 4, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_COMPLETED]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_COMPLETED]);
+    rw->windows[MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS] =
+        BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 14, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS]);
+    rw->windows[MONOLITH_RECORD_WINDOW_TOP_SCORES] =
+        BmpWin_CreateDynamic(MONOLITH_RECORD_BG_TEXT, 2, 16, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(rw->windows[MONOLITH_RECORD_WINDOW_TOP_SCORES]);
+    BmpWin_FlushMap(rw->windows[MONOLITH_RECORD_WINDOW_TOP_SCORES]);
     for (i = 0; i < MONOLITH_RECORD_WINDOW_COUNT; i++) {
         PrintWindow_Init(&rw->prints[i], rw->windows[i]);
     }
@@ -254,52 +273,53 @@ static void MonolithRecord_Draw(MonolithScreenParam *screen, MonolithWork *wk, M
     str = GFL_StrBufCreate(256, HEAPID_MONOLITH);
     expanded = GFL_StrBufCreate(256, HEAPID_MONOLITH);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 4, str);
-    PrintWindow_PrintNoColor(&rw->prints[0], wk->printQueue, 0, 4, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_TITLE], wk->printQueue, 0, 4, str, wk->font);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 12, str);
-    PrintWindow_PrintNoColor(&rw->prints[1], wk->printQueue, 0, 0, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_HOSTED], wk->printQueue, 0, 0, str, wk->font);
     value = FestRecords_GetHosted(records);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 17, str);
     WordSetNumber(wk->wordSet, 0, value, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
     width = MonolithRecord_GetAlignOffset(expanded, wk->font, MONOLITH_ALIGN_RIGHT);
-    PrintWindow_PrintNoColor(&rw->prints[1], wk->printQueue, MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded,
-                             wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_HOSTED], wk->printQueue,
+                             MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded, wk->font);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 13, str);
-    PrintWindow_PrintNoColor(&rw->prints[2], wk->printQueue, 0, 0, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_JOINED], wk->printQueue, 0, 0, str, wk->font);
     value = FestRecords_GetJoined(records);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 18, str);
     WordSetNumber(wk->wordSet, 0, value, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
     width = MonolithRecord_GetAlignOffset(expanded, wk->font, MONOLITH_ALIGN_RIGHT);
-    PrintWindow_PrintNoColor(&rw->prints[2], wk->printQueue, MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded,
-                             wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_JOINED], wk->printQueue,
+                             MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded, wk->font);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 11, str);
-    PrintWindow_PrintNoColor(&rw->prints[3], wk->printQueue, 0, 0, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_COMPLETED], wk->printQueue, 0, 0, str, wk->font);
     value = FestRecords_GetCompleted(records);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 16, str);
     WordSetNumber(wk->wordSet, 0, value, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
     width = MonolithRecord_GetAlignOffset(expanded, wk->font, MONOLITH_ALIGN_RIGHT);
-    PrintWindow_PrintNoColor(&rw->prints[3], wk->printQueue, MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded,
-                             wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_COMPLETED], wk->printQueue,
+                             MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded, wk->font);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 14, str);
-    PrintWindow_PrintNoColor(&rw->prints[4], wk->printQueue, 0, 0, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS], wk->printQueue, 0, 0, str,
+                             wk->font);
     value = FestRecords_GetMostParticipants(records);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 19, str);
     WordSetNumber(wk->wordSet, 0, value, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
     width = MonolithRecord_GetAlignOffset(expanded, wk->font, MONOLITH_ALIGN_RIGHT);
-    PrintWindow_PrintNoColor(&rw->prints[4], wk->printQueue, MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded,
-                             wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_MOST_PARTICIPANTS], wk->printQueue,
+                             MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded, wk->font);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 15, str);
-    PrintWindow_PrintNoColor(&rw->prints[5], wk->printQueue, 0, 0, str, wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_TOP_SCORES], wk->printQueue, 0, 0, str, wk->font);
     value = FestRecords_GetTopScores(records);
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 20, str);
     WordSetNumber(wk->wordSet, 0, value, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
     width = MonolithRecord_GetAlignOffset(expanded, wk->font, MONOLITH_ALIGN_RIGHT);
-    PrintWindow_PrintNoColor(&rw->prints[5], wk->printQueue, MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded,
-                             wk->font);
+    PrintWindow_PrintNoColor(&rw->prints[MONOLITH_RECORD_WINDOW_TOP_SCORES], wk->printQueue,
+                             MONOLITH_RECORD_VALUE_RIGHT - width, 0, expanded, wk->font);
     GFL_StrBufFree(str);
     GFL_StrBufFree(expanded);
 }
