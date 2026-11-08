@@ -82,12 +82,12 @@ enum {
     FILE_AUDIENCE_PALETTE = 570,
 };
 
-// The animations of a member of the audience
+// Audience animations, named by the ending that selects each reaction
 enum {
     AUDIENCE_SIT = 0,
-    AUDIENCE_GOOD = 5,
-    AUDIENCE_STRANGE = 7,
-    AUDIENCE_BAD = 8,
+    AUDIENCE_REACT_FLOP = 5,
+    AUDIENCE_REACT_STRANGE = 7,
+    AUDIENCE_REACT_HIT = 8,
 };
 
 // The frames of the audience's palette animation, and its patterns
@@ -139,6 +139,23 @@ enum {
     CREDITS_RIGHT,
     CREDITS_LEFT,
     CREDITS_LAYOUT_COUNT,
+};
+
+// The half-screen window containing one-column credits
+enum {
+    CREDITS_WINDOW_RIGHT = 0,
+    CREDITS_WINDOW_LEFT = 1,
+};
+
+// The BG tile-map areas cleared when the credits scroll wraps
+enum {
+    CREDITS_CLEAR_NONE = 0,
+    CREDITS_CLEAR_BOTH = 1,
+    CREDITS_CLEAR_BG1_BOTTOM_AND_BG2 = 2,
+    CREDITS_CLEAR_BG2 = 3,
+    CREDITS_CLEAR_BG1_TOP_AND_BG2_BOTTOM = 4,
+    CREDITS_CLEAR_BG1 = 5,
+    CREDITS_CLEAR_BG1_AND_BG2_TOP = 6,
 };
 
 enum {
@@ -204,7 +221,7 @@ typedef struct {
     StrBuf *lines[2];
     // What a message with nothing to show reads
     StrBuf *empty;
-    StrBuf *unk1D4;
+    StrBuf *unusedCreditsText;
     StrBuf *credits[CREDIT_COUNT];
     u32 unk268[2];
     s32 alpha;
@@ -1434,7 +1451,7 @@ static void PkwdBriefing_LoadCredits(PkwdBriefingParam *param, PkwdBriefingText 
     text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PKWD_BRIEFING_COMMON, heapId);
     text->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     text->empty = GFL_MsgDataLoadStrbufNew(text->msgData, PkwdBriefingCommon_Text_Empty_327);
-    text->unk1D4 = GFL_MsgDataLoadStrbufNew(text->msgData, PkwdBriefingCommon_Text_Empty_328);
+    text->unusedCreditsText = GFL_MsgDataLoadStrbufNew(text->msgData, PkwdBriefingCommon_Text_Empty_328);
     for (i = 0; i < 15; i++) {
         text->credits[CREDIT_MOVIE + i] = GFL_MsgDataLoadStrbufNew(text->msgData, movie * 15 + i);
     }
@@ -1449,7 +1466,7 @@ static void PkwdBriefing_LoadCredits(PkwdBriefingParam *param, PkwdBriefingText 
     msgData =
         GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PASS_POWER_STARTMENU, HEAPID_TAIL(heapId));
     actorName2 = 0;
-    if (sex == 0) {
+    if (sex == GENDER_MALE) {
         actorName = EventPassPowerStartmenu_Text_BrycenMan;
     } else {
         actorName2 = EventPassPowerStartmenu_Text_Brycen_8;
@@ -1500,7 +1517,7 @@ static void PkwdBriefingText_FreeCredits(PkwdBriefingText *text) {
             GFL_StrBufFree(text->credits[i]);
         }
     }
-    GFL_StrBufFree(text->unk1D4);
+    GFL_StrBufFree(text->unusedCreditsText);
     GFL_StrBufFree(text->empty);
     GFL_WordSetSystemFree(text->wordSet);
     GFL_MsgDataFree(text->msgData);
@@ -1609,10 +1626,10 @@ static void PkwdBriefingText_CreateCreditsWindows(PkwdBriefingText *text, HeapID
 
     if (layout == CREDITS_RIGHT) {
         lines = sPkwdBriefingCreditsRight;
-        PkwdBriefing_SetCreditsWindow(0);
+        PkwdBriefing_SetCreditsWindow(CREDITS_WINDOW_RIGHT);
     } else if (layout == CREDITS_LEFT) {
         lines = sPkwdBriefingCreditsLeft;
-        PkwdBriefing_SetCreditsWindow(1);
+        PkwdBriefing_SetCreditsWindow(CREDITS_WINDOW_LEFT);
     }
     for (i = 0; lines[i].line != CREDITS_END; i++) {
         if (lines[i].line < CREDITS_SPACE) {
@@ -1800,7 +1817,7 @@ static void PkwdBriefing_SetCreditsWindow(u32 side) {
     G2_SetWnd0InsidePlane(GX_WND_PLANEMASK_BG0 | GX_WND_PLANEMASK_BG1 | GX_WND_PLANEMASK_BG2 | GX_WND_PLANEMASK_OBJ,
                           TRUE);
     GX_SetVisibleWnd(GX_WNDMASK_W0 | GX_WNDMASK_W1);
-    if (side == 0) {
+    if (side == CREDITS_WINDOW_RIGHT) {
         G2_SetWnd0Position(136, 16, 255, 176);
     } else {
         G2_SetWnd0Position(0, 16, 120, 176);
@@ -1812,7 +1829,7 @@ static void PkwdBriefingText_PrintLine(PkwdBriefingText *text, s32 line, u32 sex
     StrBuf *strbuf;
     u8 height;
 
-    if (sex == 0) {
+    if (sex == GENDER_MALE) {
         strbuf = GFL_MsgDataLoadStrbufNew(text->msgData, line);
     } else {
         strbuf = GFL_MsgDataLoadStrbufNew(text->msgData, line + LINE_COUNT);
@@ -1831,7 +1848,7 @@ static void PkwdBriefingText_CountLines(PkwdBriefingText *text, u32 sex) {
     for (i = 0; i < LINE_COUNT; i++) {
         StrBuf *strbuf;
 
-        if (sex == 0) {
+        if (sex == GENDER_MALE) {
             strbuf = GFL_MsgDataLoadStrbufNew(text->msgData, i);
         } else {
             strbuf = GFL_MsgDataLoadStrbufNew(text->msgData, i + LINE_COUNT);
@@ -1846,7 +1863,7 @@ static BOOL PkwdBriefing_IsLastLine(PkwdBriefingWork *wk) {
     s32 line = wk->text.line;
     s32 buffer = line % 2;
 
-    if (wk->sex == 0) {
+    if (wk->sex == GENDER_MALE) {
         GFL_MsgDataLoadStrbuf(wk->text.msgData, line, wk->text.lines[buffer]);
     } else {
         GFL_MsgDataLoadStrbuf(wk->text.msgData, line + LINE_COUNT, wk->text.lines[buffer]);
@@ -2189,16 +2206,16 @@ static void PkwdBriefing_React(PkwdBriefingWork *wk, BtlSetup *setup) {
     }
     switch (result) {
     case STUDIO_ENDING_FLOP:
-        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_GOOD, wk->param->audience);
-        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_GOOD);
+        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_REACT_FLOP, wk->param->audience);
+        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_REACT_FLOP);
         break;
     case STUDIO_ENDING_HIT:
-        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_BAD, wk->param->audience);
-        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_BAD);
+        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_REACT_HIT, wk->param->audience);
+        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_REACT_HIT);
         break;
     case STUDIO_ENDING_STRANGE:
-        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_STRANGE, wk->param->audience);
-        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_STRANGE);
+        PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_REACT_STRANGE, wk->param->audience);
+        PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_REACT_STRANGE);
         break;
     }
 }
@@ -2222,50 +2239,50 @@ static void PkwdBriefing_CheckCreditsEnd(PkwdBriefingWork *wk) {
 // Puts the windows of the credits that the scroll is coming to on their BGs' screens, which are two screens high
 // and are filled anew at the points where the scroll wraps around
 static void PkwdBriefingText_ShowCreditsWindows(PkwdBriefingText *text) {
-    s32 part = 0;
+    s32 clearMode = CREDITS_CLEAR_NONE;
     s32 i;
 
     switch (text->scroll) {
     case -192:
-        part = 2;
+        clearMode = CREDITS_CLEAR_BG1_BOTTOM_AND_BG2;
         break;
     case 0:
-        part = 3;
+        clearMode = CREDITS_CLEAR_BG2;
         break;
     case 256:
-        part = 4;
+        clearMode = CREDITS_CLEAR_BG1_TOP_AND_BG2_BOTTOM;
         break;
     case 512:
-        part = 5;
+        clearMode = CREDITS_CLEAR_BG1;
         break;
     case 768:
-        part = 6;
+        clearMode = CREDITS_CLEAR_BG1_AND_BG2_TOP;
         break;
     }
-    if (part != 0) {
+    if (clearMode != CREDITS_CLEAR_NONE) {
         for (i = 0; i < text->windowCount; i++) {
             BmpWin_FlushMap(text->windows[i]);
         }
-        switch (part) {
-        case 1:
+        switch (clearMode) {
+        case CREDITS_CLEAR_BOTH:
             GFL_BGSysFillScrArea(1, 0, 0, 0, 32, 64, 0);
             GFL_BGSysFillScrArea(2, 0, 0, 0, 32, 64, 0);
             break;
-        case 2:
+        case CREDITS_CLEAR_BG1_BOTTOM_AND_BG2:
             GFL_BGSysFillScrArea(1, 0, 0, 32, 32, 32, 0);
             GFL_BGSysFillScrArea(2, 0, 0, 0, 32, 64, 0);
             break;
-        case 3:
+        case CREDITS_CLEAR_BG2:
             GFL_BGSysFillScrArea(2, 0, 0, 0, 32, 64, 0);
             break;
-        case 4:
+        case CREDITS_CLEAR_BG1_TOP_AND_BG2_BOTTOM:
             GFL_BGSysFillScrArea(1, 0, 0, 0, 32, 32, 0);
             GFL_BGSysFillScrArea(2, 0, 0, 32, 32, 32, 0);
             break;
-        case 5:
+        case CREDITS_CLEAR_BG1:
             GFL_BGSysFillScrArea(1, 0, 0, 0, 32, 64, 0);
             break;
-        case 6:
+        case CREDITS_CLEAR_BG1_AND_BG2_TOP:
             GFL_BGSysFillScrArea(1, 0, 0, 0, 32, 64, 0);
             GFL_BGSysFillScrArea(2, 0, 0, 0, 32, 32, 0);
             break;
