@@ -14,7 +14,13 @@
 
 #define OVERLAY_EVENT_POKEWOOD OVERLAY_ID(23)
 
-// The cast of one side of a movie (0 the player's, 1 the opponent's) as a party
+// The two sides in a movie cast file, separate from the source of the player's cast
+enum {
+    POKEWOOD_CAST_SIDE_PLAYER = 0,
+    POKEWOOD_CAST_SIDE_OPPONENT = 1,
+};
+
+// The cast of one side of a movie as a party
 void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, HeapID heapId, u32 movie, u32 side);
 void EventPokewood_CreateCastPartyFromSave(PlayerInfo *playerInfo, PokeParty *dest, HeapID heapId, u32 movie, u32 side);
 // Unlocks the movies whose conditions the player now meets, after the movie was filmed with the result and score

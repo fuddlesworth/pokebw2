@@ -39,7 +39,7 @@ EventPokewood_CreateScreenEvent kind:function(thumb,size=0x3c) addr:0x0216f6e4
 EventPokewood_RunScreen kind:function(thumb,size=0x44) addr:0x0216f720
 EventPokewood_SetupRecordedOpponent kind:function(thumb,size=0x20) addr:0x0216f764
 EventPokewood_ShowCastNames kind:function(thumb,size=0xf4) addr:0x0216f784
-sGradeTicks kind:data(any) addr:0x0216f878
+sGradeAudienceRanges kind:data(any) addr:0x0216f878
 data_ov023_0216f83c kind:data(any) addr:0x0216f87c
 sSlotInfo kind:data(any) addr:0x0216f8a0
 sMovieUnlocks kind:data(any) addr:0x0216f8cc

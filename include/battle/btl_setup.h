@@ -70,6 +70,12 @@ enum {
     STUDIO_ENDING_STRANGE,
 };
 
+// The source kept in studioCast: usePlayerCast == 1 selects PLAYER; other values select RENTAL
+enum {
+    BTL_STUDIO_CAST_PLAYER = 0,
+    BTL_STUDIO_CAST_RENTAL = 1,
+};
+
 // What BtlSetup.flags holds, which BtlSetup_SetFlag sets and BtlSetup_CheckFlag and BtlSetup_IsBattleType read
 enum {
     // A fishing encounter (BtlSetup_CreateFishing): the Dive Ball's bonus, and the player's reflection after it
@@ -220,8 +226,8 @@ struct BtlSetup {
     s32 studioScore;
     // Set when the player quits the playback of a recording (SetRecPlayQuit)
     u32 recPlayQuit;
-    // The music of a Pokéstar Studios movie's good and strange endings (GetStudioEndingBGM0 and 2)
-    u16 studioGoodEndingBgm;
+    // The music of a Pokéstar Studios movie's flop and strange endings (GetStudioEndingBGM0 and 2)
+    u16 studioFlopEndingBgm;
     u16 studioStrangeEndingBgm;
     // Added to the defeated mon's level for the experience it gives
     s8 levelDiff;

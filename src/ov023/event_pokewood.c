@@ -50,6 +50,9 @@ enum {
 // The slot of the movie that is still in the Pokewood block, the one just filmed
 #define POKEWOOD_BLOCK_SLOT 8
 
+// The script result when the movie picker is cancelled, separate from the book's signed result
+#define POKEWOOD_PICKER_CANCEL 41
+
 // The species of the Pokéstar-only cast, which have their names in the movie text bank from this message on, offset
 // by POKEWOOD_CAST_MSG_OFFSET
 #define POKEWOOD_CAST_SPECIES_FIRST 652
@@ -90,9 +93,9 @@ typedef struct {
     s16 recordedTrainerClass;
     u8 unk24[2];
     s16 bgm;
-    s16 bgm2;
-    s16 unk2a;
-    s16 unk2c;
+    s16 hitEndingBgm;
+    s16 flopEndingBgm;
+    s16 strangeEndingBgm;
 } PokewoodMovieFile;
 
 // What GameEvent_CreateOverlayDelegate hands the events that run a movie, which also is their data
@@ -147,11 +150,11 @@ typedef struct {
     PokeListParam pokeList;
 } PokewoodCastEvent;
 
-// How the battle's grade, which is 0 to 4, sets the number of ticks the movie runs
+// The audience count by grade, chosen as base plus a random value below range
 static const struct {
     u32 base;
     u32 range;
-} sGradeTicks[] = {
+} sGradeAudienceRanges[] = {
     { 5, 5 }, { 7, 6 }, { 10, 9 }, { 16, 6 }, { 22, 1 },
 };
 
@@ -265,8 +268,8 @@ void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, Heap
     count = file->count[side];
     PokeParty_InitCore(party, count);
     first = 0;
-    if (side == 1) {
-        first = file->count[0];
+    if (side == POKEWOOD_CAST_SIDE_OPPONENT) {
+        first = file->count[POKEWOOD_CAST_SIDE_PLAYER];
     }
     for (i = 0; i < count; i++) {
         PokewoodCastMember *member = &file->members[first + i];
@@ -284,15 +287,15 @@ void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, Heap
         PokeParty_SetParam(pkm, PKM_PARAM_IV_HP, member->stats[0].iv);
         PokeParty_SetParam(pkm, PKM_PARAM_EV_HP, member->stats[0].ev);
         PokeParty_SetParam(pkm, PKM_PARAM_IV_ATTACK, member->stats[1].iv);
-        PokeParty_SetParam(pkm, PKM_PARAM_EV_HP + 1, member->stats[1].ev);
+        PokeParty_SetParam(pkm, PKM_PARAM_EV_ATTACK, member->stats[1].ev);
         PokeParty_SetParam(pkm, PKM_PARAM_IV_DEFENSE, member->stats[2].iv);
-        PokeParty_SetParam(pkm, PKM_PARAM_EV_HP + 2, member->stats[2].ev);
+        PokeParty_SetParam(pkm, PKM_PARAM_EV_DEFENSE, member->stats[2].ev);
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SPEED, member->stats[3].iv);
-        PokeParty_SetParam(pkm, PKM_PARAM_EV_HP + 3, member->stats[3].ev);
+        PokeParty_SetParam(pkm, PKM_PARAM_EV_SPEED, member->stats[3].ev);
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SP_ATTACK, member->stats[4].iv);
-        PokeParty_SetParam(pkm, PKM_PARAM_EV_HP + 4, member->stats[4].ev);
+        PokeParty_SetParam(pkm, PKM_PARAM_EV_SP_ATTACK, member->stats[4].ev);
         PokeParty_SetParam(pkm, PKM_PARAM_IV_SP_DEFENSE, member->stats[5].iv);
-        PokeParty_SetParam(pkm, PKM_PARAM_EV_HP + 5, member->stats[5].ev);
+        PokeParty_SetParam(pkm, PKM_PARAM_EV_SP_DEFENSE, member->stats[5].ev);
         PokeParty_RecalcStats(pkm);
         PokeParty_AddPkm(party, pkm);
     }
@@ -309,16 +312,16 @@ void EventPokewood_CreateCastPartyFromSave(PlayerInfo *playerInfo, PokeParty *de
 
 // The first message of the movie's lines in the bank of its trainers' names, by the kind of the trainer and the sex
 static u32 EventPokewood_GetTitleMsgBase(u32 kind, u32 gender) {
-    if (kind == POKEWOOD_KIND_FILM && gender == 0) {
+    if (kind == POKEWOOD_KIND_FILM && gender == GENDER_MALE) {
         return EventPassPowerStartmenu_Text_Brycen;
     }
-    if (kind == POKEWOOD_KIND_FILM && gender == 1) {
+    if (kind == POKEWOOD_KIND_FILM && gender == GENDER_FEMALE) {
         return EventPassPowerStartmenu_Text_Brycen_8;
     }
-    if (kind == POKEWOOD_KIND_WATCH && gender == 0) {
+    if (kind == POKEWOOD_KIND_WATCH && gender == GENDER_MALE) {
         return EventPassPowerStartmenu_Text_BrycenMan;
     }
-    if (kind == POKEWOOD_KIND_WATCH && gender == 1) {
+    if (kind == POKEWOOD_KIND_WATCH && gender == GENDER_FEMALE) {
         return EventPassPowerStartmenu_Text_BrycenMan_5;
     }
     return EventPassPowerStartmenu_Text_Brycen;
@@ -355,9 +358,9 @@ static void EventPokewood_SetupRecordTrainer(u32 movie, BtlSetupTrainer *trainer
 
     trainer->trainerId = 1;
     trainer->aiFlags = 0;
-    if (gender == 0) {
+    if (gender == GENDER_MALE) {
         trainer->trainerClass = file->recordedTrainerClass;
-    } else if (gender == 1) {
+    } else if (gender == GENDER_FEMALE) {
         trainer->trainerClass = file->recordedTrainerClass + 1;
     }
     GFL_HeapFree(file);
@@ -380,20 +383,20 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
     BtlSetup_SetTrainer1v1Single(setup, gameData, &status, 0, heapId);
     BtlSetup_AllocRecBuffer(setup, heapId);
     EventPokewood_SetupMovieTrainer(movie, POKEWOOD_KIND_FILM, setup->trainers[1], playerInfo, heapId);
-    EventPokewood_CreateCastParty(playerInfo, setup->party[1], heapId, movie, 1);
+    EventPokewood_CreateCastParty(playerInfo, setup->party[1], heapId, movie, POKEWOOD_CAST_SIDE_OPPONENT);
     setup->playerInfo[0] = GetGameDataPlayerInfo(gameData);
     if (PokewoodSystem_GetUsePlayerCast(*sys) == 1) {
         PokewoodSystem_CopyCast(*sys, gameData, setup->party[0]);
-        setup->studioCast = 0;
+        setup->studioCast = BTL_STUDIO_CAST_PLAYER;
     } else {
-        EventPokewood_CreateCastParty(playerInfo, setup->party[0], heapId, movie, 0);
-        setup->studioCast = 1;
+        EventPokewood_CreateCastParty(playerInfo, setup->party[0], heapId, movie, POKEWOOD_CAST_SIDE_PLAYER);
+        setup->studioCast = BTL_STUDIO_CAST_RENTAL;
     }
     GFL_HeapFree(buffer);
     setup->studioMode = BTL_STUDIO_MODE_FILM;
     setup->studioMovie = movie;
     grade = PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save));
-    setup->audienceCount = sGradeTicks[grade].base + GFL_RandomLC(sGradeTicks[grade].range);
+    setup->audienceCount = sGradeAudienceRanges[grade].base + GFL_RandomLC(sGradeAudienceRanges[grade].range);
     setup->studioGrade = grade;
     return setup;
 }
@@ -402,7 +405,7 @@ static BtlSetup *EventPokewood_CreateFilmSetup(GameSystem *gsys, Field *field, H
 static void EventPokewood_FinishWatchSetup(GameData *gameData, BtlSetup *setup, u32 movie, HeapID heapId) {
     PlayerInfo *playerInfo = GetGameDataPlayerInfo(gameData);
 
-    EventPokewood_CreateCastParty(playerInfo, setup->party[1], heapId, movie, 1);
+    EventPokewood_CreateCastParty(playerInfo, setup->party[1], heapId, movie, POKEWOOD_CAST_SIDE_OPPONENT);
     EventPokewood_ShowCastNames(setup, heapId);
     EventPokewood_SetupRecordedOpponent(setup, heapId);
 }
@@ -459,7 +462,7 @@ static void EventPokewood_LoadIntroText(PokewoodMovieParam *param, BtlSetup *set
     u32 isMale = TRUE;
     MsgData *msgData;
 
-    if (gender != 0) {
+    if (gender != GENDER_MALE) {
         isMale = FALSE;
     }
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
@@ -492,9 +495,9 @@ static BtlSetup *EventPokewood_CreateSetup(PokewoodMovieParam *param, GameSystem
         setup = EventPokewood_LoadWatchSetup(gsys, field, heapId, param->slot);
         file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, setup->studioMovie, HEAPID_TAIL(heapId));
         setup->fieldSituation.bgm = file->bgm;
-        setup->fieldSituation.winBgm = file->bgm2;
-        setup->studioGoodEndingBgm = file->unk2a;
-        setup->studioStrangeEndingBgm = file->unk2c;
+        setup->fieldSituation.winBgm = file->hitEndingBgm;
+        setup->studioFlopEndingBgm = file->flopEndingBgm;
+        setup->studioStrangeEndingBgm = file->strangeEndingBgm;
         EventPokewood_LoadIntroText(param, setup, setup->studioMovie, POKEWOOD_KIND_WATCH, heapId);
         GFL_HeapFree(file);
         Config_SetBattleScene(setup->config, 0);
@@ -643,7 +646,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
         break;
     case STEP_START_BATTLE:
         GFL_SndBGMPlay(wk->setup->fieldSituation.bgm, 0xffff);
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, wk->setup);
+        GSYS_QueueProcAsEvent(event, OVERLAY_BATTLE_MAIN, &BATTLE_PROC_FUNCTIONS, wk->setup);
         (*state)++;
         break;
     case STEP_START_RESULT:
@@ -747,7 +750,7 @@ static GameEventReturnCode EventPokewood_RunFilm(GameEvent *event, u32 *state, v
         break;
     case STEP_FILM_START_BATTLE:
         FieldSnd_SetPlayerVolumeFade(fieldSound, 127, 1);
-        GSYS_QueueProcAsEvent(event, OVERLAY_ID(167), &BATTLE_PROC_FUNCTIONS, wk->setup);
+        GSYS_QueueProcAsEvent(event, OVERLAY_BATTLE_MAIN, &BATTLE_PROC_FUNCTIONS, wk->setup);
         (*state)++;
         break;
     case STEP_FILM_STORE_RESULT:
@@ -898,13 +901,13 @@ static GameEventReturnCode EventPokewood_RunPicker(GameEvent *event, u32 *state,
 
     switch (*state) {
     case STEP_OPEN_PICKER:
-        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_ID(322),
+        GameEvent_ChainNext(event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_PKWD_BOOK,
                                                                          &PKWD_BOOK_PROC_FUNCTIONS, &wk->param));
         *state = STEP_SET_MOVIE;
         break;
     case STEP_SET_MOVIE:
-        if (wk->param.result != NULL && *wk->param.result == -1) {
-            *wk->param.result = 41;
+        if (wk->param.result != NULL && *wk->param.result == PKWD_BOOK_CANCEL) {
+            *wk->param.result = POKEWOOD_PICKER_CANCEL;
         } else {
             PokewoodSystem **sys = GameData_GetPokewoodSystemPtr(GSYS_GetGameData(wk->gsys));
 
@@ -938,7 +941,7 @@ static GameEventReturnCode EventPokewood_RunMenu(GameEvent *event, u32 *state, v
     switch (*state) {
     case STEP_OPEN_MENU:
         GameEvent_ChainNext(event,
-                            EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_ID(323),
+                            EventFieldSubprocessTransition_Create(wk->gsys, wk->field, OVERLAY_PKWD_SELECTSCREEN,
                                                                   &PKWD_SELECTSCREEN_PROC_FUNCTIONS, &wk->param));
         *state = STEP_FINISH_MENU;
         break;
@@ -1135,7 +1138,7 @@ static void EventPokewood_ShowCastNames(BtlSetup *setup, HeapID heapId) {
         PartyPkm *pkm = PokeParty_GetPkm(party, i);
 
         if (PokeParty_GetParam(pkm, PKM_PARAM_SPECIES_VALID, NULL) != 0) {
-            PokewoodCastMember *member = &file->members[file->count[0] + i];
+            PokewoodCastMember *member = &file->members[file->count[POKEWOOD_CAST_SIDE_PLAYER] + i];
 
             if (member->species == PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL)) {
                 PokeParty_SetParam(pkm, PKM_PARAM_SPECIES, member->shownSpecies);
