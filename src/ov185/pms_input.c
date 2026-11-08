@@ -4,6 +4,7 @@
 #include "app/pms_input_view.h"
 #include "app/pmsi_initial_data.h"
 #include "app/pmsi_search.h"
+#include "app/pmsiv_menu.h"
 #include "app/ui/ui_scene.h"
 #include "constants/sound.h"
 #include "gfl/button_man.h"
@@ -21,12 +22,6 @@
 
 // The phrase input: the player writes one word, two words or a sentence, choosing each word from a group of words or
 // from the words of an initial, in a window of words, with the keys or the touch screen. The names are ours, guessed
-
-// Where the input is driven from
-enum {
-    KEY_MODE_KEY,
-    KEY_MODE_TOUCH,
-};
 
 // What the cursor on the buttons is on
 enum {
@@ -198,11 +193,17 @@ const GameProcFunctions PMS_INPUT_PROC_FUNCTIONS = {
     PMSInput_Exit,
 };
 
+enum {
+    PMSI_INIT_STEP_CREATE = 0,
+    PMSI_INIT_STEP_WAIT_INIT = 1,
+    PMSI_INIT_STEP_WAIT_EDIT_MODE = 2,
+};
+
 BOOL PMSInput_Init(GameProc *proc, u32 *state, void *param, void *work) {
     PMSInputWork *wk;
 
     switch (*state) {
-    case 0:
+    case PMSI_INIT_STEP_CREATE:
         GFL_OvlLoad(OVERLAY_APP_UI);
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_PMS_INPUT_SYS, 0x18000);
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_PMS_INPUT, 0x32000);
@@ -210,7 +211,7 @@ BOOL PMSInput_Init(GameProc *proc, u32 *state, void *param, void *work) {
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_INIT);
         (*state)++;
         break;
-    case 1:
+    case PMSI_INIT_STEP_WAIT_INIT:
         wk = work;
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             if (wk->inputMode == PMSI_MODE_SENTENCE) {
@@ -222,7 +223,7 @@ BOOL PMSInput_Init(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 2:
+    case PMSI_INIT_STEP_WAIT_EDIT_MODE:
         wk = work;
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcEditArea);
@@ -253,6 +254,11 @@ BOOL PMSInput_Main(GameProc *proc, u32 *state, void *param, void *work) {
     return ret;
 }
 
+enum {
+    PMSI_MODE_BUTTON_HELD = 0,
+    PMSI_MODE_BUTTON_RELEASED = 1,
+};
+
 static void PMSInput_ButtonCallback(u32 button, u32 event, void *work) {
     PMSInputWork *wk = work;
 
@@ -262,12 +268,12 @@ static void PMSInput_ButtonCallback(u32 button, u32 event, void *work) {
         break;
     case BMN_EVENT_RELEASE:
     case BMN_EVENT_SLIDEOUT:
-        wk->modeButton = 1;
+        wk->modeButton = PMSI_MODE_BUTTON_RELEASED;
         break;
     case BMN_EVENT_HOLD:
         break;
     default:
-        wk->modeButton = 1;
+        wk->modeButton = PMSI_MODE_BUTTON_RELEASED;
         break;
     }
 }
@@ -301,12 +307,12 @@ static PMSInputWork *PMSInput_ConstructWork(GameProc *proc, PMSIParam *param) {
     wk->dwk = PMSIData_Create(HEAPID_PMS_INPUT_SYS, wk->param);
     wk->vwk = PMSIView_Create(wk, wk->dwk);
     wk->bmn = GFL_BMN_Create(sPMSInputModeButtonRects, PMSInput_ButtonCallback, wk, HEAPID_PMS_INPUT_SYS);
-    wk->categoryMode = 0;
+    wk->categoryMode = PMSI_CATEGORY_MODE_GROUP;
     wk->subProc = NULL;
     wk->subSeq = 0;
     wk->editPos = 0;
     wk->buttonPos = BUTTON_POS_DECIDE;
-    wk->modeButton = 1;
+    wk->modeButton = PMSI_MODE_BUTTON_RELEASED;
     wk->search = PMSISearch_Create(wk, wk->dwk, HEAPID_PMS_INPUT_SYS);
     PMSInput_SetSubProc(wk, PMSInput_SubProcFadeIn);
     return wk;
@@ -435,9 +441,19 @@ static void PMSInput_WordWinKTChange(PMSInputWork *wk, u32 *seq) {
     PMSIView_ChangeKTWordWin(wk->vwk, wk, wk->dwk);
 }
 
+enum {
+    PMSI_WORD_STEP_EDIT = 0,
+    PMSI_WORD_STEP_BUTTON = 1,
+    PMSI_WORD_STEP_START_OK = 2,
+    PMSI_WORD_STEP_START_CANCEL = 3,
+    PMSI_WORD_STEP_RESUME_INPUT = 4,
+    PMSI_WORD_STEP_WAIT_CATEGORY = 5,
+    PMSI_WORD_STEP_WAIT_COMMAND_BUTTON = 6,
+};
+
 static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_WORD_STEP_EDIT:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -445,12 +461,12 @@ static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             wk->buttonPos = BUTTON_POS_CANCEL;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-            *seq = 1;
+            *seq = PMSI_WORD_STEP_BUTTON;
         } else if (wk->keyTrg & (PAD_KEY_DOWN | PAD_BUTTON_START)) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             wk->buttonPos = BUTTON_POS_DECIDE;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-            *seq = 1;
+            *seq = PMSI_WORD_STEP_BUTTON;
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
@@ -458,10 +474,10 @@ static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             PMSInput_ResetCategoryPos(wk);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
-            *seq = 5;
+            *seq = PMSI_WORD_STEP_WAIT_CATEGORY;
         }
         break;
-    case 1:
+    case PMSI_WORD_STEP_BUTTON:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -472,13 +488,13 @@ static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
             } else {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_WORD_STEP_EDIT;
             }
         } else if (wk->keyTrg & PAD_KEY_DOWN) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             if (wk->buttonPos != BUTTON_POS_DECIDE) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_WORD_STEP_EDIT;
             } else {
                 wk->buttonPos ^= 1;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
@@ -494,33 +510,33 @@ static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
                 } else {
                     GFL_SndSEPlay(SEQ_SE_BEEP);
                 }
-                *seq = 2;
+                *seq = PMSI_WORD_STEP_START_OK;
             } else {
                 GFL_SndSEPlay(SEQ_SE_CANCEL1);
-                *seq = 3;
+                *seq = PMSI_WORD_STEP_START_CANCEL;
             }
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            *seq = 3;
+            *seq = PMSI_WORD_STEP_START_CANCEL;
         }
         break;
-    case 2:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_OK:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 3:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_CANCEL:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 4:
-        *seq = 1;
+    case PMSI_WORD_STEP_RESUME_INPUT:
+        *seq = PMSI_WORD_STEP_BUTTON;
         break;
-    case 6:
+    case PMSI_WORD_STEP_WAIT_COMMAND_BUTTON:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCommandButton);
         }
         break;
-    case 5:
+    case PMSI_WORD_STEP_WAIT_CATEGORY:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
         }
@@ -528,6 +544,13 @@ static BOOL PMSInput_WordKey(PMSInputWork *wk, u32 *seq) {
     }
     return FALSE;
 }
+
+enum {
+    PMSI_WORD_HIT_OK = 0,
+    PMSI_WORD_HIT_CANCEL = 1,
+    PMSI_WORD_HIT_FIRST_WORD = 2,
+    PMSI_WORD_HIT_SECOND_WORD = 3,
+};
 
 static s32 PMSInput_WordTouchSingle(PMSInputWork *wk) {
     // The edit area's OK and quit buttons, and its words
@@ -550,6 +573,17 @@ static s32 PMSInput_WordTouchDouble(PMSInputWork *wk) {
     return GFL_HIDGetTouchPressedRect(sPMSInputWordDoubleRects);
 }
 
+enum {
+    PMSI_SENTENCE_HIT_OK = 0,
+    PMSI_SENTENCE_HIT_CANCEL = 1,
+    PMSI_SENTENCE_HIT_PREVIOUS_LOWER = 2,
+    PMSI_SENTENCE_HIT_NEXT_LOWER = 3,
+    PMSI_SENTENCE_HIT_PREVIOUS_UPPER = 4,
+    PMSI_SENTENCE_HIT_NEXT_UPPER = 5,
+    PMSI_SENTENCE_HIT_FIRST_WORD = 6,
+    PMSI_SENTENCE_HIT_SECOND_WORD = 7,
+};
+
 static s32 PMSInput_SentenceTouchArea(PMSInputWork *wk) {
     s32 hit;
     int count, i;
@@ -571,7 +605,8 @@ static s32 PMSInput_SentenceTouchArea(PMSInputWork *wk) {
     hit = GFL_HIDGetTouchPressedRect(sPMSInputSentenceRects);
     if (hit != -1) {
         if (PMSIParam_HasStartSentence(wk->param)) {
-            if (hit == 2 || hit == 3 || hit == 4 || hit == 5) {
+            if (hit == PMSI_SENTENCE_HIT_PREVIOUS_LOWER || hit == PMSI_SENTENCE_HIT_NEXT_LOWER ||
+                hit == PMSI_SENTENCE_HIT_PREVIOUS_UPPER || hit == PMSI_SENTENCE_HIT_NEXT_UPPER) {
                 hit = -1;
             }
             return hit;
@@ -583,7 +618,7 @@ static s32 PMSInput_SentenceTouchArea(PMSInputWork *wk) {
     for (i = 0; i < count; i++) {
         PMSIView_GetSentenceWordArea(wk->vwk, rects, i);
         if (GFL_HIDGetTouchRectAt(rects, x, y) != -1) {
-            return i + 6;
+            return i + PMSI_SENTENCE_HIT_FIRST_WORD;
         }
     }
     return -1;
@@ -609,48 +644,48 @@ static BOOL PMSInput_WordTouch(PMSInputWork *wk, u32 *seq) {
     s32 hit;
 
     switch (*seq) {
-    case 0:
-    case 1:
+    case PMSI_WORD_STEP_EDIT:
+    case PMSI_WORD_STEP_BUTTON:
         if (wk->inputMode == PMSI_MODE_WORD) {
             hit = PMSInput_WordTouchSingle(wk);
         } else {
             hit = PMSInput_WordTouchDouble(wk);
         }
         switch (hit) {
-        case 0:
+        case PMSI_WORD_HIT_OK:
             if (PMSInput_CheckInputComplete(wk)) {
                 GFL_SndSEPlay(SEQ_SE_DECIDE1);
             } else {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
             }
-            *seq = 2;
+            *seq = PMSI_WORD_STEP_START_OK;
             break;
-        case 1:
+        case PMSI_WORD_HIT_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            *seq = 3;
+            *seq = PMSI_WORD_STEP_START_CANCEL;
             break;
-        case 2:
-        case 3:
+        case PMSI_WORD_HIT_FIRST_WORD:
+        case PMSI_WORD_HIT_SECOND_WORD:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             PMSInput_ResetCategoryPos(wk);
-            wk->editPos = hit - 2;
+            wk->editPos = hit - PMSI_WORD_HIT_FIRST_WORD;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
-            *seq = 5;
+            *seq = PMSI_WORD_STEP_WAIT_CATEGORY;
             break;
         }
         break;
-    case 2:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_OK:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 3:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_CANCEL:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 4:
-        *seq = 0;
+    case PMSI_WORD_STEP_RESUME_INPUT:
+        *seq = PMSI_WORD_STEP_EDIT;
         break;
-    case 5:
+    case PMSI_WORD_STEP_WAIT_CATEGORY:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
         }
@@ -660,7 +695,7 @@ static BOOL PMSInput_WordTouch(PMSInputWork *wk, u32 *seq) {
 }
 
 static BOOL PMSInput_MainProcWord(PMSInputWork *wk, u32 *seq) {
-    if (*seq <= 1 && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
+    if (*seq <= PMSI_WORD_STEP_BUTTON && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         return FALSE;
     }
@@ -672,7 +707,7 @@ static BOOL PMSInput_MainProcWord(PMSInputWork *wk, u32 *seq) {
 
 static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_WORD_STEP_EDIT:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -680,12 +715,12 @@ static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             wk->buttonPos = BUTTON_POS_CANCEL;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-            *seq = 1;
+            *seq = PMSI_WORD_STEP_BUTTON;
         } else if (wk->keyTrg & (PAD_KEY_DOWN | PAD_BUTTON_START)) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             wk->buttonPos = BUTTON_POS_DECIDE;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-            *seq = 1;
+            *seq = PMSI_WORD_STEP_BUTTON;
         } else if (wk->keyTrg & PAD_KEY_LEFT) {
             if (wk->editPos != 0) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
@@ -705,10 +740,10 @@ static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             PMSInput_ResetCategoryPos(wk);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
-            *seq = 5;
+            *seq = PMSI_WORD_STEP_WAIT_CATEGORY;
         }
         break;
-    case 1:
+    case PMSI_WORD_STEP_BUTTON:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -719,13 +754,13 @@ static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
             } else {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_WORD_STEP_EDIT;
             }
         } else if (wk->keyTrg & PAD_KEY_DOWN) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             if (wk->buttonPos != BUTTON_POS_DECIDE) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_WORD_STEP_EDIT;
             } else {
                 wk->buttonPos ^= 1;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
@@ -741,33 +776,33 @@ static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
                 } else {
                     GFL_SndSEPlay(SEQ_SE_BEEP);
                 }
-                *seq = 2;
+                *seq = PMSI_WORD_STEP_START_OK;
             } else {
                 GFL_SndSEPlay(SEQ_SE_CANCEL1);
-                *seq = 3;
+                *seq = PMSI_WORD_STEP_START_CANCEL;
             }
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            *seq = 3;
+            *seq = PMSI_WORD_STEP_START_CANCEL;
         }
         break;
-    case 2:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_OK:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 3:
-        *seq = 4;
+    case PMSI_WORD_STEP_START_CANCEL:
+        *seq = PMSI_WORD_STEP_RESUME_INPUT;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 4:
-        *seq = 1;
+    case PMSI_WORD_STEP_RESUME_INPUT:
+        *seq = PMSI_WORD_STEP_BUTTON;
         break;
-    case 6:
+    case PMSI_WORD_STEP_WAIT_COMMAND_BUTTON:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCommandButton);
         }
         break;
-    case 5:
+    case PMSI_WORD_STEP_WAIT_CATEGORY:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
         }
@@ -777,7 +812,7 @@ static BOOL PMSInput_DoubleWordKey(PMSInputWork *wk, u32 *seq) {
 }
 
 static BOOL PMSInput_MainProcDoubleWord(PMSInputWork *wk, u32 *seq) {
-    if (*seq <= 1 && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
+    if (*seq <= PMSI_WORD_STEP_BUTTON && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         return FALSE;
     }
@@ -787,13 +822,25 @@ static BOOL PMSInput_MainProcDoubleWord(PMSInputWork *wk, u32 *seq) {
     return PMSInput_WordTouch(wk, seq);
 }
 
+enum {
+    PMSI_SENTENCE_STEP_INIT = 0,
+    PMSI_SENTENCE_STEP_EDIT = 1,
+    PMSI_SENTENCE_STEP_BUTTON = 2,
+    PMSI_SENTENCE_STEP_WAIT_UPDATE = 3,
+    PMSI_SENTENCE_STEP_START_OK = 4,
+    PMSI_SENTENCE_STEP_START_CANCEL = 5,
+    PMSI_SENTENCE_STEP_RESUME_BUTTON = 6,
+    PMSI_SENTENCE_STEP_WAIT_COMMAND_BUTTON = 7,
+    PMSI_SENTENCE_STEP_WAIT_CATEGORY = 8,
+};
+
 static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_SENTENCE_STEP_INIT:
         wk->sentenceEditPosMax = PMSIView_GetSentenceEditPosMax(wk->vwk);
-        *seq = 1;
+        *seq = PMSI_SENTENCE_STEP_EDIT;
         // fallthrough
-    case 1:
+    case PMSI_SENTENCE_STEP_EDIT:
         if (PMSIParam_HasStartSentence(wk->param)) {
             if (wk->keyRepeat & PAD_KEY_LEFT) {
                 break;
@@ -807,7 +854,7 @@ static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
             if (wk->editPos == 0) {
                 wk->buttonPos = BUTTON_POS_CANCEL;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-                *seq = 2;
+                *seq = PMSI_SENTENCE_STEP_BUTTON;
             } else if (wk->sentenceEditPosMax > 1 && wk->editPos != 0) {
                 wk->editPos--;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_EDITAREA_CURSOR);
@@ -820,27 +867,27 @@ static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
             } else {
                 wk->buttonPos = BUTTON_POS_DECIDE;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-                *seq = 2;
+                *seq = PMSI_SENTENCE_STEP_BUTTON;
             }
         } else if ((wk->keyTrg & PAD_BUTTON_START) || ((wk->keyTrg & PAD_BUTTON_A) && wk->sentenceEditPosMax == 0)) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             wk->buttonPos = BUTTON_POS_DECIDE;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_BUTTON);
-            *seq = 2;
+            *seq = PMSI_SENTENCE_STEP_BUTTON;
         } else if (wk->keyRepeat & PAD_KEY_LEFT) {
             GFL_SndSEPlay(SEQ_SE_SYS_37);
             wk->editPos = 0;
             PMSInput_SentenceDecrement(&wk->sentenceWk, &wk->sentence);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA);
-            PMSIView_SetMenuButton(wk->vwk, 0);
-            *seq = 3;
+            PMSIView_SetSentenceArrow(wk->vwk, PMSIV_SENTENCE_ARROW_PREVIOUS);
+            *seq = PMSI_SENTENCE_STEP_WAIT_UPDATE;
         } else if (wk->keyRepeat & PAD_KEY_RIGHT) {
             GFL_SndSEPlay(SEQ_SE_SYS_37);
             wk->editPos = 0;
             PMSInput_SentenceIncrement(&wk->sentenceWk, &wk->sentence);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA);
-            PMSIView_SetMenuButton(wk->vwk, 1);
-            *seq = 3;
+            PMSIView_SetSentenceArrow(wk->vwk, PMSIV_SENTENCE_ARROW_NEXT);
+            *seq = PMSI_SENTENCE_STEP_WAIT_UPDATE;
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
@@ -848,15 +895,15 @@ static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             PMSInput_ResetCategoryPos(wk);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
-            *seq = 8;
+            *seq = PMSI_SENTENCE_STEP_WAIT_CATEGORY;
         }
         break;
-    case 3:
+    case PMSI_SENTENCE_STEP_WAIT_UPDATE:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA)) {
-            *seq = 0;
+            *seq = PMSI_SENTENCE_STEP_INIT;
         }
         break;
-    case 2:
+    case PMSI_SENTENCE_STEP_BUTTON:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -868,14 +915,14 @@ static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
             } else {
                 wk->editPos = wk->sentenceEditPosMax != 0 ? wk->sentenceEditPosMax - 1 : 0;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_SENTENCE_STEP_INIT;
             }
         } else if (wk->keyTrg & PAD_KEY_DOWN) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             if (wk->buttonPos != BUTTON_POS_DECIDE) {
                 wk->editPos = 0;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_SENTENCE_STEP_INIT;
             } else {
                 wk->buttonPos ^= 1;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
@@ -891,33 +938,33 @@ static BOOL PMSInput_SentenceKey(PMSInputWork *wk, u32 *seq) {
                 } else {
                     GFL_SndSEPlay(SEQ_SE_BEEP);
                 }
-                *seq = 4;
+                *seq = PMSI_SENTENCE_STEP_START_OK;
             } else {
                 GFL_SndSEPlay(SEQ_SE_CANCEL1);
-                *seq = 5;
+                *seq = PMSI_SENTENCE_STEP_START_CANCEL;
             }
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            *seq = 5;
+            *seq = PMSI_SENTENCE_STEP_START_CANCEL;
         }
         break;
-    case 4:
-        *seq = 6;
+    case PMSI_SENTENCE_STEP_START_OK:
+        *seq = PMSI_SENTENCE_STEP_RESUME_BUTTON;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 5:
-        *seq = 6;
+    case PMSI_SENTENCE_STEP_START_CANCEL:
+        *seq = PMSI_SENTENCE_STEP_RESUME_BUTTON;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 6:
-        *seq = 2;
+    case PMSI_SENTENCE_STEP_RESUME_BUTTON:
+        *seq = PMSI_SENTENCE_STEP_BUTTON;
         break;
-    case 7:
+    case PMSI_SENTENCE_STEP_WAIT_COMMAND_BUTTON:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCommandButton);
         }
         break;
-    case 8:
+    case PMSI_SENTENCE_STEP_WAIT_CATEGORY:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
         }
@@ -930,24 +977,24 @@ static BOOL PMSInput_SentenceTouch(PMSInputWork *wk, u32 *seq) {
     s32 hit;
 
     switch (*seq) {
-    case 0:
+    case PMSI_SENTENCE_STEP_INIT:
         wk->sentenceEditPosMax = PMSIView_GetSentenceEditPosMax(wk->vwk);
-        *seq = 1;
+        *seq = PMSI_SENTENCE_STEP_EDIT;
         // fallthrough
-    case 1:
-    case 2:
+    case PMSI_SENTENCE_STEP_EDIT:
+    case PMSI_SENTENCE_STEP_BUTTON:
         hit = PMSInput_SentenceTouchType(wk);
         if (hit > -1) {
             wk->editPos = 0;
             PMSInput_SentenceSetDirect(&wk->sentenceWk, &wk->sentence, hit);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA);
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            *seq = 3;
+            *seq = PMSI_SENTENCE_STEP_WAIT_UPDATE;
             break;
         }
         hit = PMSInput_SentenceTouchArea(wk);
         switch (hit) {
-        case 0:
+        case PMSI_SENTENCE_HIT_OK:
             if (PMSInput_CheckInputComplete(wk)) {
                 GFL_SndSEPlay(SEQ_SE_DECIDE1);
             } else {
@@ -955,64 +1002,64 @@ static BOOL PMSInput_SentenceTouch(PMSInputWork *wk, u32 *seq) {
             }
             wk->buttonPos = BUTTON_POS_DECIDE;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA);
-            *seq = hit + 4;
+            *seq = hit + PMSI_SENTENCE_STEP_START_OK;
             break;
-        case 1:
+        case PMSI_SENTENCE_HIT_CANCEL:
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             wk->buttonPos = BUTTON_POS_CANCEL;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA);
-            *seq = hit + 4;
+            *seq = hit + PMSI_SENTENCE_STEP_START_OK;
             break;
-        case 2:
-        case 4:
+        case PMSI_SENTENCE_HIT_PREVIOUS_LOWER:
+        case PMSI_SENTENCE_HIT_PREVIOUS_UPPER:
             GFL_SndSEPlay(SEQ_SE_SYS_37);
             wk->editPos = 0;
             PMSInput_SentenceDecrement(&wk->sentenceWk, &wk->sentence);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA);
-            PMSIView_SetMenuButton(wk->vwk, 0);
-            *seq = 3;
+            PMSIView_SetSentenceArrow(wk->vwk, PMSIV_SENTENCE_ARROW_PREVIOUS);
+            *seq = PMSI_SENTENCE_STEP_WAIT_UPDATE;
             break;
-        case 3:
-        case 5:
+        case PMSI_SENTENCE_HIT_NEXT_LOWER:
+        case PMSI_SENTENCE_HIT_NEXT_UPPER:
             GFL_SndSEPlay(SEQ_SE_SYS_37);
             wk->editPos = 0;
             PMSInput_SentenceIncrement(&wk->sentenceWk, &wk->sentence);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA);
-            PMSIView_SetMenuButton(wk->vwk, 1);
-            *seq = 3;
+            PMSIView_SetSentenceArrow(wk->vwk, PMSIV_SENTENCE_ARROW_NEXT);
+            *seq = PMSI_SENTENCE_STEP_WAIT_UPDATE;
             break;
-        case 6:
-        case 7:
+        case PMSI_SENTENCE_HIT_FIRST_WORD:
+        case PMSI_SENTENCE_HIT_SECOND_WORD:
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             PMSInput_ResetCategoryPos(wk);
-            wk->editPos = hit - 6;
+            wk->editPos = hit - PMSI_SENTENCE_HIT_FIRST_WORD;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_EDITAREA_TO_CATEGORY);
-            *seq = 8;
+            *seq = PMSI_SENTENCE_STEP_WAIT_CATEGORY;
             break;
         }
         break;
-    case 3:
+    case PMSI_SENTENCE_STEP_WAIT_UPDATE:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA)) {
-            *seq = 0;
+            *seq = PMSI_SENTENCE_STEP_INIT;
         }
         break;
-    case 4:
-        *seq = 6;
+    case PMSI_SENTENCE_STEP_START_OK:
+        *seq = PMSI_SENTENCE_STEP_RESUME_BUTTON;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 5:
-        *seq = 6;
+    case PMSI_SENTENCE_STEP_START_CANCEL:
+        *seq = PMSI_SENTENCE_STEP_RESUME_BUTTON;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 6:
-        *seq = 2;
+    case PMSI_SENTENCE_STEP_RESUME_BUTTON:
+        *seq = PMSI_SENTENCE_STEP_BUTTON;
         break;
-    case 7:
+    case PMSI_SENTENCE_STEP_WAIT_COMMAND_BUTTON:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCommandButton);
         }
         break;
-    case 8:
+    case PMSI_SENTENCE_STEP_WAIT_CATEGORY:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcCategory);
         }
@@ -1022,7 +1069,7 @@ static BOOL PMSInput_SentenceTouch(PMSInputWork *wk, u32 *seq) {
 }
 
 static BOOL PMSInput_MainProcSentence(PMSInputWork *wk, u32 *seq) {
-    if (*seq <= 2 && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
+    if (*seq <= PMSI_SENTENCE_STEP_BUTTON && PMSInput_KeyStatusChange(wk, seq) && wk->keyMode == KEY_MODE_KEY) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         return FALSE;
     }
@@ -1032,9 +1079,18 @@ static BOOL PMSInput_MainProcSentence(PMSInputWork *wk, u32 *seq) {
     return PMSInput_SentenceTouch(wk, seq);
 }
 
+enum {
+    PMSI_COMMAND_STEP_INPUT = 0,
+    PMSI_COMMAND_STEP_START_OK = 1,
+    PMSI_COMMAND_STEP_START_CANCEL = 2,
+    PMSI_COMMAND_STEP_RESUME_OK = 3,
+    PMSI_COMMAND_STEP_RESUME_CANCEL = 4,
+    PMSI_COMMAND_STEP_WAIT_EDIT = 5,
+};
+
 static BOOL PMSInput_MainProcCommandButton(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_COMMAND_STEP_INPUT:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -1045,13 +1101,13 @@ static BOOL PMSInput_MainProcCommandButton(PMSInputWork *wk, u32 *seq) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
             } else {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_COMMAND_STEP_INPUT;
             }
         } else if (wk->keyTrg & PAD_KEY_DOWN) {
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             if (wk->buttonPos != BUTTON_POS_DECIDE) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_BUTTON_TO_EDITAREA_SELECT);
-                *seq = 0;
+                *seq = PMSI_COMMAND_STEP_INPUT;
             } else {
                 wk->buttonPos ^= 1;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_BUTTON_CURSOR);
@@ -1063,28 +1119,28 @@ static BOOL PMSInput_MainProcCommandButton(PMSInputWork *wk, u32 *seq) {
         } else if (wk->keyTrg & PAD_BUTTON_A) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             if (wk->buttonPos == BUTTON_POS_DECIDE) {
-                *seq = 1;
+                *seq = PMSI_COMMAND_STEP_START_OK;
             } else {
-                *seq = 2;
+                *seq = PMSI_COMMAND_STEP_START_CANCEL;
             }
         } else if (wk->keyTrg & PAD_BUTTON_B) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
-            *seq = 2;
+            *seq = PMSI_COMMAND_STEP_START_CANCEL;
         }
         break;
-    case 1:
-        *seq = 3;
+    case PMSI_COMMAND_STEP_START_OK:
+        *seq = PMSI_COMMAND_STEP_RESUME_OK;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandOK);
         break;
-    case 2:
-        *seq = 4;
+    case PMSI_COMMAND_STEP_START_CANCEL:
+        *seq = PMSI_COMMAND_STEP_RESUME_CANCEL;
         PMSInput_SetSubProc(wk, PMSInput_SubProcCommandCancel);
         break;
-    case 3:
-    case 4:
-        *seq = 0;
+    case PMSI_COMMAND_STEP_RESUME_OK:
+    case PMSI_COMMAND_STEP_RESUME_CANCEL:
+        *seq = PMSI_COMMAND_STEP_INPUT;
         break;
-    case 5:
+    case PMSI_COMMAND_STEP_WAIT_EDIT:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcEditArea);
         }
@@ -1093,40 +1149,48 @@ static BOOL PMSInput_MainProcCommandButton(PMSInputWork *wk, u32 *seq) {
     return FALSE;
 }
 
+enum {
+    PMSI_CATEGORY_STEP_INPUT = 0,
+    PMSI_CATEGORY_STEP_WAIT_ERASE_FLASH = 1,
+    PMSI_CATEGORY_STEP_WAIT_TRANSITION = 2,
+    PMSI_CATEGORY_STEP_WAIT_NEXT_PROC = 3,
+    PMSI_CATEGORY_STEP_WAIT_MODE_ENABLE = 4,
+};
+
 static BOOL PMSInput_MainProcCategory(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_CATEGORY_STEP_INPUT:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY_CURSOR) &&
             PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY) &&
-            PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_SHOW_MENU)) {
+            PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_FLASH_SEARCH_ERASE)) {
             PMSInput_CategoryInput(wk, seq);
         }
         break;
-    case 1:
-        if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_SHOW_MENU)) {
+    case PMSI_CATEGORY_STEP_WAIT_ERASE_FLASH:
+        if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_FLASH_SEARCH_ERASE)) {
             if (wk->categoryPosSaved != CATEGORY_POS_ERASE) {
                 wk->categoryPos = wk->categoryPosSaved;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY_CURSOR);
             }
-            *seq = 0;
+            *seq = PMSI_CATEGORY_STEP_INPUT;
         }
         break;
-    case 2:
+    case PMSI_CATEGORY_STEP_WAIT_TRANSITION:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             if (wk->nextProc == PMSInput_MainProcEditArea) {
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_KTCHANGE_EDITAREA);
             }
-            *seq = 3;
+            *seq = PMSI_CATEGORY_STEP_WAIT_NEXT_PROC;
         }
         break;
-    case 3:
+    case PMSI_CATEGORY_STEP_WAIT_NEXT_PROC:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, wk->nextProc);
         }
         break;
-    case 4:
+    case PMSI_CATEGORY_STEP_WAIT_MODE_ENABLE:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE_ENABLE)) {
-            *seq = 0;
+            *seq = PMSI_CATEGORY_STEP_INPUT;
         }
         break;
     }
@@ -1134,63 +1198,63 @@ static BOOL PMSInput_MainProcCategory(PMSInputWork *wk, u32 *seq) {
 }
 
 static void PMSInput_CategoryKey(PMSInputWork *wk, u32 *seq) {
-    if ((wk->keyTrg & PAD_BUTTON_START) && wk->categoryMode == 1) {
+    if ((wk->keyTrg & PAD_BUTTON_START) && wk->categoryMode == PMSI_CATEGORY_MODE_INITIAL) {
         wk->categoryPos = CATEGORY_POS_SEARCH;
         if (PMSISearch_Search(wk->search)) {
             PMSInput_StartWordWin(wk);
-            *seq = 2;
+            *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         } else {
             GFL_SndSEPlay(SEQ_SE_BEEP);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY_CURSOR);
         }
         return;
     }
-    if (wk->modeButton == 0 || (wk->keyTrg & PAD_BUTTON_SELECT)) {
+    if (wk->modeButton == PMSI_MODE_BUTTON_HELD || (wk->keyTrg & PAD_BUTTON_SELECT)) {
         GFL_SndSEPlay(SEQ_SE_SELECT4);
         wk->categoryMode ^= 1;
         PMSInput_ResetCategoryPos(wk);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE_ENABLE);
-        *seq = 4;
+        *seq = PMSI_CATEGORY_STEP_WAIT_MODE_ENABLE;
         return;
     }
     if (wk->keyTrg & PAD_BUTTON_B) {
-        if (wk->categoryMode == 1 && PMSISearch_DelChar(wk->search)) {
+        if (wk->categoryMode == PMSI_CATEGORY_MODE_INITIAL && PMSISearch_DelChar(wk->search)) {
             wk->categoryPosSaved = wk->categoryPos;
-            *seq = 1;
+            *seq = PMSI_CATEGORY_STEP_WAIT_ERASE_FLASH;
             if (wk->categoryPos != CATEGORY_POS_ERASE) {
                 wk->categoryPos = CATEGORY_POS_ERASE;
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY_CURSOR);
             }
             GFL_SndSEPlay(SEQ_SE_CANCEL3);
-            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SHOW_MENU);
+            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_FLASH_SEARCH_ERASE);
             PMSISearch_Search(wk->search);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE);
             return;
         }
-        if (wk->categoryMode == 1 && wk->categoryPos != CATEGORY_POS_BACK) {
+        if (wk->categoryMode == PMSI_CATEGORY_MODE_INITIAL && wk->categoryPos != CATEGORY_POS_BACK) {
             wk->categoryPos = CATEGORY_POS_BACK;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY_CURSOR);
         }
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CATEGORY_TO_EDITAREA);
         wk->nextProc = PMSInput_MainProcEditArea;
-        *seq = 2;
+        *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         return;
     }
     if (wk->keyTrg & PAD_BUTTON_A) {
         if (wk->categoryPos == CATEGORY_POS_SEARCH) {
             if (PMSISearch_Search(wk->search)) {
                 PMSInput_StartWordWin(wk);
-                *seq = 2;
+                *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
             } else {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
             }
         } else if (wk->categoryPos == CATEGORY_POS_ERASE) {
-            if (wk->categoryMode == 1 && PMSISearch_DelChar(wk->search)) {
+            if (wk->categoryMode == PMSI_CATEGORY_MODE_INITIAL && PMSISearch_DelChar(wk->search)) {
                 wk->categoryPosSaved = wk->categoryPos;
-                *seq = 1;
+                *seq = PMSI_CATEGORY_STEP_WAIT_ERASE_FLASH;
                 GFL_SndSEPlay(SEQ_SE_CANCEL3);
-                PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SHOW_MENU);
+                PMSIView_SetCommand(wk->vwk, PMSIV_CMD_FLASH_SEARCH_ERASE);
                 PMSISearch_Search(wk->search);
                 PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE);
             } else {
@@ -1200,12 +1264,12 @@ static void PMSInput_CategoryKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CATEGORY_TO_EDITAREA);
             wk->nextProc = PMSInput_MainProcEditArea;
-            *seq = 2;
-        } else if (wk->categoryMode == 0) {
+            *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
+        } else if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_CATEGORY);
             if (PMSInput_IsCategoryEnabled(wk)) {
                 PMSInput_StartWordWin(wk);
-                *seq = 2;
+                *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
             } else {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
             }
@@ -1224,6 +1288,17 @@ static void PMSInput_CategoryKey(PMSInputWork *wk, u32 *seq) {
     }
 }
 
+enum {
+    PMSI_CATEGORY_BUTTON_NONE = 0,
+    PMSI_CATEGORY_BUTTON_BACK = 1,
+    PMSI_CATEGORY_BUTTON_MODE = 2,
+};
+
+enum {
+    PMSI_CATEGORY_HIT_BACK = 0,
+    PMSI_CATEGORY_HIT_MODE = 1,
+};
+
 static int PMSInput_CategoryTouchButtons(PMSInputWork *wk) {
     // The categories' back and mode buttons
     static const TouchRect sPMSInputCategoryButtonRects[] = {
@@ -1235,18 +1310,18 @@ static int PMSInput_CategoryTouchButtons(PMSInputWork *wk) {
     s32 hit = GFL_HIDGetTouchPressedRect(sPMSInputCategoryButtonRects);
 
     if (hit == -1) {
-        return 0;
+        return PMSI_CATEGORY_BUTTON_NONE;
     }
     switch (hit) {
-    case 0:
-        return 1;
-    case 1:
-        if (wk->modeButton == 0) {
-            return 2;
+    case PMSI_CATEGORY_HIT_BACK:
+        return PMSI_CATEGORY_BUTTON_BACK;
+    case PMSI_CATEGORY_HIT_MODE:
+        if (wk->modeButton == PMSI_MODE_BUTTON_HELD) {
+            return PMSI_CATEGORY_BUTTON_MODE;
         }
         break;
     }
-    return 0;
+    return PMSI_CATEGORY_BUTTON_NONE;
 }
 
 static s32 PMSInput_TouchReturnButton(PMSInputWork *wk) {
@@ -1322,21 +1397,21 @@ static void PMSInput_CategoryTouch(PMSInputWork *wk, u32 *seq) {
     int pos;
 
     switch (PMSInput_CategoryTouchButtons(wk)) {
-    case 1:
+    case PMSI_CATEGORY_BUTTON_BACK:
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CATEGORY_TO_EDITAREA);
         wk->nextProc = PMSInput_MainProcEditArea;
-        *seq = 2;
+        *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         return;
-    case 2:
+    case PMSI_CATEGORY_BUTTON_MODE:
         GFL_SndSEPlay(SEQ_SE_SELECT4);
         wk->categoryMode ^= 1;
         PMSInput_ResetCategoryPos(wk);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE_ENABLE);
-        *seq = 4;
+        *seq = PMSI_CATEGORY_STEP_WAIT_MODE_ENABLE;
         return;
     }
-    if (wk->categoryMode == 0) {
+    if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
         pos = PMSInput_CategoryTouchGroup(wk);
         if (pos < 0) {
             return;
@@ -1348,7 +1423,7 @@ static void PMSInput_CategoryTouch(PMSInputWork *wk, u32 *seq) {
             return;
         }
         PMSInput_StartWordWin(wk);
-        *seq = 2;
+        *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         return;
     }
     pos = PMSInput_CategoryTouchInitial(wk);
@@ -1362,43 +1437,43 @@ static void PMSInput_CategoryTouch(PMSInputWork *wk, u32 *seq) {
         return;
     }
     switch (PMSInput_CategoryTouchSearchButtons(wk)) {
-    case -1:
+    case TOUCH_RECT_NONE:
         break;
-    case 0:
+    case PMSIV_SEARCH_SLOT_SUBMIT:
         wk->categoryPos = CATEGORY_POS_SEARCH;
         if (PMSISearch_Search(wk->search)) {
             PMSInput_StartWordWin(wk);
-            *seq = 2;
+            *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         } else {
             GFL_SndSEPlay(SEQ_SE_BEEP);
         }
         break;
-    case 1:
+    case PMSIV_SEARCH_SLOT_ERASE:
         wk->categoryPos = CATEGORY_POS_ERASE;
         if (PMSISearch_DelChar(wk->search)) {
             wk->categoryPosSaved = wk->categoryPos;
-            *seq = 1;
+            *seq = PMSI_CATEGORY_STEP_WAIT_ERASE_FLASH;
             GFL_SndSEPlay(SEQ_SE_CANCEL3);
-            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SHOW_MENU);
+            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_FLASH_SEARCH_ERASE);
             PMSISearch_Search(wk->search);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CHANGE_CATEGORY_MODE);
         } else {
             GFL_SndSEPlay(SEQ_SE_BEEP);
         }
         break;
-    case 2:
+    case PMSIV_SEARCH_SLOT_BACK:
         wk->categoryPos = CATEGORY_POS_BACK;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_CATEGORY_TO_EDITAREA);
         wk->nextProc = PMSInput_MainProcEditArea;
-        *seq = 2;
+        *seq = PMSI_CATEGORY_STEP_WAIT_TRANSITION;
         break;
     }
 }
 
 static void PMSInput_CategoryInput(PMSInputWork *wk, u32 *seq) {
     if (PMSInput_KeyStatusChange(wk, seq)) {
-        if (wk->categoryMode == 0) {
+        if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
             if (wk->keyMode == KEY_MODE_KEY && !(GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
                 return;
@@ -1609,28 +1684,36 @@ static u16 PMSInput_WordWinGetScrollMax(const PMSInputWordWin *ww) {
     return ww->scrollMax;
 }
 
+enum {
+    PMSI_WORDWIN_STEP_INPUT = 0,
+    PMSI_WORDWIN_STEP_WAIT_SCROLL = 1,
+    PMSI_WORDWIN_STEP_WAIT_SCROLL_CURSOR = 2,
+    PMSI_WORDWIN_STEP_WAIT_REDRAW = 3,
+    PMSI_WORDWIN_STEP_WAIT_NEXT_PROC = 4,
+};
+
 static BOOL PMSInput_MainProcWordWin(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_WORDWIN_STEP_INPUT:
         PMSInput_WordWinInput(wk, seq);
         break;
-    case 1:
+    case PMSI_WORDWIN_STEP_WAIT_SCROLL:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_SCROLL_WORDWIN)) {
-            *seq = 0;
+            *seq = PMSI_WORDWIN_STEP_INPUT;
         }
         break;
-    case 2:
+    case PMSI_WORDWIN_STEP_WAIT_SCROLL_CURSOR:
         if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_SCROLL_WORDWIN)) {
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN_CURSOR);
-            *seq = 0;
+            *seq = PMSI_WORDWIN_STEP_INPUT;
         }
         break;
-    case 3:
-        if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_SET_WORDWIN_ARROWS)) {
-            *seq = 0;
+    case PMSI_WORDWIN_STEP_WAIT_REDRAW:
+        if (PMSIView_WaitCommand(wk->vwk, PMSIV_CMD_REDRAW_WORDWIN)) {
+            *seq = PMSI_WORDWIN_STEP_INPUT;
         }
         break;
-    case 4:
+    case PMSI_WORDWIN_STEP_WAIT_NEXT_PROC:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_ChangeMainProc(wk, wk->nextProc);
             *seq = 0;
@@ -1649,20 +1732,20 @@ static void PMSInput_WordWinKey(PMSInputWork *wk, u32 *seq) {
     case WORDWIN_RESULT_SCROLL:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SCROLL_WORDWIN);
-        *seq = 1;
+        *seq = PMSI_WORDWIN_STEP_WAIT_SCROLL;
         return;
     case WORDWIN_RESULT_SCROLL_CURSOR:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SCROLL_WORDWIN);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN_CURSOR);
-        *seq = 2;
+        *seq = PMSI_WORDWIN_STEP_WAIT_SCROLL_CURSOR;
         return;
     }
     if (wk->keyTrg & PAD_BUTTON_B) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_WORDWIN_TO_CATEGORY);
         wk->nextProc = PMSInput_MainProcCategory;
-        *seq = 4;
+        *seq = PMSI_WORDWIN_STEP_WAIT_NEXT_PROC;
         return;
     }
     if (wk->keyTrg & PAD_BUTTON_A) {
@@ -1670,7 +1753,7 @@ static void PMSInput_WordWinKey(PMSInputWork *wk, u32 *seq) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_WORDWIN_TO_CATEGORY);
             wk->nextProc = PMSInput_MainProcCategory;
-            *seq = 4;
+            *seq = PMSI_WORDWIN_STEP_WAIT_NEXT_PROC;
             return;
         }
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -1679,7 +1762,7 @@ static void PMSInput_WordWinKey(PMSInputWork *wk, u32 *seq) {
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_WORDWIN_TO_EDITAREA);
         wk->nextProc = PMSInput_MainProcEditArea;
-        *seq = 4;
+        *seq = PMSI_WORDWIN_STEP_WAIT_NEXT_PROC;
     }
 }
 
@@ -1701,19 +1784,19 @@ static int PMSInput_WordWinTouchWord(PMSInputWork *wk) {
     if (GFL_HIDGetTouchPressedRect(sPMSInputWordWinScrollBarRects) == 0) {
         GFL_HIDGetTouchPressedPoint(&x, &y);
         switch (PMSIView_GetWordWinScrollDir(wk->vwk, x, y)) {
-        case 0:
+        case PMSIV_SCROLL_Y_EQUAL:
             wk->scrollBarHeld = TRUE;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
             return WORDWIN_RESULT_NONE;
-        case 1:
+        case PMSIV_SCROLL_Y_ABOVE:
             wk->scrollBarHeld = TRUE;
             PMSIView_SetWordWinScrollBarY(wk->vwk, y);
             return PMSInput_WordWinScrollBarUp(wk->vwk, &wk->wordWin);
-        case 2:
+        case PMSIV_SCROLL_Y_BELOW:
             wk->scrollBarHeld = TRUE;
             PMSIView_SetWordWinScrollBarY(wk->vwk, y);
             return PMSInput_WordWinScrollBarDown(wk->vwk, &wk->wordWin);
-        case 3:
+        case PMSIV_SCROLL_Y_UNAVAILABLE:
             break;
         }
     }
@@ -1761,19 +1844,19 @@ static void PMSInput_WordWinTouch(PMSInputWork *wk, u32 *seq) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_WORDWIN_TO_CATEGORY);
         wk->nextProc = PMSInput_MainProcCategory;
-        *seq = 4;
+        *seq = PMSI_WORDWIN_STEP_WAIT_NEXT_PROC;
         return;
     }
     if (PMSInput_WordWinTouchScrollBar(wk) == TRUE) {
         switch (PMSInput_WordWinScrollBarMove(wk->vwk, &wk->wordWin)) {
         case WORDWIN_RESULT_SCROLL:
-            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SET_WORDWIN_ARROWS);
-            *seq = 3;
+            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_REDRAW_WORDWIN);
+            *seq = PMSI_WORDWIN_STEP_WAIT_REDRAW;
             return;
         case WORDWIN_RESULT_SCROLL_CURSOR:
-            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SET_WORDWIN_ARROWS);
+            PMSIView_SetCommand(wk->vwk, PMSIV_CMD_REDRAW_WORDWIN);
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN_CURSOR);
-            *seq = 3;
+            *seq = PMSI_WORDWIN_STEP_WAIT_REDRAW;
             return;
         }
         return;
@@ -1785,7 +1868,7 @@ static void PMSInput_WordWinTouch(PMSInputWork *wk, u32 *seq) {
         wk->nextProc = PMSInput_MainProcEditArea;
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_WORDWIN_TO_EDITAREA);
-        *seq = 4;
+        *seq = PMSI_WORDWIN_STEP_WAIT_NEXT_PROC;
         break;
     case WORDWIN_RESULT_CURSOR:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
@@ -1793,14 +1876,14 @@ static void PMSInput_WordWinTouch(PMSInputWork *wk, u32 *seq) {
         break;
     case WORDWIN_RESULT_SCROLL:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
-        PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SET_WORDWIN_ARROWS);
-        *seq = 3;
+        PMSIView_SetCommand(wk->vwk, PMSIV_CMD_REDRAW_WORDWIN);
+        *seq = PMSI_WORDWIN_STEP_WAIT_REDRAW;
         break;
     case WORDWIN_RESULT_SCROLL_CURSOR:
         GFL_SndSEPlay(SEQ_SE_SELECT1);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_SCROLL_WORDWIN);
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_MOVE_WORDWIN_CURSOR);
-        *seq = 2;
+        *seq = PMSI_WORDWIN_STEP_WAIT_SCROLL_CURSOR;
         break;
     }
 }
@@ -1983,7 +2066,7 @@ static BOOL PMSInput_SetSelectWord(PMSInputWork *wk) {
     if (pos == PMS_WORD_NULL) {
         pos = PMSInput_WordWinGetPos(&wk->wordWin);
     }
-    if (wk->categoryMode == 0) {
+    if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
         word = PMSIData_GetCategoryWordCode(wk->dwk, wk->categoryPos, pos);
     } else {
         word = PMSISearch_GetResultWord(wk->search, pos);
@@ -2002,13 +2085,18 @@ static BOOL PMSInput_SetSelectWord(PMSInputWork *wk) {
     return PMSInput_CheckInputComplete(wk);
 }
 
+enum {
+    PMSI_QUIT_STEP_START = 0,
+    PMSI_QUIT_STEP_WAIT = 1,
+};
+
 static BOOL PMSInput_MainProcQuit(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_QUIT_STEP_START:
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_QUIT);
         (*seq)++;
         break;
-    case 1:
+    case PMSI_QUIT_STEP_WAIT:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             return TRUE;
         }
@@ -2026,13 +2114,18 @@ static void PMSInput_QuitSubProc(PMSInputWork *wk) {
     wk->subProc = NULL;
 }
 
+enum {
+    PMSI_FADEIN_STEP_START = 0,
+    PMSI_FADEIN_STEP_WAIT = 1,
+};
+
 static void PMSInput_SubProcFadeIn(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_FADEIN_STEP_START:
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_FADEIN);
         (*seq)++;
         break;
-    case 1:
+    case PMSI_FADEIN_STEP_WAIT:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_QuitSubProc(wk);
         }
@@ -2040,9 +2133,16 @@ static void PMSInput_SubProcFadeIn(PMSInputWork *wk, u32 *seq) {
     }
 }
 
+enum {
+    PMSI_OK_STEP_START = 0,
+    PMSI_OK_STEP_WAIT_FLASH = 1,
+    PMSI_OK_STEP_WAIT_KEY = 2,
+    PMSI_OK_STEP_WAIT_COMMANDS = 3,
+};
+
 static void PMSInput_SubProcCommandOK(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_OK_STEP_START:
         if (!PMSIView_WaitCommandAll(wk->vwk)) {
             break;
         }
@@ -2050,33 +2150,33 @@ static void PMSInput_SubProcCommandOK(PMSInputWork *wk, u32 *seq) {
             PMSInput_InitMenuState(&wk->menu, 1, 0);
             wk->buttonPos = BUTTON_POS_DECIDE;
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_PUSH_BUTTON);
-            *seq = 1;
+            *seq = PMSI_OK_STEP_WAIT_FLASH;
         } else {
-            *seq = 3;
+            *seq = PMSI_OK_STEP_WAIT_COMMANDS;
         }
         break;
-    case 1:
-        switch (PMSIView_GetMenuButton(wk->vwk)) {
+    case PMSI_OK_STEP_WAIT_FLASH:
+        switch (PMSIView_GetButtonFlashResult(wk->vwk)) {
         case 0:
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA_CURSOR);
-            *seq = 3;
+            *seq = PMSI_OK_STEP_WAIT_COMMANDS;
             break;
-        case 1:
+        case PMSIV_BUTTON_FLASH_DONE:
             if (wk->inputMode == PMSI_MODE_SENTENCE) {
                 PMSData_ClearUnusedWords(&wk->sentence, HEAPID_PMS_INPUT);
             }
             PMSIParam_SetResult(wk->param, wk->words, &wk->sentence);
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcQuit);
-            *seq = 3;
+            *seq = PMSI_OK_STEP_WAIT_COMMANDS;
             break;
         }
         break;
-    case 2:
+    case PMSI_OK_STEP_WAIT_KEY:
         if (wk->keyTrg & (PAD_BUTTON_A | PAD_BUTTON_B | PAD_PLUS_KEY_MASK)) {
-            *seq = 3;
+            *seq = PMSI_OK_STEP_WAIT_COMMANDS;
         }
         break;
-    case 3:
+    case PMSI_OK_STEP_WAIT_COMMANDS:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_QuitSubProc(wk);
         }
@@ -2084,27 +2184,33 @@ static void PMSInput_SubProcCommandOK(PMSInputWork *wk, u32 *seq) {
     }
 }
 
+enum {
+    PMSI_CANCEL_STEP_START = 0,
+    PMSI_CANCEL_STEP_WAIT_FLASH = 1,
+    PMSI_CANCEL_STEP_WAIT_COMMANDS = 2,
+};
+
 static void PMSInput_SubProcCommandCancel(PMSInputWork *wk, u32 *seq) {
     switch (*seq) {
-    case 0:
+    case PMSI_CANCEL_STEP_START:
         PMSInput_InitMenuState(&wk->menu, 1, 1);
         wk->buttonPos = BUTTON_POS_CANCEL;
         PMSIView_SetCommand(wk->vwk, PMSIV_CMD_PUSH_BUTTON);
-        *seq = 1;
+        *seq = PMSI_CANCEL_STEP_WAIT_FLASH;
         break;
-    case 1:
-        switch (PMSIView_GetMenuButton(wk->vwk)) {
+    case PMSI_CANCEL_STEP_WAIT_FLASH:
+        switch (PMSIView_GetButtonFlashResult(wk->vwk)) {
         case 0:
             PMSIView_SetCommand(wk->vwk, PMSIV_CMD_UPDATE_EDITAREA_CURSOR);
-            *seq = 2;
+            *seq = PMSI_CANCEL_STEP_WAIT_COMMANDS;
             break;
-        case 1:
+        case PMSIV_BUTTON_FLASH_DONE:
             PMSInput_ChangeMainProc(wk, PMSInput_MainProcQuit);
-            *seq = 2;
+            *seq = PMSI_CANCEL_STEP_WAIT_COMMANDS;
             break;
         }
         break;
-    case 2:
+    case PMSI_CANCEL_STEP_WAIT_COMMANDS:
         if (PMSIView_WaitCommandAll(wk->vwk)) {
             PMSInput_QuitSubProc(wk);
         }
@@ -2179,14 +2285,14 @@ u32 PMSInput_GetCategoryPosSaved(const PMSInputWork *wk) {
 }
 
 u32 PMSInput_GetCategoryWordMax(const PMSInputWork *wk) {
-    if (wk->categoryMode == 0) {
+    if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
         return PMSIData_GetCategoryWordCount(wk->dwk, wk->categoryPos) + 2;
     }
     return PMSISearch_GetResultCount(wk->search) + 2;
 }
 
 void PMSInput_GetCategoryWord(const PMSInputWork *wk, u32 index, StrBuf *buf) {
-    if (wk->categoryMode == 0) {
+    if (wk->categoryMode == PMSI_CATEGORY_MODE_GROUP) {
         PMSIData_GetCategoryWord(wk->dwk, wk->categoryPos, index, buf);
     } else {
         PMSISearch_GetResultStr(wk->search, index, buf);
@@ -2204,11 +2310,11 @@ int PMSInput_GetWordWinScrollVector(const PMSInputWork *wk) {
     return PMSInput_WordWinGetScrollVector(&wk->wordWin);
 }
 
-BOOL PMSInput_GetWordWinUpArrowVisible(const PMSInputWork *wk) {
+BOOL PMSInput_GetWordWinTopLine(const PMSInputWork *wk) {
     return PMSInput_WordWinGetTop(&wk->wordWin);
 }
 
-BOOL PMSInput_GetWordWinDownArrowVisible(const PMSInputWork *wk) {
+BOOL PMSInput_GetWordWinScrollMax(const PMSInputWork *wk) {
     return PMSInput_WordWinGetScrollMax(&wk->wordWin);
 }
 

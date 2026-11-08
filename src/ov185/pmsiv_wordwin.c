@@ -217,7 +217,7 @@ BOOL PMSIVWordWin_WaitFadeOut(PMSIVWordWin *wk) {
 
 void PMSIVWordWin_VisibleCursor(PMSIVWordWin *wk, BOOL visible) {
     if (visible) {
-        if (*wk->keyMode == 0) {
+        if (*wk->keyMode == KEY_MODE_KEY) {
             ClActor_SetVisible(wk->cursor, TRUE);
         } else {
             ClActor_SetVisible(wk->cursor, FALSE);
@@ -399,7 +399,8 @@ static void PMSIVWordWin_PrintWord(PMSIVWordWin *wk, unsigned int index, u32 y) 
     if (index < 2 || index >= PMSInput_GetCategoryWordMax(wk->mwk)) {
         return;
     }
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0 && PMSInput_GetCategoryCursorPos(wk->mwk) == GROUP_NUMBERS) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP &&
+        PMSInput_GetCategoryCursorPos(wk->mwk) == GROUP_NUMBERS) {
         ClActorPos pos;
 
         pos.x = ((index - 2) & 1) * 112 + 24;

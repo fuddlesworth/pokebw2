@@ -227,9 +227,9 @@ static void PMSIVCategory_SetupActor(PMSIVCategory *wk) {
 
 void PMSIVCategory_VisibleCursor(PMSIVCategory *wk, BOOL visible) {
     if (visible) {
-        if (*wk->keyMode == 0) {
+        if (*wk->keyMode == KEY_MODE_KEY) {
             ClActor_SetVisible(wk->cursor, TRUE);
-            if (PMSInput_GetCategoryMode(wk->mwk) == 0) {
+            if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
                 ClActor_SetSequence(wk->cursor, CURSOR_ANIM_GROUP);
             } else {
                 ClActor_SetSequence(wk->cursor, CURSOR_ANIM_INITIAL);
@@ -246,7 +246,7 @@ void PMSIVCategory_MoveCursor(PMSIVCategory *wk, u32 pos) {
     ClActorPos actPos = PMSIV_CURSOR_HIDE_POS;
     u32 anim;
 
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0 && pos != PMSIV_CATEGORY_POS_BACK) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP && pos != PMSIV_CATEGORY_POS_BACK) {
         actPos.x = (pos % 3) * 80 + 48;
         actPos.y = (pos / 3) * 24 + 64;
         anim = CURSOR_ANIM_GROUP;
@@ -255,20 +255,20 @@ void PMSIVCategory_MoveCursor(PMSIVCategory *wk, u32 pos) {
 
         anim = CURSOR_ANIM_BUTTON;
         if (pos == PMSIV_CATEGORY_POS_BUTTON_0) {
-            if (*wk->keyMode == 0) {
-                PMSIVMenu_SetCursor(menu, 0, TRUE);
+            if (*wk->keyMode == KEY_MODE_KEY) {
+                PMSIVMenu_SetCursor(menu, PMSIV_SEARCH_SLOT_SUBMIT, TRUE);
             } else {
                 PMSIVMenu_SetCursor(menu, 0, FALSE);
             }
         } else if (pos == PMSIV_CATEGORY_POS_BUTTON_1) {
-            if (*wk->keyMode == 0) {
-                PMSIVMenu_SetCursor(menu, 1, TRUE);
+            if (*wk->keyMode == KEY_MODE_KEY) {
+                PMSIVMenu_SetCursor(menu, PMSIV_SEARCH_SLOT_ERASE, TRUE);
             } else {
                 PMSIVMenu_SetCursor(menu, 0, FALSE);
             }
         } else if (pos == PMSIV_CATEGORY_POS_BACK) {
-            if (*wk->keyMode == 0) {
-                PMSIVMenu_SetCursor(menu, 2, TRUE);
+            if (*wk->keyMode == KEY_MODE_KEY) {
+                PMSIVMenu_SetCursor(menu, PMSIV_SEARCH_SLOT_BACK, TRUE);
             } else {
                 PMSIVMenu_SetCursor(menu, 0, FALSE);
             }
@@ -359,7 +359,7 @@ BOOL PMSIVCategory_WaitFadeIn(PMSIVCategory *wk) {
 void PMSIVCategory_ChangeModeBG(PMSIVCategory *wk) {
     int x;
 
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
         x = -4;
     } else {
         x = 0;
@@ -370,7 +370,7 @@ void PMSIVCategory_ChangeModeBG(PMSIVCategory *wk) {
 void PMSIVCategory_ChangeModeScreen(PMSIVCategory *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_PMSI, HEAPID_PMS_INPUT);
 
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
         int i;
 
         GFL_G2DIOLoadNSCRAsync(arc, 27, 1, 0, 0, 0, FALSE, HEAPID_PMS_INPUT);
@@ -486,7 +486,7 @@ void PMSIVCategory_StartCursorDecide(PMSIVCategory *wk, u32 pos) {
 
     wk->cursorVisible = ClActor_IsVisible(wk->cursor);
     ClActor_SetVisible(wk->cursor, TRUE);
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0 && pos != PMSIV_CATEGORY_POS_BACK) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP && pos != PMSIV_CATEGORY_POS_BACK) {
         actPos.x = (pos % 3) * 80 + 48;
         actPos.y = (pos / 3) * 24 + 64;
         anim = CURSOR_ANIM_GROUP_DECIDE;
@@ -514,8 +514,9 @@ BOOL PMSIVCategory_WaitCursorDecide(PMSIVCategory *wk) {
     }
     if (!ClActor_IsAnimActive(wk->cursor)) {
         ClActor_SetVisible(wk->cursor, wk->cursorVisible);
-        ClActor_SetSequence(wk->cursor,
-                            PMSInput_GetCategoryMode(wk->mwk) == 0 ? CURSOR_ANIM_GROUP : CURSOR_ANIM_INITIAL);
+        ClActor_SetSequence(wk->cursor, PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP
+                                            ? CURSOR_ANIM_GROUP
+                                            : CURSOR_ANIM_INITIAL);
         wk->cursorVisible = FALSE;
         return TRUE;
     }

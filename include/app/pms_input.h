@@ -35,8 +35,9 @@ u32 PMSInput_GetCategoryWordMax(const PMSInputWork *wk);
 void PMSInput_GetCategoryWord(const PMSInputWork *wk, u32 index, StrBuf *buf);
 u32 PMSInput_GetWordWinCursorPos(const PMSInputWork *wk);
 int PMSInput_GetWordWinScrollVector(const PMSInputWork *wk);
-BOOL PMSInput_GetWordWinUpArrowVisible(const PMSInputWork *wk);
-BOOL PMSInput_GetWordWinDownArrowVisible(const PMSInputWork *wk);
+// Numeric line positions; the original BOOL return types are preserved.
+BOOL PMSInput_GetWordWinTopLine(const PMSInputWork *wk);
+BOOL PMSInput_GetWordWinScrollMax(const PMSInputWork *wk);
 BOOL PMSInput_HasStartSentence(const PMSInputWork *wk);
 TCBManager *PMSInput_GetTCBManager(const PMSInputWork *wk);
 // The word window's first line and its last first line
@@ -51,5 +52,17 @@ u32 PMSInput_GetSearchInputLen(const PMSInputWork *wk);
 void PMSInput_GetSearchResultStr(const PMSInputWork *wk, u32 index, StrBuf *buf);
 // Puts the categories' cursor on the first category
 void PMSInput_ResetCategoryPos(PMSInputWork *wk);
+
+// Where the input is driven from
+enum {
+    KEY_MODE_KEY,
+    KEY_MODE_TOUCH,
+};
+
+// The category list layout, shared by the input and its views.
+enum {
+    PMSI_CATEGORY_MODE_GROUP = 0,
+    PMSI_CATEGORY_MODE_INITIAL = 1,
+};
 
 #endif // POKEBW2_APP_PMS_INPUT_H

@@ -25,9 +25,9 @@
 // The message file of the phrase input's texts
 #define PMSIV_MENU_MSG_FILE TEXT_BANK_PMS_INPUT
 
-// The sentence type buttons, and the button that goes back from the categories
+// The sentence type buttons and the category-mode button
 #define PMSIV_MENU_TYPE_BUTTON_COUNT 8
-#define PMSIV_MENU_TYPE_BUTTON_BACK 7
+#define PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE 7
 // The sentence types that have a button
 #define PMSIV_MENU_SENTENCE_TYPE_COUNT 5
 
@@ -79,15 +79,15 @@ typedef struct {
 } PMSIVMenuArrow;
 
 static void PMSIVMenu_Clear(PMSIVMenu *wk);
-static void PMSIVMenu_StartModeButton(PMSIVMenu *wk);
-static BOOL PMSIVMenu_WaitModeButton(PMSIVMenu *wk);
-static void PMSIVMenu_StartBackButton(PMSIVMenu *wk);
-static BOOL PMSIVMenu_WaitBackButton(PMSIVMenu *wk);
-static void PMSIVMenu_EndBackButton(PMSIVMenu *wk);
-static void PMSIVMenu_StartSearchButton(PMSIVMenu *wk);
-static BOOL PMSIVMenu_WaitSearchButton(PMSIVMenu *wk);
-static void PMSIVMenu_StartEraseButton(PMSIVMenu *wk);
-static BOOL PMSIVMenu_WaitEraseButton(PMSIVMenu *wk);
+static void PMSIVMenu_StartSearchBackButton(PMSIVMenu *wk);
+static BOOL PMSIVMenu_WaitSearchBackButton(PMSIVMenu *wk);
+static void PMSIVMenu_StartCategoryModeButton(PMSIVMenu *wk);
+static BOOL PMSIVMenu_WaitCategoryModeButton(PMSIVMenu *wk);
+static void PMSIVMenu_EndCategoryModeButton(PMSIVMenu *wk);
+static void PMSIVMenu_StartSearchEraseButton(PMSIVMenu *wk);
+static BOOL PMSIVMenu_WaitSearchEraseButton(PMSIVMenu *wk);
+static void PMSIVMenu_StartSearchSubmitButton(PMSIVMenu *wk);
+static BOOL PMSIVMenu_WaitSearchSubmitButton(PMSIVMenu *wk);
 static void PMSIVMenu_SetupTypeButtons(PMSIVMenu *wk);
 static void PMSIVMenu_FreeTypeButtons(PMSIVMenu *wk);
 static void PMSIVMenu_SetTypeButtonAnim(PMSIVMenu *wk, u32 button, BOOL on);
@@ -236,8 +236,8 @@ void PMSIVMenu_SetupEditButtons(PMSIVMenu *wk) {
 
 void PMSIVMenu_SetupCategoryButtons(PMSIVMenu *wk) {
     PMSIVMenu_Clear(wk);
-    ClActor_SetVisible(wk->typeButtons[PMSIV_MENU_TYPE_BUTTON_BACK], TRUE);
-    if (PMSInput_GetCategoryMode(wk->mwk) == 0) {
+    ClActor_SetVisible(wk->typeButtons[PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE], TRUE);
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
         PMSIVMenu_ShowReturnButton(wk);
     } else {
         PMSIVMenu_SetupSearchButtons(wk);
@@ -294,30 +294,30 @@ void PMSIVMenu_UpdateEditButtons(PMSIVMenu *wk) {
 
 void PMSIVMenu_UpdateSearchButtons(PMSIVMenu *wk) {
     if (PMSInput_GetSearchResultCount(wk->mwk)) {
-        AppTaskMenuWin_SetPalette(wk->buttons[0], wk->taskMenuRes[0], PMSIV_MENU_BUTTON_PALETTE,
-                                  PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
+        AppTaskMenuWin_SetPalette(wk->buttons[PMSIV_SEARCH_SLOT_SUBMIT], wk->taskMenuRes[PMSIV_SEARCH_SLOT_SUBMIT],
+                                  PMSIV_MENU_BUTTON_PALETTE, PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
     } else {
-        AppTaskMenuWin_SetPalette(wk->buttons[0], wk->taskMenuRes[0], PMSIV_MENU_BUTTON_PALETTE_OFF,
-                                  PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
+        AppTaskMenuWin_SetPalette(wk->buttons[PMSIV_SEARCH_SLOT_SUBMIT], wk->taskMenuRes[PMSIV_SEARCH_SLOT_SUBMIT],
+                                  PMSIV_MENU_BUTTON_PALETTE_OFF, PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
     }
     if (PMSInput_GetSearchInputLen(wk->mwk)) {
-        AppTaskMenuWin_SetPalette(wk->buttons[1], wk->taskMenuRes[1], PMSIV_MENU_BUTTON_PALETTE,
-                                  PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
+        AppTaskMenuWin_SetPalette(wk->buttons[PMSIV_SEARCH_SLOT_ERASE], wk->taskMenuRes[PMSIV_SEARCH_SLOT_ERASE],
+                                  PMSIV_MENU_BUTTON_PALETTE, PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
     } else {
-        AppTaskMenuWin_SetPalette(wk->buttons[1], wk->taskMenuRes[1], PMSIV_MENU_BUTTON_PALETTE_OFF,
-                                  PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
+        AppTaskMenuWin_SetPalette(wk->buttons[PMSIV_SEARCH_SLOT_ERASE], wk->taskMenuRes[PMSIV_SEARCH_SLOT_ERASE],
+                                  PMSIV_MENU_BUTTON_PALETTE_OFF, PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);
     }
 }
 
-static void PMSIVMenu_StartModeButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        PMSIVMenu_FlashButton(wk, 2, TRUE);
+static void PMSIVMenu_StartSearchBackButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        PMSIVMenu_FlashButton(wk, PMSIV_SEARCH_SLOT_BACK, TRUE);
     }
 }
 
-static BOOL PMSIVMenu_WaitModeButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        if (PMSIVMenu_IsFlashFinished(wk, 2)) {
+static BOOL PMSIVMenu_WaitSearchBackButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        if (PMSIVMenu_IsFlashFinished(wk, PMSIV_SEARCH_SLOT_BACK)) {
             return TRUE;
         }
         return FALSE;
@@ -325,31 +325,31 @@ static BOOL PMSIVMenu_WaitModeButton(PMSIVMenu *wk) {
     return TRUE;
 }
 
-static void PMSIVMenu_StartBackButton(PMSIVMenu *wk) {
-    PMSIVMenu_SetTypeButtonAnim(wk, PMSIV_MENU_TYPE_BUTTON_BACK, TRUE);
+static void PMSIVMenu_StartCategoryModeButton(PMSIVMenu *wk) {
+    PMSIVMenu_SetTypeButtonAnim(wk, PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE, TRUE);
 }
 
-static BOOL PMSIVMenu_WaitBackButton(PMSIVMenu *wk) {
-    if (!ClActor_IsAnimActive(wk->typeButtons[PMSIV_MENU_TYPE_BUTTON_BACK])) {
+static BOOL PMSIVMenu_WaitCategoryModeButton(PMSIVMenu *wk) {
+    if (!ClActor_IsAnimActive(wk->typeButtons[PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE])) {
         return TRUE;
     }
     return FALSE;
 }
 
-static void PMSIVMenu_EndBackButton(PMSIVMenu *wk) {
-    PMSIVMenu_SetTypeButtonAnim(wk, PMSIV_MENU_TYPE_BUTTON_BACK, FALSE);
+static void PMSIVMenu_EndCategoryModeButton(PMSIVMenu *wk) {
+    PMSIVMenu_SetTypeButtonAnim(wk, PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE, FALSE);
 }
 
-static void PMSIVMenu_StartSearchButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        PMSIVMenu_FlashButton(wk, 1, TRUE);
+static void PMSIVMenu_StartSearchEraseButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        PMSIVMenu_FlashButton(wk, PMSIV_SEARCH_SLOT_ERASE, TRUE);
     }
 }
 
-static BOOL PMSIVMenu_WaitSearchButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        if (PMSIVMenu_IsFlashFinished(wk, 1)) {
-            AppTaskMenuWin_ResetFlash(wk->buttons[1]);
+static BOOL PMSIVMenu_WaitSearchEraseButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        if (PMSIVMenu_IsFlashFinished(wk, PMSIV_SEARCH_SLOT_ERASE)) {
+            AppTaskMenuWin_ResetFlash(wk->buttons[PMSIV_SEARCH_SLOT_ERASE]);
             return TRUE;
         }
     } else {
@@ -358,42 +358,42 @@ static BOOL PMSIVMenu_WaitSearchButton(PMSIVMenu *wk) {
     return FALSE;
 }
 
-static void PMSIVMenu_StartEraseButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        PMSIVMenu_FlashButton(wk, 0, TRUE);
+static void PMSIVMenu_StartSearchSubmitButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        PMSIVMenu_FlashButton(wk, PMSIV_SEARCH_SLOT_SUBMIT, TRUE);
     }
 }
 
-static BOOL PMSIVMenu_WaitEraseButton(PMSIVMenu *wk) {
-    if (PMSInput_GetCategoryMode(wk->mwk) == 1) {
-        return PMSIVMenu_IsFlashFinished(wk, 0) ? TRUE : FALSE;
+static BOOL PMSIVMenu_WaitSearchSubmitButton(PMSIVMenu *wk) {
+    if (PMSInput_GetCategoryMode(wk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+        return PMSIVMenu_IsFlashFinished(wk, PMSIV_SEARCH_SLOT_SUBMIT) ? TRUE : FALSE;
     }
     return TRUE;
 }
 
 void PMSIVMenu_StartButton(PMSIVMenu *wk, u32 button) {
     switch (button) {
-    case PMSIV_MENU_BUTTON_MODE:
-        PMSIVMenu_StartModeButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_BACK:
+        PMSIVMenu_StartSearchBackButton(wk);
         break;
-    case PMSIV_MENU_BUTTON_BACK:
-        PMSIVMenu_StartBackButton(wk);
+    case PMSIV_MENU_ACTION_CATEGORY_MODE:
+        PMSIVMenu_StartCategoryModeButton(wk);
         break;
-    case PMSIV_MENU_BUTTON_SEARCH:
-        PMSIVMenu_StartSearchButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_ERASE:
+        PMSIVMenu_StartSearchEraseButton(wk);
         break;
-    case PMSIV_MENU_BUTTON_ERASE:
-        PMSIVMenu_StartEraseButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_SUBMIT:
+        PMSIVMenu_StartSearchSubmitButton(wk);
         break;
     }
 }
 
-void PMSIVMenu_SetEditButton(PMSIVMenu *wk, u32 which) {
+void PMSIVMenu_SetSentenceArrow(PMSIVMenu *wk, u32 which) {
     switch (which) {
-    case 0:
+    case PMSIV_SENTENCE_ARROW_PREVIOUS:
         PMSIVMenu_SetTypeButtonAnim(wk, 0, TRUE);
         break;
-    case 1:
+    case PMSIV_SENTENCE_ARROW_NEXT:
         PMSIVMenu_SetTypeButtonAnim(wk, 6, TRUE);
         break;
     }
@@ -401,21 +401,21 @@ void PMSIVMenu_SetEditButton(PMSIVMenu *wk, u32 which) {
 
 BOOL PMSIVMenu_WaitButton(PMSIVMenu *wk, u32 button) {
     switch (button) {
-    case PMSIV_MENU_BUTTON_MODE:
-        return PMSIVMenu_WaitModeButton(wk);
-    case PMSIV_MENU_BUTTON_BACK:
-        return PMSIVMenu_WaitBackButton(wk);
-    case PMSIV_MENU_BUTTON_SEARCH:
-        return PMSIVMenu_WaitSearchButton(wk);
-    case PMSIV_MENU_BUTTON_ERASE:
-        return PMSIVMenu_WaitEraseButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_BACK:
+        return PMSIVMenu_WaitSearchBackButton(wk);
+    case PMSIV_MENU_ACTION_CATEGORY_MODE:
+        return PMSIVMenu_WaitCategoryModeButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_ERASE:
+        return PMSIVMenu_WaitSearchEraseButton(wk);
+    case PMSIV_MENU_ACTION_SEARCH_SUBMIT:
+        return PMSIVMenu_WaitSearchSubmitButton(wk);
     }
     return TRUE;
 }
 
 void PMSIVMenu_EndButton(PMSIVMenu *wk, u32 button) {
-    if (button == PMSIV_MENU_BUTTON_BACK) {
-        PMSIVMenu_EndBackButton(wk);
+    if (button == PMSIV_MENU_ACTION_CATEGORY_MODE) {
+        PMSIVMenu_EndCategoryModeButton(wk);
     }
 }
 
@@ -476,7 +476,7 @@ static void PMSIVMenu_SetupTypeButtons(PMSIVMenu *wk) {
     for (i = 0; i < PMSIV_MENU_TYPE_BUTTON_COUNT; i++) {
         s16 x = i * 24;
 
-        if (i == PMSIV_MENU_TYPE_BUTTON_BACK) {
+        if (i == PMSIV_MENU_TYPE_BUTTON_CATEGORY_MODE) {
             x = 0;
         }
         wk->typeButtons[i] = PMSIView_AddActor(wk->vwk, &wk->typeButtonRes, x, 168, 0, NNS_G2D_VRAM_TYPE_2DMAIN);
@@ -558,7 +558,7 @@ static void PMSIVMenu_SetupSearchButtons(PMSIVMenu *wk) {
 
         wk->items[i].str = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 18);
         wk->items[i].color = PMSIV_MENU_TEXT_COLOR;
-        wk->items[i].type = i == 2 ? APP_TASKMENU_ITEM_RETURN : 0;
+        wk->items[i].type = i == PMSIV_SEARCH_SLOT_BACK ? APP_TASKMENU_ITEM_RETURN : 0;
         wk->buttons[i] = AppTaskMenuWin_Create(wk->taskMenuRes[i], item, i * 9 + 5, 21, 9, HEAPID_PMS_INPUT);
         AppTaskMenuWin_SetPalette(wk->buttons[i], wk->taskMenuRes[i], PMSIV_MENU_BUTTON_PALETTE,
                                   PMSIV_MENU_BUTTON_COLOR_1, PMSIV_MENU_BUTTON_COLOR_2);

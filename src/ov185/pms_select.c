@@ -250,7 +250,7 @@ static BOOL PMSSelect_Main(GameProc *proc, u32 *state, void *param, void *work) 
     PMSSelectWork *wk = work;
     BOOL running = GFL_ProcMgrUpdate(wk->procMgr);
 
-    if (running == TRUE) {
+    if (running == PROCMGR_RUNNING) {
         return FALSE;
     }
 
@@ -333,7 +333,7 @@ static BOOL PMSSelect_Main(GameProc *proc, u32 *state, void *param, void *work) 
         }
         return FALSE;
     case SEQ_INPUT_RETURN:
-        if (running != TRUE && PMSSelect_SeqInputReturn(&wk->subSeq, wk)) {
+        if (running != PROCMGR_RUNNING && PMSSelect_SeqInputReturn(&wk->subSeq, wk)) {
             GFL_OvlLoad(OVERLAY_APP_UI);
             PMSSelect_SetupScreen(wk);
             PMSSelect_SetSeq(state, wk, SEQ_TOUCHBAR_ON);
@@ -566,6 +566,12 @@ static void PMSSelect_UpdateTouchBar(TouchBar *touchBar) {
     TouchBar_Main(touchBar);
 }
 
+enum {
+    PMSSELECT_MENU_SELECT = 0,
+    PMSSELECT_MENU_EDIT = 1,
+    PMSSELECT_MENU_BACK = 2,
+};
+
 static AppTaskMenu *PMSSelect_CreateMenu(AppTaskMenuRes *res, MsgData *msgData, HeapID heapId) {
     AppTaskMenuInit init;
     AppTaskMenuItem items[3];
@@ -577,7 +583,7 @@ static AppTaskMenu *PMSSelect_CreateMenu(AppTaskMenuRes *res, MsgData *msgData, 
         items[i].color = PRINT_COLOR(14, 15, 3);
         items[i].type = 0;
     }
-    items[2].type = APP_TASKMENU_ITEM_RETURN;
+    items[PMSSELECT_MENU_BACK].type = APP_TASKMENU_ITEM_RETURN;
     init.heapId = heapId;
     init.itemCount = 3;
     init.items = items;
@@ -1021,15 +1027,15 @@ static BOOL PMSSelect_SeqMenu(u32 *seq, PMSSelectWork *wk) {
     PMSSelect_UpdateMenu(wk->menu);
     if (AppTaskMenu_IsFlashFinished(wk->menu)) {
         switch (AppTaskMenu_GetCursorPos(wk->menu)) {
-        case 0:
+        case PMSSELECT_MENU_SELECT:
             wk->nextSeq = SEQ_FADE_OUT;
             wk->param->result = PMSWordSave_GetSentence(wk->wordSave, wk->pos);
             wk->param->cancel = FALSE;
             break;
-        case 1:
+        case PMSSELECT_MENU_EDIT:
             wk->nextSeq = SEQ_INPUT_FADE_OUT;
             break;
-        case 2:
+        case PMSSELECT_MENU_BACK:
             wk->nextSeq = SEQ_SELECT;
             break;
         }
@@ -1055,15 +1061,20 @@ static BOOL PMSSelect_SeqMenuClose(u32 *seq, PMSSelectWork *wk) {
     return TRUE;
 }
 
+enum {
+    PMSSELECT_CALL_STEP_WAIT_FRAME = 0,
+    PMSSELECT_CALL_STEP_START_INPUT = 1,
+};
+
 static BOOL PMSSelect_SeqCallInput(u32 *seq, PMSSelectWork *wk) {
     PMSIParam *param;
 
     switch (*seq) {
-    case 0:
+    case PMSSELECT_CALL_STEP_WAIT_FRAME:
         (*seq)++;
         break;
-    case 1:
-        param = PMSIParam_Create(2, 0, NULL, TRUE, wk->save, wk->heapId);
+    case PMSSELECT_CALL_STEP_START_INPUT:
+        param = PMSIParam_Create(PMSI_MODE_SENTENCE, 0, NULL, TRUE, wk->save, wk->heapId);
         PMSIParam_SetSentence(param, PMSWordSave_GetSentence(wk->wordSave, wk->pos));
         QueueGameProc(wk->procMgr, OVERLAY_NONE, &PMS_INPUT_PROC_FUNCTIONS, param);
         wk->inputParam = param;
@@ -1072,11 +1083,16 @@ static BOOL PMSSelect_SeqCallInput(u32 *seq, PMSSelectWork *wk) {
     return FALSE;
 }
 
+enum {
+    PMSSELECT_RETURN_STEP_STORE_RESULT = 0,
+    PMSSELECT_RETURN_STEP_END = 1,
+};
+
 static BOOL PMSSelect_SeqInputReturn(u32 *seq, PMSSelectWork *wk) {
     PMSData sentence;
 
     switch (*seq) {
-    case 0:
+    case PMSSELECT_RETURN_STEP_STORE_RESULT:
         if (PMSIParam_IsChanged(wk->inputParam)) {
             PMSIParam_GetSentence(wk->inputParam, &sentence);
             PMSWordSave_SetSentence(wk->wordSave, wk->pos, &sentence);
@@ -1084,7 +1100,7 @@ static BOOL PMSSelect_SeqInputReturn(u32 *seq, PMSSelectWork *wk) {
         PMSIParam_Free(wk->inputParam);
         (*seq)++;
         break;
-    case 1:
+    case PMSSELECT_RETURN_STEP_END:
         return TRUE;
     }
     return FALSE;

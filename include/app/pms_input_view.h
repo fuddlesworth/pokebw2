@@ -44,8 +44,8 @@ enum {
     PMSIV_CMD_NOP_28,
     PMSIV_CMD_NOP_29,
     PMSIV_CMD_CHANGE_CATEGORY_MODE,
-    PMSIV_CMD_SET_WORDWIN_ARROWS,
-    PMSIV_CMD_SHOW_MENU,
+    PMSIV_CMD_REDRAW_WORDWIN,
+    PMSIV_CMD_FLASH_SEARCH_ERASE,
     PMSIV_CMD_MOVE_CATEGORY,
     PMSIV_CMD_MOVE_WORDWIN,
     PMSIV_CMD_COUNT,
@@ -67,8 +67,9 @@ BOOL PMSIView_WaitCommand(PMSInputView *vwk, int cmd);
 u32 PMSIView_GetSentenceEditPosMax(PMSInputView *vwk);
 u16 PMSIView_GetSentenceWord(PMSInputView *vwk, u32 index);
 void PMSIView_GetSentenceWordArea(PMSInputView *vwk, TouchRect *rect, u8 index);
-int PMSIView_GetMenuButton(PMSInputView *vwk);
-void PMSIView_SetMenuButton(PMSInputView *vwk, u32 which);
+// Returns 1 when the edit button flash ends, otherwise -1.
+int PMSIView_GetButtonFlashResult(PMSInputView *vwk);
+void PMSIView_SetSentenceArrow(PMSInputView *vwk, u32 which);
 PMSIVMenu *PMSIView_GetMenu(PMSInputView *vwk);
 ClActUnit *PMSIView_GetActUnit(PMSInputView *vwk);
 Font *PMSIView_GetFont(PMSInputView *vwk);
@@ -85,5 +86,19 @@ void PMSIView_SetLowerScreen(PMSInputView *vwk, BOOL categories);
 void PMSIView_ChangeKTEditArea(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk);
 void PMSIView_ChangeKTCategory(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk);
 void PMSIView_ChangeKTWordWin(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk);
+
+// The flash-result provider returns only these two values; 0 is not produced.
+enum {
+    PMSIV_BUTTON_FLASH_PENDING = -1,
+    PMSIV_BUTTON_FLASH_DONE = 1,
+};
+
+// Pointer Y compared with the scroll bar Y; EQUAL is exact equality, not a thumb-extent hit.
+enum {
+    PMSIV_SCROLL_Y_EQUAL = 0,
+    PMSIV_SCROLL_Y_ABOVE = 1,
+    PMSIV_SCROLL_Y_BELOW = 2,
+    PMSIV_SCROLL_Y_UNAVAILABLE = 3,
+};
 
 #endif // POKEBW2_APP_PMS_INPUT_VIEW_H
