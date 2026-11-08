@@ -28,7 +28,7 @@ struct FestivalText {
 
 // A mission's entry in file 0 of the missions' archive
 typedef struct {
-    // The kind of the mission's target, an index into data_ov027_021711c0
+    // The mission kind, used to index gFestMissionTargetWordKinds
     u8 kind;
     // Where the mission is available: 0 in both versions, 1 in White 2 alone and 2 in Black 2 alone, and 4 to 7
     // once a download that isOneShotDRObtained checks (as this minus 2) is received
@@ -84,8 +84,8 @@ enum {
     FEST_TARGET_ITEM,
 };
 
-// What the kinds of target are: 1 for a species and 2 for an item
-extern const u8 data_ov027_021711c0[8];
+// The target-word kind for each FestMissionHeader.kind; only species and item kinds are handled
+extern const u8 gFestMissionTargetWordKinds[8];
 
 #define FEST_MISSION_COUNT 55
 

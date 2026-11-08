@@ -25,7 +25,7 @@
 
 static GameEventReturnCode SurveyTextEvent_Run(GameEvent *event, u32 *state, void *data);
 
-// The options a survey can pick, with the score each needs and its probability in percent
+// Legacy selection records, filtered by the combined Entralink levels and flag 4
 // clang-format off
 static const SurveyProbabilityEntry sProbabilities[0xe0] = {
     { 1, 48, 25, 4 }, { 1, 48, 25, 3 }, { 1, 38, 25, 4 }, { 1, 38, 25, 3 },
@@ -97,11 +97,11 @@ void probabilityLoop(SurveyProbabilityState *state) {
 }
 
 void insideProbabilityLoop(SurveyProbabilityState *state, u32 selection) {
-    s32 score = state->score + state->bonus;
+    s32 combinedLevel = state->whiteLevel + state->blackLevel;
     u32 i;
     for (i = 0; i < NELEMS(sProbabilities); i++) {
         const SurveyProbabilityEntry *entry = &sProbabilities[i];
-        if (selection == entry->selection && entry->requiredScore <= score && (entry->flags & 4)) {
+        if (selection == entry->selection && entry->requiredScore <= combinedLevel && (entry->flags & 4)) {
             u32 probability = entry->probability;
             if (probability == 100 || probability >= GFL_RandomLC(101)) {
                 state->selection[selection] = i;
@@ -416,28 +416,28 @@ void SurveyTextWork_FreeText(SurveyTextWork *work) {
 }
 
 void SurveyTextWork_CreateWindow(SurveyTextWork *work) {
-    u32 first;
-    u32 second;
-    u32 third;
-    u32 mode = SurveyTextWork_GetRank(work);
+    u32 position;
+    u32 width;
+    u32 height;
+    u32 rank = SurveyTextWork_GetRank(work);
 
-    switch (mode) {
+    switch (rank) {
     case 0:
-        first = 1;
-        second = 30;
-        third = 4;
+        position = 1;
+        width = 30;
+        height = 4;
         break;
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        first = 1;
-        second = 30;
-        third = 8;
+        position = 1;
+        width = 30;
+        height = 8;
         break;
     }
-    work->window = FieldMsgBG_CreateMoneyWin(work->msgBGSys, work->message, first, first, second, third);
+    work->window = FieldMsgBG_CreateMoneyWin(work->msgBGSys, work->message, position, position, width, height);
 }
 
 void SurveyTextWork_DeleteWindow(SurveyTextWork *work) {
@@ -457,23 +457,23 @@ void SurveyTextWork_FreeWordSet(SurveyTextWork *work) {
 void SurveyTextWork_PrintRankMessage(SurveyTextWork *work) {
     StrBuf *source;
     StrBuf *formatted;
-    u32 kind;
-    u32 num1;
-    u32 num2;
+    u32 rank;
+    u32 passerbyCount;
+    u32 thankedCount;
     u32 msgId;
     PlayerInfo *player;
     BmpWin *window;
 
     source = GFL_StrBufCreate(256, work->heapId);
     formatted = GFL_StrBufCreate(256, work->heapId);
-    kind = SurveyTextWork_GetRank(work);
-    num1 = SurveyTextWork_GetReportNumberA(work);
-    num2 = SurveyTextWork_GetReportNumberB(work);
-    msgId = GetTrainerCardTextMSGID(kind);
+    rank = SurveyTextWork_GetRank(work);
+    passerbyCount = SurveyTextWork_GetPasserbyCount(work);
+    thankedCount = SurveyTextWork_GetThankedCount(work);
+    msgId = Survey_GetRankMessageID(rank);
     player = GetGameDataPlayerInfo(work->gameData);
     copyVarForText(work->wordSet, 0, player);
-    WordSetNumber(work->wordSet, 1, num1, 5, 1, 1);
-    WordSetNumber(work->wordSet, 2, num2, 5, 1, 1);
+    WordSetNumber(work->wordSet, 1, passerbyCount, 5, 1, 1);
+    WordSetNumber(work->wordSet, 2, thankedCount, 5, 1, 1);
     GFL_MsgDataLoadStrbuf(work->message, msgId, source);
     GFL_WordSetFormatStrbuf(work->wordSet, formatted, source);
     GFL_WordSetClearAll(work->wordSet);
@@ -493,16 +493,16 @@ u32 SurveyTextWork_GetRank(SurveyTextWork *work) {
     return TrainerGameInfo_GetSurveyRank(getTrainerCardData_wrapper(GameData_GetSaveControl_(work->gameData)));
 }
 
-u32 SurveyTextWork_GetReportNumberA(SurveyTextWork *work) {
+u32 SurveyTextWork_GetPasserbyCount(SurveyTextWork *work) {
     return TrainerCard_GetPasserbyCount(getTrainerCardData_wrapper(GameData_GetSaveControl_(work->gameData)));
 }
 
-u32 SurveyTextWork_GetReportNumberB(SurveyTextWork *work) {
+u32 SurveyTextWork_GetThankedCount(SurveyTextWork *work) {
     return TrainerCard_GetThankedCount(getTrainerCardData_wrapper(GameData_GetSaveControl_(work->gameData)));
 }
 
-u32 GetTrainerCardTextMSGID(u32 type) {
-    switch (type) {
+u32 Survey_GetRankMessageID(u32 rank) {
+    switch (rank) {
     case 0:
         return 0x179;
     case 1:
