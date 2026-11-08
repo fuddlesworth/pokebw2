@@ -2,6 +2,7 @@
 #include "app/mb_parent.h"
 #include "app/unova_link.h"
 #include "dwc/dwc.h"
+#include "dwc/error.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
@@ -15,6 +16,90 @@
 #include "gfl/std.h"
 #include "save/player_info.h"
 #include "system/game_data.h"
+
+// Phases of KeySystemNet_SeqConnect.
+enum {
+    KEY_NET_CONNECT_STEP_INIT = 0,
+    KEY_NET_CONNECT_STEP_WAIT_NET_INIT = 1,
+    KEY_NET_CONNECT_STEP_WAIT_CONNECTION = 2,
+    KEY_NET_CONNECT_STEP_START_SYNC = 3,
+    KEY_NET_CONNECT_STEP_WAIT_SYNC = 4,
+    KEY_NET_CONNECT_STEP_CONNECTED = 5,
+    KEY_NET_CONNECT_STEP_WAIT_SHUTDOWN = 6,
+};
+
+// Phases of KeySystemNet_SeqDisconnect.
+enum {
+    KEY_NET_DISCONNECT_STEP_START = 0,
+    KEY_NET_DISCONNECT_STEP_WAIT_SYNC = 1,
+    KEY_NET_DISCONNECT_STEP_SHUTDOWN = 2,
+    KEY_NET_DISCONNECT_STEP_WAIT_SHUTDOWN = 3,
+    KEY_NET_DISCONNECT_STEP_IDLE = 4,
+};
+
+// Phases of KeySystemNet_SeqSend.
+enum {
+    KEY_NET_SEND_STEP_START_SYNC = 0,
+    KEY_NET_SEND_STEP_WAIT_START_SYNC = 1,
+    KEY_NET_SEND_STEP_SEND = 2,
+    KEY_NET_SEND_STEP_WAIT_RECEIVE = 3,
+    KEY_NET_SEND_STEP_START_END_SYNC = 4,
+    KEY_NET_SEND_STEP_WAIT_END_SYNC = 5,
+    KEY_NET_SEND_STEP_CONNECTED = 6,
+};
+
+// Phases of KeySystemNet_SeqCancel.
+enum {
+    KEY_NET_CANCEL_STEP_EXIT_IF_INITIALIZED = 0,
+    KEY_NET_CANCEL_STEP_WAIT_SHUTDOWN = 1,
+    KEY_NET_CANCEL_STEP_IDLE = 2,
+};
+
+// Phases of KeySystemNet_SeqSync.
+enum {
+    KEY_NET_SYNC_STEP_SEND = 0,
+    KEY_NET_SYNC_STEP_WAIT_SYNC = 1,
+    KEY_NET_SYNC_STEP_INCREMENT_COUNT = 2,
+    KEY_NET_SYNC_STEP_CONNECTED = 3,
+};
+
+// Phases of KeySystemNet_SeqOv181Start.
+enum {
+    KEY_NET_DISTRIBUTE_STEP_SET_GAME_INFO = 0,
+    KEY_NET_DISTRIBUTE_STEP_DISTRIBUTE = 1,
+    KEY_NET_DISTRIBUTE_STEP_WAIT_DISTRIBUTION = 2,
+    KEY_NET_DISTRIBUTE_STEP_WAIT_CANCEL = 3,
+    KEY_NET_DISTRIBUTE_STEP_IDLE = 4,
+};
+
+// Phases of KeySystemNet_SeqOv181End.
+enum {
+    KEY_NET_RECEIVE_STEP_CONNECT = 0,
+    KEY_NET_RECEIVE_STEP_WAIT_CONNECTION = 1,
+    KEY_NET_RECEIVE_STEP_TAKE_DATA = 2,
+};
+
+// Phases of KeySystemNet_SeqWifiPost.
+enum {
+    KEY_NET_WIFI_SAVE_STEP_SEND = 0,
+    KEY_NET_WIFI_SAVE_STEP_START = 1,
+    KEY_NET_WIFI_SAVE_STEP_WAIT_RESPONSE = 2,
+    KEY_NET_WIFI_SAVE_STEP_CLEANUP = 3,
+};
+
+// Phases of KeySystemNet_SeqWifiGet.
+enum {
+    KEY_NET_WIFI_STATUS_STEP_SEND = 0,
+    KEY_NET_WIFI_STATUS_STEP_START = 1,
+    KEY_NET_WIFI_STATUS_STEP_WAIT_RESPONSE = 2,
+    KEY_NET_WIFI_STATUS_STEP_CLEANUP = 3,
+};
+
+// HTTP response status values, separate from wrapper result numbers.
+enum {
+    KEY_HTTP_STATUS_BAD_GATEWAY = 502,
+    KEY_HTTP_STATUS_SERVICE_UNAVAILABLE = 503,
+};
 
 // Unova Link's connections: the local wireless one of the Key System, the link of overlay 181 and Wi-Fi, each run as a
 // sequence of steps that the other files request
@@ -61,13 +146,13 @@ static void *KeySystemNet_GetBeacon(void *work);
 static int KeySystemNet_GetBeaconSize(void *work);
 static BOOL KeySystemNet_CheckBeacon(u32 gameId, u32 value);
 static void KeySystemNet_OnConnect(void *work);
-static void KeySystemNet_OnStart(void *work, BOOL a1);
-static void KeySystemNet_OnDisconnect(void *work);
+static void KeySystemNet_OnStart(void *work, BOOL repeatInfrared);
+static void KeySystemNet_OnInfraredEnded(void *work);
 static void KeySystemNet_Receive(int netId, int size, const void *data, void *work, NetHandle *handle);
 static BOOL KeySystemNet_CanRequest(KeySystemNet *net, unsigned int request);
 static void KeySystemNet_Stop(KeySystemNet *net);
 static void KeySystemNet_OnError(KeySystemNet *net);
-static void KeySystemNet_OnWifiError(void *work, int a1, int code, int error);
+static void KeySystemNet_OnWifiError(void *work, int code, int errorType, int error);
 
 static const NetCommand sKeySystemNetCommands[] = {
     { KeySystemNet_Receive, NULL },
@@ -168,7 +253,7 @@ void KeySystemNet_SetMode(KeySystemNet *net, u32 mode) {
             break;
         case KEY_SYSTEM_NET_MODE_OV181:
             GFL_OvlLoad(OVERLAY_ID(181));
-            net->ov181Work = MBDataConv_Create(1);
+            net->ov181Work = MBDataConv_Create(HEAPID_USER);
             break;
         case KEY_SYSTEM_NET_MODE_WIFI:
             GFL_OvlLoad(OVERLAY_ID(189));
@@ -298,16 +383,16 @@ u32 KeySystemNet_CheckError(KeySystemNet *net) {
         }
         if (GFL_NetErrCheck()) {
             switch (NetState_GetErrorInfo()->errorType) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
+            case DWC_ETYPE_LIGHT:
+            case DWC_ETYPE_SHOW_ERROR:
+            case DWC_ETYPE_SHUTDOWN_FM:
+            case DWC_ETYPE_SHUTDOWN_GHTTP:
+            case DWC_ETYPE_SHUTDOWN_ND:
+            case DWC_ETYPE_DISCONNECT:
                 KeySystemNet_OnError(net);
                 GFL_NetErrShowScreen();
                 return KEY_SYSTEM_NET_ERROR;
-            case 7:
+            case DWC_ETYPE_FATAL:
                 GFL_NetErrAbort();
                 return KEY_SYSTEM_NET_ERROR;
             }
@@ -361,25 +446,25 @@ static void KeySystemNet_SeqConnect(KeySystemSeq *seq, int *state, void *work) {
 
     KeySystemNet_GetRequest(net);
     switch (*state) {
-    case 0:
+    case KEY_NET_CONNECT_STEP_INIT:
         net->count = 0;
         net->cancel = FALSE;
         GFL_NetInit(&sNetInitData, NULL, net);
         net->timer = 0;
         (*state)++;
         break;
-    case 1:
+    case KEY_NET_CONNECT_STEP_WAIT_NET_INIT:
         if (net->cancel) {
             KeySystemSeq_Set(seq, KeySystemNet_SeqCancel);
             return;
         }
         if (GFL_NetIsInitialized()) {
             GFL_NetSetIconScreen(TRUE, HEAPID_KEY_SYSTEM);
-            GFL_NetIwChangeoverConnect(KeySystemNet_OnConnect, KeySystemNet_OnStart, KeySystemNet_OnDisconnect);
+            GFL_NetIwChangeoverConnect(KeySystemNet_OnConnect, KeySystemNet_OnStart, KeySystemNet_OnInfraredEnded);
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_NET_CONNECT_STEP_WAIT_CONNECTION:
         if (net->cancel) {
             KeySystemSeq_Set(seq, KeySystemNet_SeqCancel);
             return;
@@ -388,10 +473,10 @@ static void KeySystemNet_SeqConnect(KeySystemSeq *seq, int *state, void *work) {
             net->timer = 0;
             GFL_NetIwFree();
             GFL_NetExit(NULL);
-            *state = 6;
+            *state = KEY_NET_CONNECT_STEP_WAIT_SHUTDOWN;
         }
         break;
-    case 3:
+    case KEY_NET_CONNECT_STEP_START_SYNC:
         net->timer = 0;
         NetCommand_AddTable(NET_COMMAND_BASE, sKeySystemNetCommands, 1, net);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 10, NET_COMMAND_BASE >> 8);
@@ -399,21 +484,21 @@ static void KeySystemNet_SeqConnect(KeySystemSeq *seq, int *state, void *work) {
         GFL_NetSetDisconnectError(TRUE);
         (*state)++;
         break;
-    case 4:
+    case KEY_NET_CONNECT_STEP_WAIT_SYNC:
         if (net->timer++ >= NET_TIMEOUT) {
             net->timer = 0;
             NetCommand_RemoveTable(NET_COMMAND_BASE);
             GFL_NetIwFree();
             GFL_NetExit(NULL);
-            *state = 6;
+            *state = KEY_NET_CONNECT_STEP_WAIT_SHUTDOWN;
         } else if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 10, NET_COMMAND_BASE >> 8)) {
             (*state)++;
         }
         break;
-    case 5:
+    case KEY_NET_CONNECT_STEP_CONNECTED:
         KeySystemSeq_Set(seq, KeySystemNet_SeqConnected);
         break;
-    case 6:
+    case KEY_NET_CONNECT_STEP_WAIT_SHUTDOWN:
         if (GFL_NetIsEnded()) {
             KeySystemSeq_Set(seq, KeySystemNet_SeqIdle);
         }
@@ -423,33 +508,33 @@ static void KeySystemNet_SeqConnect(KeySystemSeq *seq, int *state, void *work) {
 
 static void KeySystemNet_SeqDisconnect(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case KEY_NET_DISCONNECT_STEP_START:
         if (GFL_NetGetNegotiatedCount() > 0) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 13, NET_COMMAND_BASE >> 8);
             (*state)++;
         } else {
-            *state = 2;
+            *state = KEY_NET_DISCONNECT_STEP_SHUTDOWN;
         }
         break;
-    case 1:
+    case KEY_NET_DISCONNECT_STEP_WAIT_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 13, NET_COMMAND_BASE >> 8)) {
             GflNet_SetAutoExit(FALSE);
             GFL_NetSetDisconnectError(FALSE);
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_NET_DISCONNECT_STEP_SHUTDOWN:
         NetCommand_RemoveTable(NET_COMMAND_BASE);
         GFL_NetIwFree();
         GFL_NetExit(NULL);
         (*state)++;
         break;
-    case 3:
+    case KEY_NET_DISCONNECT_STEP_WAIT_SHUTDOWN:
         if (GFL_NetIsEnded()) {
             (*state)++;
         }
         break;
-    case 4:
+    case KEY_NET_DISCONNECT_STEP_IDLE:
         KeySystemSeq_Set(seq, KeySystemNet_SeqIdle);
         break;
     }
@@ -463,36 +548,36 @@ static void KeySystemNet_SeqSend(KeySystemSeq *seq, int *state, void *work) {
     KeySystemNetRequest *request = KeySystemNet_GetRequest(net);
 
     switch (*state) {
-    case 0:
+    case KEY_NET_SEND_STEP_START_SYNC:
         net->hasReceived = FALSE;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 11, NET_COMMAND_BASE >> 8);
         (*state)++;
         break;
-    case 1:
+    case KEY_NET_SEND_STEP_WAIT_START_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 11, NET_COMMAND_BASE >> 8)) {
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_NET_SEND_STEP_SEND:
         if (GFL_NetSendCommand(NetHandle_GetOwn(), NET_COMMAND_BASE, request->send.size, request->send.data)) {
             (*state)++;
         }
         break;
-    case 3:
+    case KEY_NET_SEND_STEP_WAIT_RECEIVE:
         if (net->hasReceived) {
             (*state)++;
         }
         break;
-    case 4:
+    case KEY_NET_SEND_STEP_START_END_SYNC:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 12, NET_COMMAND_BASE >> 8);
         (*state)++;
         break;
-    case 5:
+    case KEY_NET_SEND_STEP_WAIT_END_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 12, NET_COMMAND_BASE >> 8)) {
             (*state)++;
         }
         break;
-    case 6:
+    case KEY_NET_SEND_STEP_CONNECTED:
         KeySystemSeq_Set(seq, KeySystemNet_SeqConnected);
         break;
     }
@@ -500,20 +585,20 @@ static void KeySystemNet_SeqSend(KeySystemSeq *seq, int *state, void *work) {
 
 static void KeySystemNet_SeqCancel(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case KEY_NET_CANCEL_STEP_EXIT_IF_INITIALIZED:
         if (GFL_NetIsInitialized()) {
             GFL_NetExit(NULL);
-            *state = 1;
+            *state = KEY_NET_CANCEL_STEP_WAIT_SHUTDOWN;
         } else {
-            *state = 2;
+            *state = KEY_NET_CANCEL_STEP_IDLE;
         }
         break;
-    case 1:
+    case KEY_NET_CANCEL_STEP_WAIT_SHUTDOWN:
         if (GFL_NetIsEnded()) {
-            *state = 2;
+            *state = KEY_NET_CANCEL_STEP_IDLE;
         }
         break;
-    case 2:
+    case KEY_NET_CANCEL_STEP_IDLE:
         KeySystemSeq_Set(seq, KeySystemNet_SeqIdle);
         break;
     }
@@ -523,20 +608,20 @@ static void KeySystemNet_SeqSync(KeySystemSeq *seq, int *state, void *work) {
     KeySystemNet *net = work;
 
     switch (*state) {
-    case 0:
+    case KEY_NET_SYNC_STEP_SEND:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), (u8)(net->count + 20), NET_COMMAND_BASE >> 8);
         (*state)++;
         break;
-    case 1:
+    case KEY_NET_SYNC_STEP_WAIT_SYNC:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), (u8)(net->count + 20), NET_COMMAND_BASE >> 8)) {
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_NET_SYNC_STEP_INCREMENT_COUNT:
         net->count++;
         (*state)++;
         break;
-    case 3:
+    case KEY_NET_SYNC_STEP_CONNECTED:
         KeySystemSeq_Set(seq, KeySystemNet_SeqConnected);
         break;
     }
@@ -547,31 +632,31 @@ static void KeySystemNet_SeqOv181Start(KeySystemSeq *seq, int *state, void *work
     KeySystemNetRequest *request = KeySystemNet_GetRequest(net);
 
     switch (*state) {
-    case 0:
-        request->ov181.result = 0;
+    case KEY_NET_DISTRIBUTE_STEP_SET_GAME_INFO:
+        request->ov181.result = KEY_NET_DISTRIBUTION_RESULT_UNSET;
         MBDataConv_SetGameInfo(net->ov181Work, request->ov181.text, request->ov181.title);
         (*state)++;
         break;
-    case 1:
+    case KEY_NET_DISTRIBUTE_STEP_DISTRIBUTE:
         MBDataConv_Request(net->ov181Work, MB_DATACONV_REQUEST_DISTRIBUTE);
         (*state)++;
         break;
-    case 2:
+    case KEY_NET_DISTRIBUTE_STEP_WAIT_DISTRIBUTION:
         if (MBDataConv_IsIdle(net->ov181Work)) {
-            request->ov181.result = 1;
-            *state = 4;
+            request->ov181.result = KEY_NET_DISTRIBUTION_RESULT_COMPLETED;
+            *state = KEY_NET_DISTRIBUTE_STEP_IDLE;
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
             MBDataConv_Request(net->ov181Work, MB_DATACONV_REQUEST_CANCEL);
-            *state = 3;
+            *state = KEY_NET_DISTRIBUTE_STEP_WAIT_CANCEL;
         }
         break;
-    case 3:
+    case KEY_NET_DISTRIBUTE_STEP_WAIT_CANCEL:
         if (MBDataConv_IsIdle(net->ov181Work)) {
-            request->ov181.result = 2;
-            *state = 4;
+            request->ov181.result = KEY_NET_DISTRIBUTION_RESULT_CANCELED;
+            *state = KEY_NET_DISTRIBUTE_STEP_IDLE;
         }
         break;
-    case 4:
+    case KEY_NET_DISTRIBUTE_STEP_IDLE:
         KeySystemSeq_Set(seq, KeySystemNet_SeqIdle);
         break;
     }
@@ -582,17 +667,17 @@ static void KeySystemNet_SeqOv181End(KeySystemSeq *seq, int *state, void *work) 
     KeySystemNetRequest *request = KeySystemNet_GetRequest(net);
 
     switch (*state) {
-    case 0:
+    case KEY_NET_RECEIVE_STEP_CONNECT:
         request->ov181End.done = FALSE;
         MBDataConv_Request(net->ov181Work, MB_DATACONV_REQUEST_CONNECT);
         (*state)++;
         break;
-    case 1:
+    case KEY_NET_RECEIVE_STEP_WAIT_CONNECTION:
         if (MBDataConv_IsIdle(net->ov181Work)) {
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_NET_RECEIVE_STEP_TAKE_DATA:
         request->ov181End.done = TRUE;
         request->ov181End.result = MBDataConv_GetResult(net->ov181Work);
         request->ov181End.data = MBDataConv_GetReceivedData(net->ov181Work);
@@ -608,88 +693,88 @@ static void KeySystemNet_SeqWifiPost(KeySystemSeq *seq, int *state, void *work) 
     void *response;
 
     switch (*state) {
-    case 0:
+    case KEY_NET_WIFI_SAVE_STEP_SEND:
         net->hasReceived = FALSE;
-        request->wifi.result = 0;
+        request->wifi.result = KEY_NET_WIFI_RESULT_UNSET;
         net->http =
             NHttpRap_Create(net->heapId, PlayerInfo_GetProfileId(GetGameDataPlayerInfo(net->gameData)), net->buffer);
         NHttpRap_SetAnswerBuffer(net->http, request->wifi.buffer, request->wifi.size);
         if (NHttpRap_SendRequestWithId(NHTTP_RAP_REQUEST_SAVEDATA_GET_BW, request->wifi.id, net->http)) {
-            *state = 1;
+            *state = KEY_NET_WIFI_SAVE_STEP_START;
         }
         net->timer = 0;
         break;
-    case 1:
+    case KEY_NET_WIFI_SAVE_STEP_START:
         if (!NHttpRap_StartRequest(net->http)) {
-            *state = 2;
+            *state = KEY_NET_WIFI_SAVE_STEP_WAIT_RESPONSE;
         } else {
             GFL_ASSERT(0);
-            request->wifi.result = 1;
-            *state = 3;
+            request->wifi.result = KEY_NET_WIFI_RESULT_REQUEST_ERROR;
+            *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
         }
         break;
-    case 2:
+    case KEY_NET_WIFI_SAVE_STEP_WAIT_RESPONSE:
         status = NHttpRap_GetStatus(net->http);
         switch (status) {
-        case 503:
+        case KEY_HTTP_STATUS_SERVICE_UNAVAILABLE:
             net->error = TRUE;
             net->errorCode = 0x3e;
-            request->wifi.result = 2;
-            *state = 3;
+            request->wifi.result = KEY_NET_WIFI_RESULT_HTTP_ERROR;
+            *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
             return;
-        case 502:
+        case KEY_HTTP_STATUS_BAD_GATEWAY:
             net->error = TRUE;
             net->errorCode = 0x3f;
-            request->wifi.result = 2;
-            *state = 3;
+            request->wifi.result = KEY_NET_WIFI_RESULT_HTTP_ERROR;
+            *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
             return;
         }
         if (status >= 400) {
             net->error = TRUE;
             net->errorCode = 0x3c;
-            request->wifi.result = 2;
-            *state = 3;
+            request->wifi.result = KEY_NET_WIFI_RESULT_HTTP_ERROR;
+            *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
         } else {
             status = NHttpRap_Poll(net->http);
             if (status == 0) {
                 response = NHttpRap_GetAnswer(net->http);
                 switch (*(int *)response) {
                 case 0:
-                    *state = 3;
-                    request->wifi.result = 4;
+                    *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
+                    request->wifi.result = KEY_NET_WIFI_RESULT_OK;
                     net->hasReceived = TRUE;
                     break;
                 case 8:
-                    *state = 3;
-                    request->wifi.result = 6;
+                    *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
+                    request->wifi.result = KEY_NET_WIFI_RESULT_INVALID_ID;
                     break;
                 case 10:
-                    *state = 3;
-                    request->wifi.result = 5;
+                    *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
+                    request->wifi.result = KEY_NET_WIFI_RESULT_WRONG_GAME;
                     break;
                 case 5:
-                    *state = 3;
-                    request->wifi.result = 7;
+                    *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
+                    request->wifi.result = KEY_NET_WIFI_RESULT_NEEDS_GAME_SYNC;
                     break;
                 default:
                     net->error = TRUE;
                     net->errorCode = GFL_NetErrGetServerMessage(*(int *)response);
-                    request->wifi.result = 3;
-                    *state = 3;
+                    request->wifi.result = KEY_NET_WIFI_RESULT_SERVER_ERROR;
+                    *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
                     break;
                 }
             } else if (status != NHTTP_STATUS_RUNNING) {
-                request->wifi.result = 1;
-                *state = 3;
+                request->wifi.result = KEY_NET_WIFI_RESULT_REQUEST_ERROR;
+                *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
             }
             if (net->timer++ > 36000) {
                 net->error = 2;
                 net->errorCode = 13;
-                *state = 3;
+                *state = KEY_NET_WIFI_SAVE_STEP_CLEANUP;
             }
         }
         break;
-    case 3:
+    case KEY_NET_WIFI_SAVE_STEP_CLEANUP:
         NHttpRap_ResetAnswerBuffer(net->http);
         if (net->http != NULL) {
             NHttpRap_EndRequest(net->http);
@@ -708,62 +793,62 @@ static void KeySystemNet_SeqWifiGet(KeySystemSeq *seq, int *state, void *work) {
     int status;
 
     switch (*state) {
-    case 0:
+    case KEY_NET_WIFI_STATUS_STEP_SEND:
         net->hasReceived = FALSE;
-        request->wifiGet.result = 0;
+        request->wifiGet.result = KEY_NET_WIFI_RESULT_UNSET;
         net->http =
             NHttpRap_Create(net->heapId, PlayerInfo_GetProfileId(GetGameDataPlayerInfo(net->gameData)), net->buffer);
         if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_ACCOUNT_PLAYSTATUS, net->http)) {
-            *state = 1;
+            *state = KEY_NET_WIFI_STATUS_STEP_START;
         }
         break;
-    case 1:
+    case KEY_NET_WIFI_STATUS_STEP_START:
         if (!NHttpRap_StartRequest(net->http)) {
-            *state = 2;
+            *state = KEY_NET_WIFI_STATUS_STEP_WAIT_RESPONSE;
         } else {
-            request->wifiGet.result = 1;
-            *state = 3;
+            request->wifiGet.result = KEY_NET_WIFI_RESULT_REQUEST_ERROR;
+            *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
         }
         break;
-    case 2:
+    case KEY_NET_WIFI_STATUS_STEP_WAIT_RESPONSE:
         status = NHttpRap_Poll(net->http);
         if (status == 0) {
             response = NHttpRap_GetAnswer(net->http);
             switch (NHttpRap_GetStatus(net->http)) {
-            case 503:
+            case KEY_HTTP_STATUS_SERVICE_UNAVAILABLE:
                 net->error = TRUE;
                 net->errorCode = 0x3e;
-                request->wifiGet.result = 2;
-                *state = 3;
+                request->wifiGet.result = KEY_NET_WIFI_RESULT_HTTP_ERROR;
+                *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
                 return;
-            case 502:
+            case KEY_HTTP_STATUS_BAD_GATEWAY:
                 net->error = TRUE;
                 net->errorCode = 0x3f;
-                request->wifiGet.result = 2;
-                *state = 3;
+                request->wifiGet.result = KEY_NET_WIFI_RESULT_HTTP_ERROR;
+                *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
                 return;
             }
             if (*response == 0) {
                 // Never read, but the original sets it
                 u32 unused[2] = { 0, 0 };
 
-                // The value is 0x80 bytes into the response
+                // Account play status is a u16 at byte offset 0x80 in the response
                 response += 0x20;
-                request->wifiGet.value = *(u16 *)response;
-                *state = 3;
-                request->wifiGet.result = 4;
+                request->wifiGet.playStatus = *(u16 *)response;
+                *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
+                request->wifiGet.result = KEY_NET_WIFI_RESULT_OK;
             } else {
                 net->error = TRUE;
                 net->errorCode = GFL_NetErrGetServerMessage(*response);
-                request->wifiGet.result = 3;
-                *state = 3;
+                request->wifiGet.result = KEY_NET_WIFI_RESULT_SERVER_ERROR;
+                *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
             }
         } else if (status != NHTTP_STATUS_RUNNING) {
-            request->wifiGet.result = 1;
-            *state = 3;
+            request->wifiGet.result = KEY_NET_WIFI_RESULT_REQUEST_ERROR;
+            *state = KEY_NET_WIFI_STATUS_STEP_CLEANUP;
         }
         break;
-    case 3:
+    case KEY_NET_WIFI_STATUS_STEP_CLEANUP:
         if (net->http != NULL) {
             NHttpRap_EndRequest(net->http);
             NHttpRap_Destroy(net->http);
@@ -797,10 +882,10 @@ static void KeySystemNet_OnConnect(void *work) {
     }
 }
 
-static void KeySystemNet_OnStart(void *work, BOOL a1) {
+static void KeySystemNet_OnStart(void *work, BOOL repeatInfrared) {
 }
 
-static void KeySystemNet_OnDisconnect(void *work) {
+static void KeySystemNet_OnInfraredEnded(void *work) {
     KeySystemNetRequest *request = KeySystemNet_GetRequest(work);
 
     if (request->callback.func != NULL) {
@@ -859,10 +944,10 @@ static void KeySystemNet_OnError(KeySystemNet *net) {
     }
 }
 
-static void KeySystemNet_OnWifiError(void *work, int a1, int code, int error) {
+static void KeySystemNet_OnWifiError(void *work, int code, int errorType, int error) {
     KeySystemNet *net = work;
 
-    if (code == 3 || code == 6) {
+    if (errorType == DWC_ETYPE_SHUTDOWN_FM || errorType == DWC_ETYPE_DISCONNECT) {
         if (net->http != NULL) {
             NHttpRap_EndRequest(net->http);
             NHttpRap_Destroy(net->http);

@@ -183,7 +183,7 @@ KeySystemNet_GetBeaconSize kind:function(thumb,size=0x4) addr:0x021c29bc
 KeySystemNet_CheckBeacon kind:function(thumb,size=0xc) addr:0x021c29c0
 KeySystemNet_OnConnect kind:function(thumb,size=0x1c) addr:0x021c29cc
 KeySystemNet_OnStart kind:function(thumb,size=0x2) addr:0x021c29e8
-KeySystemNet_OnDisconnect kind:function(thumb,size=0x12) addr:0x021c29ec
+KeySystemNet_OnInfraredEnded kind:function(thumb,size=0x12) addr:0x021c29ec
 KeySystemNet_Receive kind:function(thumb,size=0x3a) addr:0x021c2a00
 KeySystemNet_GetRequest kind:function(thumb,size=0x8) addr:0x021c2a3c
 KeySystemNet_CanRequest kind:function(thumb,size=0x38) addr:0x021c2a44
@@ -270,7 +270,7 @@ KeySystemKeyAnim_Start kind:function(thumb,size=0x60) addr:0x021c4eb8
 KeySystemKeyAnim_Update kind:function(thumb,size=0xc) addr:0x021c4f18
 KeySystemKeyAnim_Unlock kind:function(thumb,size=0x37c) addr:0x021c4f24
 KeySystemKeyAnim_Show kind:function(thumb,size=0x12c) addr:0x021c52a0
-KeySystemFlow_OnNetError kind:function(thumb,size=0xe) addr:0x021c53cc
+KeySystemFlow_OnInfraredEnded kind:function(thumb,size=0xe) addr:0x021c53cc
 DataConvert_Init kind:function(thumb,size=0x2) addr:0x021c53dc
 DataConvert_SeqMenu kind:function(thumb,size=0x184) addr:0x021c53e0
 DataConvert_SeqWireless kind:function(thumb,size=0x4c4) addr:0x021c5564
@@ -404,8 +404,9 @@ sMenuListHeader kind:data(any) addr:0x021c8da4
 sKeySystemNetCommands kind:data(any) addr:0x021c8dd8
 sModeRequests kind:data(any) addr:0x021c8de0
 sStateRequests kind:data(any) addr:0x021c8e04
-data_ov332_021c8e68 kind:data(any) addr:0x021c8e68
+sUnusedKeyMoveFrames kind:data(any) addr:0x021c8e68
 sEffectPos kind:data(any) addr:0x021c8e74
+sUnusedPlateAndShowOutFrames kind:data(any) addr:0x021c8e78
 sKeyPalettes kind:data(any) addr:0x021c8e84
 data_ov332_021c8e85 kind:data(any) addr:0x021c8e85 ambiguous
 sPlateDownEnd kind:data(any) addr:0x021c8e8c
@@ -445,7 +446,7 @@ sDataConvertWifiSceneFuncs kind:data(any) addr:0x021c9034
 sIdChars kind:data(any) addr:0x021c9044
 sBlockSizes kind:data(any) addr:0x021c9084
 sEventVars kind:data(any) addr:0x021c91a0
-sUnk52Bits kind:data(any) addr:0x021c91b8
+sMemoryFlagCopies kind:data(any) addr:0x021c91b8
 data_ov332_021c91d1 kind:data(any) addr:0x021c91d1 ambiguous
 sEventFlagBits kind:data(any) addr:0x021c91f8
 sLegends kind:data(any) addr:0x021c9258

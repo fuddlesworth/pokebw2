@@ -4585,3 +4585,4 @@ overlays/ov332 0x021c8cc5 remove_symbol
 overlays/ov332 0x021c8cd1 remove_symbol
 overlays/ov332 0x021c8d64 add_data data_ov332_021c8d64
 overlays/ov332 0x021c8e68 add_data data_ov332_021c8e68
+overlays/ov332 0x021c8e78 add_data data_ov332_021c8e78

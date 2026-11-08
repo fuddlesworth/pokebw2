@@ -15,6 +15,102 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// Phases of the shared start-scene callback.
+enum {
+    UNOVA_SCENE_START_STEP_START = 0,
+    UNOVA_SCENE_START_STEP_WAIT = 1,
+    UNOVA_SCENE_START_STEP_END = 2,
+};
+
+// The distribution wrapper result; becoming idle does not prove transfer success.
+enum {
+    KEY_NET_DISTRIBUTION_RESULT_UNSET = 0,
+    KEY_NET_DISTRIBUTION_RESULT_COMPLETED = 1,
+    KEY_NET_DISTRIBUTION_RESULT_CANCELED = 2,
+};
+
+// Wi-Fi wrapper outcomes. UNSET can remain after a timeout; it does not imply an active request.
+enum {
+    KEY_NET_WIFI_RESULT_UNSET = 0,
+    KEY_NET_WIFI_RESULT_REQUEST_ERROR = 1,
+    KEY_NET_WIFI_RESULT_HTTP_ERROR = 2,
+    KEY_NET_WIFI_RESULT_SERVER_ERROR = 3,
+    KEY_NET_WIFI_RESULT_OK = 4,
+    KEY_NET_WIFI_RESULT_WRONG_GAME = 5,
+    KEY_NET_WIFI_RESULT_INVALID_ID = 6,
+    KEY_NET_WIFI_RESULT_NEEDS_GAME_SYNC = 7,
+};
+
+// Values returned by the shared Yes/No menus.
+enum {
+    KEY_SYSTEM_YES_NO_YES = 0,
+    KEY_SYSTEM_YES_NO_NO = 1,
+    KEY_SYSTEM_YES_NO_COUNT = 2,
+};
+
+// Actor slots in KeySystemClAct. Slots 11 and 21 have no producer case.
+enum {
+    KEY_SYSTEM_ACTOR_IR_SIGNAL_LOWER = 0,
+    KEY_SYSTEM_ACTOR_IR_SIGNAL_UPPER = 1,
+    KEY_SYSTEM_ACTOR_CONSOLE_LOWER = 2,
+    KEY_SYSTEM_ACTOR_CONSOLE_UPPER = 3,
+    KEY_SYSTEM_ACTOR_LOCK_FIRST = 4,
+    KEY_SYSTEM_ACTOR_LOCK_SECOND = 5,
+    KEY_SYSTEM_ACTOR_LOCK_THIRD = 6,
+    KEY_SYSTEM_ACTOR_CURRENT_SETTING = 7,
+    KEY_SYSTEM_ACTOR_KEY = 8,
+    KEY_SYSTEM_ACTOR_NAMEPLATE = 9,
+    KEY_SYSTEM_ACTOR_UNLOCK_EFFECT = 10,
+    KEY_SYSTEM_ACTOR_ANIMATED_LOCK = 12,
+    KEY_SYSTEM_ACTOR_MEMORY_TRIPLE_TEAM = 13,
+    KEY_SYSTEM_ACTOR_MEMORY_DIFFERENT_BONES_AND_DREAMS = 14,
+    KEY_SYSTEM_ACTOR_MEMORY_HEARTS_DESIRE = 15,
+    KEY_SYSTEM_ACTOR_MEMORY_NEW_LIGHT = 16,
+    KEY_SYSTEM_ACTOR_MEMORY_TAKING_NEXT_LEVEL = 17,
+    KEY_SYSTEM_ACTOR_MEMORY_WHITE_AND_BLACK = 18,
+    KEY_SYSTEM_ACTOR_MEMORY_FAREWELL_BELOVED_SISTER = 19,
+    KEY_SYSTEM_ACTOR_MEMORY_MEETING_FRIENDS = 20,
+    KEY_SYSTEM_ACTOR_SCROLL_UP = 22,
+    KEY_SYSTEM_ACTOR_SCROLL_DOWN = 23,
+    KEY_SYSTEM_ACTOR_LOADING = 24,
+};
+
+// Animation sequence IDs in Key System resource14, distinct from actor slots.
+enum {
+    KEY_SYSTEM_ANIM_IR_SIGNAL_LOWER = 0,
+    KEY_SYSTEM_ANIM_IR_SIGNAL_UPPER = 1,
+    KEY_SYSTEM_ANIM_CONSOLE_LOWER_IR = 2,
+    KEY_SYSTEM_ANIM_CONSOLE_UPPER_IR = 3,
+    KEY_SYSTEM_ANIM_CONSOLE_LOWER_WIRELESS = 4,
+    KEY_SYSTEM_ANIM_CONSOLE_UPPER_WIRELESS = 5,
+    KEY_SYSTEM_ANIM_CHECKMARK = 6,
+    KEY_SYSTEM_ANIM_LOCK_CLOSED = 7,
+    KEY_SYSTEM_ANIM_KEY_DROP = 8,
+    KEY_SYSTEM_ANIM_KEY_TURN = 9,
+    KEY_SYSTEM_ANIM_NAMEPLATE = 10,
+    KEY_SYSTEM_ANIM_UNLOCK_EFFECT = 11,
+    KEY_SYSTEM_ANIM_LOCK_OPEN = 12,
+    KEY_SYSTEM_ANIM_SCROLL_UP = 13,
+    KEY_SYSTEM_ANIM_SCROLL_DOWN = 14,
+    KEY_SYSTEM_ANIM_LOADING = 15,
+};
+
+// Slots in KeySystemClAct.resources, loaded and freed by matching resource APIs.
+enum {
+    KEY_SYSTEM_RESOURCE_PALETTE = 0,
+    KEY_SYSTEM_RESOURCE_CHARACTERS = 1,
+    KEY_SYSTEM_RESOURCE_ANIMATIONS = 2,
+};
+
+// Logical screen selectors mapped to files7,9,8,10,11 in KeySystemBG_LoadScreen.
+enum {
+    KEY_SYSTEM_SCREEN_COMMON = 0,
+    KEY_SYSTEM_SCREEN_KEYS_SENT = 1,
+    KEY_SYSTEM_SCREEN_KEYS_HELD = 2,
+    KEY_SYSTEM_SCREEN_DREAM_RADAR_RECEIVED = 3,
+    KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU = 4,
+};
+
 // Unova Link, overlay 332: the Key System, which exchanges keys with another Black 2 or White 2, Memory Link, which
 // reads a Black or White save, and the Nintendo 3DS Link with Pokémon Dream Radar. None of these names is swan's.
 // The ROM names every file but key_system_flow.c, whose name is a guess from the functions around it, and
@@ -396,9 +492,9 @@ typedef struct {
     int count;
     u16 bg;
     u16 palette;
-    u16 unkA8;
+    u16 frameChar;
     u16 cursor;
-    u16 unkAC;
+    u16 scroll;
 } KeySystemScrollListSetup;
 
 KeySystemMsgWin *KeySystemMsgWin_Create(u16 bg, u16 x, u16 y, u16 width, u16 height, u16 palette, Font *font,
@@ -537,7 +633,7 @@ typedef struct {
     u32 size;
 } KeySystemNetSend;
 
-// Called when the wireless connection ends, a parameter of KEY_SYSTEM_NET_REQUEST_CONNECT
+// Called when infrared ends before the wireless handover, for KEY_SYSTEM_NET_REQUEST_CONNECT
 typedef struct {
     void *arg;
     void (*func)(void *arg);
@@ -567,7 +663,8 @@ typedef struct {
 
 // The results of KEY_SYSTEM_NET_REQUEST_WIFI_GET
 typedef struct {
-    u32 value;
+    // The ACCOUNT_PLAYSTATUS response contains a u16, promoted into this u32.
+    u32 playStatus;
     u32 result;
 } KeySystemNetWifiGet;
 

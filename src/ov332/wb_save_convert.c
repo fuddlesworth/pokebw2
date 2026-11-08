@@ -9,7 +9,7 @@
 
 // The blocks of a Black or White save that are read
 #define WB_SAVE_BLOCK_PLAYER 27
-#define WB_SAVE_BLOCK_UNK42 42
+#define WB_SAVE_BLOCK_MUSICAL 42
 #define WB_SAVE_BLOCK_EVENT_WORK 45
 #define WB_SAVE_BLOCK_UNK52 52
 #define WB_SAVE_BLOCK_UNK66 66
@@ -29,7 +29,7 @@ typedef struct {
 typedef struct {
     u32 src;
     u32 bit;
-} WBUnk52Bit;
+} WBFlagBitCopy;
 
 // An event work variable and where it goes
 typedef struct {
@@ -47,7 +47,7 @@ static const WBEventVar sEventVars[3] = {
 };
 
 // clang-format off
-static const WBUnk52Bit sUnk52Bits[8] = {
+static const WBFlagBitCopy sMemoryFlagCopies[8] = {
     { 0, 8 },
     { 1, 9 },
     { 2, 10 },
@@ -95,8 +95,8 @@ static void WBSaveConvert_ReadPlayer(void *save, WBSavePlayer *player) {
 
 static void WBSaveConvert_ReadMemories(void *save, WBSaveMemories *memories) {
     u8 *eventWork;
-    u32 *unk52;
-    u8 *unk42;
+    u32 *flagSource;
+    u8 *musical;
     u32 i;
 
     MI_CpuFill8(memories, 0, sizeof(WBSaveMemories));
@@ -113,20 +113,20 @@ static void WBSaveConvert_ReadMemories(void *save, WBSaveMemories *memories) {
             memories->flags[entry->bit / 8] &= ~(1 << (entry->bit % 8));
         }
     }
-    unk52 = WBSaveBlock_Get(save, WB_SAVE_BLOCK_UNK52);
-    for (i = 0; i < NELEMS(sUnk52Bits); i++) {
-        if (unk52[1] & (1 << sUnk52Bits[i].src)) {
-            memories->flags[sUnk52Bits[i].bit / 8] |= 1 << (sUnk52Bits[i].bit % 8);
+    flagSource = WBSaveBlock_Get(save, WB_SAVE_BLOCK_UNK52);
+    for (i = 0; i < NELEMS(sMemoryFlagCopies); i++) {
+        if (flagSource[1] & (1 << sMemoryFlagCopies[i].src)) {
+            memories->flags[sMemoryFlagCopies[i].bit / 8] |= 1 << (sMemoryFlagCopies[i].bit % 8);
         } else {
-            memories->flags[sUnk52Bits[i].bit / 8] &= ~(1 << (sUnk52Bits[i].bit % 8));
+            memories->flags[sMemoryFlagCopies[i].bit / 8] &= ~(1 << (sMemoryFlagCopies[i].bit % 8));
         }
     }
     for (i = 0; i < NELEMS(sEventVars); i++) {
         memories->vars[sEventVars[i].index] = ((u16 *)eventWork)[sEventVars[i].var - WB_EVENT_WORK_VARS_START];
     }
-    unk42 = WBSaveBlock_Get(save, WB_SAVE_BLOCK_UNK42);
-    MI_CpuCopy8(unk42 + 0x258, memories->props, sizeof(memories->props));
-    memories->musicalTotalPoints = *(u16 *)(unk42 + 0x256);
-    memories->musicalShowCount = *(u16 *)(unk42 + 0x252);
+    musical = WBSaveBlock_Get(save, WB_SAVE_BLOCK_MUSICAL);
+    MI_CpuCopy8(musical + 0x258, memories->props, sizeof(memories->props));
+    memories->musicalTotalPoints = *(u16 *)(musical + 0x256);
+    memories->musicalShowCount = *(u16 *)(musical + 0x252);
     MI_CpuCopy8(WBSaveBlock_Get(save, WB_SAVE_BLOCK_UNK66), memories->unk2C, sizeof(memories->unk2C));
 }

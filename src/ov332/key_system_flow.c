@@ -4,6 +4,7 @@
 #include "constants/sound.h"
 #include "constants/version.h"
 #include "field/zone.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/graphics.h"
@@ -24,6 +25,156 @@
 #include "system/dsi.h"
 #include "system/game_data.h"
 #include "system/wordset.h"
+#include "text/system/ability_handlers_2.h"
+
+// Phases of KeySystemFlow_SeqGameClear.
+enum {
+    KEY_GAME_CLEAR_STEP_START_SCENE = 0,
+    KEY_GAME_CLEAR_STEP_FADE_IN = 1,
+    KEY_GAME_CLEAR_STEP_START_ANIMATION = 2,
+    KEY_GAME_CLEAR_STEP_WAIT_ANIMATION = 3,
+    KEY_GAME_CLEAR_STEP_UNLOCK = 4,
+    KEY_GAME_CLEAR_STEP_FADE_OUT = 5,
+    KEY_GAME_CLEAR_STEP_END_SCENE = 6,
+    KEY_GAME_CLEAR_STEP_END = 7,
+};
+
+// Phases of KeySystemFlow_SeqMenu.
+enum {
+    KEY_MENU_STEP_START_SCENE = 0,
+    KEY_MENU_STEP_INPUT = 1,
+    KEY_MENU_STEP_END_SCENE = 2,
+    KEY_MENU_STEP_DISPATCH = 3,
+    KEY_MENU_STEP_END = 4,
+};
+
+// Phases of KeySystemFlow_SeqExchange.
+enum {
+    KEY_EXCHANGE_STEP_START_SCENE = 0,
+    KEY_EXCHANGE_STEP_PRINT_PROMPT = 1,
+    KEY_EXCHANGE_STEP_WAIT_PROMPT = 2,
+    KEY_EXCHANGE_STEP_WAIT_MENU_DRAW = 3,
+    KEY_EXCHANGE_STEP_SELECT = 4,
+    KEY_EXCHANGE_STEP_START_RETRY_SCENE = 5,
+    KEY_EXCHANGE_STEP_PRINT_RETRY = 6,
+    KEY_EXCHANGE_STEP_START_CONNECT_SCENE = 7,
+    KEY_EXCHANGE_STEP_CONNECT = 8,
+    KEY_EXCHANGE_STEP_WAIT_CONNECTION = 9,
+    KEY_EXCHANGE_STEP_WAIT_CANCEL = 10,
+    KEY_EXCHANGE_STEP_END_FAILED_SCENE = 11,
+    KEY_EXCHANGE_STEP_END_CANCELED_SCENE = 12,
+    KEY_EXCHANGE_STEP_SEND_SAVE_INFO = 13,
+    KEY_EXCHANGE_STEP_WAIT_SAVE_INFO = 14,
+    KEY_EXCHANGE_STEP_SEND_KEY_INFO = 15,
+    KEY_EXCHANGE_STEP_WAIT_KEY_INFO = 16,
+    KEY_EXCHANGE_STEP_END_CONNECT_SCENE = 17,
+    KEY_EXCHANGE_STEP_FIRST_EXCHANGE = 18,
+    KEY_EXCHANGE_STEP_SECOND_EXCHANGE = 19,
+    KEY_EXCHANGE_STEP_DISCONNECT = 20,
+    KEY_EXCHANGE_STEP_WAIT_DISCONNECT = 21,
+    KEY_EXCHANGE_STEP_SAVE_RECEIVED = 22,
+    KEY_EXCHANGE_STEP_PRINT_DONE = 23,
+    KEY_EXCHANGE_STEP_WAIT_DONE = 24,
+    KEY_EXCHANGE_STEP_END = 25,
+};
+
+// Phases of KeySystemFlow_SeqSettings.
+enum {
+    KEY_SETTINGS_STEP_START_SCENE = 0,
+    KEY_SETTINGS_STEP_INPUT = 1,
+    KEY_SETTINGS_STEP_END_SCENE = 2,
+    KEY_SETTINGS_STEP_DISPATCH = 3,
+    KEY_SETTINGS_STEP_RESTART = 4,
+};
+
+// Phases of KeySystemFlow_SeqDifficulty.
+enum {
+    KEY_DIFFICULTY_STEP_START_SCENE = 0,
+    KEY_DIFFICULTY_STEP_INPUT = 1,
+    KEY_DIFFICULTY_STEP_SAVE = 2,
+    KEY_DIFFICULTY_STEP_PRINT_INFO = 3,
+    KEY_DIFFICULTY_STEP_WAIT_SAVE_MESSAGE = 4,
+    KEY_DIFFICULTY_STEP_PRINT_CHANGED = 5,
+    KEY_DIFFICULTY_STEP_WAIT_CHANGED = 6,
+    KEY_DIFFICULTY_STEP_RESET_INPUT = 7,
+    KEY_DIFFICULTY_STEP_PRINT_BLOCKED = 8,
+    KEY_DIFFICULTY_STEP_WAIT_BLOCKED = 9,
+    KEY_DIFFICULTY_STEP_END_SCENE = 10,
+    KEY_DIFFICULTY_STEP_END = 11,
+};
+
+// Phases of KeySystemFlow_SeqCity.
+enum {
+    KEY_CITY_STEP_START_SCENE = 0,
+    KEY_CITY_STEP_INPUT = 1,
+    KEY_CITY_STEP_SAVE = 2,
+    KEY_CITY_STEP_PRINT_INFO = 3,
+    KEY_CITY_STEP_WAIT_SAVE_MESSAGE = 4,
+    KEY_CITY_STEP_PRINT_CHANGED = 5,
+    KEY_CITY_STEP_WAIT_CHANGED = 6,
+    KEY_CITY_STEP_RESET_INPUT = 7,
+    KEY_CITY_STEP_PRINT_BLOCKED = 8,
+    KEY_CITY_STEP_WAIT_BLOCKED = 9,
+    KEY_CITY_STEP_END_SCENE = 10,
+    KEY_CITY_STEP_END = 11,
+};
+
+// Phases of KeySystemFlow_SeqChamber.
+enum {
+    KEY_CHAMBER_STEP_START_SCENE = 0,
+    KEY_CHAMBER_STEP_INPUT = 1,
+    KEY_CHAMBER_STEP_SAVE = 2,
+    KEY_CHAMBER_STEP_PRINT_INFO = 3,
+    KEY_CHAMBER_STEP_WAIT_SAVE_MESSAGE = 4,
+    KEY_CHAMBER_STEP_PRINT_CHANGED = 5,
+    KEY_CHAMBER_STEP_WAIT_CHANGED = 6,
+    KEY_CHAMBER_STEP_RESET_INPUT = 7,
+    KEY_CHAMBER_STEP_PRINT_BLOCKED = 8,
+    KEY_CHAMBER_STEP_WAIT_BLOCKED = 9,
+    KEY_CHAMBER_STEP_END_SCENE = 10,
+    KEY_CHAMBER_STEP_END = 11,
+};
+
+// Phases of KeySystemFlow_SeqReceive.
+enum {
+    KEY_RECEIVE_STEP_CHECK_KEYS = 0,
+    KEY_RECEIVE_STEP_PRINT_NONE = 1,
+    KEY_RECEIVE_STEP_WAIT_NONE = 2,
+    KEY_RECEIVE_STEP_START_SCENE = 3,
+    KEY_RECEIVE_STEP_SYNC = 4,
+    KEY_RECEIVE_STEP_WAIT_SYNC = 5,
+    KEY_RECEIVE_STEP_FIND_KEY = 6,
+    KEY_RECEIVE_STEP_WAIT_ANIMATION = 7,
+    KEY_RECEIVE_STEP_END_SCENE = 8,
+    KEY_RECEIVE_STEP_END = 9,
+};
+
+// Phases of KeySystemFlow_SeqSend.
+enum {
+    KEY_SEND_STEP_CHECK_KEYS = 0,
+    KEY_SEND_STEP_PRINT_NONE = 1,
+    KEY_SEND_STEP_WAIT_NONE = 2,
+    KEY_SEND_STEP_START_SCENE = 3,
+    KEY_SEND_STEP_WAIT_PRINT = 4,
+    KEY_SEND_STEP_SYNC = 5,
+    KEY_SEND_STEP_WAIT_SYNC = 6,
+    KEY_SEND_STEP_FIND_KEY = 7,
+    KEY_SEND_STEP_WAIT_KEY_MESSAGE = 8,
+    KEY_SEND_STEP_END_SCENE = 9,
+    KEY_SEND_STEP_END = 10,
+};
+
+// Phases of KeySystemFlow_SeqSave.
+enum {
+    KEY_SAVE_STEP_PRINT_WAIT = 0,
+    KEY_SAVE_STEP_WAIT_PRINT = 1,
+    KEY_SAVE_STEP_WAIT_WRITE = 2,
+    KEY_SAVE_STEP_PLAY_SOUND = 3,
+    KEY_SAVE_STEP_NEXT_FRAME = 4,
+    KEY_SAVE_STEP_WAIT_DELAY = 5,
+    KEY_SAVE_STEP_WAIT_DONE = 6,
+    KEY_SAVE_STEP_END = 7,
+};
 
 // The Key System's sequences and scenes: exchanging keys with another Black 2 or White 2 over infrared, and the
 // settings that keys unlock, the difficulty, the city and the chamber behind the mystery door. The ROM doesn't name
@@ -51,29 +202,49 @@ static void KeySystemFlow_SeqStartChamberScene(KeySystemSeq *seq, int *state, vo
 // What a key that is already enabled says, what an unlocked key says, and the keys' names in the lists of keys
 // being sent and held, in each version's order. MWCC heapsorts a unit's data by size, which gives the ROM's
 // order of the three equal-size tables (unlocked, send, held) only from this declaration order
-static const u16 sKeyEnabledMsgs[KEY_SYSTEM_KEY_COUNT] = { 107, 108, 0, 109, 110 };
+static const u16 sKeyEnabledMsgs[KEY_SYSTEM_KEY_COUNT] = { AbilityHandlers2_Text_ObtainedEasyKeyKeys,
+                                                           AbilityHandlers2_Text_ObtainedChallengeKeyKeys, 0,
+                                                           AbilityHandlers2_Text_ObtainedIronKeyKeys,
+                                                           AbilityHandlers2_Text_ObtainedIcebergKeyKeys };
 static const u16 sHeldKeyNameMsgs[2][KEY_SYSTEM_KEY_COUNT] = {
-    { 14, 15, 17, 105, 106 },
-    { 14, 15, 16, 105, 106 },
+    { AbilityHandlers2_Text_EasyKey, AbilityHandlers2_Text_ChallengeKey, AbilityHandlers2_Text_TreehollowKey,
+      AbilityHandlers2_Text_IronKey, AbilityHandlers2_Text_IcebergKey },
+    { AbilityHandlers2_Text_EasyKey, AbilityHandlers2_Text_ChallengeKey, AbilityHandlers2_Text_TowerKey,
+      AbilityHandlers2_Text_IronKey, AbilityHandlers2_Text_IcebergKey },
 };
 static const u16 sSendKeyNameMsgs[2][KEY_SYSTEM_KEY_COUNT] = {
-    { 14, 15, 17, 105, 106 },
-    { 14, 15, 16, 105, 106 },
+    { AbilityHandlers2_Text_EasyKey, AbilityHandlers2_Text_ChallengeKey, AbilityHandlers2_Text_TreehollowKey,
+      AbilityHandlers2_Text_IronKey, AbilityHandlers2_Text_IcebergKey },
+    { AbilityHandlers2_Text_EasyKey, AbilityHandlers2_Text_ChallengeKey, AbilityHandlers2_Text_TowerKey,
+      AbilityHandlers2_Text_IronKey, AbilityHandlers2_Text_IcebergKey },
 };
 static const u16 sKeyUnlockedMsgs[2][KEY_SYSTEM_KEY_COUNT] = {
-    { 89, 90, 91, 103, 104 },
-    { 89, 90, 92, 103, 104 },
+    { AbilityHandlers2_Text_ObtainedEasyKeyEasy, AbilityHandlers2_Text_ObtainedChallengeKeyChallenge,
+      AbilityHandlers2_Text_ObtainedTreehollowKeyKeys, AbilityHandlers2_Text_ObtainedIronKeyIron,
+      AbilityHandlers2_Text_ObtainedIcebergKeyIceberg },
+    { AbilityHandlers2_Text_ObtainedEasyKeyEasy, AbilityHandlers2_Text_ObtainedChallengeKeyChallenge,
+      AbilityHandlers2_Text_ObtainedTowerKeyKeys, AbilityHandlers2_Text_ObtainedIronKeyIron,
+      AbilityHandlers2_Text_ObtainedIcebergKeyIceberg },
 };
 
 // The windows of the keys being sent, a title and then a key's name in each
 static KeySystemMsgWinTemplate sSendTemplates[] = {
-    { 1, 4, 18, 2, 13 }, { 1, 7, 18, 2, 0 }, { 1, 10, 18, 2, 0 }, { 1, 13, 18, 2, 0 }, { 1, 16, 18, 2, 0 },
+    { 1, 4, 18, 2, AbilityHandlers2_Text_KeysHeld },
+    { 1, 7, 18, 2, 0 },
+    { 1, 10, 18, 2, 0 },
+    { 1, 13, 18, 2, 0 },
+    { 1, 16, 18, 2, 0 },
 };
 
 // The windows of the keys held
 static KeySystemMsgWinTemplate sKeysHeldTemplates[] = {
-    { 1, 1, 18, 2, 13 }, { 1, 4, 18, 2, 0 },  { 1, 7, 18, 2, 0 },  { 1, 10, 18, 2, 0 },
-    { 1, 13, 18, 2, 0 }, { 1, 16, 18, 2, 0 }, { 1, 19, 18, 2, 0 },
+    { 1, 1, 18, 2, AbilityHandlers2_Text_KeysHeld },
+    { 1, 4, 18, 2, 0 },
+    { 1, 7, 18, 2, 0 },
+    { 1, 10, 18, 2, 0 },
+    { 1, 13, 18, 2, 0 },
+    { 1, 16, 18, 2, 0 },
+    { 1, 19, 18, 2, 0 },
 };
 
 void KeySystemFlow_Init(KeySystemWork *wk, HeapID heapId) {
@@ -104,16 +275,16 @@ void KeySystemFlow_SeqGameClear(KeySystemSeq *seq, int *state, void *work) {
     u16 msgId;
 
     switch (*state) {
-    case 0:
+    case KEY_GAME_CLEAR_STEP_START_SCENE:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartKeyAnimScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_GAME_CLEAR_STEP_FADE_IN:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeIn);
         (*state)++;
         break;
-    case 2:
+    case KEY_GAME_CLEAR_STEP_START_ANIMATION:
         enabled = FALSE;
         msgId = sKeyNameMsgs[VERSION_INDEX][wk->param->key];
         str = GFL_MsgDataLoadStrbufNew(wk->msgData, sKeyUnlockedMsgs[VERSION_INDEX][wk->param->key]);
@@ -128,28 +299,28 @@ void KeySystemFlow_SeqGameClear(KeySystemSeq *seq, int *state, void *work) {
         GFL_StrBufFree(str);
         (*state)++;
         break;
-    case 3:
+    case KEY_GAME_CLEAR_STEP_WAIT_ANIMATION:
         if (KeySystemKeyAnim_Update(&wk->keyAnim)) {
             (*state)++;
         }
         break;
-    case 4:
+    case KEY_GAME_CLEAR_STEP_UNLOCK:
         KeyInfo_UnlockKey(wk->keyInfo, wk->param->key);
         if (wk->param->key != KEY_SYSTEM_KEY_CITY) {
             KeyInfo_EnableKey(wk->keyInfo, wk->param->key);
         }
         (*state)++;
         break;
-    case 5:
+    case KEY_GAME_CLEAR_STEP_FADE_OUT:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeOut);
         (*state)++;
         break;
-    case 6:
+    case KEY_GAME_CLEAR_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         KeySystem_FreeMsgWin(wk);
         (*state)++;
         break;
-    case 7:
+    case KEY_GAME_CLEAR_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -159,11 +330,11 @@ void KeySystemFlow_SeqMenu(KeySystemSeq *seq, int *state, void *work) {
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_MENU_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartMenuScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_MENU_STEP_INPUT:
         KeySystemList_Update(wk->list);
         if (KeySystemList_IsChanged(wk->list) && KeySystemMsgWin_IsDone(wk->infoWin)) {
             KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemList_GetCursor(wk->list) + 18,
@@ -177,11 +348,11 @@ void KeySystemFlow_SeqMenu(KeySystemSeq *seq, int *state, void *work) {
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_MENU_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 3:
+    case KEY_MENU_STEP_DISPATCH:
         switch (wk->choice) {
         case KEY_MENU_EXCHANGE:
             if (isWirelessEnabled()) {
@@ -189,18 +360,18 @@ void KeySystemFlow_SeqMenu(KeySystemSeq *seq, int *state, void *work) {
             } else {
                 KeySystemSeq_Push(seq, KeySystem_SeqWirelessOff);
             }
-            *state = 0;
+            *state = KEY_MENU_STEP_START_SCENE;
             break;
         case KEY_MENU_SETTINGS:
             KeySystemSeq_Push(seq, KeySystemFlow_SeqSettings);
-            *state = 0;
+            *state = KEY_MENU_STEP_START_SCENE;
             break;
         case KEY_MENU_BACK:
             (*state)++;
             break;
         }
         break;
-    case 4:
+    case KEY_MENU_STEP_END:
         KeySystemBG_StartFade(wk->bg, KEY_SYSTEM_BG_FADE_0_TO_1, 30);
         KeySystemSeq_Pop(seq);
         break;
@@ -212,28 +383,29 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
     s32 result;
 
     switch (*state) {
-    case 0:
+    case KEY_EXCHANGE_STEP_START_SCENE:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartKeysHeldScene);
         (*state)++;
         break;
-    case 1:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 67, KEY_SYSTEM_MSG_STREAM);
+    case KEY_EXCHANGE_STEP_PRINT_PROMPT:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_WouldLikeLaunchInfrared,
+                                 KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
-    case 2:
+    case KEY_EXCHANGE_STEP_WAIT_PROMPT:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             KeySystem_CreateYesNoMenu(wk, HEAPID_KEY_SYSTEM);
             (*state)++;
         }
         break;
-    case 3:
+    case KEY_EXCHANGE_STEP_WAIT_MENU_DRAW:
         if (KeySystemMenu_UpdatePrint(wk->menu)) {
             GFL_BGSysQueueScrLoad(0);
             (*state)++;
         }
         break;
-    case 4:
+    case KEY_EXCHANGE_STEP_SELECT:
         result = KeySystemMenu_Update(wk->menu);
         if (result == BMPMENULIST_NULL) {
             break;
@@ -241,29 +413,30 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         KeySystem_FreeMenu(wk);
         switch (result) {
-        case 0:
-            *state = 7;
+        case KEY_SYSTEM_YES_NO_YES:
+            *state = KEY_EXCHANGE_STEP_START_CONNECT_SCENE;
             break;
-        case 1:
+        case KEY_SYSTEM_YES_NO_NO:
         default:
             KeySystemMsgWinGroup_Free(wk->msgWinGroup);
             wk->msgWinGroup = NULL;
             GFL_BGSysClearScr(6);
             GFL_BGSysQueueScrLoad(6);
             GFL_BGSysQueueScrLoad(4);
-            *state = 25;
+            *state = KEY_EXCHANGE_STEP_END;
             break;
         }
         break;
-    case 5:
+    case KEY_EXCHANGE_STEP_START_RETRY_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartKeysHeldScene);
         (*state)++;
         break;
-    case 6:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 111, KEY_SYSTEM_MSG_STREAM);
-        *state = 2;
+    case KEY_EXCHANGE_STEP_PRINT_RETRY:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_UnableFindNintendoDs,
+                                 KEY_SYSTEM_MSG_STREAM);
+        *state = KEY_EXCHANGE_STEP_WAIT_PROMPT;
         break;
-    case 7:
+    case KEY_EXCHANGE_STEP_START_CONNECT_SCENE:
         wk->choice = 0;
         wk->noCancel = FALSE;
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartConnectScene);
@@ -272,29 +445,30 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         GFL_SndSEPlay(SEQ_SE_SW_KEYSYS_01);
         (*state)++;
         break;
-    case 8: {
+    case KEY_EXCHANGE_STEP_CONNECT: {
         KeySystemNetCallback callback;
 
         MI_CpuFill8(&callback, 0, sizeof(KeySystemNetCallback));
         callback.arg = wk;
-        callback.func = KeySystemFlow_OnNetError;
+        callback.func = KeySystemFlow_OnInfraredEnded;
         wk->choice = 0;
         KeySystemNet_Request(wk->net, KEY_SYSTEM_NET_REQUEST_CONNECT, &callback);
         (*state)++;
         break;
     }
-    case 9:
+    case KEY_EXCHANGE_STEP_WAIT_CONNECTION:
         if (wk->choice) {
-            ClActor *actor0 = KeySystemClAct_GetActor(&wk->clact, 0);
-            ClActor *actor1 = KeySystemClAct_GetActor(&wk->clact, 1);
-            ClActor *actor2 = KeySystemClAct_GetActor(&wk->clact, 2);
-            ClActor *actor3 = KeySystemClAct_GetActor(&wk->clact, 3);
+            ClActor *actor0 = KeySystemClAct_GetActor(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_LOWER);
+            ClActor *actor1 = KeySystemClAct_GetActor(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_UPPER);
+            ClActor *actor2 = KeySystemClAct_GetActor(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_LOWER);
+            ClActor *actor3 = KeySystemClAct_GetActor(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_UPPER);
 
             ClActor_SetVisible(actor0, FALSE);
             ClActor_SetVisible(actor1, FALSE);
-            ClActor_SetSequence(actor2, 4);
-            ClActor_SetSequence(actor3, 5);
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 60, KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
+            ClActor_SetSequence(actor2, KEY_SYSTEM_ANIM_CONSOLE_LOWER_WIRELESS);
+            ClActor_SetSequence(actor3, KEY_SYSTEM_ANIM_CONSOLE_UPPER_WIRELESS);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CommunicatingPleaseStandBy,
+                                     KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
             GFL_SndStop();
             GFL_SndSEPlay(SEQ_SE_SYS_12);
             wk->choice = 0;
@@ -303,29 +477,29 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         }
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CONNECTED) {
             wk->isParent = GFL_NetIsParent();
-            *state = 13;
+            *state = KEY_EXCHANGE_STEP_SEND_SAVE_INFO;
         } else if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_IDLE) {
             GFL_SndStop();
-            *state = 11;
+            *state = KEY_EXCHANGE_STEP_END_FAILED_SCENE;
         } else if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CANCELING) {
             GFL_SndStop();
-            *state = 10;
+            *state = KEY_EXCHANGE_STEP_WAIT_CANCEL;
         }
         break;
-    case 10:
+    case KEY_EXCHANGE_STEP_WAIT_CANCEL:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_IDLE) {
-            *state = 12;
+            *state = KEY_EXCHANGE_STEP_END_CANCELED_SCENE;
         }
         break;
-    case 11:
+    case KEY_EXCHANGE_STEP_END_FAILED_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
-        *state = 5;
+        *state = KEY_EXCHANGE_STEP_START_RETRY_SCENE;
         break;
-    case 12:
+    case KEY_EXCHANGE_STEP_END_CANCELED_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
-        *state = 25;
+        *state = KEY_EXCHANGE_STEP_END;
         break;
-    case 13: {
+    case KEY_EXCHANGE_STEP_SEND_SAVE_INFO: {
         KeySystemNetSend send;
 
         send.size = sizeof(KeySystemSaveInfo);
@@ -334,13 +508,13 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         (*state)++;
         break;
     }
-    case 14:
+    case KEY_EXCHANGE_STEP_WAIT_SAVE_INFO:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CONNECTED) {
             wk->choice = KeySystemNet_GetReceived(wk->net, &wk->partnerSaveInfo, sizeof(KeySystemSaveInfo));
             (*state)++;
         }
         break;
-    case 15: {
+    case KEY_EXCHANGE_STEP_SEND_KEY_INFO: {
         KeySystemNetSend send;
 
         send.size = sizeof(KeySystemKeyState);
@@ -349,21 +523,21 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         (*state)++;
         break;
     }
-    case 16:
+    case KEY_EXCHANGE_STEP_WAIT_KEY_INFO:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CONNECTED) {
             wk->choice = KeySystemNet_GetReceived(wk->net, &wk->partnerKeys, sizeof(KeySystemKeyState));
             (*state)++;
         }
         break;
-    case 17:
+    case KEY_EXCHANGE_STEP_END_CONNECT_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         if (wk->choice) {
             (*state)++;
         } else {
-            *state = 20;
+            *state = KEY_EXCHANGE_STEP_DISCONNECT;
         }
         break;
-    case 18:
+    case KEY_EXCHANGE_STEP_FIRST_EXCHANGE:
         if (wk->isParent) {
             KeySystemSeq_Push(seq, KeySystemFlow_SeqReceive);
         } else {
@@ -371,7 +545,7 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         }
         (*state)++;
         break;
-    case 19:
+    case KEY_EXCHANGE_STEP_SECOND_EXCHANGE:
         if (!wk->isParent) {
             KeySystemSeq_Push(seq, KeySystemFlow_SeqReceive);
         } else {
@@ -379,33 +553,34 @@ static void KeySystemFlow_SeqExchange(KeySystemSeq *seq, int *state, void *work)
         }
         (*state)++;
         break;
-    case 20:
+    case KEY_EXCHANGE_STEP_DISCONNECT:
         KeySystemNet_Request(wk->net, KEY_SYSTEM_NET_REQUEST_DISCONNECT, NULL);
         (*state)++;
         break;
-    case 21:
+    case KEY_EXCHANGE_STEP_WAIT_DISCONNECT:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_IDLE) {
             (*state)++;
         }
         break;
-    case 22:
+    case KEY_EXCHANGE_STEP_SAVE_RECEIVED:
         if (KeySystemKeyState_CanExchange(&wk->keys, &wk->partnerKeys, TRUE)) {
             KeySystemKeyState_Receive(&wk->keys, &wk->partnerKeys);
             KeySystemKeyState_Save(&wk->keys, wk->keyInfo);
             KeySystemSeq_Push(seq, KeySystemFlow_SeqSave);
         }
-        *state = 23;
+        *state = KEY_EXCHANGE_STEP_PRINT_DONE;
         break;
-    case 23:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 57, KEY_SYSTEM_MSG_STREAM_FAST);
+    case KEY_EXCHANGE_STEP_PRINT_DONE:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SendingReceivingKeysHas,
+                                 KEY_SYSTEM_MSG_STREAM_FAST);
         (*state)++;
         break;
-    case 24:
+    case KEY_EXCHANGE_STEP_WAIT_DONE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             (*state)++;
         }
         break;
-    case 25:
+    case KEY_EXCHANGE_STEP_END:
         KeySystemNet_SetMode(wk->net, KEY_SYSTEM_NET_MODE_NONE);
         KeySystem_FreeMsgWin(wk);
         GFL_BGSysQueueScrLoad(0);
@@ -418,11 +593,11 @@ static void KeySystemFlow_SeqSettings(KeySystemSeq *seq, int *state, void *work)
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_SETTINGS_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartSettingsScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_SETTINGS_STEP_INPUT:
         KeySystemList_Update(wk->list);
         if (KeySystemList_IsChanged(wk->list) && KeySystemMsgWin_IsDone(wk->infoWin)) {
             KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData,
@@ -437,31 +612,31 @@ static void KeySystemFlow_SeqSettings(KeySystemSeq *seq, int *state, void *work)
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_SETTINGS_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 3:
+    case KEY_SETTINGS_STEP_DISPATCH:
         switch (wk->choice) {
         case KEY_LIST_DIFFICULTY:
             KeySystemSeq_Push(seq, KeySystemFlow_SeqDifficulty);
-            *state = 4;
+            *state = KEY_SETTINGS_STEP_RESTART;
             break;
         case KEY_LIST_CITY:
             KeySystemSeq_Push(seq, KeySystemFlow_SeqCity);
-            *state = 4;
+            *state = KEY_SETTINGS_STEP_RESTART;
             break;
         case KEY_LIST_CHAMBER:
             KeySystemSeq_Push(seq, KeySystemFlow_SeqChamber);
-            *state = 4;
+            *state = KEY_SETTINGS_STEP_RESTART;
             break;
         case KEY_LIST_BACK:
             KeySystemSeq_Pop(seq);
             break;
         }
         break;
-    case 4:
-        *state = 0;
+    case KEY_SETTINGS_STEP_RESTART:
+        *state = KEY_SETTINGS_STEP_START_SCENE;
         break;
     }
 }
@@ -470,77 +645,81 @@ static void KeySystemFlow_SeqDifficulty(KeySystemSeq *seq, int *state, void *wor
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_DIFFICULTY_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartDifficultyScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_DIFFICULTY_STEP_INPUT:
         KeySystemKeySelect_Update(&wk->keySelect);
         if (KeySystemKeySelect_IsDecided(&wk->keySelect)) {
-            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == 3) {
-                *state = 10;
+            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == KEY_DIFFICULTY_MENU_BACK) {
+                *state = KEY_DIFFICULTY_STEP_END_SCENE;
             } else {
-                *state = 2;
+                *state = KEY_DIFFICULTY_STEP_SAVE;
             }
         } else if (KeySystemKeySelect_GetResult(&wk->keySelect) == KEY_SELECT_LOCKED) {
-            *state = 8;
+            *state = KEY_DIFFICULTY_STEP_PRINT_BLOCKED;
         }
         break;
-    case 2:
+    case KEY_DIFFICULTY_STEP_SAVE:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         KeySystemSeq_Push(seq, KeySystemFlow_SeqSave);
         (*state)++;
         break;
-    case 3:
+    case KEY_DIFFICULTY_STEP_PRINT_INFO:
         KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemFlow_GetDifficultyMsg(wk->keyInfo),
                                  KEY_SYSTEM_MSG_PRINT);
         (*state)++;
         break;
-    case 4:
+    case KEY_DIFFICULTY_STEP_WAIT_SAVE_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             (*state)++;
         }
         break;
-    case 5:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, GetGameDifficulty(wk->keyInfo) + 112, KEY_SYSTEM_MSG_STREAM);
+    case KEY_DIFFICULTY_STEP_PRINT_CHANGED:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData,
+                                 GetGameDifficulty(wk->keyInfo) + AbilityHandlers2_Text_DifficultySetEasyMode,
+                                 KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
-    case 6:
+    case KEY_DIFFICULTY_STEP_WAIT_CHANGED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
-            *state = 7;
+            *state = KEY_DIFFICULTY_STEP_RESET_INPUT;
         }
         break;
-    case 7:
+    case KEY_DIFFICULTY_STEP_RESET_INPUT:
         KeySystem_FreeMsgWin(wk);
         GFL_BGSysQueueScrLoad(0);
         KeySystemKeySelect_Reset(&wk->keySelect);
-        *state = 1;
+        *state = KEY_DIFFICULTY_STEP_INPUT;
         break;
-    case 8:
+    case KEY_DIFFICULTY_STEP_PRINT_BLOCKED:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         switch (KeySystemKeySelect_GetIndex(&wk->keySelect)) {
         case GAME_DIFFICULTY_EASY:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 61, KEY_SYSTEM_MSG_PRINT);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil,
+                                     KEY_SYSTEM_MSG_PRINT);
             break;
         case GAME_DIFFICULTY_CHALLENGE:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 62, KEY_SYSTEM_MSG_PRINT);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil_2,
+                                     KEY_SYSTEM_MSG_PRINT);
             break;
         }
         (*state)++;
         break;
-    case 9:
+    case KEY_DIFFICULTY_STEP_WAIT_BLOCKED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             GFL_BGSysQueueScrLoad(0);
             if (GCTX_HIDGetPressedKeys()) {
-                *state = 7;
+                *state = KEY_DIFFICULTY_STEP_RESET_INPUT;
             }
         }
         break;
-    case 10:
+    case KEY_DIFFICULTY_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 11:
+    case KEY_DIFFICULTY_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -550,83 +729,90 @@ static void KeySystemFlow_SeqCity(KeySystemSeq *seq, int *state, void *work) {
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_CITY_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartCityScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_CITY_STEP_INPUT:
         KeySystemKeySelect_Update(&wk->keySelect);
         if (KeySystemKeySelect_IsDecided(&wk->keySelect)) {
-            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == 2) {
-                *state = 10;
+            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == KEY_CITY_MENU_BACK) {
+                *state = KEY_CITY_STEP_END_SCENE;
             } else {
-                *state = 2;
+                *state = KEY_CITY_STEP_SAVE;
             }
         } else if (KeySystemKeySelect_GetResult(&wk->keySelect) == KEY_SELECT_LOCKED ||
                    KeySystemKeySelect_GetResult(&wk->keySelect) == KEY_SELECT_IN_AREA) {
-            *state = 8;
+            *state = KEY_CITY_STEP_PRINT_BLOCKED;
         }
         break;
-    case 2:
+    case KEY_CITY_STEP_SAVE:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         KeySystemSeq_Push(seq, KeySystemFlow_SeqSave);
         (*state)++;
         break;
-    case 3:
+    case KEY_CITY_STEP_PRINT_INFO:
         KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemFlow_GetCityMsg(wk->keyInfo), KEY_SYSTEM_MSG_PRINT);
         (*state)++;
         break;
-    case 4:
+    case KEY_CITY_STEP_WAIT_SAVE_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             (*state)++;
         }
         break;
-    case 5:
+    case KEY_CITY_STEP_PRINT_CHANGED:
 #ifdef BLACK2
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeyInfo_GetCityKey(wk->keyInfo) + 115, KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData,
+                                 KeyInfo_GetCityKey(wk->keyInfo) + AbilityHandlers2_Text_ChangedAreaBlackCity,
+                                 KEY_SYSTEM_MSG_STREAM);
 #else
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, (KeyInfo_GetCityKey(wk->keyInfo) == 0 ? 1 : 0) + 115,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData,
+                                 (KeyInfo_GetCityKey(wk->keyInfo) == KEY_CITY_MENU_DEFAULT ? 1 : 0) +
+                                     AbilityHandlers2_Text_ChangedAreaBlackCity,
                                  KEY_SYSTEM_MSG_STREAM);
 #endif
         (*state)++;
         break;
-    case 6:
+    case KEY_CITY_STEP_WAIT_CHANGED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
-            *state = 7;
+            *state = KEY_CITY_STEP_RESET_INPUT;
         }
         break;
-    case 7:
+    case KEY_CITY_STEP_RESET_INPUT:
         KeySystem_FreeMsgWin(wk);
         GFL_BGSysQueueScrLoad(0);
         KeySystemKeySelect_Reset(&wk->keySelect);
-        *state = 1;
+        *state = KEY_CITY_STEP_INPUT;
         break;
-    case 8:
+    case KEY_CITY_STEP_PRINT_BLOCKED:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         if (KeySystemKeySelect_GetResult(&wk->keySelect) == KEY_SELECT_IN_AREA) {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 68, KEY_SYSTEM_MSG_PRINT);
-        } else if (KeySystemKeySelect_GetIndex(&wk->keySelect) == 1) {
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CurrentlyAreaSettingsCannot,
+                                     KEY_SYSTEM_MSG_PRINT);
+        } else if (KeySystemKeySelect_GetIndex(&wk->keySelect) == KEY_CITY_MENU_OTHER) {
 #ifdef BLACK2
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 63, KEY_SYSTEM_MSG_PRINT);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil_3,
+                                     KEY_SYSTEM_MSG_PRINT);
 #else
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 64, KEY_SYSTEM_MSG_PRINT);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil_4,
+                                     KEY_SYSTEM_MSG_PRINT);
 #endif
         }
         (*state)++;
         break;
-    case 9:
+    case KEY_CITY_STEP_WAIT_BLOCKED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             GFL_BGSysQueueScrLoad(0);
             if (GCTX_HIDGetPressedKeys()) {
-                *state = 7;
+                *state = KEY_CITY_STEP_RESET_INPUT;
             }
         }
         break;
-    case 10:
+    case KEY_CITY_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 11:
+    case KEY_CITY_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -636,78 +822,81 @@ static void KeySystemFlow_SeqChamber(KeySystemSeq *seq, int *state, void *work) 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_CHAMBER_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartChamberScene);
         (*state)++;
         break;
-    case 1:
+    case KEY_CHAMBER_STEP_INPUT:
         KeySystemKeySelect_Update(&wk->keySelect);
         if (KeySystemKeySelect_IsDecided(&wk->keySelect)) {
-            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == 3) {
-                *state = 10;
+            if (KeySystemKeySelect_GetCursor(&wk->keySelect) == KEY_CHAMBER_MENU_BACK) {
+                *state = KEY_CHAMBER_STEP_END_SCENE;
             } else {
-                *state = 2;
+                *state = KEY_CHAMBER_STEP_SAVE;
             }
         } else if (KeySystemKeySelect_GetResult(&wk->keySelect) == KEY_SELECT_LOCKED) {
-            *state = 8;
+            *state = KEY_CHAMBER_STEP_PRINT_BLOCKED;
         }
         break;
-    case 2:
+    case KEY_CHAMBER_STEP_SAVE:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         KeySystemSeq_Push(seq, KeySystemFlow_SeqSave);
         (*state)++;
         break;
-    case 3:
+    case KEY_CHAMBER_STEP_PRINT_INFO:
         KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemFlow_GetChamberMsg(wk->keyInfo),
                                  KEY_SYSTEM_MSG_PRINT);
         (*state)++;
         break;
-    case 4:
+    case KEY_CHAMBER_STEP_WAIT_SAVE_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             (*state)++;
         }
         break;
-    case 5:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeyInfo_GetChamberKey(wk->keyInfo) + 117,
+    case KEY_CHAMBER_STEP_PRINT_CHANGED:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData,
+                                 KeyInfo_GetChamberKey(wk->keyInfo) + AbilityHandlers2_Text_MysteryDoorNowLeads,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
-    case 6:
+    case KEY_CHAMBER_STEP_WAIT_CHANGED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
-            *state = 7;
+            *state = KEY_CHAMBER_STEP_RESET_INPUT;
         }
         break;
-    case 7:
+    case KEY_CHAMBER_STEP_RESET_INPUT:
         KeySystem_FreeMsgWin(wk);
         GFL_BGSysQueueScrLoad(0);
         KeySystemKeySelect_Reset(&wk->keySelect);
-        *state = 1;
+        *state = KEY_CHAMBER_STEP_INPUT;
         break;
-    case 8:
+    case KEY_CHAMBER_STEP_PRINT_BLOCKED:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         switch (KeySystemKeySelect_GetIndex(&wk->keySelect)) {
-        case 1:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 97, KEY_SYSTEM_MSG_PRINT);
+        case KEY_INFO_CHAMBER_IRON:
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil_5,
+                                     KEY_SYSTEM_MSG_PRINT);
             break;
-        case 2:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 98, KEY_SYSTEM_MSG_PRINT);
+        case KEY_INFO_CHAMBER_ICEBERG:
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CannotSelectItemUntil_6,
+                                     KEY_SYSTEM_MSG_PRINT);
             break;
         }
         (*state)++;
         break;
-    case 9:
+    case KEY_CHAMBER_STEP_WAIT_BLOCKED:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             GFL_BGSysQueueScrLoad(0);
             if (GCTX_HIDGetPressedKeys()) {
-                *state = 7;
+                *state = KEY_CHAMBER_STEP_RESET_INPUT;
             }
         }
         break;
-    case 10:
+    case KEY_CHAMBER_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 11:
+    case KEY_CHAMBER_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -717,65 +906,67 @@ static void KeySystemFlow_SeqReceive(KeySystemSeq *seq, int *state, void *work) 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_RECEIVE_STEP_CHECK_KEYS:
         if (KeySystemKeyState_CanExchange(&wk->keys, &wk->partnerKeys, TRUE)) {
-            *state = 3;
+            *state = KEY_RECEIVE_STEP_START_SCENE;
         } else {
-            *state = 1;
+            *state = KEY_RECEIVE_STEP_PRINT_NONE;
         }
         break;
-    case 1:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 59, KEY_SYSTEM_MSG_STREAM_FAST);
+    case KEY_RECEIVE_STEP_PRINT_NONE:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ThereNoKeysCan_2,
+                                 KEY_SYSTEM_MSG_STREAM_FAST);
         (*state)++;
         break;
-    case 2:
+    case KEY_RECEIVE_STEP_WAIT_NONE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
-            *state = 9;
+            *state = KEY_RECEIVE_STEP_END;
         }
         break;
-    case 3:
+    case KEY_RECEIVE_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartKeyAnimScene);
         wk->timer = 0;
         wk->choice = 0;
         (*state)++;
         break;
-    case 4:
+    case KEY_RECEIVE_STEP_SYNC:
         KeySystemNet_Request(wk->net, KEY_SYSTEM_NET_REQUEST_SYNC, NULL);
         (*state)++;
         break;
-    case 5:
+    case KEY_RECEIVE_STEP_WAIT_SYNC:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CONNECTED) {
             (*state)++;
         }
         break;
-    case 6:
+    case KEY_RECEIVE_STEP_FIND_KEY:
         // The key that is looked at
         while (TRUE) {
             if (wk->choice >= KEY_SYSTEM_KEY_COUNT) {
-                *state = 8;
+                *state = KEY_RECEIVE_STEP_END_SCENE;
                 return;
             }
             if (KeySystemFlow_FormatKeyMsg(wk, wk->choice, TRUE)) {
                 KeySystemKeyAnim_Start(&wk->keyAnim, wk->choice, wk->msgData,
                                        sReceivedKeyNameMsgs[VERSION_INDEX][wk->choice], wk->strBuf, FALSE);
-                KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 43, KEY_SYSTEM_MSG_STREAM_FAST);
+                KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ReceivingKeyS,
+                                         KEY_SYSTEM_MSG_STREAM_FAST);
                 (*state)++;
                 return;
             }
             wk->choice++;
         }
-    case 7:
+    case KEY_RECEIVE_STEP_WAIT_ANIMATION:
         if (KeySystemKeyAnim_Update(&wk->keyAnim)) {
             wk->timer = 0;
             wk->choice++;
-            *state = 4;
+            *state = KEY_RECEIVE_STEP_SYNC;
         }
         break;
-    case 8:
+    case KEY_RECEIVE_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 9:
+    case KEY_RECEIVE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -785,47 +976,48 @@ static void KeySystemFlow_SeqSend(KeySystemSeq *seq, int *state, void *work) {
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case KEY_SEND_STEP_CHECK_KEYS:
         if (KeySystemKeyState_CanExchange(&wk->keys, &wk->partnerKeys, FALSE)) {
-            *state = 3;
+            *state = KEY_SEND_STEP_START_SCENE;
         } else {
-            *state = 1;
+            *state = KEY_SEND_STEP_PRINT_NONE;
         }
         break;
-    case 1:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 58, KEY_SYSTEM_MSG_STREAM_FAST);
+    case KEY_SEND_STEP_PRINT_NONE:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ThereNoKeysCan,
+                                 KEY_SYSTEM_MSG_STREAM_FAST);
         (*state)++;
         break;
-    case 2:
+    case KEY_SEND_STEP_WAIT_NONE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
-            *state = 10;
+            *state = KEY_SEND_STEP_END;
         }
         break;
-    case 3:
+    case KEY_SEND_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystemFlow_SeqStartSendScene);
         wk->timer = 0;
         wk->choice = 0;
         (*state)++;
         break;
-    case 4:
+    case KEY_SEND_STEP_WAIT_PRINT:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             wk->timer = 0;
             (*state)++;
         }
         break;
-    case 5:
+    case KEY_SEND_STEP_SYNC:
         KeySystemNet_Request(wk->net, KEY_SYSTEM_NET_REQUEST_SYNC, NULL);
         (*state)++;
         break;
-    case 6:
+    case KEY_SEND_STEP_WAIT_SYNC:
         if (KeySystemNet_GetState(wk->net) == KEY_SYSTEM_NET_STATE_CONNECTED) {
             (*state)++;
         }
         break;
-    case 7:
+    case KEY_SEND_STEP_FIND_KEY:
         while (TRUE) {
             if (wk->choice >= KEY_SYSTEM_KEY_COUNT) {
-                *state = 9;
+                *state = KEY_SEND_STEP_END_SCENE;
                 return;
             }
             if (KeySystemFlow_FormatKeyMsg(wk, wk->choice, FALSE)) {
@@ -835,18 +1027,18 @@ static void KeySystemFlow_SeqSend(KeySystemSeq *seq, int *state, void *work) {
             }
             wk->choice++;
         }
-    case 8:
+    case KEY_SEND_STEP_WAIT_KEY_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             wk->timer = 0;
             wk->choice++;
-            *state = 5;
+            *state = KEY_SEND_STEP_SYNC;
         }
         break;
-    case 9:
+    case KEY_SEND_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 10:
+    case KEY_SEND_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -857,11 +1049,12 @@ static void KeySystemFlow_SeqSave(KeySystemSeq *seq, int *state, void *work) {
     u32 mode;
 
     switch (*state) {
-    case 0:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 29, KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
+    case KEY_SAVE_STEP_PRINT_WAIT:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavingDontTurnOff,
+                                 KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
-    case 1:
+    case KEY_SAVE_STEP_WAIT_PRINT:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             GFL_BGSysQueueScrLoad(0);
             if (SaveControl_IsDataAlreadyPresent(GameData_GetSaveControl(wk->param->gameData))) {
@@ -873,40 +1066,40 @@ static void KeySystemFlow_SeqSave(KeySystemSeq *seq, int *state, void *work) {
             (*state)++;
         }
         break;
-    case 2:
+    case KEY_SAVE_STEP_WAIT_WRITE:
         wk->timer++;
         if (SaveControl_IsDataAlreadyPresent(GameData_GetSaveControl(wk->param->gameData))) {
-            if (GameData_UpdateSave(wk->param->gameData) == 2) {
+            if (GameData_UpdateSave(wk->param->gameData) == SAVE_RESULT_OK) {
                 (*state)++;
             }
         } else if (SaveOutside_Save(wk->ov331Work)) {
             (*state)++;
         }
         break;
-    case 3:
+    case KEY_SAVE_STEP_PLAY_SOUND:
         GFL_SndSEPlay(SEQ_SE_SAVE);
-        *state = 4;
+        *state = KEY_SAVE_STEP_NEXT_FRAME;
         break;
-    case 4:
-        *state = 5;
+    case KEY_SAVE_STEP_NEXT_FRAME:
+        *state = KEY_SAVE_STEP_WAIT_DELAY;
         break;
-    case 5:
+    case KEY_SAVE_STEP_WAIT_DELAY:
         if (wk->timer++ > 60) {
             mode = KEY_SYSTEM_MSG_STREAM;
             if (GFL_NetIsInitialized()) {
                 mode = KEY_SYSTEM_MSG_STREAM_FAST;
             }
             wk->timer = 0;
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 56, mode);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_WritingSavedGameFile, mode);
             (*state)++;
         }
         break;
-    case 6:
+    case KEY_SAVE_STEP_WAIT_DONE:
         if (KeySystemMsgWin_IsDone(wk->msgWin) && !GFL_SndPlayerIsActiveAny()) {
             (*state)++;
         }
         break;
-    case 7:
+    case KEY_SAVE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -916,16 +1109,16 @@ static void KeySystemFlow_SeqStartMenuScene(KeySystemSeq *seq, int *state, void 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sMenuSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -935,16 +1128,16 @@ static void KeySystemFlow_SeqStartConnectScene(KeySystemSeq *seq, int *state, vo
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sConnectSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -954,16 +1147,16 @@ static void KeySystemFlow_SeqStartSettingsScene(KeySystemSeq *seq, int *state, v
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sSettingsSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -973,16 +1166,16 @@ static void KeySystemFlow_SeqStartDifficultyScene(KeySystemSeq *seq, int *state,
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sDifficultySceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -992,16 +1185,16 @@ static void KeySystemFlow_SeqStartCityScene(KeySystemSeq *seq, int *state, void 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sCitySceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1011,16 +1204,16 @@ static void KeySystemFlow_SeqStartKeyAnimScene(KeySystemSeq *seq, int *state, vo
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sKeyAnimSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1030,16 +1223,16 @@ static void KeySystemFlow_SeqStartSendScene(KeySystemSeq *seq, int *state, void 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sSendSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1049,16 +1242,16 @@ static void KeySystemFlow_SeqStartKeysHeldScene(KeySystemSeq *seq, int *state, v
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sKeysHeldSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1068,16 +1261,16 @@ static void KeySystemFlow_SeqStartChamberScene(KeySystemSeq *seq, int *state, vo
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sChamberSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1088,7 +1281,7 @@ void KeySystemFlow_MenuSceneInit(void *work, HeapID heapId) {
     KeySystemListSetup setup;
     u32 i;
 
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, 1, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_KeySystem, KEY_SYSTEM_MSG_PRINT);
     MI_CpuFill8(&setup, 0, sizeof(KeySystemListSetup));
     setup.bg = 1;
     setup.unk04 = 14;
@@ -1109,9 +1302,9 @@ void KeySystemFlow_MenuSceneInit(void *work, HeapID heapId) {
         setup.items[i].x = 3;
         setup.items[i].y = (setup.items[i].height + 3) * i + 5;
     }
-    setup.items[0].msgId = 2;
-    setup.items[1].msgId = 3;
-    setup.items[2].msgId = 7;
+    setup.items[0].msgId = AbilityHandlers2_Text_SendReceiveKeys;
+    setup.items[1].msgId = AbilityHandlers2_Text_KeySystemSettings;
+    setup.items[2].msgId = AbilityHandlers2_Text_Back;
     wk->list = KeySystemList_Create(&setup, heapId);
     KeySystem_CreateInfoWin(wk, heapId);
     KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, setup.cursor + 18, KEY_SYSTEM_MSG_PRINT);
@@ -1145,11 +1338,12 @@ void KeySystemFlow_MenuSceneExit(void *work) {
 void KeySystemFlow_ConnectSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 21, KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
-    KeySystemClAct_Create(&wk->clact, 0, heapId);
-    KeySystemClAct_Create(&wk->clact, 1, heapId);
-    KeySystemClAct_Create(&wk->clact, 2, heapId);
-    KeySystemClAct_Create(&wk->clact, 3, heapId);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_LaunchingInfraredCommunicationsDs,
+                             KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
+    KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_LOWER, heapId);
+    KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_UPPER, heapId);
+    KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_LOWER, heapId);
+    KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_UPPER, heapId);
     G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_PLANEMASK_OBJ, GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_BG3, 16,
                        6);
     GX_SetVisibleWnd(GX_WNDMASK_W0);
@@ -1178,10 +1372,10 @@ void KeySystemFlow_ConnectSceneExit(void *work) {
     }
     G2_BlendNone();
     GX_SetVisibleWnd(GX_WNDMASK_NONE);
-    KeySystemClAct_Delete(&wk->clact, 3);
-    KeySystemClAct_Delete(&wk->clact, 2);
-    KeySystemClAct_Delete(&wk->clact, 1);
-    KeySystemClAct_Delete(&wk->clact, 0);
+    KeySystemClAct_Delete(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_UPPER);
+    KeySystemClAct_Delete(&wk->clact, KEY_SYSTEM_ACTOR_CONSOLE_LOWER);
+    KeySystemClAct_Delete(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_UPPER);
+    KeySystemClAct_Delete(&wk->clact, KEY_SYSTEM_ACTOR_IR_SIGNAL_LOWER);
     KeySystemMsgWin_StopWaitIcon(wk->msgWin);
     GFL_BGSysQueueScrLoad(4);
     GFL_BGSysQueueScrLoad(6);
@@ -1212,10 +1406,10 @@ void KeySystemFlow_SettingsSceneInit(void *work, HeapID heapId) {
         setup.items[i].x = 3;
         setup.items[i].y = (setup.items[i].height + 3) * i + 5;
     }
-    setup.items[0].msgId = 5;
-    setup.items[1].msgId = 6;
-    setup.items[2].msgId = 99;
-    setup.items[3].msgId = 7;
+    setup.items[0].msgId = AbilityHandlers2_Text_SetDifficulty;
+    setup.items[1].msgId = AbilityHandlers2_Text_ChangeCity;
+    setup.items[2].msgId = AbilityHandlers2_Text_MysteryDoor;
+    setup.items[3].msgId = AbilityHandlers2_Text_Back;
     wk->list = KeySystemList_Create(&setup, heapId);
     KeySystem_CreateInfoWin(wk, heapId);
     KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemFlow_GetSettingsMsg(wk->keyInfo, setup.cursor),
@@ -1340,8 +1534,8 @@ void KeySystemFlow_SendSceneInit(void *work, HeapID heapId) {
         count = NELEMS(sSendTemplates) - 1;
     }
     wk->msgWinGroup = KeySystemMsgWinGroup_Create(sSendTemplates, count + 1, 0, 14, wk->font, wk->msgData, heapId);
-    KeySystemBG_LoadScreen(wk->bg, 2, 1);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 30, KEY_SYSTEM_MSG_STREAM_FAST);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_KEYS_SENT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SendingKeyS, KEY_SYSTEM_MSG_STREAM_FAST);
 }
 
 BOOL KeySystemFlow_SendSceneMain(void *work) {
@@ -1364,7 +1558,7 @@ void KeySystemFlow_SendSceneExit(void *work) {
         KeySystemMsgWin_DrawFrame(wk->msgWin, 1, 15);
         KeySystemMsgWin_StopWaitIcon(wk->msgWin);
     }
-    KeySystemBG_LoadScreen(wk->bg, 2, 0);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_COMMON);
     GFL_BGSysQueueScrLoad(0);
     GFL_BGSysQueueScrLoad(2);
 }
@@ -1374,7 +1568,7 @@ void KeySystemFlow_KeysHeldSceneInit(void *work, HeapID heapId) {
     u32 count = 0;
     int i;
 
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 0, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
     if (wk->msgWinGroup == NULL) {
         for (i = 0; i < KEY_SYSTEM_KEY_COUNT; i++) {
             if (wk->keys.unlocked[i]) {
@@ -1384,7 +1578,7 @@ void KeySystemFlow_KeysHeldSceneInit(void *work, HeapID heapId) {
         wk->msgWinGroup =
             KeySystemMsgWinGroup_Create(sKeysHeldTemplates, count + 1, 4, 14, wk->font, wk->msgData, heapId);
     }
-    KeySystemBG_LoadScreen(wk->bg, 6, 2);
+    KeySystemBG_LoadScreen(wk->bg, 6, KEY_SYSTEM_SCREEN_KEYS_HELD);
 }
 
 BOOL KeySystemFlow_KeysHeldSceneMain(void *work) {
