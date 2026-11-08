@@ -144,7 +144,7 @@ void CallMailbox_ReadResult(void *arg) {
     ScriptProcCallbackWork *work = arg;
     MailboxProcessData *mailbox = work->resource;
 
-    if (mailbox->result == 1) {
+    if (mailbox->result == MAILBOX_RESULT_CLOSE) {
         *work->data = TRUE;
     } else {
         *work->data = FALSE;

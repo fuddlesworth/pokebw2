@@ -2,6 +2,7 @@
 #include "app/mailbox_local.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"
+#include "constants/pokemon.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -139,7 +140,7 @@ void MailBox_DrawMailFrame(MailBoxWork *work, u32 frame, u32 windowIndex, u32 ma
         GFL_BitmapCopyArea(BmpWin_GetBitmap(window), tileB, 0, 0, i * 8, 8, 8, 8, GFL_BITMAP_NO_COLOR_KEY);
     }
     GFL_BitmapFill(BmpWin_GetBitmap(window), 4);
-    if (MailData_GetTrainerGender(mail) == 0) {
+    if (MailData_GetTrainerGender(mail) == GENDER_MALE) {
         MailBox_PrintString(window, work->view->strbuf, printState, work->view->printQueue, 0, 0, work->font,
                             PRINT_COLOR(5, 6, 4), PRINT_ALIGN_LEFT);
     } else {
@@ -242,7 +243,7 @@ void MailBox_PrintMail(MailBoxWork *work) {
             BmpWin_Transfer(work->view->windows[MAILBOX_WIN_SENTENCE_1 + i]);
         }
     }
-    work->view->stampSentence.type = 6;
+    work->view->stampSentence.type = PMS_SENTENCE_TYPE_WORD_FORMAT;
     work->view->stampSentence.id = 0;
     work->view->stampSentence.words[0] = MailData_GetStampWord(work->view->mails[work->mailIndex]);
     if (work->view->stampSentence.words[0] != 0) {

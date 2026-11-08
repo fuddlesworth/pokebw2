@@ -41,10 +41,14 @@ static void MailBox_LoadButtonResources(MailBoxView *view);
 static const ClActSysSetup sClActSetup = { 0, 0, 0, 512, 4, 64, 4, 64, 0, 6, 4, 4, 32, 16, 16 };
 
 static const MailBoxActorTemplate sActorTemplates[MAILBOX_ACTOR_COUNT] = {
-    { 8, 168, 0, 4, 0, 0, 0, 4, 2, 2, 0, 0, 0, 3, 0 },   { 32, 168, 0, 5, 0, 0, 0, 4, 2, 2, 0, 0, 0, 3, 0 },
-    { 64, 16, 0, 5, 0, 1, 0, 3, 1, 1, 0, 0, 0, 1, 0 },   { 224, 168, 0, 1, 0, 0, 0, 4, 2, 2, 0, 0, 0, 3, 0 },
-    { 128, 160, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0 }, { 88, 160, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0 },
-    { 48, 160, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 1, 0 },  { 188, 168, 0, 0, 0, 0, 0, 4, 2, 2, 0, 0, 0, 3, 0 },
+    { 8, 168, 0, 4, 0, 0, CLACT_SURFACE_MAIN, 4, 2, 2, 0, 0, 0, 3, 0 },
+    { 32, 168, 0, 5, 0, 0, CLACT_SURFACE_MAIN, 4, 2, 2, 0, 0, 0, 3, 0 },
+    { 64, 16, 0, 5, 0, 1, CLACT_SURFACE_MAIN, 3, 1, 1, 0, 0, 0, 1, 0 },
+    { 224, 168, 0, 1, 0, 0, CLACT_SURFACE_MAIN, 4, 2, 2, 0, 0, 0, 3, 0 },
+    { 128, 160, 0, 0, 0, 0, CLACT_SURFACE_SUB, 0, 0, 0, 0, 0, 0, 1, 0 },
+    { 88, 160, 0, 0, 0, 0, CLACT_SURFACE_SUB, 1, 0, 0, 0, 0, 0, 1, 0 },
+    { 48, 160, 0, 0, 0, 0, CLACT_SURFACE_SUB, 2, 0, 0, 0, 0, 0, 1, 0 },
+    { 188, 168, 0, 0, 0, 0, CLACT_SURFACE_MAIN, 4, 2, 2, 0, 0, 0, 3, 0 },
 };
 
 void MailBox_CreateOBJs(MailBoxWork *work) {
@@ -61,7 +65,7 @@ void MailBox_CreateOBJs(MailBoxWork *work) {
     MailBox_InitClAct(work->view);
     MailBox_LoadButtonResources(work->view);
     MailBox_LoadActorResources(work->view);
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < MAILBOX_ACTOR_COUNT; i++) {
         work->view->actors[i] = MailBox_CreateActor(work->view, &sActorTemplates[i]);
         ClActor_SetAutoAnim(work->view->actors[i], TRUE);
     }
@@ -92,7 +96,7 @@ void MailBox_UpdateClActUnit(MailBoxView *view) {
 
 static void MailBox_InitClAct(MailBoxView *view) {
     ClActSys_Create(&sClActSetup, &MailBox_VRAMConfig, HEAPID_MAILBOX_VIEW);
-    view->clActUnit = ClActUnit_Create(8, 0, HEAPID_MAILBOX_VIEW);
+    view->clActUnit = ClActUnit_Create(MAILBOX_ACTOR_COUNT, 0, HEAPID_MAILBOX_VIEW);
     ClActUnit_UseSystemRenderer(view->clActUnit);
     GFL_BGSysSetBGEnabledA(GX_PLANEMASK_OBJ, TRUE);
     GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, TRUE);
@@ -153,9 +157,9 @@ void MailBox_SetActorPos(MailBoxView *view, u32 index, int x, int y) {
     pos.x = x;
     pos.y = y;
     if (y < 256) {
-        ClActor_SetSurfacePos(view->actors[index], &pos, 0);
+        ClActor_SetSurfacePos(view->actors[index], &pos, CLACT_SURFACE_MAIN);
     } else {
-        ClActor_SetSurfacePos(view->actors[index], &pos, 1);
+        ClActor_SetSurfacePos(view->actors[index], &pos, CLACT_SURFACE_SUB);
     }
     ClActor_SetAnimTime(view->actors[index], 0);
 }

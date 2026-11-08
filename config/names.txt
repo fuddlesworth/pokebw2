@@ -30325,6 +30325,8 @@ overlays/ov215 0x021ab038 sMailSysTouchRects
 overlays/ov215 0x021ab054 sMailSysPresetSentences
 overlays/ov215 0x021ab078 MailSys_VRAMConfig
 overlays/ov215 0x021ab158 MAILBOX_PROC_FUNCTIONS
+overlays/ov215 0x021ab164 sMailBoxYesNoItems
+overlays/ov215 0x021ab174 sMailBoxMainMenuItems
 overlays/ov215 0x021ab194 MailBox_VRAMConfig
 overlays/ov215 0x021ab2d4 sWindowTemplates
 overlays/ov215 0x021ab454 sClActSetup

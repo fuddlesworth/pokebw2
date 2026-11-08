@@ -39,6 +39,18 @@
 #include "system/wipe.h"
 #include "text/system/btl_server_flow_3.h"
 
+// Key-cursor button positions; the touch buttons use the opposite order.
+enum {
+    MAIL_SYS_KEY_CONFIRM = 4,
+    MAIL_SYS_KEY_CANCEL = 5,
+};
+
+// Touch button positions from sMailSysTouchRects, distinct from key-cursor positions.
+enum {
+    MAIL_SYS_TOUCH_CANCEL = 4,
+    MAIL_SYS_TOUCH_CONFIRM = 5,
+};
+
 // The mail screen's procs (overlay 215's mailsys.c): one runs the screen of the mail, and the sentence input when the
 // player picks a sentence to write; the other is the screen itself, whose phases are the keys and touch input
 
@@ -152,7 +164,7 @@ static const u8 sMailSysPresetSentences[MAIL_DESIGN_COUNT][MAIL_WORD_COUNT] = {
     { MAIL_SENTENCE_NONE, MAIL_SENTENCE_NONE, MAIL_SENTENCE_NONE },
 };
 
-// The three sentences, the word, and the two buttons, the cancel one last
+// The three sentences, the word, then Cancel and Confirm in the touch layout.
 // clang-format off
 static const TouchRect sMailSysTouchRects[] = {
     { 0x18, 0x38, 0x18, 0xe8 }, { 0x40, 0x60, 0x18, 0xe8 }, { 0x68, 0x88, 0x18, 0xe8 },
@@ -269,7 +281,7 @@ BOOL MailSys_ProcExit(GameProc *proc, u32 *state, void *param, void *workPtr) {
 static void MailSys_StartPMSInput(MailProcWork *work, MailParam *param) {
     if (work->edit->selected == MAIL_WORD_COUNT) {
         PMSData_Clear(&work->sentence);
-        work->sentence.type = 6;
+        work->sentence.type = PMS_SENTENCE_TYPE_WORD_FORMAT;
         work->sentence.id = 0;
         work->sentence.words[0] = work->edit->word;
         work->pmsiParam = PMSIParam_Create(PMSI_MODE_WORD, 0, NULL, TRUE, param->save, work->heapId);
@@ -329,7 +341,8 @@ static void MailSys_InitPresets(MailSysWork *work, MailEdit *edit) {
 
     for (i = 0; i < MAIL_WORD_COUNT; i++) {
         if (!PMSData_IsNotEmpty(&edit->words[i]) && sMailSysPresetSentences[edit->design][i] != MAIL_SENTENCE_NONE) {
-            PMSData_InitWithSentence(&edit->words[i], 5, sMailSysPresetSentences[edit->design][i]);
+            PMSData_InitWithSentence(&edit->words[i], PMS_SENTENCE_TYPE_MAIL_TEMPLATES,
+                                     sMailSysPresetSentences[edit->design][i]);
         }
         if (sMailSysPresetSentences[edit->design][i] == MAIL_SENTENCE_NONE) {
             edit->hasPreset[i] = FALSE;
@@ -476,7 +489,7 @@ static BOOL MailSys_IsIncomplete(MailSysWork *work) {
     }
     for (i = 0; i < MAIL_WORD_COUNT; i++) {
         if (sMailSysPresetSentences[work->edit->design][i] != MAIL_SENTENCE_NONE) {
-            if (PMSData_IsComplete(&work->edit->words[i], 100)) {
+            if (PMSData_IsComplete(&work->edit->words[i], HEAPID_MAIL_SCREEN)) {
                 presetComplete++;
             }
         } else if (PMSData_IsNotEmpty(&work->edit->words[i])) {
@@ -548,7 +561,7 @@ static BOOL MailSys_PhaseKeys(MailSysWork *work) {
     BOOL moved;
 
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
-        if (work->cursor == 4) {
+        if (work->cursor == MAIL_SYS_KEY_CONFIRM) {
             if (MailSys_IsIncomplete(work)) {
                 GFL_SndSEPlay(SEQ_SE_CANCEL1);
                 work->phase = MAIL_PHASE_NOTICE;
@@ -560,7 +573,7 @@ static BOOL MailSys_PhaseKeys(MailSysWork *work) {
             work->edit->cursor = 0;
             AppTaskMenuWin_SetFlashing(work->confirmButton, TRUE);
             return TRUE;
-        } else if (work->cursor == 5) {
+        } else if (work->cursor == MAIL_SYS_KEY_CANCEL) {
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             work->phase = MAIL_PHASE_CANCEL;
             return FALSE;
@@ -573,12 +586,12 @@ static BOOL MailSys_PhaseKeys(MailSysWork *work) {
         }
     } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
-        work->cursor = 5;
+        work->cursor = MAIL_SYS_KEY_CANCEL;
         work->blinkTarget = work->cursor;
         work->phase = MAIL_PHASE_CANCEL;
         return FALSE;
     } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_START) {
-        work->cursor = 4;
+        work->cursor = MAIL_SYS_KEY_CONFIRM;
         work->savedCursor = 0;
         moved = TRUE;
     } else if (GCTX_HIDGetPressedKeys() & PAD_KEY_DOWN) {
@@ -594,13 +607,13 @@ static BOOL MailSys_PhaseKeys(MailSysWork *work) {
         return FALSE;
     }
     GFL_SndSEPlay(SEQ_SE_DECIDE1);
-    if (work->cursor < 4) {
+    if (work->cursor < MAIL_SYS_KEY_CONFIRM) {
         AppTaskMenuWin_SetActive(work->confirmButton, FALSE);
         AppTaskMenuWin_SetActive(work->cancelButton, FALSE);
-    } else if (work->cursor == 4) {
+    } else if (work->cursor == MAIL_SYS_KEY_CONFIRM) {
         AppTaskMenuWin_SetActive(work->confirmButton, TRUE);
         AppTaskMenuWin_SetActive(work->cancelButton, FALSE);
-    } else if (work->cursor == 5) {
+    } else if (work->cursor == MAIL_SYS_KEY_CANCEL) {
         AppTaskMenuWin_SetActive(work->confirmButton, FALSE);
         AppTaskMenuWin_SetActive(work->cancelButton, TRUE);
     }
@@ -614,11 +627,11 @@ static BOOL MailSys_PhaseTouch(MailSysWork *work) {
     if (touched == TOUCH_RECT_NONE) {
         return FALSE;
     }
-    if (touched == 4) {
+    if (touched == MAIL_SYS_TOUCH_CANCEL) {
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         work->phase = MAIL_PHASE_CANCEL;
         return FALSE;
-    } else if (touched < 4) {
+    } else if (touched < MAIL_SYS_TOUCH_CANCEL) {
         work->edit->selected = touched;
         work->edit->mode = work->edit->selected;
         work->edit->cursor = work->savedCursor;
@@ -650,12 +663,12 @@ static BOOL MailSys_PhaseWrite(MailSysWork *work) {
 }
 
 static void MailSys_ShowMessage(MailSysWork *work, u32 messageId) {
-    BmpWin_DrawFrame(work->windows[6], WINFRAME_TRANSFER_NONE, 0xd, 4);
-    GFL_BitmapFill(BmpWin_GetBitmap(work->windows[6]), 0xff);
+    BmpWin_DrawFrame(work->windows[MAIL_SYS_WIN_MESSAGE], WINFRAME_TRANSFER_NONE, 0xd, 4);
+    GFL_BitmapFill(BmpWin_GetBitmap(work->windows[MAIL_SYS_WIN_MESSAGE]), 0xff);
     GFL_MsgDataLoadStrbuf(work->msgData, messageId, work->msgBuf);
-    work->printStream = PrintStream_Create(work->windows[6], 0, 0, work->msgBuf, work->font, work->textSpeed,
-                                           work->tcbEx, 4, work->heapId, 15);
-    BmpWin_TransferNow(work->windows[6]);
+    work->printStream = PrintStream_Create(work->windows[MAIL_SYS_WIN_MESSAGE], 0, 0, work->msgBuf, work->font,
+                                           work->textSpeed, work->tcbEx, 4, work->heapId, 15);
+    BmpWin_TransferNow(work->windows[MAIL_SYS_WIN_MESSAGE]);
 }
 
 enum {
@@ -690,8 +703,8 @@ static BOOL MailSys_PhaseNotice(MailSysWork *work) {
         }
         break;
     case STEP_RESET_NOTICE:
-        BmpWin_ClearFrame(work->windows[6], WINFRAME_TRANSFER_NONE);
-        BmpWin_ClearScreenNow(work->windows[6]);
+        BmpWin_ClearFrame(work->windows[MAIL_SYS_WIN_MESSAGE], WINFRAME_TRANSFER_NONE);
+        BmpWin_ClearScreenNow(work->windows[MAIL_SYS_WIN_MESSAGE]);
         MailSys_ResetBlink(work);
         work->subSeq = STEP_FLASH_CONFIRM;
         work->phase = work->initialPhase;
@@ -703,12 +716,12 @@ static BOOL MailSys_PhaseNotice(MailSysWork *work) {
 static void MailSys_OpenConfirmMenu(MailSysWork *work) {
     AppTaskMenuInit init;
 
-    work->menuItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_Yes);
-    work->menuItems[0].color = PRINT_COLOR(14, 15, 3);
-    work->menuItems[0].type = 0;
-    work->menuItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_No);
-    work->menuItems[1].color = PRINT_COLOR(14, 15, 3);
-    work->menuItems[1].type = 0;
+    work->menuItems[MAIL_ANSWER_YES].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_Yes);
+    work->menuItems[MAIL_ANSWER_YES].color = PRINT_COLOR(14, 15, 3);
+    work->menuItems[MAIL_ANSWER_YES].type = 0;
+    work->menuItems[MAIL_ANSWER_NO].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_No);
+    work->menuItems[MAIL_ANSWER_NO].color = PRINT_COLOR(14, 15, 3);
+    work->menuItems[MAIL_ANSWER_NO].type = 0;
     init.heapId = work->heapId;
     init.itemCount = 2;
     init.items = work->menuItems;
@@ -730,8 +743,8 @@ static s32 MailSys_GetMenuResult(MailSysWork *work) {
     if (AppTaskMenu_IsFlashFinished(work->menu)) {
         result = AppTaskMenu_GetCursorPos(work->menu);
         AppTaskMenu_Free(work->menu);
-        GFL_StrBufFree(work->menuItems[0].str);
-        GFL_StrBufFree(work->menuItems[1].str);
+        GFL_StrBufFree(work->menuItems[MAIL_ANSWER_YES].str);
+        GFL_StrBufFree(work->menuItems[MAIL_ANSWER_NO].str);
     }
     return result;
 }
@@ -776,10 +789,10 @@ static BOOL MailSys_PhaseCancel(MailSysWork *work) {
         if (result < 0) {
             return FALSE;
         }
-        BmpWin_ClearFrame(work->windows[6], WINFRAME_TRANSFER_NONE);
-        BmpWin_ClearScreenNow(work->windows[6]);
+        BmpWin_ClearFrame(work->windows[MAIL_SYS_WIN_MESSAGE], WINFRAME_TRANSFER_NONE);
+        BmpWin_ClearScreenNow(work->windows[MAIL_SYS_WIN_MESSAGE]);
         work->subSeq = STEP_FLASH_CANCEL;
-        if (result == 0) {
+        if (result == MAIL_ANSWER_YES) {
             work->edit->mode = MAIL_EDIT_CANCEL;
             work->phase = work->initialPhase;
             return TRUE;

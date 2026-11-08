@@ -34,6 +34,20 @@
 #include "system/text_speed.h"
 #include "system/wipe.h"
 
+// Which Yes/No callback pair to run.
+enum {
+    MAILBOX_QUESTION_ERASE = 0,
+    MAILBOX_QUESTION_GIVE = 1,
+};
+
+// Menu actions after the cursor position is increased by 2. The u8 getter cannot produce case 0.
+enum {
+    MAILBOX_MENU_ACTION_READ = 2,
+    MAILBOX_MENU_ACTION_ERASE = 3,
+    MAILBOX_MENU_ACTION_GIVE = 4,
+    MAILBOX_MENU_ACTION_CANCEL = 5,
+};
+
 // The mailbox screen's state machine, one function per state, with the party list and the mail writing screen run as
 // child processes
 
@@ -81,7 +95,7 @@ static u32 MailBox_StartWipeOut(MailBoxWork *work, u32 nextState);
 static u32 MailBox_StartMessage(MailBoxWork *work, u8 waitForInput, u32 nextState);
 static u32 MailBox_StartYesNo(MailBoxWork *work, u32 index);
 static u32 MailBox_StartFrameFx(MailBoxWork *work, u32 frame, u32 nextState);
-static u32 MailBox_StartPageFx(MailBoxWork *work, u32 direction, u32 nextState);
+static u32 MailBox_StartPageFx(MailBoxWork *work, u32 actorIndex, u32 nextState);
 static void MailBox_SetDimmed(MailBoxView *view, BOOL dimmed);
 static void MailBox_SetDimmedForReading(MailBoxView *view);
 static void MailBox_ShowMail(MailBoxWork *work);
@@ -258,10 +272,10 @@ static u32 MailBox_StateWaitYesNo(MailBoxWork *work) {
         return MAILBOX_STATE_WAIT_YES_NO;
     }
     switch (AppTaskMenu_GetCursorPos(work->view->menu)) {
-    case 0:
+    case MAIL_ANSWER_YES:
         AppTaskMenu_Free(work->view->menu);
         return sYesNoFuncs[work->view->yesNoIndex].yes(work);
-    case 1:
+    case MAIL_ANSWER_NO:
         AppTaskMenu_Free(work->view->menu);
         return sYesNoFuncs[work->view->yesNoIndex].no(work);
     default:
@@ -300,26 +314,26 @@ static u32 MailBox_StateSelectMail(MailBoxWork *work) {
         return MAILBOX_STATE_SELECT_MAIL;
     }
     switch (MailBox_GetTouch(work)) {
-    case 0:
+    case MAILBOX_TOUCH_PREVIOUS_PAGE:
         if (work->page != 0) {
             work->page--;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            return MailBox_StartPageFx(work, 0, MAILBOX_STATE_CHANGE_PAGE);
+            return MailBox_StartPageFx(work, MAILBOX_ACTOR_PREV_PAGE, MAILBOX_STATE_CHANGE_PAGE);
         }
         return MAILBOX_STATE_SELECT_MAIL;
-    case 1:
+    case MAILBOX_TOUCH_NEXT_PAGE:
         if (work->page != work->view->maxPage) {
             work->page++;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            return MailBox_StartPageFx(work, 1, MAILBOX_STATE_CHANGE_PAGE);
+            return MailBox_StartPageFx(work, MAILBOX_ACTOR_NEXT_PAGE, MAILBOX_STATE_CHANGE_PAGE);
         }
         return MAILBOX_STATE_SELECT_MAIL;
-    case 2:
+    case MAILBOX_TOUCH_RETURN:
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         MailBox_SetActorAnim(work->view, MAILBOX_ACTOR_RETURN_BUTTON, 9);
         work->nextState = MAILBOX_STATE_WIPE_OUT;
         return MAILBOX_STATE_PRESS_RETURN;
-    case 3:
+    case MAILBOX_TOUCH_CLOSE:
         GFL_SndSEPlay(SEQ_SE_CLOSE1);
         MailBox_SetActorAnim(work->view, MAILBOX_ACTOR_CLOSE_BUTTON, 8);
         work->nextState = MAILBOX_STATE_WIPE_OUT;
@@ -354,7 +368,7 @@ static u32 MailBox_StateSelectMail(MailBoxWork *work) {
         if (work->page != work->view->maxPage) {
             work->page++;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            return MailBox_StartPageFx(work, 1, MAILBOX_STATE_CHANGE_PAGE);
+            return MailBox_StartPageFx(work, MAILBOX_ACTOR_NEXT_PAGE, MAILBOX_STATE_CHANGE_PAGE);
         }
         break;
     case CURSOR_MOVE_EDGE_LEFT:
@@ -362,7 +376,7 @@ static u32 MailBox_StateSelectMail(MailBoxWork *work) {
         if (work->page != 0) {
             work->page--;
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            return MailBox_StartPageFx(work, 0, MAILBOX_STATE_CHANGE_PAGE);
+            return MailBox_StartPageFx(work, MAILBOX_ACTOR_PREV_PAGE, MAILBOX_STATE_CHANGE_PAGE);
         }
         break;
     case CURSOR_MOVE_MOVED:
@@ -419,7 +433,7 @@ static u32 MailBox_StateWaitMenu(MailBoxWork *work) {
         return MAILBOX_STATE_WAIT_MENU;
     }
     switch (AppTaskMenu_GetCursorPos(work->view->menu) + 2) {
-    case 2:
+    case MAILBOX_MENU_ACTION_READ:
         MailBox_FreeMenu(work);
         MailBox_HideMessageWindow(work);
         MailBox_SetActorVisible(work->view, MAILBOX_ACTOR_CURSOR, FALSE);
@@ -429,19 +443,20 @@ static u32 MailBox_StateWaitMenu(MailBoxWork *work) {
         MailBox_SetActorAnim(work->view, MAILBOX_ACTOR_CLOSE_BUTTON, 14);
         MailBox_SetDimmedForReading(work->view);
         return MAILBOX_STATE_READ_MAIL;
-    case 3:
+    case MAILBOX_MENU_ACTION_ERASE:
         MailBox_FreeMenu(work);
         MailBox_SetMessage(work, MAILBOX_MESSAGE_ERASE);
         return MailBox_StartMessage(work, FALSE, MAILBOX_STATE_ASK_ERASE);
-    case 4:
+    case MAILBOX_MENU_ACTION_GIVE:
         MailBox_FreeMenu(work);
-        MailBox_CreatePartyParam(
-            work, 14, PML_ItemGetMailItemID(MailData_GetDesign(work->view->mails[work->mailIndex])), work->mailIndex);
+        MailBox_CreatePartyParam(work, POKELIST_MODE_GIVE_MAIL,
+                                 PML_ItemGetMailItemID(MailData_GetDesign(work->view->mails[work->mailIndex])),
+                                 work->mailIndex);
         work->childProc = MAILBOX_CHILD_PARTY_GIVE;
         work->nextState = MAILBOX_STATE_START_CHILD;
-        return MailBox_StartWipeOut(work, 1);
+        return MailBox_StartWipeOut(work, MAILBOX_STATE_EXIT);
     case 0:
-    case 5:
+    case MAILBOX_MENU_ACTION_CANCEL:
         MailBox_FreeMenu(work);
         MailBox_HideMessageWindow(work);
         BGWinFrame_Hide(work->view->frames, MAILBOX_FRAME_SELECTED);
@@ -474,7 +489,7 @@ static u32 MailBox_StateCloseMail(MailBoxWork *work) {
 }
 
 static u32 MailBox_StateAskErase(MailBoxWork *work) {
-    return MailBox_StartYesNo(work, 0);
+    return MailBox_StartYesNo(work, MAILBOX_QUESTION_ERASE);
 }
 
 static u32 MailBox_StateEraseNotice(MailBoxWork *work) {
@@ -483,11 +498,11 @@ static u32 MailBox_StateEraseNotice(MailBoxWork *work) {
 }
 
 static u32 MailBox_StateAskGive(MailBoxWork *work) {
-    return MailBox_StartYesNo(work, 1);
+    return MailBox_StartYesNo(work, MAILBOX_QUESTION_GIVE);
 }
 
 static u32 MailBox_StatePartyReturn(MailBoxWork *work) {
-    if (work->partyResult != 6) {
+    if (work->partyResult != POKELIST_RESULT_WRITE_MAIL) {
         work->nextState = MAILBOX_STATE_GIVE_FADE_IN;
         return MAILBOX_STATE_INIT;
     }
@@ -511,14 +526,14 @@ static u32 MailBox_StateMailWritten(MailBoxWork *work) {
         work->nextState = MAILBOX_STATE_GIVE_FADE_IN;
         return MAILBOX_STATE_INIT;
     }
-    MailBox_CreatePartyParam(work, 11, work->item, work->partyPos);
+    MailBox_CreatePartyParam(work, POKELIST_MODE_GIVE_ITEM_EXIT, work->item, work->partyPos);
     work->childProc = MAILBOX_CHILD_PARTY_PICK;
     return MAILBOX_STATE_START_CHILD;
 }
 
 static u32 MailBox_StatePressReturn(MailBoxWork *work) {
     if (!ClActor_IsAnimActive(work->view->actors[MAILBOX_ACTOR_RETURN_BUTTON])) {
-        work->param->result = 0;
+        work->param->result = MAILBOX_RESULT_RETURN;
         MailBox_SetActorAnim(work->view, MAILBOX_ACTOR_CLOSE_BUTTON, 0);
         return work->nextState;
     }
@@ -527,7 +542,7 @@ static u32 MailBox_StatePressReturn(MailBoxWork *work) {
 
 static u32 MailBox_StatePressClose(MailBoxWork *work) {
     if (!ClActor_IsAnimActive(work->view->actors[MAILBOX_ACTOR_CLOSE_BUTTON])) {
-        work->param->result = 1;
+        work->param->result = MAILBOX_RESULT_CLOSE;
         return work->nextState;
     }
     return MAILBOX_STATE_PRESS_CLOSE;
@@ -580,7 +595,7 @@ static u32 MailBox_StartFrameFx(MailBoxWork *work, u32 frame, u32 nextState) {
     fx->target = 2;
     fx->firstPalette = 2;
     fx->secondPalette = 1;
-    fx->phase = 0;
+    fx->phase = MAILBOX_PALETTE_FX_APPLY_FIRST;
     fx->timer = 0;
     fx->x = x;
     fx->y = y;
@@ -590,14 +605,14 @@ static u32 MailBox_StartFrameFx(MailBoxWork *work, u32 frame, u32 nextState) {
     return MAILBOX_STATE_WAIT_PALETTE_FX;
 }
 
-static u32 MailBox_StartPageFx(MailBoxWork *work, u32 direction, u32 nextState) {
+static u32 MailBox_StartPageFx(MailBoxWork *work, u32 actorIndex, u32 nextState) {
     MailBoxPaletteFx *fx = &work->view->paletteFx;
 
     fx->onScreen = FALSE;
-    fx->target = direction;
+    fx->target = actorIndex;
     fx->firstPalette = 1;
     fx->secondPalette = 0;
-    fx->phase = 0;
+    fx->phase = MAILBOX_PALETTE_FX_APPLY_FIRST;
     fx->timer = 0;
     work->nextState = nextState;
     return MAILBOX_STATE_WAIT_PALETTE_FX;
@@ -605,25 +620,25 @@ static u32 MailBox_StartPageFx(MailBoxWork *work, u32 direction, u32 nextState) 
 
 static void MailBox_SetDimmed(MailBoxView *view, BOOL dimmed) {
     if (dimmed == TRUE) {
-        MailBox_SetActorBlend(view, 0, TRUE);
-        MailBox_SetActorBlend(view, 1, TRUE);
-        MailBox_SetActorBlend(view, 3, TRUE);
-        MailBox_SetActorBlend(view, 7, TRUE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_PREV_PAGE, TRUE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_NEXT_PAGE, TRUE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_RETURN_BUTTON, TRUE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_CLOSE_BUTTON, TRUE);
         G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 8, 4, 12);
     } else {
-        MailBox_SetActorBlend(view, 0, FALSE);
-        MailBox_SetActorBlend(view, 1, FALSE);
-        MailBox_SetActorBlend(view, 3, FALSE);
-        MailBox_SetActorBlend(view, 7, FALSE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_PREV_PAGE, FALSE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_NEXT_PAGE, FALSE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_RETURN_BUTTON, FALSE);
+        MailBox_SetActorBlend(view, MAILBOX_ACTOR_CLOSE_BUTTON, FALSE);
         G2_BlendNone();
     }
 }
 
 static void MailBox_SetDimmedForReading(MailBoxView *view) {
-    MailBox_SetActorBlend(view, 0, TRUE);
-    MailBox_SetActorBlend(view, 1, TRUE);
-    MailBox_SetActorBlend(view, 3, FALSE);
-    MailBox_SetActorBlend(view, 7, FALSE);
+    MailBox_SetActorBlend(view, MAILBOX_ACTOR_PREV_PAGE, TRUE);
+    MailBox_SetActorBlend(view, MAILBOX_ACTOR_NEXT_PAGE, TRUE);
+    MailBox_SetActorBlend(view, MAILBOX_ACTOR_RETURN_BUTTON, FALSE);
+    MailBox_SetActorBlend(view, MAILBOX_ACTOR_CLOSE_BUTTON, FALSE);
     G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 4, 8, 4, 12);
 }
 
@@ -735,10 +750,10 @@ static u32 MailBox_EraseYes(MailBoxWork *work) {
 }
 
 static u32 MailBox_GiveYes(MailBoxWork *work) {
-    MailBox_CreatePartyParam(work, 9, work->item, 0);
+    MailBox_CreatePartyParam(work, POKELIST_MODE_GIVE_ITEM, work->item, 0);
     work->childProc = MAILBOX_CHILD_PARTY_ASK;
     work->nextState = MAILBOX_STATE_START_CHILD;
-    return MailBox_StartWipeOut(work, 1);
+    return MailBox_StartWipeOut(work, MAILBOX_STATE_EXIT);
 }
 
 static u32 MailBox_GiveNo(MailBoxWork *work) {
