@@ -27,6 +27,7 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "pml/poke_party.h"
+#include "save/battle_rec.h"
 #include "save/box.h"
 #include "save/bsubway_save.h"
 #include "save/event_work.h"
@@ -181,17 +182,6 @@ enum {
 };
 
 enum {
-    BSUBWAY_SCORE_FLAG_WIFI_RESULTS_PENDING = 1,
-    BSUBWAY_SCORE_FLAG_PARTNER_INTRO_SEEN = 10,
-    BSUBWAY_SCORE_FLAG_SINGLE_CLEARED = 4,
-    BSUBWAY_SCORE_FLAG_DOUBLE_CLEARED = 5,
-    BSUBWAY_SCORE_FLAG_MULTI_CLEARED = 6,
-    BSUBWAY_SCORE_FLAG_SUPER_SINGLE_CLEARED = 7,
-    BSUBWAY_SCORE_FLAG_SUPER_DOUBLE_CLEARED = 8,
-    BSUBWAY_SCORE_FLAG_SUPER_MULTI_CLEARED = 9,
-};
-
-enum {
     BSUBWAY_VIDEO_UNCHECKED = 0,
     BSUBWAY_VIDEO_EMPTY = 1,
     BSUBWAY_VIDEO_PRESENT = 2,
@@ -251,9 +241,11 @@ typedef struct {
     u32 cursorRow;
 } BSubwayMsgEvent;
 
-static const u16 sVideoModesByPlayMode[] = { BSUBWAY_RULE_SINGLE, BSUBWAY_RULE_DOUBLE, BSUBWAY_RULE_MULTI,
-                                             BSUBWAY_RULE_MULTI,  BSUBWAY_RULE_SINGLE, BSUBWAY_RULE_SINGLE,
-                                             BSUBWAY_RULE_DOUBLE, BSUBWAY_RULE_MULTI,  BSUBWAY_RULE_MULTI };
+static const u16 sVideoModesByPlayMode[] = { BATTLE_REC_MODE_BATTLE_SUBWAY_SINGLE, BATTLE_REC_MODE_BATTLE_SUBWAY_DOUBLE,
+                                             BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI,  BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI,
+                                             BATTLE_REC_MODE_BATTLE_SUBWAY_SINGLE, BATTLE_REC_MODE_BATTLE_SUBWAY_SINGLE,
+                                             BATTLE_REC_MODE_BATTLE_SUBWAY_DOUBLE, BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI,
+                                             BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI };
 static const u16 sModeClearFlags[] = { BSUBWAY_SCORE_FLAG_SINGLE_CLEARED,
                                        BSUBWAY_SCORE_FLAG_DOUBLE_CLEARED,
                                        BSUBWAY_SCORE_FLAG_MULTI_CLEARED,
@@ -1451,26 +1443,26 @@ static void BSubwayCmd_GetPassengerGiftInfo(BSubwayScrWork *bsw, u16 index, u16 
 static BOOL ScriptNative_BSubwayBattleRecSaveWait(VM *vm, void *env) {
     GameData *gameData = GSYS_GetGameData(ScriptWork_GetGameSystem(FieldScriptEnv_GetScriptWork(env)));
     BSubwayScrWork *bsw = GameData_GetBSubwayScrWork(gameData);
-    u32 regulation = BSUBWAY_RULE_SINGLE;
+    u32 modeIndex = BATTLE_REC_MODE_BATTLE_SUBWAY_SINGLE;
     int count = bsw->videoCounter;
     u32 result;
 
     switch (bsw->playMode) {
     case BSUBWAY_MODE_DOUBLE:
     case BSUBWAY_MODE_SUPER_DOUBLE:
-        regulation = BSUBWAY_RULE_DOUBLE;
+        modeIndex = BATTLE_REC_MODE_BATTLE_SUBWAY_DOUBLE;
         break;
     case BSUBWAY_MODE_MULTI:
     case BSUBWAY_MODE_COMM_MULTI:
     case BSUBWAY_MODE_SUPER_MULTI:
     case BSUBWAY_MODE_SUPER_COMM_MULTI:
-        regulation = BSUBWAY_RULE_MULTI;
+        modeIndex = BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI;
         break;
     }
     if (count > BSUBWAY_COUNT_MAX) {
         count = BSUBWAY_COUNT_MAX;
     }
-    result = BattleRec_FinishAndSaveSlot(gameData, 4, regulation, count, 0, &bsw->videoSeq, &bsw->videoSaveSeq);
+    result = BattleRec_FinishAndSaveSlot(gameData, 4, modeIndex, count, 0, &bsw->videoSeq, &bsw->videoSaveSeq);
     if (result == SAVE_RESULT_OK || result == SAVE_RESULT_NG) {
         return TRUE;
     }

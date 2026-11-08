@@ -163,21 +163,23 @@ void BrCodeInDisp_AddButtonActors(BrCodeInWork *wk) {
     setup.sequence = 0;
     setup.priority = CODE_PRIORITY;
     setup.bgPriority = 0;
-    wk->btn[0].actor = ClActor_Create(unit, wk->charRes[BR_CODEIN_RES_BUTTON], wk->plttRes[BR_CODEIN_RES_BUTTON],
-                                      wk->cellAnimRes[BR_CODEIN_RES_BUTTON], &setup, CLACT_SURFACE_SUB, wk->heapId);
-    ClActor_SetObjMode(wk->btn[0].actor, GX_OAM_MODE_XLU);
+    wk->btn[BR_CODEIN_BUTTON_BACK].actor =
+        ClActor_Create(unit, wk->charRes[BR_CODEIN_RES_BUTTON], wk->plttRes[BR_CODEIN_RES_BUTTON],
+                       wk->cellAnimRes[BR_CODEIN_RES_BUTTON], &setup, CLACT_SURFACE_SUB, wk->heapId);
+    ClActor_SetObjMode(wk->btn[BR_CODEIN_BUTTON_BACK].actor, GX_OAM_MODE_XLU);
     setup.sequence = 1;
-    wk->btn[1].actor = ClActor_Create(unit, wk->charRes[BR_CODEIN_RES_BUTTON], wk->plttRes[BR_CODEIN_RES_BUTTON],
-                                      wk->cellAnimRes[BR_CODEIN_RES_BUTTON], &setup, CLACT_SURFACE_SUB, wk->heapId);
-    ClActor_SetObjMode(wk->btn[1].actor, GX_OAM_MODE_XLU);
+    wk->btn[BR_CODEIN_BUTTON_OK].actor =
+        ClActor_Create(unit, wk->charRes[BR_CODEIN_RES_BUTTON], wk->plttRes[BR_CODEIN_RES_BUTTON],
+                       wk->cellAnimRes[BR_CODEIN_RES_BUTTON], &setup, CLACT_SURFACE_SUB, wk->heapId);
+    ClActor_SetObjMode(wk->btn[BR_CODEIN_BUTTON_OK].actor, GX_OAM_MODE_XLU);
     pos.x = wk->rects[BR_CODEIN_RECT_BACK].left;
     pos.y = wk->rects[BR_CODEIN_RECT_BACK].top + 16;
-    ClActor_SetSurfacePos(wk->btn[0].actor, &pos, CLACT_SURFACE_SUB);
-    ClActor_SetSequence(wk->btn[0].actor, 0);
+    ClActor_SetSurfacePos(wk->btn[BR_CODEIN_BUTTON_BACK].actor, &pos, CLACT_SURFACE_SUB);
+    ClActor_SetSequence(wk->btn[BR_CODEIN_BUTTON_BACK].actor, 0);
     pos.x = wk->rects[BR_CODEIN_RECT_OK].left;
     pos.y = wk->rects[BR_CODEIN_RECT_OK].top + 16;
-    ClActor_SetSurfacePos(wk->btn[1].actor, &pos, CLACT_SURFACE_SUB);
-    ClActor_SetSequence(wk->btn[1].actor, 1);
+    ClActor_SetSurfacePos(wk->btn[BR_CODEIN_BUTTON_OK].actor, &pos, CLACT_SURFACE_SUB);
+    ClActor_SetSequence(wk->btn[BR_CODEIN_BUTTON_OK].actor, 1);
 }
 
 void BrCodeInDisp_SetCursorVisible(BrCodeInWork *wk, int cursor, BOOL visible) {
@@ -342,8 +344,8 @@ void BrCodeInDisp_InitBmpOam(BrCodeInWork *wk) {
 }
 
 static void BrCodeInDisp_FreeBmpOam(BrCodeInWork *wk) {
-    BmpOam_ActorDel(wk->btnText[0]);
-    BmpOam_ActorDel(wk->btnText[1]);
+    BmpOam_ActorDel(wk->btnText[BR_CODEIN_BUTTON_BACK]);
+    BmpOam_ActorDel(wk->btnText[BR_CODEIN_BUTTON_OK]);
     BmpOam_Exit(wk->bmpOam);
 }
 
@@ -357,8 +359,8 @@ static void BrCodeInDisp_LoadButtonTextPltt(BrCodeInWork *wk) {
 
 void BrCodeInDisp_AddButtonTexts(BrCodeInWork *wk) {
     BrCodeInDisp_LoadButtonTextPltt(wk);
-    BrCodeInDisp_AddButtonText(wk, 0, 32, 8, 0);
-    BrCodeInDisp_AddButtonText(wk, 1, 32, 8, 0);
+    BrCodeInDisp_AddButtonText(wk, BR_CODEIN_BUTTON_BACK, 32, 8, 0);
+    BrCodeInDisp_AddButtonText(wk, BR_CODEIN_BUTTON_OK, 32, 8, 0);
 }
 
 // Draws the name of Back or OK and shows it on its button, x and y from the button's corner

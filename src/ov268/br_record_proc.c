@@ -16,6 +16,7 @@
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "gfl/arc.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/msg.h"
@@ -99,6 +100,12 @@ typedef struct {
     u32 msgID;
 } BrRecordMsgWinData;
 
+// Icon position-table rows for the two- and four-Trainer header layouts.
+enum {
+    BR_RECORD_ICON_LAYOUT_TWO_TRAINERS = 0,
+    BR_RECORD_ICON_LAYOUT_FOUR_TRAINERS = 1,
+};
+
 static BOOL BrRecord_ProcInit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL BrRecord_ProcExit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL BrRecord_ProcMain(GameProc *proc, u32 *state, void *param, void *work);
@@ -123,7 +130,7 @@ static void BrRecord_CreateText(BrRecordWork *p_wk, BrRecordProcParam *p_param);
 static void BrRecord_DeleteText(BrRecordWork *p_wk, BrRecordProcParam *p_param);
 static void BrRecord_CreateConfirm(BrRecordWork *p_wk, BrRecordProcParam *p_param);
 static void BrRecord_DeleteConfirm(BrRecordWork *p_wk, BrRecordProcParam *p_param);
-static BOOL BrRecord_IsSmallTeamMode(BattleRecHeader *header);
+static BOOL BrRecord_IsMultiMode(BattleRecHeader *header);
 static BOOL BrRecord_IsCounterMode(BattleRecHeader *header);
 static BOOL BrRecord_GetTrgChange(BrRecordWork *p_wk, u32 x, u32 y);
 static BOOL BrRecord_GetTrgPlay(BrRecordWork *p_wk, u32 x, u32 y);
@@ -800,7 +807,7 @@ static void BrRecord_SeqSecureSave(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) 
     case SEQ_SAVE_MAIN:
         GFL_ASSERT(p_wk->p_param->mode <= BR_RECODE_PROC_OTHER_02);
         if (BattleRecOv_SaveSecureVideo(p_wk->p_param->gameData, p_wk->p_param->mode, &p_wk->saveSeq, &p_wk->saveSeq2,
-                                        p_wk->heapId) == 2) {
+                                        p_wk->heapId) == SAVE_RESULT_OK) {
             BattleRec_DecryptBody();
             p_wk->isSecure = BattleRec_GetHeaderValue(p_wk->header, BATTLE_REC_HEADER_SECURE, 0);
             *p_seq = SEQ_FADEOUT_START;
@@ -943,7 +950,7 @@ static void BrRecord_SeqConfirmPlay(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs)
         *p_seq = SEQ_SAVE_MAIN;
         break;
     case SEQ_SAVE_MAIN:
-        if (GameData_UpdateSave(p_wk->p_param->gameData) == 2) {
+        if (GameData_UpdateSave(p_wk->p_param->gameData) == SAVE_RESULT_OK) {
             BrBallEff_Start(p_wk->ballEff[CLACT_SURFACE_MAIN], BR_BALL_EFFECT_NONE, NULL);
             *p_seq = SEQ_PLAY_FADEOUT_START;
         }
@@ -982,7 +989,7 @@ static void BrRecord_CreateInfo(BrRecordWork *p_wk, BrRecordProcParam *p_param) 
     }
     p_wk->isInfoCreated = TRUE;
 
-    if (BrRecord_IsSmallTeamMode(p_wk->header)) {
+    if (BrRecord_IsMultiMode(p_wk->header)) {
         BrRes_LoadBG(p_param->res, BR_RES_BG_RECORD_INFO_SMALL_TEAM, p_wk->heapId);
     } else {
         BrRes_LoadBG(p_param->res, BR_RES_BG_RECORD_INFO, p_wk->heapId);
@@ -1109,11 +1116,11 @@ static void BrRecord_CreateIcons(BrRecordWork *p_wk, ClActUnit *unit, BattleRecH
     step = 6;
     start = 0;
     end = 6;
-    layout = 0;
-    if (BrRecord_IsSmallTeamMode(header) == TRUE) {
+    layout = BR_RECORD_ICON_LAYOUT_TWO_TRAINERS;
+    if (BrRecord_IsMultiMode(header) == TRUE) {
         step = 3;
         end = 3;
-        layout = 1;
+        layout = BR_RECORD_ICON_LAYOUT_FOUR_TRAINERS;
     }
     do {
         for (i = start; i < end; i++) {
@@ -1366,16 +1373,16 @@ static void BrRecord_DeleteConfirm(BrRecordWork *p_wk, BrRecordProcParam *p_para
     }
 }
 
-// Whether the video's battle mode has teams of three Pokémon, whose icons are laid out in groups of three
-static BOOL BrRecord_IsSmallTeamMode(BattleRecHeader *header) {
-    u32 mode = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
+// Whether the Pokémon icons use the four-Trainer multi layout, with three slots per Trainer.
+static BOOL BrRecord_IsMultiMode(BattleRecHeader *header) {
+    u32 modeIndex = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
 
-    switch (mode) {
-    case 0x10:
-    case 0x11:
-    case 0x12:
-    case 0x13:
-    case 0x16:
+    switch (modeIndex) {
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS_LAUNCHER:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT_LAUNCHER:
+    case BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI:
         return TRUE;
     default:
         return FALSE;
@@ -1385,12 +1392,12 @@ static BOOL BrRecord_IsSmallTeamMode(BattleRecHeader *header) {
 // Whether the video's battle mode has a counter to show, such as a Battle Subway streak
 static BOOL BrRecord_IsCounterMode(BattleRecHeader *header) {
     BOOL ret = FALSE;
-    u32 mode = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
+    u32 modeIndex = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
 
-    switch (mode) {
-    case 0x14:
-    case 0x15:
-    case 0x16:
+    switch (modeIndex) {
+    case BATTLE_REC_MODE_BATTLE_SUBWAY_SINGLE:
+    case BATTLE_REC_MODE_BATTLE_SUBWAY_DOUBLE:
+    case BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI:
         return TRUE;
     }
     return ret;

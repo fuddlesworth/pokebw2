@@ -33841,7 +33841,7 @@ overlays/ov268 0x021bbf10 BrRecord_CreateText
 overlays/ov268 0x021bbf58 BrRecord_DeleteText
 overlays/ov268 0x021bbf8c BrRecord_CreateConfirm
 overlays/ov268 0x021bc038 BrRecord_DeleteConfirm
-overlays/ov268 0x021bc08c BrRecord_IsSmallTeamMode
+overlays/ov268 0x021bc08c BrRecord_IsMultiMode
 overlays/ov268 0x021bc0c0 BrRecord_IsCounterMode
 overlays/ov268 0x021bc0e0 BrRecord_GetTrgChange
 overlays/ov268 0x021bc120 BrRecord_GetTrgPlay

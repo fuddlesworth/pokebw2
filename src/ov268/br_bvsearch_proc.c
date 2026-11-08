@@ -30,6 +30,16 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// The main display windows: each caption followed by its selected value.
+enum {
+    BR_BVSEARCH_WIN_MODE_CAPTION = 0,
+    BR_BVSEARCH_WIN_MODE_CHOICE = 1,
+    BR_BVSEARCH_WIN_POKEMON_CAPTION = 2,
+    BR_BVSEARCH_WIN_POKEMON_CHOICE = 3,
+    BR_BVSEARCH_WIN_AREA_CAPTION = 4,
+    BR_BVSEARCH_WIN_AREA_CHOICE = 5,
+};
+
 // The pages of the sub screen
 enum {
     BR_BVSEARCH_PAGE_MENU,
@@ -785,23 +795,24 @@ static void BrBvSearch_PrintMainDisplay(BrBvSearchWork *p_wk, BrBvSearchProcPara
     switch (menu) {
     case BR_BVSEARCH_MENU_MODE:
         if (p_param->search.mode != BR_NET_VIDEO_SEARCH_MODE_NONE) {
-            BrMsgWin_Print(p_wk->msgWin[1], msg, 0xcd + p_param->search.mode, font, BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_Print(p_wk->msgWin[BR_BVSEARCH_WIN_MODE_CHOICE], msg, 0xcd + p_param->search.mode, font,
+                           BR_BVSEARCH_PRINT_COLOR);
         } else {
-            BrMsgWin_Print(p_wk->msgWin[1], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_Print(p_wk->msgWin[BR_BVSEARCH_WIN_MODE_CHOICE], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
         }
         break;
     case BR_BVSEARCH_MENU_POKE:
         if (p_param->search.monsno != BR_NET_VIDEO_SEARCH_MONSNO_NONE) {
-            BrMsgWin_Print(p_wk->msgWin[3], g_PMLSpeciesNamesResident, p_param->search.monsno, font,
-                           BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_Print(p_wk->msgWin[BR_BVSEARCH_WIN_POKEMON_CHOICE], g_PMLSpeciesNamesResident,
+                           p_param->search.monsno, font, BR_BVSEARCH_PRINT_COLOR);
         } else {
-            BrMsgWin_Print(p_wk->msgWin[3], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_Print(p_wk->msgWin[BR_BVSEARCH_WIN_POKEMON_CHOICE], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
         }
         break;
     case BR_BVSEARCH_MENU_AREA:
         if (p_param->search.country == BR_NET_VIDEO_SEARCH_AREA_NONE &&
             p_param->search.area == BR_NET_VIDEO_SEARCH_AREA_NONE) {
-            BrMsgWin_Print(p_wk->msgWin[5], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_Print(p_wk->msgWin[BR_BVSEARCH_WIN_AREA_CHOICE], msg, 0x75, font, BR_BVSEARCH_PRINT_COLOR);
         } else {
             WordSet *wordSet = BrRes_GetWordSet(p_param->res);
             StrBuf *src = GFL_MsgDataLoadStrbufNew(msg, 0x18);
@@ -813,7 +824,7 @@ static void BrBvSearch_PrintMainDisplay(BrBvSearchWork *p_wk, BrBvSearchProcPara
                 loadCountryAreaToStrbuf(wordSet, 0, p_param->search.country, p_param->search.area);
             }
             GFL_WordSetFormatStrbuf(wordSet, str, src);
-            BrMsgWin_PrintBuf(p_wk->msgWin[5], str, font, BR_BVSEARCH_PRINT_COLOR);
+            BrMsgWin_PrintBuf(p_wk->msgWin[BR_BVSEARCH_WIN_AREA_CHOICE], str, font, BR_BVSEARCH_PRINT_COLOR);
             GFL_StrBufFree(src);
             GFL_StrBufFree(str);
         }

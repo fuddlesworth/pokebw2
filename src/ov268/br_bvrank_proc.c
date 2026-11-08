@@ -812,30 +812,30 @@ static void BrBvRankList_ScrollIcons(BrBvRankList *p_wk, u32 list, s8 slide, Hea
     GFL_ArcToolFree(handle);
 }
 
-// The Pokémon of a video. A battle mode with teams of three has them in the header's first and third groups of three
+// The Pokémon shown for a video; multi modes use the first and third groups of three slots.
 static void BrBvRank_GetPokeData(BrOutline *outline, BrBvRankPokeData *poke) {
     BattleRecHeader *header;
     u32 form;
-    BOOL isSmallTeam;
+    BOOL isMultiMode;
     u32 max;
-    u32 mode;
+    u32 modeIndex;
     int idx = 0;
     int i;
 
     MI_CpuFill8(poke, 0, sizeof(BrBvRankPokeData));
     header = &outline->header;
-    mode = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
-    switch (mode) {
-    case 0x10:
-    case 0x11:
-    case 0x12:
-    case 0x13:
-    case 0x16:
-        isSmallTeam = TRUE;
+    modeIndex = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);
+    switch (modeIndex) {
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS_LAUNCHER:
+    case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT_LAUNCHER:
+    case BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI:
+        isMultiMode = TRUE;
         max = 9;
         break;
     default:
-        isSmallTeam = FALSE;
+        isMultiMode = FALSE;
         max = 6;
         break;
     }
@@ -844,7 +844,7 @@ static void BrBvRank_GetPokeData(BrOutline *outline, BrBvRankPokeData *poke) {
         int species;
         u32 gender;
 
-        if (isSmallTeam && 3 <= i && i <= 5) {
+        if (isMultiMode && 3 <= i && i <= 5) {
             continue;
         }
         species = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_SPECIES, i);

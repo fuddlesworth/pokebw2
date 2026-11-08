@@ -14,6 +14,7 @@
 #include "app/battle_recorder/br_res.h"
 #include "app/battle_recorder/br_util.h"
 #include "constants/sound.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
@@ -545,7 +546,7 @@ static void BrBvSave_SeqSave(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         u32 ret = BattleRecOv_SaveVideo(p_wk->p_param->gameData, p_wk->select + 1, (u8)p_wk->p_param->isSecure,
                                         &p_wk->saveSeq, &p_wk->saveSeq2, p_wk->heapId);
 
-        if (ret == 2 || ret == 3) {
+        if (ret == SAVE_RESULT_OK || ret == SAVE_RESULT_NG) {
             p_wk->p_param->isSave = TRUE;
             p_wk->p_param->saveSlot = p_wk->select + 1;
             (*p_seq)++;

@@ -177,7 +177,7 @@ static void BrBvSend_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 
         BattleRec_LoadToCurrent(GameData_GetSaveControl(p_wk->p_param->gameData), HEAPID_BATTLE_RECORDER_SYS, &result,
                                 0);
-        if (result == 1) {
+        if (result == BATTLE_REC_LOAD_RESULT_VALID) {
             *p_seq = SEQ_UPLOAD_START;
         } else {
             BrSeq_SetNext(p_seqwk, BrBvSend_SeqFadeOut);
