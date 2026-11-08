@@ -52,6 +52,7 @@ CI compiles every C file for both versions; fork PRs must verify ROM matching lo
 | [Source files](docs/source-files.md) | Overlay files and boundary evidence |
 | [Nonmatching functions](docs/nonmatching-functions.md) | Remaining mismatches |
 | [Game data](docs/data.md) | Data formats and archives |
+| [Cells and animations as JSON](docs/cells-and-animations.md) | The sprites' cells, animations and MCSS files as JSON |
 | [Scripts](docs/scripts.md) | Trainer AI, battle animation and field scripts |
 | [Configs and ROMs](docs/configs.md) | dsd configuration and ROM structure |
 | [Tools](tools/README.md) | Tool reference |

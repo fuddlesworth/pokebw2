@@ -408,7 +408,12 @@ by the Nitro cell and multi-cell animation data. Optional female variants have `
 original 4-bit color indices, while `normal.pal` and `shiny.pal` are the palettes used by the game. Edit palette
 colors in the JASC `.pal` file; the PNG palette is for viewing in an image editor. The game assembles characters
 into sprites using the adjacent `*_cells.ncer` and `*_animations.nanr.lz11` Nitro resources, so a raw PNG sheet can look
-fragmented. Those resources are preserved as separate source files and can be replaced with edited Nitro data.
+fragmented. Those resources are preserved as separate source files and can be replaced with edited Nitro data, or
+with their JSON: `tools/data/nitro_cells.py edit FILE` replaces a cell, animation, multi-cell or MCSS file
+(`*_info.bin`, `MCSSBin` in `src/system/mcss.c`, whose quads place each part of `front.png`) with JSON that packs back
+to it byte for byte, `front_cells.ncer.json`, and the packer packs it from there; an unchanged one keeps the game's
+bytes and compression. The files stay the sources, since their JSON is about thirty times their size.
+[Cells and animations as JSON](cells-and-animations.md) describes the JSON.
 
 `icon.png` is a 32×64 two-frame icon, using a bank in
 `res/pokemon/shared/icon_palettes.pal` (the PC boxes use `icon_palettes_box.pal`); the code in
@@ -768,6 +773,7 @@ the same directories. A sprite's files:
   warns about it.
 - `cells.ncer`, `animations.nanr`, `multi_cells.nmcr` and `multi_animations.nmar`, the battle sprite's Nitro cells and
   animations, uncompressed, which Nitro editors open; the packer compresses the animations as the game loads them.
+  Each may be replaced by its JSON (`nitro_cells.py edit`, [Cells and animations as JSON](cells-and-animations.md)).
 - `mcss.bin`, the battle sprite system's data (`mcss.c`), which the game reads as it is stored.
 
 To add a sprite, add its constant to the end of its list and its directory, as a copy of a sprite to start from, and
@@ -1476,7 +1482,8 @@ after their constant where `generated/narc_<archive>.txt` names them (`professor
 - the rest are the members themselves, decompressed: screens (`.nscr`), which place the tiles, cells (`.ncer`), cell
   animations (`.nanr`), multi-cells (`.nmcr`, `.nmar`), 3D animations (`.nsbca`, `.nsbta`, `.nsbma`, `.nsbtp`,
   `.nsbva`), as the field props keep theirs, a font or a particle resource that the converter doesn't take (`.nftr`,
-  `.spa`), and other data (`.bin`). Tools such as NitroPaint edit them.
+  `.spa`), and other data (`.bin`). Tools such as NitroPaint edit them, and a cell, animation or multi-cell file may
+  be replaced by its JSON, `01.ncer.json` (`nitro_cells.py edit`, [Cells and animations as JSON](cells-and-animations.md)).
 
 `archive.json` lists the members that the game stores LZ-compressed (`{"compressed": {"05.png": "lz10"}}`), which the
 packer compresses again: an edited one as a valid stream of literals, an eighth larger than its data. A member that

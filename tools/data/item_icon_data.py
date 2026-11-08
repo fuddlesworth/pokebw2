@@ -9,8 +9,8 @@ The archive's members are the constants of generated/item_icons.txt, in its orde
 icon.png, 32 by 32, and a palette (ITEM_ICON_PALETTE_POTION) icon.pal, a JASC palette of 16 colors, 0 transparent, in
 the directory of the item they are named after, res/items/potion/; the Wonder Launcher's list icons
 (ITEM_ICON_POTION_LAUNCHER) are launcher_icon.png and launcher_icon.pal. res/items/shared/ has the icons' Nitro
-animations and cells, the return arrow's icon, and the icons that no item shows, in unused_icons/. pml_item.c's tables
-give each item its icon and palette, and an icon can go with several palettes, as the TMs' disc does, so an item can
+animations and cells (or their JSON, nitro_cells.py edit), the return arrow's icon, and the icons that no item shows,
+in unused_icons/. pml_item.c's tables give each item its icon and palette, and an icon can go with several palettes, as the TMs' disc does, so an item can
 have only its icon.pal. An icon's PNG shows it with the palette of the first item that has it, but only its indices
 count, so keep them in an image editor's indexed mode; the palette files set the colors.
 
@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.data.gen_constants import ordered_names  # noqa: E402
 from tools.data.narc import read_narc, write_narc  # noqa: E402
+from tools.data.nitro_cells import json_path, packed_json  # noqa: E402
 from tools.data.nitro_2d import (character_pixels, character_resource, color5, palette_colors,  # noqa: E402
                                  palette_resource, read_indexed_png, read_palette, write_indexed_png, write_palette)
 
@@ -105,6 +106,12 @@ def check(condition: bool, path: Path, message: str):
 
 def build(path: Path, kind: str) -> tuple[bytes, object]:
     """Returns a member built from its file, and what it shows, to find an original that shows the same."""
+    if kind == "raw" and json_path(path).is_file():
+        try:
+            data = packed_json(path)
+        except ValueError as error:
+            raise SystemExit(str(error)) from error
+        return data, data
     check(path.is_file(), path, "missing; every constant of item_icons.txt needs its file")
     if kind == "palette":
         colors = read_palette(path)

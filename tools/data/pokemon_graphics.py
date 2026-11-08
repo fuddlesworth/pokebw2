@@ -6,7 +6,9 @@
 
 Images are indexed PNGs: their pixel indices select colors in the adjacent
 JASC palette. Nitro cell, animation, and other binary resources remain separate
-files so every archive member has a source without inventing lossy metadata.
+files so every archive member has a source without inventing lossy metadata. A
+cell, animation or MCSS file may be replaced by its JSON (nitro_cells.py edit),
+which packs as the game's file where it is unchanged.
 """
 
 import json
@@ -18,8 +20,9 @@ from pathlib import Path
 
 from narc import read_narc, write_narc
 from species_data import directory
-from nitro_2d import (character_pixels, palette_colors, palette_indices, patch_characters, patch_palette,
-                      read_indexed_png, read_palette, write_indexed_png, write_palette)
+from nitro_2d import (character_pixels, compress_literals, decompress, palette_colors, palette_indices,
+                      patch_characters, patch_palette, read_indexed_png, read_palette, write_indexed_png, write_palette)
+from nitro_cells import has_source, packed_json
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -275,14 +278,20 @@ def pack(root, game, output):
         path, kind, options = source_file(root, archive_name, index)
         if not original:
             # The game has no file here, such as a female sprite of a species that has none
-            if path.exists():
+            if has_source(path):
                 raise ValueError(f"{path}: the archive has no file for this, so it can't be packed")
             result.append(original)
             continue
-        if archive_name == "a/0/5/1" and not path.exists() and path.parent.name == "musical":
+        if archive_name == "a/0/5/1" and not has_source(path) and path.parent.name == "musical":
             path = path.parent.parent / path.name
         if kind == "raw":
-            edited = path.read_bytes()
+            built = packed_json(path)
+            if built is None:
+                edited = path.read_bytes()
+            elif path.name.endswith(".lz11"):
+                edited = original if decompress(original) == built else compress_literals(built, 0x11)
+            else:
+                edited = built
         elif kind == "palette":
             edited_colors = read_palette(path)
             original_colors = palette_colors(original)

@@ -14,7 +14,8 @@ files each. a/0/6/3 is a copy of the back sprites' archive. A sprite's files:
   Only the sprites that screens outside battle show have a single.png; without one the packer writes an empty
   picture, as the game has for the others.
 - cells.ncer, animations.nanr, multi_cells.nmcr and multi_animations.nmar: the Nitro cells and animations of the
-  battle sprite, uncompressed, as Nitro editors open them.
+  battle sprite, uncompressed, as Nitro editors open them. Each may be replaced by its JSON, cells.ncer.json and so on
+  (nitro_cells.py edit).
 - mcss.bin: the battle sprite system's data (mcss.c), which the game reads as it is stored.
 
 To add a sprite, add its constant and its directory; tr_tool.c's TRAINER_CLASS_RESOURCES gives a class its sprite.
@@ -27,6 +28,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.data.gen_constants import ordered_names  # noqa: E402
 from tools.data.narc import read_narc, write_narc  # noqa: E402
+from tools.data.nitro_cells import is_cells_file, json_path, packed_json  # noqa: E402
 from tools.data.nitro_2d import (SINGLE_CELL_80, character_pixels, character_resource, color5,  # noqa: E402
                                  compress_literals, decompress, palette_colors, palette_indices, palette_resource,
                                  read_indexed_png, read_palette, write_indexed_png, write_palette)
@@ -115,6 +117,12 @@ def build(path: Path, kind: str, colors: list) -> bytes:
         width = height = SINGLE_SIZE
         pixels = bytes(width * height)
     else:
+        if kind not in ("single", "sheet") and is_cells_file(path) and json_path(path).is_file():
+            try:
+                data = packed_json(path)
+            except ValueError as error:
+                raise SystemExit(str(error)) from error
+            return compress_literals(data, 0x11) if kind == "lz" else data
         check(path.is_file(), path, "missing; every sprite needs this file (only single.png is optional)")
         if kind not in ("single", "sheet"):
             data = path.read_bytes()

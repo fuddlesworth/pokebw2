@@ -55,7 +55,8 @@ generated/narc_<archive>.txt names it, as narc_intro.txt does:
 - a sound file (RIFF), which the code plays itself, is its .wav file.
 - anything else is the member itself, decompressed, named by its kind: `.nscr` (screens), `.ncer` (cells), `.nanr`
   (cell animations), `.nmcr`/`.nmar` (multi-cells), `.nsbca`/`.nsbta`/`.nsbma`/`.nsbtp`/`.nsbva` (3D animations),
-  `.nftr` (fonts), `.spa` (particle resources), or `.bin`.
+  `.nftr` (fonts), `.spa` (particle resources), or `.bin`. A cell, animation or multi-cell file may be replaced by its
+  JSON, `01.ncer.json` (nitro_cells.py edit), which packs as the member it stands for.
 
 archive.json, where there is one, lists the members the game stores LZ-compressed, `{"compressed": {"03.nscr": "lz10"}}`;
 the packer compresses them again, an edited one as a valid stream of literals that is an eighth larger than its data.
@@ -87,6 +88,7 @@ from tools.data.narc import read_narc, write_narc  # noqa: E402
 from tools.data.nitro_2d import (bitmap_pixels, compress_literals, decompress, palette_colors,  # noqa: E402
                                  palette_resource, pixels_bitmap, read_indexed_png, read_palette, read_rgba_apng,
                                  read_rgba_png, write_indexed_png, write_palette, write_rgba_apng, write_rgba_png)
+from tools.data.nitro_cells import is_cells_file, packed_json  # noqa: E402
 from tools.data.nitro_font import FontError, build_font_directory, export_font  # noqa: E402
 from tools.data.nitro_particles import ParticleError, build_directory as build_particles, export_particles  # noqa: E402
 from field_prop_model_data import edit_model, glb_fields  # noqa: E402
@@ -617,6 +619,10 @@ def member_files(directory: Path, game: str, first: int = 0) -> list[tuple[str, 
         for path in folder.iterdir() if folder.is_dir() else []:
             if path.is_file() and path.name not in ("archive.json", MOVIE) or path.is_dir() and not (
                     folder == directory and path.name in VERSIONS):
+                # A cell file's JSON is the member the file would be, which build_member packs from it
+                stands_for = path.with_name(path.name.removesuffix(".json"))
+                if path.name.endswith(".json") and is_cells_file(stands_for):
+                    path = stands_for
                 files[path.name] = path
     names = {name: number for number, name in member_names(directory).items()}
     names |= {name.split(".")[0]: number for name, number in names.copy().items()
@@ -661,6 +667,13 @@ def build_member(path: Path, original: bytes | None, bitmaps: list[int] | None =
         return build_characters(path, original if original and original[:4] == b"RGCN" else None)
     if path.suffix == ".pal":
         return build_palette(path, original if original and original[:4] == b"RLCN" else None)
+    if is_cells_file(path):
+        try:
+            built = packed_json(path)
+        except ValueError as error:
+            raise GraphicsError(str(error)) from error
+        if built is not None:
+            return built
     return path.read_bytes()
 
 
