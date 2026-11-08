@@ -85,10 +85,16 @@ typedef struct {
     u16 unk4;
 } ConfirmDialogSetup;
 
+// The yes choice returned by ConfirmDialog_Update; no/B and waiting use BMPMENU_CANCEL and BMPMENU_NULL.
+enum {
+    CONFIRM_DIALOG_RESULT_YES = 0,
+};
+
 // A yes/no menu in a window of its own, with the frame at frameChar and framePalette and the cursor on cursorPos
 BmpMenu *ShopUI_CreateConfirmDialog(const ConfirmDialogSetup *setup, u16 frameChar, u8 framePalette, u8 cursorPos,
                                     HeapID heapId);
-// Returns 0 for yes and BMPMENU_CANCEL for no or B, freeing the menu, and BMPMENU_NULL until then
+// Returns CONFIRM_DIALOG_RESULT_YES for yes and BMPMENU_CANCEL for no or B, freeing the menu,
+// and BMPMENU_NULL until then
 u32 ConfirmDialog_Update(BmpMenu *menu);
 // Whether the options are printed, copying the window's characters once they are
 BOOL ConfirmDialog_IsPrinted(BmpMenu *menu);

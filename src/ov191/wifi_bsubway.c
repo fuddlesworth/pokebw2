@@ -1406,7 +1406,7 @@ static u32 WifiBSubway_DownloadTrainMain(WifiBSubwayWork *wk, HeapID heapId) {
     case TRAIN_WAIT_CANCEL_MENU: {
         u32 result = WifiBSubwayView_UpdateYesNo(&wk->view);
 
-        if (result == 0) {
+        if (result == CONFIRM_DIALOG_RESULT_YES) {
             return MODE_RESULT_CANCEL;
         } else if (result == BMPMENU_CANCEL) {
             wk->seq = TRAIN_PRINT_ROOM_PROMPT;
@@ -1556,7 +1556,7 @@ static u32 WifiBSubway_DownloadLeadersMain(WifiBSubwayWork *wk, HeapID heapId) {
     case LEADERS_WAIT_CANCEL_MENU: {
         u32 result = WifiBSubwayView_UpdateYesNo(&wk->view);
 
-        if (result == 0) {
+        if (result == CONFIRM_DIALOG_RESULT_YES) {
             return MODE_RESULT_CANCEL;
         } else if (result == BMPMENU_CANCEL) {
             WifiBSubwayRoom_Init(&wk->room);

@@ -18731,8 +18731,8 @@ overlays/ov162 0x0219e4b4 StartMenu_InitVRAM
 overlays/ov162 0x0219e4c8 StartMenu_InitBG
 overlays/ov162 0x0219e600 StartMenu_FreeBG
 overlays/ov162 0x0219e644 StartMenu_LoadBGGraphics
-overlays/ov162 0x0219e704 StartMenu_InitUnk16C
-overlays/ov162 0x0219e740 StartMenu_FreeUnk16C
+overlays/ov162 0x0219e704 StartMenu_InitSelectionPaletteAnim
+overlays/ov162 0x0219e740 StartMenu_FreeSelectionPaletteAnim
 overlays/ov162 0x0219e750 StartMenu_InitMsg
 overlays/ov162 0x0219e7c4 StartMenu_FreeMsg
 overlays/ov162 0x0219e804 StartMenu_InitWindows

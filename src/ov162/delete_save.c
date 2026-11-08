@@ -177,7 +177,7 @@ static void DeleteSave_PrintQuestion(DeleteSaveWork *wk, u32 *state) {
 
 static void DeleteSave_Ask(DeleteSaveWork *wk, u32 *state) {
     switch (ConfirmDialog_Update(wk->dialog)) {
-    case 0:
+    case CONFIRM_DIALOG_RESULT_YES:
         DeleteSave_Print(wk, MSG_NO_WAY_TO_RECOVER);
         *state = STATE_PRINT_WARNING;
         break;
@@ -197,7 +197,7 @@ static void DeleteSave_PrintWarning(DeleteSaveWork *wk, u32 *state) {
 
 static void DeleteSave_AskAgain(DeleteSaveWork *wk, u32 *state) {
     switch (ConfirmDialog_Update(wk->dialog)) {
-    case 0:
+    case CONFIRM_DIALOG_RESULT_YES:
         DeleteSave_Print(wk, MSG_DELETING);
         *state = STATE_DELETE;
         break;

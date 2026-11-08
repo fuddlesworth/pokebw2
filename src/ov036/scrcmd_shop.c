@@ -1020,7 +1020,7 @@ static BOOL ShopUI_Update(GameSystem *gsys, ShopUIWork *wk, u32 shopId, u32 subI
         if (result == BMPMENU_NULL) {
             break;
         }
-        if (result == 0) {
+        if (result == CONFIRM_DIALOG_RESULT_YES) {
             if (wk->listMode == SHOP_LIST_MOVES) {
                 wk->state = SHOP_UI_SEQ_BUY_MOVE;
             } else {

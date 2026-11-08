@@ -724,7 +724,7 @@ static void EggDemo_UpdateDialog(EggDemoParam *param, EggDemoWork *wk) {
     case DIALOG_OPEN:
         result = ConfirmDialog_Update(wk->dialog);
         if (result != BMPMENU_NULL) {
-            wk->answer = result == 0 ? ANSWER_YES : ANSWER_NO;
+            wk->answer = result == CONFIRM_DIALOG_RESULT_YES ? ANSWER_YES : ANSWER_NO;
             wk->dialogState = DIALOG_ANSWERED;
         }
         break;

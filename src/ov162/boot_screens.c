@@ -128,7 +128,7 @@ static BOOL BootScreens_Main(GameProc *proc, u32 *state, void *param, void *work
         GFL_BGSysLoadNCLRDefault(ARCID_TITLE, 11, 4, 0, 0, HEAPID_TITLE);
         GFL_BGSysSetBGEnabled(1, TRUE);
         GFL_BGSysSetBGEnabled(5, TRUE);
-        GFL_BGSysSetDisplayLayout(1);
+        GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_MAIN_SUB);
         GFL_BGSysEnableEngines();
         GFL_FadeSet(FADE_ENGINE_A_WHITE | FADE_ENGINE_B_WHITE, 16, brightnessEnd, 2);
         wk->state = STATE_WAIT_LOGOS_FADE_IN;
@@ -174,7 +174,7 @@ static BOOL BootScreens_Main(GameProc *proc, u32 *state, void *param, void *work
         GFL_BGSysLoadScr(5);
         GFL_BGSysSetBGEnabled(1, TRUE);
         GFL_BGSysSetBGEnabled(5, TRUE);
-        GFL_BGSysSetDisplayLayout(1);
+        GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_MAIN_SUB);
         GFL_BGSysEnableEngines();
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 2);
         wk->state = STATE_WAIT_COPYRIGHT_FADE_IN;

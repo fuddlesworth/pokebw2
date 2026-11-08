@@ -13,6 +13,13 @@
 #define KEY_INFO_DIFFICULTY_COUNT 3
 #define KEY_INFO_CHAMBER_COUNT 3
 
+// The selected chamber beyond the mystery door, as returned by KeyInfo_GetChamberKey.
+enum {
+    KEY_INFO_CHAMBER_ROCK_PEAK = 0,
+    KEY_INFO_CHAMBER_IRON,
+    KEY_INFO_CHAMBER_ICEBERG,
+};
+
 struct KeyInfoSave {
     // The keys that are unlocked, and those whose effect is enabled
     u32 unlocked[KEY_INFO_KEY_COUNT];
@@ -49,7 +56,7 @@ void KeyInfo_SetChamberKey(KeyInfoSave *keyInfo, u32 chamber);
 u32 KeyInfo_GetCityKey(KeyInfoSave *keyInfo);
 // The difficulty that the keys set, GAME_DIFFICULTY_*
 u32 GetGameDifficulty(KeyInfoSave *keyInfo);
-// 1 or 2 if a key that opens a chamber is set
+// The selected KEY_INFO_CHAMBER_*, defaulting to ROCK_PEAK.
 u32 KeyInfo_GetChamberKey(KeyInfoSave *keyInfo);
 // The key information and the Memory Link's data in the key system's data that ov331 reads
 KeyInfoSave *KeySystemData_GetKeyInfo(KeySystemData *data);

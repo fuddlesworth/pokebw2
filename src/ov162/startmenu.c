@@ -148,6 +148,65 @@ enum {
     ITEM_PALETTE_BLINK,
 };
 
+// The cleanup flow waits until the network is no longer initialized.
+enum {
+    FREE_BEGIN = 0,
+    FREE_WAIT_NET,
+};
+
+// The two flashes of the selected item before entering a menu flow.
+enum {
+    BLINK_HIGHLIGHT_FIRST = 0,
+    BLINK_NORMAL_FIRST,
+    BLINK_HIGHLIGHT_SECOND,
+    BLINK_NORMAL_SECOND,
+    BLINK_END,
+};
+
+// The continue flow asks whether the C-Gear should be on.
+enum {
+    CONTINUE_CHECK_CGEAR = 0,
+    CONTINUE_SHOW_CGEAR_WARNING,
+    CONTINUE_WAIT_CGEAR_WARNING,
+    CONTINUE_ASK_CGEAR_ON,
+    CONTINUE_CLOSE_CGEAR_WARNING,
+    CONTINUE_WAIT_WIRELESS_MESSAGE,
+    CONTINUE_WAIT_WIRELESS_MESSAGE_INPUT,
+    CONTINUE_WAIT_CGEAR_OFF_QUESTION,
+    CONTINUE_ASK_CGEAR_OFF,
+};
+
+// The new-game warning, when a save already exists.
+enum {
+    NEW_GAME_CHECK_SAVE = 0,
+    NEW_GAME_WAIT_WARNING,
+    NEW_GAME_WAIT_INPUT,
+};
+
+// The key notice refreshes the list after its message is read.
+enum {
+    KEY_NOTICE_PRINT = 0,
+    KEY_NOTICE_WAIT_PRINT,
+    KEY_NOTICE_CLEAR_MESSAGE,
+    KEY_NOTICE_REFRESH_ITEMS,
+    KEY_NOTICE_SHOW_ITEMS,
+};
+
+// The connection-settings notice shown on a DSi.
+enum {
+    WFC_NOTICE_OPEN = 0,
+    WFC_NOTICE_WAIT_PRINT,
+    WFC_NOTICE_WAIT_INPUT,
+};
+
+// The broken-save flow prints each applicable block message.
+enum {
+    BROKEN_SAVE_HIDE_MENU = 0,
+    BROKEN_SAVE_PRINT_NEXT,
+    BROKEN_SAVE_WAIT_MESSAGE,
+    BROKEN_SAVE_RESTORE_MENU,
+};
+
 typedef struct {
     u16 screenFile;
     u16 rows;
@@ -172,7 +231,7 @@ typedef struct {
     SaveControl *save;
     PlayerInfo *playerInfo;
     TrainerGameInfoSave *gameInfo;
-    CGearSettings *unkC;
+    CGearSettings *cgearSettings;
     EventWork *eventWork;
     KeyInfoSave *keyInfo;
     TCB *vblankTask;
@@ -198,7 +257,7 @@ typedef struct {
     u16 *itemScreens[ITEM_COUNT];
     // Makes a screen for each item from the window with its name, which BG 1 shows
     BGWinFrame *textScreens;
-    BlinkPalAnm *unk16C;
+    BlinkPalAnm *selectionPaletteAnim;
     u8 items[ITEM_COUNT];
     u8 cursor;
     u8 selection;
@@ -243,8 +302,8 @@ static void StartMenu_InitVRAM(void);
 static void StartMenu_InitBG(void);
 static void StartMenu_FreeBG(void);
 static void StartMenu_LoadBGGraphics(void);
-static void StartMenu_InitUnk16C(StartMenuWork *wk);
-static void StartMenu_FreeUnk16C(StartMenuWork *wk);
+static void StartMenu_InitSelectionPaletteAnim(StartMenuWork *wk);
+static void StartMenu_FreeSelectionPaletteAnim(StartMenuWork *wk);
 static void StartMenu_InitMsg(StartMenuWork *wk);
 static void StartMenu_FreeMsg(StartMenuWork *wk);
 static void StartMenu_InitWindows(StartMenuWork *wk);
@@ -310,8 +369,21 @@ static const ItemLayout sItemLayouts[ITEM_COUNT] = {
 };
 
 static const BrokenSaveMessage sBrokenSaveMessages[] = {
-    { 0x2, 38 },   { 0x3c, 39 },    { 0x40, 40 },     { 0x80, 41 },     { 0x100, 42 },     { 0x200, 43 },
-    { 0x400, 44 }, { 0x7f800, 46 }, { 0x380000, 48 }, { 0x800000, 45 }, { 0x1000000, 47 },
+    { SAVE_CONTROL_ERROR_BROKEN, 38 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_BATTLE_REC_0) | SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_BATTLE_REC_1) |
+          SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_BATTLE_REC_2) | SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_BATTLE_REC_3),
+      39 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_CGEAR_PICTURE), 40 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_BATTLE_EXAMINATION), 41 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_MUSICAL_DIST), 42 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_POKEDEX_SKIN), 43 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_HALL_OF_FAME), 44 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_POKEWOOD_0) * 0xff, 46 },
+    { SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_TOURNAMENT_0) | SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_TOURNAMENT_1) |
+          SAVE_CONTROL_ERROR_EXTRA(SAVE_EXTRA_ID_TOURNAMENT_2),
+      48 },
+    { SAVE_CONTROL_ERROR_GIFTS_BROKEN, 45 },
+    { SAVE_CONTROL_ERROR_KEYS_BROKEN, 47 },
 };
 
 static const ClActorSetup sPlayerActorSetup = { 48, 52, 1, 0, 1 };
@@ -338,7 +410,7 @@ static BOOL StartMenu_Init(GameProc *proc, u32 *state, void *param, void *work) 
     wk->save = SaveControl_GetInstance();
     wk->playerInfo = SaveControl_GetPlayerInfo(wk->save);
     wk->gameInfo = getTrainerGameInfoAddress(wk->save);
-    wk->unkC = CGearSettings_GetFromSave(wk->save);
+    wk->cgearSettings = CGearSettings_GetFromSave(wk->save);
     wk->eventWork = getConstDataBlock(wk->save);
     if (SaveControl_IsDataAlreadyPresent(wk->save)) {
         wk->keyInfo = getKeyInfoSaveBlk(wk->save);
@@ -428,7 +500,7 @@ static u32 StartMenu_Setup(StartMenuWork *wk) {
     GFL_BGSysSetEnabledBGsB(0);
     G2_BlendNone();
     G2S_BlendNone();
-    GFL_BGSysSetDisplayLayout(1);
+    GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_MAIN_SUB);
     StartMenu_InitVRAM();
     StartMenu_InitBG();
     StartMenu_LoadBGGraphics();
@@ -439,7 +511,7 @@ static u32 StartMenu_Setup(StartMenuWork *wk) {
     StartMenu_InitObj(wk);
     StartMenu_InitTextScreens(wk);
     StartMenu_DrawItems(wk);
-    StartMenu_InitUnk16C(wk);
+    StartMenu_InitSelectionPaletteAnim(wk);
     StartMenu_SetBlend();
     StartMenu_AddVBlankTask(wk);
     if (SaveControl_IsDataAlreadyPresent(wk->save) == TRUE) {
@@ -450,12 +522,12 @@ static u32 StartMenu_Setup(StartMenuWork *wk) {
 
 static u32 StartMenu_Free(StartMenuWork *wk) {
     switch (wk->seq) {
-    case 0:
+    case FREE_BEGIN:
         wk->seq++;
-    case 1:
+    case FREE_WAIT_NET:
         if (GFL_NetIsNotInitialized()) {
             StartMenu_RemoveVBlankTask(wk);
-            StartMenu_FreeUnk16C(wk);
+            StartMenu_FreeSelectionPaletteAnim(wk);
             StartMenu_FreeTextScreens(wk);
             StartMenu_FreeObj(wk);
             StartMenu_FreeWindows(wk);
@@ -483,8 +555,8 @@ static u32 StartMenu_WaitWipe(StartMenuWork *wk) {
 // Blinks the selected item before going on
 static u32 StartMenu_Blink(StartMenuWork *wk) {
     switch (wk->blinkSeq) {
-    case 0:
-    case 2:
+    case BLINK_HIGHLIGHT_FIRST:
+    case BLINK_HIGHLIGHT_SECOND:
         if (wk->blinkWait == 0) {
             StartMenu_SetItemPalette(wk, wk->items[wk->cursor], StartMenu_GetScreenRow(wk, wk->cursorRow),
                                      ITEM_PALETTE_BLINK);
@@ -494,8 +566,8 @@ static u32 StartMenu_Blink(StartMenuWork *wk) {
             wk->blinkWait--;
         }
         break;
-    case 1:
-    case 3:
+    case BLINK_NORMAL_FIRST:
+    case BLINK_NORMAL_SECOND:
         if (wk->blinkWait == 0) {
             StartMenu_SetItemPalette(wk, wk->items[wk->cursor], StartMenu_GetScreenRow(wk, wk->cursorRow),
                                      ITEM_PALETTE_NORMAL);
@@ -505,7 +577,7 @@ static u32 StartMenu_Blink(StartMenuWork *wk) {
             wk->blinkWait--;
         }
         break;
-    case 4:
+    case BLINK_END:
         return wk->blinkNextState;
     }
     return STATE_BLINK;
@@ -534,7 +606,7 @@ static u32 StartMenu_WaitPrint(StartMenuWork *wk) {
 }
 
 static u32 StartMenu_Select(StartMenuWork *wk) {
-    BlinkPalAnm_Main(wk->unk16C);
+    BlinkPalAnm_Main(wk->selectionPaletteAnim);
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         switch (wk->items[wk->cursor]) {
@@ -592,7 +664,7 @@ static u32 StartMenu_Scroll(StartMenuWork *wk) {
     if (wk->scrollFrames == SCROLL_FRAMES) {
         wk->scrollFrames = 0;
         wk->scrollSpeed = 0;
-        BlinkPalAnm_InitAnime(wk->unk16C);
+        BlinkPalAnm_InitAnime(wk->selectionPaletteAnim);
         StartMenu_SetItemPalette(wk, wk->items[wk->cursor], StartMenu_GetScreenRow(wk, wk->cursorRow),
                                  ITEM_PALETTE_SELECTED);
         return STATE_SELECT;
@@ -613,18 +685,18 @@ static u32 StartMenu_Scroll(StartMenuWork *wk) {
 // Asks whether to start the C-Gear, if it was on when the game was saved
 static u32 StartMenu_Continue(StartMenuWork *wk) {
     switch (wk->seq) {
-    case 0:
+    case CONTINUE_CHECK_CGEAR:
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2, FALSE);
         StartMenu_SetItemActorsVisible(wk, FALSE);
-        if (CGearSettings_IsOn(wk->unkC) == 0) {
+        if (CGearSettings_IsOn(wk->cgearSettings) == FALSE) {
             wk->cgearOff = TRUE;
-            wk->seq = 0;
+            wk->seq = FREE_BEGIN;
             return StartMenu_WipeOut(wk, STATE_FREE);
         }
         wk->wait = 8;
         wk->seq++;
         break;
-    case 1:
+    case CONTINUE_SHOW_CGEAR_WARNING:
         if (wk->wait != 0) {
             wk->wait--;
             break;
@@ -634,60 +706,60 @@ static u32 StartMenu_Continue(StartMenuWork *wk) {
         StartMenu_OpenCGearWarning(wk);
         wk->seq++;
         break;
-    case 2:
+    case CONTINUE_WAIT_CGEAR_WARNING:
         if (StartMenu_UpdatePrint(wk) == FALSE) {
             StartMenu_OpenYesNo(wk);
             wk->seq++;
         }
         break;
-    case 3:
+    case CONTINUE_ASK_CGEAR_ON:
         switch (ConfirmDialog_Update(wk->dialog)) {
-        case 0:
+        case CONFIRM_DIALOG_RESULT_YES:
             if (isWirelessEnabled() == FALSE) {
                 StartMenu_Print(wk, 27);
-                wk->seq = 5;
+                wk->seq = CONTINUE_WAIT_WIRELESS_MESSAGE;
             } else {
                 wk->cgearOff = FALSE;
-                wk->seq = 4;
+                wk->seq = CONTINUE_CLOSE_CGEAR_WARNING;
             }
             break;
         case BMPMENU_CANCEL:
             StartMenu_Print(wk, 37);
-            wk->seq = 7;
+            wk->seq = CONTINUE_WAIT_CGEAR_OFF_QUESTION;
             break;
         }
         break;
-    case 4:
+    case CONTINUE_CLOSE_CGEAR_WARNING:
         StartMenu_CloseCGearWarning(wk);
         StartMenu_ClearMessage(wk);
-        wk->seq = 0;
+        wk->seq = FREE_BEGIN;
         return StartMenu_WipeOut(wk, STATE_FREE);
-    case 5:
+    case CONTINUE_WAIT_WIRELESS_MESSAGE:
         if (StartMenu_UpdatePrint(wk) == FALSE) {
             wk->seq++;
         }
         break;
-    case 6:
+    case CONTINUE_WAIT_WIRELESS_MESSAGE_INPUT:
         if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
             wk->cgearOff = TRUE;
-            wk->seq = 4;
+            wk->seq = CONTINUE_CLOSE_CGEAR_WARNING;
         }
         break;
-    case 7:
+    case CONTINUE_WAIT_CGEAR_OFF_QUESTION:
         if (StartMenu_UpdatePrint(wk) == FALSE) {
             StartMenu_OpenYesNo(wk);
             wk->seq++;
         }
         break;
-    case 8:
+    case CONTINUE_ASK_CGEAR_OFF:
         switch (ConfirmDialog_Update(wk->dialog)) {
-        case 0:
+        case CONFIRM_DIALOG_RESULT_YES:
             wk->cgearOff = TRUE;
-            wk->seq = 4;
+            wk->seq = CONTINUE_CLOSE_CGEAR_WARNING;
             break;
         case BMPMENU_CANCEL:
             StartMenu_Print(wk, 36);
-            wk->seq = 2;
+            wk->seq = CONTINUE_WAIT_CGEAR_WARNING;
             break;
         }
         break;
@@ -700,26 +772,26 @@ static u32 StartMenu_Continue(StartMenuWork *wk) {
 // Warns that a new game cannot be saved over the saved one
 static u32 StartMenu_NewGame(StartMenuWork *wk) {
     switch (wk->seq) {
-    case 0:
+    case NEW_GAME_CHECK_SAVE:
         if (wk->items[0] == ITEM_NEW_GAME) {
             wk->selection = ITEM_NEW_GAME;
-            wk->seq = 0;
+            wk->seq = FREE_BEGIN;
             return StartMenu_WipeOut(wk, STATE_FREE);
         }
         StartMenu_OpenNewGameWarning(wk);
         wk->seq++;
         break;
-    case 1:
+    case NEW_GAME_WAIT_WARNING:
         if (PrintQueue_IsEmpty(wk->printQueue) == TRUE) {
             wk->seq++;
         }
         break;
-    case 2:
+    case NEW_GAME_WAIT_INPUT:
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             StartMenu_CloseNotice(wk, TRUE);
             wk->selection = ITEM_NEW_GAME;
-            wk->seq = 0;
+            wk->seq = FREE_BEGIN;
             return StartMenu_WipeOut(wk, STATE_FREE);
         }
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
@@ -740,29 +812,29 @@ static u32 StartMenu_NewGame(StartMenuWork *wk) {
 // Tells that Unova Link can now send the keys
 static u32 StartMenu_KeyNotice(StartMenuWork *wk) {
     switch (wk->seq) {
-    case 0:
+    case KEY_NOTICE_PRINT:
         StartMenu_Print(wk, 29);
         wk->seq++;
         break;
-    case 1:
+    case KEY_NOTICE_WAIT_PRINT:
         if (StartMenu_UpdatePrint(wk) == FALSE) {
             wk->seq++;
         }
         break;
-    case 2:
+    case KEY_NOTICE_CLEAR_MESSAGE:
         StartMenu_ClearMessage(wk);
         wk->seq++;
         break;
-    case 3:
+    case KEY_NOTICE_REFRESH_ITEMS:
         TrainerGameInfo_AddStartMenuItemFlags(wk->gameInfo, 0, 1);
         StartMenu_InitItems(wk);
         StartMenu_DrawItems(wk);
         GFL_BGSysMoveBGReq(1, BG_MOVE_SET_Y, wk->scrollY);
         GFL_BGSysMoveBGReq(2, BG_MOVE_SET_Y, wk->scrollY);
-        BlinkPalAnm_InitAnime(wk->unk16C);
+        BlinkPalAnm_InitAnime(wk->selectionPaletteAnim);
         wk->seq++;
         break;
-    case 4:
+    case KEY_NOTICE_SHOW_ITEMS:
         StartMenu_SetItemActorsVisible(wk, TRUE);
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2, TRUE);
         wk->seq = 0;
@@ -775,16 +847,16 @@ static u32 StartMenu_KeyNotice(StartMenuWork *wk) {
 static u32 StartMenu_WFCSettings(StartMenuWork *wk) {
     if (isRunningOnDSi() == TRUE) {
         switch (wk->seq) {
-        case 0:
+        case WFC_NOTICE_OPEN:
             StartMenu_OpenDSiNotice(wk);
             wk->seq++;
             break;
-        case 1:
+        case WFC_NOTICE_WAIT_PRINT:
             if (PrintQueue_IsEmpty(wk->printQueue) == TRUE) {
                 wk->seq++;
             }
             break;
-        case 2:
+        case WFC_NOTICE_WAIT_INPUT:
             if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
                 GFL_SndSEPlay(SEQ_SE_DECIDE1);
                 StartMenu_CloseNotice(wk, FALSE);
@@ -806,18 +878,18 @@ static u32 StartMenu_WFCSettings(StartMenuWork *wk) {
 // Tells about each part of the save data that was erased
 static u32 StartMenu_BrokenSave(StartMenuWork *wk) {
     switch (wk->seq) {
-    case 0:
+    case BROKEN_SAVE_HIDE_MENU:
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_BG3 | GX_PLANEMASK_OBJ, FALSE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_BG0 | GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_OBJ, FALSE);
         GFL_BGSysResetStdPalette(0, GX_RGB(12, 12, 31));
         GFL_BGSysResetStdPalette(4, GX_RGB(12, 12, 31));
         wk->seq++;
         return StartMenu_WipeIn(wk, STATE_BROKEN_SAVE);
-    case 1:
+    case BROKEN_SAVE_PRINT_NEXT:
         while (TRUE) {
             if (wk->brokenIndex >= NELEMS(sBrokenSaveMessages)) {
                 StartMenu_ClearMessage(wk);
-                wk->seq = 3;
+                wk->seq = BROKEN_SAVE_RESTORE_MENU;
                 return StartMenu_WipeOut(wk, STATE_BROKEN_SAVE);
             }
             if (sBrokenSaveMessages[wk->brokenIndex].blocks & wk->brokenBlocks) {
@@ -829,13 +901,13 @@ static u32 StartMenu_BrokenSave(StartMenuWork *wk) {
         wk->brokenIndex++;
         wk->seq++;
         break;
-    case 2:
+    case BROKEN_SAVE_WAIT_MESSAGE:
         if (StartMenu_UpdatePrint(wk) == FALSE && (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
-            wk->seq = 1;
+            wk->seq = BROKEN_SAVE_PRINT_NEXT;
         }
         break;
-    case 3:
+    case BROKEN_SAVE_RESTORE_MENU:
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_BG3 | GX_PLANEMASK_OBJ, TRUE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_BG0 | GX_PLANEMASK_BG1 | GX_PLANEMASK_BG2 | GX_PLANEMASK_OBJ, TRUE);
         wk->seq = 0;
@@ -1040,16 +1112,16 @@ static void StartMenu_LoadBGGraphics(void) {
 #endif
 }
 
-static void StartMenu_InitUnk16C(StartMenuWork *wk) {
+static void StartMenu_InitSelectionPaletteAnim(StartMenuWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_STARTMENU, HEAPID_TAIL(HEAPID_STARTMENU));
 
-    wk->unk16C = BlinkPalAnm_Create(0x20, 0x10, 2, HEAPID_STARTMENU);
-    BlinkPalAnm_SetPalBufferArcTool(wk->unk16C, arc, 4, 0x20, 0x30);
+    wk->selectionPaletteAnim = BlinkPalAnm_Create(0x20, 0x10, 2, HEAPID_STARTMENU);
+    BlinkPalAnm_SetPalBufferArcTool(wk->selectionPaletteAnim, arc, 4, 0x20, 0x30);
     GFL_ArcToolFree(arc);
 }
 
-static void StartMenu_FreeUnk16C(StartMenuWork *wk) {
-    BlinkPalAnm_Free(wk->unk16C);
+static void StartMenu_FreeSelectionPaletteAnim(StartMenuWork *wk) {
+    BlinkPalAnm_Free(wk->selectionPaletteAnim);
 }
 
 static void StartMenu_InitMsg(StartMenuWork *wk) {
@@ -1105,7 +1177,7 @@ static void StartMenu_InitWindows(StartMenuWork *wk) {
     fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, StartmenuFieldmapCtrlHybrid_Text_Empty_3);
     copyVarForText(wk->wordSet, 0, wk->playerInfo);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, fmt);
-    if (getTrainerGender(wk->playerInfo) == 0) {
+    if (getTrainerGender(wk->playerInfo) == GENDER_MALE) {
         PrintWindow_Print(&wk->windows[WINDOW_PLAYER_NAME], wk->printQueue, 0, 0, wk->strbuf, wk->font,
                           PRINT_COLOR(3, 4, 0));
     } else {
@@ -1212,9 +1284,9 @@ static void StartMenu_InitWindows(StartMenuWork *wk) {
         u32 chamber = KeyInfo_GetChamberKey(wk->keyInfo);
         u32 chamberMsg = 0;
 
-        if (chamber == 1) {
+        if (chamber == KEY_INFO_CHAMBER_IRON) {
             chamberMsg = 25;
-        } else if (chamber == 2) {
+        } else if (chamber == KEY_INFO_CHAMBER_ICEBERG) {
             chamberMsg = 26;
         }
         if (chamberMsg != 0) {
@@ -1266,7 +1338,7 @@ static void StartMenu_InitObj(StartMenuWork *wk) {
     ClActSys_Create(&setup, &sVRAMConfig, HEAPID_STARTMENU);
     // Archive 30 has the player's icon for each gender
     arc = GFL_ArcSysCreateFileHandle(ARCID_WIFI_2DCHAR, HEAPID_TAIL(HEAPID_STARTMENU));
-    if (getTrainerGender(wk->playerInfo) == 0) {
+    if (getTrainerGender(wk->playerInfo) == GENDER_MALE) {
         wk->chars[OBJ_RES_PLAYER] = ClActSys_LoadChars(arc, 5, 0, 1, HEAPID_STARTMENU);
         wk->palettes[OBJ_RES_PLAYER] = ClActSys_LoadPltt(arc, 4, 1, 0, HEAPID_STARTMENU);
         wk->cellAnims[OBJ_RES_PLAYER] = ClActSys_LoadCellAnims(arc, 0, 1, HEAPID_STARTMENU);
@@ -1506,7 +1578,7 @@ static void StartMenu_ShowSavedGame(StartMenuWork *wk) {
         actor++;
         window++;
     }
-    if (KeyInfo_GetChamberKey(wk->keyInfo) != 0) {
+    if (KeyInfo_GetChamberKey(wk->keyInfo) != KEY_INFO_CHAMBER_ROCK_PEAK) {
         BmpWin_FlushMap(wk->windows[window].window);
         ClActor_SetVisible(wk->actors[actor], TRUE);
         anyKey = TRUE;
@@ -1810,7 +1882,7 @@ static u32 StartMenu_WipeOut(StartMenuWork *wk, u32 next) {
 
 static u32 StartMenu_StartBlink(StartMenuWork *wk, u32 next) {
     wk->blinkWait = 0;
-    wk->blinkSeq = 0;
+    wk->blinkSeq = BLINK_HIGHLIGHT_FIRST;
     wk->blinkNextState = next;
     return STATE_BLINK;
 }

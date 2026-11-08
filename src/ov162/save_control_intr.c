@@ -22,10 +22,10 @@ struct SaveControlIntr {
     u8 pauseRequested;
     u8 disabled;
     // The save control's flags, cleared while saving and put back afterwards
-    u32 flag4;
-    u32 flag5;
-    u32 flag6;
-    u32 flag7;
+    u32 giftsLoaded;
+    u32 giftsBroken;
+    u32 keysLoaded;
+    u32 keysBroken;
 };
 
 static void SaveControlIntr_OnSoftReset(void *work);
@@ -54,14 +54,14 @@ void SaveControlIntr_Start(SaveControlIntr *intr) {
     SaveControl_StartSave(intr->save);
     if (intr->disabled == FALSE) {
         TrainerDataSave_SetIntroSave(intr->save);
-        intr->flag4 = SaveControl_GetGiftsLoaded(intr->save);
-        intr->flag5 = SaveControl_GetGiftsBroken(intr->save);
-        intr->flag6 = SaveControl_GetKeysLoaded(intr->save);
-        intr->flag7 = SaveControl_GetKeysBroken(intr->save);
-        SaveControl_SetGiftsLoaded(intr->save, 0);
-        SaveControl_SetGiftsBroken(intr->save, 0);
-        SaveControl_SetKeysLoaded(intr->save, 0);
-        SaveControl_SetKeysBroken(intr->save, 0);
+        intr->giftsLoaded = SaveControl_GetGiftsLoaded(intr->save);
+        intr->giftsBroken = SaveControl_GetGiftsBroken(intr->save);
+        intr->keysLoaded = SaveControl_GetKeysLoaded(intr->save);
+        intr->keysBroken = SaveControl_GetKeysBroken(intr->save);
+        SaveControl_SetGiftsLoaded(intr->save, FALSE);
+        SaveControl_SetGiftsBroken(intr->save, FALSE);
+        SaveControl_SetKeysLoaded(intr->save, FALSE);
+        SaveControl_SetKeysBroken(intr->save, FALSE);
     }
     intr->state = STATE_SAVING;
 }
@@ -70,33 +70,33 @@ u32 SaveControlIntr_Update(SaveControlIntr *intr) {
     u32 result;
 
     if (intr->disabled == TRUE) {
-        return 2;
+        return SAVE_RESULT_OK;
     }
     switch (intr->state) {
     case STATE_SAVING:
-        if (intr->pauseRequested == TRUE && getLockIDStatus_inline_stub() == 0) {
+        if (intr->pauseRequested == TRUE && getLockIDStatus_inline_stub() == FALSE) {
             intr->resumeState = intr->state;
             intr->state = STATE_PAUSED;
-            return 0;
+            return SAVE_RESULT_CONTINUE;
         }
         result = SaveControl_ContinueSave(intr->save);
-        if (result - 2 <= 1) {
+        if (result - SAVE_RESULT_OK <= 1) {
             intr->state = STATE_DONE;
-            SaveControl_SetGiftsLoaded(intr->save, intr->flag4);
-            SaveControl_SetGiftsBroken(intr->save, intr->flag5);
-            SaveControl_SetKeysLoaded(intr->save, intr->flag6);
-            SaveControl_SetKeysBroken(intr->save, intr->flag7);
+            SaveControl_SetGiftsLoaded(intr->save, intr->giftsLoaded);
+            SaveControl_SetGiftsBroken(intr->save, intr->giftsBroken);
+            SaveControl_SetKeysLoaded(intr->save, intr->keysLoaded);
+            SaveControl_SetKeysBroken(intr->save, intr->keysBroken);
         }
         return result;
     case STATE_PAUSED:
         if (intr->pauseRequested == FALSE) {
             intr->state = intr->resumeState;
         }
-        return 0;
+        return SAVE_RESULT_CONTINUE;
     case STATE_DONE:
-        return 2;
+        return SAVE_RESULT_OK;
     }
-    return 0;
+    return SAVE_RESULT_CONTINUE;
 }
 
 void SaveControlIntr_Pause(SaveControlIntr *intr) {

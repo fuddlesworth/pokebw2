@@ -589,7 +589,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         break;
     case SEQ_REGISTER_CONFIRM:
         switch (ConfirmDialog_Update(work->yesNo)) {
-        case 0:
+        case CONFIRM_DIALOG_RESULT_YES:
             if (work->isJapan == TRUE) {
                 work->selCountry = Country_GetJapan();
                 *state = SEQ_REGION_LIST;
@@ -691,7 +691,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         break;
     case SEQ_PLACE_CONFIRM:
         switch (ConfirmDialog_Update(work->yesNo)) {
-        case 0:
+        case CONFIRM_DIALOG_RESULT_YES:
             Geonet_ClosePlaceWindow(work);
             UnityTower_SetOwnRegion(work->survey, work->playerInfo, work->selCountry, work->selRegion);
             GameBeaconSys_SetCountryRegion(work->selCountry, work->selRegion);

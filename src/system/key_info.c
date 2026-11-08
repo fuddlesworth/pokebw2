@@ -121,5 +121,5 @@ u32 KeyInfo_GetChamberKey(KeyInfoSave *keyInfo) {
             return i;
         }
     }
-    return 0;
+    return KEY_INFO_CHAMBER_ROCK_PEAK;
 }

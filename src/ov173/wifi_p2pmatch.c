@@ -1942,7 +1942,7 @@ static int WifiP2PMatch_StatePlayYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->sendSeq = WIFIP2PMATCH_SEQ_GAME_MODE_MESSAGE;
     } else {
         wk->sendSeq = WIFIP2PMATCH_SEQ_CANCEL_RESET;
@@ -2066,7 +2066,7 @@ static int WifiP2PMatch_StateNoCameraYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->sendSeq = WIFIP2PMATCH_SEQ_ASK_TVT;
         wk->seq = WIFIP2PMATCH_SEQ_SEND_SEQ_TIMING;
     } else {
@@ -2094,7 +2094,7 @@ static int WifiP2PMatch_StateAnswerNoCameraYesNo(WIFIP2PMATCH_WORK *wk, int seq)
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->seq = WIFIP2PMATCH_SEQ_SEND_START_GAME;
         WifiP2PMatch_EndMessage(wk);
     } else {
@@ -2171,7 +2171,7 @@ static int WifiP2PMatch_StateAnswerYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         if (!WifiP2PMatch_HasTwoPokemon(wk) && wk->modeSeq == WIFIP2PMATCH_SEQ_ASK_TRADE) {
             WifiP2PMatch_PrintMessage(wk, WifiP2pmatch_Text_NeedLeastTwoPokemon, FALSE);
             wk->seq = WIFIP2PMATCH_SEQ_TRADE_REFUSED_KEY_WAIT;
@@ -2701,7 +2701,7 @@ static int WifiP2PMatch_StateBattleOfferYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->seq = WIFIP2PMATCH_SEQ_BATTLE_OFFER_CHECK_PARTY;
         WifiP2PMatch_EndMessage(wk);
     } else {
@@ -3006,7 +3006,7 @@ static int WifiP2PMatch_StatePlayAgainYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->sendSeq = WIFIP2PMATCH_SEQ_GAME_MODE_MESSAGE;
     } else {
         wk->sendSeq = WIFIP2PMATCH_SEQ_CANCEL_RESET;
@@ -3164,7 +3164,7 @@ static int WifiP2PMatch_StateVChatDiffYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->seq = WIFIP2PMATCH_SEQ_VCHAT_SEND;
     } else {
         wk->seq = WIFIP2PMATCH_SEQ_VCHAT_DIFF_NO;
@@ -3291,7 +3291,7 @@ static int WifiP2PMatch_StateReturnYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->sendSeq = WIFIP2PMATCH_SEQ_GAME_MODE_MESSAGE;
     } else {
         wk->sendSeq = WIFIP2PMATCH_SEQ_DECLINE_RESET;
@@ -4157,7 +4157,7 @@ static int WifiP2PMatch_StateReconnectYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         GFL_NetExit(NULL);
         WifiP2PMatch_ChangeMyStatus(wk, WIFIP2PMATCH_STATUS_WAIT, WIFIP2PMATCH_GAMEMODE_WAIT);
         wk->seq = WIFIP2PMATCH_SEQ_CONNECT_START;
@@ -5001,7 +5001,7 @@ static int WifiP2PMatch_StateVChatEndYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
             wk->timer = 60;
             wk->seq = WIFIP2PMATCH_SEQ_VCHAT_ENDED_MESSAGE;
         }
-    } else if (ret == 0) {
+    } else if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->seq = WIFIP2PMATCH_SEQ_VCHAT_END_SEND;
     } else {
         WifiP2PMatch_PrintMessageNow(wk, WifiP2pmatch_Text_PressBButtonEnd, FALSE);
@@ -5232,7 +5232,7 @@ static int WifiP2PMatch_StateRecruitStopYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         WifiP2PMatch_ChangeMyStatus(wk, WIFIP2PMATCH_STATUS_WAIT, WIFIP2PMATCH_GAMEMODE_WAIT);
         NetState_WifiDisconnect(TRUE);
         WifiP2PMatch_NetInit(wk, FALSE);
@@ -5363,7 +5363,7 @@ static int WifiP2PMatch_StateCameraNoticeYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         WifiP2PMatch_StartConnect(wk, -1);
         WifiP2PMatch_ChangeMyStatus(wk, WIFIP2PMATCH_STATUS_RECRUIT, WIFIP2PMATCH_GAMEMODE_TVT);
         WifiP2PMatch_RoomPause(wk, TRUE);
@@ -5395,7 +5395,7 @@ static int WifiP2PMatch_StateConnectFriendYesNo(WIFIP2PMATCH_WORK *wk, int seq) 
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->result = WIFICLUB_CONNECTION_JOIN;
         if (WIFI_STATUS_GetVChatStatus(targetStatus) == WIFI_STATUS_GetVChatStatus(wk->myStatus)) {
             wk->seq = WIFIP2PMATCH_SEQ_JOIN_FRIEND;
@@ -5662,7 +5662,7 @@ static int WifiP2PMatch_StateCallCancelYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         WifiP2PMatch_PrintMessage(wk, WifiP2pmatch_Text_RequestHasBeenSuspended, FALSE);
         wk->seq = WIFIP2PMATCH_SEQ_CONNECT_ERROR;
     } else {
@@ -6242,7 +6242,7 @@ static int WifiP2PMatch_StateExitYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         wk->yesNoMenu = NULL;
         WifiP2PMatch_PrintMessage(wk, WifiError_Text_DisconnectingFromNintendoWi, TRUE);
         wk->seq = WIFIP2PMATCH_SEQ_DISCONNECT;
@@ -6313,7 +6313,7 @@ static int WifiP2PMatch_StateRetryYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         WifiP2PMatch_PrintMessage(wk, WifiP2pmatch_Text_AwaitingFriendsDecisionPlease, FALSE);
         WifiP2PMatch_StartWaitIcon(wk);
         wk->retryingNegotiation = 1;
@@ -6347,7 +6347,7 @@ static int WifiP2PMatch_StateVChatChangeYesNo(WIFIP2PMATCH_WORK *wk, int seq) {
     if (ret == BMPMENU_NULL) {
         return seq;
     }
-    if (ret == 0) {
+    if (ret == CONFIRM_DIALOG_RESULT_YES) {
         WIFI_STATUS_SetVChatStatus(wk->myStatus, 1 - WIFI_STATUS_GetVChatStatus(wk->myStatus));
         WIFI_STATUS_SetUseVChat(wk->myStatus, WIFI_STATUS_GetVChatStatus(wk->myStatus));
         wk->vchatOverridePlusOne = 2 - wk->parent->voiceChatEnabled;

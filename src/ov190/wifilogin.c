@@ -29,6 +29,7 @@
 #include "save/player_info.h"
 #include "save/tournament_block.h"
 #include "save/wifi_list.h"
+#include "system/bmp_menu.h"
 #include "system/dsi.h"
 #include "system/game_data.h"
 #include "system/wipe.h"
@@ -322,7 +323,7 @@ static void WifiLogin_StateStartNet(WifiLoginWork *work) {
 
 static void WifiLogin_StateWaitConfirmStart(WifiLoginWork *work) {
     if (WifiLoginMessage_IsMenuAnswered(work->menu)) {
-        if (WifiLoginMessage_GetMenuAnswer(work->menu) == 0) {
+        if (WifiLoginMessage_GetMenuAnswer(work->menu) == CONFIRM_DIALOG_RESULT_YES) {
             work->param->result = WIFILOGIN_RESULT_OK;
             WifiLogin_SetState(work, WifiLogin_StateStartNet);
         } else {
@@ -340,7 +341,7 @@ static void WifiLogin_StateWaitConfirmStart(WifiLoginWork *work) {
 
 static void WifiLogin_StateWaitConfirmRetry(WifiLoginWork *work) {
     if (WifiLoginMessage_IsMenuAnswered(work->menu)) {
-        if (WifiLoginMessage_GetMenuAnswer(work->menu) == 0) {
+        if (WifiLoginMessage_GetMenuAnswer(work->menu) == CONFIRM_DIALOG_RESULT_YES) {
             work->param->result = WIFILOGIN_RESULT_OK;
             WifiLogin_SetState(work, WifiLogin_StateStartNet);
         } else {
@@ -416,7 +417,7 @@ static void WifiLogin_StateOpenYesNo(WifiLoginWork *work) {
 
 static void WifiLogin_StateWaitResetConfirm(WifiLoginWork *work) {
     if (WifiLoginMessage_IsMenuAnswered(work->menu)) {
-        if (WifiLoginMessage_GetMenuAnswer(work->menu) == 0) {
+        if (WifiLoginMessage_GetMenuAnswer(work->menu) == CONFIRM_DIALOG_RESULT_YES) {
             TournamentEntry *entry =
                 TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(work->gameData)), 0);
 
@@ -454,7 +455,7 @@ static void WifiLogin_StateWaitProfileConfirm(WifiLoginWork *work) {
         }
         WifiLoginMessage_FreeMenu(work->menu);
         work->menu = NULL;
-        if (answer == 0) {
+        if (answer == CONFIRM_DIALOG_RESULT_YES) {
             TournamentEntry *entry =
                 TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(work->gameData)), 0);
             u32 field2 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID);
@@ -484,7 +485,7 @@ static void WifiLogin_StateOpenProfileConfirm(WifiLoginWork *work) {
 
 static void WifiLogin_StateWaitFixConfirm(WifiLoginWork *work) {
     if (WifiLoginMessage_IsMenuAnswered(work->menu)) {
-        if (WifiLoginMessage_GetMenuAnswer(work->menu) == 0) {
+        if (WifiLoginMessage_GetMenuAnswer(work->menu) == CONFIRM_DIALOG_RESULT_YES) {
             work->param->result = WIFILOGIN_RESULT_OK;
             WifiLoginMessage_ClearTitle(work->msg);
             WifiLoginMessage_PrintNotice(work->msg, WifiError_Text_ConnectNintendoWiFi_2);

@@ -505,7 +505,7 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
 
         if (choice != BMPMENU_NULL) {
             GCTX_HIDSetUsingTouch(FALSE);
-            if (choice == 0) {
+            if (choice == CONFIRM_DIALOG_RESULT_YES) {
                 // With a video saved already, show it and ask whether to overwrite it
                 if (BattleRec_IsSlotValid(save, wk->heapId, &saved, 0)) {
                     wk->timerStopped = TRUE;
@@ -528,7 +528,7 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
 
         if (choice != BMPMENU_NULL) {
             GCTX_HIDSetUsingTouch(FALSE);
-            if (choice == 0) {
+            if (choice == CONFIRM_DIALOG_RESULT_YES) {
                 BtlRecSel_StopTimer(prm, wk);
                 *state = SEQ_END_MESSAGE;
             } else {
@@ -545,7 +545,7 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
 
         if (choice != BMPMENU_NULL) {
             GCTX_HIDSetUsingTouch(FALSE);
-            if (choice == 0) {
+            if (choice == CONFIRM_DIALOG_RESULT_YES) {
                 wk->hideNextSeq = SEQ_SAVE_MESSAGE;
             } else {
                 wk->hideNextSeq = SEQ_END_MESSAGE;
