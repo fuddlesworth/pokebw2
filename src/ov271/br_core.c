@@ -382,7 +382,7 @@ static void BrCore_RecordBefore(void *param, void *work, const void *preParam, u
         wk->param->data->recordMode = menuParam->nextMode;
         gameData = wk->param->mainParam->gameData;
         BattleRec_LoadToCurrent(GameData_GetSaveControl(gameData), HEAPID_BATTLE_RECORDER_SYS, &result, p->mode);
-        if (result == 1) {
+        if (result == BATTLE_REC_LOAD_RESULT_VALID) {
             if (p->mode == BR_RECORD_MODE_MINE) {
                 GdsProfile_SetFromGameData(getVSPlayerAllocation(), gameData);
             }
@@ -655,7 +655,7 @@ static void BrCore_LoadRecordInfo(BrRecordInfo *info, BOOL keepLoaded, GameData 
 
         for (i = 0; i < BR_RECORD_NUM; i++) {
             BattleRec_LoadToCurrent(save, HEAPID_TAIL(heapId), &result, i);
-            if (result == 1) {
+            if (result == BATTLE_REC_LOAD_RESULT_VALID) {
                 GdsProfile *profile = getVSPlayerAllocation();
 
                 if (i == 0) {

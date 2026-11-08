@@ -11,6 +11,7 @@
 #include "app/battle_recorder/br_res.h"
 #include "app/battle_recorder/br_util.h"
 #include "constants/sound.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/msg.h"
@@ -269,7 +270,7 @@ static void BrBvDelete_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         u32 ret = BattleRecOv_DeleteVideoMain(p_wk->p_param->gameData, p_wk->p_param->mode);
 
         p_wk->cnt++;
-        if (ret == 2 || ret == 3) {
+        if (ret == SAVE_RESULT_OK || ret == SAVE_RESULT_NG) {
             p_wk->p_param->isDelete = TRUE;
             *p_seq = SEQ_DELETE_WAIT;
         }

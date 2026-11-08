@@ -565,7 +565,7 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->video = BattleRec_LoadVideo(save, wk->heapId, &result, 0);
         BtlRecSel_ClearBG(prm, wk);
         BtlRecSel_ClearMessageWindow(prm, wk);
-        if (result == 1) {
+        if (result == BATTLE_REC_LOAD_RESULT_VALID) {
             BattleRecHeader *header = BattleRec_GetVideoHeader(wk->video);
 
             wk->mode = BattleRec_GetHeaderValue(header, BATTLE_REC_HEADER_MODE, 0);

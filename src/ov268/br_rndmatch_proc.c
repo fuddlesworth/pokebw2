@@ -24,6 +24,51 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// Window rows of the numeric ratings table.
+enum {
+    BR_RNDMATCH_RATING_ROW_TITLE = 0,
+    BR_RNDMATCH_RATING_ROW_RATING_LABEL = 1,
+    BR_RNDMATCH_RATING_ROW_SINGLE_LABEL = 2,
+    BR_RNDMATCH_RATING_ROW_DOUBLE_LABEL = 3,
+    BR_RNDMATCH_RATING_ROW_TRIPLE_LABEL = 4,
+    BR_RNDMATCH_RATING_ROW_ROTATION_LABEL = 5,
+    BR_RNDMATCH_RATING_ROW_LAUNCHER_LABEL = 6,
+    BR_RNDMATCH_RATING_ROW_SINGLE_VALUE = 7,
+    BR_RNDMATCH_RATING_ROW_DOUBLE_VALUE = 8,
+    BR_RNDMATCH_RATING_ROW_TRIPLE_VALUE = 9,
+    BR_RNDMATCH_RATING_ROW_ROTATION_VALUE = 10,
+    BR_RNDMATCH_RATING_ROW_LAUNCHER_VALUE = 11,
+};
+
+// Window rows shared by the Rating and Free win/loss record tables.
+enum {
+    BR_RNDMATCH_RECORD_ROW_TITLE = 0,
+    BR_RNDMATCH_RECORD_ROW_WINS_LABEL = 1,
+    BR_RNDMATCH_RECORD_ROW_LOSSES_LABEL = 2,
+    BR_RNDMATCH_RECORD_ROW_SINGLE_LABEL = 3,
+    BR_RNDMATCH_RECORD_ROW_DOUBLE_LABEL = 4,
+    BR_RNDMATCH_RECORD_ROW_TRIPLE_LABEL = 5,
+    BR_RNDMATCH_RECORD_ROW_ROTATION_LABEL = 6,
+    BR_RNDMATCH_RECORD_ROW_LAUNCHER_LABEL = 7,
+    BR_RNDMATCH_RECORD_ROW_SINGLE_WINS = 8,
+    BR_RNDMATCH_RECORD_ROW_DOUBLE_WINS = 9,
+    BR_RNDMATCH_RECORD_ROW_TRIPLE_WINS = 10,
+    BR_RNDMATCH_RECORD_ROW_ROTATION_WINS = 11,
+    BR_RNDMATCH_RECORD_ROW_LAUNCHER_WINS = 12,
+    BR_RNDMATCH_RECORD_ROW_SINGLE_LOSSES = 13,
+    BR_RNDMATCH_RECORD_ROW_DOUBLE_LOSSES = 14,
+    BR_RNDMATCH_RECORD_ROW_TRIPLE_LOSSES = 15,
+    BR_RNDMATCH_RECORD_ROW_ROTATION_LOSSES = 16,
+    BR_RNDMATCH_RECORD_ROW_LAUNCHER_LOSSES = 17,
+};
+
+// Menu-window slots, separate from the page IDs.
+enum {
+    BR_RNDMATCH_MENU_ROW_RATING = 0,
+    BR_RNDMATCH_MENU_ROW_RATING_RECORDS = 1,
+    BR_RNDMATCH_MENU_ROW_FREE_RECORDS = 2,
+};
+
 // The records of the menu, which are what the main screen shows
 enum {
     BR_RNDMATCH_PAGE_TOP,
@@ -286,30 +331,30 @@ static void BrRndMatch_CreateRating(BrRndMatchWork *wk, BrRndMatchProcParam *p) 
         wk->msgWin[i] = BrMsgWin_Init(1, data->x, data->y, data->w, data->h, 14, wk->que, wk->heapId);
         BrMsgWin_SetPos(wk->msgWin[i], 0, 1, BR_MSGWIN_POS_ABSOLUTE);
         switch (i) {
-        case 0:
+        case BR_RNDMATCH_RATING_ROW_TITLE:
             copyVarForText(wordSet, 0, GetGameDataPlayerInfo(p->gameData));
             break;
-        case 7:
+        case BR_RNDMATCH_RATING_ROW_SINGLE_VALUE:
             WordSetNumber(wordSet, 0,
                           RndMatchData_GetParam(p->record, RNDMATCH_RECORD_RATING + 0, RNDMATCH_FIELD_RATING), 4, 1,
                           TRUE);
             break;
-        case 8:
+        case BR_RNDMATCH_RATING_ROW_DOUBLE_VALUE:
             WordSetNumber(wordSet, 0,
                           RndMatchData_GetParam(p->record, RNDMATCH_RECORD_RATING + 1, RNDMATCH_FIELD_RATING), 4, 1,
                           TRUE);
             break;
-        case 9:
+        case BR_RNDMATCH_RATING_ROW_TRIPLE_VALUE:
             WordSetNumber(wordSet, 0,
                           RndMatchData_GetParam(p->record, RNDMATCH_RECORD_RATING + 2, RNDMATCH_FIELD_RATING), 4, 1,
                           TRUE);
             break;
-        case 10:
+        case BR_RNDMATCH_RATING_ROW_ROTATION_VALUE:
             WordSetNumber(wordSet, 0,
                           RndMatchData_GetParam(p->record, RNDMATCH_RECORD_RATING + 3, RNDMATCH_FIELD_RATING), 4, 1,
                           TRUE);
             break;
-        case 11:
+        case BR_RNDMATCH_RATING_ROW_LAUNCHER_VALUE:
             WordSetNumber(wordSet, 0,
                           RndMatchData_GetParam(p->record, RNDMATCH_RECORD_RATING + 4, RNDMATCH_FIELD_RATING), 4, 1,
                           TRUE);
@@ -351,11 +396,13 @@ static void BrRndMatch_CreateRate(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
 
         wk->msgWin[i] = BrMsgWin_Init(1, data->x, data->y, data->w, data->h, 14, wk->que, wk->heapId);
         BrMsgWin_SetPos(wk->msgWin[i], 0, 1, BR_MSGWIN_POS_ABSOLUTE);
-        if (8 <= i && i <= 12) {
-            value = RndMatchData_GetParam(p->record, i - 8 + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_WIN);
+        if (BR_RNDMATCH_RECORD_ROW_SINGLE_WINS <= i && i <= BR_RNDMATCH_RECORD_ROW_LAUNCHER_WINS) {
+            value = RndMatchData_GetParam(p->record, i - BR_RNDMATCH_RECORD_ROW_SINGLE_WINS + RNDMATCH_RECORD_RATING,
+                                          RNDMATCH_FIELD_WIN);
             isFormat = TRUE;
-        } else if (13 <= i && i <= 17) {
-            value = RndMatchData_GetParam(p->record, i - 13 + RNDMATCH_RECORD_RATING, RNDMATCH_FIELD_LOSE);
+        } else if (BR_RNDMATCH_RECORD_ROW_SINGLE_LOSSES <= i && i <= BR_RNDMATCH_RECORD_ROW_LAUNCHER_LOSSES) {
+            value = RndMatchData_GetParam(p->record, i - BR_RNDMATCH_RECORD_ROW_SINGLE_LOSSES + RNDMATCH_RECORD_RATING,
+                                          RNDMATCH_FIELD_LOSE);
             isFormat = TRUE;
         } else {
             str = GFL_MsgDataLoadStrbufNew(msg, data->msgID);
@@ -394,11 +441,11 @@ static void BrRndMatch_CreateFree(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
 
         wk->msgWin[i] = BrMsgWin_Init(1, data->x, data->y, data->w, data->h, 14, wk->que, wk->heapId);
         BrMsgWin_SetPos(wk->msgWin[i], 0, 1, BR_MSGWIN_POS_ABSOLUTE);
-        if (8 <= i && i <= 12) {
-            value = RndMatchData_GetParam(p->record, i - 8, RNDMATCH_FIELD_WIN);
+        if (BR_RNDMATCH_RECORD_ROW_SINGLE_WINS <= i && i <= BR_RNDMATCH_RECORD_ROW_LAUNCHER_WINS) {
+            value = RndMatchData_GetParam(p->record, i - BR_RNDMATCH_RECORD_ROW_SINGLE_WINS, RNDMATCH_FIELD_WIN);
             isFormat = TRUE;
-        } else if (13 <= i && i <= 17) {
-            value = RndMatchData_GetParam(p->record, i - 13, RNDMATCH_FIELD_LOSE);
+        } else if (BR_RNDMATCH_RECORD_ROW_SINGLE_LOSSES <= i && i <= BR_RNDMATCH_RECORD_ROW_LAUNCHER_LOSSES) {
+            value = RndMatchData_GetParam(p->record, i - BR_RNDMATCH_RECORD_ROW_SINGLE_LOSSES, RNDMATCH_FIELD_LOSE);
             isFormat = TRUE;
         } else {
             str = GFL_MsgDataLoadStrbufNew(msg, data->msgID);
@@ -467,7 +514,7 @@ static void BrRndMatch_CreateMenu(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
         const BrRndMatchMsgWinData *data = &sBrRndMatchMenuWins[i];
 
         wk->menuWin[i] = BrMsgWin_Init(4, data->x, data->y, data->w, data->h, 14, wk->que, wk->heapId);
-        if (i == 0) {
+        if (i == BR_RNDMATCH_MENU_ROW_RATING) {
             // The player's name
             GFL_MsgDataLoadStrbuf(msg, data->msgID, src);
             copyVarForText(wordSet, 0, player);

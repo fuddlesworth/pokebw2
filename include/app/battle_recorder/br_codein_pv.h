@@ -20,6 +20,12 @@
 #define BR_CODEIN_CODE_MAX 12
 #define BR_CODEIN_BAR_COUNT 2
 #define BR_CODEIN_BUTTON_COUNT 2
+// Indices of the Back and OK actors and their text; not animation IDs or touched-state flags.
+enum {
+    BR_CODEIN_BUTTON_BACK = 0,
+    BR_CODEIN_BUTTON_OK = 1,
+};
+
 // The lower screen's keys: the ten digits, then Back and OK
 #define BR_CODEIN_KEY_COUNT 12
 #define BR_CODEIN_KEY_BACK 10

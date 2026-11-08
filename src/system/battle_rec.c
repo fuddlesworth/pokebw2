@@ -1,5 +1,6 @@
 #include "types.h"
 #include "constants/species.h"
+#include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/std.h"
@@ -89,26 +90,26 @@ static BOOL BattleRec_LoadSlot(SaveControl *save, BattleRecVideo *video, HeapID 
 
     *result = SaveControl_LoadExtraBlock(save, BattleRec_GetExtraBlock(slot), heapId, video, BATTLE_REC_BLOCK_SIZE);
     freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
-    if (*result == 0) {
-        *result = 0;
+    if (*result == SAVE_LOAD_RESULT_NONE) {
+        *result = BATTLE_REC_LOAD_RESULT_EMPTY;
         return TRUE;
     }
-    if (*result != 1) {
-        *result = 3;
+    if (*result != SAVE_LOAD_RESULT_OK) {
+        *result = BATTLE_REC_LOAD_RESULT_LOAD_FAILED;
         return TRUE;
     }
 
     body = &video->body;
     __decryptData(body, BATTLE_REC_BODY_CRC_SIZE, BATTLE_REC_KEY(body));
     if (BattleRec_IsEmpty(save, video) == TRUE) {
-        *result = 0;
+        *result = BATTLE_REC_LOAD_RESULT_EMPTY;
         return TRUE;
     }
     if (!BattleRec_IsValid(save, video)) {
-        *result = 2;
+        *result = BATTLE_REC_LOAD_RESULT_INVALID;
         return TRUE;
     }
-    *result = 1;
+    *result = BATTLE_REC_LOAD_RESULT_VALID;
     return TRUE;
 }
 
@@ -135,13 +136,13 @@ u32 BattleRec_IsSlotValid(SaveControl *save, HeapID heapId, u32 *result, u32 slo
 
     *result = SaveControl_OpenExtraBlock(save, BattleRec_GetExtraBlock(slot), heapId);
     video = getAddressOfExtraSaveBlk(save, BattleRec_GetExtraBlock(slot), 0);
-    if (*result == 0) {
-        *result = 0;
+    if (*result == SAVE_LOAD_RESULT_NONE) {
+        *result = BATTLE_REC_LOAD_RESULT_EMPTY;
         freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
         return FALSE;
     }
-    if (*result != 1) {
-        *result = 3;
+    if (*result != SAVE_LOAD_RESULT_OK) {
+        *result = BATTLE_REC_LOAD_RESULT_LOAD_FAILED;
         freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
         return FALSE;
     }
@@ -149,16 +150,16 @@ u32 BattleRec_IsSlotValid(SaveControl *save, HeapID heapId, u32 *result, u32 slo
     body = &video->body;
     __decryptData(body, BATTLE_REC_BODY_CRC_SIZE, BATTLE_REC_KEY(body));
     if (BattleRec_IsEmpty(save, video) == TRUE) {
-        *result = 0;
+        *result = BATTLE_REC_LOAD_RESULT_EMPTY;
         freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
         return FALSE;
     }
     if (!BattleRec_IsValid(save, video)) {
-        *result = 2;
+        *result = BATTLE_REC_LOAD_RESULT_INVALID;
         freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
         return FALSE;
     }
-    *result = 1;
+    *result = BATTLE_REC_LOAD_RESULT_VALID;
     freeIntermediateSaveExtraBlksAfterLoad(save, BattleRec_GetExtraBlock(slot));
     return TRUE;
 }
@@ -220,11 +221,11 @@ void BattleRec_GetModeCounts(u16 mode, s32 *clientCount, s32 *pkmCount) {
     for (i = 0; i < BATTLE_REC_MODE_MAX; i++) {
         if (mode == sBattleRecModes[i]) {
             switch (i) {
-            case 16:
-            case 17:
-            case 18:
-            case 19:
-            case 22:
+            case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS:
+            case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT:
+            case BATTLE_REC_MODE_COLOSSEUM_MULTI_NO_RESTRICTIONS_LAUNCHER:
+            case BATTLE_REC_MODE_COLOSSEUM_MULTI_FLAT_LAUNCHER:
+            case BATTLE_REC_MODE_BATTLE_SUBWAY_MULTI:
                 *clientCount = 4;
                 *pkmCount = 3;
                 return;

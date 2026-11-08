@@ -30,6 +30,19 @@ typedef struct {
 
 static void BrCodeIn_SetFocus(BrCodeInWork *wk, int focus);
 static void BrCodeIn_SetState(BrCodeInWork *wk, int state);
+// Move-state steps; FINISH is reached by increment and handled by the existing default branch.
+enum {
+    BR_CODEIN_MOVE_STEP_MOVE = 0,
+    BR_CODEIN_MOVE_STEP_SCALE = 1,
+    BR_CODEIN_MOVE_STEP_FINISH = 2,
+};
+
+// Input-state steps: the first update only advances; later updates poll buttons.
+enum {
+    BR_CODEIN_INPUT_STEP_START = 0,
+    BR_CODEIN_INPUT_STEP_POLL_BUTTONS = 1,
+};
+
 static BOOL BrCodeIn_StateInit(BrCodeInWork *wk);
 static BOOL BrCodeIn_StateEnd(BrCodeInWork *wk);
 static BOOL BrCodeIn_StateInput(BrCodeInWork *wk);
@@ -142,7 +155,7 @@ static BOOL BrCodeIn_StateEnd(BrCodeInWork *wk) {
 }
 
 static BOOL BrCodeIn_StateInput(BrCodeInWork *wk) {
-    if (wk->seq == 0) {
+    if (wk->seq == BR_CODEIN_INPUT_STEP_START) {
         wk->seq++;
     } else {
         BrCodeIn_RunNext(wk);
@@ -158,7 +171,7 @@ static BOOL BrCodeIn_StateMove(BrCodeInWork *wk) {
     ClActorPos barPos;
 
     switch (wk->seq) {
-    case 0:
+    case BR_CODEIN_MOVE_STEP_MOVE:
         BrCodeInDisp_SetCursorVisible(wk, BR_CODEIN_CURSOR_CODE, FALSE);
         for (i = 0; i < wk->codeMax; i++) {
             if (wk->code[i].move.wait == 0) {
@@ -205,7 +218,7 @@ static BOOL BrCodeIn_StateMove(BrCodeInWork *wk) {
         }
         wk->count++;
         break;
-    case 1:
+    case BR_CODEIN_MOVE_STEP_SCALE:
         for (i = wk->largeStart; i < wk->largeEnd; i++) {
             if (wk->code[i].move.scale == SCALE_COUNT) {
                 continue;
@@ -262,8 +275,8 @@ static void BrCodeIn_Confirm(BrCodeInWork *wk) {
     int blockCount = 0;
     StrBuf *digit = GFL_StrBufCreate(100, wk->heapId);
 
-    wk->btn[1].state = 1;
-    wk->btn[1].move.wait = 0;
+    wk->btn[BR_CODEIN_BUTTON_OK].state = 1;
+    wk->btn[BR_CODEIN_BUTTON_OK].move.wait = 0;
     wk->blockNumber[0] = 0;
     wk->blockNumber[1] = 0;
     wk->blockNumber[2] = 0;
@@ -300,8 +313,8 @@ static void BrCodeIn_Backspace(BrCodeInWork *wk) {
     int group;
     int prevGroup;
 
-    wk->btn[0].state = 1;
-    wk->btn[0].move.wait = 0;
+    wk->btn[BR_CODEIN_BUTTON_BACK].state = 1;
+    wk->btn[BR_CODEIN_BUTTON_BACK].move.wait = 0;
     if (wk->focus == 0) {
         wk->cur[BR_CODEIN_CURSOR_CODE].state = wk->codeMax - 1;
         group = wk->code[wk->cur[BR_CODEIN_CURSOR_CODE].state].group;
