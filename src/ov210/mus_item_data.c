@@ -38,138 +38,138 @@ u32 MusItemData_GetTexSize(MusicalItemData *item) {
 
 BOOL MusItemData_CanEquipAtPos(MusicalItemData *item, s32 pos) {
     switch (pos) {
-    case 0:
-    case 1:
-        if (item->flags & 0x1) {
+    case MUS_POKE_DRAW_EQUIP_EAR:
+    case MUS_POKE_DRAW_EQUIP_EAR_2:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_EAR) {
             return TRUE;
         }
         break;
-    case 2:
-        if (item->flags & 0x2) {
+    case MUS_POKE_DRAW_EQUIP_HEAD:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_HEAD) {
             return TRUE;
         }
         break;
-    case 3:
-        if (item->flags & 0x4) {
+    case MUS_POKE_DRAW_EQUIP_FACE:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_FACE) {
             return TRUE;
         }
         break;
-    case 4:
-        if (item->flags & 0x8) {
+    case MUS_POKE_DRAW_EQUIP_FACE_2:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_FACE_2) {
             return TRUE;
         }
         break;
-    case 5:
-        if (item->flags & 0x10) {
+    case MUS_POKE_DRAW_EQUIP_BODY:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_BODY) {
             return TRUE;
         }
         break;
-    case 6:
-        if (item->flags & 0x20) {
+    case MUS_POKE_DRAW_EQUIP_WAIST:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_WAIST) {
             return TRUE;
         }
         break;
     case MUS_POKE_DRAW_EQUIP_HAND_R:
     case MUS_POKE_DRAW_EQUIP_HAND_L:
-        if (item->flags & 0x40) {
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_ARM) {
             return TRUE;
         }
         break;
-    case 9:
+    case MUS_POKE_DRAW_EQUIP_MAX:
         return FALSE;
     }
     return FALSE;
 }
 
-BOOL MusItemData_CanEquipInGroup(MusicalItemData *item, s32 pos) {
-    switch (pos) {
-    case 0:
-    case 1:
-        if (item->flags & 0x1) {
+BOOL MusItemData_CanEquipInGroup(MusicalItemData *item, s32 group) {
+    switch (group) {
+    case DUP_FITTING_CATEGORY_EAR:
+    case DUP_FITTING_CATEGORY_EAR_2:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_EAR) {
             return TRUE;
         }
         break;
-    case 2:
-        if (item->flags & 0x2) {
+    case DUP_FITTING_CATEGORY_HEAD:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_HEAD) {
             return TRUE;
         }
         break;
-    case 3:
-        if (item->flags & 0xc) {
+    case DUP_FITTING_CATEGORY_FACE:
+        if (item->flags & (MUS_ITEM_FLAG_EQUIP_FACE | MUS_ITEM_FLAG_EQUIP_FACE_2)) {
             return TRUE;
         }
         break;
-    case 4:
-        if (item->flags & 0x10) {
+    case DUP_FITTING_CATEGORY_BODY:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_BODY) {
             return TRUE;
         }
         break;
-    case 5:
-        if (item->flags & 0x20) {
+    case DUP_FITTING_CATEGORY_WAIST:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_WAIST) {
             return TRUE;
         }
         break;
-    case 6:
-    case 7:
-        if (item->flags & 0x40) {
+    case DUP_FITTING_CATEGORY_ARM:
+    case DUP_FITTING_CATEGORY_ARM_2:
+        if (item->flags & MUS_ITEM_FLAG_EQUIP_ARM) {
             return TRUE;
         }
         break;
-    case 8:
+    case DUP_FITTING_CATEGORY_ORIGINAL:
         return FALSE;
     }
     return FALSE;
 }
 
-BOOL MusItemData_IsCategoryOfGroup(MusicalItemData *item, s32 pos) {
-    switch (pos) {
-    case 0:
-    case 1:
-        if (item->category == 0) {
+BOOL MusItemData_IsCategoryOfGroup(MusicalItemData *item, s32 group) {
+    switch (group) {
+    case DUP_FITTING_CATEGORY_EAR:
+    case DUP_FITTING_CATEGORY_EAR_2:
+        if (item->category == MUS_ITEM_CATEGORY_EAR) {
             return TRUE;
         }
         break;
-    case 2:
-        if (item->category == 1) {
+    case DUP_FITTING_CATEGORY_HEAD:
+        if (item->category == MUS_ITEM_CATEGORY_HEAD) {
             return TRUE;
         }
         break;
-    case 3:
-        if (item->category == 2 || item->category == 3) {
+    case DUP_FITTING_CATEGORY_FACE:
+        if (item->category == MUS_ITEM_CATEGORY_FACE || item->category == MUS_ITEM_CATEGORY_FACE_2) {
             return TRUE;
         }
         break;
-    case 4:
-        if (item->category == 4) {
+    case DUP_FITTING_CATEGORY_BODY:
+        if (item->category == MUS_ITEM_CATEGORY_BODY) {
             return TRUE;
         }
         break;
-    case 5:
-        if (item->category == 5) {
+    case DUP_FITTING_CATEGORY_WAIST:
+        if (item->category == MUS_ITEM_CATEGORY_WAIST) {
             return TRUE;
         }
         break;
-    case 6:
-    case 7:
-        if (item->category == 6) {
+    case DUP_FITTING_CATEGORY_ARM:
+    case DUP_FITTING_CATEGORY_ARM_2:
+        if (item->category == MUS_ITEM_CATEGORY_ARM) {
             return TRUE;
         }
         break;
-    case 8:
+    case DUP_FITTING_CATEGORY_ORIGINAL:
         return FALSE;
     }
     return FALSE;
 }
 
-BOOL MusItemData_GetFlag7(MusicalItemData *item) {
-    if (item->flags & 0x80) {
+BOOL MusItemData_UsesLowerDrawDepth(MusicalItemData *item) {
+    if (item->flags & MUS_ITEM_FLAG_LOWER_DRAW_DEPTH) {
         return TRUE;
     }
     return FALSE;
 }
 
-BOOL MusItemData_GetFlag9(MusicalItemData *item) {
-    if (item->flags & 0x200) {
+BOOL MusItemData_UsesMarkerFlip(MusicalItemData *item) {
+    if (item->flags & MUS_ITEM_FLAG_MARKER_FLIP) {
         return TRUE;
     }
     return FALSE;
@@ -177,25 +177,25 @@ BOOL MusItemData_GetFlag9(MusicalItemData *item) {
 
 s32 MusItemData_GetPosGroup(s32 pos) {
     switch (pos) {
-    case 0:
-        return 0;
-    case 1:
-        return 1;
-    case 2:
-        return 2;
-    case 3:
-    case 4:
-        return 3;
-    case 5:
-        return 4;
-    case 6:
-        return 5;
+    case MUS_POKE_DRAW_EQUIP_EAR:
+        return DUP_FITTING_CATEGORY_EAR;
+    case MUS_POKE_DRAW_EQUIP_EAR_2:
+        return DUP_FITTING_CATEGORY_EAR_2;
+    case MUS_POKE_DRAW_EQUIP_HEAD:
+        return DUP_FITTING_CATEGORY_HEAD;
+    case MUS_POKE_DRAW_EQUIP_FACE:
+    case MUS_POKE_DRAW_EQUIP_FACE_2:
+        return DUP_FITTING_CATEGORY_FACE;
+    case MUS_POKE_DRAW_EQUIP_BODY:
+        return DUP_FITTING_CATEGORY_BODY;
+    case MUS_POKE_DRAW_EQUIP_WAIST:
+        return DUP_FITTING_CATEGORY_WAIST;
     case MUS_POKE_DRAW_EQUIP_HAND_R:
-        return 6;
+        return DUP_FITTING_CATEGORY_ARM;
     case MUS_POKE_DRAW_EQUIP_HAND_L:
-        return 7;
-    case 9:
-        return 8;
+        return DUP_FITTING_CATEGORY_ARM_2;
+    case MUS_POKE_DRAW_EQUIP_MAX:
+        return DUP_FITTING_CATEGORY_ORIGINAL;
     }
     return 9;
 }

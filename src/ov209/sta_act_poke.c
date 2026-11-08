@@ -167,10 +167,10 @@ static void StaActPoke_UpdateItems(StaActPokeSys *sys, StaActPoke *poke) {
                 equipPos = MUS_POKE_DRAW_EQUIP_HAND_L;
             } else if (i == MUS_POKE_DRAW_EQUIP_HAND_L) {
                 equipPos = MUS_POKE_DRAW_EQUIP_HAND_R;
-            } else if (i == 0) {
-                equipPos = 1;
-            } else if (i == 1) {
-                equipPos = 0;
+            } else if (i == MUS_POKE_DRAW_EQUIP_EAR) {
+                equipPos = MUS_POKE_DRAW_EQUIP_EAR_2;
+            } else if (i == MUS_POKE_DRAW_EQUIP_EAR_2) {
+                equipPos = MUS_POKE_DRAW_EQUIP_EAR;
             }
         }
         if (poke->items[i] != NULL && poke->showItem[i] == TRUE) {
@@ -193,14 +193,14 @@ static void StaActPoke_UpdateItems(StaActPokeSys *sys, StaActPoke *poke) {
                     if (flipped == TRUE) {
                         itemRot = 0x10000 - itemRot;
                     }
-                    if (MusItemDraw_GetItemFlag9(poke->items[i]) == FALSE && flipped == TRUE) {
+                    if (MusItemDraw_UsesMarkerFlip(poke->items[i]) == FALSE && flipped == TRUE) {
                         scaleX = -scaleX;
                     }
                     MTX_MultVec33(&equip->info.center, &rotation, &center);
                     VEC_Subtract(&equip->info.center, &center, &center);
                     pos.x = equip->info.pos.x + offset.x + FX32_CONST(128) + FX32_CONST(sys->scroll);
                     pos.y = equip->info.pos.y + offset.y + FX32_CONST(96);
-                    if (MusItemDraw_GetItemFlag7(poke->items[i]) == TRUE) {
+                    if (MusItemDraw_UsesLowerDrawDepth(poke->items[i]) == TRUE) {
                         pos.z = poke->pos.z - FX32_CONST(20);
                     } else {
                         if (equipPos == MUS_POKE_DRAW_EQUIP_HAND_R || equipPos == MUS_POKE_DRAW_EQUIP_HAND_L) {

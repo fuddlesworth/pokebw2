@@ -20,6 +20,13 @@ typedef struct {
 
 // A prop position on a Pokémon, one for each marker cell from kind MUS_POKE_DRAW_CELL_EQUIP
 typedef enum {
+    MUS_POKE_DRAW_EQUIP_EAR = 0,
+    MUS_POKE_DRAW_EQUIP_EAR_2 = 1,
+    MUS_POKE_DRAW_EQUIP_HEAD = 2,
+    MUS_POKE_DRAW_EQUIP_FACE = 3,
+    MUS_POKE_DRAW_EQUIP_FACE_2 = 4,
+    MUS_POKE_DRAW_EQUIP_BODY = 5,
+    MUS_POKE_DRAW_EQUIP_WAIST = 6,
     // The props held in each hand
     MUS_POKE_DRAW_EQUIP_HAND_R = 7,
     MUS_POKE_DRAW_EQUIP_HAND_L = 8,

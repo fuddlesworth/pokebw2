@@ -49,8 +49,8 @@ void MusItemDraw_DrawSystem(MusItemDrawSys *sys);
 BOOL MusItemDraw_CanEquipPos(MusItemDraw *item, s32 pos);
 BOOL MusItemDraw_ItemCanEquipPos(MusItemDrawSys *sys, u16 itemId, s32 pos);
 BOOL MusItemDraw_IsItemOfPos(MusItemDrawSys *sys, u16 itemId, s32 pos);
-BOOL MusItemDraw_GetItemFlag7(MusItemDraw *item);
-BOOL MusItemDraw_GetItemFlag9(MusItemDraw *item);
+BOOL MusItemDraw_UsesLowerDrawDepth(MusItemDraw *item);
+BOOL MusItemDraw_UsesMarkerFlip(MusItemDraw *item);
 // The texture of a prop, as a 3D resource
 G3DResource *MusItemDraw_LoadTexResource(u16 itemId);
 void MusItemDraw_FreeTexResource(G3DResource *resource);

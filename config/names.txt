@@ -29082,8 +29082,8 @@ overlays/ov209 0x021bb570 MusItemDraw_GetFaceSize
 overlays/ov209 0x021bb598 MusItemDraw_CanEquipPos
 overlays/ov209 0x021bb5a4 MusItemDraw_ItemCanEquipPos
 overlays/ov209 0x021bb5b8 MusItemDraw_IsItemOfPos
-overlays/ov209 0x021bb5cc MusItemDraw_GetItemFlag7
-overlays/ov209 0x021bb5d8 MusItemDraw_GetItemFlag9
+overlays/ov209 0x021bb5cc MusItemDraw_UsesLowerDrawDepth
+overlays/ov209 0x021bb5d8 MusItemDraw_UsesMarkerFlip
 overlays/ov209 0x021bb5e4 MusItemDraw_LoadTexResource
 overlays/ov209 0x021bb5f4 MusItemDraw_FreeTexResource
 overlays/ov209 0x021bb5fc MusItemDraw_GetFreeIndex
@@ -29470,8 +29470,8 @@ overlays/ov210 0x021eef94 MusItemData_GetTexSize
 overlays/ov210 0x021eef98 MusItemData_CanEquipAtPos
 overlays/ov210 0x021ef018 MusItemData_CanEquipInGroup
 overlays/ov210 0x021ef088 MusItemData_IsCategoryOfGroup
-overlays/ov210 0x021ef0f4 MusItemData_GetFlag7
-overlays/ov210 0x021ef104 MusItemData_GetFlag9
+overlays/ov210 0x021ef0f4 MusItemData_UsesLowerDrawDepth
+overlays/ov210 0x021ef104 MusItemData_UsesMarkerFlip
 overlays/ov210 0x021ef118 MusItemData_GetPosGroup
 overlays/ov210 0x021ef164 MusItemData_GetKind
 overlays/ov210 0x021ef170 MusItemData_GetEffect
