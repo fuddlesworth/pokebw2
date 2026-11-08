@@ -3,6 +3,7 @@
 // colosseum_comm.c's
 #include "field/colosseum.h"
 #include "types.h"
+#include "app/comm_btl_demo.h"
 #include "app/pms_select.h"
 #include "field/event_colosseum_battle.h"
 #include "field/field_event.h"
@@ -15,6 +16,7 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "pml/poke_party.h"
+#include "save/battle_rec.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 
@@ -35,11 +37,11 @@ UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const Pla
         colosseum->party[i] = PokeParty_Create(HEAPID_UNION);
     }
     for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
-        colosseum->vote[i] = 0xff;
-        colosseum->voteReply[i] = 0xff;
+        colosseum->vote[i] = COLOSSEUM_VOTE_NONE;
+        colosseum->voteReply[i] = COLOSSEUM_VOTE_REPLY_NONE;
     }
-    colosseum->myVote = 0xff;
-    colosseum->myVoteReply = 0xff;
+    colosseum->myVote = COLOSSEUM_VOTE_NONE;
+    colosseum->myVoteReply = COLOSSEUM_VOTE_REPLY_NONE;
     PokeParty_Copy(GameData_GetParty(gameData), colosseum->party[self]);
     member = &colosseum->members[self];
     PlayerInfo_Copy(info, &member->info);
@@ -50,7 +52,7 @@ UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const Pla
         value = 0;
     }
     member->autoAccept = value;
-    member->unk28 = 100;
+    member->battleRecordVersion = BATTLE_REC_VERSION;
     TrainerCardData_Fill(colosseum->cardCheck[self], gameData, TRUE, FALSE, HEAPID_UNION);
     TrainerCardData_FillExtras(colosseum->card[self], gameData, HEAPID_UNION);
     colosseum->cardReady[self] = TRUE;
@@ -74,7 +76,7 @@ void Colosseum_SetStarted(UnionColosseum *colosseum, BOOL value) {
 
 void Colosseum_SetMyVote(UnionColosseum *colosseum, u32 value) {
     colosseum->myVote = value;
-    colosseum->myVoteReply = 0xff;
+    colosseum->myVoteReply = COLOSSEUM_VOTE_REPLY_NONE;
 }
 
 u8 Colosseum_GetMyVote(const UnionColosseum *colosseum) {
@@ -93,7 +95,7 @@ BOOL Colosseum_Vote(UnionColosseum *colosseum, u32 netId, u8 value) {
     int i;
     BOOL accepted;
 
-    if (value == 0xff) {
+    if (value == COLOSSEUM_VOTE_NONE) {
         colosseum->vote[netId] = value;
         accepted = TRUE;
     } else {
@@ -119,8 +121,8 @@ void Colosseum_SendVoteReplies(UnionColosseum *colosseum) {
         for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
             u8 value = colosseum->voteReply[i];
 
-            if (value != 0xff && Colosseum_SendVoteReply(colosseum, i, value) == TRUE) {
-                colosseum->voteReply[i] = 0xff;
+            if (value != COLOSSEUM_VOTE_REPLY_NONE && Colosseum_SendVoteReply(colosseum, i, value) == TRUE) {
+                colosseum->voteReply[i] = COLOSSEUM_VOTE_REPLY_NONE;
             }
         }
     }
@@ -208,10 +210,10 @@ void Colosseum_BuildBattlePlayers(UnionColosseum *colosseum, GameSystem *gsys, C
     int slot;
 
     MI_CpuFill8(players, 0, sizeof(ColosseumPlayers));
-    players->battle.demoType = 3;
+    players->battle.demoType = COMM_BTL_DEMO_TYPE_MULTI_START;
     for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
         if (colosseum->partyReady[i] == 0) {
-            players->battle.demoType = 1;
+            players->battle.demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;
             break;
         }
         member_max++;
@@ -224,7 +226,7 @@ void Colosseum_BuildBattlePlayers(UnionColosseum *colosseum, GameSystem *gsys, C
 
         if ((team & 1) == (selfTeam & 1)) {
             slot = 0;
-        } else if (players->battle.demoType == 1) {
+        } else if (players->battle.demoType == COMM_BTL_DEMO_TYPE_SINGLE_START) {
             slot = 1;
         } else {
             slot = 2;
@@ -243,5 +245,5 @@ void Colosseum_ClearPlayers(ColosseumPlayers *players) {
 static void Colosseum_SetPlayer(UnionColosseum *colosseum, BattlePlayer *player, u8 index, u32 unused) {
     player->party = colosseum->party[index];
     player->info = &colosseum->members[index].info;
-    player->unk08[1] = colosseum->members[index].unk28;
+    player->unk08[1] = colosseum->members[index].battleRecordVersion;
 }

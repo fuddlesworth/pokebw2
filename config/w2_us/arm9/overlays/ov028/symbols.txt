@@ -23,8 +23,8 @@ UnionComm_GetBeacon kind:function(thumb,size=0x14) addr:0x02170a0c
 UnionComm_BuildBeacon kind:function(thumb,size=0x168) addr:0x02170a20
 UnionComm_GetBeaconSize kind:function(thumb,size=0x4) addr:0x02170b88
 UnionComm_IsBeaconJoinable kind:function(thumb,size=0x38) addr:0x02170b8c
-UnionComm_NetCallback24 kind:function(thumb,size=0x2) addr:0x02170bc4
-UnionComm_NetCallback2C kind:function(thumb,size=0x2) addr:0x02170bc8
+UnionComm_OnNetError kind:function(thumb,size=0x2) addr:0x02170bc4
+UnionComm_OnNetEnd kind:function(thumb,size=0x2) addr:0x02170bc8
 UnionComm_ClearBeacons kind:function(thumb,size=0x18) addr:0x02170bcc
 UnionComm_FreeResources kind:function(thumb,size=0x88) addr:0x02170be4
 UnionComm_SetSelf kind:function(thumb,size=0x38) addr:0x02170c6c
@@ -153,8 +153,8 @@ Colosseum_ClearParties kind:function(thumb,size=0x3e) addr:0x02172b8c
 Colosseum_BuildBattlePlayers kind:function(thumb,size=0xd4) addr:0x02172bcc
 Colosseum_ClearPlayers kind:function(thumb,size=0xc) addr:0x02172ca0
 Colosseum_SetPlayer kind:function(thumb,size=0x26) addr:0x02172cac
-data_ov028_02172c94 kind:data(any) addr:0x02172cd4
-data_ov028_02172d04 kind:data(any) addr:0x02172d44
+sUnionNetInitData kind:data(any) addr:0x02172cd4
+sUnionNetCommands kind:data(any) addr:0x02172d44
 sUnionCommands kind:data(any) addr:0x02172df4
 data_ov028_02172db8 kind:data(any) addr:0x02172df8
 data_ov028_02172db9 kind:data(any) addr:0x02172df9

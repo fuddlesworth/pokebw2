@@ -96,6 +96,12 @@ typedef struct UnionBeaconEntry {
 } UnionBeaconEntry;
 
 // The players this machine is grouped with
+enum {
+    UNION_GROUP_STEP_SEND_DONE = 0,
+    UNION_GROUP_STEP_WAIT_DONE = 1,
+    UNION_GROUP_STEP_STOP_LINK = 2,
+};
+
 struct UnionGroup {
     // The player spoken to, the one asked to connect, the one who answered, and the parent joined (the name of the
     // third is the ROM's)
@@ -232,6 +238,29 @@ typedef struct {
 #define UNION_SUBPROC_ID_NULL 0
 
 #define UNION_BEACON_ENTRY_MAX 10
+
+enum {
+    UNION_COMM_STATE_INIT = 1,
+    UNION_COMM_STATE_READY = 2,
+    UNION_COMM_STATE_SEARCHING = 3,
+    UNION_COMM_STATE_EXIT = 4,
+    UNION_COMM_STATE_ENDED = 5,
+};
+
+enum {
+    UNION_LINK_STEP_IDLE = 0,
+    UNION_LINK_STEP_SELECT_MODE = 1,
+    UNION_LINK_STEP_EXIT = 2,
+    UNION_LINK_STEP_WAIT_EXIT = 3,
+    UNION_LINK_STEP_INIT = 4,
+    UNION_LINK_STEP_WAIT_INIT = 5,
+};
+
+enum {
+    UNION_LINK_MODE_RESTART = 0,
+    UNION_LINK_MODE_STOP = 1,
+    UNION_LINK_MODE_START = 2,
+};
 
 struct UnionSystem {
     UnionBootParam *param;

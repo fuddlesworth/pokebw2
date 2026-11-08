@@ -70,7 +70,7 @@ void UnionMain_Update(GameCommSys *comm, Field *field) {
         }
         if (UnionMain_IsFieldReady(unisys) == TRUE) {
             activity = unisys->situ.activity;
-            if (activity >= 4 && activity <= 0x17) {
+            if (activity >= UNION_ACTIVITY_SINGLE && activity <= UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER) {
                 if (UnionCommand_IsActive(unisys)) {
                     return;
                 }
@@ -79,7 +79,7 @@ void UnionMain_Update(GameCommSys *comm, Field *field) {
             }
             switch (activity) {
             case 0:
-            case 1:
+            case UNION_ACTIVITY_TALKING:
                 if (UnionCommand_IsActive(unisys)) {
                     return;
                 }
@@ -153,7 +153,8 @@ BOOL UnionMain_IsIdle(GameSystem *gsys) {
     if (unisys == NULL) {
         return FALSE;
     }
-    if ((unisys->situ.step == 0 || unisys->situ.step == 0x2a) && unisys->updateDisabled == 0) {
+    if ((unisys->situ.step == UNION_STEP_IDLE || unisys->situ.step == UNION_STEP_COLOSSEUM_IDLE) &&
+        unisys->updateDisabled == 0) {
         return TRUE;
     }
     return FALSE;
