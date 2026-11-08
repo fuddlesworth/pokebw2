@@ -1765,11 +1765,11 @@ static void Studio_SetEnding(BtlClient *client, u32 value) {
 static void Studio_DecideEnding(BtlClient *client, const BtlScriptedRules *rules, s32 scene) {
     if (GetStudioMode(client->mainModule) == BTL_STUDIO_MODE_FILM) {
         if (rules->badEndingScene == scene) {
-            Studio_SetEnding(client, 1);
+            Studio_SetEnding(client, STUDIO_ENDING_HIT);
         } else if (rules->scenes[scene].points >= 60) {
-            Studio_SetEnding(client, 2);
+            Studio_SetEnding(client, STUDIO_ENDING_STRANGE);
         } else {
-            Studio_SetEnding(client, 0);
+            Studio_SetEnding(client, STUDIO_ENDING_FLOP);
         }
     }
 }
@@ -7285,11 +7285,11 @@ static void Studio_UpdateAudience(BtlClient *client) {
 static void Studio_PlayEndingBgm(BtlMainModule *mainModule) {
     BtlSetup *setup = GetBattleSetupParam(mainModule);
 
-    if (setup->studioEnding == 0) {
+    if (setup->studioEnding == STUDIO_ENDING_FLOP) {
         BtlvEffect_PlayBgm(GetStudioEndingBGM0(mainModule));
-    } else if (setup->studioEnding == 1) {
+    } else if (setup->studioEnding == STUDIO_ENDING_HIT) {
         BtlvEffect_PlayBgm(GetWinBGM(mainModule));
-    } else if (setup->studioEnding == 2) {
+    } else if (setup->studioEnding == STUDIO_ENDING_STRANGE) {
         BtlvEffect_PlayBgm(GetStudioEndingBGM2(mainModule));
     }
 }

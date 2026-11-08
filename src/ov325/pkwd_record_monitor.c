@@ -1654,7 +1654,7 @@ static void PkwdRecordMonitor_LoadMovies(PkwdRecordMonitorWork *wk) {
     count = 0;
 
     for (movie = 0; movie < POKEWOOD_MOVIE_COUNT; movie++) {
-        if (PokewoodSave_CheckFlag(wk->param->save, 5, movie) == TRUE) {
+        if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_WATCHED, movie) == TRUE) {
             PokewoodRecord *record = PokewoodSave_GetRecord(wk->param->save, movie);
 
             wk->entries[count].movie = movie;
@@ -1672,13 +1672,13 @@ static void PkwdRecordMonitor_LoadMovies(PkwdRecordMonitorWork *wk) {
                 best[bestCount] = movie;
                 bestCount++;
             }
-            if (PokewoodSave_CheckFlag(wk->param->save, 2, movie) == TRUE) {
+            if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_HIT_ENDING, movie) == TRUE) {
                 wk->entries[count].flags |= 1 << 0;
             }
-            if (PokewoodSave_CheckFlag(wk->param->save, 6, movie) == TRUE) {
+            if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_FLOP_ENDING, movie) == TRUE) {
                 wk->entries[count].flags |= 1 << 1;
             }
-            if (PokewoodSave_CheckFlag(wk->param->save, 4, movie) == TRUE) {
+            if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_STRANGE_ENDING, movie) == TRUE) {
                 wk->entries[count].flags |= 1 << 2;
             }
             wk->entries[count].series = sPkwdRecordMonitorSeries[movie] & 3;

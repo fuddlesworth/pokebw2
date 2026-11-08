@@ -1,5 +1,5 @@
-func_ov062_021e5800 kind:function(thumb,size=0x2c) addr:0x021e5840
-func_ov062_021e582c kind:function(thumb,size=0x14) addr:0x021e586c
+Pokewood_GetTrainerObjCode kind:function(thumb,size=0x2c) addr:0x021e5840
+Pokewood_GetDirectorObjCode kind:function(thumb,size=0x14) addr:0x021e586c
 Pokewood_LoadMovie kind:function(thumb,size=0x10) addr:0x021e5880
 Pokewood_GetMovieField kind:function(thumb,size=0x3e) addr:0x021e5890
 Pokewood_GetSave kind:function(thumb,size=0xc) addr:0x021e58d0
@@ -27,13 +27,13 @@ Scrcmd_Pokewood_GetNewUnlockKind kind:function(thumb,size=0xb0) addr:0x021e5e24
 Scrcmd_Pokewood_TestAndSetLevelBit kind:function(thumb,size=0x34) addr:0x021e5ed4
 Scrcmd_Pokewood_GetSlotFlag kind:function(thumb,size=0x30) addr:0x021e5f08
 Scrcmd_Pokewood_SetSlotFlag kind:function(thumb,size=0x24) addr:0x021e5f38
-func_ov062_021e5f1c kind:function(thumb,size=0x32) addr:0x021e5f5c
-func_ov062_021e5f50 kind:function(thumb,size=0x60) addr:0x021e5f90
+Scrcmd_Pokewood_GetDownloadedMovieStudioCast kind:function(thumb,size=0x32) addr:0x021e5f5c
+Scrcmd_Pokewood_GetMovieActorObjCodes kind:function(thumb,size=0x60) addr:0x021e5f90
 Scrcmd_Pokewood_SetSaveSlot kind:function(thumb,size=0x3a) addr:0x021e5ff0
-func_ov062_021e5fec kind:function(thumb,size=0x24) addr:0x021e602c
-func_ov062_021e6010 kind:function(thumb,size=0x30) addr:0x021e6050
+Scrcmd_Pokewood_GetMovieDirector kind:function(thumb,size=0x24) addr:0x021e602c
+Scrcmd_Pokewood_HasAllHitEndings kind:function(thumb,size=0x30) addr:0x021e6050
 Scrcmd_Pokewood_OpenRecordMonitor kind:function(thumb,size=0x68) addr:0x021e6080
-func_ov062_021e60a8 kind:function(thumb,size=0xa4) addr:0x021e60e8
+Scrcmd_Pokewood_GetFanGift kind:function(thumb,size=0xa4) addr:0x021e60e8
 PokewoodSystem_Create kind:function(thumb,size=0x40) addr:0x021e618c
 PokewoodSystem_Free kind:function(thumb,size=0x14) addr:0x021e61cc
 PokewoodSystem_SetCastFromPokeList kind:function(thumb,size=0x48) addr:0x021e61e0
@@ -68,18 +68,18 @@ PokewoodSetup_FreeRecordMonitorParam kind:function(thumb,size=0x8) addr:0x021e67
 Pokewood_KeepMovieResults kind:function(thumb,size=0x5a) addr:0x021e6794
 EventPokewoodSave_Callback kind:function(thumb,size=0x7a) addr:0x021e67f0
 EventPokewoodSave_Create kind:function(thumb,size=0x3c) addr:0x021e686c
-data_ov062_021e6868 kind:data(any) addr:0x021e68a8
+sDirectorObjCodes kind:data(any) addr:0x021e68a8
 data_ov062_021e6869 kind:data(any) addr:0x021e68a9 ambiguous
-data_ov062_021e6872 kind:data(any) addr:0x021e68b2
-data_ov062_021e688a kind:data(any) addr:0x021e68ca
+sGiftColumns kind:data(any) addr:0x021e68b2
+sGiftQuantities kind:data(any) addr:0x021e68ca
 data_ov062_021e689d kind:data(any) addr:0x021e68dd ambiguous
-data_ov062_021e68b2 kind:data(any) addr:0x021e68f2
-data_ov062_021e68da kind:data(any) addr:0x021e691a
-data_ov062_021e6906 kind:data(any) addr:0x021e6946
+sGiftItems kind:data(any) addr:0x021e68f2
+sGiftGroups kind:data(any) addr:0x021e691a
+sTrainerObjCodes kind:data(any) addr:0x021e6946
 data_ov062_021e6908 kind:data(any) addr:0x021e6948
 data_ov062_021e6935 kind:data(any) addr:0x021e6975 ambiguous
 POKEWOOD_SCRIPT_COMMANDS kind:data(any) addr:0x021e6984 ambiguous
-data_ov062_021e69b4 kind:data(any) addr:0x021e69f4
+sMovieSeries kind:data(any) addr:0x021e69f4
 sSeries kind:data(any) addr:0x021e6a20
 sAmounts kind:data(any) addr:0x021e6a80
 sFameChanges kind:data(any) addr:0x021e6a8c

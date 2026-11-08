@@ -77,6 +77,16 @@ enum {
 };
 
 // The flag lists of the save, with a flag for each movie
+enum {
+    POKEWOOD_FLAG_LIST_UNLOCKED = 0,
+    POKEWOOD_FLAG_LIST_FILMED = 1,
+    POKEWOOD_FLAG_LIST_HIT_ENDING = 2,
+    POKEWOOD_FLAG_LIST_ANNOUNCED = 3,
+    POKEWOOD_FLAG_LIST_STRANGE_ENDING = 4,
+    POKEWOOD_FLAG_LIST_WATCHED = 5,
+    POKEWOOD_FLAG_LIST_FLOP_ENDING = 6,
+};
+
 #define POKEWOOD_FLAG_LIST_COUNT 7
 #define POKEWOOD_FLAG_WORDS ((POKEWOOD_MOVIE_COUNT + 31) / 32)
 #define POKEWOOD_SLOT_COUNT 8
@@ -88,7 +98,7 @@ struct PokewoodSave {
     u32 unlockedMovies[POKEWOOD_FLAG_WORDS];
     // Flag list 1, the movies that have been filmed
     u32 filmedMovies[POKEWOOD_FLAG_WORDS];
-    u32 flags2[POKEWOOD_FLAG_WORDS];
+    u32 hitEndings[POKEWOOD_FLAG_WORDS];
     // Flag list 3, the unlocked movies that the scripts have announced
     u32 announcedMovies[POKEWOOD_FLAG_WORDS];
     // Whether the movie of each slot has been watched, cleared when a new one is filmed into it
@@ -100,9 +110,9 @@ struct PokewoodSave {
     s16 levelBits;
     // The series (plus 1, 0 for none) of the last movies filmed, from the newest
     u8 lastSeries[POKEWOOD_LAST_SERIES_COUNT];
-    u32 flags4[POKEWOOD_FLAG_WORDS];
-    u32 flags5[POKEWOOD_FLAG_WORDS];
-    u32 flags6[POKEWOOD_FLAG_WORDS];
+    u32 strangeEndings[POKEWOOD_FLAG_WORDS];
+    u32 watchedMovies[POKEWOOD_FLAG_WORDS];
+    u32 flopEndings[POKEWOOD_FLAG_WORDS];
     u8 padding368[0x7c];
 }; // size: 0x3e4
 

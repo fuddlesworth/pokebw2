@@ -7052,7 +7052,7 @@
      ]
     },
     "1018": {
-     "handler": "func_ov062_021e5f1c",
+     "handler": "Scrcmd_Pokewood_GetDownloadedMovieStudioCast",
      "overlay": 62,
      "args": [
       "any",
@@ -7060,7 +7060,7 @@
      ]
     },
     "1019": {
-     "handler": "func_ov062_021e5f50",
+     "handler": "Scrcmd_Pokewood_GetMovieActorObjCodes",
      "overlay": 62,
      "args": [
       "any",
@@ -7069,7 +7069,7 @@
      ]
     },
     "1020": {
-     "handler": "func_ov062_021e5fec",
+     "handler": "Scrcmd_Pokewood_GetMovieDirector",
      "overlay": 62,
      "args": [
       "any",
@@ -7077,7 +7077,7 @@
      ]
     },
     "1021": {
-     "handler": "func_ov062_021e6010",
+     "handler": "Scrcmd_Pokewood_HasAllHitEndings",
      "overlay": 62,
      "args": [
       "var"
@@ -7098,7 +7098,7 @@
      ]
     },
     "1024": {
-     "handler": "func_ov062_021e60a8",
+     "handler": "Scrcmd_Pokewood_GetFanGift",
      "overlay": 62,
      "args": [
       "any",

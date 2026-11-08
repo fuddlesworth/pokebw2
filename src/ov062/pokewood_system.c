@@ -1,6 +1,8 @@
 #include "types.h"
 #include "battle/btl_setup.h"
+#include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/types.h"
 #include "field/pokewood_system.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
@@ -46,7 +48,8 @@ void PokewoodSystem_SetCastFromPokeList(PokewoodSystem *sys, const PokeListParam
     MI_CpuCopy8(param->picked, sys->castSlots, sizeof(sys->castSlots));
     sys->listIndex = param->index;
     sys->listResult = param->result;
-    if (sys->listResult != 0 || sys->listIndex == 7 || sys->listIndex == 8) {
+    if (sys->listResult != POKELIST_RESULT_DONE || sys->listIndex == POKELIST_CURSOR_CANCEL ||
+        sys->listIndex == POKELIST_CURSOR_CLOSE) {
         *sys->resultVar = 0;
     } else {
         *sys->resultVar = 1;
@@ -62,11 +65,11 @@ void PokewoodSystem_SetupPokeList(PokewoodSystem *sys, GameData *gameData, PokeL
     sys->regulation.minCount = movie->castCount;
     sys->regulation.maxCount = movie->castCount;
     GFL_HeapFree(movie);
-    sys->unkCE = 0x11;
-    sys->unkCF = 1;
-    sys->unkD0 = 0x90;
+    sys->extraRuleType = TYPE_NULL;
+    sys->extraRuleBanMoves = TRUE;
+    sys->extraRuleMove = MOVE_TRANSFORM;
     param->regulation = &sys->regulation;
-    param->extraRule = &sys->unkCE;
+    param->extraRule = &sys->extraRuleType;
     param->unk48 = 0;
 }
 
@@ -151,12 +154,12 @@ void PokewoodSystem_CopyCast(PokewoodSystem *sys, GameData *gameData, PokeParty 
 void PokewoodSystem_SetResultFlag(PokewoodSystem *sys, GameData *gameData, u32 movie, u32 result) {
     PokewoodSave *save = PokewoodSave_Get(gameData);
 
-    if (result == 1) {
-        PokewoodSave_SetFlag(save, 2, movie);
-    } else if (result == 2) {
-        PokewoodSave_SetFlag(save, 4, movie);
-    } else if (result == 0) {
-        PokewoodSave_SetFlag(save, 6, movie);
+    if (result == STUDIO_ENDING_HIT) {
+        PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_HIT_ENDING, movie);
+    } else if (result == STUDIO_ENDING_STRANGE) {
+        PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_STRANGE_ENDING, movie);
+    } else if (result == STUDIO_ENDING_FLOP) {
+        PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_FLOP_ENDING, movie);
     }
 }
 
@@ -181,7 +184,7 @@ static BOOL Pokewood_IsSeriesComplete(PokewoodSave *save, u32 series) {
     u32 i;
 
     for (i = 0; sSeries[series].movies[i] != POKEWOOD_SERIES_END; i++) {
-        if (PokewoodSave_CheckFlag(save, 1, sSeries[series].movies[i]) == FALSE) {
+        if (PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_FILMED, sSeries[series].movies[i]) == FALSE) {
             break;
         }
     }
@@ -202,17 +205,17 @@ void Pokewood_CheckMedals(GameData *gameData) {
             MedalBox_GiveMedal(box, sSeries[i].medal);
         }
     }
-    if (PokewoodSave_CountFlags(save, 1) == POKEWOOD_MOVIE_COUNT) {
+    if (PokewoodSave_CountFlags(save, POKEWOOD_FLAG_LIST_FILMED) == POKEWOOD_MOVIE_COUNT) {
         MedalBox_GiveMedal(box, 0xd8);
         MedalBox_DiscoverMedal(box, 0xdc);
     }
-    if (PokewoodSave_CountFlags(save, 2) == POKEWOOD_MOVIE_COUNT) {
+    if (PokewoodSave_CountFlags(save, POKEWOOD_FLAG_LIST_HIT_ENDING) == POKEWOOD_MOVIE_COUNT) {
         MedalBox_GiveMedal(box, 0xd9);
     }
     if (PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save)) >= 2) {
         MedalBox_DiscoverMedal(box, 0xd9);
     }
-    count = PokewoodSave_CountFlags(save, 4);
+    count = PokewoodSave_CountFlags(save, POKEWOOD_FLAG_LIST_STRANGE_ENDING);
     if (count != 0) {
         MedalBox_GiveMedal(box, 0xdb);
     }
@@ -235,7 +238,7 @@ void PokewoodSystem_SetRecord(PokewoodSystem *sys, const BtlSetup *setup, u32 mo
         pkm = PokeParty_GetPkm(party, i);
         species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
         form = PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL);
-        record.cast[i] = PokeIcon_PackSpecies(species, form, PokeParty_GetParam(pkm, 0x6e, NULL));
+        record.cast[i] = PokeIcon_PackSpecies(species, form, PokeParty_GetParam(pkm, PKM_PARAM_SEX, NULL));
         if (PML_GetPokestarFameLevel(PokeParty_GetParam(pkm, PKM_PARAM_POKESTAR_FAME, NULL)) >= 2) {
             record.famousCast |= (u8)(1 << i);
         }

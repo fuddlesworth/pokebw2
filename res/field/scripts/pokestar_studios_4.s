@@ -419,7 +419,7 @@ L_0686:
     WordSetPlayerName 0
     ActorMsg MSGFILE_SCRIPT, 0x8020, 0x8011, 2, 0
     MsgWaitAdvance
-    Plugin10_Cmd1024 EVENT_WORK_0x4002, 0x8021, 0x8027, 0x8028
+    GetFanGift EVENT_WORK_0x4002, 0x8021, 0x8027, 0x8028
     VMStackPush 0x8029
     VMStackPushConst 0
     VMStackCmp CMP_EQ

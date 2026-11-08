@@ -4834,30 +4834,26 @@
     .2byte \a1
     .endm
 
-    // func_ov062_021e5f1c
-    .macro Plugin10_Cmd1018 a0, a1
+    .macro GetDownloadedMovieStudioCast a0, a1
     FieldCommand 1018
     .2byte \a0
     .2byte \a1
     .endm
 
-    // func_ov062_021e5f50
-    .macro Plugin10_Cmd1019 a0, a1, a2
+    .macro GetMovieActorObjCodes a0, a1, a2
     FieldCommand 1019
     .2byte \a0
     .2byte \a1
     .2byte \a2
     .endm
 
-    // func_ov062_021e5fec
-    .macro Plugin10_Cmd1020 a0, a1
+    .macro GetMovieDirector a0, a1
     FieldCommand 1020
     .2byte \a0
     .2byte \a1
     .endm
 
-    // func_ov062_021e6010
-    .macro Plugin10_Cmd1021 a0
+    .macro HasAllHitEndings a0
     FieldCommand 1021
     .2byte \a0
     .endm
@@ -4872,8 +4868,7 @@
     .2byte \a0
     .endm
 
-    // func_ov062_021e60a8
-    .macro Plugin10_Cmd1024 a0, a1, a2, a3
+    .macro GetFanGift a0, a1, a2, a3
     FieldCommand 1024
     .2byte \a0
     .2byte \a1

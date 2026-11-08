@@ -19,7 +19,18 @@ void EventPokewood_CreateCastParty(PlayerInfo *playerInfo, PokeParty *dest, Heap
 void EventPokewood_CreateCastPartyFromSave(PlayerInfo *playerInfo, PokeParty *dest, HeapID heapId, u32 movie, u32 side);
 // Unlocks the movies whose conditions the player now meets, after the movie was filmed with the result and score
 void EventPokewood_UnlockMovies(PokewoodSave *save, GameData *gameData, u32 movie, u32 result, s32 score);
-// How the movie unlocks, 1 to 7, or 0 for none
+// How the movie unlocks
+enum {
+    POKEWOOD_UNLOCK_NONE = 0,
+    POKEWOOD_UNLOCK_PREVIOUS_HIT = 1,
+    POKEWOOD_UNLOCK_EVENT_FLAG = 2,
+    POKEWOOD_UNLOCK_MIN_GRADE = 3,
+    POKEWOOD_UNLOCK_HIGH_SCORE = 4,
+    POKEWOOD_UNLOCK_ALL_PREVIOUS_HITS = 5,
+    POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED = 6,
+    POKEWOOD_UNLOCK_HIT_AND_EVENT_FLAG = 7,
+};
+
 u8 EventPokewood_GetUnlockKind(u32 movie);
 
 // Events for GameEvent_CreateOverlayDelegate
