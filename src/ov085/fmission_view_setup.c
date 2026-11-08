@@ -230,11 +230,11 @@ GameEvent *FMissionViewSetup_CheckEvent(FMissionView *view, BOOL enabled) {
         u32 args[2];
 
         args[0] = view->usePassPower;
-        args[1] = view->unk89;
+        args[1] = view->paidPassPower;
         event = FMissionViewSetup_CreateCallEvent(
             view,
             GameEvent_CreateOverlayDelegate(view->gsys, OVERLAY_FIELD_PASS_POWER, EventPassPowerActivate_Create, args),
-            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, 1));
+            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, PASS_POWER_MENU_USE));
         view->usePassPower = PASS_POWER_NONE;
         break;
     }
@@ -243,14 +243,14 @@ GameEvent *FMissionViewSetup_CheckEvent(FMissionView *view, BOOL enabled) {
             view,
             GameEvent_CreateOverlayDelegate(view->gsys, OVERLAY_FIELD_PASS_POWER,
                                             (GameEventProvider)EventPassPowerList_Create, view->field),
-            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, 0));
+            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, PASS_POWER_MENU_LIST));
         break;
     case FMISSION_VIEW_EVENT_PASS_POWER_LIST_9:
         event = FMissionViewSetup_CreateCallEvent(
             view,
             GameEvent_CreateOverlayDelegate(view->gsys, OVERLAY_FIELD_PASS_POWER,
                                             (GameEventProvider)EventPassPowerList_Create, view->field),
-            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, 0));
+            CALL_MENU_BUTTON, (u32)BeaconViewMenu_GetButton(view->menu, PASS_POWER_MENU_LIST));
         view->unk80 = 0;
         break;
     case FMISSION_VIEW_EVENT_GREETING:
@@ -723,12 +723,14 @@ static void FMissionViewSetup_InitPanel(FMissionView *view, u8 index) {
                                    view->res[FMISSION_VIEW_RES_ICON].lists[FMISSION_VIEW_RES_CELL_ANIMS].ids[0],
                                    panel->x + 16, panel->y + 16, 0, 3, index + 6);
     ClActor_SetPalette(panel->icon, (u8)(index + 9), 1);
-    FMissionViewSetup_InitLine(view, &panel->lines[0], 8, 2, panel->x + 48, panel->y + 4);
-    panel->strs[0] = GFL_StrBufCreate(8, view->heapId);
-    FMissionViewSetup_InitLine(view, &panel->lines[1], 24, 2, panel->x + 48, panel->y + 20);
-    panel->strs[1] = GFL_StrBufCreate(41, view->heapId);
-    FMissionViewSetup_InitLine(view, &panel->lines[2], 12, 2, panel->x + 128, panel->y + 4);
-    panel->strs[2] = GFL_StrBufCreate(24, view->heapId);
+    FMissionViewSetup_InitLine(view, &panel->lines[FMISSION_VIEW_PANEL_LINE_NAME], 8, 2, panel->x + 48, panel->y + 4);
+    panel->strs[FMISSION_VIEW_PANEL_LINE_NAME] = GFL_StrBufCreate(8, view->heapId);
+    FMissionViewSetup_InitLine(view, &panel->lines[FMISSION_VIEW_PANEL_LINE_MESSAGE], 24, 2, panel->x + 48,
+                               panel->y + 20);
+    panel->strs[FMISSION_VIEW_PANEL_LINE_MESSAGE] = GFL_StrBufCreate(41, view->heapId);
+    FMissionViewSetup_InitLine(view, &panel->lines[FMISSION_VIEW_PANEL_LINE_SCORE], 12, 2, panel->x + 128,
+                               panel->y + 4);
+    panel->strs[FMISSION_VIEW_PANEL_LINE_SCORE] = GFL_StrBufCreate(24, view->heapId);
     ClActor_SetVisible(panel->frame, FALSE);
     ClActor_SetVisible(panel->markActor, FALSE);
     ClActor_SetVisible(panel->icon, FALSE);

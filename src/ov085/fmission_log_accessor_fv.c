@@ -5,6 +5,7 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "save/high_link.h"
+#include "save/player_info.h"
 #include "system/fest_mission_beacon.h"
 #include "system/wordset.h"
 
@@ -39,7 +40,7 @@ FestMissionLogEntry *FMissionLogFV_AllocEntry(HeapID heapId) {
 }
 
 BOOL FMissionLogFV_PopEntry(FestMissionLog *log, FestMissionLogEntry *dest) {
-    if (log->entries[0].kind == 0) {
+    if (log->entries[0].kind == LOG_KIND_NONE) {
         return FALSE;
     }
     *dest = log->entries[0];
@@ -112,7 +113,7 @@ void FMissionLogEntryFV_GetText(FestMissionLogEntry *entry, StrBuf *dest) {
 }
 
 u8 FMissionLogEntryFV_GetLook(FestMissionLogEntry *entry) {
-    if (entry->gender == 0) {
+    if (entry->gender == GENDER_MALE) {
         return entry->look;
     }
     return entry->look + 8;
