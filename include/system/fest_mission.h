@@ -23,7 +23,7 @@ typedef struct {
     u32 target : 10;
     // Which of the target's variants the mission uses: a table index or file, by the target
     u32 targetVariant : 10;
-    u32 unk0_30 : 1;
+    u32 isSpecial : 1;
     // Whether the mission is of Black 2, and of White 2 when clear
     u32 isBlack : 1;
     // The item of the mission's reward

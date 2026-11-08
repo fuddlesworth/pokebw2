@@ -79,13 +79,6 @@ enum {
 // The first palette of the panels' icons
 #define PANEL_ICON_PALETTE 9
 
-// The buttons of the Pass Power's menu
-enum {
-    PASS_POWER_MENU_LIST,
-    PASS_POWER_MENU_USE,
-    PASS_POWER_MENU_CANCEL,
-};
-
 typedef struct {
     u32 x;
     u32 y;
@@ -1199,7 +1192,7 @@ static void FMissionView_PassPowerTask(TCBEx *task, void *data) {
         break;
     case STEP_OPEN_OFFER_MENU:
         BeaconView_SetPrintTimeLimit(view->printQueue, TRUE);
-        BeaconViewMenu_Open(view->menu, 0);
+        BeaconViewMenu_Open(view->menu, BEACON_VIEW_MENU_CHECK_YES_NO);
         FMissionView_SetButtonsVisible(view, FALSE);
         offer->seq++;
         break;
@@ -1306,7 +1299,7 @@ static void FMissionView_QuitTask(TCBEx *task, void *data) {
         break;
     case STEP_OPEN_QUIT_MENU:
         BeaconView_SetPrintTimeLimit(view->printQueue, TRUE);
-        BeaconViewMenu_Open(view->menu, 1);
+        BeaconViewMenu_Open(view->menu, BEACON_VIEW_MENU_YES_NO);
         FMissionView_SetButtonsVisible(view, FALSE);
         quit->seq++;
         break;

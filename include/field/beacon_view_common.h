@@ -23,6 +23,19 @@
 #define BEACON_VIEW_MENU_BUTTON_MAX 3
 #define BEACON_VIEW_MENU_STR_MAX 4
 
+enum {
+    BEACON_VIEW_MENU_CHECK_YES_NO = 0,
+    BEACON_VIEW_MENU_YES_NO = 1,
+    BEACON_VIEW_MENU_CHECK_CLOSE = 2,
+};
+
+// The buttons of the Pass Power's menu
+enum {
+    PASS_POWER_MENU_LIST,
+    PASS_POWER_MENU_USE,
+    PASS_POWER_MENU_CANCEL,
+};
+
 typedef struct {
     AppTaskMenuWin *win;
     AppTaskMenuItem item;

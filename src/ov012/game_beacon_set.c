@@ -230,7 +230,7 @@ static void GameBeacon_FillSpecialTrainerBattleWin(GameBeacon *info, u16 itemId)
 void GameBeacon_BroadcastPassPower(u32 passPower) {
     if (GameBeaconSys_AddMissionScore(15, passPower)) {
         GameBeaconSendSlot_SetMission(&GameBeaconSys->mine, 0x49, passPower);
-    } else if (GameBeaconSys_CanSendType(0x12)) {
+    } else if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_PASS_POWER)) {
         if (PassPower_IsBW1Compatible(passPower)) {
             GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         } else {
@@ -241,7 +241,7 @@ void GameBeacon_BroadcastPassPower(u32 passPower) {
 }
 
 static void GameBeacon_FillPassPower(GameBeacon *info, u32 passPower) {
-    info->type = 0x12;
+    info->type = GAME_BEACON_TYPE_PASS_POWER;
     info->passPower = passPower;
     GameBeacon_ClearRecent(info);
 }
@@ -559,7 +559,7 @@ static void GameBeacon_FillReceivedPassPower(GameBeacon *info, u32 passPower) {
 }
 
 void GameBeacon_BroadcastThanks(GameData *gameData, u16 value) {
-    if (GameBeaconSys_CanSendType(0x18)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_THANKS)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_FillThanks(&GameBeaconSys->mine.beacon, gameData, value);
     }
@@ -568,7 +568,7 @@ void GameBeacon_BroadcastThanks(GameData *gameData, u16 value) {
 static void GameBeacon_FillThanks(GameBeacon *info, GameData *gameData, u16 value) {
     wcharsncpy(TrainerGameInfo_GetThanks(getTrainerGameInfoAddress(GameData_GetSaveControl(gameData))),
                info->payload.named.name, 9);
-    info->type = 0x18;
+    info->type = GAME_BEACON_TYPE_THANKS;
     info->payload.named.value = value;
     GameBeacon_ClearRecent(info);
 }
@@ -576,7 +576,7 @@ static void GameBeacon_FillThanks(GameBeacon *info, GameData *gameData, u16 valu
 void GameBeacon_BroadcastPhrase(StrBuf *name, u8 value) {
     if (GameBeaconSys_AddMissionScore(0x2d, 0)) {
         GameBeaconSendSlot_SetMissionEx(&GameBeaconSys->mine, 0x67, (u32)name, value);
-    } else if (GameBeaconSys_CanSendType(0x31)) {
+    } else if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_PHRASE)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_FillPhrase(&GameBeaconSys->mine.beacon, name, value);
     }
@@ -585,7 +585,7 @@ void GameBeacon_BroadcastPhrase(StrBuf *name, u8 value) {
 static void GameBeacon_FillPhrase(GameBeacon *info, const StrBuf *name, u8 value) {
     GFL_StrBufStoreString(name, info->payload.namedByte.name, 9);
     info->payload.namedByte.value = value;
-    info->type = 0x31;
+    info->type = GAME_BEACON_TYPE_PHRASE;
     GameBeacon_ClearRecent(info);
 }
 

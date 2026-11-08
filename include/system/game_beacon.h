@@ -25,6 +25,15 @@
 // A beacon's recentKind when it has no recent event
 #define GAME_BEACON_RECENT_NONE 5
 
+// Beacon type categories used by the log and its offers.
+enum {
+    GAME_BEACON_TYPE_DEFAULT = 0x1,
+    GAME_BEACON_TYPE_PASS_POWER = 0x12,
+    GAME_BEACON_TYPE_THANKS = 0x18,
+    GAME_BEACON_TYPE_PHRASE = 0x31,
+    GAME_BEACON_TYPE_GIFT_PASS_POWER = 0x32,
+};
+
 // What a beacon's type sends
 typedef union {
     // A value (an item, a move, a Pass Power, a number of hours)

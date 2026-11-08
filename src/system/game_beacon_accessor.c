@@ -310,7 +310,7 @@ BOOL GameBeacon_IsGiftType(const GameBeacon *beacon) {
     case 0x19:
     case 0x1a:
     case 0x1b:
-    case 0x32:
+    case GAME_BEACON_TYPE_GIFT_PASS_POWER:
         return TRUE;
     }
     return FALSE;
@@ -430,7 +430,7 @@ void GameBeacon_GetGreeting(const GameBeacon *beacon, StrBuf *dest) {
 }
 
 void GameBeacon_GetMessage(const GameBeacon *beacon, StrBuf *dest) {
-    if (beacon->type != 0x18) {
+    if (beacon->type != GAME_BEACON_TYPE_THANKS) {
         GFL_StrBufClear(dest);
         return;
     }
@@ -438,7 +438,7 @@ void GameBeacon_GetMessage(const GameBeacon *beacon, StrBuf *dest) {
 }
 
 void GameBeacon_GetTextMessage(const GameBeacon *beacon, StrBuf *dest) {
-    if (beacon->type != 0x31) {
+    if (beacon->type != GAME_BEACON_TYPE_PHRASE) {
         GFL_StrBufClear(dest);
         return;
     }
@@ -487,7 +487,7 @@ u16 GameBeacon_GetType(const GameBeacon *beacon) {
     u16 type = beacon->type;
 
     if (type == 0 || type >= GAME_BEACON_TYPE_MAX) {
-        type = 1;
+        type = GAME_BEACON_TYPE_DEFAULT;
     }
     return type;
 }
@@ -540,7 +540,7 @@ static u16 GameBeacon_GetGiftItem(const GameBeacon *beacon) {
 }
 
 u16 GameBeacon_GetGiftPassPower(const GameBeacon *beacon) {
-    if (beacon->type == 0x32) {
+    if (beacon->type == GAME_BEACON_TYPE_GIFT_PASS_POWER) {
         return beacon->payload.gift.passPower;
     }
     return 0;

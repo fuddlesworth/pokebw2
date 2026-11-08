@@ -21,7 +21,7 @@ BOOL BeaconView_GetMissionOffer(LinkFestival *festival, FestMissionConfig *dest,
         return FALSE;
     }
     for (i = 0; i < offers->count; i++) {
-        if (offers->entries[i].config.info.unk0_30 && FestMissionConfig_HasTimeLeft(&offers->entries[i].config)) {
+        if (offers->entries[i].config.info.isSpecial && FestMissionConfig_HasTimeLeft(&offers->entries[i].config)) {
             GFL_StrBufLoadFixedString(name, offers->entries[i].name, 8);
             *dest = offers->entries[i].config;
             return TRUE;
@@ -57,7 +57,7 @@ void BeaconStatus_PopRecord(BeaconStatus *status) {
     if (status->recordCount != 0) {
         status->recordCount--;
         MI_CpuCopy8(&status->records[1], &status->records[0], status->recordCount);
-        status->records[status->recordCount] = 0;
+        status->records[status->recordCount] = BEACON_VIEW_RECORD_NONE;
     }
 }
 

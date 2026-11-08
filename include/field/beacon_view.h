@@ -94,6 +94,56 @@ enum {
     BEACON_VIEW_RES_KINDS,
 };
 
+// The three animation states of the four screen buttons.
+enum {
+    BEACON_VIEW_BUTTON_IDLE = 0,
+    BEACON_VIEW_BUTTON_TOUCHED = 1,
+    BEACON_VIEW_BUTTON_OFF = 2,
+};
+
+// A panel display mode; GREETING also slides a newly added line in horizontally.
+enum {
+    BEACON_VIEW_PANEL_MESSAGE = 0,
+    BEACON_VIEW_PANEL_GREETING = 1,
+    BEACON_VIEW_PANEL_NAME = 2,
+};
+
+// The records queued for their special Pass Power.
+enum {
+    BEACON_VIEW_RECORD_NONE = 0,
+    BEACON_VIEW_RECORD_NON_ENGLISH = 1,
+    BEACON_VIEW_RECORD_OTHER_VERSION_20 = 2,
+    BEACON_VIEW_RECORD_HUNDRED_PASSERSBY = 3,
+    BEACON_VIEW_RECORD_LOG_FULL = 4,
+    BEACON_VIEW_RECORD_OTHER_GENDER_20 = 5,
+    BEACON_VIEW_RECORD_REPDIGIT = 6,
+};
+
+// Log movement: older entries move rows up, newer entries down; SLIDE_IN keeps the line.
+enum {
+    BEACON_VIEW_MOVE_OLDER = 0,
+    BEACON_VIEW_MOVE_NEWER = 1,
+    BEACON_VIEW_MOVE_SLIDE_IN = 2,
+};
+
+// The three choices of a mission offer.
+enum {
+    BEACON_VIEW_MISSION_CHECK = 0,
+    BEACON_VIEW_MISSION_JOIN = 1,
+    BEACON_VIEW_MISSION_DECLINE = 2,
+};
+
+// No refusal, too little time for join/check, or a missing required flag.
+enum {
+    BEACON_VIEW_MISSION_REFUSAL_NONE = 0,
+    BEACON_VIEW_MISSION_JOIN_TOO_LATE = 1,
+    BEACON_VIEW_MISSION_CHECK_TOO_LATE = 2,
+    BEACON_VIEW_MISSION_FLAG_REQUIRED = 3,
+};
+
+#define BEACON_VIEW_PANEL_UNASSIGNED 0xff
+#define BEACON_VIEW_MEDAL_UNSUPPORTED 0xffff
+
 // The registered resources of one kind
 typedef struct {
     u32 count;
@@ -325,7 +375,7 @@ void BeaconView_OfferMission(BeaconViewWork *work, const FestMissionConfig *conf
 void BeaconView_FlashSelected(BeaconViewWork *work, u8 offset);
 
 // beacon_view_accessor.c
-// The first mission another player offers that has time left, with the player's name; those of a set unk0_30 first
+// The first mission another player offers that has time left, with the player's name; special missions first
 BOOL BeaconView_GetMissionOffer(LinkFestival *festival, FestMissionConfig *dest, StrBuf *name);
 // The records the player has reached, each of which gives a Pass Power once the view offers it
 void BeaconStatus_AddRecord(BeaconStatus *status, u8 record);
