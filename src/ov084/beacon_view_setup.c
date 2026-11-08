@@ -225,7 +225,7 @@ GameEvent *BeaconView_CreateEvent(BeaconViewWork *work, BOOL enabled) {
         args[1] = FALSE;
         event = GameEvent_CreateOverlayDelegate(work->gsys, OVERLAY_ID(156), EventPassPowerActivate_Create, args);
         event = BeaconView_CreateWaitEvent(work, event, EVENT_WAIT_MENU_BUTTON,
-                                           (u32)BeaconViewMenu_GetButton(work->menu, 1));
+                                           (u32)BeaconViewMenu_GetButton(work->menu, PASS_POWER_MENU_USE));
         work->usePassPower = PASS_POWER_NONE;
         break;
     }
@@ -233,13 +233,13 @@ GameEvent *BeaconView_CreateEvent(BeaconViewWork *work, BOOL enabled) {
         event = GameEvent_CreateOverlayDelegate(work->gsys, OVERLAY_ID(156),
                                                 (GameEventProvider)EventPassPowerList_Create, work->field);
         event = BeaconView_CreateWaitEvent(work, event, EVENT_WAIT_MENU_BUTTON,
-                                           (u32)BeaconViewMenu_GetButton(work->menu, 0));
+                                           (u32)BeaconViewMenu_GetButton(work->menu, PASS_POWER_MENU_LIST));
         break;
     case BEACON_VIEW_EVENT_PASS_POWER_LIST_2:
         event = GameEvent_CreateOverlayDelegate(work->gsys, OVERLAY_ID(156),
                                                 (GameEventProvider)EventPassPowerList_Create, work->field);
         event = BeaconView_CreateWaitEvent(work, event, EVENT_WAIT_MENU_BUTTON,
-                                           (u32)BeaconViewMenu_GetButton(work->menu, 0));
+                                           (u32)BeaconViewMenu_GetButton(work->menu, PASS_POWER_MENU_LIST));
         work->unk88 = 0;
         break;
     case BEACON_VIEW_EVENT_GREETING:
@@ -256,7 +256,7 @@ GameEvent *BeaconView_CreateEvent(BeaconViewWork *work, BOOL enabled) {
         event =
             GameEvent_CreateOverlayDelegate(work->gsys, OVERLAY_FUNFEST_MISSION, EventFestMissionStart_Create, &args);
         event = BeaconView_CreateWaitEvent(work, event, EVENT_WAIT_MENU_BUTTON,
-                                           (u32)BeaconViewMenu_GetButton(work->menu, 1));
+                                           (u32)BeaconViewMenu_GetButton(work->menu, BEACON_VIEW_MISSION_JOIN));
         ClearFesMissionCfg(&work->mission);
         break;
     }
@@ -278,7 +278,7 @@ GameEvent *BeaconView_CreateEvent(BeaconViewWork *work, BOOL enabled) {
         event = GameEvent_CreateOverlayDelegate(work->gsys, OVERLAY_FUNFEST_MISSION, EventFestMissionInfo_Create,
                                                 &work->mission);
         event = BeaconView_CreateWaitEvent(work, event, EVENT_WAIT_MENU_BUTTON,
-                                           (u32)BeaconViewMenu_GetButton(work->menu, 0));
+                                           (u32)BeaconViewMenu_GetButton(work->menu, BEACON_VIEW_MISSION_CHECK));
         break;
     case BEACON_VIEW_EVENT_NONE:
     default:
@@ -336,7 +336,7 @@ enum {
 static BOOL BeaconView_WaitButton(BeaconViewWork *work, BeaconViewEvent *event) {
     switch (event->seq) {
     case STEP_START_BUTTON_ANIM:
-        BeaconView_SetButtonAnim(work, event->param, 1);
+        BeaconView_SetButtonAnim(work, event->param, BEACON_VIEW_BUTTON_TOUCHED);
         event->seq++;
         return FALSE;
     case STEP_WAIT_BUTTON_ANIM:
@@ -764,7 +764,7 @@ static void BeaconView_InitPanel(BeaconViewWork *work, u8 id) {
 
     MI_CpuFill8(panel, 0, sizeof(BeaconViewPanel));
     panel->id = id;
-    panel->dataIndex = 0xff;
+    panel->dataIndex = BEACON_VIEW_PANEL_UNASSIGNED;
     panel->line = 0;
     panel->queue = work->printQueue;
     panel->x = 8;

@@ -259,6 +259,8 @@ void GFL_NetErrShowScreen(void);
 // Whether the error was handled, after shutting the connection down
 BOOL GFL_NetErrShutdown(void);
 void GFL_NetErrClear(void);
+// WihDwc_GetStatus found a friend invitation.
+#define WIHDWC_STATUS_FRIEND_INVITE 0x8
 // The state of the wireless connections, as bits: 0x2 a local wireless one, 0x3c the signal, 0x3c0 Wi-Fi
 u32 WihDwc_GetStatus(WifiList *wifiList);
 WihDwcWork *WihDwc_Create(int num, HeapID heapId);

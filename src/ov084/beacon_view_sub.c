@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/language.h"
 #include "constants/sound.h"
 #include "constants/version.h"
 #include "field/beacon_view.h"
@@ -190,6 +191,16 @@ static void BeaconViewPanel_Print(BeaconViewWork *work, BeaconViewPanel *panel, 
 static void BeaconViewPanel_StartPrintTask(BeaconViewWork *work, BeaconViewPanel *panel, int *pending);
 static void BeaconViewPanel_PrintTask(TCBEx *task, void *data);
 
+enum {
+    STEP_ADD_LINE_START = 0,
+    STEP_ADD_LINE_FINISH = 1,
+};
+
+enum {
+    STEP_ICON_WAIT_TIMER = 0,
+    STEP_ICON_WAIT_PRINT = 1,
+};
+
 // The message of the offer of a Pass Power, by whether a record gives it
 static const u8 sBeaconViewPassPowerMessages[] = {
     GameBeacon_Text_UseActivated,
@@ -246,23 +257,23 @@ void BeaconView_CheckRecords(BeaconViewWork *work, const GameBeacon *beacon, u8 
     u8 genderCount = 0;
 
     BeaconView_CountOthers(work, &genderCount, &versionCount);
-    if (GameBeacon_GetLanguage(beacon) != 2) {
-        BeaconStatus_AddRecord(work->status, 1);
+    if (GameBeacon_GetLanguage(beacon) != LANGUAGE_ENGLISH) {
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_NON_ENGLISH);
     }
     if (work->otherVersionCount != versionCount && versionCount == 20) {
-        BeaconStatus_AddRecord(work->status, 2);
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_OTHER_VERSION_20);
     }
     if (work->passerbyCount % 100 == 0) {
-        BeaconStatus_AddRecord(work->status, 3);
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_HUNDRED_PASSERSBY);
     }
     if (oldCount == GAME_BEACON_LOG_MAX - 1 && work->logCount == GAME_BEACON_LOG_MAX) {
-        BeaconStatus_AddRecord(work->status, 4);
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_LOG_FULL);
     }
     if (work->otherGenderCount != genderCount && genderCount == 20) {
-        BeaconStatus_AddRecord(work->status, 5);
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_OTHER_GENDER_20);
     }
     if (BeaconView_IsRepdigit(work->passerbyCount)) {
-        BeaconStatus_AddRecord(work->status, 6);
+        BeaconStatus_AddRecord(work->status, BEACON_VIEW_RECORD_REPDIGIT);
     }
     work->otherGenderCount = genderCount;
     work->otherVersionCount = versionCount;
@@ -271,7 +282,7 @@ void BeaconView_CheckRecords(BeaconViewWork *work, const GameBeacon *beacon, u8 
 u32 BeaconView_GetRecordPassPower(BeaconViewWork *work) {
     u8 record = BeaconStatus_GetRecord(work->status);
 
-    if (record == 0) {
+    if (record == BEACON_VIEW_RECORD_NONE) {
         return PASS_POWER_NONE;
     }
     return sBeaconViewRecordPassPowers[record - 1];
@@ -342,10 +353,10 @@ int BeaconView_HitTestArrow(BeaconViewWork *work, BeaconViewTouch *touch) {
     int hit = GFL_HIDGetTouchRectAt(sBeaconViewArrowRects, touch->x, touch->y);
 
     if (hit == 0 && work->top != 0) {
-        return 1;
+        return BEACON_VIEW_MOVE_NEWER;
     }
     if (hit == 1 && work->top + work->viewCount < work->logCount) {
-        return 0;
+        return BEACON_VIEW_MOVE_OLDER;
     }
     return TOUCH_RECT_NONE;
 }
@@ -363,7 +374,7 @@ int BeaconView_HitTestBar(BeaconViewWork *work, BeaconViewTouch *touch) {
     if (BeaconView_DragBar(work, touch->y) == TRUE) {
         BeaconView_StartJump(work, work->barTarget);
     }
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
     return 0;
 }
 
@@ -376,7 +387,7 @@ int BeaconView_HitTestButton(BeaconViewWork *work, BeaconViewTouch *touch) {
     for (i = 0; i < BEACON_VIEW_ACTOR_UP; i++) {
         u8 state = ClActor_GetSequence(work->actors[i]) - (i * 3 + 1);
 
-        if (state % 3 < 2) {
+        if (state % 3 < BEACON_VIEW_BUTTON_OFF) {
             rects[0].top = 172;
             rects[0].bottom = rects[0].top + 24;
             rects[0].left = i * 32 + 132;
@@ -463,7 +474,7 @@ void BeaconViewPanel_SetVisible(BeaconViewPanel *panel, BOOL visible) {
     BmpOam_ActorSetDrawEnable(panel->oam.actor, visible);
     ClActor_SetVisible(panel->trainer, visible);
     ClActor_SetVisible(panel->base, visible);
-    if (!visible || panel->favoriteMedal != 0xffff) {
+    if (!visible || panel->favoriteMedal != BEACON_VIEW_MEDAL_UNSUPPORTED) {
         BeaconViewPanel_SetMedalVisible(panel, visible);
     }
     if (!visible) {
@@ -491,7 +502,7 @@ static void BeaconViewPanel_Clear(BeaconViewPanel *panel) {
     BmpOam_ActorBmpTrans(panel->oam.actor);
     GFL_StrBufClear(panel->name);
     GFL_StrBufClear(panel->greeting);
-    panel->dataIndex = 0xff;
+    panel->dataIndex = BEACON_VIEW_PANEL_UNASSIGNED;
     panel->line = 0;
     panel->rank = 0;
     if (panel->printTask != NULL) {
@@ -630,7 +641,7 @@ static void BeaconViewPanel_SetMedals(BeaconViewWork *work, BeaconViewPanel *pan
 
     // Black and White have no medals
     if (panel->version == VERSION_WHITE || panel->version == VERSION_BLACK) {
-        panel->favoriteMedal = 0xffff;
+        panel->favoriteMedal = BEACON_VIEW_MEDAL_UNSUPPORTED;
         panel->medalCount = 0;
         BeaconViewPanel_SetMedalVisible(panel, FALSE);
         return;
@@ -667,24 +678,24 @@ void BeaconViewPanel_SetBeacon(BeaconViewWork *work, BeaconViewPanel *panel, con
         return;
     }
     switch (mode) {
-    case 0:
+    case BEACON_VIEW_PANEL_MESSAGE:
         switch (GameBeacon_GetType(beacon)) {
-        case 24:
+        case GAME_BEACON_TYPE_THANKS:
             GameBeacon_GetMessage(beacon, work->strTemplate);
             BeaconViewPanel_PrintText(work, panel, work->strTemplate, pending);
             break;
-        case 49:
+        case GAME_BEACON_TYPE_PHRASE:
             GameBeacon_GetTextMessage(beacon, work->strTemplate);
             BeaconViewPanel_PrintText(work, panel, work->strTemplate, pending);
             break;
         }
         BeaconViewPanel_StartIcon(work, panel, beacon, FALSE);
         break;
-    case 1:
+    case BEACON_VIEW_PANEL_GREETING:
         BeaconViewPanel_PrintText(work, panel, panel->greeting, pending);
         BeaconViewPanel_StartIcon(work, panel, beacon, TRUE);
         break;
-    case 2:
+    case BEACON_VIEW_PANEL_NAME:
         BeaconViewPanel_PrintName(work, panel, TRUE, pending);
         break;
     }
@@ -727,7 +738,7 @@ void BeaconView_ScrollLine(BeaconViewWork *work, int dir, u8 frames) {
     u8 dataIndex;
 
     BeaconView_PlaySE(SEQ_SE_SELECT4);
-    if (dir == 0) {
+    if (dir == BEACON_VIEW_MOVE_OLDER) {
         offset = work->top + work->viewCount;
         work->top++;
     } else {
@@ -737,7 +748,7 @@ void BeaconView_ScrollLine(BeaconViewWork *work, int dir, u8 frames) {
     BeaconStatus_SetLogTop(work->status, work->top);
     GameBeaconInfoTable_RingGet(work->log, work->beacon, &work->time, offset);
     dataIndex = GameBeaconInfoTable_RingIndex(work->log, offset);
-    BeaconView_AddLine(work, work->beacon, dataIndex, dir, frames, 2);
+    BeaconView_AddLine(work, work->beacon, dataIndex, dir, frames, BEACON_VIEW_PANEL_NAME);
 }
 
 void BeaconView_StartScroll(BeaconViewWork *work, int dir, u8 returnSeq) {
@@ -747,12 +758,12 @@ void BeaconView_StartScroll(BeaconViewWork *work, int dir, u8 returnSeq) {
     work->scrollReturnSeq = returnSeq;
     work->scrollFrames = 0;
     BeaconView_SetPrintTimeLimit(work->printQueue, TRUE);
-    if (work->scrollDir == 0) {
+    if (work->scrollDir == BEACON_VIEW_MOVE_OLDER) {
         BeaconView_SetActorAnim(work->actors[BEACON_VIEW_ACTOR_DOWN], 19);
     } else {
         BeaconView_SetActorAnim(work->actors[BEACON_VIEW_ACTOR_UP], 15);
     }
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
     BeaconView_ScrollLine(work, dir, 8);
     BeaconView_UpdateBar(work);
 }
@@ -774,7 +785,7 @@ BOOL BeaconView_DragBar(BeaconViewWork *work, int y) {
 // Brings a log entry in on the free line: mode 1 slides it in from the left as the newest, pushing the others down;
 // otherwise it comes in from below for dir 0 and from above for dir 1, as the others move by a line
 void BeaconView_AddLine(BeaconViewWork *work, const GameBeacon *beacon, u8 dataIndex, u8 dir, u8 frames, int mode) {
-    BeaconViewPanel *panel = BeaconView_FindPanel(work, 0xff);
+    BeaconViewPanel *panel = BeaconView_FindPanel(work, BEACON_VIEW_PANEL_UNASSIGNED);
     BeaconViewAddLineTask *data;
 
     if (panel == NULL) {
@@ -801,9 +812,9 @@ static void BeaconView_AddLineTask(TCBEx *task, void *data) {
     if (add->printing > 0) {
         return;
     }
-    if (add->seq == 0) {
+    if (add->seq == STEP_ADD_LINE_START) {
         BeaconViewPanel_SetVisible(add->panel, TRUE);
-        if (add->mode == 1) {
+        if (add->mode == BEACON_VIEW_PANEL_GREETING) {
             BeaconView_SlideInLine(work, add->panel, &add->printing);
             BeaconViewPanel_SetIconVisible(add->panel, TRUE);
         } else {
@@ -824,7 +835,7 @@ static void BeaconView_MoveLines(BeaconViewWork *work, u8 dir, u8 frames, Beacon
     int i;
 
     if (newPanel != NULL) {
-        if (dir == 0) {
+        if (dir == BEACON_VIEW_MOVE_OLDER) {
             newPanel->line = BEACON_VIEW_LINE_MAX + 1;
         } else {
             newPanel->line = 0;
@@ -835,7 +846,7 @@ static void BeaconView_MoveLines(BeaconViewWork *work, u8 dir, u8 frames, Beacon
     for (i = 0; i < BEACON_VIEW_PANEL_MAX; i++) {
         BeaconViewPanel *panel = &work->panels[i];
 
-        if (panel->dataIndex == 0xff) {
+        if (panel->dataIndex == BEACON_VIEW_PANEL_UNASSIGNED) {
             continue;
         }
         if (skip != NULL && panel->id == skip->id) {
@@ -854,8 +865,8 @@ static void BeaconView_SlideInLine(BeaconViewWork *work, BeaconViewPanel *panel,
     if (work->logCount != 0) {
         delay = 8;
     }
-    BeaconViewPanel_StartMove(work, panel, 2, delay, 8, pending);
-    BeaconView_MoveLines(work, 1, 8, NULL, panel, pending);
+    BeaconViewPanel_StartMove(work, panel, BEACON_VIEW_MOVE_SLIDE_IN, delay, 8, pending);
+    BeaconView_MoveLines(work, BEACON_VIEW_MOVE_NEWER, 8, NULL, panel, pending);
 }
 
 // Moves a line to where it belongs over some frames, after going up a line for dir 0 or down a line for dir 1. A line
@@ -867,9 +878,9 @@ static void BeaconViewPanel_StartMove(BeaconViewWork *work, BeaconViewPanel *pan
 
     MI_CpuFill8(data, 0, sizeof(BeaconViewMoveTask));
     data->dir = dir;
-    if (data->dir == 0) {
+    if (data->dir == BEACON_VIEW_MOVE_OLDER) {
         panel->line--;
-    } else if (data->dir == 1) {
+    } else if (data->dir == BEACON_VIEW_MOVE_NEWER) {
         panel->line++;
     }
     data->work = work;
@@ -973,7 +984,8 @@ static void BeaconView_JumpTask(TCBEx *task, void *data) {
 
             GameBeaconInfoTable_RingGet(work->log, work->beacon, &work->time, jump->top + i);
             BeaconViewPanel_Reassign(jump->panels[i], dataIndex, i + 1);
-            BeaconViewPanel_SetBeacon(work, jump->panels[i], work->beacon, 2, FALSE, &jump->printing);
+            BeaconViewPanel_SetBeacon(work, jump->panels[i], work->beacon, BEACON_VIEW_PANEL_NAME, FALSE,
+                                      &jump->printing);
             BeaconViewPanel_SetVisible(jump->panels[i], TRUE);
         }
         jump->seq++;
@@ -1004,13 +1016,13 @@ BOOL BeaconView_ShowBeaconMessage(BeaconViewWork *work, const GameBeacon *beacon
         return FALSE;
     }
     switch (type) {
-    case 1:
+    case GAME_BEACON_TYPE_DEFAULT:
         return FALSE;
-    case 18:
+    case GAME_BEACON_TYPE_PASS_POWER:
         return BeaconView_TakePassPower(work, beacon, FALSE);
-    case 50:
+    case GAME_BEACON_TYPE_GIFT_PASS_POWER:
         return BeaconView_TakePassPower(work, beacon, TRUE);
-    case 24:
+    case GAME_BEACON_TYPE_THANKS:
         GameBeacon_BroadcastThankedCount(TrainerGameInfo_IncThankedCount((TrainerGameInfoSave *)work->trainerCard));
         break;
     }
@@ -1038,7 +1050,7 @@ static void BeaconView_StartMessage(BeaconViewWork *work, const StrBuf *strbuf, 
     GFL_StrBufCopy(work->strMessage, strbuf);
     data->work = work;
     data->timer = 90;
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
     data->pending = pending;
     (*data->pending)++;
 }
@@ -1114,7 +1126,7 @@ void BeaconView_OfferPassPower(BeaconViewWork *work, u32 passPower, u8 record, i
     data->passPower = passPower;
     data->record = record;
     loadPassPowerToStrbuf(work->wordSet, 1, passPower);
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
     data->pending = pending;
     (*data->pending)++;
 }
@@ -1149,7 +1161,7 @@ static void BeaconView_PassPowerTask(TCBEx *task, void *data) {
         return;
     case STEP_PASS_OPEN_MENU:
         BeaconView_SetPrintTimeLimit(work->printQueue, TRUE);
-        BeaconViewMenu_Open(work->menu, 0);
+        BeaconViewMenu_Open(work->menu, BEACON_VIEW_MENU_CHECK_YES_NO);
         BeaconView_ClearTotal(work);
         BeaconView_SetButtonsVisible(work, FALSE);
         offer->seq++;
@@ -1161,16 +1173,16 @@ static void BeaconView_PassPowerTask(TCBEx *task, void *data) {
         }
         offer->button = button;
         switch (offer->button) {
-        case 0:
+        case PASS_POWER_MENU_LIST:
             BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_PASS_POWER_LIST);
             offer->seq = STEP_PASS_WAIT_MENU;
             return;
-        case 1:
+        case PASS_POWER_MENU_USE:
             work->usePassPower = offer->passPower;
             BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_PASS_POWER_USE);
             offer->seq = STEP_PASS_CHECK_CANCEL;
             return;
-        case 2:
+        case PASS_POWER_MENU_CANCEL:
             offer->seq = STEP_PASS_WAIT_FLASH;
             return;
         }
@@ -1203,7 +1215,7 @@ static void BeaconView_PassPowerTask(TCBEx *task, void *data) {
         offer->seq++;
         return;
     default:
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
         BeaconView_SetPrintTimeLimit(work->printQueue, FALSE);
         (*offer->pending)--;
         GFL_TCBExRequestEnd(task);
@@ -1218,14 +1230,14 @@ void BeaconView_OfferMission(BeaconViewWork *work, const FestMissionConfig *conf
 
     MI_CpuFill8(data, 0, sizeof(BeaconViewMissionTask));
     ClearFesMissionCfg(&work->mission);
-    work->missionRefusal = 0;
+    work->missionRefusal = BEACON_VIEW_MISSION_REFUSAL_NONE;
     data->work = work;
     data->timer = 90;
     data->config = *config;
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_PASS_POWER, 2);
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_GREETING, 2);
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, 2);
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_RETURN, 2);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_PASS_POWER, BEACON_VIEW_BUTTON_OFF);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_GREETING, BEACON_VIEW_BUTTON_OFF);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, BEACON_VIEW_BUTTON_OFF);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_RETURN, BEACON_VIEW_BUTTON_OFF);
     data->pending = pending;
     (*data->pending)++;
 }
@@ -1251,7 +1263,7 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
     }
     switch (offer->seq) {
     case STEP_MISSION_PRINT:
-        BeaconView_ExpandMessage(work, offer->config.info.unk0_30 + GameBeacon_Text_WantJoinFunfestMission);
+        BeaconView_ExpandMessage(work, offer->config.info.isSpecial + GameBeacon_Text_WantJoinFunfestMission);
         BeaconView_PrintMessage(work, work->strExpand, &offer->printing);
         offer->seq++;
         return;
@@ -1261,7 +1273,7 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
         return;
     case STEP_MISSION_OPEN_MENU:
         BeaconView_SetPrintTimeLimit(work->printQueue, TRUE);
-        BeaconViewMenu_Open(work->menu, 0);
+        BeaconViewMenu_Open(work->menu, BEACON_VIEW_MENU_CHECK_YES_NO);
         BeaconView_ClearTotal(work);
         BeaconView_SetButtonsVisible(work, FALSE);
         offer->seq++;
@@ -1273,11 +1285,11 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
         }
         offer->button = button;
         switch (offer->button) {
-        case 0:
+        case BEACON_VIEW_MISSION_CHECK:
             refusal = BeaconView_CheckMissionRefusal(work, &offer->config, offer->button);
             work->mission = offer->config;
             work->missionButton = offer->button;
-            if (refusal == 0 || refusal == 3) {
+            if (refusal == BEACON_VIEW_MISSION_REFUSAL_NONE || refusal == BEACON_VIEW_MISSION_FLAG_REQUIRED) {
                 BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_MISSION_INFO);
                 offer->seq = STEP_MISSION_WAIT_MENU;
                 return;
@@ -1286,11 +1298,11 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
             BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_MISSION_MESSAGE);
             offer->seq = STEP_MISSION_CHECK_CANCEL;
             return;
-        case 1:
+        case BEACON_VIEW_MISSION_JOIN:
             refusal = BeaconView_CheckMissionRefusal(work, &offer->config, offer->button);
             work->mission = offer->config;
             work->missionButton = offer->button;
-            if (refusal == 0) {
+            if (refusal == BEACON_VIEW_MISSION_REFUSAL_NONE) {
                 BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_MISSION_START);
             } else {
                 work->missionRefusal = refusal;
@@ -1298,7 +1310,7 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
             }
             offer->seq = STEP_MISSION_CHECK_CANCEL;
             return;
-        case 2:
+        case BEACON_VIEW_MISSION_DECLINE:
             LinkFestival_AddRecord(work->festival, &offer->config);
             offer->seq = STEP_MISSION_WAIT_FLASH;
             return;
@@ -1327,7 +1339,7 @@ static void BeaconView_MissionTask(TCBEx *task, void *data) {
         offer->seq++;
         return;
     default:
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
         BeaconView_SetPrintTimeLimit(work->printQueue, FALSE);
         (*offer->pending)--;
         GFL_TCBExRequestEnd(task);
@@ -1340,15 +1352,15 @@ static u32 BeaconView_CheckMissionRefusal(BeaconViewWork *work, FestMissionConfi
     EventWork *eventWork = GameData_GetEventWork(work->gameData);
 
     if (!FestMissionConfig_HasTimeLeft(config)) {
-        if (button == 0) {
-            return 2;
+        if (button == BEACON_VIEW_MISSION_CHECK) {
+            return BEACON_VIEW_MISSION_CHECK_TOO_LATE;
         }
-        return 1;
+        return BEACON_VIEW_MISSION_JOIN_TOO_LATE;
     }
     if (config->info.requiredFlag != 0 && !EventWork_FlagGet(eventWork, config->info.requiredFlag)) {
-        return 3;
+        return BEACON_VIEW_MISSION_FLAG_REQUIRED;
     }
-    return 0;
+    return BEACON_VIEW_MISSION_REFUSAL_NONE;
 }
 
 // Shows the icon of the beacon's type on the line for a while, after which the line shows the name again
@@ -1363,7 +1375,7 @@ static void BeaconViewPanel_StartIcon(BeaconViewWork *work, BeaconViewPanel *pan
     data->timer = 90;
     panel->iconTask = task;
     if (greeting) {
-        data->type = 1;
+        data->type = GAME_BEACON_TYPE_DEFAULT;
     } else {
         data->type = GameBeacon_GetType(beacon);
     }
@@ -1374,11 +1386,12 @@ static void BeaconViewPanel_StartIcon(BeaconViewWork *work, BeaconViewPanel *pan
 static void BeaconViewPanel_IconTask(TCBEx *task, void *data) {
     BeaconViewIconTask *icon = data;
 
-    if (icon->seq == 0) {
+    if (icon->seq == STEP_ICON_WAIT_TIMER) {
         if (icon->timer-- != 0) {
             return;
         }
-        if (icon->type == 1 || icon->type == 24 || icon->type == 49) {
+        if (icon->type == GAME_BEACON_TYPE_DEFAULT || icon->type == GAME_BEACON_TYPE_THANKS ||
+            icon->type == GAME_BEACON_TYPE_PHRASE) {
             BeaconViewPanel_PrintName(icon->work, icon->panel, TRUE, NULL);
             icon->seq++;
             return;

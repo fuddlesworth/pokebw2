@@ -68,7 +68,7 @@ void FestMission_Load(ArcTool *arc, u8 index, u32 level, FestMissionConfig *miss
     mission->info.level = level;
     mission->info.target = params->target;
     mission->info.targetVariant = params->targetVariant;
-    mission->info.unk0_30 = 0;
+    mission->info.isSpecial = 0;
     mission->info.isBlack = MISSION_VERSION_BIT;
     mission->info.rewardItem = params->rewardItem;
     mission->info.rewardItemCount = params->levels[level].rewardItemCount;

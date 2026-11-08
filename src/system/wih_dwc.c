@@ -200,7 +200,7 @@ u32 WihDwc_GetStatus(WifiList *wifiList) {
         return status;
     }
     if (WihDwc_FindFriendInvite(wifiList) != -1) {
-        status |= 0x8;
+        status |= WIHDWC_STATUS_FRIEND_INVITE;
     }
     if (init->gameCommandBase == 0x35 && GFL_NetGetNegotiatedCount() > 1) {
         status |= 0x4;

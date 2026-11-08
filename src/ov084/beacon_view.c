@@ -50,6 +50,13 @@ enum {
 // How long the view leaves a message alone
 #define MESSAGE_WAIT 90
 
+enum {
+    STEP_NEW_WAIT_PRINT,
+    STEP_NEW_SHOW_MESSAGE,
+    STEP_NEW_PRINT_TOTAL,
+    STEP_NEW_ADD_LINE,
+};
+
 static int BeaconView_SeqMain(BeaconViewWork *work);
 static int BeaconView_SeqNewBeacon(BeaconViewWork *work);
 static int BeaconView_SeqWaitTasks(BeaconViewWork *work);
@@ -190,7 +197,7 @@ static int BeaconView_SeqWaitTasks(BeaconViewWork *work) {
     if (work->pending != 0) {
         return SEQ_WAIT_TASKS;
     }
-    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+    BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
     BeaconView_ResetArrows(work);
     return SEQ_MAIN;
 }
@@ -213,7 +220,7 @@ static int BeaconView_SeqScroll(BeaconViewWork *work) {
         work->scrollFrames = 0;
         work->scrolling = FALSE;
         if (work->scrollReturnSeq == SEQ_MAIN) {
-            BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+            BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
         }
         BeaconView_ResetArrows(work);
         BeaconView_SetPrintTimeLimit(work->printQueue, FALSE);
@@ -259,9 +266,9 @@ static void BeaconView_DrawAll(BeaconViewWork *work) {
 
         GameBeaconInfoTable_RingGet(work->log, work->beacon, &work->time, top + i);
         dataIndex = GameBeaconInfoTable_RingIndex(work->log, top + i);
-        panel = BeaconView_FindPanel(work, 0xff);
+        panel = BeaconView_FindPanel(work, BEACON_VIEW_PANEL_UNASSIGNED);
         BeaconViewPanel_Assign(panel, dataIndex, i + 1);
-        BeaconViewPanel_SetBeacon(work, panel, work->beacon, 2, FALSE, NULL);
+        BeaconViewPanel_SetBeacon(work, panel, work->beacon, BEACON_VIEW_PANEL_NAME, FALSE, NULL);
         BeaconViewPanel_SetVisible(panel, TRUE);
     }
     BeaconView_UpdateArrows(work);
@@ -368,9 +375,9 @@ static int BeaconView_UpdateBarDrag(BeaconViewWork *work) {
     if (work->barTarget == work->top) {
         if (!work->barDragging) {
             if (work->barReturnSeq == SEQ_MAIN) {
-                BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+                BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
             } else {
-                BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, 0);
+                BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, BEACON_VIEW_BUTTON_IDLE);
             }
             return work->barReturnSeq;
         }
@@ -392,7 +399,7 @@ static BOOL BeaconView_CheckLeave(BeaconViewWork *work) {
         BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_MENU_COMM);
         return TRUE;
     }
-    if (WihDwc_GetStatus(work->wifiList) & 8) {
+    if (WihDwc_GetStatus(work->wifiList) & WIHDWC_STATUS_FRIEND_INVITE) {
         BeaconView_RequestEvent(work, BEACON_VIEW_EVENT_MENU_WIFI);
         return TRUE;
     }
@@ -472,9 +479,9 @@ static BOOL BeaconView_TakeNewBeacon(BeaconViewWork *work) {
         work->passerbyCount = TrainerGameInfo_IncPasserbyCount((TrainerGameInfoSave *)work->trainerCard);
     }
     if (work->newPanel != NULL && work->newPanel->printTask != NULL) {
-        work->subSeq = 0;
+        work->subSeq = STEP_NEW_WAIT_PRINT;
     } else {
-        work->subSeq = 1;
+        work->subSeq = STEP_NEW_SHOW_MESSAGE;
     }
     work->oldCount = work->logCount;
     if (work->logCount < GAME_BEACON_LOG_MAX) {
@@ -520,13 +527,6 @@ BOOL BeaconView_IsButtonAnimating(BeaconViewWork *work, int button) {
     return ClActor_IsAnimActive(work->actors[button]);
 }
 
-enum {
-    STEP_NEW_WAIT_PRINT,
-    STEP_NEW_SHOW_MESSAGE,
-    STEP_NEW_PRINT_TOTAL,
-    STEP_NEW_ADD_LINE,
-};
-
 // Shows a beacon just taken: its message, then its line, which pushes the others down when the player is new
 static BOOL BeaconView_ShowNewBeacon(BeaconViewWork *work) {
     switch (work->subSeq) {
@@ -541,16 +541,17 @@ static BOOL BeaconView_ShowNewBeacon(BeaconViewWork *work) {
 
         if (!work->isNew) {
             if (message) {
-                BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+                BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
                 BeaconView_PlaySE(SEQ_SE_SELECT2);
             }
             if (work->newPanel != NULL) {
-                BeaconViewPanel_SetBeacon(work, work->newPanel, work->newBeacon, 0, message ? FALSE : TRUE, NULL);
+                BeaconViewPanel_SetBeacon(work, work->newPanel, work->newBeacon, BEACON_VIEW_PANEL_MESSAGE,
+                                          message ? FALSE : TRUE, NULL);
                 BeaconViewPanel_SetVisible(work->newPanel, TRUE);
             }
             return TRUE;
         }
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 2);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_OFF);
         work->subSeq++;
         break;
     }
@@ -570,7 +571,7 @@ static BOOL BeaconView_ShowNewBeacon(BeaconViewWork *work) {
             atTop = FALSE;
         }
         work->top = work->newOffset;
-        BeaconView_AddLine(work, work->newBeacon, work->newIndex, 1, 8, (atTop ? 0 : 1) + 1);
+        BeaconView_AddLine(work, work->newBeacon, work->newIndex, BEACON_VIEW_MOVE_NEWER, 8, (atTop ? 0 : 1) + 1);
         BeaconView_UpdateBar(work);
         BeaconView_PlaySE(SEQ_SE_SYS_11);
         return TRUE;
@@ -586,7 +587,7 @@ static int BeaconView_UpdateThanks(BeaconViewWork *work) {
     }
     switch (work->subSeq) {
     case THANKS_START:
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, 1);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, BEACON_VIEW_BUTTON_TOUCHED);
         BeaconView_PrintTotal(work, GameBeacon_Text_WhoWillThank, &work->pending);
         work->subSeq++;
         break;
@@ -594,9 +595,9 @@ static int BeaconView_UpdateThanks(BeaconViewWork *work) {
         if (BeaconView_IsButtonAnimating(work, BEACON_VIEW_ACTOR_THANKS)) {
             break;
         }
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_PASS_POWER, 2);
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_GREETING, 2);
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_RETURN, 2);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_PASS_POWER, BEACON_VIEW_BUTTON_OFF);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_GREETING, BEACON_VIEW_BUTTON_OFF);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_RETURN, BEACON_VIEW_BUTTON_OFF);
         work->subSeq++;
         break;
     case THANKS_INPUT:
@@ -625,11 +626,11 @@ static int BeaconView_UpdateThanks(BeaconViewWork *work) {
         work->subSeq = THANKS_END;
         break;
     case THANKS_SCROLL_END:
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, 0);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_ACTOR_THANKS, BEACON_VIEW_BUTTON_IDLE);
         work->subSeq = THANKS_INPUT;
         break;
     case THANKS_END:
-        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, 0);
+        BeaconView_SetButtonAnim(work, BEACON_VIEW_BUTTON_ALL, BEACON_VIEW_BUTTON_IDLE);
         BeaconView_PrintTotal(work, GameBeacon_Text_Total, &work->pending);
         work->subSeq = THANKS_EXIT;
         break;

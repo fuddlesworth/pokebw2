@@ -104,7 +104,7 @@ void FMissionLogFApp_EndMission(LinkFestival *festival, FMissionAppResult *resul
     MI_CpuFill8(result, 0, sizeof(FMissionAppResult));
     LinkFestival_SetState(festival, 4);
     result->cleared = LinkFestival_IsTargetReached(festival, &result->total);
-    if (!festival->info->unk0_30) {
+    if (!festival->info->isSpecial) {
         if (festival->info->index == 0 && !EventWork_FlagGet(eventWork, EVENT_FLAG_0x0986)) {
             EventWork_FlagSet(eventWork, EVENT_FLAG_0x0986);
             *EventWork_GetWkPtr(eventWork, EVENT_WORK_0x404d) = result->cleared + 2;
@@ -137,7 +137,7 @@ void FMissionLogFApp_EndMission(LinkFestival *festival, FMissionAppResult *resul
         int quotient;
 
         FestRecords_AddCompleted(funfest);
-        if (!festival->info->unk0_30) {
+        if (!festival->info->isSpecial) {
             FestRecords_UpdateMissionLevel(funfest, (u8)festival->info->index, festival->info->level + 1);
             if (festival->missionHeader->clearFlag != 0) {
                 EventWork_FlagSet(eventWork, festival->missionHeader->clearFlag);
