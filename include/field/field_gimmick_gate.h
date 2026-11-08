@@ -20,6 +20,14 @@ struct GimmickGateZoneData {
     u32 enabled;
 };
 
+#define GIMMICK_GATE_VERSION_ANY 0
+
+// The two news-entry behaviors the board handles.
+enum {
+    GIMMICK_GATE_ENTRY_SINGLE = 0,
+    GIMMICK_GATE_ENTRY_LIST = 2,
+};
+
 // A news entry in archive 0xa4, shown when its flag is set and the gate's zone is one of zones
 struct GimmickGateBoardEntry {
     u32 version;
@@ -28,6 +36,7 @@ struct GimmickGateBoardEntry {
     u32 clearFlag;
     // In message file 0x2b
     u32 messageId;
+    // GIMMICK_GATE_ENTRY_*
     u32 type;
     u32 zones[4];
 };
@@ -38,7 +47,7 @@ void GimmickGate_Delete(Field *field);
 void GimmickGate_Update(Field *field);
 u32 GimmickGate_GetDirection(Field *field);
 
-// Script command 0x17a: plays a sound and runs the news board's event for as long as the script says
+// Script command 0x17a: plays a sound and views the board, using the script argument for camera-move frames
 BOOL Scrcmd_FieldGimmickGate_GimmickGateViewBoard(VM *vm, FieldScriptEnv *env);
 
 #endif // POKEBW2_FIELD_FIELD_GIMMICK_GATE_H
