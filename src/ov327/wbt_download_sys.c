@@ -33,6 +33,19 @@ enum {
     WBT_DOWNLOAD_SEQ_DONE,
 };
 
+// The outer process defers once, runs its steps, then ends.
+enum {
+    WBT_DOWNLOAD_MAIN_DEFER = 0,
+    WBT_DOWNLOAD_MAIN_RUN_STEPS = 1,
+    WBT_DOWNLOAD_MAIN_END = 2,
+};
+
+// What to do after the download has logged out.
+enum {
+    WBT_DOWNLOAD_AFTER_LOGOUT_SHOW_TOURNAMENTS = 0,
+    WBT_DOWNLOAD_AFTER_LOGOUT_END = 1,
+};
+
 typedef struct WbtDownloadWork WbtDownloadWork;
 
 // A step: the process to run, and the functions that make its parameter and use its result
@@ -125,15 +138,15 @@ static BOOL WbtDownload_Main(GameProc *proc, u32 *state, void *param, void *work
     WbtDownloadWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case WBT_DOWNLOAD_MAIN_DEFER:
         (*state)++;
         break;
-    case 1:
+    case WBT_DOWNLOAD_MAIN_RUN_STEPS:
         if (WbtDownloadSeq_Update(&wk->seq)) {
             (*state)++;
         }
         break;
-    case 2:
+    case WBT_DOWNLOAD_MAIN_END:
         return TRUE;
     }
     return FALSE;
@@ -168,10 +181,10 @@ static BOOL WbtDownloadSeq_Update(WbtDownloadSeq *p_wk) {
     case WBT_DOWNLOAD_SEQ_RUN: {
         BOOL running = GFL_ProcMgrUpdate(p_wk->p_manager);
 
-        if (running == 0 || running == 2) {
+        if (running == PROCMGR_DONE || running == PROCMGR_PROC_ENDED) {
             GFL_NetErrShow(0);
         }
-        if (running == 0) {
+        if (running == PROCMGR_DONE) {
             p_wk->state = WBT_DOWNLOAD_SEQ_FINISH;
         }
         break;
@@ -254,10 +267,10 @@ static void WbtDownload_FinishLogout(void *param, WbtDownloadWork *wk) {
     WifiLogoutParam *logout = param;
 
     switch (wk->result) {
-    case 0:
+    case WBT_DOWNLOAD_AFTER_LOGOUT_SHOW_TOURNAMENTS:
         WbtDownloadSeq_SetNext(&wk->seq, WBT_DOWNLOAD_STEP_TOURNAMENTS);
         break;
-    case 1:
+    case WBT_DOWNLOAD_AFTER_LOGOUT_END:
         break;
     }
     GFL_SndBGMFadeOut(6);
@@ -277,16 +290,16 @@ static void WbtDownload_FinishDownload(void *param, WbtDownloadWork *wk) {
     WbtDownloadNetParam *net = param;
 
     switch (net->result) {
-    case 0:
+    case WBT_DOWNLOAD_NET_RESULT_VALID_FILE:
     default:
-        wk->result = 0;
+        wk->result = WBT_DOWNLOAD_AFTER_LOGOUT_SHOW_TOURNAMENTS;
         WbtDownloadSeq_SetNext(&wk->seq, WBT_DOWNLOAD_STEP_LOGOUT);
         break;
-    case 2:
-        wk->result = 1;
+    case WBT_DOWNLOAD_NET_RESULT_NO_VALID_FILE:
+        wk->result = WBT_DOWNLOAD_AFTER_LOGOUT_END;
         WbtDownloadSeq_SetNext(&wk->seq, WBT_DOWNLOAD_STEP_LOGOUT);
         break;
-    case 1:
+    case WBT_DOWNLOAD_NET_RESULT_RETRY_LOGIN:
         WbtDownloadSeq_SetNext(&wk->seq, WBT_DOWNLOAD_STEP_LOGIN);
         break;
     }

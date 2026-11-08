@@ -9,6 +9,13 @@
 // wbt_download_sys.c between the login and the logout. The name is the ROM's string, from GFL_HeapAllocate's call.
 // Our names
 
+// The download result consumed by wbt_download_sys.c.
+enum {
+    WBT_DOWNLOAD_NET_RESULT_VALID_FILE = 0,
+    WBT_DOWNLOAD_NET_RESULT_RETRY_LOGIN = 1,
+    WBT_DOWNLOAD_NET_RESULT_NO_VALID_FILE = 2,
+};
+
 // What wbt_download_sys.c gives the download
 typedef struct {
     GameData *gameData;
