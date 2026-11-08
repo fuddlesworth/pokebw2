@@ -104,6 +104,13 @@ enum {
     GFL_NET_TYPE_WIFI_GTS,
 };
 
+// The game-command bases selected by the infrared battle callers; the multi battle continues over wireless
+enum {
+    GFL_NET_GAME_COMMAND_IR_BATTLE = 12,
+    GFL_NET_GAME_COMMAND_LIVE_BATTLE_IR = 31,
+    GFL_NET_GAME_COMMAND_IR_MULTI_BATTLE = 37,
+};
+
 // What the network device does, wireless or Wi-Fi; the code calls each through GFLNetSys
 typedef BOOL (*GFLNetRecvFunc)(u16 netId, u8 *data, u16 size);
 // Whether the infrared device links with a machine of the peer's game code

@@ -1259,7 +1259,7 @@ static void IrcBattleMatch_StateStartNet(IrcBattleMatch *work) {
     case IRCBATTLEMATCH_MODE_DOUBLE:
     case IRCBATTLEMATCH_MODE_TRIPLE:
     case IRCBATTLEMATCH_MODE_ROTATION:
-        init.gameCommandBase = 0xc;
+        init.gameCommandBase = GFL_NET_GAME_COMMAND_IR_BATTLE;
         break;
     case IRCBATTLEMATCH_MODE_MULTI:
         init.gameCommandBase = 0x26;
@@ -1306,7 +1306,7 @@ static void IrcBattleMatch_StateStartNet(IrcBattleMatch *work) {
         GFL_NetIwSetGameCommandBase(0x11);
         break;
     case IRCBATTLEMATCH_MODE_MULTI:
-        GFL_NetIwSetGameCommandBase(0x25);
+        GFL_NetIwSetGameCommandBase(GFL_NET_GAME_COMMAND_IR_MULTI_BATTLE);
         break;
     }
     IrcBattleMatch_CreateBackMenu(work, FALSE);
