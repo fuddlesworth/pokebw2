@@ -108,8 +108,8 @@ static void PMSIView_CmdNop27(TCB *tcb, void *data);
 static void PMSIView_CmdNop28(TCB *tcb, void *data);
 static void PMSIView_CmdNop29(TCB *tcb, void *data);
 static void PMSIView_CmdChangeCategoryMode(TCB *tcb, void *data);
-static void PMSIView_CmdSetWordWinArrows(TCB *tcb, void *data);
-static void PMSIView_CmdShowMenu(TCB *tcb, void *data);
+static void PMSIView_CmdRedrawWordWin(TCB *tcb, void *data);
+static void PMSIView_CmdFlashSearchErase(TCB *tcb, void *data);
 static void PMSIView_CmdMoveCategory(TCB *tcb, void *data);
 static void PMSIView_CmdMoveWordWin(TCB *tcb, void *data);
 static void PMSIView_CmdChangeCategoryModeDisable(TCB *tcb, void *data);
@@ -121,6 +121,11 @@ static const BGSysVRAMConfig sPMSIViewVRAMConfig = {
     GX_VRAM_BG_128_B, GX_VRAM_BGEXTPLTT_NONE,  GX_VRAM_SUB_BG_128_C,       GX_VRAM_SUB_BGEXTPLTT_NONE,
     GX_VRAM_OBJ_64_E, GX_VRAM_OBJEXTPLTT_NONE, GX_VRAM_SUB_OBJ_128_D,      GX_VRAM_SUB_OBJEXTPLTT_NONE,
     GX_VRAM_TEX_0_A,  GX_VRAM_TEXPLTT_01_FG,   GX_OBJVRAMMODE_CHAR_1D_64K, GX_OBJVRAMMODE_CHAR_1D_64K,
+};
+
+enum {
+    PMSIV_FOCUS_EDIT = 0,
+    PMSIV_FOCUS_BUTTON = 1,
 };
 
 PMSInputView *PMSIView_Create(const PMSInputWork *mwk, const PMSInputData *dwk) {
@@ -146,7 +151,7 @@ PMSInputView *PMSIView_Create(const PMSInputWork *mwk, const PMSInputData *dwk) 
             vwk->cmdTask[i] = NULL;
         }
         vwk->msgPrinting = FALSE;
-        vwk->status = 0;
+        vwk->status = PMSIV_FOCUS_EDIT;
         vwk->lowerScreenChanged = FALSE;
         vwk->lowerScreenCategories = FALSE;
         vwk->arc = GFL_ArcSysCreateFileHandle(ARCID_PMSI, HEAPID_PMS_INPUT);
@@ -243,8 +248,8 @@ void PMSIView_SetCommand(PMSInputView *vwk, int cmd) {
         PMSIView_CmdNop28,
         PMSIView_CmdNop29,
         PMSIView_CmdChangeCategoryMode,
-        PMSIView_CmdSetWordWinArrows,
-        PMSIView_CmdShowMenu,
+        PMSIView_CmdRedrawWordWin,
+        PMSIView_CmdFlashSearchErase,
         PMSIView_CmdMoveCategory,
         PMSIView_CmdMoveWordWin,
     };
@@ -379,16 +384,21 @@ static void PMSIView_SetupObjGraphic(PMSIVCommandWork *cwk, ArcTool *arc) {
     }
 }
 
+enum {
+    PMSIV_QUIT_STEP_START_FADE = 0,
+    PMSIV_QUIT_STEP_WAIT_FADE = 1,
+};
+
 static void PMSIView_CmdQuit(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_QUIT_STEP_START_FADE:
         GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, 0, 5, 1, HEAPID_PMS_INPUT);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_QUIT_STEP_WAIT_FADE:
         if (GFL_WipeIsFinished()) {
             BmpWin_Free(cwk->vwk->msgWin);
             PMSIVEdit_Delete(cwk->vwk->edit);
@@ -558,15 +568,20 @@ static void PMSIView_SetupBG(PMSIVCommandWork *cwk) {
     vwk->printQueue = PrintQueue_Create(0x500, HEAPID_PMS_INPUT);
 }
 
+enum {
+    PMSIV_FADEIN_STEP_START_FADE = 0,
+    PMSIV_FADEIN_STEP_WAIT_FADE = 1,
+};
+
 static void PMSIView_CmdFadeIn(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_FADEIN_STEP_START_FADE:
         GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, 0, 5, 1, HEAPID_PMS_INPUT);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_FADEIN_STEP_WAIT_FADE:
         if (GFL_WipeIsFinished()) {
             cwk->seq++;
         }
@@ -581,7 +596,7 @@ static void PMSIView_CmdUpdateEditArea(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    vwk->status = 0;
+    vwk->status = PMSIV_FOCUS_EDIT;
     PMSIVEdit_UpdateEditArea(vwk->edit);
     PMSIVEdit_MoveCursor(vwk->edit, PMSInput_GetEditAreaCursorPos(cwk->mwk));
     PMSIVMenu_UpdateSentenceType(vwk->menu);
@@ -614,7 +629,7 @@ static void PMSIView_CmdEditAreaToButton(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    vwk->status = 1;
+    vwk->status = PMSIV_FOCUS_BUTTON;
     PMSIVEdit_VisibleCursor(vwk->edit, FALSE);
     PMSIVEdit_StopArrow(vwk->edit);
     PMSIVMenu_SetCursor(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk), TRUE);
@@ -625,7 +640,7 @@ static void PMSIView_CmdButtonToEditArea(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    vwk->status = 1;
+    vwk->status = PMSIV_FOCUS_BUTTON;
     PMSIVEdit_VisibleCursor(vwk->edit, FALSE);
     PMSIVEdit_StopArrow(vwk->edit);
     PMSIVMenu_SetCursor(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk), FALSE);
@@ -636,7 +651,7 @@ static void PMSIView_CmdButtonToEditAreaSelect(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    vwk->status = 0;
+    vwk->status = PMSIV_FOCUS_EDIT;
     PMSIVMenu_SetCursor(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk), FALSE);
     PMSIVEdit_ActiveArrow(vwk->edit);
     PMSIVEdit_VisibleCursor(vwk->edit, TRUE);
@@ -644,35 +659,41 @@ static void PMSIView_CmdButtonToEditAreaSelect(TCB *tcb, void *data) {
     PMSIView_DeleteCommand(cwk);
 }
 
+enum {
+    PMSIV_EDIT_TO_CATEGORY_STEP_SHOW_EDIT_CURSOR = 0,
+    PMSIV_EDIT_TO_CATEGORY_STEP_START_TRANSITION = 1,
+    PMSIV_EDIT_TO_CATEGORY_STEP_WAIT_TRANSITION = 2,
+};
+
 static void PMSIView_CmdEditAreaToCategory(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_EDIT_TO_CATEGORY_STEP_SHOW_EDIT_CURSOR:
         PMSIVEdit_VisibleCursor(vwk->edit, TRUE);
         PMSIVEdit_MoveCursor(vwk->edit, PMSInput_GetEditAreaCursorPos(cwk->mwk));
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_EDIT_TO_CATEGORY_STEP_START_TRANSITION:
         PMSInput_ResetSearch(cwk->mwk);
         PMSIVMenu_SetupCategoryButtons(vwk->menu);
         PMSIVEdit_StopCursor(vwk->edit);
         PMSIVEdit_StopArrow(vwk->edit);
         PMSIVCategory_StartEnableBG(vwk->category);
         PMSIVEdit_ScrollSet(vwk->edit, FALSE);
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 1) {
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
             PMSIVCategory_PrintSearchInput(vwk->category);
         }
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 0) {
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
             PMSIView_PrintMessage(cwk, 2);
         } else {
             PMSIView_PrintMessage(cwk, 4);
         }
         cwk->seq++;
         break;
-    case 2:
+    case PMSIV_EDIT_TO_CATEGORY_STEP_WAIT_TRANSITION:
         flag1 = PMSIVCategory_WaitEnableBG(vwk->category);
         flag2 = PMSIVEdit_ScrollWait(vwk->edit);
         if (flag1 && flag2) {
@@ -684,24 +705,30 @@ static void PMSIView_CmdEditAreaToCategory(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_MODE_DISABLE_STEP_START = 0,
+    PMSIV_MODE_DISABLE_STEP_CHANGE_SCREEN = 1,
+    PMSIV_MODE_DISABLE_STEP_WAIT_SCREEN = 2,
+};
+
 static void PMSIView_CmdChangeCategoryModeDisable(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_MODE_DISABLE_STEP_START:
         cwk->seq++;
         // fallthrough
-    case 1:
+    case PMSIV_MODE_DISABLE_STEP_CHANGE_SCREEN:
         PMSIVMenu_SetupCategoryButtons(vwk->menu);
         PMSIVCategory_ChangeModeScreen(vwk->category);
         PMSIVCategory_ChangeModeBG(vwk->category);
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 1) {
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
             PMSIVCategory_PrintSearchInput(vwk->category);
         }
         cwk->seq++;
         break;
-    case 2:
+    case PMSIV_MODE_DISABLE_STEP_WAIT_SCREEN:
         if (PMSIVCategory_WaitModeChange(vwk->category)) {
             PMSIView_DeleteCommand(cwk);
         }
@@ -709,31 +736,38 @@ static void PMSIView_CmdChangeCategoryModeDisable(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_MODE_ENABLE_STEP_START_FLASH = 0,
+    PMSIV_MODE_ENABLE_STEP_WAIT_FLASH = 1,
+    PMSIV_MODE_ENABLE_STEP_WAIT_SCREEN = 2,
+    PMSIV_MODE_ENABLE_STEP_SHOW_CURSOR = 3,
+};
+
 static void PMSIView_CmdChangeCategoryModeEnable(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
-        PMSIVMenu_StartButton(vwk->menu, 1);
+    case PMSIV_MODE_ENABLE_STEP_START_FLASH:
+        PMSIVMenu_StartButton(vwk->menu, PMSIV_MENU_ACTION_CATEGORY_MODE);
         PMSIVCategory_StartResultList(vwk->category, FALSE);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_MODE_ENABLE_STEP_WAIT_FLASH:
         flag1 = PMSIVCategory_WaitResultList(vwk->category, FALSE);
-        flag2 = PMSIVMenu_WaitButton(vwk->menu, 1);
+        flag2 = PMSIVMenu_WaitButton(vwk->menu, PMSIV_MENU_ACTION_CATEGORY_MODE);
         if (flag1 && flag2) {
-            PMSIVMenu_EndButton(vwk->menu, 1);
+            PMSIVMenu_EndButton(vwk->menu, PMSIV_MENU_ACTION_CATEGORY_MODE);
             PMSInput_ResetSearch(cwk->mwk);
             PMSIVMenu_SetupCategoryButtons(vwk->menu);
             PMSIVCategory_VisibleCursor(vwk->category, FALSE);
             PMSIVCategory_ChangeModeScreen(vwk->category);
             PMSIVCategory_ChangeModeBG(vwk->category);
-            if (PMSInput_GetCategoryMode(cwk->mwk) == 1) {
+            if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
                 PMSIVCategory_PrintSearchInput(vwk->category);
             }
-            if (PMSInput_GetCategoryMode(cwk->mwk) == 0) {
+            if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
                 PMSIView_PrintMessage(cwk, 2);
             } else {
                 PMSIView_PrintMessage(cwk, 4);
@@ -741,12 +775,12 @@ static void PMSIView_CmdChangeCategoryModeEnable(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_MODE_ENABLE_STEP_WAIT_SCREEN:
         if (PMSIVCategory_WaitModeChange(vwk->category)) {
             cwk->seq++;
         }
         break;
-    case 3:
+    case PMSIV_MODE_ENABLE_STEP_SHOW_CURSOR:
         PMSIVCategory_MoveCursor(vwk->category, PMSInput_GetCategoryCursorPos(vwk->mwk));
         PMSIVCategory_VisibleCursor(vwk->category, TRUE);
         PMSIView_DeleteCommand(cwk);
@@ -754,25 +788,32 @@ static void PMSIView_CmdChangeCategoryModeEnable(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_CATEGORY_TO_EDIT_STEP_START_BACK = 0,
+    PMSIV_CATEGORY_TO_EDIT_STEP_WAIT_BACK = 1,
+    PMSIV_CATEGORY_TO_EDIT_STEP_START_TRANSITION = 2,
+    PMSIV_CATEGORY_TO_EDIT_STEP_WAIT_TRANSITION = 3,
+};
+
 static void PMSIView_CmdCategoryToEditArea(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 1) {
-            PMSIVMenu_StartButton(vwk->menu, 0);
+    case PMSIV_CATEGORY_TO_EDIT_STEP_START_BACK:
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
+            PMSIVMenu_StartButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_BACK);
             PMSIVCategory_StartResultList(vwk->category, FALSE);
         } else {
             PMSIVMenu_StartReturn(vwk->menu);
         }
         cwk->seq++;
         break;
-    case 1:
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 1) {
+    case PMSIV_CATEGORY_TO_EDIT_STEP_WAIT_BACK:
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_INITIAL) {
             flag1 = PMSIVCategory_WaitResultList(vwk->category, FALSE);
-            flag2 = PMSIVMenu_WaitButton(vwk->menu, 0);
+            flag2 = PMSIVMenu_WaitButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_BACK);
         } else {
             flag1 = PMSIVMenu_WaitReturn(vwk->menu);
             flag2 = TRUE;
@@ -781,7 +822,7 @@ static void PMSIView_CmdCategoryToEditArea(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_CATEGORY_TO_EDIT_STEP_START_TRANSITION:
         PMSIVMenu_SetupEditButtons(vwk->menu);
         PMSIVCategory_VisibleCursor(vwk->category, FALSE);
         PMSIVCategory_StartDisableBG(vwk->category);
@@ -793,18 +834,26 @@ static void PMSIView_CmdCategoryToEditArea(TCB *tcb, void *data) {
         }
         cwk->seq++;
         break;
-    case 3:
+    case PMSIV_CATEGORY_TO_EDIT_STEP_WAIT_TRANSITION:
         flag1 = PMSIVCategory_WaitDisableBG(vwk->category);
         flag2 = PMSIVEdit_ScrollWait(vwk->edit);
         if (flag1 && flag2) {
             PMSIVEdit_ActiveArrow(vwk->edit);
             PMSIVEdit_ActiveCursor(vwk->edit);
-            vwk->status = 0;
+            vwk->status = PMSIV_FOCUS_EDIT;
             PMSIView_DeleteCommand(cwk);
         }
         break;
     }
 }
+
+enum {
+    PMSIV_CATEGORY_TO_WORDWIN_STEP_START = 0,
+    PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_CURSOR = 1,
+    PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_SUBMIT = 2,
+    PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_FADEOUT = 3,
+    PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_FADEIN = 4,
+};
 
 static void PMSIView_CmdCategoryToWordWin(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
@@ -812,31 +861,31 @@ static void PMSIView_CmdCategoryToWordWin(TCB *tcb, void *data) {
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_CATEGORY_TO_WORDWIN_STEP_START:
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_CURSOR:
         if (PMSIVCategory_WaitCursorDecide(vwk->category)) {
             PMSIVCategory_VisibleCursor(vwk->category, FALSE);
-            PMSIVMenu_StartButton(vwk->menu, 3);
+            PMSIVMenu_StartButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_SUBMIT);
             cwk->seq++;
         }
         break;
-    case 2:
-        if (PMSIVMenu_WaitButton(vwk->menu, 3)) {
+    case PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_SUBMIT:
+        if (PMSIVMenu_WaitButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_SUBMIT)) {
             PMSIVCategory_StartFadeOut(vwk->category);
             PMSIVCategory_StartResultList(vwk->category, FALSE);
             cwk->seq++;
         }
         break;
-    case 3:
+    case PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_FADEOUT:
         flag1 = PMSIVCategory_WaitResultList(vwk->category, FALSE);
         flag2 = PMSIVCategory_WaitFadeOut(vwk->category);
         if (flag1 && flag2) {
             PMSIVMenu_SetupWordWinButtons(vwk->menu);
             PMSIVWordWin_SetupWords(vwk->wordWin);
             PMSIVWordWin_StartFadeIn(vwk->wordWin);
-            if (PMSInput_GetCategoryMode(cwk->mwk) == 0) {
+            if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
                 PMSIView_PrintMessage(cwk, 3);
             } else {
                 PMSIView_PrintMessage(cwk, 5);
@@ -844,17 +893,27 @@ static void PMSIView_CmdCategoryToWordWin(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 4:
+    case PMSIV_CATEGORY_TO_WORDWIN_STEP_WAIT_FADEIN:
         if (PMSIVWordWin_WaitFadeIn(vwk->wordWin)) {
             PMSIVWordWin_MoveCursor(vwk->wordWin, PMSInput_GetWordWinCursorPos(vwk->mwk));
-            PMSIVWordWin_SetScrollBar(vwk->wordWin, PMSInput_GetWordWinUpArrowVisible(vwk->mwk),
-                                      PMSInput_GetWordWinDownArrowVisible(vwk->mwk));
+            PMSIVWordWin_SetScrollBar(vwk->wordWin, PMSInput_GetWordWinTopLine(vwk->mwk),
+                                      PMSInput_GetWordWinScrollMax(vwk->mwk));
             PMSIVWordWin_VisibleCursor(vwk->wordWin, TRUE);
             PMSIView_DeleteCommand(cwk);
         }
         break;
     }
 }
+
+enum {
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_START_RETURN = 0,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_RETURN = 1,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_SETUP_BUTTONS = 2,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_START_FADEOUT = 3,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_FADEOUT = 4,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_START_FADEIN = 5,
+    PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_FADEIN = 6,
+};
 
 static void PMSIView_CmdWordWinToCategory(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
@@ -863,36 +922,36 @@ static void PMSIView_CmdWordWinToCategory(TCB *tcb, void *data) {
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_START_RETURN:
         PMSIVMenu_StartReturn(vwk->menu);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_RETURN:
         if (PMSIVMenu_WaitReturn(vwk->menu)) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_SETUP_BUTTONS:
         PMSIVMenu_SetupCategoryButtons(vwk->menu);
         cwk->seq++;
         break;
-    case 3:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_START_FADEOUT:
         PMSIVWordWin_VisibleCursor(vwk->wordWin, FALSE);
         PMSIVWordWin_StartFadeOut(vwk->wordWin);
         cwk->seq++;
         break;
-    case 4:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_FADEOUT:
         if (PMSIVWordWin_WaitFadeOut(vwk->wordWin)) {
             PMSIVCategory_ChangeModeBG(vwk->category);
             cwk->seq++;
         }
         break;
-    case 5: {
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_START_FADEIN: {
         BOOL flag = FALSE;
 
         PMSIView_SetLowerScreen(cwk->vwk, FALSE);
         PMSIVCategory_StartFadeIn(vwk->category);
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 0) {
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
             PMSIVCategory_StartResultList(vwk->category, flag);
         } else {
             if (searchCount) {
@@ -900,7 +959,7 @@ static void PMSIView_CmdWordWinToCategory(TCB *tcb, void *data) {
             }
             PMSIVCategory_StartResultList(vwk->category, flag);
         }
-        if (PMSInput_GetCategoryMode(cwk->mwk) == 0) {
+        if (PMSInput_GetCategoryMode(cwk->mwk) == PMSI_CATEGORY_MODE_GROUP) {
             PMSIView_PrintMessage(cwk, 2);
         } else {
             PMSIView_PrintMessage(cwk, 4);
@@ -908,7 +967,7 @@ static void PMSIView_CmdWordWinToCategory(TCB *tcb, void *data) {
         cwk->seq++;
         break;
     }
-    case 6:
+    case PMSIV_WORDWIN_TO_CATEGORY_STEP_WAIT_FADEIN:
         flag1 = PMSIVCategory_WaitFadeIn(vwk->category);
         flag2 = PMSIVCategory_WaitResultList(vwk->category, searchCount ? TRUE : FALSE);
         if (flag1 && flag2) {
@@ -920,16 +979,24 @@ static void PMSIView_CmdWordWinToCategory(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_WORDWIN_TO_EDIT_STEP_START = 0,
+    PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_CURSOR = 1,
+    PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_TRANSITION = 2,
+    PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_FADEIN = 3,
+    PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_BRIGHT = 4,
+};
+
 static void PMSIView_CmdWordWinToEditArea(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
     BOOL flag1, flag2;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_WORDWIN_TO_EDIT_STEP_START:
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_CURSOR:
         if (PMSIVWordWin_WaitCursorDecide(vwk->wordWin)) {
             PMSIVMenu_SetupEditButtons(vwk->menu);
             PMSIVWordWin_VisibleCursor(vwk->wordWin, FALSE);
@@ -938,7 +1005,7 @@ static void PMSIView_CmdWordWinToEditArea(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_TRANSITION:
         flag1 = PMSIVWordWin_WaitFadeOut(vwk->wordWin);
         flag2 = PMSIVEdit_ScrollWait(vwk->edit);
         if (flag1 && flag2) {
@@ -953,36 +1020,43 @@ static void PMSIView_CmdWordWinToEditArea(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 3:
+    case PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_FADEIN:
         if (PMSIVCategory_WaitFadeIn(vwk->category)) {
             PMSIVCategory_StartBrightDown(vwk->category);
             cwk->seq++;
         }
         break;
-    case 4:
+    case PMSIV_WORDWIN_TO_EDIT_STEP_WAIT_BRIGHT:
         if (PMSIVCategory_WaitBrightDown(vwk->category)) {
             PMSIVEdit_UpdateEditArea(vwk->edit);
             PMSIVEdit_VisibleCursor(vwk->edit, TRUE);
             PMSIVEdit_ActiveArrow(vwk->edit);
             PMSIVEdit_ActiveCursor(vwk->edit);
-            vwk->status = 0;
+            vwk->status = PMSIV_FOCUS_EDIT;
             PMSIView_DeleteCommand(cwk);
         }
         break;
     }
 }
 
+enum {
+    PMSIV_WORDWIN_TO_BUTTON_STEP_START_FADEOUT = 0,
+    PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_FADEOUT = 1,
+    PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_FADEIN = 2,
+    PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_BRIGHT = 3,
+};
+
 static void PMSIView_CmdWordWinToButton(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_WORDWIN_TO_BUTTON_STEP_START_FADEOUT:
         PMSIVWordWin_VisibleCursor(vwk->wordWin, FALSE);
         PMSIVWordWin_StartFadeOut(vwk->wordWin);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_FADEOUT:
         if (PMSIVWordWin_WaitFadeOut(vwk->wordWin)) {
             PMSIVCategory_SetDisableBG(vwk->category);
             PMSIView_SetLowerScreen(cwk->vwk, FALSE);
@@ -990,13 +1064,13 @@ static void PMSIView_CmdWordWinToButton(TCB *tcb, void *data) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_FADEIN:
         if (PMSIVCategory_WaitFadeIn(vwk->category)) {
             PMSIVCategory_StartBrightDown(vwk->category);
             cwk->seq++;
         }
         break;
-    case 3:
+    case PMSIV_WORDWIN_TO_BUTTON_STEP_WAIT_BRIGHT:
         if (PMSIVCategory_WaitBrightDown(vwk->category)) {
             PMSIVEdit_UpdateEditArea(vwk->edit);
             PMSIVEdit_VisibleCursor(vwk->edit, FALSE);
@@ -1038,16 +1112,21 @@ static void PMSIView_CmdMoveWordWinCursor(TCB *tcb, void *data) {
     PMSIView_DeleteCommand(cwk);
 }
 
+enum {
+    PMSIV_SCROLL_WORDWIN_STEP_START = 0,
+    PMSIV_SCROLL_WORDWIN_STEP_WAIT = 1,
+};
+
 static void PMSIView_CmdScrollWordWin(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_SCROLL_WORDWIN_STEP_START:
         PMSIVWordWin_StartScroll(vwk->wordWin, PMSInput_GetWordWinScrollVector(vwk->mwk));
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_SCROLL_WORDWIN_STEP_WAIT:
         if (PMSIVWordWin_WaitScroll(vwk->wordWin)) {
             PMSIView_DeleteCommand(cwk);
         }
@@ -1071,7 +1150,7 @@ static void PMSIView_CmdUpdateEditAreaCursor(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    if (vwk->status != 1) {
+    if (vwk->status != PMSIV_FOCUS_BUTTON) {
         PMSIVEdit_ActiveCursor(vwk->edit);
     }
     PMSIView_DeleteCommand(cwk);
@@ -1093,51 +1172,63 @@ static void PMSIView_CmdNop29(TCB *tcb, void *data) {
     PMSIView_DeleteCommand(data);
 }
 
+enum {
+    PMSIV_CHANGE_MODE_STEP_START_RESULTS = 0,
+    PMSIV_CHANGE_MODE_STEP_WAIT_RESULTS = 1,
+    PMSIV_CHANGE_MODE_STEP_END = 2,
+};
+
 static void PMSIView_CmdChangeCategoryMode(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
     u32 searchCount = PMSInput_GetSearchResultCount(cwk->mwk);
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_CHANGE_MODE_STEP_START_RESULTS:
         PMSIVMenu_UpdateSearchButtons(vwk->menu);
         PMSIVCategory_PrintSearchInput(vwk->category);
         PMSIVCategory_StartResultList(vwk->category, searchCount ? TRUE : FALSE);
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_CHANGE_MODE_STEP_WAIT_RESULTS:
         if (PMSIVCategory_WaitResultList(vwk->category, searchCount ? TRUE : FALSE)) {
             cwk->seq++;
         }
         break;
-    case 2:
+    case PMSIV_CHANGE_MODE_STEP_END:
         PMSIView_DeleteCommand(cwk);
         break;
     }
 }
 
-static void PMSIView_CmdSetWordWinArrows(TCB *tcb, void *data) {
+static void PMSIView_CmdRedrawWordWin(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
-    PMSIVWordWin_RedrawWords(vwk->wordWin, PMSInput_GetWordWinUpArrowVisible(vwk->mwk));
+    PMSIVWordWin_RedrawWords(vwk->wordWin, PMSInput_GetWordWinTopLine(vwk->mwk));
     PMSIView_DeleteCommand(cwk);
 }
 
-static void PMSIView_CmdShowMenu(TCB *tcb, void *data) {
+enum {
+    PMSIV_FLASH_ERASE_STEP_START = 0,
+    PMSIV_FLASH_ERASE_STEP_WAIT = 1,
+};
+
+static void PMSIView_CmdFlashSearchErase(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
-        PMSIVMenu_StartButton(vwk->menu, 2);
+    case PMSIV_FLASH_ERASE_STEP_START:
+        PMSIVMenu_StartButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_ERASE);
         cwk->seq++;
         break;
-    case 1:
-        if (PMSIVMenu_WaitButton(vwk->menu, 2)) {
-            if (*vwk->keyMode == 0 && PMSInput_GetCategoryCursorPos(vwk->mwk) == 0xfd &&
-                PMSInput_GetCategoryPosSaved(vwk->mwk) == 0xfd) {
-                PMSIVMenu_SetCursor(vwk->menu, 1, TRUE);
+    case PMSIV_FLASH_ERASE_STEP_WAIT:
+        if (PMSIVMenu_WaitButton(vwk->menu, PMSIV_MENU_ACTION_SEARCH_ERASE)) {
+            if (*vwk->keyMode == KEY_MODE_KEY &&
+                PMSInput_GetCategoryCursorPos(vwk->mwk) == PMSIV_CATEGORY_POS_BUTTON_1 &&
+                PMSInput_GetCategoryPosSaved(vwk->mwk) == PMSIV_CATEGORY_POS_BUTTON_1) {
+                PMSIVMenu_SetCursor(vwk->menu, PMSIV_SEARCH_SLOT_ERASE, TRUE);
             } else {
                 PMSIVMenu_SetCursor(vwk->menu, 0, FALSE);
             }
@@ -1147,16 +1238,21 @@ static void PMSIView_CmdShowMenu(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_CATEGORY_DECIDE_STEP_START = 0,
+    PMSIV_CATEGORY_DECIDE_STEP_WAIT = 1,
+};
+
 static void PMSIView_CmdMoveCategory(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_CATEGORY_DECIDE_STEP_START:
         PMSIVCategory_StartCursorDecide(vwk->category, PMSInput_GetCategoryCursorPos(vwk->mwk));
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_CATEGORY_DECIDE_STEP_WAIT:
         if (PMSIVCategory_WaitCursorDecide(vwk->category)) {
             PMSIView_DeleteCommand(cwk);
         }
@@ -1164,16 +1260,21 @@ static void PMSIView_CmdMoveCategory(TCB *tcb, void *data) {
     }
 }
 
+enum {
+    PMSIV_WORD_DECIDE_STEP_START = 0,
+    PMSIV_WORD_DECIDE_STEP_WAIT = 1,
+};
+
 static void PMSIView_CmdMoveWordWin(TCB *tcb, void *data) {
     PMSIVCommandWork *cwk = data;
     PMSInputView *vwk = cwk->vwk;
 
     switch (cwk->seq) {
-    case 0:
+    case PMSIV_WORD_DECIDE_STEP_START:
         PMSIVWordWin_StartCursorDecide(vwk->wordWin, PMSInput_GetWordWinCursorPos(vwk->mwk));
         cwk->seq++;
         break;
-    case 1:
+    case PMSIV_WORD_DECIDE_STEP_WAIT:
         if (PMSIVWordWin_WaitCursorDecide(vwk->wordWin)) {
             PMSIView_DeleteCommand(cwk);
         }
@@ -1193,15 +1294,15 @@ void PMSIView_GetSentenceWordArea(PMSInputView *vwk, TouchRect *rect, u8 index) 
     PMSIVEdit_GetWordArea(vwk->edit, rect, index);
 }
 
-int PMSIView_GetMenuButton(PMSInputView *vwk) {
+int PMSIView_GetButtonFlashResult(PMSInputView *vwk) {
     if (PMSIVMenu_IsFlashFinished(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk))) {
-        return 1;
+        return PMSIV_BUTTON_FLASH_DONE;
     }
-    return -1;
+    return PMSIV_BUTTON_FLASH_PENDING;
 }
 
-void PMSIView_SetMenuButton(PMSInputView *vwk, u32 which) {
-    PMSIVMenu_SetEditButton(vwk->menu, which);
+void PMSIView_SetSentenceArrow(PMSInputView *vwk, u32 which) {
+    PMSIVMenu_SetSentenceArrow(vwk->menu, which);
 }
 
 PMSIVMenu *PMSIView_GetMenu(PMSInputView *vwk) {
@@ -1258,18 +1359,18 @@ int PMSIView_GetWordWinScrollDir(PMSInputView *vwk, u32 unused, u32 pos) {
     ClActorPos barPos;
 
     if (!PMSIVWordWin_GetScrollBarPos(vwk->wordWin, &barPos)) {
-        return 3;
+        return PMSIV_SCROLL_Y_UNAVAILABLE;
     }
     if (pos < barPos.y) {
-        return 1;
+        return PMSIV_SCROLL_Y_ABOVE;
     }
     if (pos > barPos.y) {
-        return 2;
+        return PMSIV_SCROLL_Y_BELOW;
     }
     if (pos == barPos.y) {
-        return 0;
+        return PMSIV_SCROLL_Y_EQUAL;
     }
-    return 3;
+    return PMSIV_SCROLL_Y_UNAVAILABLE;
 }
 
 void PMSIView_SetWordWinScrollBarY(PMSInputView *vwk, u32 y) {
@@ -1320,10 +1421,10 @@ static void PMSIView_FlushMessage(PMSInputView *vwk) {
 }
 
 void PMSIView_ChangeKTEditArea(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk) {
-    if (*vwk->keyMode == 1) {
+    if (*vwk->keyMode == KEY_MODE_TOUCH) {
         PMSIVEdit_VisibleCursor(vwk->edit, FALSE);
         PMSIVMenu_SetCursor(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk), FALSE);
-    } else if (vwk->status == 1) {
+    } else if (vwk->status == PMSIV_FOCUS_BUTTON) {
         PMSIVEdit_VisibleCursor(vwk->edit, FALSE);
         PMSIVMenu_SetCursor(vwk->menu, PMSInput_GetButtonCursorPos(vwk->mwk), TRUE);
     } else {
@@ -1334,8 +1435,8 @@ void PMSIView_ChangeKTEditArea(PMSInputView *vwk, const PMSInputWork *mwk, const
 
 void PMSIView_ChangeKTCategory(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk) {
     PMSIVCategory_VisibleCursor(vwk->category, TRUE);
-    if (*vwk->keyMode == 1) {
-        if (PMSInput_GetCategoryMode(mwk) == 1) {
+    if (*vwk->keyMode == KEY_MODE_TOUCH) {
+        if (PMSInput_GetCategoryMode(mwk) == PMSI_CATEGORY_MODE_INITIAL) {
             PMSIVMenu_SetCursor(vwk->menu, 0, FALSE);
         }
     } else {

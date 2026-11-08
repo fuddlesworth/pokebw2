@@ -9,10 +9,10 @@
 
 // The buttons that PMSIVMenu_StartButton and PMSIVMenu_WaitButton press
 enum {
-    PMSIV_MENU_BUTTON_MODE,
-    PMSIV_MENU_BUTTON_BACK,
-    PMSIV_MENU_BUTTON_SEARCH,
-    PMSIV_MENU_BUTTON_ERASE,
+    PMSIV_MENU_ACTION_SEARCH_BACK,
+    PMSIV_MENU_ACTION_CATEGORY_MODE,
+    PMSIV_MENU_ACTION_SEARCH_ERASE,
+    PMSIV_MENU_ACTION_SEARCH_SUBMIT,
 };
 
 PMSIVMenu *PMSIVMenu_Create(PMSInputView *vwk, const PMSInputWork *mwk, const PMSInputData *dwk);
@@ -27,8 +27,8 @@ void PMSIVMenu_UpdateSentenceType(PMSIVMenu *wk);
 void PMSIVMenu_UpdateEditButtons(PMSIVMenu *wk);
 void PMSIVMenu_UpdateSearchButtons(PMSIVMenu *wk);
 void PMSIVMenu_StartButton(PMSIVMenu *wk, u32 button);
-// Lights the edit area's OK or quit button
-void PMSIVMenu_SetEditButton(PMSIVMenu *wk, u32 which);
+// Selects the previous or next sentence arrow
+void PMSIVMenu_SetSentenceArrow(PMSIVMenu *wk, u32 which);
 BOOL PMSIVMenu_WaitButton(PMSIVMenu *wk, u32 button);
 void PMSIVMenu_EndButton(PMSIVMenu *wk, u32 button);
 void PMSIVMenu_SetCursor(PMSIVMenu *wk, u8 pos, BOOL active);
@@ -37,5 +37,18 @@ BOOL PMSIVMenu_IsFlashFinished(PMSIVMenu *wk, u8 pos);
 // Plays the return button's animation, if it is shown and still
 BOOL PMSIVMenu_StartReturn(PMSIVMenu *wk);
 BOOL PMSIVMenu_WaitReturn(PMSIVMenu *wk);
+
+// Search button slots and matching touch rectangles; separate from the action IDs above.
+enum {
+    PMSIV_SEARCH_SLOT_SUBMIT = 0,
+    PMSIV_SEARCH_SLOT_ERASE = 1,
+    PMSIV_SEARCH_SLOT_BACK = 2,
+};
+
+// The direction selected by SetSentenceArrow.
+enum {
+    PMSIV_SENTENCE_ARROW_PREVIOUS = 0,
+    PMSIV_SENTENCE_ARROW_NEXT = 1,
+};
 
 #endif // POKEBW2_APP_PMSIV_MENU_H
