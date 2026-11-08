@@ -56,6 +56,10 @@ enum {
 #define ANIM_FRAME 0
 #define ANIM_MARK 20
 
+// Bits required by the arrow buttons, independent of the scroll-direction enum
+#define FMISSION_VIEW_SCROLL_NEWER_AVAILABLE (1 << 0)
+#define FMISSION_VIEW_SCROLL_OLDER_AVAILABLE (1 << 1)
+
 // Which way the list scrolls: to older entries, or to newer ones. The first is also how a new entry comes in
 enum {
     SCROLL_OLDER,
@@ -206,7 +210,12 @@ static const u8 sFMissionViewLookPalettes[FMISSION_VIEW_LOOK_COUNT] = {
 };
 
 static const FMissionViewButton sFMissionViewButtons[FMISSION_VIEW_BUTTON_COUNT] = {
-    { 164, 172, 0 }, { 196, 172, 0 }, { 228, 172, 0 }, { 16, 172, 0 }, { 88, 172, 1 }, { 112, 172, 2 },
+    { 164, 172, 0 },
+    { 196, 172, 0 },
+    { 228, 172, 0 },
+    { 16, 172, 0 },
+    { 88, 172, FMISSION_VIEW_SCROLL_NEWER_AVAILABLE },
+    { 112, 172, FMISSION_VIEW_SCROLL_OLDER_AVAILABLE },
 };
 
 FMissionView *FMissionView_Create(GameSystem *gsys, FieldSubscreen *subscreen) {
@@ -654,10 +663,10 @@ static int FMissionView_GetTouchedButton(FMissionView *view, FMissionViewTouch *
 
     rects[1].top = TOUCH_RECT_END;
     if (view->logTop != 0) {
-        scroll |= 1;
+        scroll |= FMISSION_VIEW_SCROLL_NEWER_AVAILABLE;
     }
     if (view->logTop + view->logVisible < view->logCount) {
-        scroll |= 2;
+        scroll |= FMISSION_VIEW_SCROLL_OLDER_AVAILABLE;
     }
     for (i = 0; i < FMISSION_VIEW_BUTTON_COUNT; i++) {
         if ((u8)(ClActor_GetSequence(view->buttons[i]) - (i + 1) * FMISSION_VIEW_BUTTON_STATE_COUNT) %
@@ -774,7 +783,7 @@ static void FMissionViewPanel_Clear(FMissionViewPanel *panel) {
     panel->slot = 0;
     panel->look = 0;
     panel->mark = 0;
-    panel->kind = 0;
+    panel->frameKind = FMISSION_VIEW_FRAME_DEFAULT;
 }
 
 static void FMissionViewPanel_Set(FMissionViewPanel *panel, u8 logIndex, u8 slot) {
@@ -822,19 +831,19 @@ static void FMissionView_LoadPanelIcon(FMissionView *view, FMissionViewPanel *pa
     }
 }
 
-// The animation of the frame of an entry: 2 for a player's words, 1 for what counts, 0 for the rest
+// Selects a frame for player text, start/join notices or matching targets, and other entries
 static int FMissionView_GetEntryFrame(FMissionView *view, u32 kind, u32 value) {
     switch (kind) {
     case LOG_KIND_TEXT:
-        return 2;
+        return FMISSION_VIEW_FRAME_PLAYER_TEXT;
     case LOG_KIND_START:
     case LOG_KIND_JOIN:
-        return 1;
+        return FMISSION_VIEW_FRAME_START_JOIN_OR_TARGET;
     }
     if (FestMissionConfig_IsTarget(view->config, kind, value)) {
-        return 1;
+        return FMISSION_VIEW_FRAME_START_JOIN_OR_TARGET;
     }
-    return 0;
+    return FMISSION_VIEW_FRAME_DEFAULT;
 }
 
 static void FMissionView_TransferPanel(FMissionView *view, FMissionViewPanel *panel) {
@@ -854,33 +863,35 @@ static void FMissionView_PrintPanel(FMissionView *view, FMissionViewPanel *panel
     panel->gender = FMissionLogEntryFV_GetGender(entry);
     panel->own = FMissionLogEntryFV_IsOwn(entry);
     panel->value = FMissionLogEntryFV_GetValue(entry);
-    panel->kind = FMissionView_GetEntryFrame(view, kind, panel->value);
+    panel->frameKind = FMissionView_GetEntryFrame(view, kind, panel->value);
     panel->look = FMissionLogEntryFV_GetLook(entry);
-    FestMissionLogEntry_GetName(entry, panel->strs[0]);
+    FestMissionLogEntry_GetName(entry, panel->strs[FMISSION_VIEW_PANEL_LINE_NAME]);
     WordSetNumber(view->wordSet, 0, FMissionLogEntryFV_GetScore(entry), 4, 1, TRUE);
     GFL_MsgDataLoadStrbuf(view->msgData, FmissionViewSetup_Text_Score, view->tmpStr);
-    GFL_WordSetFormatStrbuf(view->wordSet, panel->strs[2], view->tmpStr);
+    GFL_WordSetFormatStrbuf(view->wordSet, panel->strs[FMISSION_VIEW_PANEL_LINE_SCORE], view->tmpStr);
     FMissionLogEntryFV_SetWords(entry, view->wordSet, view->heapId);
     GFL_MsgDataLoadStrbuf(view->msgData, kind + FmissionViewSetup_Text_Score, view->tmpStr);
-    GFL_WordSetFormatStrbuf(view->wordSet, panel->strs[1], view->tmpStr);
+    GFL_WordSetFormatStrbuf(view->wordSet, panel->strs[FMISSION_VIEW_PANEL_LINE_MESSAGE], view->tmpStr);
     {
         u16 colors[2] = { PRINT_COLOR(15, 3, 0), PRINT_COLOR(6, 5, 0) };
         int textX = 0;
 
-        if (panel->kind == 2) {
+        if (panel->frameKind == FMISSION_VIEW_FRAME_PLAYER_TEXT) {
             colors[0] = PRINT_COLOR(2, 3, 0);
             colors[1] = PRINT_COLOR(6, 4, 0);
             textX = 6;
         }
         if (view->printNow) {
             for (i = 0; i < FMISSION_VIEW_PANEL_LINE_COUNT; i++) {
-                GFL_TextRendererDrawToBitmapEx(panel->lines[i].bitmap, (i == 1) ? textX : 0, 0, panel->strs[i],
-                                               view->font, colors[i == 2]);
+                GFL_TextRendererDrawToBitmapEx(panel->lines[i].bitmap,
+                                               (i == FMISSION_VIEW_PANEL_LINE_MESSAGE) ? textX : 0, 0, panel->strs[i],
+                                               view->font, colors[i == FMISSION_VIEW_PANEL_LINE_SCORE]);
             }
         } else {
             for (i = 0; i < FMISSION_VIEW_PANEL_LINE_COUNT; i++) {
-                PrintQueue_PrintColor(view->printQueue, panel->lines[i].bitmap, (i == 1) ? textX : 0, 0, panel->strs[i],
-                                      view->font, colors[i == 2]);
+                PrintQueue_PrintColor(view->printQueue, panel->lines[i].bitmap,
+                                      (i == FMISSION_VIEW_PANEL_LINE_MESSAGE) ? textX : 0, 0, panel->strs[i],
+                                      view->font, colors[i == FMISSION_VIEW_PANEL_LINE_SCORE]);
             }
         }
     }
@@ -888,7 +899,7 @@ static void FMissionView_PrintPanel(FMissionView *view, FMissionViewPanel *panel
 
 static void FMissionView_ShowPanel(FMissionView *view, FMissionViewPanel *panel) {
     FMissionView_LoadPanelIcon(view, panel);
-    BeaconView_SetActorAnim(panel->frame, (u8)(ANIM_FRAME + panel->kind));
+    BeaconView_SetActorAnim(panel->frame, (u8)(ANIM_FRAME + panel->frameKind));
     FMissionViewPanel_SetVisible(panel, TRUE);
     panel->dirty = TRUE;
 }
@@ -917,9 +928,9 @@ static void FMissionViewPanel_SetPos(FMissionViewPanel *panel, s16 x, s16 y) {
     BeaconView_SetActorPos(panel->frame, x, y);
     BeaconView_SetActorPos(panel->markActor, x + PANEL_MARK_X, y + PANEL_MARK_Y);
     BeaconView_SetActorPos(panel->icon, x + PANEL_ICON_X, y + PANEL_ICON_Y);
-    BmpOam_ActorSetPos(panel->lines[0].actor, x + PANEL_NAME_X, y + PANEL_NAME_Y);
-    BmpOam_ActorSetPos(panel->lines[1].actor, x + PANEL_TEXT_X, y + PANEL_TEXT_Y);
-    BmpOam_ActorSetPos(panel->lines[2].actor, x + PANEL_SCORE_X, y + PANEL_SCORE_Y);
+    BmpOam_ActorSetPos(panel->lines[FMISSION_VIEW_PANEL_LINE_NAME].actor, x + PANEL_NAME_X, y + PANEL_NAME_Y);
+    BmpOam_ActorSetPos(panel->lines[FMISSION_VIEW_PANEL_LINE_MESSAGE].actor, x + PANEL_TEXT_X, y + PANEL_TEXT_Y);
+    BmpOam_ActorSetPos(panel->lines[FMISSION_VIEW_PANEL_LINE_SCORE].actor, x + PANEL_SCORE_X, y + PANEL_SCORE_Y);
 }
 
 // Pops up the mark of a player's words for a while
@@ -1008,7 +1019,7 @@ static void FMissionView_AddPanel(FMissionView *view, FestMissionLogEntry *entry
     view->pending++;
     FMissionViewPanel_Set(panel, logIndex, 0);
     FMissionView_PrintPanel(view, panel, entry);
-    if (mark && panel->kind == 2) {
+    if (mark && panel->frameKind == FMISSION_VIEW_FRAME_PLAYER_TEXT) {
         panel->mark = (u8)panel->value;
     } else {
         panel->mark = 0;
@@ -1148,7 +1159,7 @@ static BOOL FMissionView_StartPassPower(FMissionView *view, u32 passPower, int r
         GFL_TCBExMgrAddTask(view->tcbManager, FMissionView_PassPowerTask, sizeof(FMissionViewPassPowerTask), 0));
     MI_CpuFill8(data, 0, sizeof(FMissionViewPassPowerTask));
     view->usePassPower = PASS_POWER_NONE;
-    view->unk89 = 0;
+    view->paidPassPower = 0;
     data->view = view;
     data->timer = MESSAGE_WAIT;
     data->passPower = passPower;

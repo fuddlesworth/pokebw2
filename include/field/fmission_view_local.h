@@ -113,6 +113,20 @@ typedef struct {
     u32 unk1C;
 } FMissionViewWin;
 
+// The frame selected from the log kind and the mission target; constructor animations are separate.
+enum {
+    FMISSION_VIEW_FRAME_DEFAULT = 0,
+    FMISSION_VIEW_FRAME_START_JOIN_OR_TARGET = 1,
+    FMISSION_VIEW_FRAME_PLAYER_TEXT = 2,
+};
+
+// The three fixed text slots of each log panel.
+enum {
+    FMISSION_VIEW_PANEL_LINE_NAME = 0,
+    FMISSION_VIEW_PANEL_LINE_MESSAGE = 1,
+    FMISSION_VIEW_PANEL_LINE_SCORE = 2,
+};
+
 // A line of the log on screen
 typedef struct {
     u8 index;
@@ -125,8 +139,8 @@ typedef struct {
     u8 look : 5;
     u8 gender : 1;
     u8 own : 1;
-    // The frame's animation: 1 for an entry that counts for the mission, 2 for a player's words
-    u8 kind : 2;
+    // A FMISSION_VIEW_FRAME_*; start/join notices and matching targets share frame 1
+    u8 frameKind : 2;
     // The mark that pops up next to a player's words, or 0
     u8 mark : 4;
     u16 unk4;
@@ -207,7 +221,8 @@ struct FMissionView {
     u8 unk87;
     // The Pass Power that the player chose to use, or PASS_POWER_NONE
     u8 usePassPower;
-    u8 unk89;
+    // Passed to PassPower_Activate as its paid flag; this view only assigns zero
+    u8 paidPassPower;
     // The players in the mission
     u8 memberCount;
     u8 unk8B[0x2d];
