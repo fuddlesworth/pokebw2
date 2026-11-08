@@ -76,7 +76,7 @@ def dump(files: Path, output: Path):
     for kind, archive in KINDS.items():
         key, to_json, _ = CODECS[kind]
         entries = [to_json(data) for data in read_narc((files / archive).read_bytes())]
-        write(output / f"{kind}.json", {"$schema": f"{kind}.schema.json", key: entries})
+        write(output / f"{kind}.json", {"$schema": f"{kind}.schema.json", key: entries}, flat_objects=True)
         print(f"wrote {len(entries)} {key} to {output / f'{kind}.json'}")
 
 

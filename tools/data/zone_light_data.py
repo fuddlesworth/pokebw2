@@ -33,9 +33,9 @@ def dump(files: Path, output: Path):
     if len(sets) != TABLE_FILE or len(table) % ZONE_VALUE.size:
         raise ValueError("the zone light archive isn't a lighting set and a table of zones")
     for i, data in enumerate(sets):
-        write(output / f"{i:03d}.json", set_json(data))
+        write(output / f"{i:03d}.json", set_json(data), flat_objects=True)
     zones = [{"zone": name("ZONE_", zone), "lights": lights} for zone, lights in ZONE_VALUE.iter_unpack(table)]
-    write(output / "zones.json", {"$schema": "zones.schema.json", "zones": zones})
+    write(output / "zones.json", {"$schema": "zones.schema.json", "zones": zones}, flat_objects=True)
     print(f"wrote {len(sets)} lighting sets and {len(zones)} zones to {output}")
 
 

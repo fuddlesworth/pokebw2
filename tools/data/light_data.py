@@ -55,7 +55,7 @@ def dump(files: Path, output: Path):
     for kind, archive in ARCHIVES.items():
         sets = read_narc((files / archive).read_bytes())
         for i, data in enumerate(sets):
-            write(output / kind / f"{i:03d}.json", set_json(data))
+            write(output / kind / f"{i:03d}.json", set_json(data), flat_objects=True)
         print(f"wrote {len(sets)} {kind} lighting sets to {output / kind}")
 
 

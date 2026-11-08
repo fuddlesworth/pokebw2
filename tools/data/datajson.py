@@ -192,12 +192,18 @@ def label(path: Path) -> str:
     return path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
 
 
-def dumps(data, indent: int = 0, width: int = 120) -> str:
+def dumps(data, indent: int = 0, width: int = 120, flat_objects: bool = False) -> str:
     """Writes JSON with four-space indents: an object with a field per line, and an array on one line when it only
     holds numbers, strings and booleans and fits, so that a list of moves or a pair of a level and a move reads as
-    one line."""
+    one line. With flat_objects, an object that only holds those goes on one line too where it fits, so that a color's
+    red, green and blue read as one line."""
     if isinstance(data, list) and data and all(not isinstance(v, (dict, list)) for v in data):
         one_line = "[ " + ", ".join(json.dumps(v, ensure_ascii=False) for v in data) + " ]"
+        if indent + len(one_line) <= width:
+            return one_line
+    if flat_objects and isinstance(data, dict) and data and all(not isinstance(v, (dict, list)) for v in data.values()):
+        one_line = "{ " + ", ".join(f"{json.dumps(k, ensure_ascii=False)}: {json.dumps(v, ensure_ascii=False)}"
+                                    for k, v in data.items()) + " }"
         if indent + len(one_line) <= width:
             return one_line
     if not isinstance(data, (dict, list)):
@@ -206,12 +212,13 @@ def dumps(data, indent: int = 0, width: int = 120) -> str:
         return "{}" if isinstance(data, dict) else "[]"
     inner = " " * (indent + 4)
     if isinstance(data, dict):
-        items = [f"{inner}{json.dumps(k, ensure_ascii=False)}: {dumps(v, indent + 4, width)}" for k, v in data.items()]
+        items = [f"{inner}{json.dumps(k, ensure_ascii=False)}: {dumps(v, indent + 4, width, flat_objects)}"
+                 for k, v in data.items()]
         return "{\n" + ",\n".join(items) + "\n" + " " * indent + "}"
-    items = [inner + dumps(item, indent + 4, width) for item in data]
+    items = [inner + dumps(item, indent + 4, width, flat_objects) for item in data]
     return "[\n" + ",\n".join(items) + "\n" + " " * indent + "]"
 
 
-def write(path: Path, data, width: int = 120):
+def write(path: Path, data, width: int = 120, flat_objects: bool = False):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(dumps(data, width=width) + "\n")
+    path.write_text(dumps(data, width=width, flat_objects=flat_objects) + "\n")
