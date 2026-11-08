@@ -18,14 +18,14 @@
 
 typedef struct {
     u32 unk0;
-    u16 unk4;
+    u16 scoreMultiplier;
     // How many Pokémon take part in the movie's battle
     s16 castCount;
-    u16 unk8;
+    u16 director;
     u8 unkA[0xe];
-    u16 unk18;
-    u16 unk1a;
-    u16 unk1c;
+    u16 maleFilmTrainerClass;
+    u16 maleWatchTrainerClass;
+    u16 femaleFilmTrainerClass;
 } PokewoodMovie;
 
 struct PokewoodSystem {
@@ -37,9 +37,9 @@ struct PokewoodSystem {
     u16 listResult;
     // The movie's rules, whose unk3 is how many Pokémon take part
     Regulation regulation;
-    u8 unkCE;
-    u8 unkCF;
-    u16 unkD0;
+    u8 extraRuleType;
+    u8 extraRuleBanMoves;
+    u16 extraRuleMove;
     u16 movie;
     u16 *resultVar;
     u16 usePlayerCast;

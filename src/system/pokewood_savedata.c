@@ -27,7 +27,7 @@ void PokewoodSave_Init(PokewoodSave *save) {
         save->records[i].score = POKEWOOD_SCORE_NONE;
     }
     PokewoodSave_UnlockMovie(save, 0);
-    PokewoodSave_SetFlag(save, 3, 0);
+    PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_ANNOUNCED, 0);
     PokewoodSave_SetLevelBit(save, 0, 1);
 }
 
@@ -42,20 +42,20 @@ static void getFlagPos(int movie, int *word, int *bit) {
 
 static u32 *getFlagList(PokewoodSave *save, u32 list) {
     switch (list) {
-    case 0:
+    case POKEWOOD_FLAG_LIST_UNLOCKED:
         return save->unlockedMovies;
-    case 1:
+    case POKEWOOD_FLAG_LIST_FILMED:
         return save->filmedMovies;
-    case 2:
-        return save->flags2;
-    case 3:
+    case POKEWOOD_FLAG_LIST_HIT_ENDING:
+        return save->hitEndings;
+    case POKEWOOD_FLAG_LIST_ANNOUNCED:
         return save->announcedMovies;
-    case 4:
-        return save->flags4;
-    case 5:
-        return save->flags5;
-    case 6:
-        return save->flags6;
+    case POKEWOOD_FLAG_LIST_STRANGE_ENDING:
+        return save->strangeEndings;
+    case POKEWOOD_FLAG_LIST_WATCHED:
+        return save->watchedMovies;
+    case POKEWOOD_FLAG_LIST_FLOP_ENDING:
+        return save->flopEndings;
     }
     return NULL;
 }
@@ -79,19 +79,19 @@ void PokewoodSave_SetFlag(PokewoodSave *save, u32 list, u32 movie) {
 }
 
 BOOL PokewoodSave_IsMovieUnlocked(PokewoodSave *save, u32 movie) {
-    return PokewoodSave_CheckFlag(save, 0, movie);
+    return PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, movie);
 }
 
 static void PokewoodSave_UnlockMovie(PokewoodSave *save, u32 movie) {
-    PokewoodSave_SetFlag(save, 0, movie);
+    PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, movie);
 }
 
 BOOL PokewoodSave_IsMovieFilmed(PokewoodSave *save, u32 movie) {
-    return PokewoodSave_CheckFlag(save, 1, movie);
+    return PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_FILMED, movie);
 }
 
 void PokewoodSave_SetMovieFilmed(PokewoodSave *save, u32 movie) {
-    PokewoodSave_SetFlag(save, 1, movie);
+    PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_FILMED, movie);
 }
 
 void PokewoodSave_UpdateRecord(PokewoodSave *save, u32 movie, const PokewoodRecord *record) {

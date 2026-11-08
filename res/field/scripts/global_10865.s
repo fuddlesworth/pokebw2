@@ -430,7 +430,7 @@ L_06B3:
     VMStackPushConst 0
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_06E3
-    Plugin10_Cmd1021 0x8010
+    HasAllHitEndings 0x8010
     VMStackPush 0x8010
     VMStackPushConst 1
     VMStackCmp CMP_EQ
@@ -674,7 +674,7 @@ L_0A3A:
     VMJump L_0A4C
 
 L_0A4C:
-    Plugin10_Cmd1018 EVENT_WORK_0x4001, 0x8010
+    GetDownloadedMovieStudioCast EVENT_WORK_0x4001, 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ

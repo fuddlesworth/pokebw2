@@ -1,6 +1,10 @@
 #include "types.h"
+#include "battle/btl_setup.h"
 #include "constants/arc.h"
+#include "constants/items.h"
+#include "constants/obj_codes.h"
 #include "constants/text_banks.h"
+#include "constants/trainer_classes.h"
 #include "field/event_pokewood.h"
 #include "field/field_script.h"
 #include "field/pokewood_system.h"
@@ -21,32 +25,64 @@
 
 #define POKEWOOD_MSG_FILE TEXT_BANK_POKEWOOD_LINES
 
-static u16 func_ov062_021e5800(u16 value) {
+enum {
+    POKEWOOD_MOVIE_FIELD_DIRECTOR = 0,
+    POKEWOOD_MOVIE_FIELD_MALE_FILM_TRAINER_CLASS = 1,
+    POKEWOOD_MOVIE_FIELD_FEMALE_FILM_TRAINER_CLASS = 2,
+    POKEWOOD_MOVIE_FIELD_SCORE_MULTIPLIER = 3,
+};
+
+enum {
+    POKEWOOD_UNLOCK_NOTICE_STANDARD = 0,
+    POKEWOOD_UNLOCK_NOTICE_EVENT_FLAG = 1,
+    POKEWOOD_UNLOCK_NOTICE_MIN_GRADE = 2,
+    POKEWOOD_UNLOCK_NOTICE_HIGH_SCORE = 3,
+    POKEWOOD_UNLOCK_NOTICE_ALL_PREVIOUS_HITS = 4,
+    POKEWOOD_UNLOCK_NOTICE_FIRST_MOVIE_WATCHED = 5,
+    POKEWOOD_UNLOCK_NOTICE_HIT_AND_EVENT_FLAG = 6,
+};
+
+#define POKEWOOD_FAN_GIFT_GROUP_NONE 0xff
+
+static u16 Pokewood_GetTrainerObjCode(u16 trainerClass) {
     static const struct {
-        u16 key;
-        u16 value;
-    } sTable[] = {
-        { 0x4c, 0x2c }, { 0x2e, 0x4a },  { 0x7c, 0x100 }, { 0x34, 0x49 }, { 0xdf, 0x15a },
-        { 0x57, 0x41 }, { 0x36, 0x5b },  { 0x32, 0x1e },  { 0x31, 0x1f }, { 0x3a, 0x45 },
-        { 0x30, 0x35 }, { 0xe0, 0x15a }, { 0x0e, 0x9a },  { 0x43, 0x34 }, { 0x1a, 0x9b },
+        u16 trainerClass;
+        u16 objCode;
+    } sTrainerObjCodes[] = {
+        { TRAINER_CLASS_GENTLEMAN, OBJ_CODE_GENTLEMAN },
+        { TRAINER_CLASS_SCIENTIST_F_46, OBJ_CODE_SCIENTIST_F_46 },
+        { TRAINER_CLASS_SABRINA, OBJ_CODE_256 },
+        { TRAINER_CLASS_SCIENTIST_M_52, OBJ_CODE_SCIENTIST_M_52 },
+        { TRAINER_CLASS_GUY_IN_SUIT_223, OBJ_CODE_346 },
+        { TRAINER_CLASS_MAID, OBJ_CODE_65 },
+        { TRAINER_CLASS_BRYCEN, OBJ_CODE_91 },
+        { TRAINER_CLASS_ACE_TRAINER_M, OBJ_CODE_ACE_TRAINER_M },
+        { TRAINER_CLASS_ACE_TRAINER_F, OBJ_CODE_ACE_TRAINER_F },
+        { TRAINER_CLASS_JANITOR, OBJ_CODE_JANITOR },
+        { TRAINER_CLASS_CLERK_F, OBJ_CODE_CLERK_F },
+        { TRAINER_CLASS_GIRL_IN_SUIT_224, OBJ_CODE_346 },
+        { TRAINER_CLASS_PRESCHOOLER_F, OBJ_CODE_PRESCHOOLER_F },
+        { TRAINER_CLASS_CLERK_M_67, OBJ_CODE_CLERK_M_67 },
+        { TRAINER_CLASS_WORKER_26, OBJ_CODE_WORKER_26 },
     };
     u32 i;
 
-    for (i = 0; i < NELEMS(sTable); i++) {
-        if (value == sTable[i].key) {
-            return sTable[i].value;
+    for (i = 0; i < NELEMS(sTrainerObjCodes); i++) {
+        if (trainerClass == sTrainerObjCodes[i].trainerClass) {
+            return sTrainerObjCodes[i].objCode;
         }
     }
-    return 11;
+    return OBJ_CODE_YOUNGSTER;
 }
 
-static u16 func_ov062_021e582c(u8 index) {
-    static const u16 sTable[] = { 0x1c, 0x53, 0x19, 0x2c, 0x12f };
+static u16 Pokewood_GetDirectorObjCode(u8 director) {
+    static const u16 sDirectorObjCodes[] = { OBJ_CODE_ARTIST, OBJ_CODE_83, OBJ_CODE_25, OBJ_CODE_GENTLEMAN,
+                                             OBJ_CODE_303 };
 
-    if (index >= NELEMS(sTable)) {
-        index = 0;
+    if (director >= NELEMS(sDirectorObjCodes)) {
+        director = 0;
     }
-    return sTable[index];
+    return sDirectorObjCodes[director];
 }
 
 static PokewoodMovie *Pokewood_LoadMovie(HeapID heapId, u32 movie) {
@@ -58,17 +94,17 @@ static u16 Pokewood_GetMovieField(u32 movie, u32 field) {
     PokewoodMovie *data = Pokewood_LoadMovie(HEAPID_GAMEEVENT, movie);
 
     switch (field) {
-    case 0:
-        value = data->unk8;
+    case POKEWOOD_MOVIE_FIELD_DIRECTOR:
+        value = data->director;
         break;
-    case 1:
-        value = data->unk18;
+    case POKEWOOD_MOVIE_FIELD_MALE_FILM_TRAINER_CLASS:
+        value = data->maleFilmTrainerClass;
         break;
-    case 2:
-        value = data->unk1c;
+    case POKEWOOD_MOVIE_FIELD_FEMALE_FILM_TRAINER_CLASS:
+        value = data->femaleFilmTrainerClass;
         break;
-    case 3:
-        value = data->unk4;
+    case POKEWOOD_MOVIE_FIELD_SCORE_MULTIPLIER:
+        value = data->scoreMultiplier;
         break;
     }
     GFL_HeapFree(data);
@@ -228,14 +264,14 @@ static u32 Pokewood_CountDownloadedMovies(FieldScriptEnv *env) {
 }
 
 // A field of the downloaded movie of a slot, and 0 when it doesn't load
-static u32 Pokewood_GetDownloadedMovieField(FieldScriptEnv *env, u32 slot, u32 field, u32 a3) {
+static u32 Pokewood_GetDownloadedMovieField(FieldScriptEnv *env, u32 slot, u32 field, u32 fieldArg) {
     SaveControl *save = GameData_GetSaveControl(GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env)));
     HeapID heapId = FieldScriptEnv_GetHeapID(env);
     u32 value;
 
     allocatePokewoodBlk(heapId);
     if (Pokewood_LoadDownloadedMovie(save, heapId, slot) == 1) {
-        value = Pokewood_GetLoadedMovieField(field, a3);
+        value = Pokewood_GetLoadedMovieField(field, fieldArg);
     } else {
         value = 0;
     }
@@ -255,16 +291,16 @@ static BOOL Scrcmd_Pokewood_GetDownloadedMovieResult(VM *vm, FieldScriptEnv *env
     u16 slot = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
 
-    switch (Pokewood_GetDownloadedMovieField(env, slot, 1, 0)) {
-    case 0:
+    switch (Pokewood_GetDownloadedMovieField(env, slot, POKEWOOD_BLOCK_FIELD_ENDING, 0)) {
+    case STUDIO_ENDING_FLOP:
     default:
-        *var = 0;
+        *var = STUDIO_ENDING_FLOP;
         break;
-    case 1:
-        *var = 1;
+    case STUDIO_ENDING_HIT:
+        *var = STUDIO_ENDING_HIT;
         break;
-    case 2:
-        *var = 2;
+    case STUDIO_ENDING_STRANGE:
+        *var = STUDIO_ENDING_STRANGE;
         break;
     }
     return FALSE;
@@ -330,32 +366,33 @@ static BOOL Scrcmd_Pokewood_GetNewUnlockKind(VM *vm, FieldScriptEnv *env) {
     u16 *doneVar = ScriptReadVar(vm, env);
 
     *doneVar = FALSE;
-    if (PokewoodSave_CheckFlag(save, 0, movie) == TRUE && PokewoodSave_CheckFlag(save, 3, movie) == FALSE) {
-        PokewoodSave_SetFlag(save, 3, movie);
+    if (PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, movie) == TRUE &&
+        PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_ANNOUNCED, movie) == FALSE) {
+        PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_ANNOUNCED, movie);
         GFL_OvlLoad(OVERLAY_EVENT_POKEWOOD);
         switch (EventPokewood_GetUnlockKind(movie)) {
-        case 0:
-        case 1:
+        case POKEWOOD_UNLOCK_NONE:
+        case POKEWOOD_UNLOCK_PREVIOUS_HIT:
         default:
-            *var = 0;
+            *var = POKEWOOD_UNLOCK_NOTICE_STANDARD;
             break;
-        case 2:
-            *var = 1;
+        case POKEWOOD_UNLOCK_EVENT_FLAG:
+            *var = POKEWOOD_UNLOCK_NOTICE_EVENT_FLAG;
             break;
-        case 3:
-            *var = 2;
+        case POKEWOOD_UNLOCK_MIN_GRADE:
+            *var = POKEWOOD_UNLOCK_NOTICE_MIN_GRADE;
             break;
-        case 4:
-            *var = 3;
+        case POKEWOOD_UNLOCK_HIGH_SCORE:
+            *var = POKEWOOD_UNLOCK_NOTICE_HIGH_SCORE;
             break;
-        case 5:
-            *var = 4;
+        case POKEWOOD_UNLOCK_ALL_PREVIOUS_HITS:
+            *var = POKEWOOD_UNLOCK_NOTICE_ALL_PREVIOUS_HITS;
             break;
-        case 6:
-            *var = 5;
+        case POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED:
+            *var = POKEWOOD_UNLOCK_NOTICE_FIRST_MOVIE_WATCHED;
             break;
-        case 7:
-            *var = 6;
+        case POKEWOOD_UNLOCK_HIT_AND_EVENT_FLAG:
+            *var = POKEWOOD_UNLOCK_NOTICE_HIT_AND_EVENT_FLAG;
             break;
         }
         GFL_OvlUnload(OVERLAY_EVENT_POKEWOOD);
@@ -390,23 +427,25 @@ static BOOL Scrcmd_Pokewood_SetSlotFlag(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-static BOOL func_ov062_021e5f1c(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_Pokewood_GetDownloadedMovieStudioCast(VM *vm, FieldScriptEnv *env) {
     PokewoodSave *save = Pokewood_GetSave(env);
     u16 slot = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
 
-    *var = Pokewood_GetDownloadedMovieField(env, slot, 9, 0);
+    *var = Pokewood_GetDownloadedMovieField(env, slot, POKEWOOD_BLOCK_FIELD_STUDIO_CAST, 0);
     return FALSE;
 }
 
-static BOOL func_ov062_021e5f50(VM *vm, FieldScriptEnv *env) {
-    u8 sex = getTrainerGender(GetGameDataPlayerInfo(FieldScriptEnv_GetGameData(env)));
+static BOOL Scrcmd_Pokewood_GetMovieActorObjCodes(VM *vm, FieldScriptEnv *env) {
+    u8 playerGender = getTrainerGender(GetGameDataPlayerInfo(FieldScriptEnv_GetGameData(env)));
     u16 movie = ScriptReadAny(vm, env);
-    u16 *var = ScriptReadVar(vm, env);
-    u16 *var2 = ScriptReadVar(vm, env);
+    u16 *trainerObjCodeVar = ScriptReadVar(vm, env);
+    u16 *directorObjCodeVar = ScriptReadVar(vm, env);
 
-    *var = func_ov062_021e5800(Pokewood_GetMovieField(movie, sex == 0 ? 1 : 2));
-    *var2 = func_ov062_021e582c(Pokewood_GetMovieField(movie, 0));
+    *trainerObjCodeVar = Pokewood_GetTrainerObjCode(
+        Pokewood_GetMovieField(movie, playerGender == GENDER_MALE ? POKEWOOD_MOVIE_FIELD_MALE_FILM_TRAINER_CLASS
+                                                                  : POKEWOOD_MOVIE_FIELD_FEMALE_FILM_TRAINER_CLASS));
+    *directorObjCodeVar = Pokewood_GetDirectorObjCode(Pokewood_GetMovieField(movie, POKEWOOD_MOVIE_FIELD_DIRECTOR));
     return FALSE;
 }
 
@@ -421,19 +460,19 @@ static BOOL Scrcmd_Pokewood_SetSaveSlot(VM *vm, FieldScriptEnv *env) {
     return TRUE;
 }
 
-static BOOL func_ov062_021e5fec(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_Pokewood_GetMovieDirector(VM *vm, FieldScriptEnv *env) {
     u16 movie = ScriptReadAny(vm, env);
     u16 *var = ScriptReadVar(vm, env);
 
-    *var = Pokewood_GetMovieField(movie, 0);
+    *var = Pokewood_GetMovieField(movie, POKEWOOD_MOVIE_FIELD_DIRECTOR);
     return FALSE;
 }
 
-static BOOL func_ov062_021e6010(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_Pokewood_HasAllHitEndings(VM *vm, FieldScriptEnv *env) {
     PokewoodSave *save = Pokewood_GetSave(env);
     u16 *var = ScriptReadVar(vm, env);
 
-    if (PokewoodSave_CountFlags(save, 2) == POKEWOOD_MOVIE_COUNT) {
+    if (PokewoodSave_CountFlags(save, POKEWOOD_FLAG_LIST_HIT_ENDING) == POKEWOOD_MOVIE_COUNT) {
         *var = TRUE;
     } else {
         *var = FALSE;
@@ -457,33 +496,61 @@ static BOOL Scrcmd_Pokewood_OpenRecordMonitor(VM *vm, FieldScriptEnv *env) {
     return TRUE;
 }
 
-static BOOL func_ov062_021e60a8(VM *vm, FieldScriptEnv *env) {
-    static const u16 sTable6872[][3] = { { 3, 2, 1 }, { 3, 2, 1 }, { 3, 2, 0 }, { 2, 1, 0 } };
-    static const u16 sTable68b2[][4] = {
-        { 0x23b, 0x2a, 0x20, 0x1e }, { 0x1d, 0x19, 0x2b, 0x11 }, { 0x5c, 0x21, 0x4e, 0x8a },
-        { 0x5b, 0x36, 0x1f8, 0x86 }, { 0x17, 0x59, 0x23, 0x22 },
+static BOOL Scrcmd_Pokewood_GetFanGift(VM *vm, FieldScriptEnv *env) {
+    static const u16 sGiftColumns[][3] = { { 3, 2, 1 }, { 3, 2, 1 }, { 3, 2, 0 }, { 2, 1, 0 } };
+    static const u16 sGiftItems[][4] = {
+        { ITEM_PRETTY_WING, ITEM_LAVA_COOKIE, ITEM_LEMONADE, ITEM_FRESH_WATER },
+        { ITEM_MAX_REVIVE, ITEM_HYPER_POTION, ITEM_BERRY_JUICE, ITEM_POTION },
+        { ITEM_NUGGET, ITEM_MOOMOO_MILK, ITEM_ESCAPE_ROPE, ITEM_FAVORED_MAIL },
+        { ITEM_STAR_PIECE, ITEM_OLD_GATEAU, ITEM_RAGE_CANDY_BAR, ITEM_SWEET_HEART },
+        { ITEM_FULL_RESTORE, ITEM_BIG_PEARL, ITEM_ENERGY_ROOT, ITEM_ENERGY_POWDER },
     };
-    static const u16 sTable688a[][4] = {
+    static const u16 sGiftQuantities[][4] = {
         { 1, 5, 5, 1 }, { 1, 5, 1, 1 }, { 1, 5, 1, 1 }, { 1, 5, 1, 1 }, { 1, 1, 1, 1 },
     };
-    static const u16 sTable68da[] = {
-        0, 0xff, 0xff, 1, 2, 0xff, 2, 2, 3, 0xff, 0xff, 3, 0xff, 3, 0xff, 0xff, 3, 0xff, 0xff, 0xff, 4, 4,
+    static const u16 sGiftGroups[] = {
+        0,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        1,
+        2,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        2,
+        2,
+        3,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        3,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        3,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        3,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        POKEWOOD_FAN_GIFT_GROUP_NONE,
+        4,
+        4,
     };
     u16 slot = ScriptReadAny(vm, env);
-    u16 kind = ScriptReadAny(vm, env);
-    u16 *var = ScriptReadVar(vm, env);
-    u16 *var2 = ScriptReadVar(vm, env);
-    u16 a = Pokewood_GetDownloadedMovieField(env, slot, 1, 0);
-    u16 b = Pokewood_GetMovieField((u16)Pokewood_GetDownloadedMovieField(env, slot, 0, 0), 3) / 2 - 1;
-    u16 column = sTable6872[b][a];
-    u16 row = sTable68da[kind];
+    u16 fanIndex = ScriptReadAny(vm, env);
+    u16 *itemVar = ScriptReadVar(vm, env);
+    u16 *quantityVar = ScriptReadVar(vm, env);
+    u16 ending = Pokewood_GetDownloadedMovieField(env, slot, POKEWOOD_BLOCK_FIELD_ENDING, 0);
+    u16 multiplierIndex =
+        Pokewood_GetMovieField((u16)Pokewood_GetDownloadedMovieField(env, slot, POKEWOOD_BLOCK_FIELD_MOVIE, 0),
+                               POKEWOOD_MOVIE_FIELD_SCORE_MULTIPLIER) /
+            2 -
+        1;
+    u16 column = sGiftColumns[multiplierIndex][ending];
+    u16 row = sGiftGroups[fanIndex];
 
-    if (row != 0xff) {
-        *var = sTable68b2[row][column];
-        *var2 = sTable688a[row][column];
+    if (row != POKEWOOD_FAN_GIFT_GROUP_NONE) {
+        *itemVar = sGiftItems[row][column];
+        *quantityVar = sGiftQuantities[row][column];
     } else {
-        *var = 0;
-        *var2 = 0;
+        *itemVar = ITEM_NONE;
+        *quantityVar = 0;
     }
     return FALSE;
 }
@@ -507,13 +574,13 @@ const FieldScriptCommand POKEWOOD_SCRIPT_COMMANDS[] = {
     Scrcmd_Pokewood_GetNewUnlockKind,
     Scrcmd_Pokewood_TestAndSetLevelBit,
     Scrcmd_Pokewood_GetSlotFlag,
-    func_ov062_021e5f1c,
-    func_ov062_021e5f50,
-    func_ov062_021e5fec,
-    func_ov062_021e6010,
+    Scrcmd_Pokewood_GetDownloadedMovieStudioCast,
+    Scrcmd_Pokewood_GetMovieActorObjCodes,
+    Scrcmd_Pokewood_GetMovieDirector,
+    Scrcmd_Pokewood_HasAllHitEndings,
     Scrcmd_Pokewood_SetSlotFlag,
     Scrcmd_Pokewood_OpenRecordMonitor,
-    func_ov062_021e60a8,
+    Scrcmd_Pokewood_GetFanGift,
     Scrcmd_Pokewood_CountMovieFlags,
     Scrcmd_Pokewood_WatchBlock,
     (FieldScriptCommand)0xFFFFFFFF,

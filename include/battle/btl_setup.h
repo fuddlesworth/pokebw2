@@ -65,8 +65,8 @@ typedef struct {
 
 // What BtlSetup.studioEnding is: how a Pokéstar Studios movie ended, which the audience reacts to
 enum {
-    STUDIO_ENDING_GOOD,
-    STUDIO_ENDING_BAD,
+    STUDIO_ENDING_FLOP,
+    STUDIO_ENDING_HIT,
     STUDIO_ENDING_STRANGE,
 };
 

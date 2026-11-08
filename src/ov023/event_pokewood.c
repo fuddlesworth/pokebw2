@@ -166,10 +166,46 @@ static const struct {
     u8 kind;
     u8 param;
 } sMovieUnlocks[POKEWOOD_MOVIE_COUNT] = {
-    { 0, 0 },  { 7, 0 }, { 1, 1 },  { 4, 0 },  { 1, 3 },  { 1, 4 },  { 1, 5 },  { 6, 0 },  { 1, 7 },  { 1, 8 },
-    { 1, 9 },  { 2, 0 }, { 1, 11 }, { 1, 12 }, { 1, 13 }, { 6, 0 },  { 1, 15 }, { 1, 16 }, { 2, 0 },  { 1, 18 },
-    { 1, 19 }, { 6, 0 }, { 1, 21 }, { 1, 22 }, { 3, 2 },  { 1, 24 }, { 1, 25 }, { 1, 26 }, { 6, 27 }, { 1, 28 },
-    { 1, 29 }, { 3, 3 }, { 1, 31 }, { 1, 32 }, { 1, 33 }, { 2, 0 },  { 1, 35 }, { 1, 36 }, { 1, 37 }, { 5, 0 },
+    { POKEWOOD_UNLOCK_NONE, 0 },
+    { POKEWOOD_UNLOCK_HIT_AND_EVENT_FLAG, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 1 },
+    { POKEWOOD_UNLOCK_HIGH_SCORE, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 3 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 4 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 5 },
+    { POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 7 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 8 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 9 },
+    { POKEWOOD_UNLOCK_EVENT_FLAG, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 11 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 12 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 13 },
+    { POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 15 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 16 },
+    { POKEWOOD_UNLOCK_EVENT_FLAG, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 18 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 19 },
+    { POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 21 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 22 },
+    { POKEWOOD_UNLOCK_MIN_GRADE, 2 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 24 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 25 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 26 },
+    { POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED, 27 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 28 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 29 },
+    { POKEWOOD_UNLOCK_MIN_GRADE, 3 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 31 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 32 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 33 },
+    { POKEWOOD_UNLOCK_EVENT_FLAG, 0 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 35 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 36 },
+    { POKEWOOD_UNLOCK_PREVIOUS_HIT, 37 },
+    { POKEWOOD_UNLOCK_ALL_PREVIOUS_HITS, 0 },
 };
 
 static u32 EventPokewood_GetTitleMsgBase(u32 kind, u32 gender);
@@ -638,7 +674,7 @@ static GameEventReturnCode EventPokewood_RunWatch(GameEvent *event, u32 *state, 
                 if (*var != 0) {
                     PokewoodSystem_SetResultFlag(sys, gameData, wk->setup->studioMovie, wk->setup->studioEnding);
                     PokewoodSystem_AddGradePoints(gameData, sys, wk->setup->studioEnding, param->slot);
-                    PokewoodSave_SetFlag(save, 5, wk->setup->studioMovie);
+                    PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_WATCHED, wk->setup->studioMovie);
                     Pokewood_CheckMedals(gameData);
                     EventPokewood_UnlockMovies(save, gameData, wk->setup->studioMovie, wk->setup->studioEnding,
                                                wk->setup->studioScore);
@@ -987,53 +1023,53 @@ void EventPokewood_UnlockMovies(PokewoodSave *save, GameData *gameData, u32 movi
         u32 count = 0;
         int j;
 
-        if (PokewoodSave_CheckFlag(save, 0, i)) {
+        if (PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i)) {
             continue;
         }
         switch (sMovieUnlocks[i].kind) {
-        case 1:
-            if (movie == sMovieUnlocks[i].param && result == 1) {
-                PokewoodSave_SetFlag(save, 0, i);
+        case POKEWOOD_UNLOCK_PREVIOUS_HIT:
+            if (movie == sMovieUnlocks[i].param && result == STUDIO_ENDING_HIT) {
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 3:
+        case POKEWOOD_UNLOCK_MIN_GRADE:
             if (PokewoodSave_GetLevelOfPoints(PokewoodSave_GetLevelPoints(save)) >= sMovieUnlocks[i].param) {
-                PokewoodSave_SetFlag(save, 0, i);
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 4:
+        case POKEWOOD_UNLOCK_HIGH_SCORE:
             if (score >= 5000) {
-                PokewoodSave_SetFlag(save, 0, i);
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 2:
+        case POKEWOOD_UNLOCK_EVENT_FLAG:
             if (EventWork_FlagGet(GameData_GetEventWork(gameData), EVENT_FLAG_0x0960)) {
-                PokewoodSave_SetFlag(save, 0, i);
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 7:
-            if (PokewoodSave_CheckFlag(save, 2, sMovieUnlocks[i].param) &&
+        case POKEWOOD_UNLOCK_HIT_AND_EVENT_FLAG:
+            if (PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_HIT_ENDING, sMovieUnlocks[i].param) &&
                 EventWork_FlagGet(GameData_GetEventWork(gameData), EVENT_FLAG_0x0960)) {
-                PokewoodSave_SetFlag(save, 0, i);
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 5:
+        case POKEWOOD_UNLOCK_ALL_PREVIOUS_HITS:
             for (j = 0; j < POKEWOOD_MOVIE_COUNT - 1; j++) {
-                count += PokewoodSave_CheckFlag(save, 2, j);
+                count += PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_HIT_ENDING, j);
             }
             if (count == POKEWOOD_MOVIE_COUNT - 1) {
-                PokewoodSave_SetFlag(save, 0, i);
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;
-        case 6:
-            if (PokewoodSave_CheckFlag(save, 5, 0)) {
-                PokewoodSave_SetFlag(save, 0, i);
+        case POKEWOOD_UNLOCK_FIRST_MOVIE_WATCHED:
+            if (PokewoodSave_CheckFlag(save, POKEWOOD_FLAG_LIST_WATCHED, 0)) {
+                PokewoodSave_SetFlag(save, POKEWOOD_FLAG_LIST_UNLOCKED, i);
                 EventPokewood_OnMovieUnlocked(save, i);
             }
             break;

@@ -574,7 +574,7 @@ u32 TrainerCard_CountStars(GameData *gameData) {
     if (WbtSave_GetCount(wbt, 17) != 0) {
         stars++;
     }
-    if ((int)PokewoodSave_CountFlags(pokewood, 0) >= POKEWOOD_MOVIE_COUNT) {
+    if ((int)PokewoodSave_CountFlags(pokewood, POKEWOOD_FLAG_LIST_UNLOCKED) >= POKEWOOD_MOVIE_COUNT) {
         stars++;
     }
     return stars;

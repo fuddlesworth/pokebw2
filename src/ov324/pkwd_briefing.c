@@ -2182,17 +2182,17 @@ static void PkwdBriefing_RunCredits(PkwdBriefingWork *wk) {
 
 // Has the audience react to how the movie's battle went
 static void PkwdBriefing_React(PkwdBriefingWork *wk, BtlSetup *setup) {
-    u32 result = STUDIO_ENDING_GOOD;
+    u32 result = STUDIO_ENDING_FLOP;
 
     if (setup != NULL) {
         result = setup->studioEnding;
     }
     switch (result) {
-    case STUDIO_ENDING_GOOD:
+    case STUDIO_ENDING_FLOP:
         PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_GOOD, wk->param->audience);
         PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_GOOD);
         break;
-    case STUDIO_ENDING_BAD:
+    case STUDIO_ENDING_HIT:
         PkwdBriefingAudience_SetAllSequences(&wk->audience, AUDIENCE_BAD, wk->param->audience);
         PkwdBriefingAudience_PlaySE(wk->param->audienceCount, AUDIENCE_BAD);
         break;

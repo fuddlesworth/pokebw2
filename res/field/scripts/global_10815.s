@@ -303,7 +303,7 @@ Movement_0418:
     MoveEnd
 
 L_0420:
-    Plugin10_Cmd1020 0x8024, 0x8027
+    GetMovieDirector 0x8024, 0x8027
     WorkAdd 0x8010, 0x8027
     ActorMsg MSGFILE_SCRIPT, 0x8010, 1, 2, 0
     VMReturn
@@ -488,7 +488,7 @@ L_06C0:
 
 L_06CE:
     ActorCmdWait
-    Plugin10_Cmd1019 0x8024, EVENT_WORK_0x4020, EVENT_WORK_0x4021
+    GetMovieActorObjCodes 0x8024, EVENT_WORK_0x4020, EVENT_WORK_0x4021
     FlagReset EVENT_FLAG_0x0392
     FlagSet EVENT_FLAG_0x0393
     FlagSet EVENT_FLAG_0x03c3
