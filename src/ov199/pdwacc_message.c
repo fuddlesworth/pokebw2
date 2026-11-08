@@ -25,6 +25,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include "text/system/0107.h"
 
 #define PDWACC_MESSAGE_WIN_MAX 12
 
@@ -225,10 +226,10 @@ AppTaskMenu *PdwAccMessage_CreateYesNo(PdwAccMessage *msg, int pos) {
     init.width = 13;
     init.height = 3;
     msg->yesNoItems[0].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, 4, msg->yesNoItems[0].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, Bank0107_Text_Yes, msg->yesNoItems[0].str);
     msg->yesNoItems[0].color = PRINT_COLOR(14, 15, 0);
     msg->yesNoItems[1].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, 5, msg->yesNoItems[1].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, Bank0107_Text_No, msg->yesNoItems[1].str);
     msg->yesNoItems[1].color = PRINT_COLOR(14, 15, 0);
     menu = AppTaskMenu_Create(&init, msg->menuRes);
     GFL_StrBufFree(msg->yesNoItems[0].str);
@@ -295,7 +296,7 @@ void PdwAccMessage_ShowGSyncId(PdwAccMessage *msg, u32 id, u32 unused) {
     }
     win = msg->idLabelWin;
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
-    GFL_MsgDataLoadStrbuf(msg->msgData, 10, msg->strBuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, Bank0107_Text_GameSyncId, msg->strBuf);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(win), 0, 0, msg->strBuf, msg->font);
     BmpWin_FlushChar(win);
     BmpWin_FlushMap(win);

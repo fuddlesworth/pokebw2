@@ -1,5 +1,5 @@
-// The Game Sync menu: three touch buttons, Game Sync itself (whose button also shows the wireless signal), the Wi-Fi
-// settings and return. The name is the ROM's string, from GFL_HeapAllocate's calls. Function names are ours.
+// The Game Sync menu: three touch buttons, Game Sync itself (whose button also reflects the detected AP category), the
+// Wi-Fi settings and return. The name is the ROM's string, from GFL_HeapAllocate's calls. Function names are ours.
 
 #include "types.h"
 #include "app/gsync.h"
@@ -8,6 +8,7 @@
 #include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"
@@ -58,9 +59,16 @@ enum {
     GSYNC_MENU_BUTTON_RETURN,
 };
 
-// The actors' first sequences. The Game Sync button's sequence also shows the wireless signal
+// The actors' first sequences. The Game Sync button also reflects the detected AP category
 #define GSYNC_MENU_SEQ_GSYNC 14
 #define GSYNC_MENU_SEQ_WIFI_SETTINGS 13
+
+// Sequences selected by WihDwc_GetStatus's AP categories, not link strength.
+enum {
+    GSYNC_MENU_SEQ_KNOWN_ACCESS_POINT = 24,
+    GSYNC_MENU_SEQ_HOTSPOT = 22,
+    GSYNC_MENU_SEQ_OTHER_ACCESS_POINT = 21,
+};
 
 typedef struct GSyncMenuWork GSyncMenuWork;
 typedef void (*GSyncMenuStateFunc)(GSyncMenuWork *wk);
@@ -155,8 +163,8 @@ static void GSyncMenu_StateWaitFadeOut(GSyncMenuWork *wk);
 static void GSyncMenu_StateWaitMessageTouch(GSyncMenuWork *wk);
 static void GSyncMenu_StatePressButton(GSyncMenuWork *wk);
 static BOOL GSyncMenu_OnTouch(u32 button, GSyncMenuWork *wk);
-static void GSyncMenu_SetSignalSequence(GSyncMenuWork *wk, int sequence);
-static void GSyncMenu_UpdateSignal(GSyncMenuWork *wk);
+static void GSyncMenu_SetAccessPointSequence(GSyncMenuWork *wk, int sequence);
+static void GSyncMenu_UpdateAccessPointIndicator(GSyncMenuWork *wk);
 static void GSyncMenu_StateSelect(GSyncMenuWork *wk);
 static void GSyncMenu_DimPalettes(GSyncMenuWork *wk, u16 buffer, int count);
 static void GSyncMenu_DimSubScreen(GSyncMenuWork *wk, BOOL dim);
@@ -636,27 +644,27 @@ static BOOL GSyncMenu_OnTouch(u32 button, GSyncMenuWork *wk) {
     return TRUE;
 }
 
-static void GSyncMenu_SetSignalSequence(GSyncMenuWork *wk, int sequence) {
+static void GSyncMenu_SetAccessPointSequence(GSyncMenuWork *wk, int sequence) {
     if (sequence != ClActor_GetSequence(wk->actors[GSYNC_MENU_BUTTON_GSYNC])) {
         ClActor_SetAutoAnim(wk->actors[GSYNC_MENU_BUTTON_GSYNC], TRUE);
         ClActor_SetSequence(wk->actors[GSYNC_MENU_BUTTON_GSYNC], sequence);
     }
 }
 
-// Shows the wireless signal's strength on the Game Sync button, from the bits of WihDwc_GetStatus's status that
-// are set, strongest first
-static void GSyncMenu_UpdateSignal(GSyncMenuWork *wk) {
+// Shows WihDwc_GetStatus's detected AP category on the Game Sync button: known, hotspot, then other APs.
+// The provider tracks link level separately.
+static void GSyncMenu_UpdateAccessPointIndicator(GSyncMenuWork *wk) {
     if (wk->wifiStatus != wk->prevWifiStatus) {
         if (wk->wifiStatus & 0x40) {
-            GSyncMenu_SetSignalSequence(wk, 24);
+            GSyncMenu_SetAccessPointSequence(wk, GSYNC_MENU_SEQ_KNOWN_ACCESS_POINT);
         } else if (wk->wifiStatus & 0x80) {
-            GSyncMenu_SetSignalSequence(wk, 22);
+            GSyncMenu_SetAccessPointSequence(wk, GSYNC_MENU_SEQ_HOTSPOT);
         } else if (wk->wifiStatus & 0x100) {
-            GSyncMenu_SetSignalSequence(wk, 21);
+            GSyncMenu_SetAccessPointSequence(wk, GSYNC_MENU_SEQ_OTHER_ACCESS_POINT);
         } else if (wk->wifiStatus & 0x200) {
-            GSyncMenu_SetSignalSequence(wk, 21);
+            GSyncMenu_SetAccessPointSequence(wk, GSYNC_MENU_SEQ_OTHER_ACCESS_POINT);
         } else {
-            GSyncMenu_SetSignalSequence(wk, GSYNC_MENU_SEQ_GSYNC);
+            GSyncMenu_SetAccessPointSequence(wk, GSYNC_MENU_SEQ_GSYNC);
         }
     }
 }
@@ -665,7 +673,7 @@ static void GSyncMenu_StateSelect(GSyncMenuWork *wk) {
     if (GFL_WipeIsFinished()) {
         GFL_BMN_Main(wk->buttonMan);
     }
-    GSyncMenu_UpdateSignal(wk);
+    GSyncMenu_UpdateAccessPointIndicator(wk);
 }
 
 // Dims the first count palettes of the sub screen's BG or OBJ palettes. buffer is both the PaletteFade buffer and the
@@ -805,7 +813,7 @@ static void GSyncMenu_StateSaveAsk(GSyncMenuWork *wk) {
 }
 
 static void GSyncMenu_StateWaitSave(GSyncMenuWork *wk) {
-    if (GameData_UpdateSave(wk->gameData) == 2) {
+    if (GameData_UpdateSave(wk->gameData) == SAVE_RESULT_OK) {
         GSyncMenu_FreeMessage(wk);
         GSyncMenu_DimSubScreen(wk, FALSE);
         GSyncMenu_ChangeState(wk, GSyncMenu_StateFadeOut, 1258);

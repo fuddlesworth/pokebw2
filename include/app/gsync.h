@@ -33,13 +33,25 @@ enum {
     GSYNC_ERROR_HTTP,
 };
 
+// HTTP response codes, separate from the app error codes above.
+enum {
+    GSYNC_HTTP_STATUS_BAD_GATEWAY = 502,
+    GSYNC_HTTP_STATUS_SERVICE_UNAVAILABLE = 503,
+};
+
+// Account-body states whose meaning is directly reported to the player.
+enum {
+    GSYNC_ACCOUNT_STATUS_NOT_DREAMING = 1,
+    GSYNC_ACCOUNT_STATUS_DREAMING = 2,
+};
+
 // The answer to Game Sync's account.playstatus request. Status 0 is an account that isn't set up yet, 1 one whose
 // Pokémon isn't dreaming yet and 2 one whose Pokémon is dreaming. With 0 and 4, the Pokémon and items below come back
 // without the server's result, and with 4 Game Sync doesn't ask the server again
 typedef struct {
     u16 status;
     u16 species;
-    u16 unk4;
+    u16 move;
     u8 form;
     u8 sex;
     u16 items[20];

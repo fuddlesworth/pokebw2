@@ -27919,8 +27919,8 @@ overlays/ov199 0x021b37f8 GSyncMenu_StateWaitFadeOut
 overlays/ov199 0x021b3840 GSyncMenu_StateWaitMessageTouch
 overlays/ov199 0x021b3888 GSyncMenu_StatePressButton
 overlays/ov199 0x021b38ec GSyncMenu_OnTouch
-overlays/ov199 0x021b3968 GSyncMenu_SetSignalSequence
-overlays/ov199 0x021b3990 GSyncMenu_UpdateSignal
+overlays/ov199 0x021b3968 GSyncMenu_SetAccessPointSequence
+overlays/ov199 0x021b3990 GSyncMenu_UpdateAccessPointIndicator
 overlays/ov199 0x021b39e4 GSyncMenu_StateSelect
 overlays/ov199 0x021b3a00 GSyncMenu_DimPalettes
 overlays/ov199 0x021b3a84 GSyncMenu_DimSubScreen
@@ -27960,7 +27960,7 @@ overlays/ov199 0x021b4870 GSyncDownload_OnNdEvent
 overlays/ov199 0x021b48c0 GSyncDownload_Create
 overlays/ov199 0x021b4924 GSyncDownload_Free
 overlays/ov199 0x021b4954 GSyncDownload_GetBuffer
-overlays/ov199 0x021b495c GSyncDownload_OnDwcEvent
+overlays/ov199 0x021b495c GSyncDownload_OnDwcError
 overlays/ov199 0x021b4988 GSyncDownload_Init
 overlays/ov199 0x021b49c0 GSyncDownload_IsSucceeded
 overlays/ov199 0x021b49e0 GSyncDownload_IsFailed
@@ -28098,7 +28098,7 @@ overlays/ov199 0x021b7cb0 GSync_StateSendAnimJump
 overlays/ov199 0x021b7cf0 GSync_StateSendAnimIcon
 overlays/ov199 0x021b7d20 GSync_StateSendShowIcon
 overlays/ov199 0x021b7d4c GSync_StateSend
-overlays/ov199 0x021b7dc4 GSync_OnDisconnect
+overlays/ov199 0x021b7dc4 GSync_OnDwcError
 overlays/ov199 0x021b7de0 GSync_RestoreDreamWorld
 overlays/ov199 0x021b7e44 GSync_PersonExists
 overlays/ov199 0x021b7e54 GSync_PersonToPlayerInfo
@@ -28150,7 +28150,7 @@ overlays/ov199 0x021b92a0 PdwAcc_StateWaitCreate
 overlays/ov199 0x021b9318 PdwAcc_StateCreate
 overlays/ov199 0x021b9380 PdwAcc_StateIdOnlyWait
 overlays/ov199 0x021b93ac PdwAcc_StateShowIdOnly
-overlays/ov199 0x021b93d4 PdwAcc_OnDisconnect
+overlays/ov199 0x021b93d4 PdwAcc_OnDwcError
 overlays/ov199 0x021b93f0 PdwAcc_ProcInit
 overlays/ov199 0x021b94c4 PdwAcc_ProcMain
 overlays/ov199 0x021b9548 PdwAcc_ProcExit

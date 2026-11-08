@@ -32,7 +32,7 @@ struct GSyncDownload {
 };
 
 static void GSyncDownload_OnNdEvent(DWCNdCallbackReason reason, DWCNdError error, int serverError);
-static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event, int a3);
+static u32 GSyncDownload_OnDwcError(void *work, int code, int errorType, int error);
 static BOOL GSyncDownload_UpdateTimer(GSyncDownload *dl);
 
 static GSyncDownload *_pDLWork;
@@ -80,7 +80,7 @@ void *GSyncDownload_GetBuffer(GSyncDownload *dl) {
     return dl->buffer;
 }
 
-static u32 GSyncDownload_OnDwcEvent(void *work, int a1, int event, int a3) {
+static u32 GSyncDownload_OnDwcError(void *work, int code, int errorType, int error) {
     GSyncDownload *dl = work;
 
     if (!dl->cleanedUp && DWC_NdCleanupAsync()) {
@@ -97,7 +97,7 @@ BOOL GSyncDownload_Init(GSyncDownload *dl) {
     if (!DWC_NdInitAsync(GSyncDownload_OnNdEvent, "IRAO", "WX9x7Zh6J3aBC4zQ")) {
         return FALSE;
     }
-    DWCRap_SetEventFunc(GSyncDownload_OnDwcEvent, dl);
+    DWCRap_SetEventFunc(GSyncDownload_OnDwcError, dl);
     return TRUE;
 }
 

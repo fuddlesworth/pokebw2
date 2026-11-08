@@ -11,6 +11,8 @@
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/species.h"
+#include "constants/text_banks.h"
+#include "gfl/backup_system.h"
 #include "gfl/clact.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/dwc_rapcommon.h"
@@ -39,11 +41,13 @@
 #include "save/player_info.h"
 #include "save/records.h"
 #include "save/save_control.h"
+#include "save/symbol_save.h"
 #include "system/app_taskmenu.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/tpoke_data.h"
 #include "system/wipe.h"
+#include "text/system/gsync_menu.h"
 
 #define HEAPID_GSYNC 0x62
 
@@ -54,14 +58,16 @@ enum {
     GSYNC_DOWNLOAD_POKEDEX,
 };
 
-// The requests Game Sync makes of the server, by their URLs in overlay 189's table
+// The header result, separate from accountInfo.status and the special create reply 2.
 enum {
-    GSYNC_REQUEST_PLAY_STATUS,         // account.playstatus
-    GSYNC_REQUEST_SPECIES_FLAGS,       // sleepily.bitlist, the species that can be sent
-    GSYNC_REQUEST_DOWNLOAD,            // savedata.download
-    GSYNC_REQUEST_UPLOAD,              // savedata.upload
-    GSYNC_REQUEST_DOWNLOAD_FINISH = 8, // savedata.download.finish
-    GSYNC_REQUEST_CREATE = 9,          // account.create.upload
+    GSYNC_RESPONSE_STATUS_OK = 0,
+};
+
+// The completed download kinds that index the combined-message table.
+enum {
+    GSYNC_DOWNLOAD_FLAG_CGEAR = 1,
+    GSYNC_DOWNLOAD_FLAG_MUSICAL = 2,
+    GSYNC_DOWNLOAD_FLAG_POKEDEX = 4,
 };
 
 // The largest item ID the Dream World sends
@@ -78,10 +84,10 @@ typedef void (*GSyncStateFunc)(GSyncWork *wk);
 // A Pokémon the Dream World sends to the Entree Forest
 typedef struct {
     u16 species;
-    u16 unk2;
+    u16 move;
     u8 form;
     u8 sex;
-    u8 slot;
+    u8 actorType;
     u8 unk7;
 } GSyncResultPokemon;
 
@@ -91,9 +97,9 @@ typedef struct {
     u32 id;
     s32 profileId;
     u8 country;
-    u8 region;
-    u8 unk1A;
-    u8 unk1B;
+    u8 province;
+    u8 language;
+    u8 gameVersion;
     u8 gender;
     u8 unk1D;
     u16 species;
@@ -108,7 +114,7 @@ typedef struct {
     u8 musical;
     u8 cgear;
     u8 dex;
-    u8 unk5A;
+    u8 dreamWorldMode;
     u8 unk5B;
     u16 items[20];
     u8 itemCounts[20];
@@ -221,8 +227,8 @@ static void GSync_StateNextDownload(GSyncWork *wk);
 static void GSync_SetEntries(DreamWorldSave *dreamWorld, GSyncResult *result);
 static BOOL GSync_SetItems(DreamWorldSave *dreamWorld, GSyncResult *result);
 static BOOL GSync_HasItems(DreamWorldSave *dreamWorld, GSyncResult *result);
-static void GSync_AddForestPokemon(GSyncWork *wk, DreamWorldSave *dreamWorld, int species, int sex, int form, int unk2,
-                                   int slot);
+static void GSync_AddForestPokemon(GSyncWork *wk, DreamWorldSave *dreamWorld, int species, int sex, int form, int move,
+                                   int actorType);
 static void GSync_AddForestPokemonList(GSyncWork *wk, DreamWorldSave *dreamWorld, GSyncResult *result);
 static void GSync_SetFloatItems(GSyncWork *wk, GSyncResult *result);
 static void GSync_ReadResult(GSyncWork *wk, DreamWorldSave *dreamWorld, GSyncResult *result, GSyncResponse *response);
@@ -268,7 +274,7 @@ static void GSync_StateSendAnimJump(GSyncWork *wk);
 static void GSync_StateSendAnimIcon(GSyncWork *wk);
 static void GSync_StateSendShowIcon(GSyncWork *wk);
 static void GSync_StateSend(GSyncWork *wk);
-static void GSync_OnDisconnect(void *work, int a1, int code, int error);
+static void GSync_OnDwcError(void *work, int code, int errorType, int error);
 static void GSync_RestoreDreamWorld(GSyncWork *wk);
 static BOOL GSync_PersonExists(GSyncResultPerson *person);
 static void GSync_PersonToPlayerInfo(GSyncResultPerson *person, PlayerInfo *info);
@@ -286,11 +292,11 @@ const GameProcFunctions GSYNC_PROC_FUNCTIONS = {
 // Returns whether the HTTP status is an error, and shows it
 static BOOL GSync_CheckHttpStatus(GSyncWork *wk, int status) {
     switch (status) {
-    case 503:
+    case GSYNC_HTTP_STATUS_SERVICE_UNAVAILABLE:
         wk->error = GSYNC_ERROR_SERVICE_UNAVAILABLE;
         GSync_ChangeState(wk, GSync_StateError, 218);
         return TRUE;
-    case 502:
+    case GSYNC_HTTP_STATUS_BAD_GATEWAY:
         wk->error = GSYNC_ERROR_BAD_GATEWAY;
         GSync_ChangeState(wk, GSync_StateError, 222);
         return TRUE;
@@ -407,17 +413,17 @@ static void GSync_StateError(GSyncWork *wk) {
         NHttpRap_EndRequest(wk->http);
     }
     if (wk->error == GSYNC_ERROR_DOWNLOAD) {
-        msgId = 39;
+        msgId = GsyncMenu_Text_ErrorOccurredServerPlease_5;
     } else if (wk->error == GSYNC_ERROR_SERVICE_UNAVAILABLE) {
-        msgId = 40;
+        msgId = GsyncMenu_Text_ServerExperiencingHighTraffic;
     } else if (wk->error == GSYNC_ERROR_BAD_GATEWAY) {
-        msgId = 41;
+        msgId = GsyncMenu_Text_ServerUndergoingMaintenanceCan;
     } else if (wk->error == GSYNC_ERROR_HTTP) {
-        msgId = 38;
+        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
     } else if (wk->error == 10) {
-        msgId = 38;
+        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
     } else if (wk->error <= 0 || wk->error >= 11) {
-        msgId = 38;
+        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
     }
     GSyncMessage_ClearMessage(wk->msg);
     GSyncDisp_DeleteActor(wk->disp, 13);
@@ -440,7 +446,14 @@ static void GSync_StateWaitDownloadsShown(GSyncWork *wk) {
 
 // Shows what was downloaded: the C-Gear skin, the musical and the Pokédex skin
 static void GSync_StateShowDownloads(GSyncWork *wk) {
-    u32 msgIds[] = { 0, 24, 25, 27, 26, 29, 28, 23 };
+    u32 msgIds[] = { GsyncMenu_Text_GameSync,
+                     GsyncMenu_Text_CGearSkinHas_2,
+                     GsyncMenu_Text_MusicalShowHasChanged,
+                     GsyncMenu_Text_CGearSkinHas_3,
+                     GsyncMenu_Text_PokedexSkinHasChanged,
+                     GsyncMenu_Text_CGearSkinHas_4,
+                     GsyncMenu_Text_MusicalShowHasChanged_2,
+                     GsyncMenu_Text_CGearSkinHas };
 
     if (wk->downloadFlags) {
         GSyncMessage_ClearMessage(wk->msg);
@@ -476,7 +489,7 @@ static void GSync_StateWaitReceived(GSyncWork *wk) {
             return;
         }
         GSyncMessage_ClearInfo(wk->msg);
-        GSyncMessage_FormatPokemonNumber(wk->msg, 22, wk->levels, wk->pkm);
+        GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_HasGainedLevelS, wk->levels, wk->pkm);
         GSyncMessage_PrintLoaded(wk->msg, FALSE);
         GFL_SndBGMSetPaused(TRUE);
         GFL_SndBGMPush();
@@ -533,13 +546,13 @@ static void GSync_StateWaitReceiveSave(GSyncWork *wk) {
     ClActorCallback callback;
 
     getDreamWorldStuffAddress(wk->save);
-    if (GameData_UpdateSave(wk->gameData) == 2) {
+    if (GameData_UpdateSave(wk->gameData) == SAVE_RESULT_OK) {
         wk->saving = FALSE;
         wk->receiving = FALSE;
         wk->busy = FALSE;
         JoinAvenue_RecordActivity(28);
         GSyncMessage_ClearMessage(wk->msg);
-        GSyncMessage_FormatPokemonNumber(wk->msg, 45, 0, wk->pkm);
+        GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_HasWokenUp_2, 0, wk->pkm);
         GSyncMessage_PrintInfoAt(wk->msg, 1, 4);
         GSyncDisp_CreateActor(wk->disp, 0);
         GSyncDisp_SetActorSequence(wk->disp, 6, 7);
@@ -573,7 +586,7 @@ static void GSync_StateFinishDownload(GSyncWork *wk) {
         wk->wait--;
         return;
     }
-    if (GFL_NetIsInitialized() && NHttpRap_SendRequest(GSYNC_REQUEST_DOWNLOAD_FINISH, wk->http)) {
+    if (GFL_NetIsInitialized() && NHttpRap_SendRequest(NHTTP_RAP_REQUEST_SAVEDATA_DOWNLOAD_FINISH, wk->http)) {
         wk->request[0] = 1;
         wk->request[1] = 0;
         NHTTPSetPostDataRaw(NHttpRap_GetConnection(wk->http), wk->request, sizeof(wk->request));
@@ -588,7 +601,7 @@ static void GSync_StateWaitReceiveSaveStart(GSyncWork *wk) {
         wk->progress++;
     }
     GSyncDisp_SetProgress(wk->disp, wk->progress);
-    if (GameData_UpdateSave(wk->gameData) == 1) {
+    if (GameData_UpdateSave(wk->gameData) == SAVE_RESULT_LAST) {
         wk->wait = GFL_RandomLC(190);
         GSync_ChangeState(wk, GSync_StateFinishDownload, 768);
     }
@@ -604,13 +617,13 @@ static void GSync_StateReceive(GSyncWork *wk) {
         GSync_SetItems(dreamWorld, wk->result);
         GSync_AddForestPokemonList(wk, dreamWorld, wk->result);
         GSync_SetEntries(dreamWorld, wk->result);
-        DreamWorldSave_SetMode(dreamWorld, wk->result->unk5A);
+        DreamWorldSave_SetMode(dreamWorld, wk->result->dreamWorldMode);
         GSync_AddJoinAvenuePeople(wk->gameData, wk->result->people, wk->heapId);
     } else {
         int i;
         GSyncAccountInfo *info = &wk->param->accountInfo;
 
-        GSync_AddForestPokemon(wk, dreamWorld, info->species, info->sex, info->form, info->unk4, GFL_RandomLC(8));
+        GSync_AddForestPokemon(wk, dreamWorld, info->species, info->sex, info->form, info->move, GFL_RandomLC(8));
         for (i = 0; i < 20; i++) {
             DreamWorldSave_SetItem(dreamWorld, i, info->items[i], info->itemCounts[i]);
         }
@@ -640,8 +653,8 @@ static void GSync_StateCGearSaved(GSyncWork *wk) {
 static void GSync_StateWaitCGearSave(GSyncWork *wk) {
     SaveControl *save = GameData_GetSaveControl(wk->gameData);
 
-    if (GameData_UpdateSaveBlock(wk->gameData, 4) == 2) {
-        freeIntermediateSaveExtraBlksAfterLoad2(save, 4);
+    if (GameData_UpdateSaveBlock(wk->gameData, SAVE_EXTRA_ID_CGEAR_PICTURE) == SAVE_RESULT_OK) {
+        freeIntermediateSaveExtraBlksAfterLoad2(save, SAVE_EXTRA_ID_CGEAR_PICTURE);
         CGearSettings_SetSkinValid(CGearSettings_GetFromSave(save), TRUE);
         GSync_ChangeState(wk, GSync_StateCGearSaved, 848);
     }
@@ -661,10 +674,10 @@ static void GSync_StateCGearDownloaded(GSyncWork *wk) {
     wk->busy = TRUE;
     skin = GFL_HeapAllocate(wk->heapId, 0x2800, FALSE, "gsync_state.c", 871);
     wk->cgearSkin = skin;
-    SaveControl_LoadExtraBlock(save, 4, wk->heapId, skin, 0x2800);
+    SaveControl_LoadExtraBlock(save, SAVE_EXTRA_ID_CGEAR_PICTURE, wk->heapId, skin, 0x2800);
     MI_CpuCopy8(buffer, skin, GSYNC_CGEAR_SKIN_SIZE);
     CGearSettings_SetSkinCrc(CGearSettings_GetFromSave(save), crc);
-    GameData_StartSaveBlock(wk->gameData, 4);
+    GameData_StartSaveBlock(wk->gameData, SAVE_EXTRA_ID_CGEAR_PICTURE);
     GSync_ChangeState(wk, GSync_StateWaitCGearSave, 882);
 }
 
@@ -679,8 +692,8 @@ static void GSync_StatePokedexSaved(GSyncWork *wk) {
 static void GSync_StateWaitPokedexSave(GSyncWork *wk) {
     SaveControl *save = GameData_GetSaveControl(wk->gameData);
 
-    if (GameData_UpdateSaveBlock(wk->gameData, 7) == 2) {
-        freeIntermediateSaveExtraBlksAfterLoad2(save, 7);
+    if (GameData_UpdateSaveBlock(wk->gameData, SAVE_EXTRA_ID_POKEDEX_SKIN) == SAVE_RESULT_OK) {
+        freeIntermediateSaveExtraBlksAfterLoad2(save, SAVE_EXTRA_ID_POKEDEX_SKIN);
         GSync_ChangeState(wk, GSync_StatePokedexSaved, 903);
     }
 }
@@ -697,10 +710,10 @@ static void GSync_StatePokedexDownloaded(GSyncWork *wk) {
     }
     wk->busy = TRUE;
     wk->pokedexSkin = GFL_HeapAllocate(wk->heapId, 0x6800, FALSE, "gsync_state.c", 922);
-    SaveControl_LoadExtraBlock(save, 7, wk->heapId, wk->pokedexSkin, 0x6800);
+    SaveControl_LoadExtraBlock(save, SAVE_EXTRA_ID_POKEDEX_SKIN, wk->heapId, wk->pokedexSkin, 0x6800);
     MI_CpuCopy8(buffer, wk->pokedexSkin, GSYNC_POKEDEX_SKIN_SIZE);
     PokedexSkinSave_SetValid(wk->pokedexSkin, TRUE);
-    GameData_StartSaveBlock(wk->gameData, 7);
+    GameData_StartSaveBlock(wk->gameData, SAVE_EXTRA_ID_POKEDEX_SKIN);
     GSync_ChangeState(wk, GSync_StateWaitPokedexSave, 928);
 }
 
@@ -903,7 +916,7 @@ static void GSync_SetEntries(DreamWorldSave *dreamWorld, GSyncResult *result) {
         for (i = 0; i < 5; i++) {
             DreamWorldSave_SetResult(dreamWorld, i, result->entries[i]);
         }
-        DreamWorldSave_SetResultIndex(dreamWorld, 127);
+        DreamWorldSave_SetResultIndex(dreamWorld, DREAM_WORLD_RESULT_INDEX_NONE);
     }
 }
 
@@ -937,41 +950,41 @@ static BOOL GSync_HasItems(DreamWorldSave *dreamWorld, GSyncResult *result) {
 }
 
 // Puts a Pokémon from the Dream World in the Entree Forest, if it has an overworld model
-static void GSync_AddForestPokemon(GSyncWork *wk, DreamWorldSave *dreamWorld, int species, int sex, int form, int unk2,
-                                   int slot) {
-    u8 forestSlot = slot;
+static void GSync_AddForestPokemon(GSyncWork *wk, DreamWorldSave *dreamWorld, int species, int sex, int form, int move,
+                                   int actorType) {
+    u8 forestActorType = actorType;
 
     if (species != SPECIES_NONE && species <= SPECIES_GENESECT) {
         TPokeData *data = LoadTPokeData(wk->heapId);
-        int size = 3;
+        int kind = SYMBOL_KIND_FREE_SMALL;
         u8 sanitized = PML_PkmSanitizeForme(species, form);
         u32 sexRatio = PML_PersonalGetParamSingle(species, sanitized, PERSONAL_SEX_RATIO);
         u8 modelForm = PML_PkmGetSpriteForme(species, sanitized);
 
         switch (sexRatio) {
-        case 0:
-            sex = 0;
+        case GENDER_RATIO_MALE_ONLY:
+            sex = GENDER_MALE;
             break;
-        case 254:
-            sex = 1;
+        case GENDER_RATIO_FEMALE_ONLY:
+            sex = GENDER_FEMALE;
             break;
-        case 255:
-            sex = 2;
+        case GENDER_RATIO_GENDERLESS:
+            sex = GENDER_UNKNOWN;
             break;
         default:
-            if (sex > 1) {
+            if (sex > GENDER_FEMALE) {
                 sex = GFL_RandomLC(2);
             }
             break;
         }
         if (IsFieldPokemonSpriteHugeBillboard(wk->gameData, data, species, sex, modelForm)) {
-            size = 2;
+            kind = SYMBOL_KIND_FREE_LARGE;
         }
-        if (forestSlot > 8) {
-            forestSlot = 0;
+        if (forestActorType > 8) {
+            forestActorType = 0;
         }
-        if (GetFieldPokemonActorLUTIndex_(data, species, sex, modelForm) != 0xffff) {
-            SymbolSave_AddPokemon(getAreaNPCData(wk->save), species, unk2, sex, modelForm, forestSlot, size);
+        if (GetFieldPokemonActorLUTIndex_(data, species, sex, modelForm) != TPOKE_INDEX_NONE) {
+            SymbolSave_AddPokemon(getAreaNPCData(wk->save), species, move, sex, modelForm, forestActorType, kind);
         }
         FreeTPokeData(data);
     }
@@ -985,7 +998,7 @@ static void GSync_AddForestPokemonList(GSyncWork *wk, DreamWorldSave *dreamWorld
             break;
         }
         GSync_AddForestPokemon(wk, dreamWorld, result->pokemon[i].species, result->pokemon[i].sex,
-                               result->pokemon[i].form, result->pokemon[i].unk2, result->pokemon[i].slot);
+                               result->pokemon[i].form, result->pokemon[i].move, result->pokemon[i].actorType);
     }
 }
 
@@ -1004,7 +1017,7 @@ static void GSync_SetFloatItems(GSyncWork *wk, GSyncResult *result) {
 static void GSync_ReadResult(GSyncWork *wk, DreamWorldSave *dreamWorld, GSyncResult *result, GSyncResponse *response) {
     int i;
 
-    if (response->status != 0) {
+    if (response->status != GSYNC_RESPONSE_STATUS_OK) {
         wk->error = response->status;
         GSync_ChangeState(wk, GSync_StateError, 1323);
         return;
@@ -1016,13 +1029,13 @@ static void GSync_ReadResult(GSyncWork *wk, DreamWorldSave *dreamWorld, GSyncRes
         wk->getPokedex = result->dex;
         wk->levels = result->levels;
         if (wk->getCGear) {
-            wk->downloadFlags |= 1;
+            wk->downloadFlags |= GSYNC_DOWNLOAD_FLAG_CGEAR;
         }
         if (wk->getMusical) {
-            wk->downloadFlags |= 2;
+            wk->downloadFlags |= GSYNC_DOWNLOAD_FLAG_MUSICAL;
         }
         if (wk->getPokedex) {
-            wk->downloadFlags |= 4;
+            wk->downloadFlags |= GSYNC_DOWNLOAD_FLAG_POKEDEX;
         }
         for (i = 0; i < 10; i++) {
             if (result->pokemon[i].species == SPECIES_NONE) {
@@ -1079,10 +1092,10 @@ static void GSync_StateWaitResult(GSyncWork *wk) {
         wk->progress++;
     }
     if (wk->frames == 360) {
-        GSyncMessage_LoadString(wk->msg, 43);
+        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_MustSetUpGame);
         GSyncMessage_PrintInfo(wk->msg);
     } else if (wk->frames == 720) {
-        GSyncMessage_LoadString(wk->msg, 44);
+        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_PleaseReadInstructionBooklet);
         GSyncMessage_PrintInfo(wk->msg);
     } else if (wk->frames == 1080) {
         if (GSync_IsNewAccount(wk)) {
@@ -1100,14 +1113,15 @@ static void GSync_StateWaitResult(GSyncWork *wk) {
 
 static void GSync_StateRequestResult(GSyncWork *wk) {
     if (GSync_IsOnline(wk) && !GSync_HasAccountPokemon(wk)) {
-        if (NHttpRap_SendRequest(GSYNC_REQUEST_DOWNLOAD, wk->http) && NHttpRap_StartRequest(wk->http) == 0) {
+        if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_SAVEDATA_DOWNLOAD, wk->http) &&
+            NHttpRap_StartRequest(wk->http) == 0) {
             GSync_ChangeState(wk, GSync_StateWaitResult, 1480);
         }
         return;
     }
     if (GSync_IsNewAccount(wk)) {
         wk->frames = 0;
-        GSyncMessage_LoadString(wk->msg, 42);
+        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_CanLetPokemonPlay);
         GSyncMessage_PrintInfo(wk->msg);
     } else {
         wk->frames = 1070;
@@ -1122,7 +1136,7 @@ static void GSync_StateWaitWakeMessage(GSyncWork *wk) {
 }
 
 static void GSync_StateWake(GSyncWork *wk) {
-    GSyncMessage_PrintStream(wk->msg, 11);
+    GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonBeingWokenUp);
     GSyncMessage_StartWaitIcon(wk->msg);
     GSyncDisp_DeleteActor(wk->disp, 8);
     GSyncDisp_StartWave(wk->disp);
@@ -1144,7 +1158,7 @@ static void GSync_StateWaitTooSoon(GSyncWork *wk) {
 
 static void GSync_StateTooSoon(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, 16);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_GameSyncHasRun);
         GSync_ChangeState(wk, GSync_StateWaitTooSoon, 1550);
     }
 }
@@ -1158,7 +1172,7 @@ static void GSync_StateWaitNoRoomMessage(GSyncWork *wk) {
 
 static void GSync_StateNoRoom(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, 49);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PcFullMustHave);
         GSync_ChangeState(wk, GSync_StateWaitNoRoomMessage, 1574);
     }
 }
@@ -1204,9 +1218,9 @@ static void GSync_StateWakeShow(GSyncWork *wk) {
     GSyncDisp_CreateActor(wk->disp, 6);
     GSyncDisp_CreateActor(wk->disp, 8);
     if (DreamWorldSave_CountItems(getDreamWorldStuffAddress(wk->save)) != 0) {
-        GSyncMessage_PrintStream(wk->msg, 21);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_HaventYetReceivedItems);
     } else {
-        GSyncMessage_PrintStream(wk->msg, 10);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_OkWakeUpPokemon);
     }
     GSync_ChangeState(wk, GSync_StateWakeAsk, 1660);
 }
@@ -1228,7 +1242,7 @@ static void GSync_StateShowIdNext(GSyncWork *wk) {
 
 static void GSync_StateShowIdWait(GSyncWork *wk) {
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
-        GSyncMessage_LoadString(wk->msg, 48);
+        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_AccessPokemonGlobalLink);
         GSyncMessage_PrintInfoAt(wk->msg, 7, 14);
         GSync_ChangeState(wk, GSync_StateShowIdNext, 1755);
     }
@@ -1238,7 +1252,7 @@ static void GSync_StateShowIdWait(GSyncWork *wk) {
 static void GSync_StateShowId(GSyncWork *wk) {
     GSyncMessage_FormatGSyncId(wk->msg, PlayerInfo_GetProfileId(GetGameDataPlayerInfo(wk->param->gameData)));
     GSyncMessage_PrintLoaded(wk->msg, TRUE);
-    GSyncMessage_LoadString(wk->msg, 47);
+    GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_GameSyncIdHas);
     GSyncMessage_PrintInfoAt(wk->msg, 7, 14);
     GSync_ChangeState(wk, GSync_StateShowIdWait, 1767);
 }
@@ -1252,7 +1266,7 @@ static void GSync_StateWaitCreate(GSyncWork *wk) {
             response = NHttpRap_GetAnswer(wk->http);
             if (response->status == 2) {
                 GSync_ChangeState(wk, GSync_StateCheckDate, 1799);
-            } else if (response->status == 0) {
+            } else if (response->status == GSYNC_RESPONSE_STATUS_OK) {
                 GSyncMessage_ClearMessage(wk->msg);
                 GSync_ChangeState(wk, GSync_StateShowId, 1803);
             } else {
@@ -1271,7 +1285,7 @@ static void GSync_StateCreate(GSyncWork *wk) {
     void *data;
 
     if (GFL_NetIsInitialized()) {
-        if (NHttpRap_SendRequest(GSYNC_REQUEST_CREATE, wk->http)) {
+        if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_ACCOUNT_CREATE_UPLOAD, wk->http)) {
             data = SaveControl_GetUploadData(wk->save, &size);
             NHTTPSetPostDataRaw(NHttpRap_GetConnection(wk->http), data, 0x80000);
             GSyncDisp_CreateActor(wk->disp, 13);
@@ -1293,7 +1307,7 @@ static void GSync_StateWaitNotDreamingMessage(GSyncWork *wk) {
 
 static void GSync_StateNotDreaming(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, 17);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonNotDreamingYet);
         GSync_ChangeState(wk, GSync_StateWaitNotDreamingMessage, 1908);
     }
 }
@@ -1307,7 +1321,7 @@ static void GSync_StateWaitDreamingNowMessage(GSyncWork *wk) {
 
 static void GSync_StateDreamingNow(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, 20);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonDreaming);
         GSync_ChangeState(wk, GSync_StateWaitDreamingNowMessage, 1939);
     }
 }
@@ -1315,16 +1329,16 @@ static void GSync_StateDreamingNow(GSyncWork *wk) {
 // Goes on by the account's state and whether this proc sends or receives
 static void GSync_HandleAccount(GSyncWork *wk, u16 status, GSyncResponse *response) {
     switch (response->status) {
-    case 0:
+    case GSYNC_RESPONSE_STATUS_OK:
         switch (wk->param->gsyncResult) {
         case GSYNC_RESULT_NONE:
             if (status == 0) {
                 GSync_ChangeState(wk, GSync_StateWaitAccountMessage, 1967);
             } else if (status == 3) {
                 GSync_ChangeState(wk, GSync_StateWaitAccountMessage, 1970);
-            } else if (status == 1) {
+            } else if (status == GSYNC_ACCOUNT_STATUS_NOT_DREAMING) {
                 GSync_ChangeState(wk, GSync_StateNotDreaming, 1974);
-            } else if (status == 2) {
+            } else if (status == GSYNC_ACCOUNT_STATUS_DREAMING) {
                 GSync_ChangeState(wk, GSync_StateDreamingNow, 1978);
             } else if (status == 4) {
                 GSync_ChangeState(wk, GSync_StateWaitAccountMessage, 1981);
@@ -1381,10 +1395,11 @@ static void GSync_StateWaitAccount(GSyncWork *wk) {
 }
 
 static void GSync_StateRequestAccount(GSyncWork *wk) {
-    GSyncMessage_Print(wk->msg, 13);
+    GSyncMessage_Print(wk->msg, GsyncMenu_Text_PleaseWaitMoment);
     GSyncMessage_StartWaitIcon(wk->msg);
     if (GFL_NetIsInitialized()) {
-        if (NHttpRap_SendRequest(GSYNC_REQUEST_PLAY_STATUS, wk->http) && NHttpRap_StartRequest(wk->http) == 0) {
+        if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_ACCOUNT_PLAYSTATUS, wk->http) &&
+            NHttpRap_StartRequest(wk->http) == 0) {
             GSync_ChangeState(wk, GSync_StateWaitAccount, 2085);
         }
     } else if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
@@ -1402,7 +1417,7 @@ static void GSync_StateWaitNoPokemonMessage(GSyncWork *wk) {
 }
 
 static void GSync_StateNoPokemon(GSyncWork *wk) {
-    GSyncMessage_PrintStream(wk->msg, 19);
+    GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_ThereNoPokemonPc);
     GSync_ChangeState(wk, GSync_StateWaitNoPokemonMessage, 2130);
 }
 
@@ -1412,7 +1427,7 @@ static void GSync_StateWaitSpeciesFlags(GSyncWork *wk) {
             GSyncResponse *response = NHttpRap_GetAnswer(wk->http);
             u32 status = response->status;
 
-            if (status == 0 || status == 8) {
+            if (status == GSYNC_RESPONSE_STATUS_OK || status == 8) {
                 MI_CpuCopy8(response->body.sendableSpecies, wk->param->sendableSpecies,
                             sizeof(wk->param->sendableSpecies));
                 wk->param->gsyncResult = GSYNC_RESULT_SELECT_POKEMON;
@@ -1449,7 +1464,8 @@ static void GSync_StateCheckDate(GSyncWork *wk) {
         return;
     }
     if (GFL_NetIsInitialized()) {
-        if (NHttpRap_SendRequest(GSYNC_REQUEST_SPECIES_FLAGS, wk->http) && NHttpRap_StartRequest(wk->http) == 0) {
+        if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_SLEEPILY_BITLIST, wk->http) &&
+            NHttpRap_StartRequest(wk->http) == 0) {
             GSync_ChangeState(wk, GSync_StateWaitSpeciesFlags, 2220);
         }
     } else if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
@@ -1480,7 +1496,7 @@ static void GSync_StateSent(GSyncWork *wk) {
     }
     wk->progress = 100;
     GSyncDisp_SetProgress(wk->disp, 100);
-    GSyncMessage_FormatPokemonNumber(wk->msg, 14, 0, wk->pkm);
+    GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_FellAsleepItsSleeping, 0, wk->pkm);
     GSyncMessage_PrintLoaded(wk->msg, FALSE);
     GSyncDisp_CreateActor(wk->disp, 8);
     GSyncDisp_StartFade(wk->disp, FALSE);
@@ -1497,17 +1513,17 @@ static void GSync_StateWaitSendSave(GSyncWork *wk) {
     }
     GSyncDisp_SetProgress(wk->disp, wk->progress);
     switch (GameData_UpdateSave(wk->gameData)) {
-    case 1:
+    case SAVE_RESULT_LAST:
         if (wk->dreamWorldCopy != NULL) {
             GFL_HeapFree(wk->dreamWorldCopy);
             wk->dreamWorldCopy = NULL;
         }
         break;
-    case 3:
+    case SAVE_RESULT_NG:
         NetState_RecordError(0, 0, 0, 1011);
         NetState_SetError(0);
         break;
-    case 2:
+    case SAVE_RESULT_OK:
         wk->saving = FALSE;
         GSync_ChangeState(wk, GSync_StateSent, 2342);
         break;
@@ -1523,7 +1539,7 @@ static void GSync_StateSendSave(GSyncWork *wk) {
     RTC_GetCachedDate(&date);
     DreamWorldSave_SetSyncDate(dreamWorld,
                                (date.year << 24) | ((date.month & 0xff) << 16) | ((date.day & 0xff) << 8) | date.week);
-    if (DreamWorldSave_GetResultIndex(dreamWorld) != 127) {
+    if (DreamWorldSave_GetResultIndex(dreamWorld) != DREAM_WORLD_RESULT_INDEX_NONE) {
         DreamWorldSave_SetFlag(dreamWorld, 1);
         DreamWorldSave_SetResultIndex(dreamWorld, 126);
     }
@@ -1540,13 +1556,13 @@ static void GSync_StateWaitUpload(GSyncWork *wk) {
     GSyncDisp_UpdateFloats(wk->disp);
     if (GSync_IsNewAccount(wk)) {
         if (wk->frames == 0) {
-            GSyncMessage_LoadString(wk->msg, 42);
+            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_CanLetPokemonPlay);
             GSyncMessage_PrintInfo(wk->msg);
         } else if (wk->frames == 360) {
-            GSyncMessage_LoadString(wk->msg, 43);
+            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_MustSetUpGame);
             GSyncMessage_PrintInfo(wk->msg);
         } else if (wk->frames == 720) {
-            GSyncMessage_LoadString(wk->msg, 44);
+            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_PleaseReadInstructionBooklet);
             GSyncMessage_PrintInfo(wk->msg);
         }
         wk->frames++;
@@ -1562,7 +1578,7 @@ static void GSync_StateWaitUpload(GSyncWork *wk) {
             if (GSync_IsNewAccount(wk)) {
                 GSyncMessage_ClearInfo(wk->msg);
             }
-            if (response->status == 0) {
+            if (response->status == GSYNC_RESPONSE_STATUS_OK) {
                 GSync_ChangeState(wk, GSync_StateSendSave, 2456);
                 return;
             }
@@ -1587,7 +1603,7 @@ static void GSync_StateUpload(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
         wk->frames = 0;
         if (GSync_IsOnline(wk)) {
-            if (NHttpRap_SendRequest(GSYNC_REQUEST_UPLOAD, wk->http)) {
+            if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_SAVEDATA_UPLOAD, wk->http)) {
                 void *data = SaveControl_GetUploadData(wk->save, &size);
 
                 NHTTPSetPostDataRaw(NHttpRap_GetConnection(wk->http), data, 0x80000);
@@ -1607,7 +1623,7 @@ static void GSync_StateUpload(GSyncWork *wk) {
 static void GSync_StateSendAnimText(GSyncWork *wk) {
     if (--wk->timer == 0) {
         GSyncDisp_StartWave(wk->disp);
-        GSyncMessage_PrintStream(wk->msg, 8);
+        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonHasBeenTucked);
         GSyncMessage_StartWaitIcon(wk->msg);
         GSyncDisp_StartFade(wk->disp, TRUE);
         GSyncDisp_SetActorSequence(wk->disp, 4, 5);
@@ -1676,7 +1692,7 @@ static void GSync_StateSend(GSyncWork *wk) {
     GSync_ChangeState(wk, GSync_StateSendShowIcon, 2673);
 }
 
-static void GSync_OnDisconnect(void *work, int a1, int code, int error) {
+static void GSync_OnDwcError(void *work, int code, int errorType, int error) {
     GSyncWork *wk = work;
 
     if (wk->http != NULL) {
@@ -1719,11 +1735,11 @@ static void GSync_PersonToPlayerInfo(GSyncResultPerson *person, PlayerInfo *info
     MI_CpuFill8(info, 0, 0x20);
     copyTrainerName(info, person->name);
     PlayerInfo_InitProfileId(info, person->profileId);
-    PlayerInfo_SetCountryAndProvince(info, person->country, person->region);
+    PlayerInfo_SetCountryAndProvince(info, person->country, person->province);
     setTrainerGender(info, person->gender);
     setIDAsUInt(info, person->id);
-    PlayerInfo_SetVersion(info, person->unk1B);
-    PlayerInfo_SetRegion(info, person->unk1A);
+    PlayerInfo_SetVersion(info, person->gameVersion);
+    PlayerInfo_SetRegion(info, person->language);
     // The Union Room look: the ID picks one of 8, and girls have the other 8
     style = person->id & 7;
     if (person->gender) {
@@ -1797,11 +1813,11 @@ static BOOL GSync_ProcInit(GameProc *proc, u32 *state, void *param, void *work) 
         }
         if (pParent->gsyncResult != GSYNC_RESULT_NO_POKEMON) {
             wk->http = NHttpRap_Create(HEAPID_GSYNC, profileID, pParent->loginBuffer);
-            DWCRap_SetErrorFunc(GSync_OnDisconnect, wk);
+            DWCRap_SetErrorFunc(GSync_OnDwcError, wk);
         }
     }
     wk->disp = GSyncDisp_Create(wk->heapId);
-    wk->msg = GSyncMessage_Create(wk->heapId, 44);
+    wk->msg = GSyncMessage_Create(wk->heapId, TEXT_BANK_GSYNC_MENU);
     GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, wk->heapId);
     GFL_NetSetIconScreen(FALSE, wk->heapId);
     return TRUE;
