@@ -11,6 +11,20 @@
 #define RECORD_COUNT_WORD 0x47
 #define RECORD_COUNT 0xa7
 
+// The battle counters used by the link-battle result screens
+enum {
+    GAME_RECORD_UNION_BATTLES = 13,
+    GAME_RECORD_UNION_WINS = 14,
+    GAME_RECORD_UNION_LOSSES = 15,
+    GAME_RECORD_WIFI_BATTLES = 17,
+    GAME_RECORD_WIFI_WINS = 18,
+    GAME_RECORD_WIFI_LOSSES = 19,
+    GAME_RECORD_WIFI_DRAWS = 20,
+    GAME_RECORD_IR_BATTLES = 37,
+    GAME_RECORD_IR_WINS = 38,
+    GAME_RECORD_IR_LOSSES = 39,
+};
+
 struct GameRecords {
     u32 words[RECORD_COUNT_WORD];
     u16 halfwords[RECORD_COUNT - RECORD_COUNT_WORD];

@@ -37,9 +37,9 @@ void ResortWork_UpdateRecords(ResortWork *work, SaveControl *save) {
     work->values[4] = TrainerCard_GetPasserbyCount(trainerCard);
 
     sum = 0;
-    sum += RecordGet(records, 0xd);
-    sum += RecordGet(records, 0x11);
-    sum += RecordGet(records, 0x25);
+    sum += RecordGet(records, GAME_RECORD_UNION_BATTLES);
+    sum += RecordGet(records, GAME_RECORD_WIFI_BATTLES);
+    sum += RecordGet(records, GAME_RECORD_IR_BATTLES);
     if (sum > RESORT_WORK_RECORD_MAX) {
         sum = RESORT_WORK_RECORD_MAX;
     }

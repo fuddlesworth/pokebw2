@@ -695,9 +695,9 @@ static BOOL PokemonCenter_CheckLinkBattles(MedalCheckContext *ctx, GameData *gam
     u32 sum = 0;
     GameRecords *records = getTrainerCardInfoBlkAddress(GameData_GetSaveControl(gameData));
 
-    sum += RecordGet(records, 0xd);
-    sum += RecordGet(records, 0x11);
-    sum += RecordGet(records, 0x25);
+    sum += RecordGet(records, GAME_RECORD_UNION_BATTLES);
+    sum += RecordGet(records, GAME_RECORD_WIFI_BATTLES);
+    sum += RecordGet(records, GAME_RECORD_IR_BATTLES);
     return PokemonCenter_MeetsThreshold(sum, threshold);
 }
 

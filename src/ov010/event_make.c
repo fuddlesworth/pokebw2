@@ -1,4 +1,5 @@
 #include "types.h"
+#include "app/comm_btl_demo.h"
 #include "battle/battle_proc.h"
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_net.h"
@@ -95,9 +96,9 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
     switch (*state) {
     case PROC_STEP_COMM_DEMO:
         if (battle->setup->fieldSituation.multiMode == 0) {
-            battle->players->demoType = 1;
+            battle->players->demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;
         } else {
-            battle->players->demoType = 3;
+            battle->players->demoType = COMM_BTL_DEMO_TYPE_MULTI_START;
         }
         QueueGameProc(procWork->manager, OVERLAY_ID(305), &CommBtlDemoProc, battle->players);
         *state = PROC_STEP_COMM_DEMO_WAIT;
@@ -187,26 +188,26 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         break;
     case PROC_STEP_RESULT_DEMO:
         if (battle->setup->fieldSituation.multiMode == 0) {
-            battle->players->demoType = 2;
+            battle->players->demoType = COMM_BTL_DEMO_TYPE_SINGLE_END;
         } else {
-            battle->players->demoType = 4;
+            battle->players->demoType = COMM_BTL_DEMO_TYPE_MULTI_END;
         }
         switch (battle->setup->result) {
         case BTL_RESULT_VICTORY:
         case BTL_RESULT_FLEE_FOE:
-            battle->players->result = 0;
+            battle->players->result = COMM_BTL_DEMO_RESULT_WIN;
             break;
         case BTL_RESULT_DEFEAT:
         case BTL_RESULT_FLEE:
-            battle->players->result = 1;
+            battle->players->result = COMM_BTL_DEMO_RESULT_LOSE;
             break;
         case BTL_RESULT_DRAW:
-            battle->players->result = 2;
+            battle->players->result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         case BTL_RESULT_6:
             break;
         default:
-            battle->players->result = 2;
+            battle->players->result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         }
         if (battle->setup->fieldSituation.multiMode == 0) {

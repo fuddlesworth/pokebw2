@@ -2,9 +2,12 @@
 #include "app/comm_btl_demo.h"
 #include "app/comm_btl_demo_graphic.h"
 #include "app/ui/ui_scene.h"
+#include "app/wifi_login.h"
 #include "constants/arc.h"
+#include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
+#include "field/union_comm.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -429,7 +432,7 @@ static BOOL CommBtlDemoProc_Init(GameProc *proc, u32 *state, void *param, void *
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INTRO_BTL_SERVER_FLOW, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
-    wk->scene = UIScene_Create(wk->heapId, sCommBtlDemoSteps, 3, CommBtlDemo_GetFirstScene(prm), wk);
+    wk->scene = UIScene_Create(wk->heapId, sCommBtlDemoSteps, SCENE_COUNT, CommBtlDemo_GetFirstScene(prm), wk);
     CommBtlDemo_LoadBG(&wk->back, wk->heapId, wk->param->competition);
     CommBtlDemoG3D_Init(&wk->g3d, wk->graphic, wk->heapId);
     CommBtlDemoObj_Init(&wk->obj, wk->graphic, wk->heapId);
@@ -509,7 +512,7 @@ static void CommBtlDemo_BindSinglePalettes(CommBtlDemoWork *wk) {
     int i;
 
     for (i = 0; i < 2; i++) {
-        CommBtlDemoG3D_BindPalette(actor, i + 1, wk->trainers[i].gender == 0 ? 1 : 2);
+        CommBtlDemoG3D_BindPalette(actor, i + 1, wk->trainers[i].gender == GENDER_MALE ? 1 : 2);
     }
 }
 
@@ -519,7 +522,7 @@ static void CommBtlDemo_BindMultiPalettes(CommBtlDemoWork *wk) {
     int i;
 
     for (i = 0; i < 4; i++) {
-        CommBtlDemoG3D_BindPalette(actor, i + 1, wk->trainers[i].gender == 0 ? 1 : 3);
+        CommBtlDemoG3D_BindPalette(actor, i + 1, wk->trainers[i].gender == GENDER_MALE ? 1 : 3);
     }
 }
 
@@ -652,11 +655,12 @@ static BOOL CommBtlDemoResult_Main(UIScene *scene, void *param) {
             u32 side = wk->battleResult == COMM_BTL_DEMO_RESULT_WIN ? 0 : 1;
 
             GFL_SndSEPlay(CommBtlDemo_GetSE(SE_RESULT, wk->param->competition));
-            CommBtlDemoResult_ShowLabel(&wk->result, side, 0);
+            CommBtlDemoResult_ShowLabel(&wk->result, side, COMM_BTL_DEMO_RESULT_WIN);
         } else if (wk->timer == 24) {
             ClActor_SetVisible(wk->result.countActors[wk->battleResult != COMM_BTL_DEMO_RESULT_WIN ? 1 : 0], FALSE);
         } else if (wk->timer == 45) {
-            CommBtlDemoResult_ShowLabel(&wk->result, wk->battleResult == COMM_BTL_DEMO_RESULT_LOSE ? 0 : 1, 1);
+            CommBtlDemoResult_ShowLabel(&wk->result, wk->battleResult == COMM_BTL_DEMO_RESULT_LOSE ? 0 : 1,
+                                        COMM_BTL_DEMO_RESULT_LOSE);
         } else if (wk->timer == 54) {
             ClActor_SetVisible(wk->result.countActors[wk->battleResult != COMM_BTL_DEMO_RESULT_LOSE ? 1 : 0], FALSE);
         } else if (wk->timer == 120) {
@@ -751,7 +755,7 @@ static BOOL CommBtlDemoDraw_Main(UIScene *scene, void *param) {
         break;
     case DRAW_STEP_LABEL:
         if (wk->timer++ == 30) {
-            CommBtlDemoResult_ShowLabel(&wk->result, LABEL_MIDDLE, 2);
+            CommBtlDemoResult_ShowLabel(&wk->result, LABEL_MIDDLE, COMM_BTL_DEMO_RESULT_DRAW);
         }
         if (!CommBtlDemoG3D_UpdateAnim(&wk->g3d)) {
             GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, -3);
@@ -886,7 +890,7 @@ static void CommBtlDemoBalls_Init(CommBtlDemoBalls *balls, PokeParty *party, u8 
             pkm = PokeParty_GetPkm(party, i);
         }
         anim = CommBtlDemo_GetBallAnim(pkm, states[i]);
-        // Before the battle, nothing shows what state the Pokémon are in
+        // At the start of the result screen, occupied balls show healthy until their states are revealed
         if (!CommBtlDemo_IsStart(type) && anim != ANIM_BALL_NONE) {
             anim = ANIM_BALL_HEALTHY;
         }
@@ -1109,7 +1113,7 @@ static void CommBtlDemoTrainer_Update(CommBtlDemoTrainer *trainer) {
 
 static void CommBtlDemoTrainer_PrintName(CommBtlDemoTrainer *trainer, Font *font) {
     GFL_BitmapFill(BmpWin_GetBitmap(trainer->nameWindow), 0);
-    if (trainer->gender == 0) {
+    if (trainer->gender == GENDER_MALE) {
         GFL_TextRndUpdateColorIndexLUT(5, 6, 0);
     } else {
         GFL_TextRndUpdateColorIndexLUT(3, 4, 0);
@@ -1155,57 +1159,57 @@ static void CommBtlDemo_StartBalls(CommBtlDemoWork *wk) {
     }
 }
 
-// Counts a battle of a kind, which is one of records 13, 17 and 37, in that record and in the record of its result
+// Counts a battle in its connection category and in the matching result counter
 static void CommBtlDemo_AddRecord(GameRecords *records, u32 id, u32 result) {
     switch (id) {
-    case 13:
+    case GAME_RECORD_UNION_BATTLES:
         if (result == COMM_BTL_DEMO_RESULT_WIN) {
-            RecordAddOne(records, 14);
+            RecordAddOne(records, GAME_RECORD_UNION_WINS);
         } else if (result == COMM_BTL_DEMO_RESULT_LOSE) {
-            RecordAddOne(records, 15);
+            RecordAddOne(records, GAME_RECORD_UNION_LOSSES);
         }
         break;
-    case 37:
+    case GAME_RECORD_IR_BATTLES:
         if (result == COMM_BTL_DEMO_RESULT_WIN) {
-            RecordAddOne(records, 38);
+            RecordAddOne(records, GAME_RECORD_IR_WINS);
         } else if (result == COMM_BTL_DEMO_RESULT_LOSE) {
-            RecordAddOne(records, 39);
+            RecordAddOne(records, GAME_RECORD_IR_LOSSES);
         }
         break;
-    case 17:
+    case GAME_RECORD_WIFI_BATTLES:
         if (result == COMM_BTL_DEMO_RESULT_WIN) {
-            RecordAddOne(records, 18);
+            RecordAddOne(records, GAME_RECORD_WIFI_WINS);
         } else if (result == COMM_BTL_DEMO_RESULT_LOSE) {
-            RecordAddOne(records, 19);
+            RecordAddOne(records, GAME_RECORD_WIFI_LOSSES);
         } else if (result == COMM_BTL_DEMO_RESULT_DRAW) {
-            RecordAddOne(records, 20);
+            RecordAddOne(records, GAME_RECORD_WIFI_DRAWS);
         }
         break;
     }
     RecordAddOne(records, id);
 }
 
-// Counts the battle in the records of the kind of connection it was fought over
+// Counts the battle in the record category selected by its network game-command base
 static void CommBtlDemo_AddRecords(CommBtlDemoWork *wk) {
     if (wk->param->records == NULL) {
         return;
     }
     switch (GFL_NetGetGameCommandBase()) {
-    case 12:
-    case 31:
-    case 37:
-        CommBtlDemo_AddRecord(wk->param->records, 37, wk->battleResult);
+    case GFL_NET_GAME_COMMAND_IR_BATTLE:
+    case GFL_NET_GAME_COMMAND_LIVE_BATTLE_IR:
+    case GFL_NET_GAME_COMMAND_IR_MULTI_BATTLE:
+        CommBtlDemo_AddRecord(wk->param->records, GAME_RECORD_IR_BATTLES, wk->battleResult);
         break;
-    case 10:
-        CommBtlDemo_AddRecord(wk->param->records, 17, wk->battleResult);
+    case WIFILOGIN_SERVICE_WIFI_CLUB:
+        CommBtlDemo_AddRecord(wk->param->records, GAME_RECORD_WIFI_BATTLES, wk->battleResult);
         break;
-    case 20:
+    case UNION_GAME_COMMAND_ROOM:
     case 21:
-    case 23:
-    case 24:
-    case 25:
-    case 26:
-        CommBtlDemo_AddRecord(wk->param->records, 13, wk->battleResult);
+    case UNION_GAME_COMMAND_MULTI:
+    case UNION_GAME_COMMAND_MULTI_NO_LAUNCHER:
+    case UNION_GAME_COMMAND_MULTI_FLAT:
+    case UNION_GAME_COMMAND_MULTI_FLAT_NO_LAUNCHER:
+        CommBtlDemo_AddRecord(wk->param->records, GAME_RECORD_UNION_BATTLES, wk->battleResult);
         break;
     }
 }
@@ -1271,13 +1275,13 @@ static void CommBtlDemoResult_ShowLabel(CommBtlDemoResult *result, u32 label, u3
     u32 anim;
 
     switch (kind) {
-    case 0:
+    case COMM_BTL_DEMO_RESULT_WIN:
         anim = ANIM_WIN;
         break;
-    case 1:
+    case COMM_BTL_DEMO_RESULT_LOSE:
         anim = ANIM_LOSE;
         break;
-    case 2:
+    case COMM_BTL_DEMO_RESULT_DRAW:
         anim = ANIM_DRAW;
         break;
     }
@@ -1291,7 +1295,7 @@ static void CommBtlDemoObj_Init(CommBtlDemoObj *obj, CommBtlDemoGraphic *graphic
 
     obj->graphic = graphic;
     obj->heapId = heapId;
-    setup.vramType = 0;
+    setup.vramType = CLACT_VRAM_MAIN;
     setup.flags = 0;
     setup.arcId = ARCID_COMM_BTL_DEMO;
     setup.paletteFile = FILE_OBJ_PALETTE;
@@ -1375,6 +1379,7 @@ static void CommBtlDemoG3D_LoadParticles(CommBtlDemoG3D *g3d, u32 file) {
     }
     g3d->particles = Particle_CreateSystem(g3d->particleWork, PARTICLE_WORK_SIZE, TRUE, g3d->heapId);
     projection.type = G3DCAM_PROJECTION_ORTHO;
+    // In orthographic mode the shared projection fields are top, bottom, left and right.
     projection.param1 = FX32_CONST(3);
     projection.param2 = -FX32_CONST(3);
     projection.param3 = -FX32_CONST(4);

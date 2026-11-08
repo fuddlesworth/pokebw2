@@ -46,16 +46,6 @@ static void UnionComm_InitVisitors(UnionVisitorList *list);
 
 static const NetCommand sUnionNetCommands[22];
 
-enum {
-    UNION_GAME_COMMAND_ROOM = 20,
-    UNION_GAME_COMMAND_DRAW = 22,
-    UNION_GAME_COMMAND_MULTI = 23,
-    UNION_GAME_COMMAND_MULTI_NO_LAUNCHER = 24,
-    UNION_GAME_COMMAND_MULTI_FLAT = 25,
-    UNION_GAME_COMMAND_MULTI_FLAT_NO_LAUNCHER = 26,
-    UNION_GAME_COMMAND_SPIN_TRADE = 27,
-};
-
 // clang-format off
 static const GFLNetInitData sUnionNetInitData = {
     sUnionNetCommands,

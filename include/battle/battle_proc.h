@@ -17,7 +17,7 @@ typedef struct {
     PokeParty *party;
     PlayerInfo *info;
     u8 unk08[2];
-    // The party slots of the Pokémon the player sends out
+    // Selected party slots; reused by overlay 305 for its COMM_BTL_DEMO_POKE_* health states
     u8 order[6];
 } BattlePlayer;
 

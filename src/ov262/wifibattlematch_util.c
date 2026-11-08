@@ -349,17 +349,17 @@ void WifiBattleMatch_RecordResult(GameData *gameData, u32 mode) {
     switch (mode) {
     case BTL_RESULT_VICTORY:
     case BTL_RESULT_FLEE_FOE:
-        RecordAddOne(records, 0x12);
+        RecordAddOne(records, GAME_RECORD_WIFI_WINS);
         break;
     case BTL_RESULT_DEFEAT:
     case BTL_RESULT_FLEE:
-        RecordAddOne(records, 0x13);
+        RecordAddOne(records, GAME_RECORD_WIFI_LOSSES);
         break;
     case BTL_RESULT_DRAW:
-        RecordAddOne(records, 0x14);
+        RecordAddOne(records, GAME_RECORD_WIFI_DRAWS);
         break;
     }
-    RecordAddOne(records, 0x11);
+    RecordAddOne(records, GAME_RECORD_WIFI_BATTLES);
 }
 
 void WifiBattleMatch_RecordBattleTime(GameData *gameData, u32 mode) {
