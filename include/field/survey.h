@@ -1,7 +1,8 @@
 #ifndef POKEBW2_FIELD_SURVEY_H
 #define POKEBW2_FIELD_SURVEY_H
 
-// Survey function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0).
+// Survey names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), except the report-count getters
+// and rank-message lookup named from their providers here.
 
 #include "types.h"
 #include "gfl/heap.h"
@@ -11,8 +12,9 @@
 struct SurveyProbabilityState {
     u8 selection[6];
     u8 probability[6];
-    u16 score;
-    u16 bonus;
+    // The sole external initializer casts PassPowerLevel: White at 0xC and Black at 0xE
+    u16 whiteLevel;
+    u16 blackLevel;
 };
 
 struct SurveyProbabilityEntry {
@@ -76,8 +78,8 @@ void SurveyTextWork_FreeWordSet(SurveyTextWork *work);
 void SurveyTextWork_PrintRankMessage(SurveyTextWork *work);
 void SurveyTextWork_ClearWindow(SurveyTextWork *work);
 u32 SurveyTextWork_GetRank(SurveyTextWork *work);
-u32 SurveyTextWork_GetReportNumberA(SurveyTextWork *work);
-u32 SurveyTextWork_GetReportNumberB(SurveyTextWork *work);
+u32 SurveyTextWork_GetPasserbyCount(SurveyTextWork *work);
+u32 SurveyTextWork_GetThankedCount(SurveyTextWork *work);
 BOOL Scrcmd_Survey_SurveyGetRank(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_Survey_SurveyRaiseRank(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_Survey_SurveyGetCurrentQuestionID(VM *vm, FieldScriptEnv *env);

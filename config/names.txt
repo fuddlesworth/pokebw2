@@ -9368,8 +9368,9 @@ overlays/ov027 0x02170954 SurveyTextWork_FreeWordSet
 overlays/ov027 0x02170964 SurveyTextWork_PrintRankMessage
 overlays/ov027 0x02170a1c SurveyTextWork_ClearWindow
 overlays/ov027 0x02170a38 SurveyTextWork_GetRank
-overlays/ov027 0x02170a4c SurveyTextWork_GetReportNumberA
-overlays/ov027 0x02170a60 SurveyTextWork_GetReportNumberB
+overlays/ov027 0x02170a4c SurveyTextWork_GetPasserbyCount
+overlays/ov027 0x02170a60 SurveyTextWork_GetThankedCount
+overlays/ov027 0x02170a74 Survey_GetRankMessageID
 overlays/ov027 0x02170b00 FestivalText_Free
 overlays/ov027 0x02170b18 FestMissionData_LoadHeaders
 overlays/ov027 0x02170b24 FestMissionData_Load
@@ -9381,6 +9382,7 @@ overlays/ov027 0x02170d04 FestMission_GetMessage
 overlays/ov027 0x02170d90 FestMission_GetResultMessage
 overlays/ov027 0x02170e1c FestMission_SetTargetWord
 overlays/ov027 0x02170e40 sProbabilities
+overlays/ov027 0x021711c0 gFestMissionTargetWordKinds
 overlays/ov028 0x02170340 UnionComm_Create
 overlays/ov028 0x021703a0 UnionComm_Free
 overlays/ov028 0x021703d0 UnionComm_Init

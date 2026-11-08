@@ -174,7 +174,7 @@ void LinkFestivalBest_Free(LinkFestivalBest *best);
 void FestMissionEntry_Clear(FestMissionEntry *entry);
 int LinkFestival_UpdateMember(LinkFestival *festival, FestMissionEntry *entry, u32 *out);
 void LinkFestival_StartTimer(LinkFestival *festival, u32 unused);
-u32 GetTrainerCardTextMSGID(u32 type);
+u32 Survey_GetRankMessageID(u32 rank);
 FieldFMissionInfo *FieldFMissionInfo_Create(GameSystem *gsys, HeapID heapId);
 void FieldFMissionInfo_Free(FieldFMissionInfo *work);
 void FieldFMissionInfo_Update(FieldFMissionInfo *work);
