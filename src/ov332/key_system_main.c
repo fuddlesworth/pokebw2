@@ -19,6 +19,7 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "nitro/os.h"
+#include "nnsys/gfd.h"
 #include "save/key_info.h"
 #include "save/save_control.h"
 #include "save/save_outside.h"
@@ -28,6 +29,58 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/script/global_10520.h"
+#include "text/system/ability_handlers_2.h"
+
+// Phases of KeySystem_SeqFadeIn.
+enum {
+    UNOVA_FADE_STEP_START = 0,
+    UNOVA_FADE_STEP_WAIT = 1,
+    UNOVA_FADE_STEP_END = 2,
+};
+
+// Phases of KeySystem_SeqEndScene.
+enum {
+    UNOVA_END_SCENE_STEP_REQUEST = 0,
+    UNOVA_END_SCENE_STEP_WAIT = 1,
+    UNOVA_END_SCENE_STEP_END = 2,
+};
+
+// Phases of KeySystem_SeqWirelessOff.
+enum {
+    UNOVA_WIRELESS_OFF_STEP_PRINT = 0,
+    UNOVA_WIRELESS_OFF_STEP_WAIT_MESSAGE = 1,
+    UNOVA_WIRELESS_OFF_STEP_END = 2,
+};
+
+// Phases of KeySystem_SeqTop.
+enum {
+    UNOVA_TOP_STEP_START_SCENE = 0,
+    UNOVA_TOP_STEP_FADE_IN = 1,
+    UNOVA_TOP_STEP_MENU = 2,
+    UNOVA_TOP_STEP_FADE_OUT = 3,
+    UNOVA_TOP_STEP_END_SCENE = 4,
+    UNOVA_TOP_STEP_END = 5,
+};
+
+// Phases of KeySystem_SeqSaveCorrupted.
+enum {
+    UNOVA_CORRUPT_SAVE_STEP_START_SCENE = 0,
+    UNOVA_CORRUPT_SAVE_STEP_FADE_IN = 1,
+    UNOVA_CORRUPT_SAVE_STEP_PRINT = 2,
+    UNOVA_CORRUPT_SAVE_STEP_WAIT_MESSAGE = 3,
+    UNOVA_CORRUPT_SAVE_STEP_FADE_OUT = 4,
+    UNOVA_CORRUPT_SAVE_STEP_END_SCENE = 5,
+    UNOVA_CORRUPT_SAVE_STEP_END = 6,
+};
+
+// Phases of KeySystem_SeqTopMenu.
+enum {
+    UNOVA_TOP_MENU_STEP_START_SCENE = 0,
+    UNOVA_TOP_MENU_STEP_INPUT = 1,
+    UNOVA_TOP_MENU_STEP_END_SCENE = 2,
+    UNOVA_TOP_MENU_STEP_DISPATCH = 3,
+    UNOVA_TOP_MENU_STEP_END = 4,
+};
 
 // Unova Link's proc: the BG, actors and windows that every part shares, and the main menu that leads to the Key
 // System, Memory Link and the Nintendo 3DS Link with Pokémon Dream Radar
@@ -164,10 +217,10 @@ static BOOL KeySystem_ProcMain(GameProc *proc, u32 *state, void *param, void *wo
 
     if (wk->net != NULL) {
         switch (KeySystemNet_CheckError(wk->net)) {
-        case 0:
+        case KEY_SYSTEM_NET_ERROR_NONE:
             break;
         case 1:
-        case 2:
+        case KEY_SYSTEM_NET_ERROR:
         default:
             KeySystemNet_Reset(wk->net);
             GFL_SndStop();
@@ -175,7 +228,7 @@ static BOOL KeySystem_ProcMain(GameProc *proc, u32 *state, void *param, void *wo
                 GFL_HeapFree(wk->wbSave);
                 wk->wbSave = NULL;
             }
-            KeySystemNet_SetMode(wk->net, 0);
+            KeySystemNet_SetMode(wk->net, KEY_SYSTEM_NET_MODE_NONE);
             KeySystemSeq_PopTo(wk->seq, KeySystem_SeqTop);
             if (wk->menu != NULL) {
                 KeySystem_FreeMenu(wk);
@@ -234,16 +287,16 @@ static BOOL KeySystem_ProcMain(GameProc *proc, u32 *state, void *param, void *wo
 
 void KeySystem_SeqFadeIn(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case UNOVA_FADE_STEP_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_FADE_STEP_WAIT:
         if (!GFL_FadeIsRunning()) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_FADE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -251,16 +304,16 @@ void KeySystem_SeqFadeIn(KeySystemSeq *seq, int *state, void *work) {
 
 void KeySystem_SeqFadeOut(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case UNOVA_FADE_STEP_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_FADE_STEP_WAIT:
         if (!GFL_FadeIsRunning()) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_FADE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -268,16 +321,16 @@ void KeySystem_SeqFadeOut(KeySystemSeq *seq, int *state, void *work) {
 
 void KeySystem_SeqFadeInUnused(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case UNOVA_FADE_STEP_START:
         GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_FADE_STEP_WAIT:
         if (!GFL_FadeIsRunning()) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_FADE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -285,16 +338,16 @@ void KeySystem_SeqFadeInUnused(KeySystemSeq *seq, int *state, void *work) {
 
 void KeySystem_SeqFadeOutWhite(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case UNOVA_FADE_STEP_START:
         GFL_FadeSet(FADE_ENGINE_A_WHITE | FADE_ENGINE_B_WHITE, 0, 16, 0);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_FADE_STEP_WAIT:
         if (!GFL_FadeIsRunning()) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_FADE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -304,16 +357,16 @@ void KeySystem_SeqEndScene(KeySystemSeq *seq, int *state, void *work) {
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_END_SCENE_STEP_REQUEST:
         KeySystemScene_RequestEnd(wk->scene);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_END_SCENE_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_END_SCENE_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -325,7 +378,7 @@ void KeySystem_SeqWirelessOff(KeySystemSeq *seq, int *state, void *work) {
     StrBuf *str;
 
     switch (*state) {
-    case 0:
+    case UNOVA_WIRELESS_OFF_STEP_PRINT:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, HEAPID_KEY_SYSTEM);
         str = GFL_MsgDataLoadStrbufNew(msgData, Global10520_Text_WirelessCommunicationsTurnedOff);
@@ -333,16 +386,16 @@ void KeySystem_SeqWirelessOff(KeySystemSeq *seq, int *state, void *work) {
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         GFL_BGSysQueueScrLoad(0);
-        *state = 1;
+        *state = UNOVA_WIRELESS_OFF_STEP_WAIT_MESSAGE;
         break;
-    case 1:
+    case UNOVA_WIRELESS_OFF_STEP_WAIT_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             KeySystem_FreeMsgWin(wk);
             GFL_BGSysQueueScrLoad(0);
-            *state = 2;
+            *state = UNOVA_WIRELESS_OFF_STEP_END;
         }
         break;
-    case 2:
+    case UNOVA_WIRELESS_OFF_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -446,8 +499,8 @@ static void KeySystemBG_Update(KeySystemBG *bg) {
             from = to;
             break;
         }
-        KeySystem_BlendPalette(15, bg->mainColors, t, 0, from, to);
-        KeySystem_BlendPalette(31, bg->subColors, t, 0, from, to);
+        KeySystem_BlendPalette(NNS_GFD_DST_2D_BG_PLTT_MAIN, bg->mainColors, t, 0, from, to);
+        KeySystem_BlendPalette(NNS_GFD_DST_2D_BG_PLTT_SUB, bg->subColors, t, 0, from, to);
         if (bg->frame++ >= bg->duration) {
             bg->fade = KEY_SYSTEM_BG_FADE_NONE;
         }
@@ -464,19 +517,19 @@ void KeySystemBG_LoadScreen(KeySystemBG *bg, u8 bgId, u32 screen) {
     u32 fileId;
 
     switch (screen) {
-    case 0:
+    case KEY_SYSTEM_SCREEN_COMMON:
         fileId = 7;
         break;
-    case 3:
+    case KEY_SYSTEM_SCREEN_DREAM_RADAR_RECEIVED:
         fileId = 10;
         break;
-    case 4:
+    case KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU:
         fileId = 11;
         break;
-    case 1:
+    case KEY_SYSTEM_SCREEN_KEYS_SENT:
         fileId = 9;
         break;
-    case 2:
+    case KEY_SYSTEM_SCREEN_KEYS_HELD:
         fileId = 8;
         break;
     default:
@@ -493,16 +546,16 @@ static void KeySystemClAct_Init(KeySystemClAct *clact, KeySystemGraphic *graphic
 static void KeySystemClAct_LoadResources(KeySystemClAct *clact, HeapID heapId) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_KEY_SYSTEM, heapId);
 
-    clact->resources[1] = ClActSys_LoadChars(arc, 5, FALSE, 0, heapId);
-    clact->resources[0] = ClActSys_LoadPlttRange(arc, 2, 0, 0, 0, 4, heapId);
-    clact->resources[2] = ClActSys_LoadCellAnims(arc, 13, 14, heapId);
+    clact->resources[KEY_SYSTEM_RESOURCE_CHARACTERS] = ClActSys_LoadChars(arc, 5, FALSE, 0, heapId);
+    clact->resources[KEY_SYSTEM_RESOURCE_PALETTE] = ClActSys_LoadPlttRange(arc, 2, 0, 0, 0, 4, heapId);
+    clact->resources[KEY_SYSTEM_RESOURCE_ANIMATIONS] = ClActSys_LoadCellAnims(arc, 13, 14, heapId);
     GFL_ArcToolFree(arc);
 }
 
 static void KeySystemClAct_FreeResources(KeySystemClAct *clact) {
-    ClActSys_FreePltt(clact->resources[0]);
-    ClActSys_FreeChars(clact->resources[1]);
-    ClActSys_FreeCellAnims(clact->resources[2]);
+    ClActSys_FreePltt(clact->resources[KEY_SYSTEM_RESOURCE_PALETTE]);
+    ClActSys_FreeChars(clact->resources[KEY_SYSTEM_RESOURCE_CHARACTERS]);
+    ClActSys_FreeCellAnims(clact->resources[KEY_SYSTEM_RESOURCE_ANIMATIONS]);
 }
 
 ClActor *KeySystemClAct_Create(KeySystemClAct *clact, u32 id, HeapID heapId) {
@@ -513,130 +566,130 @@ ClActor *KeySystemClAct_Create(KeySystemClAct *clact, u32 id, HeapID heapId) {
     u32 surface;
 
     switch (id) {
-    case 0:
+    case KEY_SYSTEM_ACTOR_IR_SIGNAL_LOWER:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 113;
-        setup.sequence = 0;
+        setup.sequence = KEY_SYSTEM_ANIM_IR_SIGNAL_LOWER;
         setup.priority = 0;
         setup.bgPriority = 1;
         break;
-    case 1:
+    case KEY_SYSTEM_ACTOR_IR_SIGNAL_UPPER:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 77;
-        setup.sequence = 1;
+        setup.sequence = KEY_SYSTEM_ANIM_IR_SIGNAL_UPPER;
         setup.priority = 0;
         setup.bgPriority = 1;
         break;
-    case 2:
+    case KEY_SYSTEM_ACTOR_CONSOLE_LOWER:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 57;
         setup.y = 154;
-        setup.sequence = 2;
+        setup.sequence = KEY_SYSTEM_ANIM_CONSOLE_LOWER_IR;
         setup.priority = 0;
         setup.bgPriority = 1;
         affineMode = 1;
         break;
-    case 3:
+    case KEY_SYSTEM_ACTOR_CONSOLE_UPPER:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 200;
         setup.y = 38;
-        setup.sequence = 3;
+        setup.sequence = KEY_SYSTEM_ANIM_CONSOLE_UPPER_IR;
         setup.priority = 0;
         setup.bgPriority = 1;
         affineMode = 1;
         break;
-    case 4:
-    case 5:
-    case 6:
+    case KEY_SYSTEM_ACTOR_LOCK_FIRST:
+    case KEY_SYSTEM_ACTOR_LOCK_SECOND:
+    case KEY_SYSTEM_ACTOR_LOCK_THIRD:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 0;
         setup.y = 0;
-        setup.sequence = 7;
+        setup.sequence = KEY_SYSTEM_ANIM_LOCK_CLOSED;
         setup.priority = 0;
         setup.bgPriority = 0;
         break;
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-    case 18:
-    case 19:
-    case 20:
+    case KEY_SYSTEM_ACTOR_MEMORY_TRIPLE_TEAM:
+    case KEY_SYSTEM_ACTOR_MEMORY_DIFFERENT_BONES_AND_DREAMS:
+    case KEY_SYSTEM_ACTOR_MEMORY_HEARTS_DESIRE:
+    case KEY_SYSTEM_ACTOR_MEMORY_NEW_LIGHT:
+    case KEY_SYSTEM_ACTOR_MEMORY_TAKING_NEXT_LEVEL:
+    case KEY_SYSTEM_ACTOR_MEMORY_WHITE_AND_BLACK:
+    case KEY_SYSTEM_ACTOR_MEMORY_FAREWELL_BELOVED_SISTER:
+    case KEY_SYSTEM_ACTOR_MEMORY_MEETING_FRIENDS:
         visible = FALSE;
-    case 7:
+    case KEY_SYSTEM_ACTOR_CURRENT_SETTING:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 200;
         setup.y = 38;
-        setup.sequence = 6;
+        setup.sequence = KEY_SYSTEM_ANIM_CHECKMARK;
         setup.priority = 0;
         setup.bgPriority = 2;
         break;
-    case 8:
+    case KEY_SYSTEM_ACTOR_KEY:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 98;
-        setup.sequence = 8;
+        setup.sequence = KEY_SYSTEM_ANIM_KEY_DROP;
         setup.priority = 0;
         setup.bgPriority = 1;
         autoAnim = FALSE;
         visible = FALSE;
         break;
-    case 9:
+    case KEY_SYSTEM_ACTOR_NAMEPLATE:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 98;
-        setup.sequence = 10;
+        setup.sequence = KEY_SYSTEM_ANIM_NAMEPLATE;
         setup.priority = 2;
         setup.bgPriority = 1;
         autoAnim = FALSE;
         visible = FALSE;
         break;
-    case 10:
+    case KEY_SYSTEM_ACTOR_UNLOCK_EFFECT:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 98;
-        setup.sequence = 11;
+        setup.sequence = KEY_SYSTEM_ANIM_UNLOCK_EFFECT;
         setup.priority = 0;
         setup.bgPriority = 0;
         visible = FALSE;
         autoAnim = FALSE;
         break;
-    case 12:
+    case KEY_SYSTEM_ACTOR_ANIMATED_LOCK:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 98;
-        setup.sequence = 12;
+        setup.sequence = KEY_SYSTEM_ANIM_LOCK_OPEN;
         setup.priority = 1;
         setup.bgPriority = 1;
         autoAnim = FALSE;
         visible = FALSE;
         break;
-    case 22:
+    case KEY_SYSTEM_ACTOR_SCROLL_UP:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 248;
         setup.y = 40;
-        setup.sequence = 13;
+        setup.sequence = KEY_SYSTEM_ANIM_SCROLL_UP;
         setup.priority = 0;
         setup.bgPriority = 0;
         visible = FALSE;
         break;
-    case 23:
+    case KEY_SYSTEM_ACTOR_SCROLL_DOWN:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 248;
         setup.y = 174;
-        setup.sequence = 14;
+        setup.sequence = KEY_SYSTEM_ANIM_SCROLL_DOWN;
         setup.priority = 0;
         setup.bgPriority = 0;
         visible = FALSE;
         break;
-    case 24:
+    case KEY_SYSTEM_ACTOR_LOADING:
         surface = CLACT_SURFACE_MAIN;
         setup.x = 128;
         setup.y = 96;
-        setup.sequence = 15;
+        setup.sequence = KEY_SYSTEM_ANIM_LOADING;
         setup.priority = 0;
         setup.bgPriority = 0;
         visible = FALSE;
@@ -644,8 +697,9 @@ ClActor *KeySystemClAct_Create(KeySystemClAct *clact, u32 id, HeapID heapId) {
     default:
         return NULL;
     }
-    clact->actors[id] = ClActor_Create(clact->unit, clact->resources[1], clact->resources[0], clact->resources[2],
-                                       &setup, surface, heapId);
+    clact->actors[id] = ClActor_Create(clact->unit, clact->resources[KEY_SYSTEM_RESOURCE_CHARACTERS],
+                                       clact->resources[KEY_SYSTEM_RESOURCE_PALETTE],
+                                       clact->resources[KEY_SYSTEM_RESOURCE_ANIMATIONS], &setup, surface, heapId);
     ClActor_SetAutoAnim(clact->actors[id], autoAnim);
     ClActor_SetVisible(clact->actors[id], visible);
     ClActor_SetAffineMode(clact->actors[id], affineMode);
@@ -870,12 +924,12 @@ void KeySystem_CreateYesNoMenu(KeySystemWork *wk, HeapID heapId) {
     setup.palette = 14;
     setup.framePalette = 15;
     setup.frameChar = 1;
-    setup.msgIds[0] = 65;
-    setup.msgIds[1] = 66;
-    setup.count = 2;
+    setup.msgIds[KEY_SYSTEM_YES_NO_YES] = AbilityHandlers2_Text_Yes;
+    setup.msgIds[KEY_SYSTEM_YES_NO_NO] = AbilityHandlers2_Text_No;
+    setup.count = KEY_SYSTEM_YES_NO_COUNT;
     setup.cancelable = TRUE;
-    setup.cancelValue = 1;
-    setup.cursor = 0;
+    setup.cancelValue = KEY_SYSTEM_YES_NO_NO;
+    setup.cursor = KEY_SYSTEM_YES_NO_YES;
     wk->menu = KeySystemMenu_Create(&setup, heapId);
 }
 
@@ -886,27 +940,27 @@ void KeySystem_FreeMenu(KeySystemWork *wk) {
 
 void KeySystem_SeqTop(KeySystemSeq *seq, int *state, void *work) {
     switch (*state) {
-    case 0:
+    case UNOVA_TOP_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqStartTopScene);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_TOP_STEP_FADE_IN:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeIn);
         (*state)++;
         break;
-    case 2:
+    case UNOVA_TOP_STEP_MENU:
         KeySystemSeq_Push(seq, KeySystem_SeqTopMenu);
         (*state)++;
         break;
-    case 3:
+    case UNOVA_TOP_STEP_FADE_OUT:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeOutWhite);
         (*state)++;
         break;
-    case 4:
+    case UNOVA_TOP_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 5:
+    case UNOVA_TOP_STEP_END:
         KeySystemSeq_Reset(seq);
         break;
     }
@@ -916,32 +970,33 @@ static void KeySystem_SeqSaveCorrupted(KeySystemSeq *seq, int *state, void *work
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_CORRUPT_SAVE_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqStartMsgScene);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_CORRUPT_SAVE_STEP_FADE_IN:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeIn);
         (*state)++;
         break;
-    case 2:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 161, KEY_SYSTEM_MSG_STREAM);
+    case UNOVA_CORRUPT_SAVE_STEP_PRINT:
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavedGameDataCorrupted,
+                                 KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
-    case 3:
+    case UNOVA_CORRUPT_SAVE_STEP_WAIT_MESSAGE:
         if (KeySystemMsgWin_IsDone(wk->msgWin)) {
             (*state)++;
         }
         break;
-    case 4:
+    case UNOVA_CORRUPT_SAVE_STEP_FADE_OUT:
         KeySystemSeq_Push(seq, KeySystem_SeqFadeOutWhite);
         (*state)++;
         break;
-    case 5:
+    case UNOVA_CORRUPT_SAVE_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 6:
+    case UNOVA_CORRUPT_SAVE_STEP_END:
         KeySystemSeq_Reset(seq);
         break;
     }
@@ -951,31 +1006,33 @@ static void KeySystem_SeqTopMenu(KeySystemSeq *seq, int *state, void *work) {
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_TOP_MENU_STEP_START_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqStartTopScene);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_TOP_MENU_STEP_INPUT:
         KeySystemList_Update(wk->list);
         if (KeySystemList_IsChanged(wk->list) && KeySystemMsgWin_IsDone(wk->infoWin)) {
-            KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemList_GetCursor(wk->list) + 72,
+            KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData,
+                                     KeySystemList_GetCursor(wk->list) +
+                                         AbilityHandlers2_Text_CommunicatePokemonBlackVersion,
                                      KEY_SYSTEM_MSG_PRINT);
         }
         if (KeySystemList_IsDecided(wk->list)) {
             wk->choice = KeySystemList_GetCursor(wk->list);
             if (wk->choice == TOP_MENU_BACK) {
-                *state = 4;
+                *state = UNOVA_TOP_MENU_STEP_END;
                 return;
             }
             KeySystemTags_Set(wk->tags, "MAN", KeySystemList_GetCursor(wk->list));
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_TOP_MENU_STEP_END_SCENE:
         KeySystemSeq_Push(seq, KeySystem_SeqEndScene);
         (*state)++;
         break;
-    case 3:
+    case UNOVA_TOP_MENU_STEP_DISPATCH:
         switch (wk->choice) {
         case TOP_MENU_KEY_SYSTEM:
             KeySystemBG_StartFade(wk->bg, KEY_SYSTEM_BG_FADE_1_TO_0, 30);
@@ -990,9 +1047,9 @@ static void KeySystem_SeqTopMenu(KeySystemSeq *seq, int *state, void *work) {
             KeySystemSeq_Push(seq, CygnusFlow_SeqMenu);
             break;
         }
-        *state = 0;
+        *state = UNOVA_TOP_MENU_STEP_START_SCENE;
         break;
-    case 4:
+    case UNOVA_TOP_MENU_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1002,16 +1059,16 @@ static void KeySystem_SeqStartTopScene(KeySystemSeq *seq, int *state, void *work
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sTopSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1021,16 +1078,16 @@ static void KeySystem_SeqStartMsgScene(KeySystemSeq *seq, int *state, void *work
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sMsgSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case 1:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case 2:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -1064,15 +1121,17 @@ static void KeySystemTopScene_Init(void *work, HeapID heapId) {
         setup.items[i].x = 3;
         setup.items[i].y = (setup.items[i].height + 3) * i + 5;
     }
-    setup.items[0].msgId = 69;
-    setup.items[1].msgId = 70;
-    setup.items[2].msgId = 162;
-    setup.items[3].msgId = 71;
+    setup.items[0].msgId = AbilityHandlers2_Text_KeySystem_2;
+    setup.items[1].msgId = AbilityHandlers2_Text_MemoryLink;
+    setup.items[2].msgId = AbilityHandlers2_Text_Nintendo3dsLink;
+    setup.items[3].msgId = AbilityHandlers2_Text_Back_2;
     wk->list = KeySystemList_Create(&setup, heapId);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, 84, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
     KeySystem_CreateInfoWin(wk, heapId);
-    KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData, KeySystemList_GetCursor(wk->list) + 72, KEY_SYSTEM_MSG_PRINT);
-    KeySystemBG_LoadScreen(wk->bg, 2, 0);
+    KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData,
+                             KeySystemList_GetCursor(wk->list) + AbilityHandlers2_Text_CommunicatePokemonBlackVersion,
+                             KEY_SYSTEM_MSG_PRINT);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_COMMON);
 }
 
 static BOOL KeySystemTopScene_Main(void *work) {
@@ -1105,9 +1164,9 @@ static void KeySystemMsgScene_Init(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
     KeySystem_CreateMsgWin(wk, heapId);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, 0, KEY_SYSTEM_MSG_PRINT);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, 84, KEY_SYSTEM_MSG_PRINT);
-    KeySystemBG_LoadScreen(wk->bg, 2, 0);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_COMMON);
 }
 
 static BOOL KeySystemMsgScene_Main(void *work) {

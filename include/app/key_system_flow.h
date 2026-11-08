@@ -7,6 +7,14 @@
 #include "save/key_info.h"
 #include "system/game_data.h"
 
+// City choices: this version's original city first, then the other city, then Back.
+enum {
+    KEY_CITY_MENU_DEFAULT = 0,
+    KEY_CITY_MENU_OTHER = 1,
+    KEY_CITY_MENU_BACK = 2,
+    KEY_CITY_MENU_COUNT = 3,
+};
+
 // The Key System's flow, split as the ROM links it: three data-only units (key_system_key_frames.c,
 // key_system_plate_frames.c, key_system_anim_data.c), the sequences and scenes (key_system_flow.c) and the helpers
 // with the scene tables (key_system_flow_sub.c). The names are ours; the ROM names none of them.
@@ -41,12 +49,16 @@ enum {
     KEY_SELECT_IN_AREA,
 };
 
+// Back entries in the difficulty and chamber menus.
+#define KEY_DIFFICULTY_MENU_BACK 3
+#define KEY_CHAMBER_MENU_BACK 3
+
 // key_system_key_frames.c: the frames of the key's moves, which the code has as constants
-extern const u32 data_ov332_021c8e68[3];
+extern const u32 sUnusedKeyMoveFrames[3];
 
 // key_system_plate_frames.c
 extern const ClActorPos sEffectPos;
-extern const u32 data_ov332_021c8e78[3];
+extern const u32 sUnusedPlateAndShowOutFrames[3];
 
 // key_system_anim_data.c
 extern const u8 sKeyPalettes[KEY_SYSTEM_KEY_COUNT];
@@ -131,6 +143,6 @@ void KeySystemKeyAnim_Init(KeySystemKeyAnim *anim, KeySystemClAct *clact, KeySys
 void KeySystemKeyAnim_Free(KeySystemKeyAnim *anim);
 void KeySystemKeyAnim_Start(KeySystemKeyAnim *anim, u32 key, MsgData *msgData, u16 msgId, StrBuf *str, BOOL enabled);
 BOOL KeySystemKeyAnim_Update(KeySystemKeyAnim *anim);
-void KeySystemFlow_OnNetError(void *work);
+void KeySystemFlow_OnInfraredEnded(void *work);
 
 #endif

@@ -19,6 +19,7 @@
 #include "nitro/hw.h"
 #include "nitro/math.h"
 #include "nitro/os.h"
+#include "nnsys/gfd.h"
 #include "pml/item.h"
 #include "pml/met_data.h"
 #include "pml/personal.h"
@@ -157,13 +158,6 @@ enum {
     RECEIVE_ALL_SEQ_PRINT_ITEMS,
     RECEIVE_ALL_SEQ_WAIT_ITEMS,
     RECEIVE_ALL_SEQ_END,
-};
-
-// The steps of the sequences that start a scene
-enum {
-    SCENE_SEQ_START,
-    SCENE_SEQ_WAIT,
-    SCENE_SEQ_END,
 };
 
 // What CygnusAppear_Run does: load the particles, flash, wait, show the sprite, fade it in, hold it, pause, whiten it,
@@ -427,10 +421,10 @@ void CygnusFlow_SeqMenu(KeySystemSeq *seq, int *state, void *work) {
         }
         KeySystem_FreeMenu(wk);
         switch (result) {
-        case 0:
+        case KEY_SYSTEM_YES_NO_YES:
             *state = MENU_SEQ_END_MENU_SCENE;
             break;
-        case 1:
+        case KEY_SYSTEM_YES_NO_NO:
         default:
             *state = MENU_SEQ_END_SCENE;
             break;
@@ -715,7 +709,7 @@ static void CygnusFlow_SeqReceiveAll(KeySystemSeq *seq, int *state, void *work) 
     switch (*state) {
     case RECEIVE_ALL_SEQ_RECEIVE:
         CygnusData_Receive(wk->cygnusData, HEAPID_KEY_SYSTEM);
-        KeySystemBG_LoadScreen(wk->bg, 2, 3);
+        KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_DREAM_RADAR_RECEIVED);
         (*state)++;
         break;
     case RECEIVE_ALL_SEQ_FADE_IN:
@@ -800,16 +794,16 @@ static void CygnusFlow_SeqStartMenuScene(KeySystemSeq *seq, int *state, void *wo
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case SCENE_SEQ_START:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sCygnusMenuSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case SCENE_SEQ_WAIT:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case SCENE_SEQ_END:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -819,16 +813,16 @@ static void CygnusFlow_SeqStartMsgScene(KeySystemSeq *seq, int *state, void *wor
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case SCENE_SEQ_START:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sCygnusMsgSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case SCENE_SEQ_WAIT:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case SCENE_SEQ_END:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -838,16 +832,16 @@ static void CygnusFlow_SeqStartReceiveScene(KeySystemSeq *seq, int *state, void 
     KeySystemWork *wk = work;
 
     switch (*state) {
-    case SCENE_SEQ_START:
+    case UNOVA_SCENE_START_STEP_START:
         KeySystemScene_Start(wk->scene, &sReceiveSceneFuncs, HEAPID_KEY_SYSTEM);
         (*state)++;
         break;
-    case SCENE_SEQ_WAIT:
+    case UNOVA_SCENE_START_STEP_WAIT:
         if (KeySystemScene_IsIdle(wk->scene)) {
             (*state)++;
         }
         break;
-    case SCENE_SEQ_END:
+    case UNOVA_SCENE_START_STEP_END:
         KeySystemSeq_Pop(seq);
         break;
     }
@@ -856,7 +850,7 @@ static void CygnusFlow_SeqStartReceiveScene(KeySystemSeq *seq, int *state, void 
 static void CygnusFlow_MenuSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
-    KeySystemBG_LoadScreen(wk->bg, 2, 4);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU);
     KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);
     KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
@@ -899,7 +893,7 @@ static void CygnusFlow_MsgSceneExit(void *work) {
 static void CygnusFlow_ReceiveSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
-    ClActor_SetVisible(KeySystemClAct_Create(&wk->clact, 24, heapId), TRUE);
+    ClActor_SetVisible(KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_LOADING, heapId), TRUE);
     KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
 
@@ -916,7 +910,7 @@ static BOOL CygnusFlow_ReceiveSceneMain(void *work) {
 static void CygnusFlow_ReceiveSceneExit(void *work) {
     KeySystemWork *wk = work;
 
-    KeySystemClAct_Delete(&wk->clact, 24);
+    KeySystemClAct_Delete(&wk->clact, KEY_SYSTEM_ACTOR_LOADING);
 }
 
 static CygnusAppear *CygnusAppear_Create(KeySystemParticle *particle, KeySystemGraphic *graphic, HeapID heapId) {
@@ -1047,8 +1041,8 @@ static void CygnusAppear_Run(CygnusAppear *appear) {
         break;
     case APPEAR_STATE_WHITEN:
         appear->blend = (appear->timer * 0x7fff) / 120;
-        KeySystem_BlendPalette(14, appear->blendedPalette, appear->blend, CYGNUS_APPEAR_PALETTE, appear->spritePalette,
-                               appear->whitePalette);
+        KeySystem_BlendPalette(NNS_GFD_DST_2D_OBJ_PLTT_MAIN, appear->blendedPalette, appear->blend,
+                               CYGNUS_APPEAR_PALETTE, appear->spritePalette, appear->whitePalette);
         if (appear->timer++ > 120) {
             appear->timer = 0;
             appear->state = APPEAR_STATE_WAIT_END;
@@ -1630,7 +1624,7 @@ static void CygnusFlow_HideScreen(KeySystemWork *wk, HeapID heapId) {
 
 static void CygnusFlow_ShowScreen(KeySystemWork *wk) {
     GFL_BGSysLoadNCGRStatic(ARCID_KEY_SYSTEM, 3, 2, 0, 0, FALSE, HEAPID_KEY_SYSTEM);
-    KeySystemBG_LoadScreen(wk->bg, 2, 4);
+    KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU);
     KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
     KeySystem_CreateTitleWin(wk, 21, HEAPID_KEY_SYSTEM);
     KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);

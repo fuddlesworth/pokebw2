@@ -40789,7 +40789,7 @@ overlays/ov332 0x021c29bc KeySystemNet_GetBeaconSize
 overlays/ov332 0x021c29c0 KeySystemNet_CheckBeacon
 overlays/ov332 0x021c29cc KeySystemNet_OnConnect
 overlays/ov332 0x021c29e8 KeySystemNet_OnStart
-overlays/ov332 0x021c29ec KeySystemNet_OnDisconnect
+overlays/ov332 0x021c29ec KeySystemNet_OnInfraredEnded
 overlays/ov332 0x021c2a00 KeySystemNet_Receive
 overlays/ov332 0x021c2a3c KeySystemNet_GetRequest
 overlays/ov332 0x021c2a44 KeySystemNet_CanRequest
@@ -40876,7 +40876,7 @@ overlays/ov332 0x021c4eb8 KeySystemKeyAnim_Start
 overlays/ov332 0x021c4f18 KeySystemKeyAnim_Update
 overlays/ov332 0x021c4f24 KeySystemKeyAnim_Unlock
 overlays/ov332 0x021c52a0 KeySystemKeyAnim_Show
-overlays/ov332 0x021c53cc KeySystemFlow_OnNetError
+overlays/ov332 0x021c53cc KeySystemFlow_OnInfraredEnded
 overlays/ov332 0x021c53dc DataConvert_Init
 overlays/ov332 0x021c53e0 DataConvert_SeqMenu
 overlays/ov332 0x021c5564 DataConvert_SeqWireless
@@ -41009,7 +41009,9 @@ overlays/ov332 0x021c8da4 sMenuListHeader
 overlays/ov332 0x021c8dd8 sKeySystemNetCommands
 overlays/ov332 0x021c8de0 sModeRequests
 overlays/ov332 0x021c8e04 sStateRequests
+overlays/ov332 0x021c8e68 sUnusedKeyMoveFrames
 overlays/ov332 0x021c8e74 sEffectPos
+overlays/ov332 0x021c8e78 sUnusedPlateAndShowOutFrames
 overlays/ov332 0x021c8e84 sKeyPalettes
 overlays/ov332 0x021c8e8c sPlateDownEnd
 overlays/ov332 0x021c8e94 sKeyInEnd
@@ -41044,7 +41046,7 @@ overlays/ov332 0x021c9034 sDataConvertWifiSceneFuncs
 overlays/ov332 0x021c9044 sIdChars
 overlays/ov332 0x021c9084 sBlockSizes
 overlays/ov332 0x021c91a0 sEventVars
-overlays/ov332 0x021c91b8 sUnk52Bits
+overlays/ov332 0x021c91b8 sMemoryFlagCopies
 overlays/ov332 0x021c91f8 sEventFlagBits
 overlays/ov332 0x021c9258 sLegends
 overlays/ov332 0x021c9264 sReceiveSceneFuncs

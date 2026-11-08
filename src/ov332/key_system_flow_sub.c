@@ -24,6 +24,53 @@
 #include "system/dsi.h"
 #include "system/game_data.h"
 #include "system/wordset.h"
+#include "text/system/ability_handlers_2.h"
+
+// Phases of KeySystemKeyAnim_Unlock.
+enum {
+    KEY_UNLOCK_STEP_PRINT_NAME = 0,
+    KEY_UNLOCK_STEP_WAIT_NAME = 1,
+    KEY_UNLOCK_STEP_START_PLATE_RISE = 2,
+    KEY_UNLOCK_STEP_MOVE_PLATE_UP = 3,
+    KEY_UNLOCK_STEP_WAIT_PLATE = 4,
+    KEY_UNLOCK_STEP_START_KEY_DROP = 5,
+    KEY_UNLOCK_STEP_MOVE_KEY_DOWN = 6,
+    KEY_UNLOCK_STEP_WAIT_KEY = 7,
+    KEY_UNLOCK_STEP_START_KEY_TURN = 8,
+    KEY_UNLOCK_STEP_MOVE_KEY_OUT = 9,
+    KEY_UNLOCK_STEP_START_LOCK_OPEN = 10,
+    KEY_UNLOCK_STEP_WAIT_LOCK = 11,
+    KEY_UNLOCK_STEP_START_EFFECT = 12,
+    KEY_UNLOCK_STEP_WAIT_EFFECT = 13,
+    KEY_UNLOCK_STEP_WAIT_EFFECT_END = 14,
+    KEY_UNLOCK_STEP_PRINT_RESULT = 15,
+    KEY_UNLOCK_STEP_WAIT_RESULT = 16,
+    KEY_UNLOCK_STEP_START_PLATE_DROP = 17,
+    KEY_UNLOCK_STEP_MOVE_PLATE_DOWN = 18,
+    KEY_UNLOCK_STEP_DONE = 19,
+};
+
+// Phases of KeySystemKeyAnim_Show.
+enum {
+    KEY_SHOW_STEP_START_DROP = 0,
+    KEY_SHOW_STEP_MOVE_DOWN = 1,
+    KEY_SHOW_STEP_WAIT_KEY = 2,
+    KEY_SHOW_STEP_PRINT_RESULT = 3,
+    KEY_SHOW_STEP_WAIT_RESULT = 4,
+    KEY_SHOW_STEP_START_EXIT = 5,
+    KEY_SHOW_STEP_MOVE_OUT = 6,
+    KEY_SHOW_STEP_DONE = 7,
+};
+
+// Message columns after expanding the version-dependent city key into two city messages.
+enum {
+    KEY_EXCHANGE_MSG_COLUMN_EASY = 0,
+    KEY_EXCHANGE_MSG_COLUMN_CHALLENGE = 1,
+    KEY_EXCHANGE_MSG_COLUMN_TREEHOLLOW = 2,
+    KEY_EXCHANGE_MSG_COLUMN_TOWER = 3,
+    KEY_EXCHANGE_MSG_COLUMN_IRON = 4,
+    KEY_EXCHANGE_MSG_COLUMN_ICEBERG = 5,
+};
 
 // The Key System's helpers: the key state, the key lists, the key messages and the key animations, and the scene
 // tables of key_system_flow.c. The ROM doesn't name this file
@@ -217,11 +264,11 @@ void KeySystemKeySelect_Init(KeySystemKeySelect *keySelect, u32 mode, KeySystemC
         break;
     }
     // The locks of the items
-    for (i = 4; i <= 6; i++) {
+    for (i = KEY_SYSTEM_ACTOR_LOCK_FIRST; i <= KEY_SYSTEM_ACTOR_LOCK_THIRD; i++) {
         ClActor_SetVisible(KeySystemClAct_Create(clact, i, heapId), FALSE);
     }
     // The cursor at the setting
-    ClActor_SetVisible(KeySystemClAct_Create(clact, 7, heapId), FALSE);
+    ClActor_SetVisible(KeySystemClAct_Create(clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING, heapId), FALSE);
     MI_CpuFill8(&setup, 0, sizeof(KeySystemListSetup));
     setup.bg = 1;
     setup.unk04 = 14;
@@ -237,8 +284,8 @@ void KeySystemKeySelect_Init(KeySystemKeySelect *keySelect, u32 mode, KeySystemC
         setup.items[i].height = 2;
         setup.items[i].x = 16;
         setup.items[i].y = i * (setup.items[0].height + 2) + 3;
-        if (i + 4 <= 6) {
-            ClActor *lock = KeySystemClAct_GetActor(clact, i + 4);
+        if (i + KEY_SYSTEM_ACTOR_LOCK_FIRST <= KEY_SYSTEM_ACTOR_LOCK_THIRD) {
+            ClActor *lock = KeySystemClAct_GetActor(clact, i + KEY_SYSTEM_ACTOR_LOCK_FIRST);
 
             pos.x = (setup.items[i].x + setup.items[i].width - 1) * 8;
             pos.y = (setup.items[i].y + 1) * 8;
@@ -254,10 +301,10 @@ void KeySystemKeySelect_Init(KeySystemKeySelect *keySelect, u32 mode, KeySystemC
 void KeySystemKeySelect_Free(KeySystemKeySelect *keySelect) {
     KeySystemList_Free(*keySelect->list);
     *keySelect->list = NULL;
-    KeySystemClAct_Delete(keySelect->clact, 6);
-    KeySystemClAct_Delete(keySelect->clact, 5);
-    KeySystemClAct_Delete(keySelect->clact, 4);
-    KeySystemClAct_Delete(keySelect->clact, 7);
+    KeySystemClAct_Delete(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_THIRD);
+    KeySystemClAct_Delete(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_SECOND);
+    KeySystemClAct_Delete(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_FIRST);
+    KeySystemClAct_Delete(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING);
 }
 
 void KeySystemKeySelect_Update(KeySystemKeySelect *keySelect) {
@@ -323,18 +370,18 @@ static void KeySystemKeySelect_SetupDifficulty(KeySystemKeySelect *keySelect, Ke
     ClActor *cursor;
 
     setup->count = 4;
-    setup->items[0].msgId = 8;
-    setup->items[1].msgId = 9;
-    setup->items[2].msgId = 10;
-    setup->items[3].msgId = 7;
+    setup->items[GAME_DIFFICULTY_EASY].msgId = AbilityHandlers2_Text_EasyMode;
+    setup->items[GAME_DIFFICULTY_NORMAL].msgId = AbilityHandlers2_Text_NormalMode;
+    setup->items[GAME_DIFFICULTY_CHALLENGE].msgId = AbilityHandlers2_Text_ChallengeMode;
+    setup->items[KEY_DIFFICULTY_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectDifficulty;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_EASY)) {
-        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, 4), TRUE);
+        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_FIRST), TRUE);
     }
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_CHALLENGE)) {
-        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, 6), TRUE);
+        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_THIRD), TRUE);
     }
-    cursor = KeySystemClAct_GetActor(keySelect->clact, 7);
+    cursor = KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING);
     KeySystemKeySelect_MoveCursor(cursor, setup, GetGameDifficulty(keySelect->keyInfo));
 }
 
@@ -344,7 +391,7 @@ static int KeySystemKeySelect_SelectDifficulty(int index, KeySystemKeySelect *ke
     if (index == GetGameDifficulty(keySelect->keyInfo)) {
         return KEY_SELECT_CURRENT;
     }
-    if (index < 3) {
+    if (index < KEY_DIFFICULTY_MENU_BACK) {
         switch (index) {
         case GAME_DIFFICULTY_EASY:
             if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_EASY)) {
@@ -359,7 +406,8 @@ static int KeySystemKeySelect_SelectDifficulty(int index, KeySystemKeySelect *ke
         }
         SetGameDifficulty(keySelect->keyInfo, index);
         setup = KeySystemList_GetSetup(*keySelect->list);
-        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, 7), setup, index);
+        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING),
+                                      setup, index);
     }
     return KEY_SELECT_DONE;
 }
@@ -367,20 +415,20 @@ static int KeySystemKeySelect_SelectDifficulty(int index, KeySystemKeySelect *ke
 static void KeySystemKeySelect_SetupCity(KeySystemKeySelect *keySelect, KeySystemListSetup *setup) {
     ClActor *cursor;
 
-    setup->count = 3;
+    setup->count = KEY_CITY_MENU_COUNT;
 #ifdef BLACK2
-    setup->items[0].msgId = 11;
-    setup->items[1].msgId = 12;
+    setup->items[KEY_CITY_MENU_DEFAULT].msgId = AbilityHandlers2_Text_BlackCity;
+    setup->items[KEY_CITY_MENU_OTHER].msgId = AbilityHandlers2_Text_WhiteForest;
 #else
-    setup->items[0].msgId = 12;
-    setup->items[1].msgId = 11;
+    setup->items[KEY_CITY_MENU_DEFAULT].msgId = AbilityHandlers2_Text_WhiteForest;
+    setup->items[KEY_CITY_MENU_OTHER].msgId = AbilityHandlers2_Text_BlackCity;
 #endif
-    setup->items[2].msgId = 7;
+    setup->items[KEY_CITY_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectCity;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_CITY)) {
-        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, 5), TRUE);
+        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_SECOND), TRUE);
     }
-    cursor = KeySystemClAct_GetActor(keySelect->clact, 7);
+    cursor = KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING);
     KeySystemKeySelect_MoveCursor(cursor, setup, KeyInfo_GetCityKey(keySelect->keyInfo));
 }
 
@@ -399,7 +447,7 @@ static int KeySystemKeySelect_SelectCity(int index, KeySystemKeySelect *keySelec
     if (city == index) {
         return KEY_SELECT_CURRENT;
     }
-    if (index < 2) {
+    if (index < KEY_CITY_MENU_BACK) {
         if (SaveControl_IsDataAlreadyPresent(GameData_GetSaveControl(keySelect->gameData))) {
             spawn = GetGameDataNowSpawnZone(keySelect->gameData);
             // The city, its tower or treehollow, or the zones next to them
@@ -408,12 +456,13 @@ static int KeySystemKeySelect_SelectCity(int index, KeySystemKeySelect *keySelec
                 return KEY_SELECT_IN_AREA;
             }
         }
-        if (index == 1 && !keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_CITY)) {
+        if (index == KEY_CITY_MENU_OTHER && !keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_CITY)) {
             return KEY_SELECT_LOCKED;
         }
         KeyInfo_SetCityKey(keySelect->keyInfo, index);
         setup = KeySystemList_GetSetup(*keySelect->list);
-        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, 7), setup, index);
+        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING),
+                                      setup, index);
     }
     return KEY_SELECT_DONE;
 }
@@ -422,18 +471,18 @@ static void KeySystemKeySelect_SetupChamber(KeySystemKeySelect *keySelect, KeySy
     ClActor *cursor;
 
     setup->count = 4;
-    setup->items[0].msgId = 100;
-    setup->items[1].msgId = 101;
-    setup->items[2].msgId = 102;
-    setup->items[3].msgId = 7;
+    setup->items[KEY_INFO_CHAMBER_ROCK_PEAK].msgId = AbilityHandlers2_Text_RockPeakChamber;
+    setup->items[KEY_INFO_CHAMBER_IRON].msgId = AbilityHandlers2_Text_IronChamber;
+    setup->items[KEY_INFO_CHAMBER_ICEBERG].msgId = AbilityHandlers2_Text_IcebergChamber;
+    setup->items[KEY_CHAMBER_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectChamber;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_IRON)) {
-        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, 5), TRUE);
+        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_SECOND), TRUE);
     }
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_ICEBERG)) {
-        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, 6), TRUE);
+        ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_THIRD), TRUE);
     }
-    cursor = KeySystemClAct_GetActor(keySelect->clact, 7);
+    cursor = KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING);
     KeySystemKeySelect_MoveCursor(cursor, setup, KeyInfo_GetChamberKey(keySelect->keyInfo));
 }
 
@@ -443,14 +492,14 @@ static int KeySystemKeySelect_SelectChamber(int index, KeySystemKeySelect *keySe
     if (index == KeyInfo_GetChamberKey(keySelect->keyInfo)) {
         return KEY_SELECT_CURRENT;
     }
-    if (index < 3) {
+    if (index < KEY_CHAMBER_MENU_BACK) {
         switch (index) {
-        case 1:
+        case KEY_INFO_CHAMBER_IRON:
             if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_IRON)) {
                 return KEY_SELECT_LOCKED;
             }
             break;
-        case 2:
+        case KEY_INFO_CHAMBER_ICEBERG:
             if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_ICEBERG)) {
                 return KEY_SELECT_LOCKED;
             }
@@ -458,25 +507,26 @@ static int KeySystemKeySelect_SelectChamber(int index, KeySystemKeySelect *keySe
         }
         KeyInfo_SetChamberKey(keySelect->keyInfo, index);
         setup = KeySystemList_GetSetup(*keySelect->list);
-        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, 7), setup, index);
+        KeySystemKeySelect_MoveCursor(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_CURRENT_SETTING),
+                                      setup, index);
     }
     return KEY_SELECT_DONE;
 }
 
 u16 KeySystemFlow_GetDifficultyMsg(KeyInfoSave *keyInfo) {
-    return GetGameDifficulty(keyInfo) + 22;
+    return GetGameDifficulty(keyInfo) + AbilityHandlers2_Text_ChangeDifficultyCurrentMode;
 }
 
 u16 KeySystemFlow_GetCityMsg(KeyInfoSave *keyInfo) {
 #ifdef BLACK2
-    return KeyInfo_GetCityKey(keyInfo) + 25;
+    return KeyInfo_GetCityKey(keyInfo) + AbilityHandlers2_Text_SwapWhiteForestBlack;
 #else
-    return 26 - KeyInfo_GetCityKey(keyInfo);
+    return AbilityHandlers2_Text_SwapWhiteForestBlack_2 - KeyInfo_GetCityKey(keyInfo);
 #endif
 }
 
 u16 KeySystemFlow_GetChamberMsg(KeyInfoSave *keyInfo) {
-    return KeyInfo_GetChamberKey(keyInfo) + 94;
+    return KeyInfo_GetChamberKey(keyInfo) + AbilityHandlers2_Text_ChangeWhatLiesBeyond;
 }
 
 u16 KeySystemFlow_GetSettingsMsg(KeyInfoSave *keyInfo, u16 item) {
@@ -488,7 +538,7 @@ u16 KeySystemFlow_GetSettingsMsg(KeyInfoSave *keyInfo, u16 item) {
     case KEY_LIST_CHAMBER:
         return KeySystemFlow_GetChamberMsg(keyInfo);
     case KEY_LIST_BACK:
-        return 27;
+        return AbilityHandlers2_Text_GoBackKeySystems;
     }
     return 0;
 }
@@ -516,16 +566,16 @@ BOOL KeySystemFlow_FormatKeyMsg(KeySystemWork *wk, int key, BOOL receive) {
     if (exchange) {
         // With the other player's name or without it
         if (wk->partnerSaveInfo.hasSave) {
-            msgId = receive ? 44 : 31;
+            msgId = receive ? AbilityHandlers2_Text_EasyModeUnlockedBy : AbilityHandlers2_Text_SentEasyKey;
         } else {
-            msgId = receive ? 50 : 37;
+            msgId = receive ? AbilityHandlers2_Text_EasyModeUnlockedBy_2 : AbilityHandlers2_Text_SentEasyKey_2;
         }
         // The city key has a message for each city
         if (key == KEY_SYSTEM_KEY_CITY) {
 #ifdef BLACK2
-            key = receive ? 2 : 3;
+            key = receive ? KEY_EXCHANGE_MSG_COLUMN_TREEHOLLOW : KEY_EXCHANGE_MSG_COLUMN_TOWER;
 #else
-            key = receive ? 3 : 2;
+            key = receive ? KEY_EXCHANGE_MSG_COLUMN_TOWER : KEY_EXCHANGE_MSG_COLUMN_TREEHOLLOW;
 #endif
         } else if (key > KEY_SYSTEM_KEY_CITY) {
             key++;
@@ -550,25 +600,26 @@ void KeySystemKeyAnim_Init(KeySystemKeyAnim *anim, KeySystemClAct *clact, KeySys
     anim->font = font;
     anim->oamSys = BmpOam_Init(heapId, KeySystemClAct_GetUnit(clact));
     anim->str = GFL_StrBufCreate(281, heapId);
-    anim->keyActor = KeySystemClAct_Create(clact, 8, heapId);
-    anim->effectActor = KeySystemClAct_Create(clact, 10, heapId);
-    anim->lockActor = KeySystemClAct_Create(clact, 12, heapId);
-    anim->plateActor = KeySystemClAct_Create(clact, 9, heapId);
+    anim->keyActor = KeySystemClAct_Create(clact, KEY_SYSTEM_ACTOR_KEY, heapId);
+    anim->effectActor = KeySystemClAct_Create(clact, KEY_SYSTEM_ACTOR_UNLOCK_EFFECT, heapId);
+    anim->lockActor = KeySystemClAct_Create(clact, KEY_SYSTEM_ACTOR_ANIMATED_LOCK, heapId);
+    anim->plateActor = KeySystemClAct_Create(clact, KEY_SYSTEM_ACTOR_NAMEPLATE, heapId);
     {
         ClActorSetup setup = { 192, 98, 0, 1, 1 };
 
-        anim->text = KeySystemOamText_Create(&setup, 16, 2, KeySystemClAct_GetResource(clact, 0), 3, CLACT_SURFACE_MAIN,
-                                             anim->oamSys, heapId);
+        anim->text =
+            KeySystemOamText_Create(&setup, 16, 2, KeySystemClAct_GetResource(clact, KEY_SYSTEM_RESOURCE_PALETTE), 3,
+                                    CLACT_SURFACE_MAIN, anim->oamSys, heapId);
         BmpOam_ActorSetDrawEnable(KeySystemOamText_GetActor(anim->text), FALSE);
     }
 }
 
 void KeySystemKeyAnim_Free(KeySystemKeyAnim *anim) {
     KeySystemOamText_Free(anim->text);
-    KeySystemClAct_Delete(anim->clact, 9);
-    KeySystemClAct_Delete(anim->clact, 12);
-    KeySystemClAct_Delete(anim->clact, 10);
-    KeySystemClAct_Delete(anim->clact, 8);
+    KeySystemClAct_Delete(anim->clact, KEY_SYSTEM_ACTOR_NAMEPLATE);
+    KeySystemClAct_Delete(anim->clact, KEY_SYSTEM_ACTOR_ANIMATED_LOCK);
+    KeySystemClAct_Delete(anim->clact, KEY_SYSTEM_ACTOR_UNLOCK_EFFECT);
+    KeySystemClAct_Delete(anim->clact, KEY_SYSTEM_ACTOR_KEY);
     GFL_StrBufFree(anim->str);
     BmpOam_Exit(anim->oamSys);
 }
@@ -617,24 +668,24 @@ static BOOL KeySystemKeyAnim_Unlock(KeySystemKeyAnim *anim) {
     }
     anim->frame++;
     switch (anim->state) {
-    case 0:
+    case KEY_UNLOCK_STEP_PRINT_NAME:
         KeySystemOamText_SetColor(anim->text, PRINT_COLOR(1, 2, 0));
         KeySystemOamText_Print(anim->text, anim->msgData, anim->msgId, anim->font);
         anim->state++;
-    case 1:
+    case KEY_UNLOCK_STEP_WAIT_NAME:
         KeySystemOamText_Update(anim->text);
         if (KeySystemOamText_IsDone(anim->text)) {
             anim->state++;
         }
         break;
-    case 2:
+    case KEY_UNLOCK_STEP_START_PLATE_RISE:
         KeySystemAccelMove_Init(&anim->move, &sPlateUpStart, &sPlateUpEnd, FX32_CONST(-3), PLATE_UP_FRAMES);
         ClActor_SetVisible(anim->plateActor, TRUE);
         ClActor_SetVisible(anim->lockActor, TRUE);
-        ClActor_SetSequence(anim->lockActor, 7);
+        ClActor_SetSequence(anim->lockActor, KEY_SYSTEM_ANIM_LOCK_CLOSED);
         BmpOam_ActorSetDrawEnable(KeySystemOamText_GetActor(anim->text), TRUE);
         anim->state++;
-    case 3: {
+    case KEY_UNLOCK_STEP_MOVE_PLATE_UP: {
         ClActorPos pos;
         ClActorPos actorPos;
         BmpOamActor *actor;
@@ -655,20 +706,20 @@ static BOOL KeySystemKeyAnim_Unlock(KeySystemKeyAnim *anim) {
         BmpOam_ActorSetPos(actor, actorPos.x, actorPos.y);
         break;
     }
-    case 4:
+    case KEY_UNLOCK_STEP_WAIT_PLATE:
         if (anim->timer++ > 60) {
             anim->timer = 0;
             anim->state++;
         }
         break;
-    case 5:
+    case KEY_UNLOCK_STEP_START_KEY_DROP:
         KeySystemTween_Init(&anim->tween, &sKeyInStart, &sKeyInEnd, KEY_IN_FRAMES);
         ClActor_SetVisible(anim->keyActor, TRUE);
-        ClActor_SetSequence(anim->keyActor, 8);
+        ClActor_SetSequence(anim->keyActor, KEY_SYSTEM_ANIM_KEY_DROP);
         ClActor_SetAutoAnim(anim->keyActor, TRUE);
         GFL_SndSEPlay(SEQ_SE_SW_KEYSYS_02);
         anim->state++;
-    case 6: {
+    case KEY_UNLOCK_STEP_MOVE_KEY_DOWN: {
         ClActorPos pos;
 
         if (KeySystemTween_Update(&anim->tween) && ClActor_GetAnimFrame(anim->keyActor) == 0) {
@@ -679,17 +730,17 @@ static BOOL KeySystemKeyAnim_Unlock(KeySystemKeyAnim *anim) {
         ClActor_SetSurfacePos(anim->keyActor, &pos, CLACT_SURFACE_MAIN);
         break;
     }
-    case 7:
+    case KEY_UNLOCK_STEP_WAIT_KEY:
         if (anim->timer++ > 60) {
             anim->timer = 0;
             anim->state++;
         }
         break;
-    case 8:
+    case KEY_UNLOCK_STEP_START_KEY_TURN:
         KeySystemTween_Init(&anim->tween, &sKeyOutStart, &sKeyOutEnd, KEY_OUT_FRAMES);
-        ClActor_SetSequence(anim->keyActor, 9);
+        ClActor_SetSequence(anim->keyActor, KEY_SYSTEM_ANIM_KEY_TURN);
         anim->state++;
-    case 9: {
+    case KEY_UNLOCK_STEP_MOVE_KEY_OUT: {
         ClActorPos pos;
 
         if (KeySystemTween_Update(&anim->tween) && !ClActor_IsAnimActive(anim->keyActor)) {
@@ -701,51 +752,51 @@ static BOOL KeySystemKeyAnim_Unlock(KeySystemKeyAnim *anim) {
         ClActor_SetSurfacePos(anim->keyActor, &pos, CLACT_SURFACE_MAIN);
         break;
     }
-    case 10:
-        ClActor_SetSequence(anim->lockActor, 12);
+    case KEY_UNLOCK_STEP_START_LOCK_OPEN:
+        ClActor_SetSequence(anim->lockActor, KEY_SYSTEM_ANIM_LOCK_OPEN);
         ClActor_SetAutoAnim(anim->lockActor, TRUE);
         anim->state++;
         break;
-    case 11:
+    case KEY_UNLOCK_STEP_WAIT_LOCK:
         if (!ClActor_IsAnimActive(anim->lockActor)) {
             ClActor_SetVisible(anim->lockActor, FALSE);
             anim->state++;
         }
         break;
-    case 12:
+    case KEY_UNLOCK_STEP_START_EFFECT:
         ClActor_SetSurfacePos(anim->effectActor, &sEffectPos, CLACT_SURFACE_MAIN);
         ClActor_SetVisible(anim->effectActor, TRUE);
-        ClActor_SetSequence(anim->effectActor, 11);
+        ClActor_SetSequence(anim->effectActor, KEY_SYSTEM_ANIM_UNLOCK_EFFECT);
         ClActor_SetAutoAnim(anim->effectActor, TRUE);
         GFL_SndSEPlay(SEQ_SE_SW_KEYSYS_04);
         anim->state++;
         break;
-    case 13:
+    case KEY_UNLOCK_STEP_WAIT_EFFECT:
         if (!ClActor_IsAnimActive(anim->effectActor)) {
             ClActor_SetVisible(anim->effectActor, FALSE);
             anim->state++;
         }
         break;
-    case 14:
+    case KEY_UNLOCK_STEP_WAIT_EFFECT_END:
         if (anim->timer++ > 120) {
             anim->timer = 0;
             anim->state++;
         }
         break;
-    case 15:
+    case KEY_UNLOCK_STEP_PRINT_RESULT:
         KeySystemMsgWin_PrintStr(anim->msgWin, anim->str, KEY_SYSTEM_MSG_STREAM_FAST);
         GFL_BGSysQueueScrLoad(0);
         anim->state++;
         break;
-    case 16:
+    case KEY_UNLOCK_STEP_WAIT_RESULT:
         if (KeySystemMsgWin_IsDone(anim->msgWin)) {
             anim->state++;
         }
         break;
-    case 17:
+    case KEY_UNLOCK_STEP_START_PLATE_DROP:
         KeySystemTween_Init(&anim->tween, &sPlateDownStart, &sPlateDownEnd, PLATE_DOWN_FRAMES);
         anim->state++;
-    case 18: {
+    case KEY_UNLOCK_STEP_MOVE_PLATE_DOWN: {
         ClActorPos pos;
         ClActorPos actorPos;
         BmpOamActor *actor;
@@ -769,7 +820,7 @@ static BOOL KeySystemKeyAnim_Unlock(KeySystemKeyAnim *anim) {
         BmpOam_ActorSetPos(actor, actorPos.x, actorPos.y);
         break;
     }
-    case 19:
+    case KEY_UNLOCK_STEP_DONE:
         anim->active = FALSE;
         return TRUE;
     }
@@ -783,13 +834,13 @@ static BOOL KeySystemKeyAnim_Show(KeySystemKeyAnim *anim) {
     }
     anim->frame++;
     switch (anim->state) {
-    case 0:
+    case KEY_SHOW_STEP_START_DROP:
         KeySystemTween_Init(&anim->tween, &sShowInStart, &sShowInEnd, SHOW_IN_FRAMES);
         ClActor_SetVisible(anim->keyActor, TRUE);
         ClActor_SetAutoAnim(anim->keyActor, TRUE);
         GFL_SndSEPlay(SEQ_SE_SW_KEYSYS_02);
         anim->state++;
-    case 1: {
+    case KEY_SHOW_STEP_MOVE_DOWN: {
         ClActorPos pos;
 
         if (KeySystemTween_Update(&anim->tween) && ClActor_GetAnimFrame(anim->keyActor) == 0) {
@@ -800,26 +851,26 @@ static BOOL KeySystemKeyAnim_Show(KeySystemKeyAnim *anim) {
         ClActor_SetSurfacePos(anim->keyActor, &pos, CLACT_SURFACE_MAIN);
         break;
     }
-    case 2:
+    case KEY_SHOW_STEP_WAIT_KEY:
         if (anim->timer++ > 60) {
             anim->timer = 0;
             anim->state++;
         }
         break;
-    case 3:
+    case KEY_SHOW_STEP_PRINT_RESULT:
         KeySystemMsgWin_PrintStr(anim->msgWin, anim->str, KEY_SYSTEM_MSG_STREAM_FAST);
         GFL_BGSysQueueScrLoad(0);
         anim->state++;
         break;
-    case 4:
+    case KEY_SHOW_STEP_WAIT_RESULT:
         if (KeySystemMsgWin_IsDone(anim->msgWin)) {
             anim->state++;
         }
         break;
-    case 5:
+    case KEY_SHOW_STEP_START_EXIT:
         KeySystemTween_Init(&anim->tween, &sShowOutStart, &sShowOutEnd, SHOW_OUT_FRAMES);
         anim->state++;
-    case 6: {
+    case KEY_SHOW_STEP_MOVE_OUT: {
         ClActorPos pos;
 
         if (KeySystemTween_Update(&anim->tween)) {
@@ -829,15 +880,15 @@ static BOOL KeySystemKeyAnim_Show(KeySystemKeyAnim *anim) {
         ClActor_SetSurfacePos(anim->keyActor, &pos, CLACT_SURFACE_MAIN);
         break;
     }
-    case 7:
+    case KEY_SHOW_STEP_DONE:
         anim->active = FALSE;
         return TRUE;
     }
     return FALSE;
 }
 
-// Called when the wireless connection ends: the exchange stops and B can't cancel any more
-void KeySystemFlow_OnNetError(void *work) {
+// The infrared phase ended; the exchange continues over wireless.
+void KeySystemFlow_OnInfraredEnded(void *work) {
     KeySystemWork *wk = work;
 
     wk->choice = TRUE;

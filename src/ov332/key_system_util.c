@@ -32,6 +32,13 @@
 #include "system/time_icon.h"
 #include "system/wordset.h"
 
+// Phases of KeySystemList_Update.
+enum {
+    KEY_LIST_STEP_INPUT = 0,
+    KEY_LIST_STEP_BLINK_DECISION = 1,
+    KEY_LIST_STEP_DECIDED = 2,
+};
+
 // The parts that Unova Link's screens are built from: message windows, menus and lists, the sequence of steps and the
 // scenes it runs, text shown as OAM, moves over frames, the scrolling list, particles and palette fades
 
@@ -601,7 +608,7 @@ void KeySystemList_Update(KeySystemList *list) {
 
     list->changed = FALSE;
     switch (list->state) {
-    case 0:
+    case KEY_LIST_STEP_INPUT:
         repeat = GCTX_HIDGetTypedKeys();
         pressed = GCTX_HIDGetPressedKeys();
         decided = FALSE;
@@ -660,7 +667,7 @@ void KeySystemList_Update(KeySystemList *list) {
             list->timer = 0;
         }
         break;
-    case 1:
+    case KEY_LIST_STEP_BLINK_DECISION:
         if ((list->timer / 4) % 2) {
             palette = list->setup.palette + 1;
         } else {
@@ -673,7 +680,7 @@ void KeySystemList_Update(KeySystemList *list) {
             list->state++;
         }
         break;
-    case 2:
+    case KEY_LIST_STEP_DECIDED:
         list->decided = TRUE;
         break;
     }
@@ -713,7 +720,7 @@ BOOL KeySystemList_IsDecided(KeySystemList *list) {
 
 // Takes a choice back, to choose again
 void KeySystemList_Reset(KeySystemList *list) {
-    list->state = 0;
+    list->state = KEY_LIST_STEP_INPUT;
     list->decided = FALSE;
     KeySystemMsgWin_SetPaletteNo(list->wins[list->cursor], list->setup.palette + 1);
     GFL_BGSysQueueScrLoad(list->setup.bg);
@@ -1036,9 +1043,9 @@ KeySystemScrollList *KeySystemScrollList_Create(const KeySystemScrollListSetup *
     listSetup.work = list;
     listSetup.callbacks = &sScrollListCallbacks;
     list->list = FrameList_Create(&listSetup, heapId);
-    FrameList_SetKeyMask(list->list, 193);
+    FrameList_SetKeyMask(list->list, PAD_KEY_UP | PAD_KEY_DOWN | PAD_BUTTON_A);
     arc = GFL_ArcSysCreateFileHandle(ARCID_KEY_SYSTEM, heapId);
-    FrameList_LoadScreenPalette(list->list, arc, 12, FALSE, 0, setup->unkA8, setup->palette);
+    FrameList_LoadScreenPalette(list->list, arc, 12, FALSE, 0, setup->frameChar, setup->palette);
     FrameList_LoadCursorPalette(list->list, arc, 1, 1, 2);
     GFL_ArcToolFree(arc);
     for (i = 0; i < setup->count; i++) {
@@ -1076,7 +1083,7 @@ BOOL KeySystemScrollList_Start(KeySystemScrollList *list) {
     if (!FrameList_Draw(list->list)) {
         FrameList_SetCursor(list->list, list->setup.cursor);
         if (FrameList_CanScrollDown(list->list)) {
-            FrameList_ScrollBlocking(list->list, list->setup.unkAC);
+            FrameList_ScrollBlocking(list->list, list->setup.scroll);
         }
         list->started = TRUE;
         return TRUE;
