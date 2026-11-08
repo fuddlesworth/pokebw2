@@ -51,7 +51,7 @@ void BrBtnSys_Main(BrBtnSys *p_wk);
 // BR_BTN_INPUT_*, with the pressed button's BR_BTN_DATA_PARAM_DATA1 and DATA2
 u32 BrBtnSys_GetInput(const BrBtnSys *cp_wk, u32 *p_data1, u32 *p_data2);
 BOOL BrBtnSys_IsBusy(const BrBtnSys *cp_wk);
-u32 BrBtnSys_GetUnk54(const BrBtnSys *cp_wk);
+u32 BrBtnSys_GetExitResult(const BrBtnSys *cp_wk);
 
 // A button labelled with the message msgID of msg
 BrBtn *BrBtn_InitEx(const ClActorSetup *setup, u16 msgID, u16 width, u32 display, ClActUnit *unit, BmpOamSys *bmpoam,

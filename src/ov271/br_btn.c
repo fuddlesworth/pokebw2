@@ -3,6 +3,7 @@
 // OAM, that the screens use for their own buttons. The name is the ROM's string, from GFL_HeapAllocate's asserts
 
 #include "types.h"
+#include "app/battle_recorder.h"
 #include "app/battle_recorder/br_btn.h"
 #include "app/battle_recorder/br_btn_data.h"
 #include "app/battle_recorder/br_res.h"
@@ -94,7 +95,8 @@ struct BrBtnSys {
     BmpOamSys *bmpoam;
     PrintQueue *que;
     BrMsgWin *text;
-    u32 unk54;
+    // Copied to the outer result on menu exit; current producers only set 0.
+    u32 exitResult;
     BrBallEffect *ballEff;
     BrBtnRecovery *recovery;
 };
@@ -282,8 +284,8 @@ BOOL BrBtnSys_IsBusy(const BrBtnSys *cp_wk) {
     return cp_wk->isBusy;
 }
 
-u32 BrBtnSys_GetUnk54(const BrBtnSys *cp_wk) {
-    return cp_wk->unk54;
+u32 BrBtnSys_GetExitResult(const BrBtnSys *cp_wk) {
+    return cp_wk->exitResult;
 }
 
 static void BrBtnSys_PushStack(BrBtnSys *p_wk, const BrBtnWork *cp_btn, u32 display) {
@@ -345,16 +347,21 @@ static void BrBtnRecovery_Pop(BrBtnRecovery *p_wk) {
 }
 
 // Lights the buttons of the stack that can be pressed to return: the top one, or after a return the top two
+enum {
+    BR_BTN_STACK_ACTIVE_TOP = 0,
+    BR_BTN_STACK_ACTIVE_TOP_TWO = 1,
+};
+
 static void BrBtnSys_SetStackPalette(BrBtnSys *p_wk, u32 mode) {
     int i;
     BOOL isActive;
 
     for (i = 0; i < p_wk->btn_stack_num; i++) {
         switch (mode) {
-        case 0:
+        case BR_BTN_STACK_ACTIVE_TOP:
             isActive = i == p_wk->btn_stack_num - 1;
             break;
-        case 1:
+        case BR_BTN_STACK_ACTIVE_TOP_TWO:
             isActive = i >= p_wk->btn_stack_num - 2;
             break;
         }
@@ -394,13 +401,13 @@ static void BrBtnSys_Seq_Main(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
                     p_wk->trgPos.y = y;
                     BrBallEff_Start(p_wk->ballEff, BR_BALL_EFFECT_TOUCH, &p_wk->trgPos);
                     BrBtnWork_SetFollow(&p_wk->btn[p_wk->trgIdx], &p_wk->trgPos);
-                    p_wk->unk54 = 0;
+                    p_wk->exitResult = BR_RESULT_EXIT;
                 } else {
                     u32 type = BrBtnWork_GetParam(&p_wk->btn[i], BR_BTN_PARAM_UNVALID_TYPE);
                     u32 data = BrBtnWork_GetParam(&p_wk->btn[i], BR_BTN_PARAM_UNVALID_DATA);
 
                     GFL_SndSEPlay(0x704);
-                    if (type == 1) {
+                    if (type == BR_BTN_INVALID_TYPE_INFO) {
                         p_wk->trgIdx = i;
                         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Info);
                     }
@@ -443,12 +450,18 @@ static void BrBtnSys_Seq_Main(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BTN_HIDE_STEP_MOVE_OTHERS = 0,
+    BR_BTN_HIDE_STEP_WAIT_MOVE = 1,
+    BR_BTN_HIDE_STEP_CHANGE = 2,
+};
+
 static void BrBtnSys_Seq_Hide(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0: {
+    case BR_BTN_HIDE_STEP_MOVE_OTHERS: {
         BrPoint pos;
 
         for (i = 0; i < p_wk->btn_num; i++) {
@@ -457,21 +470,21 @@ static void BrBtnSys_Seq_Hide(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
                 BrBtnWork_StartMove(&p_wk->btn[i], BR_BTN_MOVE_TARGET, &pos);
             }
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_HIDE_STEP_WAIT_MOVE;
         break;
     }
-    case 1: {
+    case BR_BTN_HIDE_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn[i]);
         }
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BTN_HIDE_STEP_CHANGE;
         }
         break;
     }
-    case 2:
+    case BR_BTN_HIDE_STEP_CHANGE:
         // Both branches start the same sequence
         if (p_wk->btnType == BR_BTN_TYPE_CHANGE_DISPLAY) {
             BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Change);
@@ -534,29 +547,35 @@ static void BrBtnSys_Seq_Change(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BTN_SHOW_STEP_MOVE_TO_MENU = 0,
+    BR_BTN_SHOW_STEP_WAIT_MOVE = 1,
+    BR_BTN_SHOW_STEP_NEXT = 2,
+};
+
 static void BrBtnSys_Seq_Show(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_SHOW_STEP_MOVE_TO_MENU:
         for (i = 0; i < p_wk->btn_num; i++) {
             BrBtnWork_StartMove(&p_wk->btn[i], BR_BTN_MOVE_RETURN, NULL);
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_SHOW_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_SHOW_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn[i]);
         }
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BTN_SHOW_STEP_NEXT;
         }
         break;
     }
-    case 2:
+    case BR_BTN_SHOW_STEP_NEXT:
         switch (p_wk->btnType) {
         case BR_BTN_TYPE_SELECT:
         case BR_BTN_TYPE_MENU:
@@ -573,12 +592,18 @@ static void BrBtnSys_Seq_Show(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BTN_RETURN_STEP_MOVE_OFFSCREEN = 0,
+    BR_BTN_RETURN_STEP_WAIT_MOVE = 1,
+    BR_BTN_RETURN_STEP_UNSTACK = 2,
+};
+
 static void BrBtnSys_Seq_Return(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_RETURN_STEP_MOVE_OFFSCREEN:
         for (i = 0; i < p_wk->btn_num; i++) {
             BrPoint pos;
 
@@ -586,31 +611,38 @@ static void BrBtnSys_Seq_Return(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             pos.y = 224;
             BrBtnWork_StartMove(&p_wk->btn[i], BR_BTN_MOVE_TARGET_SLOW, &pos);
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_RETURN_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_RETURN_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn[i]);
         }
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BTN_RETURN_STEP_UNSTACK;
         }
         break;
     }
-    case 2:
+    case BR_BTN_RETURN_STEP_UNSTACK:
         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Unstack);
         break;
     }
 }
+
+enum {
+    BR_BTN_STACK_STEP_MOVE_STACK = 0,
+    BR_BTN_STACK_STEP_WAIT_MOVE = 1,
+    BR_BTN_STACK_STEP_PRINT_PROMPT = 2,
+    BR_BTN_STACK_STEP_NEXT = 3,
+};
 
 static void BrBtnSys_Seq_Stack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_STACK_STEP_MOVE_STACK:
         for (i = 0; i < p_wk->btn_stack_num; i++) {
             if (i == p_wk->btn_stack_num - 1) {
                 BrBtnWork_StartMove(&p_wk->btn_stack[i], BR_BTN_MOVE_TO_MAIN, &sc_stack_pos[0]);
@@ -619,21 +651,21 @@ static void BrBtnSys_Seq_Stack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
                                     &sc_stack_pos[p_wk->btn_stack_num - i - 1]);
             }
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_STACK_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_STACK_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_stack_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn_stack[i]);
         }
         if (isEnd) {
-            BrBtnSys_SetStackPalette(p_wk, 0);
-            *p_seq = 2;
+            BrBtnSys_SetStackPalette(p_wk, BR_BTN_STACK_ACTIVE_TOP);
+            *p_seq = BR_BTN_STACK_STEP_PRINT_PROMPT;
         }
         break;
     }
-    case 2: {
+    case BR_BTN_STACK_STEP_PRINT_PROMPT: {
         BrBtnWork *p_top = &p_wk->btn_stack[p_wk->btn_stack_num - 1];
         u32 type = BrBtnWork_GetParam(p_top, BR_BTN_PARAM_TYPE);
         u16 msgID = BrBtnWork_GetParam(p_top, BR_BTN_PARAM_DATA2);
@@ -644,10 +676,10 @@ static void BrBtnSys_Seq_Stack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             }
             BrText_Print(p_wk->text, p_wk->res, msgID);
         }
-        *p_seq = 3;
+        *p_seq = BR_BTN_STACK_STEP_NEXT;
         break;
     }
-    case 3:
+    case BR_BTN_STACK_STEP_NEXT:
         switch (p_wk->btnType) {
         case BR_BTN_TYPE_SELECT:
         case BR_BTN_TYPE_MENU:
@@ -660,12 +692,18 @@ static void BrBtnSys_Seq_Stack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BTN_UNSTACK_STEP_MOVE_STACK = 0,
+    BR_BTN_UNSTACK_STEP_WAIT_MOVE = 1,
+    BR_BTN_UNSTACK_STEP_CHANGE = 2,
+};
+
 static void BrBtnSys_Seq_Unstack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_UNSTACK_STEP_MOVE_STACK:
         for (i = 0; i < p_wk->btn_stack_num; i++) {
             if (i == p_wk->btn_stack_num - 1) {
                 BrPoint pos;
@@ -682,31 +720,35 @@ static void BrBtnSys_Seq_Unstack(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         for (i = 0; i < p_wk->btn_num; i++) {
             BrBtnWork_SetSoftPriority(&p_wk->btn[i], 3);
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_UNSTACK_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_UNSTACK_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_stack_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn_stack[i]);
         }
         if (isEnd) {
-            BrBtnSys_SetStackPalette(p_wk, 1);
-            *p_seq = 2;
+            BrBtnSys_SetStackPalette(p_wk, BR_BTN_STACK_ACTIVE_TOP_TWO);
+            *p_seq = BR_BTN_UNSTACK_STEP_CHANGE;
         }
         break;
     }
-    case 2:
+    case BR_BTN_UNSTACK_STEP_CHANGE:
         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Change);
         break;
     }
 }
 
+enum {
+    BR_BTN_END_STEP_REPORT_INPUT = 0,
+};
+
 static void BrBtnSys_Seq_End(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_END_STEP_REPORT_INPUT:
         if (p_wk->isValid) {
             switch (p_wk->btnType) {
             case BR_BTN_TYPE_SELECT:
@@ -726,35 +768,47 @@ static void BrBtnSys_Seq_End(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     }
 }
 
+enum {
+    BR_BTN_INFO_STEP_PRINT = 0,
+    BR_BTN_INFO_STEP_WAIT_FRAME = 1,
+    BR_BTN_INFO_STEP_RETURN_TO_INPUT = 2,
+};
+
 static void BrBtnSys_Seq_Info(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
 
     switch (*p_seq) {
-    case 0: {
+    case BR_BTN_INFO_STEP_PRINT: {
         u32 msgID = BrBtnWork_GetParam(&p_wk->btn[p_wk->trgIdx], BR_BTN_PARAM_UNVALID_DATA);
 
         if (p_wk->text == NULL) {
             p_wk->text = BrText_Init(p_wk->res, p_wk->que, p_wk->heapId);
         }
         BrText_Print(p_wk->text, p_wk->res, msgID);
-        *p_seq = 1;
+        *p_seq = BR_BTN_INFO_STEP_WAIT_FRAME;
         break;
     }
-    case 1:
-        *p_seq = 2;
+    case BR_BTN_INFO_STEP_WAIT_FRAME:
+        *p_seq = BR_BTN_INFO_STEP_RETURN_TO_INPUT;
         break;
-    case 2:
+    case BR_BTN_INFO_STEP_RETURN_TO_INPUT:
         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Main);
         break;
     }
 }
+
+enum {
+    BR_BTN_OPEN_STEP_MOVE_IN = 0,
+    BR_BTN_OPEN_STEP_WAIT_MOVE = 1,
+    BR_BTN_OPEN_STEP_START = 2,
+};
 
 static void BrBtnSys_Seq_Open(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_OPEN_STEP_MOVE_IN:
         for (i = 0; i < p_wk->btn_num; i++) {
             BrPoint pos;
 
@@ -762,31 +816,37 @@ static void BrBtnSys_Seq_Open(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             pos.y = BrBtnWork_GetParam(&p_wk->btn[i], BR_BTN_PARAM_Y);
             BrBtnWork_StartMove(&p_wk->btn[i], BR_BTN_MOVE_TARGET_SLOW, &pos);
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_OPEN_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_OPEN_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn[i]);
         }
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BTN_OPEN_STEP_START;
         }
         break;
     }
-    case 2:
+    case BR_BTN_OPEN_STEP_START:
         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_Start);
         break;
     }
 }
+
+enum {
+    BR_BTN_CLOSE_STEP_MOVE_OUT = 0,
+    BR_BTN_CLOSE_STEP_WAIT_MOVE = 1,
+    BR_BTN_CLOSE_STEP_END = 2,
+};
 
 static void BrBtnSys_Seq_Close(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     BrBtnSys *p_wk = p_wk_adrs;
     int i;
 
     switch (*p_seq) {
-    case 0:
+    case BR_BTN_CLOSE_STEP_MOVE_OUT:
         for (i = 0; i < p_wk->btn_num; i++) {
             BrPoint pos;
 
@@ -794,20 +854,20 @@ static void BrBtnSys_Seq_Close(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             pos.y = 224;
             BrBtnWork_StartMove(&p_wk->btn[i], BR_BTN_MOVE_TARGET_SLOW, &pos);
         }
-        *p_seq = 1;
+        *p_seq = BR_BTN_CLOSE_STEP_WAIT_MOVE;
         break;
-    case 1: {
+    case BR_BTN_CLOSE_STEP_WAIT_MOVE: {
         BOOL isEnd = TRUE;
 
         for (i = 0; i < p_wk->btn_num; i++) {
             isEnd &= BrBtnWork_MainMove(&p_wk->btn[i]);
         }
         if (isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_BTN_CLOSE_STEP_END;
         }
         break;
     }
-    case 2:
+    case BR_BTN_CLOSE_STEP_END:
         BrSeq_SetNext(p_seqwk, BrBtnSys_Seq_End);
         break;
     }
@@ -1021,9 +1081,15 @@ static void BrBtnWork_SetFollow(BrBtnWork *p_wk, BrPoint *p_pos) {
     p_wk->follow = p_pos;
 }
 
+enum {
+    BR_BTN_TARGET_STEP_SETUP = 0,
+    BR_BTN_TARGET_STEP_MOVE = 1,
+    BR_BTN_TARGET_STEP_END = 2,
+};
+
 static BOOL BrBtnWork_Move_Target(BrBtnWork *p_wk) {
     switch (p_wk->seq) {
-    case 0: {
+    case BR_BTN_TARGET_STEP_SETUP: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1031,29 +1097,35 @@ static BOOL BrBtnWork_Move_Target(BrBtnWork *p_wk) {
         p_wk->end = p_wk->target.y;
         p_wk->count = 0;
         p_wk->max = 10;
-        p_wk->seq = 1;
+        p_wk->seq = BR_BTN_TARGET_STEP_MOVE;
         break;
     }
-    case 1: {
+    case BR_BTN_TARGET_STEP_MOVE: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_BTN_TARGET_STEP_END;
         }
         break;
     }
-    case 2:
+    case BR_BTN_TARGET_STEP_END:
         return TRUE;
     }
     return FALSE;
 }
 
+enum {
+    BR_BTN_MOVE_RETURN_STEP_SETUP = 0,
+    BR_BTN_MOVE_RETURN_STEP_MOVE = 1,
+    BR_BTN_MOVE_RETURN_STEP_END = 2,
+};
+
 static BOOL BrBtnWork_Move_Return(BrBtnWork *p_wk) {
     switch (p_wk->seq) {
-    case 0: {
+    case BR_BTN_MOVE_RETURN_STEP_SETUP: {
         BrPoint pos;
         s16 end;
 
@@ -1063,29 +1135,38 @@ static BOOL BrBtnWork_Move_Return(BrBtnWork *p_wk) {
         p_wk->end = end;
         p_wk->count = 0;
         p_wk->max = 16;
-        p_wk->seq = 1;
+        p_wk->seq = BR_BTN_MOVE_RETURN_STEP_MOVE;
         break;
     }
-    case 1: {
+    case BR_BTN_MOVE_RETURN_STEP_MOVE: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_BTN_MOVE_RETURN_STEP_END;
         }
         break;
     }
-    case 2:
+    case BR_BTN_MOVE_RETURN_STEP_END:
         return TRUE;
     }
     return FALSE;
 }
 
+enum {
+    BR_BTN_TO_MAIN_STEP_SETUP_OFFSCREEN = 0,
+    BR_BTN_TO_MAIN_STEP_MOVE_OFFSCREEN = 1,
+    BR_BTN_TO_MAIN_STEP_CHANGE_SCREEN = 2,
+    BR_BTN_TO_MAIN_STEP_SETUP_TARGET = 3,
+    BR_BTN_TO_MAIN_STEP_MOVE_TARGET = 4,
+    BR_BTN_TO_MAIN_STEP_END = 5,
+};
+
 static BOOL BrBtnWork_Move_ToMain(BrBtnWork *p_wk) {
     switch (p_wk->seq) {
-    case 0: {
+    case BR_BTN_TO_MAIN_STEP_SETUP_OFFSCREEN: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1093,25 +1174,25 @@ static BOOL BrBtnWork_Move_ToMain(BrBtnWork *p_wk) {
         p_wk->end = -32;
         p_wk->count = 0;
         p_wk->max = 14;
-        p_wk->seq = 1;
+        p_wk->seq = BR_BTN_TO_MAIN_STEP_MOVE_OFFSCREEN;
         break;
     }
-    case 1: {
+    case BR_BTN_TO_MAIN_STEP_MOVE_OFFSCREEN: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_BTN_TO_MAIN_STEP_CHANGE_SCREEN;
         }
         break;
     }
-    case 2:
+    case BR_BTN_TO_MAIN_STEP_CHANGE_SCREEN:
         BrBtnWork_ChangeDisplay(p_wk, CLACT_SURFACE_MAIN);
-        p_wk->seq = 3;
+        p_wk->seq = BR_BTN_TO_MAIN_STEP_SETUP_TARGET;
         break;
-    case 3: {
+    case BR_BTN_TO_MAIN_STEP_SETUP_TARGET: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1119,29 +1200,38 @@ static BOOL BrBtnWork_Move_ToMain(BrBtnWork *p_wk) {
         p_wk->end = p_wk->target.y;
         p_wk->count = 0;
         p_wk->max = 14;
-        p_wk->seq = 4;
+        p_wk->seq = BR_BTN_TO_MAIN_STEP_MOVE_TARGET;
         break;
     }
-    case 4: {
+    case BR_BTN_TO_MAIN_STEP_MOVE_TARGET: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 5;
+            p_wk->seq = BR_BTN_TO_MAIN_STEP_END;
         }
         break;
     }
-    case 5:
+    case BR_BTN_TO_MAIN_STEP_END:
         return TRUE;
     }
     return FALSE;
 }
 
+enum {
+    BR_BTN_TO_SUB_STEP_SETUP_OFFSCREEN = 0,
+    BR_BTN_TO_SUB_STEP_MOVE_OFFSCREEN = 1,
+    BR_BTN_TO_SUB_STEP_CHANGE_SCREEN = 2,
+    BR_BTN_TO_SUB_STEP_SETUP_TARGET = 3,
+    BR_BTN_TO_SUB_STEP_MOVE_TARGET = 4,
+    BR_BTN_TO_SUB_STEP_END = 5,
+};
+
 static BOOL BrBtnWork_Move_ToSub(BrBtnWork *p_wk) {
     switch (p_wk->seq) {
-    case 0: {
+    case BR_BTN_TO_SUB_STEP_SETUP_OFFSCREEN: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1149,25 +1239,25 @@ static BOOL BrBtnWork_Move_ToSub(BrBtnWork *p_wk) {
         p_wk->end = 224;
         p_wk->count = 0;
         p_wk->max = 14;
-        p_wk->seq = 1;
+        p_wk->seq = BR_BTN_TO_SUB_STEP_MOVE_OFFSCREEN;
         break;
     }
-    case 1: {
+    case BR_BTN_TO_SUB_STEP_MOVE_OFFSCREEN: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_BTN_TO_SUB_STEP_CHANGE_SCREEN;
         }
         break;
     }
-    case 2:
+    case BR_BTN_TO_SUB_STEP_CHANGE_SCREEN:
         BrBtnWork_ChangeDisplay(p_wk, CLACT_SURFACE_SUB);
-        p_wk->seq = 3;
+        p_wk->seq = BR_BTN_TO_SUB_STEP_SETUP_TARGET;
         break;
-    case 3: {
+    case BR_BTN_TO_SUB_STEP_SETUP_TARGET: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1175,29 +1265,35 @@ static BOOL BrBtnWork_Move_ToSub(BrBtnWork *p_wk) {
         p_wk->end = p_wk->target.y;
         p_wk->count = 0;
         p_wk->max = 14;
-        p_wk->seq = 4;
+        p_wk->seq = BR_BTN_TO_SUB_STEP_MOVE_TARGET;
         break;
     }
-    case 4: {
+    case BR_BTN_TO_SUB_STEP_MOVE_TARGET: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 5;
+            p_wk->seq = BR_BTN_TO_SUB_STEP_END;
         }
         break;
     }
-    case 5:
+    case BR_BTN_TO_SUB_STEP_END:
         return TRUE;
     }
     return FALSE;
 }
 
+enum {
+    BR_BTN_TARGET_SLOW_STEP_SETUP = 0,
+    BR_BTN_TARGET_SLOW_STEP_MOVE = 1,
+    BR_BTN_TARGET_SLOW_STEP_END = 2,
+};
+
 static BOOL BrBtnWork_Move_TargetSlow(BrBtnWork *p_wk) {
     switch (p_wk->seq) {
-    case 0: {
+    case BR_BTN_TARGET_SLOW_STEP_SETUP: {
         BrPoint pos;
 
         BrBtnWork_GetPos(p_wk, &pos);
@@ -1205,21 +1301,21 @@ static BOOL BrBtnWork_Move_TargetSlow(BrBtnWork *p_wk) {
         p_wk->end = p_wk->target.y;
         p_wk->count = 0;
         p_wk->max = 26;
-        p_wk->seq = 1;
+        p_wk->seq = BR_BTN_TARGET_SLOW_STEP_MOVE;
         break;
     }
-    case 1: {
+    case BR_BTN_TARGET_SLOW_STEP_MOVE: {
         s16 y = p_wk->start + (p_wk->end - p_wk->start) * p_wk->count / p_wk->max;
         s16 x;
 
         BrBtn_GetPos(p_wk->btn, &x, NULL);
         BrBtn_SetPos(p_wk->btn, x, y);
         if (p_wk->count++ >= p_wk->max) {
-            p_wk->seq = 2;
+            p_wk->seq = BR_BTN_TARGET_SLOW_STEP_END;
         }
         break;
     }
-    case 2:
+    case BR_BTN_TARGET_SLOW_STEP_END:
         return TRUE;
     }
     return FALSE;

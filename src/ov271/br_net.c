@@ -5,6 +5,7 @@
 #include "types.h"
 #include "app/battle_recorder/br_net.h"
 #include "app/gds_rap.h"
+#include "dwc/error.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/net.h"
@@ -43,7 +44,7 @@ struct BrNet {
     u32 unk5cc;
     u32 unk5d0;
     u32 unk5d4;
-    BOOL unk5d8End;
+    BOOL favoriteVideoEnd;
     BOOL isFailed;
     GameData *gameData;
 };
@@ -52,27 +53,27 @@ static void BrNet_SeqIdle(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
 static void BrNet_SeqWaitEnd(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
 static void BrNet_SeqUploadMusicalShot(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
 static void BrNet_SeqDownloadMusicalShot(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq2(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq3(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq4(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq5(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq6(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq7(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
-static void BrNet_Seq8(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqUploadVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqDownloadVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqSearchVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqDownloadVideoList1(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqDownloadVideoList3(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqDownloadVideoList2(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
+static void BrNet_SeqFavoriteVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net);
 static void BrNet_OnUploadMusicalShotEnd(void *work, const GdsRapResult *result);
 static void BrNet_OnDownloadMusicalShotEnd(void *work, const GdsRapResult *result);
 static void BrNet_OnUploadVideoEnd(void *work, const GdsRapResult *result);
 static void BrNet_OnDownloadVideoListEnd(void *work, const GdsRapResult *result);
 static void BrNet_OnDownloadVideoEnd(void *work, const GdsRapResult *result);
-static void BrNet_OnUnk5d8End(void *work, const GdsRapResult *result);
+static void BrNet_OnFavoriteVideoEnd(void *work, const GdsRapResult *result);
 static BrNetSeq *BrNetSeq_Init(BrNet *net, BrNetSeqFunc func, HeapID heapId);
 static void BrNetSeq_Exit(BrNetSeq *p_wk);
 static void BrNetSeq_Main(BrNetSeq *p_wk);
 static void BrNetSeq_SetNext(BrNetSeq *p_wk, BrNetSeqFunc func);
 static BOOL BrNetSeq_IsComp(const BrNetSeq *cp_wk, BrNetSeqFunc func);
-static u32 BrNet_EventFunc(void *work, int a1, int event, int a3);
+static u32 BrNet_EventFunc(void *work, int code, int errorType, int error);
 
-BrNet *BrNet_Init(GameData *gameData, u32 a1, HeapID heapId) {
+BrNet *BrNet_Init(GameData *gameData, u32 loginBuffer, HeapID heapId) {
     BrNet *net;
     GdsRapInit init;
 
@@ -84,14 +85,14 @@ BrNet *BrNet_Init(GameData *gameData, u32 a1, HeapID heapId) {
     MI_CpuFill8(&init, 0, sizeof(GdsRapInit));
     init.gameData = gameData;
     init.profileId = PlayerInfo_GetProfileId(GetGameDataPlayerInfo(gameData));
-    init.loginBuffer = (void *)a1;
+    init.loginBuffer = (void *)loginBuffer;
     init.callbacks.work = net;
     init.callbacks.onUploadMusicalShotEnd = BrNet_OnUploadMusicalShotEnd;
     init.callbacks.onDownloadMusicalShotEnd = BrNet_OnDownloadMusicalShotEnd;
     init.callbacks.onUploadVideoEnd = BrNet_OnUploadVideoEnd;
     init.callbacks.onDownloadVideoListEnd = BrNet_OnDownloadVideoListEnd;
     init.callbacks.onDownloadVideoEnd = BrNet_OnDownloadVideoEnd;
-    init.callbacks.onFavoriteVideoEnd = BrNet_OnUnk5d8End;
+    init.callbacks.onFavoriteVideoEnd = BrNet_OnFavoriteVideoEnd;
     GdsRap_Init(&net->gdsrap, &init);
     net->isOpen = TRUE;
 
@@ -137,26 +138,26 @@ void BrNet_StartRequest(BrNet *net, int type, const BrNetRequestParam *param) {
     case BR_NET_REQUEST_DOWNLOAD_MUSICAL_SHOT:
         BrNetSeq_SetNext(net->seq, BrNet_SeqDownloadMusicalShot);
         break;
-    case BR_NET_REQUEST_2:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq2);
+    case BR_NET_REQUEST_UPLOAD_VIDEO:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqUploadVideo);
         break;
-    case BR_NET_REQUEST_3:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq3);
+    case BR_NET_REQUEST_DOWNLOAD_VIDEO:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqDownloadVideo);
         break;
-    case BR_NET_REQUEST_4:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq4);
+    case BR_NET_REQUEST_SEARCH_VIDEO:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqSearchVideo);
         break;
-    case BR_NET_REQUEST_5:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq5);
+    case BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST1:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqDownloadVideoList1);
         break;
-    case BR_NET_REQUEST_6:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq6);
+    case BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST3:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqDownloadVideoList3);
         break;
-    case BR_NET_REQUEST_7:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq7);
+    case BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST2:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqDownloadVideoList2);
         break;
-    case BR_NET_REQUEST_8:
-        BrNetSeq_SetNext(net->seq, BrNet_Seq8);
+    case BR_NET_REQUEST_FAVORITE_VIDEO:
+        BrNetSeq_SetNext(net->seq, BrNet_SeqFavoriteVideo);
         break;
     default:
         GFL_ASSERT(0);
@@ -227,102 +228,102 @@ BOOL BrNet_GetResultMsg(BrNet *net, u32 *msgID) {
     BOOL ret;
 
     if (GdsRap_GetResult(&net->gdsrap, &result)) {
-        ret = TRUE;
-        if (result->type == 0) {
+        ret = BR_NET_RESULT_DEFAULT_ERROR;
+        if (result->type == GDS_RAP_RESULT_TYPE_LIB_ERROR) {
             if (result->detail != 0) {
                 if (msgID != NULL) {
                     *msgID = result->detail + 0x11b;
                 }
-                ret = TRUE;
+                ret = BR_NET_RESULT_DEFAULT_ERROR;
             }
-        } else if (result->type == 1) {
-            if (result->detail == 7) {
+        } else if (result->type == GDS_RAP_RESULT_TYPE_ABORTED) {
+            if (result->detail == POKE_NET_GDS_STATUS_ABORTED) {
                 if (msgID != NULL) {
                     *msgID = result->detail + 0x12a;
                 }
-                ret = TRUE;
+                ret = BR_NET_RESULT_DEFAULT_ERROR;
             } else {
-                ret = TRUE;
+                ret = BR_NET_RESULT_DEFAULT_ERROR;
             }
-        } else if (result->type == 2) {
+        } else if (result->type == GDS_RAP_RESULT_TYPE_SERVER_ERROR) {
             switch (result->code) {
-            case 0x5208:
+            case POKE_NET_GDS_REQCODE_MUSICALSHOT_REGIST:
                 if (result->detail != 0) {
                     if (msgID != NULL) {
                         *msgID = result->detail + 0xe6;
                     }
-                    ret = 2;
+                    ret = BR_NET_RESULT_REQUEST_ERROR;
                 }
                 break;
-            case 0x5209:
+            case POKE_NET_GDS_REQCODE_MUSICALSHOT_GET:
                 if (result->detail != 0) {
                     if (msgID != NULL) {
                         *msgID = result->detail + 0xed;
                     }
-                    ret = 2;
+                    ret = BR_NET_RESULT_REQUEST_ERROR;
                 }
                 break;
-            case 0x55f0:
+            case POKE_NET_GDS_REQCODE_BATTLEDATA_REGIST:
                 if (result->detail != 0) {
                     switch (result->detail) {
-                    case 0x96:
+                    case GDS_RAP_HTTP_ERROR_BAD_REQUEST:
                         GFL_SndStop();
                         GFL_NetErrRecordWifi(0x41);
-                        ret = 3;
+                        ret = BR_NET_RESULT_FATAL_ERROR;
                         break;
-                    case 0x97:
+                    case GDS_RAP_HTTP_ERROR_UNAUTHORIZED:
                         GFL_SndStop();
                         GFL_NetErrRecordWifi(0x42);
-                        ret = 3;
+                        ret = BR_NET_RESULT_FATAL_ERROR;
                         break;
-                    case 0x98:
+                    case GDS_RAP_HTTP_ERROR_TIMEOUT:
                         GFL_SndStop();
                         GFL_NetErrRecordWifi(0x44);
-                        ret = 3;
+                        ret = BR_NET_RESULT_FATAL_ERROR;
                         break;
-                    case 0x99:
+                    case GDS_RAP_HTTP_ERROR_OTHER:
                         GFL_SndStop();
                         GFL_NetErrRecordWifi(0x43);
-                        ret = 3;
+                        ret = BR_NET_RESULT_FATAL_ERROR;
                         break;
                     default:
                         if (msgID != NULL) {
                             *msgID = result->detail + 0x105;
                         }
-                        ret = 2;
+                        ret = BR_NET_RESULT_REQUEST_ERROR;
                         break;
                     }
                 }
                 break;
-            case 0x55f1:
+            case POKE_NET_GDS_REQCODE_BATTLEDATA_SEARCH:
                 if (result->detail != 0) {
                     if (msgID != NULL) {
                         *msgID = result->detail + 0x10d;
                     }
-                    ret = 2;
+                    ret = BR_NET_RESULT_REQUEST_ERROR;
                 }
                 break;
-            case 0x55f2:
+            case POKE_NET_GDS_REQCODE_BATTLEDATA_GET:
                 if (result->detail != 0) {
                     if (msgID != NULL) {
                         *msgID = result->detail + 0x112;
                     }
-                    ret = 1;
+                    ret = BR_NET_RESULT_DEFAULT_ERROR;
                 }
                 break;
-            case 0x55f3:
-                ret = 0;
+            case POKE_NET_GDS_REQCODE_BATTLEDATA_FAVORITE:
+                ret = BR_NET_RESULT_NONE;
                 break;
             }
         }
 
         GdsRap_ClearResult(&net->gdsrap);
-        if (ret == 3) {
+        if (ret == BR_NET_RESULT_FATAL_ERROR) {
             net->isFailed = TRUE;
         }
         return ret;
     }
-    return FALSE;
+    return BR_NET_RESULT_NONE;
 }
 
 u32 BrNet_CheckError(BrNet *net) {
@@ -377,49 +378,50 @@ static void BrNet_SeqDownloadMusicalShot(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *n
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq2(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqUploadVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoUpload(&net->gdsrap, net->profile);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq3(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqDownloadVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoDownload(&net->gdsrap, net->param.dataNumber);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq4(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
-    BOOL ret = GdsRap_SendBattleVideoSearch(&net->gdsrap, net->param.a1, net->param.unk4, net->param.a3, net->param.a4);
+static void BrNet_SeqSearchVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+    BOOL ret = GdsRap_SendBattleVideoSearch(&net->gdsrap, net->param.searchSpecies, net->param.searchMode,
+                                            net->param.country, net->param.area);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq5(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqDownloadVideoList1(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoList1(&net->gdsrap);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq6(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqDownloadVideoList3(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoList3(&net->gdsrap);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq7(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqDownloadVideoList2(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoList2(&net->gdsrap);
 
     GFL_ASSERT(ret);
     BrNetSeq_SetNext(p_seqwk, BrNet_SeqWaitEnd);
 }
 
-static void BrNet_Seq8(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
+static void BrNet_SeqFavoriteVideo(BrNetSeq *p_seqwk, u32 *p_seq, BrNet *net) {
     BOOL ret = GdsRap_SendBattleVideoFavorite(&net->gdsrap, net->param.dataNumber);
 
     GFL_ASSERT(ret);
@@ -456,10 +458,10 @@ static void BrNet_OnDownloadVideoEnd(void *work, const GdsRapResult *result) {
     net->downloadVideoEnd = TRUE;
 }
 
-static void BrNet_OnUnk5d8End(void *work, const GdsRapResult *result) {
+static void BrNet_OnFavoriteVideoEnd(void *work, const GdsRapResult *result) {
     BrNet *net = work;
 
-    net->unk5d8End = TRUE;
+    net->favoriteVideoEnd = TRUE;
 }
 
 static BrNetSeq *BrNetSeq_Init(BrNet *net, BrNetSeqFunc func, HeapID heapId) {
@@ -490,15 +492,15 @@ static BOOL BrNetSeq_IsComp(const BrNetSeq *cp_wk, BrNetSeqFunc func) {
     return cp_wk->func == func;
 }
 
-static u32 BrNet_EventFunc(void *work, int a1, int event, int a3) {
+static u32 BrNet_EventFunc(void *work, int code, int errorType, int error) {
     BrNet *net = work;
 
     if (GameData_CheckEventsPaused(net->gameData)) {
         return TRUE;
     }
 
-    GdsRap_OnNetEvent(&net->gdsrap, a1, event, a3);
-    if (event == 3 || event == 6) {
+    GdsRap_OnNetEvent(&net->gdsrap, code, errorType, error);
+    if (errorType == DWC_ETYPE_SHUTDOWN_FM || errorType == DWC_ETYPE_DISCONNECT) {
         if (net->isOpen) {
             GdsRap_Exit(&net->gdsrap);
             net->isOpen = FALSE;

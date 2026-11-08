@@ -10,7 +10,7 @@
 
 // The Battle Recorder's connection to the Global Link (br_net.c), used by its online modes
 
-BrNet *BrNet_Init(GameData *gameData, u32 a1, HeapID heapId);
+BrNet *BrNet_Init(GameData *gameData, u32 loginBuffer, HeapID heapId);
 void BrNet_Exit(BrNet *net);
 void BrNet_Main(BrNet *net);
 
@@ -39,12 +39,12 @@ typedef union {
             u16 species;
             // The arguments of request 4
             struct {
-                u16 a1;
-                u8 a3;
-                u8 a4;
+                u16 searchSpecies;
+                u8 country;
+                u8 area;
             };
         };
-        u32 unk4;
+        u32 searchMode;
     };
     // The arguments of request 4, as the search screen gives them
     BrNetVideoSearchData search;
@@ -63,13 +63,13 @@ typedef struct {
 enum {
     BR_NET_REQUEST_UPLOAD_MUSICAL_SHOT,
     BR_NET_REQUEST_DOWNLOAD_MUSICAL_SHOT,
-    BR_NET_REQUEST_2,
-    BR_NET_REQUEST_3,
-    BR_NET_REQUEST_4,
-    BR_NET_REQUEST_5,
-    BR_NET_REQUEST_6,
-    BR_NET_REQUEST_7,
-    BR_NET_REQUEST_8,
+    BR_NET_REQUEST_UPLOAD_VIDEO,
+    BR_NET_REQUEST_DOWNLOAD_VIDEO,
+    BR_NET_REQUEST_SEARCH_VIDEO,
+    BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST1,
+    BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST3,
+    BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST2,
+    BR_NET_REQUEST_FAVORITE_VIDEO,
     BR_NET_REQUEST_MAX,
 };
 
@@ -79,6 +79,9 @@ void BrNet_StartRequest(BrNet *net, int type, const BrNetRequestParam *param);
 BOOL BrNet_IsRequestEnd(BrNet *net);
 // Returns a status from 0 to 3 and consumes any valid GDS result, including those returning 0.
 // msgID may be NULL and is written only for results that map to a message; otherwise it is unchanged.
+// No reported error includes deliberately ignored favorite-request failures. The default
+// error route need not write msgID; request errors have an optional mapped message.
+// Fatal errors record an HTTP-check failure and set isFailed. Keep the BOOL API type.
 BOOL BrNet_GetResultMsg(BrNet *net, u32 *msgID);
 // What BrNet_CheckError finds. BR_NET_ERROR_FAILED ends the Battle Recorder's screens
 enum {
@@ -103,5 +106,12 @@ BOOL BrNet_GetDownloadVideo(BrNet *net, BattleRecVideo **video, u32 *value);
 BOOL BrNet_GetDownloadVideoListA(BrNet *net, void *list, int listMax, int *num);
 BOOL BrNet_GetDownloadVideoListB(BrNet *net, void *list, int listMax, int *num);
 BOOL BrNet_GetDownloadVideoListC(BrNet *net, void *list, int listMax, int *num);
+
+enum {
+    BR_NET_RESULT_NONE = 0,
+    BR_NET_RESULT_DEFAULT_ERROR = 1,
+    BR_NET_RESULT_REQUEST_ERROR = 2,
+    BR_NET_RESULT_FATAL_ERROR = 3,
+};
 
 #endif // POKEBW2_APP_BATTLE_RECORDER_BR_NET_H

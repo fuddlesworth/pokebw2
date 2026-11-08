@@ -49,4 +49,7 @@ void BrFade_SetAlpha(BrFade *p_wk, u32 display, u32 ev);
 // Loads a palette into one of the fade's PaletteFade buffers
 void BrFade_LoadPlttArc(BrFade *p_wk, ArcTool *handle, u32 fileId, u32 buffer, u32 offset, u32 size, HeapID heapId);
 
+// PLTT-only override: sub BG palettes 12 and 13 fade to white.
+#define BR_FADE_PLTT_SUB_BG12_13_WHITE 0xf
+
 #endif // POKEBW2_APP_BATTLE_RECORDER_BR_FADE_H

@@ -277,7 +277,7 @@ static void BrRndMatch_CreateRating(BrRndMatchWork *wk, BrRndMatchProcParam *p) 
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0x10, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_RNDMATCH_RATING, wk->heapId);
 
     for (i = 0; i < 12; i++) {
         BOOL isFormat = TRUE;
@@ -344,7 +344,7 @@ static void BrRndMatch_CreateRate(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0x11, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_RNDMATCH_RECORDS, wk->heapId);
 
     for (i = 0; i < BR_RNDMATCH_MSGWIN_MAX; i++) {
         const BrRndMatchMsgWinData *data = &sBrRndMatchRateWins[i];
@@ -387,7 +387,7 @@ static void BrRndMatch_CreateFree(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
-    BrRes_LoadBG(p->res, 0x11, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_RNDMATCH_RECORDS, wk->heapId);
 
     for (i = 0; i < BR_RNDMATCH_MSGWIN_MAX; i++) {
         const BrRndMatchMsgWinData *data = &sBrRndMatchFreeWins[i];
@@ -426,7 +426,7 @@ static void BrRndMatch_DeletePage(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
             wk->msgWin[i] = NULL;
         }
     }
-    BrRes_UnloadBG(p->res, 0x11);
+    BrRes_UnloadBG(p->res, BR_RES_BG_RNDMATCH_RECORDS);
     if (wk->text != NULL) {
         BrText_Exit(wk->text, p->res);
         wk->text = NULL;
@@ -445,8 +445,8 @@ static void BrRndMatch_CreateMenu(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
     PlayerInfo *player;
     int i;
 
-    BrRes_LoadOBJ(p->res, 6, wk->heapId);
-    BrRes_LoadBG(p->res, 0xf, wk->heapId);
+    BrRes_LoadOBJ(p->res, BR_RES_OBJ_CONTROLS_S, wk->heapId);
+    BrRes_LoadBG(p->res, BR_RES_BG_RNDMATCH_MENU, wk->heapId);
     font = BrRes_GetFont(p->res);
     msg = BrRes_GetMsgData(p->res);
     wordSet = BrRes_GetWordSet(p->res);
@@ -456,7 +456,7 @@ static void BrRndMatch_CreateMenu(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
     setup.y = 168;
     setup.sequence = 0;
     setup.priority = 1;
-    BrRes_GetObjData(p->res, 6, &obj);
+    BrRes_GetObjData(p->res, BR_RES_OBJ_CONTROLS_S, &obj);
     wk->btn = BrBtn_InitEx(&setup, 4, 96, CLACT_SURFACE_SUB, p->unit, wk->bmpoam, font, msg, &obj, wk->heapId);
 
     src = GFL_StrBufCreate(0x80, wk->heapId);
@@ -495,8 +495,8 @@ static void BrRndMatch_DeleteMenu(BrRndMatchWork *wk, BrRndMatchProcParam *p) {
         BrBtn_Exit(wk->btn);
         wk->btn = NULL;
     }
-    BrRes_UnloadOBJ(p->res, 6);
-    BrRes_UnloadBG(p->res, 0xf);
+    BrRes_UnloadOBJ(p->res, BR_RES_OBJ_CONTROLS_S);
+    BrRes_UnloadBG(p->res, BR_RES_BG_RNDMATCH_MENU);
 }
 
 // The record of the menu that the touch is on, other than the one shown, or BR_RNDMATCH_PAGE_TOP

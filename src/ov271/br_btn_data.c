@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "app/battle_recorder/br_btn_data.h"
+#include "app/battle_recorder/br_bvrank_proc.h"
 #include "app/battle_recorder/br_core.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -37,42 +38,42 @@ static const BrBtnLink sc_link_menu00[] = {
 };
 
 static const BrBtnLink sc_link_menu01[] = {
-    { 0, 0 },
+    { BR_MENUID_BROWSE_TOP, 0 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu02[] = {
-    { 0, 0 },
-    { 1, 1 },
+    { BR_MENUID_BROWSE_TOP, 0 },
+    { BR_MENUID_BROWSE_RECORD, 1 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu03[] = {
-    { 0, 0 },
-    { 1, 2 },
+    { BR_MENUID_BROWSE_TOP, 0 },
+    { BR_MENUID_BROWSE_RECORD, 2 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu07[] = {
-    { 5, 0 },
-    { 6, 0 },
+    { BR_MENUID_GBV_TOP, 0 },
+    { BR_MENUID_GBV_BROWSE, 0 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu04[] = {
-    { 0, 0 },
-    { 1, 2 },
-    { 3, 1 },
+    { BR_MENUID_BROWSE_TOP, 0 },
+    { BR_MENUID_BROWSE_RECORD, 2 },
+    { BR_MENUID_BROWSE_DELETE, 1 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu09[] = {
-    { 5, 2 },
+    { BR_MENUID_GBV_TOP, 2 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu06[] = {
-    { 5, 0 },
+    { BR_MENUID_GBV_TOP, 0 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
@@ -85,88 +86,127 @@ static const BrBtnLink sc_link_menu05[] = {
 };
 
 static const BrBtnLink sc_link_menu08[] = {
-    { 5, 1 },
+    { BR_MENUID_GBV_TOP, 1 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnLink sc_link_menu11[] = {
-    { 10, 2 },
+    { BR_MENUID_MUSICAL_TOP, 2 },
     { BR_BTN_LINK_END, BR_BTN_LINK_END },
 };
 
 static const BrBtnData sc_btn_menu00[] = {
-    { { 42, 41, 0, 0, 7, 0, 1, 0, 0, 0, 0, 0 } },
-    { { 42, 77, 0, 1, 3, 4, 3, 0, 0, 0, 0, 0 } },
-    { { 42, 113, 0, 2, 9, 4, 4, 0, 0, 0, 0, 0 } },
-    { { 42, 149, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_BROWSE_TOP, 0, 7, BR_BTN_TYPE_SELECT, BR_MENUID_BROWSE_RECORD, 0, 0, BR_BTN_INVALID_TYPE_NONE,
+        0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 77, BR_MENUID_BROWSE_TOP, 1, 3, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BTLSUBWAY, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 113, BR_MENUID_BROWSE_TOP, 2, 9, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_RNDMATCH, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 149, BR_MENUID_BROWSE_TOP, 3, 0, BR_BTN_TYPE_EXIT, 0, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu01[] = {
-    { { 42, 41, 1, 5, 10, 4, 2, 0, 0, 1, 308, 1 } },
-    { { 42, 77, 1, 6, 11, 0, 2, 0, 0, 0, 0, 0 } },
-    { { 42, 113, 1, 7, 12, 0, 3, 0, 0, 0, 0, 0 } },
-    { { 42, 149, 1, 4, 1, 2, 0, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_BROWSE_RECORD, 5, 10, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_RECORD, BR_RECORD_MODE_MINE, 0,
+        BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_MINE } },
+    { { 42, 77, BR_MENUID_BROWSE_RECORD, 6, 11, BR_BTN_TYPE_SELECT, BR_MENUID_BROWSE_OTHER, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 113, BR_MENUID_BROWSE_RECORD, 7, 12, BR_BTN_TYPE_SELECT, BR_MENUID_BROWSE_DELETE, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 149, BR_MENUID_BROWSE_RECORD, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_BROWSE_TOP, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu05[] = {
-    { { 42, 57, 5, 95, 7, 0, 6, 0, 0, 0, 0, 0 } },
-    { { 42, 93, 5, 96, 8, 1, 8, 340, 0, 1, 121, 1 } },
-    { { 42, 129, 5, 3, 0, 1, 9, 229, 0, 0, 0, 0 } },
+    { { 42, 57, BR_MENUID_GBV_TOP, 95, 7, BR_BTN_TYPE_SELECT, BR_MENUID_GBV_BROWSE, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 93, BR_MENUID_GBV_TOP, 96, 8, BR_BTN_TYPE_MENU, BR_MENUID_GBV_UPLOAD_CONFIRM, 340, 0,
+        BR_BTN_INVALID_TYPE_INFO, 121, BR_BTN_VALID_TYPE_MINE } },
+    { { 42, 129, BR_MENUID_GBV_TOP, 3, 0, BR_BTN_TYPE_MENU, BR_MENUID_GBV_EXIT_CONFIRM, 229, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu06[] = {
-    { { 42, 41, 6, 31, 13, 0, 7, 0, 0, 0, 0, 0 } },
-    { { 42, 77, 6, 34, 5, 4, 6, 0, 0, 0, 0, 0 } },
-    { { 42, 113, 6, 35, 6, 4, 7, 0, 0, 0, 0, 0 } },
-    { { 42, 149, 6, 4, 1, 2, 5, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_GBV_BROWSE, 31, 13, BR_BTN_TYPE_SELECT, BR_MENUID_GBV_LIST, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 77, BR_MENUID_GBV_BROWSE, 34, 5, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_SEARCH, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 113, BR_MENUID_GBV_BROWSE, 35, 6, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_CODEIN, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 149, BR_MENUID_GBV_BROWSE, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_GBV_TOP, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu03[] = {
-    { { 42, 57, 3, 27, 10, 4, 9, 0, 0, 1, 308, 1 } },
-    { { 42, 93, 3, 28, 11, 0, 4, 0, 0, 0, 0, 0 } },
-    { { 42, 129, 3, 4, 1, 2, 1, 0, 0, 0, 0, 0 } },
+    { { 42, 57, BR_MENUID_BROWSE_DELETE, 27, 10, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_DELETE, BR_RECORD_MODE_MINE,
+        0, BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_MINE } },
+    { { 42, 93, BR_MENUID_BROWSE_DELETE, 28, 11, BR_BTN_TYPE_SELECT, BR_MENUID_BROWSE_DELETE_OTHER, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 129, BR_MENUID_BROWSE_DELETE, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_BROWSE_RECORD, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu04[] = {
-    { { 42, 41, 4, 9, 11, 4, 9, 1, 0, 1, 308, 2 } },
-    { { 42, 77, 4, 9, 11, 4, 9, 2, 0, 1, 308, 3 } },
-    { { 42, 113, 4, 9, 11, 4, 9, 3, 0, 1, 308, 4 } },
-    { { 42, 149, 4, 4, 1, 2, 3, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_BROWSE_DELETE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_DELETE,
+        BR_RECORD_MODE_OTHER1, 0, BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER1 } },
+    { { 42, 77, BR_MENUID_BROWSE_DELETE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_DELETE,
+        BR_RECORD_MODE_OTHER2, 0, BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER2 } },
+    { { 42, 113, BR_MENUID_BROWSE_DELETE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_DELETE,
+        BR_RECORD_MODE_OTHER3, 0, BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER3 } },
+    { { 42, 149, BR_MENUID_BROWSE_DELETE_OTHER, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_BROWSE_DELETE, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu07[] = {
-    { { 42, 41, 7, 33, 4, 4, 5, 0, 0, 0, 0, 0 } },
-    { { 42, 77, 7, 39, 14, 4, 5, 1, 0, 0, 0, 0 } },
-    { { 42, 113, 7, 40, 3, 4, 5, 2, 0, 0, 0, 0 } },
-    { { 42, 149, 7, 4, 1, 2, 6, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_GBV_LIST, 33, 4, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_RANK, BR_BVRANK_MODE_LIST1, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 77, BR_MENUID_GBV_LIST, 39, 14, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_RANK, BR_BVRANK_MODE_LIST3, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 113, BR_MENUID_GBV_LIST, 40, 3, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_RANK, BR_BVRANK_MODE_LIST2, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 149, BR_MENUID_GBV_LIST, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_GBV_BROWSE, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu02[] = {
-    { { 42, 41, 2, 9, 11, 4, 2, 1, 0, 1, 308, 2 } },
-    { { 42, 77, 2, 9, 11, 4, 2, 2, 0, 1, 308, 3 } },
-    { { 42, 113, 2, 9, 11, 4, 2, 3, 0, 1, 308, 4 } },
-    { { 42, 149, 2, 4, 1, 2, 1, 0, 0, 0, 0, 0 } },
+    { { 42, 41, BR_MENUID_BROWSE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_RECORD, BR_RECORD_MODE_OTHER1, 0,
+        BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER1 } },
+    { { 42, 77, BR_MENUID_BROWSE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_RECORD, BR_RECORD_MODE_OTHER2, 0,
+        BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER2 } },
+    { { 42, 113, BR_MENUID_BROWSE_OTHER, 9, 11, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_RECORD, BR_RECORD_MODE_OTHER3, 0,
+        BR_BTN_INVALID_TYPE_INFO, 308, BR_BTN_VALID_TYPE_OTHER3 } },
+    { { 42, 149, BR_MENUID_BROWSE_OTHER, 4, 1, BR_BTN_TYPE_RETURN, BR_MENUID_BROWSE_RECORD, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu10[] = {
-    { { 42, 57, 10, 42, 0, 4, 11, 0, 0, 0, 0, 0 } },
-    { { 42, 93, 10, 41, 1, 4, 12, 0, 0, 1, 329, 5 } },
-    { { 42, 129, 10, 3, 2, 1, 11, 229, 0, 0, 0, 0 } },
+    { { 42, 57, BR_MENUID_MUSICAL_TOP, 42, 0, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_MUSICAL_LOOK, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 93, BR_MENUID_MUSICAL_TOP, 41, 1, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_MUSICAL_SEND, 0, 0,
+        BR_BTN_INVALID_TYPE_INFO, 329, BR_BTN_VALID_TYPE_MUSICAL } },
+    { { 42, 129, BR_MENUID_MUSICAL_TOP, 3, 2, BR_BTN_TYPE_MENU, BR_MENUID_MUSICAL_EXIT_CONFIRM, 229, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu09[] = {
-    { { 42, 73, 9, 161, 2, 3, 0, 0, 0, 0, 0, 0 } },
-    { { 42, 109, 9, 162, 1, 2, 5, 0, 0, 0, 0, 0 } },
+    { { 42, 73, BR_MENUID_GBV_EXIT_CONFIRM, 161, 2, BR_BTN_TYPE_EXIT, 0, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 109, BR_MENUID_GBV_EXIT_CONFIRM, 162, 1, BR_BTN_TYPE_RETURN, BR_MENUID_GBV_TOP, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu08[] = {
-    { { 42, 73, 8, 161, 2, 4, 8, 0, 0, 0, 0, 0 } },
-    { { 42, 109, 8, 162, 1, 2, 5, 0, 0, 0, 0, 0 } },
+    { { 42, 73, BR_MENUID_GBV_UPLOAD_CONFIRM, 161, 2, BR_BTN_TYPE_CHANGE_DISPLAY, BR_PROCID_BV_SEND, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 109, BR_MENUID_GBV_UPLOAD_CONFIRM, 162, 1, BR_BTN_TYPE_RETURN, BR_MENUID_GBV_TOP, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnData sc_btn_menu11[] = {
-    { { 42, 73, 11, 161, 3, 3, 0, 0, 0, 0, 0, 0 } },
-    { { 42, 109, 11, 162, 4, 2, 10, 0, 0, 0, 0, 0 } },
+    { { 42, 73, BR_MENUID_MUSICAL_EXIT_CONFIRM, 161, 3, BR_BTN_TYPE_EXIT, 0, 0, 0, BR_BTN_INVALID_TYPE_NONE, 0,
+        BR_BTN_VALID_TYPE_NONE } },
+    { { 42, 109, BR_MENUID_MUSICAL_EXIT_CONFIRM, 162, 4, BR_BTN_TYPE_RETURN, BR_MENUID_MUSICAL_TOP, 0, 0,
+        BR_BTN_INVALID_TYPE_NONE, 0, BR_BTN_VALID_TYPE_NONE } },
 };
 
 static const BrBtnDataTbl sc_btn_data_tbl[BR_MENUID_MAX] = {

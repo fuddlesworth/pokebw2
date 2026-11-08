@@ -165,8 +165,8 @@ static BOOL BrBvRank_ProcExit(GameProc *proc, u32 *state, void *param, void *wor
         p_wk->btn = NULL;
     }
     if (p_wk->isResLoaded) {
-        BrRes_UnloadOBJ(p_wk->p_param->res, 6);
-        BrRes_UnloadBG(p_wk->p_param->res, 0x18);
+        BrRes_UnloadOBJ(p_wk->p_param->res, BR_RES_OBJ_CONTROLS_S);
+        BrRes_UnloadBG(p_wk->p_param->res, BR_RES_BG_BV_LIST);
         p_wk->isResLoaded = FALSE;
     }
     BrSeq_Exit(p_wk->seq);
@@ -228,8 +228,8 @@ static void BrBvRank_SeqCreate(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         BrText_Exit(p_wk->text, p_wk->p_param->res);
         p_wk->text = NULL;
     }
-    BrRes_LoadBG(p_wk->p_param->res, 0x18, p_wk->heapId);
-    BrRes_LoadOBJ(p_wk->p_param->res, 6, p_wk->heapId);
+    BrRes_LoadBG(p_wk->p_param->res, BR_RES_BG_BV_LIST, p_wk->heapId);
+    BrRes_LoadOBJ(p_wk->p_param->res, BR_RES_OBJ_CONTROLS_S, p_wk->heapId);
     p_wk->isResLoaded = TRUE;
 
     MI_CpuFill8(&setup, 0, sizeof(ClActorSetup));
@@ -237,7 +237,7 @@ static void BrBvRank_SeqCreate(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
     setup.y = 168;
     setup.sequence = 0;
     setup.priority = 1;
-    ret = BrRes_GetObjData(p_wk->p_param->res, 6, &obj);
+    ret = BrRes_GetObjData(p_wk->p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
     GFL_ASSERT(ret);
     p_wk->btn = BrBtn_InitEx(&setup, 4, 96, CLACT_SURFACE_SUB, p_wk->p_param->unit, p_wk->bmpoam, font, msg, &obj,
                              p_wk->heapId);
@@ -272,8 +272,8 @@ static void BrBvRank_SeqDelete(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
 
     BrBtn_Exit(p_wk->btn);
     p_wk->btn = NULL;
-    BrRes_UnloadOBJ(p_wk->p_param->res, 6);
-    BrRes_UnloadBG(p_wk->p_param->res, 0x18);
+    BrRes_UnloadOBJ(p_wk->p_param->res, BR_RES_OBJ_CONTROLS_S);
+    BrRes_UnloadBG(p_wk->p_param->res, BR_RES_BG_BV_LIST);
     p_wk->isResLoaded = FALSE;
 
     BrSeq_End(p_seqwk);
@@ -382,16 +382,16 @@ static void BrBvRank_SeqDownload(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         switch (p_wk->p_param->mode) {
         case BR_BVRANK_MODE_LIST1:
-            type = BR_NET_REQUEST_5;
+            type = BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST1;
             break;
         case BR_BVRANK_MODE_LIST3:
-            type = BR_NET_REQUEST_6;
+            type = BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST3;
             break;
         case BR_BVRANK_MODE_LIST2:
-            type = BR_NET_REQUEST_7;
+            type = BR_NET_REQUEST_DOWNLOAD_VIDEO_LIST2;
             break;
         case BR_BVRANK_MODE_SEARCH:
-            type = BR_NET_REQUEST_4;
+            type = BR_NET_REQUEST_SEARCH_VIDEO;
             req.search = p_wk->p_param->search;
             break;
         default:

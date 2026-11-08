@@ -216,7 +216,7 @@ static BOOL BrRecord_ProcInit(GameProc *proc, u32 *state, void *param, void *wor
         p_wk->header = &outline->data[outline->select].header;
         p_wk->profile = &p_wk->p_param->outline->data[p_wk->p_param->outline->select].profile;
         p_wk->canSave = TRUE;
-        if (*p_wk->p_param->unk3C && p_wk->p_param->isRecovery) {
+        if (*p_wk->p_param->recReadComplete && p_wk->p_param->isRecovery) {
             p_wk->p_param->outline->isSecure[p_wk->p_param->outline->select] = TRUE;
         }
         p_wk->isSecure = p_wk->p_param->outline->isSecure[p_wk->p_param->outline->select];
@@ -244,7 +244,7 @@ static BOOL BrRecord_ProcInit(GameProc *proc, u32 *state, void *param, void *wor
         } else {
             p_wk->header = BattleRec_GetHeader();
             p_wk->profile = getVSPlayerAllocation();
-            p_wk->isSecure = *p_wk->p_param->unk3C;
+            p_wk->isSecure = *p_wk->p_param->recReadComplete;
         }
         p_wk->canSave = TRUE;
         break;
@@ -258,7 +258,7 @@ static BOOL BrRecord_ProcInit(GameProc *proc, u32 *state, void *param, void *wor
         }
     } else if ((p_wk->p_param->mode == BR_RECORD_MODE_OTHER1 || p_wk->p_param->mode == BR_RECORD_MODE_OTHER2 ||
                 p_wk->p_param->mode == BR_RECORD_MODE_OTHER3) &&
-               p_wk->p_param->isRecovery && *p_wk->p_param->unk3C && !p_wk->isSecure) {
+               p_wk->p_param->isRecovery && *p_wk->p_param->recReadComplete && !p_wk->isSecure) {
         // A saved video that has just been watched to its end for the first time is marked
         BrSeq_SetNext(p_wk->seq, BrRecord_SeqSecureSave);
     } else {
@@ -277,7 +277,7 @@ static BOOL BrRecord_ProcExit(GameProc *proc, u32 *state, void *param, void *wor
     BrRecord_DeleteButtons(p_wk, p_param);
     BrRecord_DeleteText(p_wk, p_param);
     BrRecord_DeleteConfirm(p_wk, p_param);
-    p_param->unk4 = p_wk->isSecure;
+    p_param->isSecure = p_wk->isSecure;
 
     GFL_BGSysLoadScr(4);
     GFL_BGSysLoadScr(1);
@@ -423,7 +423,7 @@ static void BrRecord_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             pos.x = x;
             pos.y = y;
             BrBallEff_Start(p_wk->ballEff[CLACT_SURFACE_SUB], BR_BALL_EFFECT_SPREAD, &pos);
-            p_wk->p_param->result = 0;
+            p_wk->p_param->result = BR_RECORD_RESULT_NONE;
             BrProcSys_Pop(p_wk->p_param->procSys);
             BrSeq_SetNext(p_seqwk, BrRecord_SeqFadeOut);
         }
@@ -443,7 +443,7 @@ static void BrRecord_SeqMain(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs) {
             } else if (!p_wk->isSecure) {
                 BrSeq_SetNext(p_seqwk, BrRecord_SeqConfirmPlay);
             } else {
-                p_wk->p_param->result = 1;
+                p_wk->p_param->result = BR_RECORD_RESULT_PLAY_VIDEO;
                 BrProcSys_Interrupt(p_wk->p_param->procSys);
                 BrSeq_SetNext(p_seqwk, BrRecord_SeqFadeOut);
             }
@@ -537,7 +537,7 @@ static void BrRecord_SeqDownloadOutline(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_a
 
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.dataNumber = p_wk->p_param->videoNumber;
-        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_3, &req);
+        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_DOWNLOAD_VIDEO, &req);
         p_wk->cnt = 0;
         *p_seq = SEQ_DOWNLOAD_WAIT;
         break;
@@ -682,7 +682,7 @@ static void BrRecord_SeqDownloadPlay(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs
 
         MI_CpuFill8(&req, 0, sizeof(BrNetRequestParam));
         req.dataNumber = BattleRec_GetHeaderValue(p_wk->header, BATTLE_REC_HEADER_DATA_NUMBER, 0);
-        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_3, &req);
+        BrNet_StartRequest(p_wk->p_param->net, BR_NET_REQUEST_DOWNLOAD_VIDEO, &req);
         p_wk->cnt = 0;
         *p_seq = SEQ_DOWNLOAD_WAIT;
         break;
@@ -704,8 +704,8 @@ static void BrRecord_SeqDownloadPlay(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs
             if (BrNet_GetDownloadVideo(p_wk->p_param->net, &video, &value)) {
                 BattleRec_StoreDownloaded((GdsProfile *)video->profile, &video->header, &video->body,
                                           GameData_GetSaveControl(p_wk->p_param->gameData));
-                *p_wk->p_param->unk2C = (s32)value;
-                p_wk->p_param->result = 1;
+                *p_wk->p_param->downloadedVideoNumberLowWord = (s32)value;
+                p_wk->p_param->result = BR_RECORD_RESULT_PLAY_VIDEO;
                 BrProcSys_Interrupt(p_wk->p_param->procSys);
                 *p_seq = SEQ_PLAY_FADEOUT_START;
             } else {
@@ -960,7 +960,7 @@ static void BrRecord_SeqConfirmPlay(BrSeq *p_seqwk, u32 *p_seq, void *p_wk_adrs)
     case SEQ_PLAY_END:
         if (!GFL_SndIsPlaying(SEQ_SE_BREC_04)) {
             BrRecord_DeleteText(p_wk, p_wk->p_param);
-            p_wk->p_param->result = 1;
+            p_wk->p_param->result = BR_RECORD_RESULT_PLAY_VIDEO;
             BrProcSys_Interrupt(p_wk->p_param->procSys);
             BrSeq_End(p_seqwk);
         }
@@ -983,9 +983,9 @@ static void BrRecord_CreateInfo(BrRecordWork *p_wk, BrRecordProcParam *p_param) 
     p_wk->isInfoCreated = TRUE;
 
     if (BrRecord_IsSmallTeamMode(p_wk->header)) {
-        BrRes_LoadBG(p_param->res, 7, p_wk->heapId);
+        BrRes_LoadBG(p_param->res, BR_RES_BG_RECORD_INFO_SMALL_TEAM, p_wk->heapId);
     } else {
-        BrRes_LoadBG(p_param->res, 6, p_wk->heapId);
+        BrRes_LoadBG(p_param->res, BR_RES_BG_RECORD_INFO, p_wk->heapId);
     }
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
@@ -1216,7 +1216,7 @@ static void BrRecord_DeleteInfo(BrRecordWork *p_wk, BrRecordProcParam *p_param) 
                 p_wk->msgWin[i] = NULL;
             }
         }
-        BrRes_UnloadBG(p_param->res, 6);
+        BrRes_UnloadBG(p_param->res, BR_RES_BG_RECORD_INFO);
         GFL_BGSysLoadScr(1);
         p_wk->isInfoCreated = FALSE;
     }
@@ -1232,8 +1232,8 @@ static void BrRecord_CreateButtons(BrRecordWork *p_wk, BrRecordProcParam *p_para
     }
     p_wk->isButtonsCreated = TRUE;
 
-    BrRes_LoadBG(p_param->res, 5, p_wk->heapId);
-    BrRes_LoadOBJ(p_param->res, 6, p_wk->heapId);
+    BrRes_LoadBG(p_param->res, BR_RES_BG_RECORD_CONTROLS, p_wk->heapId);
+    BrRes_LoadOBJ(p_param->res, BR_RES_OBJ_CONTROLS_S, p_wk->heapId);
     font = BrRes_GetFont(p_param->res);
     msg = BrRes_GetMsgData(p_param->res);
 
@@ -1246,7 +1246,7 @@ static void BrRecord_CreateButtons(BrRecordWork *p_wk, BrRecordProcParam *p_para
         setup.y = 168;
         setup.sequence = 0;
         setup.priority = 1;
-        BrRes_GetObjData(p_param->res, 6, &obj);
+        BrRes_GetObjData(p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
         p_wk->btn[BTN_RETURN] =
             BrBtn_InitEx(&setup, 4, 96, CLACT_SURFACE_SUB, p_param->unit, p_wk->bmpoam, font, msg, &obj, p_wk->heapId);
         setup.x = 136;
@@ -1262,7 +1262,7 @@ static void BrRecord_CreateButtons(BrRecordWork *p_wk, BrRecordProcParam *p_para
         setup.y = 168;
         setup.sequence = 0;
         setup.priority = 1;
-        BrRes_GetObjData(p_param->res, 6, &obj);
+        BrRes_GetObjData(p_param->res, BR_RES_OBJ_CONTROLS_S, &obj);
         p_wk->btn[BTN_RETURN] =
             BrBtn_InitEx(&setup, 4, 96, CLACT_SURFACE_SUB, p_param->unit, p_wk->bmpoam, font, msg, &obj, p_wk->heapId);
     }
@@ -1290,8 +1290,8 @@ static void BrRecord_DeleteButtons(BrRecordWork *p_wk, BrRecordProcParam *p_para
             }
         }
         GFL_BGSysLoadScr(4);
-        BrRes_UnloadOBJ(p_param->res, 6);
-        BrRes_UnloadBG(p_param->res, 5);
+        BrRes_UnloadOBJ(p_param->res, BR_RES_OBJ_CONTROLS_S);
+        BrRes_UnloadBG(p_param->res, BR_RES_BG_RECORD_CONTROLS);
         p_wk->isButtonsCreated = FALSE;
     }
 }
@@ -1334,7 +1334,7 @@ static void BrRecord_CreateConfirm(BrRecordWork *p_wk, BrRecordProcParam *p_para
             p_wk->text = BrText_Init(p_param->res, p_wk->que, p_wk->heapId);
         }
         BrText_Print(p_wk->text, p_param->res, 0x14f);
-        BrRes_LoadBG(p_param->res, 0x1e, p_wk->heapId);
+        BrRes_LoadBG(p_param->res, BR_RES_BG_CONFIRM, p_wk->heapId);
         font = BrRes_GetFont(p_param->res);
         msg = BrRes_GetMsgData(p_param->res);
         for (i = 0; i < BR_RECORD_TITLE_MAX; i++) {
@@ -1357,7 +1357,7 @@ static void BrRecord_DeleteConfirm(BrRecordWork *p_wk, BrRecordProcParam *p_para
             }
         }
         GFL_BGSysLoadScr(4);
-        BrRes_UnloadBG(p_param->res, 0x1e);
+        BrRes_UnloadBG(p_param->res, BR_RES_BG_CONFIRM);
         if (p_wk->text != NULL) {
             BrText_Exit(p_wk->text, p_param->res);
             p_wk->text = NULL;

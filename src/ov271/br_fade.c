@@ -17,6 +17,12 @@
     (GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_BG3 |               \
      GX_BLEND_PLANEMASK_OBJ)
 
+enum {
+    BR_FADE_SEQ_START = 0,
+    BR_FADE_SEQ_RUN = 1,
+    BR_FADE_SEQ_END = 2,
+};
+
 typedef BOOL (*BrFadeFunc)(BrFade *p_wk, u32 *p_seq);
 
 struct BrFade {
@@ -83,7 +89,7 @@ void BrFade_StartFadeEx(BrFade *p_wk, u32 type, u32 display, u32 dir, u32 sync) 
     p_wk->dir = dir;
     p_wk->fade_func = BrFade_GetFadeFunc(type);
     p_wk->is_end = FALSE;
-    p_wk->seq = 0;
+    p_wk->seq = BR_FADE_SEQ_START;
 }
 
 BOOL BrFade_IsEnd(const BrFade *cp_wk) {
@@ -145,7 +151,7 @@ void BrFade_LoadPlttArc(BrFade *p_wk, ArcTool *handle, u32 fileId, u32 buffer, u
 
 static BOOL BrFade_Fade_MasterBright_Black(BrFade *p_wk, u32 *p_seq) {
     switch (*p_seq) {
-    case 0: {
+    case BR_FADE_SEQ_START: {
         u32 mode = 0;
         s32 start, end;
 
@@ -163,15 +169,15 @@ static BOOL BrFade_Fade_MasterBright_Black(BrFade *p_wk, u32 *p_seq) {
             end = 16;
         }
         GFL_FadeSet(mode, start, end, p_wk->sync);
-        *p_seq = 1;
+        *p_seq = BR_FADE_SEQ_RUN;
         break;
     }
-    case 1:
+    case BR_FADE_SEQ_RUN:
         if (!GFL_FadeIsRunning()) {
-            *p_seq = 2;
+            *p_seq = BR_FADE_SEQ_END;
         }
         break;
-    case 2:
+    case BR_FADE_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -179,7 +185,7 @@ static BOOL BrFade_Fade_MasterBright_Black(BrFade *p_wk, u32 *p_seq) {
 
 static BOOL BrFade_Fade_MasterBright_White(BrFade *p_wk, u32 *p_seq) {
     switch (*p_seq) {
-    case 0: {
+    case BR_FADE_SEQ_START: {
         u32 mode = 0;
         s32 start, end;
 
@@ -197,15 +203,15 @@ static BOOL BrFade_Fade_MasterBright_White(BrFade *p_wk, u32 *p_seq) {
             end = 16;
         }
         GFL_FadeSet(mode, start, end, p_wk->sync);
-        *p_seq = 1;
+        *p_seq = BR_FADE_SEQ_RUN;
         break;
     }
-    case 1:
+    case BR_FADE_SEQ_RUN:
         if (!GFL_FadeIsRunning()) {
-            *p_seq = 2;
+            *p_seq = BR_FADE_SEQ_END;
         }
         break;
-    case 2:
+    case BR_FADE_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -217,7 +223,7 @@ static BOOL BrFade_Fade_Alpha_BG012(BrFade *p_wk, u32 *p_seq) {
     s32 ev1, ev2;
 
     switch (*p_seq) {
-    case 0:
+    case BR_FADE_SEQ_START:
         if (p_wk->dir == BR_FADE_DIR_IN) {
             ev1 = 0;
             ev2 = 16;
@@ -236,9 +242,9 @@ static BOOL BrFade_Fade_Alpha_BG012(BrFade *p_wk, u32 *p_seq) {
         }
         p_wk->cnt = 0;
         p_wk->cnt_max = p_wk->sync != 0 ? p_wk->sync : 16 / GFL_FadeGetUpdateFreq();
-        *p_seq = 1;
+        *p_seq = BR_FADE_SEQ_RUN;
         break;
-    case 1:
+    case BR_FADE_SEQ_RUN:
         if (p_wk->dir == BR_FADE_DIR_IN) {
             ev2 = p_wk->cnt * 16 / p_wk->cnt_max;
             ev1 = 16 - ev2;
@@ -269,10 +275,10 @@ static BOOL BrFade_Fade_Alpha_BG012(BrFade *p_wk, u32 *p_seq) {
             }
         }
         if (p_wk->cnt++ >= p_wk->cnt_max) {
-            *p_seq = 2;
+            *p_seq = BR_FADE_SEQ_END;
         }
         break;
-    case 2:
+    case BR_FADE_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -282,20 +288,20 @@ static BOOL BrFade_Fade_Pltt(BrFade *p_wk, u32 *p_seq) {
     u8 evy;
 
     switch (*p_seq) {
-    case 0:
+    case BR_FADE_SEQ_START:
         p_wk->cnt = 0;
         p_wk->cnt_max = p_wk->sync != 0 ? p_wk->sync : 16 / GFL_FadeGetUpdateFreq();
         PaletteFade_SetAllActive(p_wk->pfd, TRUE);
-        *p_seq = 1;
+        *p_seq = BR_FADE_SEQ_RUN;
         break;
-    case 1:
+    case BR_FADE_SEQ_RUN:
         if (p_wk->dir == BR_FADE_DIR_IN) {
             evy = 16 - p_wk->cnt * 16 / p_wk->cnt_max;
         } else if (p_wk->dir == BR_FADE_DIR_OUT) {
             evy = p_wk->cnt * 16 / p_wk->cnt_max;
         }
         // Not one of the BR_FADE_DISPLAY_* masks: sub BG palettes 12 and 13 to white
-        if (p_wk->display == 0xf) {
+        if (p_wk->display == BR_FADE_PLTT_SUB_BG12_13_WHITE) {
             PaletteFade_BlendPalettes(p_wk->pfd, PALFADE_BUFFER_SUB_BG, 0x3000, evy, 0xffff);
         } else {
             if (p_wk->display & BR_FADE_DISPLAY_MAIN) {
@@ -309,10 +315,10 @@ static BOOL BrFade_Fade_Pltt(BrFade *p_wk, u32 *p_seq) {
         }
         PaletteFade_Transfer(p_wk->pfd);
         if (p_wk->cnt++ >= p_wk->cnt_max) {
-            *p_seq = 2;
+            *p_seq = BR_FADE_SEQ_END;
         }
         break;
-    case 2:
+    case BR_FADE_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -320,7 +326,7 @@ static BOOL BrFade_Fade_Pltt(BrFade *p_wk, u32 *p_seq) {
 
 static BOOL BrFade_Fade_MasterBrightAndAlpha(BrFade *p_wk, u32 *p_seq) {
     switch (*p_seq) {
-    case 0: {
+    case BR_FADE_SEQ_START: {
         s32 start, end;
         s32 eva, evb;
 
@@ -343,10 +349,10 @@ static BOOL BrFade_Fade_MasterBrightAndAlpha(BrFade *p_wk, u32 *p_seq) {
                            GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2, eva, evb);
         p_wk->cnt = 0;
         p_wk->cnt_max = p_wk->sync != 0 ? p_wk->sync : 16 / GFL_FadeGetUpdateFreq();
-        *p_seq = 1;
+        *p_seq = BR_FADE_SEQ_RUN;
         break;
     }
-    case 1: {
+    case BR_FADE_SEQ_RUN: {
         BOOL isEnd = TRUE;
         s32 eva, evb;
 
@@ -366,11 +372,11 @@ static BOOL BrFade_Fade_MasterBrightAndAlpha(BrFade *p_wk, u32 *p_seq) {
         // Ends once both the steps and the master brightness fade are done
         isEnd &= p_wk->cnt++ >= p_wk->cnt_max;
         if ((GFL_FadeIsRunning() == FALSE) & isEnd) {
-            *p_seq = 2;
+            *p_seq = BR_FADE_SEQ_END;
         }
         break;
     }
-    case 2:
+    case BR_FADE_SEQ_END:
         return TRUE;
     }
     return FALSE;

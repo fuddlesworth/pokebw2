@@ -2,7 +2,10 @@
 // guess: the ROM gives none, and br_main.c is overlay 272's proc, which runs this one
 
 #include "types.h"
+#include "app/battle_recorder/br_btn_data.h"
+#include "app/battle_recorder/br_bvrank_proc.h"
 #include "app/battle_recorder/br_core.h"
+#include "app/battle_recorder/br_start_proc.h"
 #include "field/field_sound.h"
 #include "gfl/fade.h"
 #include "gfl/net.h"
@@ -106,13 +109,13 @@ static BOOL BrCore_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     wk = GFL_ProcInitSubsystem(proc, sizeof(BrCoreWork), HEAPID_BATTLE_RECORDER);
     MI_CpuFill8(wk, 0, sizeof(BrCoreWork));
     wk->param = coreParam;
-    coreParam->mainParam->result = 0;
+    coreParam->mainParam->result = BR_RESULT_EXIT;
 
     wk->graphic = BrGraphic_Init(wk->param->mainParam->mode == BR_MODE_GLOBAL_MUSICAL, 1, HEAPID_BATTLE_RECORDER);
     color = TrainerCard_GetBattleRecorderColor(getTrainerCardDataBlkAddress(wk->param->mainParam->gameData));
     wk->res = BrRes_Init(color, wk->param->mainParam->mode == BR_MODE_BROWSE, HEAPID_BATTLE_RECORDER);
-    BrRes_LoadBG(wk->res, 0, HEAPID_BATTLE_RECORDER);
-    BrRes_LoadBG(wk->res, 1, HEAPID_BATTLE_RECORDER);
+    BrRes_LoadBG(wk->res, BR_RES_BG_COMMON_M, HEAPID_BATTLE_RECORDER);
+    BrRes_LoadBG(wk->res, BR_RES_BG_COMMON_S, HEAPID_BATTLE_RECORDER);
     wk->procSys = BrProcSys_Init(BR_PROCID_START, sBrProcTable, BR_PROCID_MAX, wk, &wk->param->data->procRecovery,
                                  HEAPID_BATTLE_RECORDER);
     wk->fade = BrFade_Init(HEAPID_BATTLE_RECORDER);
@@ -125,7 +128,7 @@ static BOOL BrCore_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     BrCore_LoadRecordInfo(&wk->param->data->recordInfo, TRUE, wk->param->mainParam->gameData, HEAPID_BATTLE_RECORDER);
 
     if (wk->param->mainParam->mode != BR_MODE_BROWSE) {
-        wk->net = BrNet_Init(wk->param->mainParam->gameData, wk->param->mainParam->unk8, HEAPID_BATTLE_RECORDER);
+        wk->net = BrNet_Init(wk->param->mainParam->gameData, wk->param->mainParam->loginBuffer, HEAPID_BATTLE_RECORDER);
     } else {
         GFL_OvlLoad(OVERLAY_ID(201));
     }
@@ -161,7 +164,7 @@ static BOOL BrCore_ProcExit(GameProc *proc, u32 *state, void *param, void *work)
 
     if (wk->net != NULL) {
         if (BrNet_IsFailed(wk->net)) {
-            wk->param->mainParam->result = 2;
+            wk->param->mainParam->result = BR_RESULT_NETWORK_FAILED;
         }
         BrNet_Exit(wk->net);
         wk->net = NULL;
@@ -176,8 +179,8 @@ static BOOL BrCore_ProcExit(GameProc *proc, u32 *state, void *param, void *work)
         TrainerCardSave *trainerCard = getTrainerCardDataBlkAddress(wk->param->mainParam->gameData);
         TrainerCard_SetBattleRecorderColor(trainerCard, BrRes_GetColor(wk->res));
     }
-    BrRes_UnloadBG(wk->res, 0);
-    BrRes_UnloadBG(wk->res, 1);
+    BrRes_UnloadBG(wk->res, BR_RES_BG_COMMON_M);
+    BrRes_UnloadBG(wk->res, BR_RES_BG_COMMON_S);
     BrRes_Exit(wk->res);
     BrGraphic_Exit(wk->graphic);
 
@@ -249,11 +252,11 @@ static void BrCore_StartBefore(void *param, void *work, const void *preParam, u3
     p->unit = BrGraphic_GetClunit(wk->graphic);
     p->sidebar = wk->sidebar;
     if (preID == BR_PROCID_MENU) {
-        p->mode = 1;
+        p->mode = BR_START_MODE_CLOSE;
     } else if (wk->param->mode == BR_CORE_MODE_INIT) {
-        p->mode = 0;
+        p->mode = BR_START_MODE_OPEN;
     } else {
-        p->mode = 2;
+        p->mode = BR_START_MODE_RETURN;
     }
 }
 
@@ -264,20 +267,20 @@ static void BrCore_MenuBefore(void *param, void *work, const void *preParam, u32
     BrMenuProcParam *p = param;
     BrCoreWork *wk = work;
 
-    p->fadeType = 2;
+    p->fadeType = BR_FADE_TYPE_ALPHA_BG012;
     p->result = &wk->param->mainParam->result;
     p->btnRecovery = &wk->param->data->btnRecovery;
 
     if (wk->param->mode == BR_CORE_MODE_RETURN) {
         switch (wk->param->mainParam->mode) {
         case BR_MODE_BROWSE:
-            p->menuID = 1;
+            p->menuID = BR_MENUID_BROWSE_RECORD;
             break;
         case BR_MODE_GLOBAL_BV:
-            p->menuID = 7;
+            p->menuID = BR_MENUID_GBV_LIST;
             break;
         case BR_MODE_GLOBAL_MUSICAL:
-            p->menuID = 10;
+            p->menuID = BR_MENUID_MUSICAL_TOP;
             break;
         }
     } else {
@@ -287,50 +290,50 @@ static void BrCore_MenuBefore(void *param, void *work, const void *preParam, u32
 
             switch (recordParam->mode) {
             case BR_RECORD_MODE_MINE:
-                p->menuID = 1;
+                p->menuID = BR_MENUID_BROWSE_RECORD;
                 break;
             case BR_RECORD_MODE_OTHER1:
             case BR_RECORD_MODE_OTHER2:
             case BR_RECORD_MODE_OTHER3:
-                p->menuID = 2;
+                p->menuID = BR_MENUID_BROWSE_OTHER;
                 break;
             case BR_RECORD_MODE_BROWSE:
                 GFL_ASSERT(0);
-                p->menuID = 7;
+                p->menuID = BR_MENUID_GBV_LIST;
                 break;
             case BR_RECORD_MODE_CODEIN:
                 GFL_ASSERT(0);
-                p->menuID = 7;
+                p->menuID = BR_MENUID_GBV_LIST;
                 break;
             }
             break;
         }
         case BR_PROCID_BV_RANK:
-            p->menuID = 7;
+            p->menuID = BR_MENUID_GBV_LIST;
             break;
         case BR_PROCID_BV_SEARCH:
         case BR_PROCID_CODEIN:
-            p->menuID = 6;
+            p->menuID = BR_MENUID_GBV_BROWSE;
             break;
         case BR_PROCID_MUSICAL_SEND: {
             const BrMusicalSendProcParam *musicalParam = preParam;
 
             if (!musicalParam->isSend) {
-                p->fadeType = 4;
+                p->fadeType = BR_FADE_TYPE_MASTER_BRIGHT_AND_ALPHA;
             }
-            p->menuID = 10;
+            p->menuID = BR_MENUID_MUSICAL_TOP;
             break;
         }
         default:
             switch (wk->param->mainParam->mode) {
             case BR_MODE_BROWSE:
-                p->menuID = 0;
+                p->menuID = BR_MENUID_BROWSE_TOP;
                 break;
             case BR_MODE_GLOBAL_BV:
-                p->menuID = 5;
+                p->menuID = BR_MENUID_GBV_TOP;
                 break;
             case BR_MODE_GLOBAL_MUSICAL:
-                p->menuID = 10;
+                p->menuID = BR_MENUID_MUSICAL_TOP;
                 break;
             }
         }
@@ -348,7 +351,7 @@ static void BrCore_MenuAfter(void *param, void *work) {
     BrBtnRecovery *recovery = p->btnRecovery;
     u16 last = recovery->stack_num - 1;
 
-    if (recovery->stack[last].menuID == 8) {
+    if (recovery->stack[last].menuID == BR_MENUID_GBV_UPLOAD_CONFIRM) {
         recovery->stack_num = recovery->stack_num - 1;
     }
 }
@@ -364,10 +367,10 @@ static void BrCore_RecordBefore(void *param, void *work, const void *preParam, u
     p->unit = BrGraphic_GetClunit(wk->graphic);
     p->net = wk->net;
     p->gameData = wk->param->mainParam->gameData;
-    p->unk2C = &wk->param->data->unk_1720;
+    p->downloadedVideoNumberLowWord = &wk->param->data->downloadedVideoNumberLowWord;
     p->isRecovery = FALSE;
     p->recordInfo = &wk->param->data->recordInfo;
-    p->unk3C = &wk->param->data->recReadComplete;
+    p->recReadComplete = &wk->param->data->recReadComplete;
 
     switch (preID) {
     case BR_PROCID_MENU: {
@@ -425,7 +428,7 @@ static void BrCore_RecordAfter(void *param, void *work) {
     BrRecordProcParam *p = param;
     BrCoreWork *wk = work;
 
-    if (p->result == 1) {
+    if (p->result == BR_RECORD_RESULT_PLAY_VIDEO) {
         wk->param->result = BR_CORE_RESULT_PLAY_VIDEO;
     }
 }
@@ -477,9 +480,9 @@ static void BrCore_BvRankBefore(void *param, void *work, const void *preParam, u
     } else if (preID == BR_PROCID_BV_SEARCH) {
         const BrBvSearchProcParam *searchParam = preParam;
 
-        p->mode = 3;
+        p->mode = BR_BVRANK_MODE_SEARCH;
         p->search = searchParam->search;
-        wk->param->data->bvRankMode = 3;
+        wk->param->data->bvRankMode = BR_BVRANK_MODE_SEARCH;
         MI_CpuFill8(p->listPos, 0, sizeof(BrListPos));
     } else if (preID == BR_PROCID_RECORD) {
         p->mode = wk->param->data->bvRankMode;
@@ -580,7 +583,7 @@ static void BrCore_BvSaveBefore(void *param, void *work, const void *preParam, u
     p->videoNumber = recordParam->videoNumber;
     p->gameData = wk->param->mainParam->gameData;
     p->recordInfo = &wk->param->data->recordInfo;
-    p->unk24 = recordParam->unk4;
+    p->isSecure = recordParam->isSecure;
 }
 
 static void BrCore_BvSaveAfter(void *param, void *work) {
