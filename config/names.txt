@@ -27876,8 +27876,8 @@ overlays/ov198 0x021b3df4 CommTvtField_SetAnswerMode
 overlays/ov198 0x021b3e1c CommTvtField_SetCallMode
 overlays/ov198 0x021b3e50 CommTvtField_UpdateCalls
 overlays/ov198 0x021b3fb8 CommTvtField_OnBeacon
-overlays/ov198 0x021b4050 CommTvtField_TickCallers
-overlays/ov198 0x021b407c CommTvtField_CountCalls
+overlays/ov198 0x021b4050 CommTvtField_TickRoomBeacons
+overlays/ov198 0x021b407c CommTvtField_CountRoomPlayers
 overlays/ov198 0x021b40a8 CommTvtField_VBlank
 overlays/ov198 0x021b40b0 CommTvtFieldApp_Init
 overlays/ov198 0x021b4254 CommTvtFieldApp_Main

@@ -39,22 +39,62 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/0026.h"
 
-// The Xtransceiver's screen in the field: the player picks to call a friend, to answer one that calls or to quit, and
-// the screen leaves to the video chat of overlay 257. The ROM has no string for the file, so the name is a guess.
+// The field's wireless screen: Entralink, Xtransceiver calls and nearby wireless status.
+// The ROM has no string for the file, so the name is a guess.
 // Function names are ours
 
 #define WINDOW_COUNT 11
-#define CALLER_COUNT 16
+#define ROOM_BEACON_COUNT 16
 #define ACTOR_COUNT 6
 #define PALETTE_COUNT 7
 #define TEXT_COLOR 0x39e3
 
-// The frames a call lasts without a new beacon of its caller
-#define CALLER_FRAMES 600
+// The frames a Union Room beacon is kept after its last reception
+#define ROOM_BEACON_FRAMES 600
 
 // The heap of the screen
 #define HEAPID_COMM_TVT_FIELD 0x1f
+
+enum {
+    COMM_TVT_FIELD_TOUCH_ENTRALINK = 0,
+    COMM_TVT_FIELD_TOUCH_XTRANSCEIVER = 1,
+    COMM_TVT_FIELD_TOUCH_CLOSE = 2,
+    COMM_TVT_FIELD_TOUCH_ENTRALINK_ALTERNATE = 3,
+    COMM_TVT_FIELD_TOUCH_XTRANSCEIVER_ALTERNATE = 4,
+};
+
+enum {
+    COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON = 0,
+    COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON = 1,
+    COMM_TVT_FIELD_ACTOR_CLOSE_BUTTON = 2,
+    COMM_TVT_FIELD_ACTOR_CALL_INDICATOR = 3,
+    COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR = 4,
+    COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE = 5,
+};
+
+enum {
+    COMM_TVT_FIELD_ANIM_CLOSE_BUTTON = 0,
+    COMM_TVT_FIELD_ANIM_XTRANSCEIVER_BUTTON = 11,
+    COMM_TVT_FIELD_ANIM_ENTRALINK_BUTTON = 12,
+    COMM_TVT_FIELD_ANIM_CALL_IDLE = 15,
+    COMM_TVT_FIELD_ANIM_CALL_RINGING = 16,
+    COMM_TVT_FIELD_ANIM_CALLER_INDICATOR = 18,
+    COMM_TVT_FIELD_ANIM_XTRANSCEIVER_RINGING = 19,
+    COMM_TVT_FIELD_ANIM_LEGACY_NOTICE = 25,
+};
+
+enum {
+    COMM_TVT_FIELD_WINDOW_ENTRALINK = 0,
+    COMM_TVT_FIELD_WINDOW_ROOM_LABEL = 4,
+    COMM_TVT_FIELD_WINDOW_ROOM_COUNT = 5,
+    COMM_TVT_FIELD_WINDOW_DISTRIBUTION_LABEL = 6,
+    COMM_TVT_FIELD_WINDOW_DISTRIBUTION_STATUS = 7,
+    COMM_TVT_FIELD_WINDOW_CGEAR_LABEL = 8,
+    COMM_TVT_FIELD_WINDOW_CGEAR_STATUS = 9,
+    COMM_TVT_FIELD_WINDOW_LEGACY_NOTICE = 10,
+};
 
 // Where a window goes: its position and size in tiles
 typedef struct {
@@ -64,15 +104,15 @@ typedef struct {
     u32 height;
 } CommTvtFieldWindowParam;
 
-// A call in the neighbourhood, from the beacon of its caller
+// A received Union Room beacon, kept until its timer expires
 typedef struct {
     u8 mac[6];
     u8 unk6[2];
     // The frames until the call is forgotten
     u16 timer;
-    // How many children the caller's beacon says it has
+    // The childCount value advertised by that beacon
     u16 count;
-} CommTvtFieldCaller;
+} CommTvtFieldRoomBeacon;
 
 typedef struct CommTvtFieldWork CommTvtFieldWork;
 typedef void (*CommTvtFieldFunc)(CommTvtFieldWork *wk);
@@ -91,15 +131,15 @@ struct CommTvtFieldWork {
     MsgData *msgData;
     WordSet *wordSet;
     Font *font;
-    StrBuf *strbuf50;
-    StrBuf *strbuf54;
-    StrBuf *strbuf58;
+    StrBuf *formatBuffer;
+    StrBuf *textBuffer;
+    StrBuf *callerName;
     u32 frameChars;
     u32 backgroundChars;
-    CommTvtFieldCaller callers[CALLER_COUNT];
-    // The status of the calls that the screen shows, and the number of the caller it shows
-    u32 shownState;
-    u32 shownCaller;
+    CommTvtFieldRoomBeacon roomBeacons[ROOM_BEACON_COUNT];
+    // The Intrude alert state and CountEventPeers result last drawn by the legacy panel
+    u32 shownAlertState;
+    u32 shownPeerResult;
     u16 palettes[PALETTE_COUNT][16];
     u16 adjustedPalettes[PALETTE_COUNT][16];
     u8 unk2EC[0x20];
@@ -110,7 +150,7 @@ struct CommTvtFieldWork {
     TCBExManager *tcbManager;
     PrintQueue *queue;
     AppTaskMenu *taskMenu;
-    StrBuf *unk328;
+    StrBuf *unusedMessage;
     u16 unk32C;
     int unk330;
     u8 unk334[0xc];
@@ -125,9 +165,9 @@ struct CommTvtFieldWork {
     u8 unk360[4];
     u32 wifiState;
     u32 prevWifiState;
-    u32 callCount;
-    u32 prevCallCount;
-    int unk374;
+    u32 roomPlayerCount;
+    u32 prevRoomPlayerCount;
+    int newBeaconSeen;
     u32 palette;
     u32 chars;
     u32 cellAnims;
@@ -170,8 +210,8 @@ static void CommTvtField_SetAnswerMode(CommTvtFieldWork *wk, int index);
 static void CommTvtField_SetCallMode(CommTvtFieldWork *wk);
 static void CommTvtField_UpdateCalls(CommTvtFieldWork *wk);
 static void CommTvtField_OnBeacon(void *arg, const void *beacon, int gameCommandBase, u8 childCount);
-static void CommTvtField_TickCallers(CommTvtFieldWork *wk);
-static u32 CommTvtField_CountCalls(CommTvtFieldWork *wk);
+static void CommTvtField_TickRoomBeacons(CommTvtFieldWork *wk);
+static u32 CommTvtField_CountRoomPlayers(CommTvtFieldWork *wk);
 static void CommTvtField_VBlank(TCB *tcb, void *data);
 
 static const int sTitleCenterX[1] = { 40 };
@@ -335,18 +375,18 @@ static void CommTvtField_CreateWindows(int count, const u32 *msgIds, CommTvtFiel
         wk->windows[j] =
             BmpWin_CreateDynamic(7, params[j].x, params[j].y, params[j].width, params[j].height, 13, FALSE);
         GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[j]), 0);
-        GFL_MsgDataLoadStrbuf(wk->msgData, msgIds[j], wk->strbuf54);
+        GFL_MsgDataLoadStrbuf(wk->msgData, msgIds[j], wk->textBuffer);
         if (centersX != NULL) {
-            x = centersX[j] - GFL_FontGetBlockWidth(wk->strbuf54, wk->font, 0) / 2;
+            x = centersX[j] - GFL_FontGetBlockWidth(wk->textBuffer, wk->font, 0) / 2;
         } else {
             x = 0;
         }
         if (centersY != NULL) {
-            y = centersY[j] - GFL_FontGetBlockHeight(wk->strbuf54, wk->font) / 2;
+            y = centersY[j] - GFL_FontGetBlockHeight(wk->textBuffer, wk->font) / 2;
         } else {
             y = 0;
         }
-        GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[j]), x, y, wk->strbuf54, wk->font, TEXT_COLOR);
+        GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[j]), x, y, wk->textBuffer, wk->font, TEXT_COLOR);
         BmpWin_FlushChar(wk->windows[j]);
         BmpWin_FlushMap(wk->windows[j]);
     }
@@ -371,16 +411,16 @@ static void CommTvtField_CreateWindow(u32 index, CommTvtFieldWork *wk, CommTvtFi
     wk->windows[index] = BmpWin_CreateDynamic(7, param->x, param->y, param->width, param->height, 13, FALSE);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[index]), 0);
     if (centersX != NULL) {
-        x = centersX[index] - GFL_FontGetBlockWidth(wk->strbuf54, wk->font, 0) / 2;
+        x = centersX[index] - GFL_FontGetBlockWidth(wk->textBuffer, wk->font, 0) / 2;
     } else {
         x = 0;
     }
     if (centersY != NULL) {
-        y = centersY[index] - GFL_FontGetBlockHeight(wk->strbuf54, wk->font) / 2;
+        y = centersY[index] - GFL_FontGetBlockHeight(wk->textBuffer, wk->font) / 2;
     } else {
         y = 0;
     }
-    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[index]), x, y, wk->strbuf54, wk->font, TEXT_COLOR);
+    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[index]), x, y, wk->textBuffer, wk->font, TEXT_COLOR);
     BmpWin_FlushChar(wk->windows[index]);
     BmpWin_FlushMap(wk->windows[index]);
     GFL_BGSysQueueScrLoad(7);
@@ -466,7 +506,8 @@ static void CommTvtField_AddPaletteOffsets(u16 (*palettes)[16], const u16 *offse
 static void CommTvtField_InitActors(CommTvtFieldWork *wk) {
     u8 xs[3] = { 0x80, 0x80, 0xe0 };
     u8 ys[3] = { 0x60, 0x60, 0xb1 };
-    u8 sequences[3] = { 12, 11, 0 };
+    u8 sequences[3] = { COMM_TVT_FIELD_ANIM_ENTRALINK_BUTTON, COMM_TVT_FIELD_ANIM_XTRANSCEIVER_BUTTON,
+                        COMM_TVT_FIELD_ANIM_CLOSE_BUTTON };
     ClActorSetup setup;
     int i;
 
@@ -484,34 +525,34 @@ static void CommTvtField_InitActors(CommTvtFieldWork *wk) {
     }
     setup.x = 128;
     setup.y = 96;
-    setup.sequence = 15;
+    setup.sequence = COMM_TVT_FIELD_ANIM_CALL_IDLE;
     setup.priority = 0;
     setup.bgPriority = 2;
-    wk->actors[3] =
+    wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR] =
         ClActor_Create(wk->unit, wk->chars, wk->palette, wk->cellAnims, &setup, CLACT_SURFACE_SUB, wk->heapId);
-    ClActor_SetAutoAnim(wk->actors[3], TRUE);
-    ClActor_SetVisible(wk->actors[3], TRUE);
-    ClActor_SetObjMode(wk->actors[3], TRUE);
+    ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR], TRUE);
+    ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR], TRUE);
+    ClActor_SetObjMode(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR], TRUE);
     setup.x = 128;
     setup.y = 96;
-    setup.sequence = 18;
+    setup.sequence = COMM_TVT_FIELD_ANIM_CALLER_INDICATOR;
     setup.priority = 0;
     setup.bgPriority = 2;
-    wk->actors[4] =
+    wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR] =
         ClActor_Create(wk->unit, wk->chars, wk->palette, wk->cellAnims, &setup, CLACT_SURFACE_SUB, wk->heapId);
-    ClActor_SetAutoAnim(wk->actors[4], TRUE);
-    ClActor_SetVisible(wk->actors[4], FALSE);
-    ClActor_SetObjMode(wk->actors[4], TRUE);
+    ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR], TRUE);
+    ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR], FALSE);
+    ClActor_SetObjMode(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR], TRUE);
     setup.x = 128;
     setup.y = 96;
-    setup.sequence = 25;
+    setup.sequence = COMM_TVT_FIELD_ANIM_LEGACY_NOTICE;
     setup.priority = 0;
     setup.bgPriority = 2;
-    wk->actors[5] =
+    wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE] =
         ClActor_Create(wk->unit, wk->chars, wk->palette, wk->cellAnims, &setup, CLACT_SURFACE_SUB, wk->heapId);
-    ClActor_SetAutoAnim(wk->actors[5], TRUE);
-    ClActor_SetVisible(wk->actors[5], FALSE);
-    ClActor_SetObjMode(wk->actors[5], TRUE);
+    ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], TRUE);
+    ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], FALSE);
+    ClActor_SetObjMode(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], TRUE);
 }
 
 static void CommTvtField_InitGraphics(CommTvtFieldWork *wk) {
@@ -519,13 +560,13 @@ static void CommTvtField_InitGraphics(CommTvtFieldWork *wk) {
     NNSG2dPaletteData *palette;
     void *file;
 
-    wk->strbuf54 = GFL_StrBufCreate(200, wk->heapId);
-    wk->strbuf58 = GFL_StrBufCreate(200, wk->heapId);
-    wk->strbuf50 = GFL_StrBufCreate(200, wk->heapId);
+    wk->textBuffer = GFL_StrBufCreate(200, wk->heapId);
+    wk->callerName = GFL_StrBufCreate(200, wk->heapId);
+    wk->formatBuffer = GFL_StrBufCreate(200, wk->heapId);
     wk->nameWindow = BmpWin_CreateDynamic(5, 16, 10, 10, 2, 13, FALSE);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, 26, wk->heapId);
-    arc = GFL_ArcSysCreateFileHandle(29, wk->heapId);
+    arc = GFL_ArcSysCreateFileHandle(ARCID_GSYNC_MENU, wk->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 0, PALTYPE_MAIN_BG, 0, 0, wk->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 1, PALTYPE_SUB_BG, 0, 0, wk->heapId);
     file = GFL_G2DIOReadNCLRArc(arc, 1, &palette, wk->heapId);
@@ -553,7 +594,7 @@ static const TouchRect sCommTvtFieldTouchRects[6] = {
 };
 
 static void CommTvtField_InitUI(CommTvtFieldWork *wk) {
-    u32 msgIds[2] = { 0, 1 };
+    u32 msgIds[2] = { Bank0026_Text_Entralink, Bank0026_Text_Xtransceiver };
 
     CommTvtField_CreateWindows(2, msgIds, wk, sButtonWindows, sButtonCenterX, sButtonCenterY);
     wk->buttonMan = GFL_BMN_Create(sCommTvtFieldTouchRects, CommTvtField_ButtonCallback, wk, wk->heapId);
@@ -571,9 +612,9 @@ static void CommTvtField_FreeGraphics(CommTvtFieldWork *wk) {
     GFL_BGSysReleaseBG(4);
     GFL_MsgDataFree(wk->msgData);
     GFL_FontFree(wk->font);
-    GFL_StrBufFree(wk->strbuf54);
-    GFL_StrBufFree(wk->strbuf50);
-    GFL_StrBufFree(wk->strbuf58);
+    GFL_StrBufFree(wk->textBuffer);
+    GFL_StrBufFree(wk->formatBuffer);
+    GFL_StrBufFree(wk->callerName);
     BmpWin_Free(wk->nameWindow);
 }
 
@@ -615,10 +656,10 @@ static void CommTvtField_StartPress(CommTvtFieldWork *wk) {
     callback.type = CLACT_CALLBACK_LAST_FRAME;
     callback.param = (u32)wk;
     callback.func = (NNSG2dAnmCallBackPtr)CommTvtField_QueueStartExit;
-    if (index == 3) {
-        index = 0;
-    } else if (index == 4) {
-        index = 1;
+    if (index == COMM_TVT_FIELD_TOUCH_ENTRALINK_ALTERNATE) {
+        index = COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON;
+    } else if (index == COMM_TVT_FIELD_TOUCH_XTRANSCEIVER_ALTERNATE) {
+        index = COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON;
     }
     ClActor_SetAutoAnim(wk->actors[index], TRUE);
     ClActor_SetAnimCallback(wk->actors[index], &callback);
@@ -631,20 +672,20 @@ static BOOL CommTvtField_OnButton(u32 button, CommTvtFieldWork *wk) {
 
     wk->selected = button;
     switch (button) {
-    case 0:
-    case 3:
+    case COMM_TVT_FIELD_TOUCH_ENTRALINK:
+    case COMM_TVT_FIELD_TOUCH_ENTRALINK_ALTERNATE:
         wk->param->exitArgument = Intrude_GetAlertState(comm);
         wk->mode = COMM_TVT_FIELD_MODE_ENTRALINK_RETURN;
         GFL_SndSEPlay(SEQ_SE_SYS_69);
         CommTvtField_SetFuncLine(wk, CommTvtField_StartPress, 964);
         break;
-    case 1:
-    case 4:
+    case COMM_TVT_FIELD_TOUCH_XTRANSCEIVER:
+    case COMM_TVT_FIELD_TOUCH_XTRANSCEIVER_ALTERNATE:
         wk->mode = COMM_TVT_FIELD_MODE_VIDEO_CHAT;
         GFL_SndSEPlay(SEQ_SE_SYS_69);
         CommTvtField_SetFuncLine(wk, CommTvtField_StartPress, 973);
         break;
-    case 2:
+    case COMM_TVT_FIELD_TOUCH_CLOSE:
         GFL_SndSEPlay(SEQ_SE_SYS_70);
         wk->mode = COMM_TVT_FIELD_MODE_CLOSE;
         CommTvtField_SetFuncLine(wk, CommTvtField_StartPress, 979);
@@ -663,12 +704,12 @@ static void CommTvtField_DrawWindowText(u32 index, u32 msgId, BOOL redraw, BOOL 
     }
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[index]), 0);
     if (format != 0) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, msgId, wk->strbuf50);
-        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf54, wk->strbuf50);
+        GFL_MsgDataLoadStrbuf(wk->msgData, msgId, wk->formatBuffer);
+        GFL_WordSetFormatStrbuf(wk->wordSet, wk->textBuffer, wk->formatBuffer);
     } else {
-        GFL_MsgDataLoadStrbuf(wk->msgData, msgId, wk->strbuf54);
+        GFL_MsgDataLoadStrbuf(wk->msgData, msgId, wk->textBuffer);
     }
-    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[index]), 0, 0, wk->strbuf54, wk->font, TEXT_COLOR);
+    GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->windows[index]), 0, 0, wk->textBuffer, wk->font, TEXT_COLOR);
     BmpWin_FlushChar(wk->windows[index]);
     BmpWin_FlushMap(wk->windows[index]);
 }
@@ -679,80 +720,83 @@ static void CommTvtField_UpdateStatus(CommTvtFieldWork *wk) {
     GameCommSys *comm = GSYS_GetGameCommSystem(wk->gsys);
     u32 state = Intrude_GetAlertState(comm);
 
-    if (wk->unk374 == 0) {
+    if (wk->newBeaconSeen == 0) {
         newIndex = 0;
-        if (GameBeaconSys_GetNextNew(&newIndex) != 30) {
-            wk->unk374 = 1;
+        if (GameBeaconSys_GetNextNew(&newIndex) != GAME_BEACON_LOG_MAX) {
+            wk->newBeaconSeen = 1;
         }
     }
-    if (wk->callCount != wk->prevCallCount) {
+    if (wk->roomPlayerCount != wk->prevRoomPlayerCount) {
         changed = TRUE;
     }
     if (wk->prevWifiState != wk->wifiState) {
         changed = TRUE;
     }
-    CommTvtField_DrawWindowText(4, 2, FALSE, FALSE, wk);
-    CommTvtField_DrawWindowText(6, 4, FALSE, FALSE, wk);
-    CommTvtField_DrawWindowText(8, 12, FALSE, FALSE, wk);
+    CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_ROOM_LABEL, Bank0026_Text_UnionRoom, FALSE, FALSE, wk);
+    CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_DISTRIBUTION_LABEL, Bank0026_Text_WirelessDistribution, FALSE,
+                                FALSE, wk);
+    CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_CGEAR_LABEL, Bank0026_Text_CGearDetected, FALSE, FALSE, wk);
     if (state == 0) {
-        WordSetNumber(wk->wordSet, 0, wk->callCount, 2, 0, TRUE);
-        CommTvtField_DrawWindowText(5, 3, changed, TRUE, wk);
+        WordSetNumber(wk->wordSet, 0, wk->roomPlayerCount, 2, 0, TRUE);
+        CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_ROOM_COUNT, Bank0026_Text_Ppl, changed, TRUE, wk);
         if (wk->wifiState & 0x20) {
-            CommTvtField_DrawWindowText(7, 5, changed, TRUE, wk);
+            CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_DISTRIBUTION_STATUS, Bank0026_Text_Yes, changed, TRUE,
+                                        wk);
         } else {
-            CommTvtField_DrawWindowText(7, 6, changed, TRUE, wk);
+            CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_DISTRIBUTION_STATUS, Bank0026_Text_No, changed, TRUE, wk);
         }
-        if (wk->unk374 != 0) {
-            CommTvtField_DrawWindowText(9, 5, changed, TRUE, wk);
+        if (wk->newBeaconSeen != 0) {
+            CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_CGEAR_STATUS, Bank0026_Text_Yes, changed, TRUE, wk);
         } else {
-            CommTvtField_DrawWindowText(9, 6, changed, TRUE, wk);
+            CommTvtField_DrawWindowText(COMM_TVT_FIELD_WINDOW_CGEAR_STATUS, Bank0026_Text_No, changed, TRUE, wk);
         }
     } else {
-        CommTvtField_FreeWindow5(5, wk);
-        CommTvtField_FreeWindow5(7, wk);
-        CommTvtField_FreeWindow5(9, wk);
+        CommTvtField_FreeWindow5(COMM_TVT_FIELD_WINDOW_ROOM_COUNT, wk);
+        CommTvtField_FreeWindow5(COMM_TVT_FIELD_WINDOW_DISTRIBUTION_STATUS, wk);
+        CommTvtField_FreeWindow5(COMM_TVT_FIELD_WINDOW_CGEAR_STATUS, wk);
     }
     if (state == 2) {
-        if (wk->shownCaller != Intrude_CountEventPeers(comm)) {
-            wk->shownState = 0;
+        if (wk->shownPeerResult != Intrude_CountEventPeers(comm)) {
+            wk->shownAlertState = 0;
         }
     }
-    if (wk->shownState != state) {
+    if (wk->shownAlertState != state) {
         switch (state) {
         case 0:
-            ClActor_SetVisible(wk->actors[5], FALSE);
-            CommTvtField_FreeWindow7(10, wk);
-            GFL_MsgDataLoadStrbuf(wk->msgData, 0, wk->strbuf54);
-            CommTvtField_CreateWindow(0, wk, &sMessageWindow, sTitleCenterX, sTitleCenterY);
+            ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], FALSE);
+            CommTvtField_FreeWindow7(COMM_TVT_FIELD_WINDOW_LEGACY_NOTICE, wk);
+            GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Entralink, wk->textBuffer);
+            CommTvtField_CreateWindow(COMM_TVT_FIELD_WINDOW_ENTRALINK, wk, &sMessageWindow, sTitleCenterX,
+                                      sTitleCenterY);
             break;
         case 1:
-            ClActor_SetVisible(wk->actors[5], FALSE);
-            CommTvtField_FreeWindow7(10, wk);
-            GFL_MsgDataLoadStrbuf(wk->msgData, 15, wk->strbuf54);
-            CommTvtField_CreateWindow(0, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
+            ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], FALSE);
+            CommTvtField_FreeWindow7(COMM_TVT_FIELD_WINDOW_LEGACY_NOTICE, wk);
+            GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Empty_8, wk->textBuffer);
+            CommTvtField_CreateWindow(COMM_TVT_FIELD_WINDOW_ENTRALINK, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
             break;
         case 2: {
             u32 caller = Intrude_CountEventPeers(comm);
 
-            wk->shownCaller = caller;
-            ClActor_SetVisible(wk->actors[5], FALSE);
-            CommTvtField_FreeWindow7(10, wk);
+            wk->shownPeerResult = caller;
+            ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], FALSE);
+            CommTvtField_FreeWindow7(COMM_TVT_FIELD_WINDOW_LEGACY_NOTICE, wk);
             WordSetNumber(wk->wordSet, 0, caller, 1, 0, TRUE);
-            GFL_MsgDataLoadStrbuf(wk->msgData, 16, wk->strbuf50);
-            GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf54, wk->strbuf50);
-            CommTvtField_CreateWindow(0, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
+            GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Empty_9, wk->formatBuffer);
+            GFL_WordSetFormatStrbuf(wk->wordSet, wk->textBuffer, wk->formatBuffer);
+            CommTvtField_CreateWindow(COMM_TVT_FIELD_WINDOW_ENTRALINK, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
             break;
         }
         case 3:
-            GFL_MsgDataLoadStrbuf(wk->msgData, 17, wk->strbuf54);
-            CommTvtField_CreateWindow(0, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
-            if (Intrude_GetRequesterStatus(comm, wk->strbuf54)) {
-                CommTvtField_CreateWindow(10, wk, &sNoticeWindow, NULL, NULL);
-                ClActor_SetVisible(wk->actors[5], TRUE);
+            GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Empty_10, wk->textBuffer);
+            CommTvtField_CreateWindow(COMM_TVT_FIELD_WINDOW_ENTRALINK, wk, &sCallWindow, sTitleCenterX, sTitleCenterY);
+            if (Intrude_GetRequesterStatus(comm, wk->textBuffer)) {
+                CommTvtField_CreateWindow(COMM_TVT_FIELD_WINDOW_LEGACY_NOTICE, wk, &sNoticeWindow, NULL, NULL);
+                ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE], TRUE);
             }
             break;
         }
-        wk->shownState = state;
+        wk->shownAlertState = state;
     }
     GFL_BGSysQueueScrLoad(7);
 }
@@ -766,27 +810,29 @@ static void CommTvtField_Run(CommTvtFieldWork *wk) {
 }
 
 static void CommTvtField_InitMessage(CommTvtFieldWork *wk) {
-    wk->unk328 = GFL_StrBufCreate(100, wk->heapId);
-    GFL_MsgDataLoadStrbuf(wk->msgData, 9, wk->unk328);
+    wk->unusedMessage = GFL_StrBufCreate(100, wk->heapId);
+    GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Empty_3, wk->unusedMessage);
     wk->unk32C = TEXT_COLOR;
     wk->unk330 = 1;
-    GFL_StrBufFree(wk->unk328);
+    GFL_StrBufFree(wk->unusedMessage);
 }
 
 static void CommTvtField_AnimateIcon(CommTvtFieldWork *wk) {
     switch (Intrude_GetAlertState(GSYS_GetGameCommSystem(wk->gsys))) {
     case 0:
     case 1:
-        if (ClActor_GetSequence(wk->actors[0]) == 20) {
-            ClActor_SetAutoAnim(wk->actors[0], FALSE);
-            ClActor_SetSequence(wk->actors[0], 12);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON]) == 20) {
+            ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON], FALSE);
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON],
+                                COMM_TVT_FIELD_ANIM_ENTRALINK_BUTTON);
         }
         break;
     case 2:
     case 3:
-        if (ClActor_GetSequence(wk->actors[0]) == 12) {
-            ClActor_SetAutoAnim(wk->actors[0], TRUE);
-            ClActor_SetSequence(wk->actors[0], 20);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON]) ==
+            COMM_TVT_FIELD_ANIM_ENTRALINK_BUTTON) {
+            ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON], TRUE);
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_ENTRALINK_BUTTON], 20);
         }
         break;
     }
@@ -817,37 +863,42 @@ static void CommTvtField_UpdateCalls(CommTvtFieldWork *wk) {
         StrBuf *name = GFL_StrBufCreate(200, wk->heapId);
 
         GFL_StrBufLoadFixedString(name, CtvtBeacon_GetPlayerName(beacon), 8);
-        if (!ClActor_IsVisible(wk->actors[4])) {
-            GFL_StrBufLoadFixedString(wk->strbuf58, CtvtBeacon_GetPlayerName(beacon), 8);
+        if (!ClActor_IsVisible(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR])) {
+            GFL_StrBufLoadFixedString(wk->callerName, CtvtBeacon_GetPlayerName(beacon), 8);
             GFL_BitmapFill(BmpWin_GetBitmap(wk->nameWindow), 0);
-            GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->nameWindow), 0, 0, wk->strbuf58, wk->font, TEXT_COLOR);
+            GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(wk->nameWindow), 0, 0, wk->callerName, wk->font,
+                                           TEXT_COLOR);
             BmpWin_FlushChar(wk->nameWindow);
             BmpWin_FlushMap(wk->nameWindow);
-            ClActor_SetVisible(wk->actors[4], TRUE);
+            ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR], TRUE);
             GFL_BGSysQueueScrLoad(5);
             CommTvtField_SetAnswerMode(wk, found);
         }
         GFL_StrBufFree(name);
         FieldSnd_RingRingtone(GameData_GetFieldSoundSystem(wk->gameData));
-        if (ClActor_GetSequence(wk->actors[3]) == 15) {
-            ClActor_SetSequence(wk->actors[3], 16);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR]) == COMM_TVT_FIELD_ANIM_CALL_IDLE) {
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR], COMM_TVT_FIELD_ANIM_CALL_RINGING);
         }
-        if (ClActor_GetSequence(wk->actors[1]) == 11) {
-            ClActor_SetAutoAnim(wk->actors[1], TRUE);
-            ClActor_SetSequence(wk->actors[1], 19);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON]) ==
+            COMM_TVT_FIELD_ANIM_XTRANSCEIVER_BUTTON) {
+            ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON], TRUE);
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON],
+                                COMM_TVT_FIELD_ANIM_XTRANSCEIVER_RINGING);
         }
     } else {
         FieldSnd_StopRingtone(GameData_GetFieldSoundSystem(wk->gameData));
-        ClActor_SetVisible(wk->actors[4], FALSE);
+        ClActor_SetVisible(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR], FALSE);
         GFL_BitmapFill(BmpWin_GetBitmap(wk->nameWindow), 0);
         BmpWin_FlushChar(wk->nameWindow);
         CommTvtField_SetCallMode(wk);
-        if (ClActor_GetSequence(wk->actors[1]) == 19) {
-            ClActor_SetAutoAnim(wk->actors[1], FALSE);
-            ClActor_SetSequence(wk->actors[1], 11);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON]) ==
+            COMM_TVT_FIELD_ANIM_XTRANSCEIVER_RINGING) {
+            ClActor_SetAutoAnim(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON], FALSE);
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_XTRANSCEIVER_BUTTON],
+                                COMM_TVT_FIELD_ANIM_XTRANSCEIVER_BUTTON);
         }
-        if (ClActor_GetSequence(wk->actors[3]) == 16) {
-            ClActor_SetSequence(wk->actors[3], 15);
+        if (ClActor_GetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR]) == COMM_TVT_FIELD_ANIM_CALL_RINGING) {
+            ClActor_SetSequence(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR], COMM_TVT_FIELD_ANIM_CALL_IDLE);
         }
     }
 }
@@ -858,41 +909,42 @@ static void CommTvtField_OnBeacon(void *arg, const void *beacon, int gameCommand
     int j;
 
     if (gameCommandBase >= 20 && gameCommandBase <= 27) {
-        for (i = 0; i < CALLER_COUNT; i++) {
-            if (wk->callers[i].timer != 0 && GFL_STD_MemCmp(wk->callers[i].mac, (const u8 *)beacon + 4, 6) == 0) {
-                wk->callers[i].timer = CALLER_FRAMES;
-                wk->callers[i].count = childCount;
+        for (i = 0; i < ROOM_BEACON_COUNT; i++) {
+            if (wk->roomBeacons[i].timer != 0 &&
+                GFL_STD_MemCmp(wk->roomBeacons[i].mac, (const u8 *)beacon + 4, 6) == 0) {
+                wk->roomBeacons[i].timer = ROOM_BEACON_FRAMES;
+                wk->roomBeacons[i].count = childCount;
                 return;
             }
         }
-        for (j = 0; j < CALLER_COUNT; j++) {
-            if (wk->callers[j].timer == 0) {
-                MI_CpuCopy8((const u8 *)beacon + 4, wk->callers[j].mac, 6);
-                wk->callers[j].timer = CALLER_FRAMES;
-                wk->callers[j].count = childCount;
+        for (j = 0; j < ROOM_BEACON_COUNT; j++) {
+            if (wk->roomBeacons[j].timer == 0) {
+                MI_CpuCopy8((const u8 *)beacon + 4, wk->roomBeacons[j].mac, 6);
+                wk->roomBeacons[j].timer = ROOM_BEACON_FRAMES;
+                wk->roomBeacons[j].count = childCount;
                 return;
             }
         }
     }
 }
 
-static void CommTvtField_TickCallers(CommTvtFieldWork *wk) {
+static void CommTvtField_TickRoomBeacons(CommTvtFieldWork *wk) {
     int i;
 
-    for (i = 0; i < CALLER_COUNT; i++) {
-        if (wk->callers[i].timer != 0) {
-            wk->callers[i].timer--;
+    for (i = 0; i < ROOM_BEACON_COUNT; i++) {
+        if (wk->roomBeacons[i].timer != 0) {
+            wk->roomBeacons[i].timer--;
         }
     }
 }
 
-static u32 CommTvtField_CountCalls(CommTvtFieldWork *wk) {
+static u32 CommTvtField_CountRoomPlayers(CommTvtFieldWork *wk) {
     int i;
     u32 total = 0;
 
-    for (i = 0; i < CALLER_COUNT; i++) {
-        if (wk->callers[i].timer != 0) {
-            total += wk->callers[i].count;
+    for (i = 0; i < ROOM_BEACON_COUNT; i++) {
+        if (wk->roomBeacons[i].timer != 0) {
+            total += wk->roomBeacons[i].count;
         }
     }
     return total;
@@ -974,13 +1026,13 @@ static BOOL CommTvtFieldApp_Main(GameProc *proc, u32 *state, void *param, void *
     if (wk->mode != COMM_TVT_FIELD_MODE_VIDEO_CHAT) {
         CommTvtField_UpdateCalls(wk);
     }
-    CommTvtField_TickCallers(wk);
+    CommTvtField_TickRoomBeacons(wk);
     ClActSys_Draw();
     if (GFL_NetIsInitialized()) {
         wk->prevWifiState = wk->wifiState;
         wk->wifiState = WihDwc_GetStatus(GameData_GetWifiList(wk->gameData));
-        wk->prevCallCount = wk->callCount;
-        wk->callCount = CommTvtField_CountCalls(wk);
+        wk->prevRoomPlayerCount = wk->roomPlayerCount;
+        wk->roomPlayerCount = CommTvtField_CountRoomPlayers(wk);
     }
     GFL_TCBExMgrUpdate(wk->tcbManager);
     PrintQueue_Main(wk->queue);
@@ -1018,9 +1070,9 @@ static BOOL CommTvtFieldApp_Exit(GameProc *proc, u32 *state, void *param, void *
     for (i = 0; i < 3; i++) {
         ClActor_Delete(wk->actors[i]);
     }
-    ClActor_Delete(wk->actors[3]);
-    ClActor_Delete(wk->actors[4]);
-    ClActor_Delete(wk->actors[5]);
+    ClActor_Delete(wk->actors[COMM_TVT_FIELD_ACTOR_CALL_INDICATOR]);
+    ClActor_Delete(wk->actors[COMM_TVT_FIELD_ACTOR_CALLER_INDICATOR]);
+    ClActor_Delete(wk->actors[COMM_TVT_FIELD_ACTOR_LEGACY_NOTICE]);
     ClActSys_FreePltt(wk->palette);
     ClActSys_FreeChars(wk->chars);
     ClActSys_FreeCellAnims(wk->cellAnims);
