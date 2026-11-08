@@ -851,7 +851,7 @@ static BOOL ResortShop_UpdateShop(GameSystem *gsys, ResortShopWork *wk, u8 mode,
     case RESORT_BUY_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
-            if (result == 0) {
+            if (result == CONFIRM_DIALOG_RESULT_YES) {
                 wk->state = RESORT_BUY_STATE_BUY;
                 ResortShop_ClearListScreen(1);
                 BmpMenuList_Redraw(wk->list);
@@ -969,7 +969,7 @@ static BOOL ResortShop_UpdateRecords(GameSystem *gsys, ResortShopWork *wk, u8 mo
     case RESORT_SELECT_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
-            if (result == 0) {
+            if (result == CONFIRM_DIALOG_RESULT_YES) {
                 wk->state = RESORT_SELECT_STATE_ACCEPT;
                 ResortShop_ClearListScreen(1);
                 BmpMenuList_Redraw(wk->list);
@@ -1074,7 +1074,7 @@ static BOOL ResortShop_UpdateOrder(GameSystem *gsys, ResortShopWork *wk, u8 mode
     case RESORT_REORDER_STATE_WAIT_CONFIRM:
         result = ConfirmDialog_Update(wk->confirmDialog);
         if (result != BMPMENU_NULL) {
-            if (result == 0) {
+            if (result == CONFIRM_DIALOG_RESULT_YES) {
                 wk->state = RESORT_REORDER_STATE_SWAP;
             } else if (result == BMPMENU_CANCEL) {
                 wk->state = RESORT_REORDER_STATE_RESTORE_LIST;

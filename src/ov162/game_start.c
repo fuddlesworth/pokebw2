@@ -263,19 +263,19 @@ static BOOL NewGame_Init(GameProc *proc, u32 *state, void *param, void *work) {
 
 static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
     GameStartWork *wk = work;
-    BOOL running;
+    BOOL procResult;
     MsgData *msgData;
     StrBuf *name;
 
     SaveControlIntr_Update(wk->saveTask);
-    running = GFL_ProcMgrUpdate(wk->procManager);
+    procResult = GFL_ProcMgrUpdate(wk->procManager);
     switch (*state) {
     case NEW_GAME_INTRO:
         QueueGameProc(wk->procManager, OVERLAY_ID(294), &INTRO_PROC_FUNCTIONS, &wk->introParam);
         *state = NEW_GAME_WAIT_INTRO;
         break;
     case NEW_GAME_WAIT_INTRO:
-        if (running == TRUE) {
+        if (procResult == PROCMGR_RUNNING) {
             break;
         }
         *state = NEW_GAME_NAME_ENTRY;
@@ -287,7 +287,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
         *state = NEW_GAME_WAIT_NAME_ENTRY;
         break;
     case NEW_GAME_WAIT_NAME_ENTRY:
-        if (running == TRUE) {
+        if (procResult == PROCMGR_RUNNING) {
             break;
         }
         *state = NEW_GAME_INTRO_PLAYER_NAMED;
@@ -299,7 +299,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
         *state = NEW_GAME_WAIT_INTRO_PLAYER_NAMED;
         break;
     case NEW_GAME_WAIT_INTRO_PLAYER_NAMED:
-        if (running == TRUE) {
+        if (procResult == PROCMGR_RUNNING) {
             break;
         }
         *state = NEW_GAME_AFTER_PLAYER_NAMED;
@@ -323,7 +323,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
         *state = NEW_GAME_WAIT_RIVAL_NAME_ENTRY;
         break;
     case NEW_GAME_WAIT_RIVAL_NAME_ENTRY:
-        if (running == TRUE) {
+        if (procResult == PROCMGR_RUNNING) {
             break;
         }
         *state = NEW_GAME_INTRO_RIVAL_NAMED;
@@ -335,7 +335,7 @@ static BOOL NewGame_Main(GameProc *proc, u32 *state, void *param, void *work) {
         *state = NEW_GAME_WAIT_INTRO_RIVAL_NAMED;
         break;
     case NEW_GAME_WAIT_INTRO_RIVAL_NAMED:
-        if (running == TRUE) {
+        if (procResult == PROCMGR_RUNNING) {
             break;
         }
         *state = NEW_GAME_AFTER_RIVAL_NAMED;
@@ -386,11 +386,17 @@ static BOOL Continue_Init(GameProc *proc, u32 *state, void *param, void *work) {
     return TRUE;
 }
 
+// The continue process configures the C-Gear and then finishes.
+enum {
+    CONTINUE_STATE_CONFIGURE = 0,
+    CONTINUE_STATE_END,
+};
+
 static BOOL Continue_Main(GameProc *proc, u32 *state, void *param, void *work) {
     GameStartWork *wk = work;
 
     switch (*state) {
-    case 0:
+    case CONTINUE_STATE_CONFIGURE:
         if ((u32)param == CONTINUE_DEBUG) {
             GCTX_ProcMgrQueueProc(OVERLAY_NONE, &DEBUG_GAME_START_PROC_FUNCTIONS, wk);
         } else if ((u32)param == CONTINUE_CGEAR_OFF) {
@@ -400,7 +406,7 @@ static BOOL Continue_Main(GameProc *proc, u32 *state, void *param, void *work) {
         }
         (*state)++;
         break;
-    case 1:
+    case CONTINUE_STATE_END:
         return TRUE;
     }
     return TRUE;
@@ -440,7 +446,7 @@ static void NewGame_SetUpPlayer(PlayerInfo *info, StrBuf *name, u32 gender) {
 static void NewGame_EraseOutsideKeys(SaveControl *save) {
     void *work;
 
-    if (SaveControl_GetErrors(save) & 2) {
+    if (SaveControl_GetErrors(save) & SAVE_CONTROL_ERROR_BROKEN) {
         GFL_OvlLoad(OVERLAY_ID(331));
         work = SaveOutside_Load(HEAPID_USER);
         if (SaveOutside_IsKeysLoaded(work)) {
@@ -500,6 +506,13 @@ static BOOL DebugGameStart_Exit(GameProc *proc, u32 *state, void *param, void *w
     return TRUE;
 }
 
+// The debug picker results are distinct from its zero-based cursor and touch rows.
+enum {
+    DEBUG_MENU_NONE = 0,
+    DEBUG_MENU_FIRST,
+    DEBUG_MENU_SECOND,
+};
+
 // Answers come as 1 for the first option and 2 for the second
 static BOOL DebugGameStart_Main(GameProc *proc, u32 *state, void *param, void *work) {
     GameStartWork *gameStart = param;
@@ -509,10 +522,10 @@ static BOOL DebugGameStart_Main(GameProc *proc, u32 *state, void *param, void *w
     switch (wk->question) {
     case DEBUG_QUESTION_TEXT:
         answer = DebugGameStart_UpdateMenu(wk);
-        if (answer == 0) {
+        if (answer == DEBUG_MENU_NONE) {
             break;
         }
-        if (answer == 1) {
+        if (answer == DEBUG_MENU_FIRST) {
             Config_SetKanji(gameStart->config, 0);
         } else {
             Config_SetKanji(gameStart->config, 1);
@@ -523,10 +536,10 @@ static BOOL DebugGameStart_Main(GameProc *proc, u32 *state, void *param, void *w
         break;
     case DEBUG_QUESTION_GENDER:
         answer = DebugGameStart_UpdateMenu(wk);
-        if (answer == 0) {
+        if (answer == DEBUG_MENU_NONE) {
             break;
         }
-        if (answer == 1) {
+        if (answer == DEBUG_MENU_FIRST) {
             setTrainerGender(gameStart->playerInfo, GENDER_MALE);
         } else {
             setTrainerGender(gameStart->playerInfo, GENDER_FEMALE);
@@ -537,10 +550,10 @@ static BOOL DebugGameStart_Main(GameProc *proc, u32 *state, void *param, void *w
         break;
     case DEBUG_QUESTION_CGEAR:
         answer = DebugGameStart_UpdateMenu(wk);
-        if (answer == 0) {
+        if (answer == DEBUG_MENU_NONE) {
             break;
         }
-        if (answer == 1) {
+        if (answer == DEBUG_MENU_FIRST) {
             Config_SetCGearOn(gameStart->config, TRUE);
         } else {
             Config_SetCGearOn(gameStart->config, FALSE);
@@ -653,10 +666,10 @@ static u32 DebugGameStart_UpdateMenu(DebugGameStartWork *wk) {
         GFL_SndSEPlay(SEQ_SE_SELECT1);
     }
     if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
-        answer = 1;
+        answer = DEBUG_MENU_FIRST;
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         if (wk->cursor != 0) {
-            answer = 2;
+            answer = DEBUG_MENU_SECOND;
         }
         return answer;
     }
@@ -668,11 +681,11 @@ static u32 DebugGameStart_UpdateMenu(DebugGameStartWork *wk) {
     if (touched != TOUCH_RECT_NONE) {
         GFL_SndSEPlay(SEQ_SE_DECIDE1);
         if (touched == 0) {
-            return 1;
+            return DEBUG_MENU_FIRST;
         }
-        return 2;
+        return DEBUG_MENU_SECOND;
     }
-    return 0;
+    return DEBUG_MENU_NONE;
 }
 
 // Cycles the chosen answer's frame color, through palette 3 of the main screen

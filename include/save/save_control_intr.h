@@ -12,7 +12,8 @@ typedef struct SaveControlIntr SaveControlIntr;
 SaveControlIntr *SaveControlIntr_Create(HeapID heapId, SaveControl *save);
 void SaveControlIntr_Free(SaveControlIntr *intr);
 void SaveControlIntr_Start(SaveControlIntr *intr);
-// Returns 0 until saving ends, then the save control's result
+// While saving, returns the save control's SAVE_RESULT_*. Idle/paused return CONTINUE;
+// an already-finished or disabled task returns OK, even after an earlier NG.
 u32 SaveControlIntr_Update(SaveControlIntr *intr);
 void SaveControlIntr_Pause(SaveControlIntr *intr);
 void SaveControlIntr_Resume(SaveControlIntr *intr);

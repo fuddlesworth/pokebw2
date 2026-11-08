@@ -402,11 +402,11 @@ void MBUtilMsg_ForgetConfirm(MBUtilMsg *msg) {
 int MBUtilMsg_UpdateConfirm(MBUtilMsg *msg) {
     u32 result = ConfirmDialog_Update(msg->confirm);
 
-    if (result == 0) {
+    if (result == CONFIRM_DIALOG_RESULT_YES) {
         msg->confirm = NULL;
         return MB_UTIL_MSG_YES;
     }
-    if (result == -2) {
+    if (result == BMPMENU_CANCEL) {
         msg->confirm = NULL;
         return MB_UTIL_MSG_NO;
     }

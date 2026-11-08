@@ -243,7 +243,7 @@ BmpMenu *ShopUI_CreateConfirmDialog(const ConfirmDialogSetup *setup, u16 frameCh
 
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, MSG_YESNO, heapId);
     options = ListMenuCore_CreateOptionList(2, heapId);
-    ListMenuCore_AppendMsgOption(options, msgData, MSG_YESNO_YES, 0, heapId);
+    ListMenuCore_AppendMsgOption(options, msgData, MSG_YESNO_YES, CONFIRM_DIALOG_RESULT_YES, heapId);
     ListMenuCore_AppendMsgOption(options, msgData, MSG_YESNO_NO, BMPMENU_CANCEL, heapId);
     GFL_MsgDataFree(msgData);
 

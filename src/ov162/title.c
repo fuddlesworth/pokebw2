@@ -325,7 +325,7 @@ static BOOL Title_Init(GameProc *proc, u32 *state, void *param, void *work) {
 static void Title_UpdateTimer(TitleWork *wk) {
     if (wk->frames == HIDE_LAYERS_FRAMES) {
         GFL_FadeSet(FADE_ENGINE_A_WHITE | FADE_ENGINE_B_WHITE, 16, 0, 3);
-        GFL_BGSysSetDisplayLayout(1);
+        GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_MAIN_SUB);
         GFL_BGSysSetBGEnabled(6, FALSE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, FALSE);
         GFL_BGSysSetBGEnabledA(GX_PLANEMASK_BG3, FALSE);
@@ -342,7 +342,7 @@ static void Title_UpdateTimer(TitleWork *wk) {
 
 static void Title_HandleInput(TitleWork *wk) {
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B | PAD_BUTTON_START)) && wk->layers == LAYERS_HIDDEN) {
-        GFL_BGSysSetDisplayLayout(0);
+        GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_SUB_MAIN);
         GFL_BGSysSetBGEnabled(6, TRUE);
         GFL_BGSysSetBGEnabled(3, TRUE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, TRUE);
@@ -355,7 +355,7 @@ static void Title_HandleInput(TitleWork *wk) {
         wk->state = STATE_WAIT_CRY;
         wk->cry = PokeVoice_Play(SPECIES_KYUREM, KYUREM_FORM, 64, 0, 0, 0, 0, 0);
         TitleG3D_SetFrame(&wk->g3d, CURVE_LEAVE_FRAME);
-        GFL_BGSysSetDisplayLayout(0);
+        GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_SUB_MAIN);
         GFL_BGSysSetBGEnabled(6, TRUE);
         GFL_BGSysSetBGEnabledB(GX_PLANEMASK_OBJ, FALSE);
         GFL_FadeSet(FADE_ENGINE_A_WHITE | FADE_ENGINE_B_WHITE, 16, 0, 3);
@@ -500,7 +500,7 @@ static void TitleSys_Init(TitleSys *sys, HeapID heapId) {
     GFL_TextRndInitColorIndexLUT();
     sys->tcbManager = GFL_TCBExMgrCreate(heapId, heapId, 4, 32);
     sys->vblankTask = GFL_VBlankTCBAdd(TitleSys_VBlank, sys, 5);
-    GFL_BGSysSetDisplayLayout(0);
+    GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_SUB_MAIN);
     GFL_BGSysEnableEngines();
     sys->captureEva = 12;
     sys->captureEvb = 4;
@@ -511,7 +511,7 @@ static void TitleSys_Update(TitleSys *sys, HeapID heapId) {
 }
 
 static void TitleSys_Free(TitleSys *sys) {
-    GFL_BGSysSetDisplayLayout(1);
+    GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_MAIN_SUB);
     GFL_BGSysEnableEngines();
     GFL_TCBRemove(sys->vblankTask);
     GFL_TCBExMgrFree(sys->tcbManager);
