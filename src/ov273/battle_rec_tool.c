@@ -13,6 +13,13 @@
 #include "save/config.h"
 #include "save/player_info.h"
 
+// Positions in the movie conversion helpers, independent of BATTLE_REC_CLIENT_* tags; both current callers pass one
+// client
+enum {
+    POKEWOOD_RECORD_SLOT_PLAYER = 0,
+    POKEWOOD_RECORD_SLOT_TRAINER = 1,
+};
+
 static void BattleRecTool_StorePkm(PartyPkm *pkm, BattleRecPkm *rec);
 static void BattleRecTool_StoreParty(PokeParty *party, BattleRecParty *rec);
 static void BattleRecTool_LoadParty(BattleRecParty *rec, PokeParty *party, HeapID heapId);
@@ -58,10 +65,10 @@ static void BattleRecTool_StorePkm(PartyPkm *pkm, BattleRecPkm *rec) {
         PML_CryptoRun(&pkm->statusCond, sizeof(PartyPkm) - sizeof(BoxPkm), pkm->base.pid);
         PML_CryptoRun(&pkm->base.contentBuffer, sizeof(PkmBuffer), pkm->base.checksum);
     }
-    blockA = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, 0);
-    blockB = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, 1);
-    blockC = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, 2);
-    blockD = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, 3);
+    blockA = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, PKM_DATA_BLOCK_A);
+    blockB = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, PKM_DATA_BLOCK_B);
+    blockC = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, PKM_DATA_BLOCK_C);
+    blockD = PML_PkmGetParamBlockCore(&pkm->base, pkm->base.pid, PKM_DATA_BLOCK_D);
 
     rec->pid = pkm->base.pid;
     rec->partyDecrypted = FALSE;
@@ -135,10 +142,10 @@ void BattleRecTool_LoadPkm(BattleRecPkm *rec, PartyPkm *pkm) {
     int i;
 
     MI_CpuFill8(pkm, 0, sizeof(PartyPkm));
-    blockA = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, 0);
-    blockB = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, 1);
-    blockC = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, 2);
-    blockD = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, 3);
+    blockA = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, PKM_DATA_BLOCK_A);
+    blockB = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, PKM_DATA_BLOCK_B);
+    blockC = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, PKM_DATA_BLOCK_C);
+    blockD = PML_PkmGetParamBlockCore(&pkm->base, rec->pid, PKM_DATA_BLOCK_D);
 
     pkm->base.pid = rec->pid;
     pkm->base.partyDecrypted = FALSE;
@@ -229,12 +236,12 @@ void BattleRecTool_StoreSetup(BtlSetup *setup) {
     }
 }
 
-void BattleRecTool_LoadSetup(BtlSetup *setup, u32 mode, HeapID heapId) {
+void BattleRecTool_LoadSetup(BtlSetup *setup, u32 source, HeapID heapId) {
     BattleRecBody *body;
     PokewoodBlock *block;
 
-    switch (mode) {
-    case 0:
+    switch (source) {
+    case BATTLE_REC_TOOL_SOURCE_VIDEO:
     default:
         body = &gBattleRecVideo->body;
         BattleRecTool_LoadParties(setup, body, heapId);
@@ -242,7 +249,7 @@ void BattleRecTool_LoadSetup(BtlSetup *setup, u32 mode, HeapID heapId) {
         BattleRecTool_LoadRecData(setup, body);
         BattleRecTool_LoadSetupParams(setup, &body->setup);
         break;
-    case 1:
+    case BATTLE_REC_TOOL_SOURCE_POKEWOOD:
         block = getPokewoodBlock();
         BattleRecTool_LoadPokewoodParty(setup, block, heapId);
         BattleRecTool_LoadPokewoodClients(setup, &block->client, 1, block->trainerClass);
@@ -315,7 +322,7 @@ static void BattleRecTool_StoreClients(const BtlSetup *setup, BattleRecClient *c
         } else {
             clients[i].type = BATTLE_REC_CLIENT_NONE;
         }
-        clients[i].unk2 = setup->chatterEffects[i];
+        clients[i].chatterEffect = setup->chatterEffects[i];
     }
 }
 
@@ -325,7 +332,7 @@ static void BattleRecTool_StorePokewoodClients(const BtlSetup *setup, BattleRecC
 
     for (i = 0; i < count; i++) {
         switch (i) {
-        case 0:
+        case POKEWOOD_RECORD_SLOT_PLAYER:
             PlayerInfo_Copy(setup->playerInfo[i], &clients[i].info.player);
             if (setup->trainers[i] != NULL) {
                 *trainerClass = setup->trainers[i]->trainerClass;
@@ -334,14 +341,15 @@ static void BattleRecTool_StorePokewoodClients(const BtlSetup *setup, BattleRecC
             } else {
                 *trainerClass = 1;
             }
+            // The movie record holds player bytes with the trainer tag.
             clients[i].type = BATTLE_REC_CLIENT_TRAINER;
             break;
-        case 1:
+        case POKEWOOD_RECORD_SLOT_TRAINER:
             BattleRecTool_StoreTrainer(setup->trainers[i], &clients[i].info.trainer);
             clients[i].type = BATTLE_REC_CLIENT_TRAINER;
             break;
         }
-        clients[i].unk2 = setup->chatterEffects[i];
+        clients[i].chatterEffect = setup->chatterEffects[i];
     }
 }
 
@@ -359,7 +367,7 @@ static void BattleRecTool_LoadClients(BtlSetup *setup, BattleRecClient *clients,
             BattleRecTool_LoadTrainer(setup->trainers[i], &client->info.trainer);
             break;
         }
-        setup->chatterEffects[i] = client->unk2;
+        setup->chatterEffects[i] = client->chatterEffect;
     }
 }
 
@@ -369,16 +377,16 @@ static void BattleRecTool_LoadPokewoodClients(BtlSetup *setup, const BattleRecCl
 
     for (i = 0; i < count; i++) {
         switch (i) {
-        case 0:
+        case POKEWOOD_RECORD_SLOT_PLAYER:
             PlayerInfo_Copy(&clients[i].info.player, setup->playerInfo[i]);
             setup->trainers[i]->trainerId = 1;
             setup->trainers[i]->trainerClass = trainerClass;
             break;
-        case 1:
+        case POKEWOOD_RECORD_SLOT_TRAINER:
             BattleRecTool_LoadTrainer(setup->trainers[i], &clients[i].info.trainer);
             break;
         }
-        setup->chatterEffects[i] = clients[i].unk2;
+        setup->chatterEffects[i] = clients[i].chatterEffect;
     }
 }
 
@@ -388,8 +396,8 @@ static void BattleRecTool_StoreTrainer(const BtlSetupTrainer *trainer, BattleRec
     rec->trainerId = trainer->trainerId;
     rec->trainerClass = trainer->trainerClass;
     rec->aiFlags = trainer->aiFlags;
-    rec->unk30 = trainer->winWords;
-    rec->unk38 = trainer->loseWords;
+    rec->winWords = trainer->winWords;
+    rec->loseWords = trainer->loseWords;
     for (i = 0; i < 4; i++) {
         rec->items[i] = trainer->items[i];
     }
@@ -403,8 +411,8 @@ static void BattleRecTool_LoadTrainer(BtlSetupTrainer *trainer, const BattleRecT
     trainer->trainerId = rec->trainerId;
     trainer->trainerClass = rec->trainerClass;
     trainer->aiFlags = rec->aiFlags;
-    trainer->winWords = rec->unk30;
-    trainer->loseWords = rec->unk38;
+    trainer->winWords = rec->winWords;
+    trainer->loseWords = rec->loseWords;
     for (i = 0; i < 4; i++) {
         trainer->items[i] = rec->items[i];
     }
@@ -443,10 +451,10 @@ static BOOL BattleRecTool_StoreSetupParams(const BtlSetup *setup, BattleRecSetup
     rec->winBgm = setup->fieldSituation.winBgm;
     rec->battleType = setup->battleType;
     rec->battleStyle = setup->battleStyle;
-    rec->unk33_4 = setup->fieldSituation.multiMode;
+    rec->multiMode = setup->fieldSituation.multiMode;
     rec->unk30 = setup->unkA2;
-    rec->unk32_5 = setup->fieldSituation.playerClientId;
-    rec->unk33_7 = setup->shooterSettings.launcher ? TRUE : FALSE;
+    rec->playerClientId = setup->fieldSituation.playerClientId;
+    rec->launcherEnabled = setup->shooterSettings.launcher ? TRUE : FALSE;
     initConfig(setup->config, (Config *)rec->config);
     return TRUE;
 }
@@ -458,10 +466,10 @@ static BOOL BattleRecTool_LoadSetupParams(BtlSetup *setup, const BattleRecSetup 
     setup->fieldSituation.winBgm = rec->winBgm;
     setup->battleType = rec->battleType;
     setup->battleStyle = rec->battleStyle;
-    setup->fieldSituation.multiMode = rec->unk33_4;
+    setup->fieldSituation.multiMode = rec->multiMode;
     setup->unkA2 = rec->unk30;
-    setup->fieldSituation.playerClientId = rec->unk32_5;
-    setup->shooterSettings.launcher = rec->unk33_7;
+    setup->fieldSituation.playerClientId = rec->playerClientId;
+    setup->shooterSettings.launcher = rec->launcherEnabled;
     return TRUE;
 }
 
@@ -504,7 +512,7 @@ static void BattleRecTool_StorePokewoodPartyCore(PokeParty *party, BattleRecPart
 
     MI_CpuFill8(rec, 0, sizeof(BattleRecParty));
     if (PokeParty_GetPkmCount(party) != 0) {
-        rec->capacity = BattleRecTool_Min(6, PokeParty_GetCapacity(party));
+        rec->capacity = BattleRecTool_Min(PARTY_SIZE, PokeParty_GetCapacity(party));
         rec->count = BattleRecTool_Min(PokeParty_GetPkmCount(party), rec->capacity);
         for (i = 0; i < rec->count; i++) {
             BattleRecTool_StorePkm(PokeParty_GetPkm(party, i), &rec->pkm[i]);
@@ -516,7 +524,7 @@ static void BattleRecTool_LoadPokewoodPartyCore(BattleRecParty *rec, PokeParty *
     int i;
     PartyPkm *pkm = GFL_HeapAllocate(HEAPID_TAIL(heapId), PokeParty_GetPkmRawSize(), TRUE, "battle_rec_tool.c", 742);
 
-    PokeParty_InitCore(party, 6);
+    PokeParty_InitCore(party, PARTY_SIZE);
     for (i = 0; i < rec->count; i++) {
         BattleRecTool_LoadPkm(&rec->pkm[i], pkm);
         PokeParty_SetParam(pkm, 0x9f, 0);
@@ -528,13 +536,13 @@ static void BattleRecTool_LoadPokewoodPartyCore(BattleRecParty *rec, PokeParty *
 static void BattleRecTool_StorePokewoodInfo(const BtlSetup *setup, PokewoodBattleInfo *info) {
     info->movie = setup->studioMovie;
     info->ending = setup->studioEnding;
-    MI_CpuCopy8(setup->studioChoices, info->unk110, sizeof(info->unk110));
+    MI_CpuCopy8(setup->studioChoices, info->studioChoices, sizeof(info->studioChoices));
 }
 
 static void BattleRecTool_LoadPokewoodInfo(BtlSetup *setup, const PokewoodBattleInfo *info) {
     setup->studioMovie = info->movie;
     setup->studioEnding = info->ending;
-    MI_CpuCopy8(info->unk110, setup->studioChoices, sizeof(setup->studioChoices));
+    MI_CpuCopy8(info->studioChoices, setup->studioChoices, sizeof(setup->studioChoices));
 }
 
 static void BattleRecTool_StorePokewoodExtra(const BtlSetup *setup, PokewoodBlock *block) {

@@ -981,7 +981,7 @@ static void *WifiBattleMatchSys_CreateReplayParam(WifiBattleMatchChain *chain, H
     BtlSetup_InitForRecord(setup, sys->param.gameData, heapId);
     GFL_OvlUnload(OVERLAY_ID(167));
     BattleRec_LoadToolOverlay();
-    BattleRecTool_LoadSetup(setup, 0, heapId);
+    BattleRecTool_LoadSetup(setup, BATTLE_REC_TOOL_SOURCE_VIDEO, heapId);
     BattleRec_UnloadToolOverlay();
     GFL_OvlLoad(OVERLAY_ID(167));
     GFL_SndBGMStopImmediate();

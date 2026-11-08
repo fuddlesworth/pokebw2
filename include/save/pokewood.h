@@ -31,7 +31,7 @@ typedef struct {
 typedef struct {
     u32 movie;
     u32 ending;
-    u8 unk110[0x14];
+    u8 studioChoices[0x14];
 } PokewoodBattleInfo;
 
 // The setup of a Pokéstar Studios battle, which getPokewoodBlock returns.
