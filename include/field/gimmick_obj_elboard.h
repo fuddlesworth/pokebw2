@@ -12,13 +12,16 @@ struct ElboardInit {
     u16 heapId;
     // The most messages the board holds
     u8 capacity;
-    u8 unk03;
-    u8 unk04;
+    // Text origin and scrolling lead-in, scaled by 14 and 13 respectively.
+    u8 textOffset;
+    // Gap between consecutive messages, in 13-pixel units.
+    u8 messageGap;
     G3DActor *actor;
 };
 
 struct ElboardMessageArg {
-    u16 kind;
+    // The actor animation that scrolls this board texture.
+    u16 animation;
     u16 padding;
     const char *name;
     const char *plName;
@@ -34,7 +37,7 @@ BOOL GimmickGateBoardEntry_Load(GimmickGateBoardEntry *entry, u32 arc, u32 index
 BOOL GimmickGateBoardEntry_MatchesZone(GimmickGateBoardEntry *entry, u16 zone);
 BOOL GimmickGateBoardEntry_MatchesVersion(GimmickGateBoardEntry *entry);
 void Elboard_Free(Elboard *state);
-void Elboard_Update(Elboard *state, u32 value);
+void Elboard_Update(Elboard *state, u32 frameStep);
 s32 Elboard_GetTime(Elboard *state);
 u16 Elboard_GetHeapID(Elboard *state);
 void Elboard_SetTime(Elboard *state, fx32 time);

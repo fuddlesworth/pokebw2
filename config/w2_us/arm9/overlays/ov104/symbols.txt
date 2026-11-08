@@ -5,12 +5,12 @@ GimmickGate_GetDirection kind:function(thumb,size=0x12) addr:0x021eed84
 GimmickGate_GetSave kind:function(thumb,size=0x1e) addr:0x021eed98
 GimmickGate_SaveWork kind:function(thumb,size=0x36) addr:0x021eedb8
 GimmickGate_LoadWork kind:function(thumb,size=0x1a) addr:0x021eedf0
-GimmickGate_ApplyTrainerCardFlag kind:function(thumb,size=0x18) addr:0x021eee0c
+GimmickGate_RestoreHallOfFameMinutes kind:function(thumb,size=0x18) addr:0x021eee0c
 GimmickGate_RestoreEventFlags kind:function(thumb,size=0x3e) addr:0x021eee24
 GimmickGate_RestoreBoardTime kind:function(thumb,size=0x10) addr:0x021eee64
 GimmickGate_CreateWork kind:function(thumb,size=0x6a) addr:0x021eee74
 GimmickGate_FreeWork kind:function(thumb,size=0x1a) addr:0x021eeee0
-GimmickGate_InitFlag kind:function(thumb,size=0x24) addr:0x021eeefc
+GimmickGate_InitHallOfFameMinutes kind:function(thumb,size=0x24) addr:0x021eeefc
 GimmickGate_LoadZoneData kind:function(thumb,size=0xa4) addr:0x021eef20
 GimmickGate_FreeZoneData kind:function(thumb,size=0x14) addr:0x021eefc4
 GimmickGate_StartBoardAnimation kind:function(thumb,size=0x28) addr:0x021eefd8
@@ -75,7 +75,7 @@ sScene0Animations kind:data(any) addr:0x021f0430
 sScene1Animations kind:data(any) addr:0x021f0488
 sSceneResources kind:data(any) addr:0x021f04e0
 sBoardStep kind:data(any) addr:0x021f0660
-sMessageKinds kind:data(any) addr:0x021f0664
+sMessageAnimations kind:data(any) addr:0x021f0664
 sBoardNames kind:data(any) addr:0x021f0674
 sBoardPlNames kind:data(any) addr:0x021f0690
 sBoardAnimations kind:data(any) addr:0x021f06ac

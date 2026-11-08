@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/directions.h"
 #include "field/el_scoreboard.h"
 #include "field/field.h"
 #include "field/field_camera.h"
@@ -22,7 +23,7 @@ struct ElboardMessage {
     u8 index;
     u8 padding[3];
     u32 active;
-    u32 pending;
+    u32 nextMessageTriggered;
     ElScoreboard *scoreboard;
     G3DActor *actor;
     u16 animation;
@@ -36,13 +37,13 @@ struct Elboard {
     u16 heapId;
     u8 count;
     u8 capacity;
-    u8 unk04;
-    u8 unk05;
+    u8 textOffset;
+    u8 messageGap;
     ElboardMessage **messages;
-    u32 *flags;
+    u32 *startRequests;
     G3DActor *actor;
     Font *font;
-    u32 current;
+    u32 elapsedTime;
 };
 
 // The event that turns the camera to the board and back
@@ -64,18 +65,19 @@ Elboard *Elboard_Create(ElboardInit *init) {
     state->heapId = init->heapId;
     state->count = 0;
     state->capacity = init->capacity;
-    state->unk04 = init->unk03;
-    state->unk05 = init->unk04;
+    state->textOffset = init->textOffset;
+    state->messageGap = init->messageGap;
     state->actor = init->actor;
-    state->current = 0;
+    state->elapsedTime = 0;
     state->messages =
         GFL_HeapAllocate(init->heapId, init->capacity * sizeof(ElboardMessage *), FALSE, "gimmick_obj_elboard.c", 0x6c);
-    state->flags = GFL_HeapAllocate(init->heapId, init->capacity * sizeof(u32), FALSE, "gimmick_obj_elboard.c", 0x6e);
+    state->startRequests =
+        GFL_HeapAllocate(init->heapId, init->capacity * sizeof(u32), FALSE, "gimmick_obj_elboard.c", 0x6e);
     for (i = 0; i < init->capacity; i++) {
         state->messages[i] = NULL;
-        state->flags[i] = 0;
+        state->startRequests[i] = FALSE;
     }
-    state->flags[0] = 1;
+    state->startRequests[0] = TRUE;
     state->font = GFL_FontCreate(0x17, 0, 0, 0, state->heapId);
     return state;
 }
@@ -95,21 +97,21 @@ void Elboard_Free(Elboard *state) {
         ElboardMessage_Free(state->messages[i]);
     }
     GFL_HeapFree(state->messages);
-    GFL_HeapFree(state->flags);
+    GFL_HeapFree(state->startRequests);
     GFL_HeapFree(state);
 }
 
-void Elboard_Update(Elboard *state, u32 amount) {
+void Elboard_Update(Elboard *state, u32 frameStep) {
     s32 i;
 
     for (i = 0; i < state->count; i++) {
-        Elboard_UpdateMessage(state, state->messages[i], amount);
+        Elboard_UpdateMessage(state, state->messages[i], frameStep);
     }
-    state->current += amount;
+    state->elapsedTime += frameStep;
 }
 
 s32 Elboard_GetTime(Elboard *state) {
-    return state->current;
+    return state->elapsedTime;
 }
 
 u16 Elboard_GetHeapID(Elboard *state) {
@@ -121,7 +123,7 @@ u8 Elboard_GetMessageCount(Elboard *state) {
 }
 
 void Elboard_SetTime(Elboard *state, fx32 time) {
-    s32 seconds = FX_Whole(time);
+    s32 wholeFrames = FX_Whole(time);
     s32 *starts =
         GFL_HeapAllocate(HEAPID_TAIL(state->heapId), state->count * sizeof(s32), FALSE, "gimmick_obj_elboard.c", 0x119);
     s32 *frames =
@@ -132,9 +134,9 @@ void Elboard_SetTime(Elboard *state, fx32 time) {
     s32 next;
     ElboardMessage *message;
 
-    state->current = time;
+    state->elapsedTime = time;
     for (i = 0; i < state->count; i++) {
-        state->flags[i] = 0;
+        state->startRequests[i] = FALSE;
         total += FX_Whole(state->messages[i]->triggerTime);
         if (i == 0) {
             starts[i] = 0;
@@ -143,11 +145,12 @@ void Elboard_SetTime(Elboard *state, fx32 time) {
         }
     }
     for (i = 0; i < state->count; i++) {
-        offset = seconds % total;
+        offset = wholeFrames % total;
         message = state->messages[i];
         frames[i] = offset - starts[i];
         message->active = frames[i] > 0 && frames[i] < FX_Whole(message->duration);
-        message->pending = FX_Whole(message->triggerTime) < frames[i] && frames[i] < FX_Whole(message->duration);
+        message->nextMessageTriggered =
+            FX_Whole(message->triggerTime) < frames[i] && frames[i] < FX_Whole(message->duration);
         if (frames[i] < 0) {
             frames[i] = 0;
         }
@@ -159,14 +162,14 @@ void Elboard_SetTime(Elboard *state, fx32 time) {
             GFL_G3DActorUnbindAnm(message->actor, message->animation);
         }
     }
-    if (state->count != 0 && seconds == 0) {
+    if (state->count != 0 && wholeFrames == 0) {
         message = state->messages[0];
-        message->active = 1;
+        message->active = TRUE;
         GFL_G3DActorBindAnm(message->actor, message->animation);
     }
     for (i = 0; i < state->count; i++) {
         next = (i + 1) % state->count;
-        state->flags[next] = state->messages[i]->pending && !state->messages[next]->active;
+        state->startRequests[next] = state->messages[i]->nextMessageTriggered && !state->messages[next]->active;
     }
     GFL_HeapFree(starts);
     GFL_HeapFree(frames);
@@ -195,14 +198,14 @@ ElboardMessage *ElboardMessage_Create(Elboard *state, const ElboardMessageArg *a
     }
     width = GFL_FontGetBlockWidth(text, state->font, 1);
     message->scoreboard = ElScoreboard_Create(GFL_G3DMdlGetTexResource(GFL_G3DActorGetMdl(state->actor)), arg->name,
-                                              arg->plName, text, (u16)(state->unk04 * 14), 1, state->heapId);
+                                              arg->plName, text, (u16)(state->textOffset * 14), 1, state->heapId);
     GFL_HeapFree(text);
     GFL_MsgDataFree(msgData);
-    frameCount = NNS_G3dAnmObjGetNumFrame(GFL_G3DAnmGetRenderObj(GFL_G3DActorGetAnm(state->actor, arg->kind)));
-    start = state->unk04 * 13;
+    frameCount = NNS_G3dAnmObjGetNumFrame(GFL_G3DAnmGetRenderObj(GFL_G3DActorGetAnm(state->actor, arg->animation)));
+    start = state->textOffset * 13;
     end = start + width;
     length = end - start;
-    gap = state->unk05 * 13;
+    gap = state->messageGap * 13;
     length += gap;
     message->elapsed = 0;
     message->triggerTime = FX32_CONST(length / 1024.0f);
@@ -210,10 +213,10 @@ ElboardMessage *ElboardMessage_Create(Elboard *state, const ElboardMessageArg *a
     message->duration = FX32_CONST(end / 1024.0f);
     message->duration = FX_Mul(message->duration, frameCount);
     message->index = index;
-    message->active = 0;
-    message->pending = 0;
+    message->active = FALSE;
+    message->nextMessageTriggered = FALSE;
     message->actor = state->actor;
-    message->animation = arg->kind;
+    message->animation = arg->animation;
     GFL_G3DActorUnbindAnm(message->actor, message->animation);
     GFL_G3DActorResetAnmFrame(message->actor, message->animation);
     return message;
@@ -225,39 +228,39 @@ void ElboardMessage_Free(ElboardMessage *message) {
 }
 
 void ElboardMessage_Start(ElboardMessage *message) {
-    if (message->active != 1) {
-        message->active = 1;
-        message->pending = 0;
+    if (message->active != TRUE) {
+        message->active = TRUE;
+        message->nextMessageTriggered = FALSE;
         message->elapsed = 0;
         GFL_G3DActorBindAnm(message->actor, message->animation);
         GFL_G3DActorResetAnmFrame(message->actor, message->animation);
     }
 }
 
-void Elboard_UpdateMessage(Elboard *state, ElboardMessage *message, u32 amount) {
+void Elboard_UpdateMessage(Elboard *state, ElboardMessage *message, u32 frameStep) {
     s32 next;
 
-    if (message->active == 1) {
+    if (message->active == TRUE) {
         ElScoreboard_Update(message->scoreboard);
-        GFL_G3DActorStepAnmFrame(message->actor, message->animation, amount);
-        message->elapsed += amount;
-        if (message->triggerTime < message->elapsed && message->pending != 1) {
+        GFL_G3DActorStepAnmFrame(message->actor, message->animation, frameStep);
+        message->elapsed += frameStep;
+        if (message->triggerTime < message->elapsed && message->nextMessageTriggered != TRUE) {
             next = (message->index + 1) % state->count;
-            state->flags[next] = 1;
-            message->pending = 1;
+            state->startRequests[next] = TRUE;
+            message->nextMessageTriggered = TRUE;
         }
         if (message->duration < message->elapsed) {
             ElboardMessage_Stop(message);
         }
-    } else if (state->flags[message->index] == 1) {
+    } else if (state->startRequests[message->index] == TRUE) {
         ElboardMessage_Start(message);
-        state->flags[message->index] = 0;
+        state->startRequests[message->index] = FALSE;
     }
 }
 
 void ElboardMessage_Stop(ElboardMessage *message) {
-    if (message->active == 1) {
-        message->active = 0;
+    if (message->active == TRUE) {
+        message->active = FALSE;
         GFL_G3DActorUnbindAnm(message->actor, message->animation);
         GFL_G3DActorResetAnmFrame(message->actor, message->animation);
     }
@@ -303,7 +306,7 @@ GameEventReturnCode GimmickGateEvent_ViewBoard(GameEvent *event, u32 *state, voi
         break;
     case STEP_MOVE_TO_BOARD:
         switch (GimmickGate_GetDirection(field)) {
-        case 1:
+        case DIR_DOWN:
         default:
             pitch = 0xee5;
             zoom = FX32_CONST(134);
@@ -312,7 +315,7 @@ GameEventReturnCode GimmickGateEvent_ViewBoard(GameEvent *event, u32 *state, voi
             offset.y = FX32_CONST(27);
             offset.z = FX32_CONST(-108);
             break;
-        case 3:
+        case DIR_RIGHT:
             pitch = 0xee5;
             zoom = FX32_CONST(134);
             yaw = 0x3fff;
@@ -393,7 +396,7 @@ BOOL GimmickGateBoardEntry_MatchesZone(GimmickGateBoardEntry *entry, u16 zone) {
 }
 
 BOOL GimmickGateBoardEntry_MatchesVersion(GimmickGateBoardEntry *entry) {
-    if (entry->version == 0) {
+    if (entry->version == GIMMICK_GATE_VERSION_ANY) {
         return TRUE;
     }
     if (entry->version == getGameVersion()) {

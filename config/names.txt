@@ -16153,12 +16153,12 @@ overlays/ov104 0x021eed44 GimmickGate_GetDirection
 overlays/ov104 0x021eed58 GimmickGate_GetSave
 overlays/ov104 0x021eed78 GimmickGate_SaveWork
 overlays/ov104 0x021eedb0 GimmickGate_LoadWork
-overlays/ov104 0x021eedcc GimmickGate_ApplyTrainerCardFlag
+overlays/ov104 0x021eedcc GimmickGate_RestoreHallOfFameMinutes
 overlays/ov104 0x021eede4 GimmickGate_RestoreEventFlags
 overlays/ov104 0x021eee24 GimmickGate_RestoreBoardTime
 overlays/ov104 0x021eee34 GimmickGate_CreateWork
 overlays/ov104 0x021eeea0 GimmickGate_FreeWork
-overlays/ov104 0x021eeebc GimmickGate_InitFlag
+overlays/ov104 0x021eeebc GimmickGate_InitHallOfFameMinutes
 overlays/ov104 0x021eeee0 GimmickGate_LoadZoneData
 overlays/ov104 0x021eef84 GimmickGate_FreeZoneData
 overlays/ov104 0x021eef98 GimmickGate_StartBoardAnimation
@@ -16223,7 +16223,7 @@ overlays/ov104 0x021f03f0 sScene0Animations
 overlays/ov104 0x021f0448 sScene1Animations
 overlays/ov104 0x021f04a0 sSceneResources
 overlays/ov104 0x021f0620 sBoardStep
-overlays/ov104 0x021f0624 sMessageKinds
+overlays/ov104 0x021f0624 sMessageAnimations
 overlays/ov104 0x021f0634 sBoardNames
 overlays/ov104 0x021f0650 sBoardPlNames
 overlays/ov104 0x021f066c sBoardAnimations

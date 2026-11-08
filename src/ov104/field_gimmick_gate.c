@@ -1,6 +1,10 @@
 #include "types.h"
 #include "constants/arc.h"
+#include "constants/directions.h"
+#include "constants/sound.h"
 #include "constants/text_banks.h"
+#include "constants/version.h"
+#include "constants/zones.h"
 #include "field/encounter.h"
 #include "field/field.h"
 #include "field/field_environment.h"
@@ -11,6 +15,7 @@
 #include "field/gimmick_obj_elboard.h"
 #include "field/zone.h"
 #include "gfl/arc.h"
+#include "gfl/backup_system.h"
 #include "gfl/calctool.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
@@ -29,22 +34,53 @@
 #include "system/season.h"
 #include "system/version.h"
 #include "system/wordset.h"
+#include "system/zone_weather.h"
 #include "text/system/gym_insect.h"
 
 #define GIMMICK_GATE_WEATHER_NONE 0xffff
 #define GIMMICK_GATE_ZONE_NONE 0xffff
 
+// These identify the work block and expansion-object placement, independently of the scene variant.
+#define GIMMICK_GATE_WORK_BLOCK 0
+#define GIMMICK_GATE_BOARD_SCENE 1
+#define GIMMICK_GATE_BOARD_ACTOR 0
+#define GIMMICK_GATE_MESSAGE_CAPACITY 7
+
+// The saved history describes news behavior, not the actor animation or physical board slot.
+enum {
+    GIMMICK_GATE_MESSAGE_DATE = 1,
+    GIMMICK_GATE_MESSAGE_WEATHER = 2,
+    GIMMICK_GATE_MESSAGE_SWARM = 3,
+    GIMMICK_GATE_MESSAGE_ROTATION_FIRST = 4,
+    GIMMICK_GATE_MESSAGE_ROTATION_SECOND = 5,
+    GIMMICK_GATE_MESSAGE_ROTATION_THIRD = 6,
+    GIMMICK_GATE_MESSAGE_WEEKDAY = 7,
+    GIMMICK_GATE_MESSAGE_ENTRY = 8,
+    GIMMICK_GATE_MESSAGE_HALL_OF_FAME = 9,
+};
+
+// Slots in the board textures and animation-index map; news uses slots three through five.
+enum {
+    GIMMICK_GATE_SLOT_DATE = 0,
+    GIMMICK_GATE_SLOT_WEATHER = 1,
+    GIMMICK_GATE_SLOT_SWARM = 2,
+    GIMMICK_GATE_SLOT_NEWS_FIRST = 3,
+    GIMMICK_GATE_SLOT_NEWS_SECOND = 4,
+    GIMMICK_GATE_SLOT_NEWS_THIRD = 5,
+    GIMMICK_GATE_SLOT_WEEKDAY = 6,
+};
+
 struct GimmickGateMessageList {
     u8 count;
     u8 padding[3];
-    u32 kinds[7];
-    u32 flags[7];
+    u32 kinds[GIMMICK_GATE_MESSAGE_CAPACITY];
+    u32 flags[GIMMICK_GATE_MESSAGE_CAPACITY];
 };
 
 struct GimmickGateSave {
-    u32 value;
+    u32 initialized;
     u32 boardTime;
-    u16 flag;
+    u16 hallOfFameMinutes;
     u16 padding;
     GimmickGateMessageList messages;
 };
@@ -60,7 +96,7 @@ struct GimmickGateWork {
     Field *field;
     GameData *gameData;
     GameSystem *gameSystem;
-    u32 value;
+    u32 initialized;
     Elboard *board;
     u32 boardTime;
     GimmickGateZoneData *zoneData;
@@ -68,16 +104,16 @@ struct GimmickGateWork {
     u8 boardEntryCount;
     u8 unk25[3];
     GimmickGateMessageList messages;
-    u16 flag;
+    u16 hallOfFameMinutes;
 };
 
 void GimmickGate_SaveWork(GimmickGateWork *work);
 void GimmickGate_LoadWork(GimmickGateWork *work);
-void GimmickGate_ApplyTrainerCardFlag(GimmickGateWork *work);
+void GimmickGate_RestoreHallOfFameMinutes(GimmickGateWork *work);
 void GimmickGate_RestoreEventFlags(GimmickGateWork *work);
 void GimmickGate_RestoreBoardTime(GimmickGateWork *work);
 GimmickGateWork *GimmickGate_CreateWork(Field *field);
-void GimmickGate_InitFlag(GimmickGateWork *work);
+void GimmickGate_InitHallOfFameMinutes(GimmickGateWork *work);
 void GimmickGate_FreeZoneData(GimmickGateWork *work);
 void GimmickGate_StartBoardAnimation(GimmickGateWork *work);
 void GimmickGate_PlaceBoard(GimmickGateWork *work);
@@ -171,26 +207,41 @@ static const G3DSceneSetup sSceneSetups[GATE_SCENE_COUNT] = {
     { sSceneResources, NELEMS(sSceneResources), sScene1Actors, NELEMS(sScene1Actors) },
 };
 
-static const char *sBoardNames[7] = {
+static const char *sBoardNames[GIMMICK_GATE_MESSAGE_CAPACITY] = {
     "gelboard_1", "gelboard_2", "gelboard_3", "gelboard_4", "gelboard_5", "gelboard_6", "gelboard_7",
 };
-static const char *sBoardPlNames[7] = {
+static const char *sBoardPlNames[GIMMICK_GATE_MESSAGE_CAPACITY] = {
     "gelboard_1_pl", "gelboard_2_pl", "gelboard_3_pl", "gelboard_4_pl",
     "gelboard_5_pl", "gelboard_6_pl", "gelboard_7_pl",
 };
 
-static u16 sMessageKinds[8] = { 0, 1, 2, 3, 4, 5, 6 };
+static u16 sMessageAnimations[8] = { 0, 1, 2, 3, 4, 5, 6 };
 static u16 sBoardAnimations[16] = { 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
 
 // The zones whose weather the boards report, and the weathers they report
-static const u16 sWeatherZones[] = { 0x71 };
-static const u8 sReportedWeathers[] = { 6, 7, 8 };
+static const u16 sWeatherZones[] = { ZONE_ICIRRUS_CITY };
+static const u8 sReportedWeathers[] = { WEATHER_THUNDERSTORM, WEATHER_GUSTY_RAIN, WEATHER_DIAMOND_DUST };
 
-static const u32 sEntrySlots[3] = { 3, 4, 5 };
+static const u32 sEntrySlots[3] = { GIMMICK_GATE_SLOT_NEWS_FIRST, GIMMICK_GATE_SLOT_NEWS_SECOND,
+                                    GIMMICK_GATE_SLOT_NEWS_THIRD };
 
 // Messages for the weathers, as GimmickGateZoneList gives them
-static u32 sWeatherMessages[15] = {
-    0xb5, 0xb6, 0xb7, 0xb8, 0xba, 0xbb, 0xbe, 0xbf, 0xbd, 0xbc, 0xbc, 0xbc, 0xb9, 0xbc, 0xbc,
+static u32 sWeatherMessages[WEATHER_MAX] = {
+    GymInsect_Text_Sunny,
+    GymInsect_Text_Snowy,
+    GymInsect_Text_Rainy,
+    GymInsect_Text_Sandstorm,
+    GymInsect_Text_Blizzard,
+    GymInsect_Text_Hail,
+    GymInsect_Text_VeryUnusualThunderstormHappening,
+    GymInsect_Text_VeryUnusualStrongStorm,
+    GymInsect_Text_VeryUnusualDiamondDust,
+    GymInsect_Text_Misty,
+    GymInsect_Text_Misty,
+    GymInsect_Text_Misty,
+    GymInsect_Text_Sandstorm_2,
+    GymInsect_Text_Misty,
+    GymInsect_Text_Misty,
 };
 
 void GimmickGate_Setup(Field *field) {
@@ -202,15 +253,15 @@ void GimmickGate_Setup(Field *field) {
         (Config *)getTrainerDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(Field_GetGameSystem(field)))));
     scene = GATE_SCENE_1;
     // Loaded as the expansion objects' scene 1, where the board's functions find it
-    LoadFieldExpandObjData(expObj, &sSceneSetups[scene], 1);
+    LoadFieldExpandObjData(expObj, &sSceneSetups[scene], GIMMICK_GATE_BOARD_SCENE);
     work = GimmickGate_CreateWork(field);
     GimmickGate_LoadZoneData(work);
     GimmickGate_LoadBoardEntries(work);
     GimmickGate_LoadWork(work);
-    if (work->value == 0) {
-        GimmickGate_InitFlag(work);
+    if (work->initialized == FALSE) {
+        GimmickGate_InitHallOfFameMinutes(work);
     } else {
-        GimmickGate_ApplyTrainerCardFlag(work);
+        GimmickGate_RestoreHallOfFameMinutes(work);
         GimmickGate_RestoreEventFlags(work);
     }
     GimmickGate_SetupMessages(work);
@@ -222,7 +273,7 @@ void GimmickGate_Setup(Field *field) {
 void GimmickGate_Delete(Field *field) {
     GimmickGateWork *work;
 
-    work = Field_GetGimmickWorkBlock(field, 0);
+    work = Field_GetGimmickWorkBlock(field, GIMMICK_GATE_WORK_BLOCK);
     GimmickGate_SaveWork(work);
     if (work->board != 0) {
         Elboard_Free(work->board);
@@ -233,7 +284,7 @@ void GimmickGate_Delete(Field *field) {
 void GimmickGate_Update(Field *field) {
     GimmickGateWork *work;
 
-    work = Field_GetGimmickWorkBlock(field, 0);
+    work = Field_GetGimmickWorkBlock(field, GIMMICK_GATE_WORK_BLOCK);
     Elboard_Update(work->board, sBoardStep);
     FieldExpObj_StepAllAnimations(Field_GetExpObjSystem(field));
 }
@@ -242,7 +293,7 @@ u32 GimmickGate_GetDirection(Field *field) {
     GimmickGateWork *work;
     GimmickGateZoneData *zoneData;
 
-    work = Field_GetGimmickWorkBlock(field, 0);
+    work = Field_GetGimmickWorkBlock(field, GIMMICK_GATE_WORK_BLOCK);
     zoneData = work->zoneData;
     return (u8)zoneData->direction;
 }
@@ -260,9 +311,9 @@ void GimmickGate_SaveWork(GimmickGateWork *work) {
     GimmickGateSave *data;
 
     data = GimmickGate_GetSave(work->field);
-    data->value = work->value;
+    data->initialized = work->initialized;
     data->boardTime = Elboard_GetTime(work->board) >> 12;
-    data->flag = work->flag;
+    data->hallOfFameMinutes = work->hallOfFameMinutes;
     data->messages = work->messages;
 }
 
@@ -270,18 +321,18 @@ void GimmickGate_LoadWork(GimmickGateWork *work) {
     GimmickGateSave *data;
 
     data = GimmickGate_GetSave(work->field);
-    work->value = data->value;
+    work->initialized = data->initialized;
     work->boardTime = data->boardTime;
-    work->flag = data->flag;
+    work->hallOfFameMinutes = data->hallOfFameMinutes;
 }
 
-void GimmickGate_ApplyTrainerCardFlag(GimmickGateWork *work) {
+void GimmickGate_RestoreHallOfFameMinutes(GimmickGateWork *work) {
     SaveControl *save;
     TrainerCardSave *card;
 
     save = GameData_GetSaveControl(work->gameData);
     card = getTrainerGameInfoAddress(save);
-    TrainerCard_SetHallOfFameMinutes(card, work->flag);
+    TrainerCard_SetHallOfFameMinutes(card, work->hallOfFameMinutes);
 }
 
 void GimmickGate_RestoreEventFlags(GimmickGateWork *work) {
@@ -292,7 +343,7 @@ void GimmickGate_RestoreEventFlags(GimmickGateWork *work) {
     eventWork = GameData_GetEventWork(work->gameData);
     list = &GimmickGate_GetSave(work->field)->messages;
     for (i = 0; i < list->count; i++) {
-        if (list->kinds[i] == 8) {
+        if (list->kinds[i] == GIMMICK_GATE_MESSAGE_ENTRY) {
             EventWork_FlagSet(eventWork, list->flags[i]);
         }
     }
@@ -310,18 +361,18 @@ GimmickGateWork *GimmickGate_CreateWork(Field *field) {
 
     heapId = Field_GetHeapID(field);
     system = Field_GetExpObjSystem(field);
-    work = Field_AllocGimmickWorkBlock(field, 0, heapId, sizeof(GimmickGateWork));
+    work = Field_AllocGimmickWorkBlock(field, GIMMICK_GATE_WORK_BLOCK, heapId, sizeof(GimmickGateWork));
     MI_CpuFill8(work, 0, sizeof(GimmickGateWork));
     work->heapId = heapId;
     work->field = field;
     work->gameSystem = Field_GetGameSystem(field);
     work->gameData = GSYS_GetGameData(work->gameSystem);
-    work->value = 0;
+    work->initialized = FALSE;
     init.heapId = heapId;
-    init.capacity = 7;
-    init.unk03 = 8;
-    init.unk04 = 3;
-    init.actor = FieldExpObj_GetActor(system, 1, 0);
+    init.capacity = GIMMICK_GATE_MESSAGE_CAPACITY;
+    init.textOffset = 8;
+    init.messageGap = 3;
+    init.actor = FieldExpObj_GetActor(system, GIMMICK_GATE_BOARD_SCENE, GIMMICK_GATE_BOARD_ACTOR);
     work->board = Elboard_Create(&init);
     return work;
 }
@@ -330,19 +381,19 @@ void GimmickGate_FreeWork(GimmickGateWork *work) {
     if (work != 0) {
         GimmickGate_FreeZoneData(work);
         GimmickGate_FreeBoardEntries(work);
-        Field_DeleteGimmickWorkBlock(work->field, 0);
+        Field_DeleteGimmickWorkBlock(work->field, GIMMICK_GATE_WORK_BLOCK);
     }
 }
 
-void GimmickGate_InitFlag(GimmickGateWork *work) {
+void GimmickGate_InitHallOfFameMinutes(GimmickGateWork *work) {
     SaveControl *save;
     TrainerCardSave *card;
 
-    if (work->value == 0) {
+    if (work->initialized == FALSE) {
         save = GameData_GetSaveControl_(work->gameData);
         card = getTrainerCardData_wrapper(save);
-        work->flag = TrainerCard_GetHallOfFameMinutes(card);
-        work->value = 1;
+        work->hallOfFameMinutes = TrainerCard_GetHallOfFameMinutes(card);
+        work->initialized = TRUE;
     }
 }
 
@@ -364,15 +415,15 @@ void GimmickGate_LoadZoneData(GimmickGateWork *work) {
         if (temp.zoneId != zone) {
             continue;
         }
-        if (temp.version != 0 && temp.version != getGameVersion()) {
+        if (temp.version != GIMMICK_GATE_VERSION_ANY && temp.version != getGameVersion()) {
             continue;
         }
-        if (zone == 0x177 || zone == 0x17b) {
+        if (zone == ZONE_BLACK_GATE || zone == ZONE_BLACK_GATE_GATE) {
             switch (GameData_GetMyCity(work->gameData)) {
-            case 0:
+            case CITY_BLACK_CITY:
                 GimmickGateZoneData_Load(&temp, ARCID_FIELD_GIMMICK_GATE_ZONE_DATA, i + 1);
                 break;
-            case 1:
+            case CITY_WHITE_FOREST:
                 break;
             }
         }
@@ -394,7 +445,7 @@ void GimmickGate_StartBoardAnimation(GimmickGateWork *work) {
 
     system = Field_GetExpObjSystem(work->field);
     anm = work->zoneData->anmIndex;
-    FieldExpObj_SetAnm(system, 1, 0, sBoardAnimations[anm], TRUE);
+    FieldExpObj_SetAnm(system, GIMMICK_GATE_BOARD_SCENE, GIMMICK_GATE_BOARD_ACTOR, sBoardAnimations[anm], TRUE);
 }
 
 void GimmickGate_PlaceBoard(GimmickGateWork *work) {
@@ -404,22 +455,22 @@ void GimmickGate_PlaceBoard(GimmickGateWork *work) {
     u32 angle;
 
     system = Field_GetExpObjSystem(work->field);
-    matrix = FieldExpObj_GetActorMatrixPtr(system, 1, 0);
+    matrix = FieldExpObj_GetActorMatrixPtr(system, GIMMICK_GATE_BOARD_SCENE, GIMMICK_GATE_BOARD_ACTOR);
     state = work->zoneData;
     matrix->translation.x = state->x << 12;
     matrix->translation.y = state->y << 12;
     matrix->translation.z = state->z << 12;
     switch (state->direction) {
-    case 1:
+    case DIR_DOWN:
         angle = 0;
         break;
-    case 3:
+    case DIR_RIGHT:
         angle = 90;
         break;
-    case 0:
+    case DIR_UP:
         angle = 180;
         break;
-    case 2:
+    case DIR_LEFT:
         angle = 270;
         break;
     default:
@@ -435,7 +486,7 @@ void GimmickGate_AddMessage(GimmickGateWork *work, u32 kind, u32 flag) {
 
     list = &work->messages;
     count = list->count;
-    if (count < 7) {
+    if (count < GIMMICK_GATE_MESSAGE_CAPACITY) {
         list->kinds[count] = kind;
         list->flags[count] = flag;
         list->count = count + 1;
@@ -443,20 +494,20 @@ void GimmickGate_AddMessage(GimmickGateWork *work, u32 kind, u32 flag) {
 }
 
 u32 GimmickGate_ShouldShowHallOfFame(GimmickGateWork *work) {
-    if (GimmickGate_IsHallOfFameFlagSet(work) == 1 && work->flag != 0) {
-        return 1;
+    if (GimmickGate_IsHallOfFameFlagSet(work) == TRUE && work->hallOfFameMinutes != 0) {
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 u32 GimmickGate_IsHallOfFameFlagSet(GimmickGateWork *work) {
     EventWork *eventWork;
 
     eventWork = GameData_GetEventWork(work->gameData);
-    if (EventWork_FlagGet(eventWork, 0x960) == 1) {
-        return 1;
+    if (EventWork_FlagGet(eventWork, 0x960) == TRUE) {
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 void GimmickGate_GetHallOfFameSpecies(const GimmickGateWork *work, u32 *species, s32 *count) {
@@ -469,9 +520,9 @@ void GimmickGate_GetHallOfFameSpecies(const GimmickGateWork *work, u32 *species,
 
     *count = 0;
     save = GameData_GetSaveControl(gameData);
-    result = SaveControl_OpenExtraBlock(save, 8, work->heapId);
-    if (result == 1 || result == 2) {
-        hallOfFame = getAddressOfExtraSaveBlk(save, 8, 0);
+    result = SaveControl_OpenExtraBlock(save, SAVE_EXTRA_ID_HALL_OF_FAME, work->heapId);
+    if (result == SAVE_LOAD_RESULT_OK || result == SAVE_LOAD_RESULT_OK_PARTIAL) {
+        hallOfFame = getAddressOfExtraSaveBlk(save, SAVE_EXTRA_ID_HALL_OF_FAME, 0);
         if (HallOfFameSave_GetTeamCount(hallOfFame) != 0) {
             *count = HallOfFameSave_GetPokemonCount(hallOfFame, 0);
             for (i = 0; i < *count; i++) {
@@ -484,7 +535,7 @@ void GimmickGate_GetHallOfFameSpecies(const GimmickGateWork *work, u32 *species,
             }
         }
     }
-    freeIntermediateSaveExtraBlksAfterLoad(save, 8);
+    freeIntermediateSaveExtraBlksAfterLoad(save, SAVE_EXTRA_ID_HALL_OF_FAME);
 }
 
 void GimmickGate_LoadBoardEntries(GimmickGateWork *work) {
@@ -550,7 +601,7 @@ GimmickGateBoardEntry *GimmickGate_FindListEntry(GimmickGateWork *work) {
         zoneMatch = GimmickGateBoardEntry_MatchesZone(&work->boardEntries[i], zone);
         if (flag && zoneMatch) {
             entry = &work->boardEntries[i];
-            if (entry->type == 2) {
+            if (entry->type == GIMMICK_GATE_ENTRY_LIST) {
                 return entry;
             }
         }
@@ -560,26 +611,26 @@ GimmickGateBoardEntry *GimmickGate_FindListEntry(GimmickGateWork *work) {
 
 u32 GimmickGate_HasBoardEntry(GimmickGateWork *work) {
     if (GimmickGate_FindBoardEntry(work) != 0) {
-        return 1;
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 void GimmickGate_AddBoardMessage(GimmickGateWork *work, ElboardMessageArg *message, u32 kind,
                                  GimmickGateBoardEntry *entry) {
     Elboard_AddMessage(work->board, message);
-    if (kind == 8) {
+    if (kind == GIMMICK_GATE_MESSAGE_ENTRY) {
         GimmickGate_AddMessage(work, kind, entry->flagId);
     } else {
         GimmickGate_AddMessage(work, kind, 0);
     }
-    if (kind == 8 && entry->clearFlag == 1) {
+    if (kind == GIMMICK_GATE_MESSAGE_ENTRY && entry->clearFlag == TRUE) {
         EventWork_FlagReset(GameData_GetEventWork(work->gameData), entry->flagId);
     }
 }
 
 void GimmickGate_SetupMessages(GimmickGateWork *work) {
-    if (GimmickGate_ShouldShowHallOfFame(work) == 1) {
+    if (GimmickGate_ShouldShowHallOfFame(work) == TRUE) {
         GimmickGate_SetupHallOfFameMessages(work);
         return;
     }
@@ -632,14 +683,14 @@ void GimmickGate_AddDateMessage(GimmickGateWork *work) {
     WordSetNumber(wordSet, 2, date.year, 2, 2, 1);
     loadMonthToStrbuf(wordSet, 0, date.month);
     WordSetNumber(wordSet, 1, date.day, 2, 0, 1);
-    arg.kind = sMessageKinds[0];
-    arg.name = sBoardNames[0];
-    arg.plName = sBoardPlNames[0];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_DATE];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_DATE];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_DATE];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.messageId = work->zoneData->messageIds[0];
     arg.wordSet = wordSet;
-    GimmickGate_AddBoardMessage(work, &arg, 1, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_DATE, 0);
     GFL_WordSetSystemFree(wordSet);
 }
 
@@ -698,14 +749,14 @@ void GimmickGate_AddWeatherMessage(GimmickGateWork *work) {
         message = 0xc4;
         break;
     }
-    arg.kind = sMessageKinds[1];
-    arg.name = sBoardNames[1];
-    arg.plName = sBoardPlNames[1];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_WEATHER];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_WEATHER];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_WEATHER];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.messageId = message;
     arg.wordSet = wordSet;
-    GimmickGate_AddBoardMessage(work, &arg, 2, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_WEATHER, 0);
     GFL_WordSetSystemFree(wordSet);
 }
 
@@ -717,7 +768,8 @@ void GimmickGate_AddSwarmMessage(GimmickGateWork *work) {
     ElboardMessageArg arg;
 
     zone = getSwarmLevelRangeFromData(work->gameData);
-    if (zone == GIMMICK_GATE_ZONE_NONE || (zone == 0x159 && GameData_GetSeason(work->gameData) == SEASON_WINTER)) {
+    if (zone == GIMMICK_GATE_ZONE_NONE ||
+        (zone == ZONE_ROUTE_8 && GameData_GetSeason(work->gameData) == SEASON_WINTER)) {
         return;
     }
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
@@ -726,14 +778,14 @@ void GimmickGate_AddSwarmMessage(GimmickGateWork *work) {
     GFL_WordSetSetStrbuf(wordSet, 0, zoneName, 0, 1, 0);
     GFL_StrBufFree(zoneName);
     GFL_MsgDataFree(msgData);
-    arg.kind = sMessageKinds[2];
-    arg.name = sBoardNames[2];
-    arg.plName = sBoardPlNames[2];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_SWARM];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_SWARM];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_SWARM];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.messageId = work->zoneData->messageIds[2];
     arg.wordSet = wordSet;
-    GimmickGate_AddBoardMessage(work, &arg, 3, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_SWARM, 0);
     GFL_WordSetSystemFree(wordSet);
 }
 
@@ -743,35 +795,35 @@ void GimmickGate_AddWeekdayMessage3(GimmickGateWork *work) {
 
     RTC_GetDate(&date);
     switch (date.week) {
-    case 0:
+    case RTC_WEEK_SUNDAY:
         arg.messageId = work->zoneData->messageIds[9];
         break;
-    case 1:
+    case RTC_WEEK_MONDAY:
         arg.messageId = work->zoneData->messageIds[6];
         break;
-    case 2:
+    case RTC_WEEK_TUESDAY:
         arg.messageId = work->zoneData->messageIds[3];
         break;
-    case 3:
+    case RTC_WEEK_WEDNESDAY:
         arg.messageId = work->zoneData->messageIds[7];
         break;
-    case 4:
+    case RTC_WEEK_THURSDAY:
         arg.messageId = work->zoneData->messageIds[4];
         break;
-    case 5:
+    case RTC_WEEK_FRIDAY:
         arg.messageId = work->zoneData->messageIds[8];
         break;
-    case 6:
+    case RTC_WEEK_SATURDAY:
         arg.messageId = work->zoneData->messageIds[5];
         break;
     }
-    arg.kind = sMessageKinds[3];
-    arg.name = sBoardNames[3];
-    arg.plName = sBoardPlNames[3];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.wordSet = 0;
-    GimmickGate_AddBoardMessage(work, &arg, 4, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_FIRST, 0);
 }
 
 void GimmickGate_AddWeekdayMessage4(GimmickGateWork *work) {
@@ -780,35 +832,35 @@ void GimmickGate_AddWeekdayMessage4(GimmickGateWork *work) {
 
     RTC_GetDate(&date);
     switch (date.week) {
-    case 0:
+    case RTC_WEEK_SUNDAY:
         arg.messageId = work->zoneData->messageIds[10];
         break;
-    case 1:
+    case RTC_WEEK_MONDAY:
         arg.messageId = work->zoneData->messageIds[7];
         break;
-    case 2:
+    case RTC_WEEK_TUESDAY:
         arg.messageId = work->zoneData->messageIds[4];
         break;
-    case 3:
+    case RTC_WEEK_WEDNESDAY:
         arg.messageId = work->zoneData->messageIds[8];
         break;
-    case 4:
+    case RTC_WEEK_THURSDAY:
         arg.messageId = work->zoneData->messageIds[5];
         break;
-    case 5:
+    case RTC_WEEK_FRIDAY:
         arg.messageId = work->zoneData->messageIds[9];
         break;
-    case 6:
+    case RTC_WEEK_SATURDAY:
         arg.messageId = work->zoneData->messageIds[6];
         break;
     }
-    arg.kind = sMessageKinds[4];
-    arg.name = sBoardNames[4];
-    arg.plName = sBoardPlNames[4];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_NEWS_SECOND];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_SECOND];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_SECOND];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.wordSet = 0;
-    GimmickGate_AddBoardMessage(work, &arg, 5, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_SECOND, 0);
 }
 
 void GimmickGate_AddWeekdayMessage5(GimmickGateWork *work) {
@@ -817,35 +869,35 @@ void GimmickGate_AddWeekdayMessage5(GimmickGateWork *work) {
 
     RTC_GetDate(&date);
     switch (date.week) {
-    case 0:
+    case RTC_WEEK_SUNDAY:
         arg.messageId = work->zoneData->messageIds[11];
         break;
-    case 1:
+    case RTC_WEEK_MONDAY:
         arg.messageId = work->zoneData->messageIds[8];
         break;
-    case 2:
+    case RTC_WEEK_TUESDAY:
         arg.messageId = work->zoneData->messageIds[5];
         break;
-    case 3:
+    case RTC_WEEK_WEDNESDAY:
         arg.messageId = work->zoneData->messageIds[9];
         break;
-    case 4:
+    case RTC_WEEK_THURSDAY:
         arg.messageId = work->zoneData->messageIds[6];
         break;
-    case 5:
+    case RTC_WEEK_FRIDAY:
         arg.messageId = work->zoneData->messageIds[10];
         break;
-    case 6:
+    case RTC_WEEK_SATURDAY:
         arg.messageId = work->zoneData->messageIds[7];
         break;
     }
-    arg.kind = sMessageKinds[5];
-    arg.name = sBoardNames[5];
-    arg.plName = sBoardPlNames[5];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_NEWS_THIRD];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_THIRD];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_THIRD];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.wordSet = 0;
-    GimmickGate_AddBoardMessage(work, &arg, 6, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_THIRD, 0);
 }
 
 void GimmickGate_AddWeekdayMessage6(GimmickGateWork *work) {
@@ -854,35 +906,35 @@ void GimmickGate_AddWeekdayMessage6(GimmickGateWork *work) {
 
     RTC_GetDate(&date);
     switch (date.week) {
-    case 0:
+    case RTC_WEEK_SUNDAY:
         arg.messageId = work->zoneData->messageIds[18];
         break;
-    case 1:
+    case RTC_WEEK_MONDAY:
         arg.messageId = work->zoneData->messageIds[12];
         break;
-    case 2:
+    case RTC_WEEK_TUESDAY:
         arg.messageId = work->zoneData->messageIds[13];
         break;
-    case 3:
+    case RTC_WEEK_WEDNESDAY:
         arg.messageId = work->zoneData->messageIds[14];
         break;
-    case 4:
+    case RTC_WEEK_THURSDAY:
         arg.messageId = work->zoneData->messageIds[15];
         break;
-    case 5:
+    case RTC_WEEK_FRIDAY:
         arg.messageId = work->zoneData->messageIds[16];
         break;
-    case 6:
+    case RTC_WEEK_SATURDAY:
         arg.messageId = work->zoneData->messageIds[17];
         break;
     }
-    arg.kind = sMessageKinds[6];
-    arg.name = sBoardNames[6];
-    arg.plName = sBoardPlNames[6];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_WEEKDAY];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_WEEKDAY];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_WEEKDAY];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.wordSet = 0;
-    GimmickGate_AddBoardMessage(work, &arg, 7, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_WEEKDAY, 0);
 }
 
 void GimmickGate_AddHallOfFameMessage(GimmickGateWork *work) {
@@ -897,36 +949,36 @@ void GimmickGate_AddHallOfFameMessage(GimmickGateWork *work) {
     GimmickGate_GetHallOfFameSpecies(work, species, &count);
     switch (count) {
     case 1:
-        message = 0xcd;
+        message = GymInsect_Text_WelcomeHallFameWon;
         break;
     case 2:
-        message = 0xce;
+        message = GymInsect_Text_WelcomeHallFameWon_2;
         break;
     case 3:
-        message = 0xcf;
+        message = GymInsect_Text_WelcomeHallFameWon_3;
         break;
     case 4:
-        message = 0xd0;
+        message = GymInsect_Text_WelcomeHallFameWon_4;
         break;
     case 5:
-        message = 0xd1;
+        message = GymInsect_Text_WelcomeHallFameWon_5;
         break;
     case 6:
-        message = 0xd2;
+        message = GymInsect_Text_WelcomeHallFameWon_6;
         break;
     }
     for (i = 0; i < count; i++) {
         WordSet_LoadSpeciesName(wordSet, i, (u16)species[i]);
     }
     copyVarForText(wordSet, 6, GetGameDataPlayerInfo(work->gameData));
-    arg.kind = sMessageKinds[3];
-    arg.name = sBoardNames[3];
-    arg.plName = sBoardPlNames[3];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.animation = sMessageAnimations[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.messageId = message;
     arg.wordSet = wordSet;
-    GimmickGate_AddBoardMessage(work, &arg, 9, 0);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_HALL_OF_FAME, 0);
     GFL_WordSetSystemFree(wordSet);
 }
 
@@ -935,10 +987,10 @@ void GimmickGate_AddEntryMessages(GimmickGateWork *work) {
 
     entry = GimmickGate_FindBoardEntry(work);
     switch (entry->type) {
-    case 0:
-        GimmickGate_AddEntryMessage(work, entry, 3);
+    case GIMMICK_GATE_ENTRY_SINGLE:
+        GimmickGate_AddEntryMessage(work, entry, GIMMICK_GATE_SLOT_NEWS_FIRST);
         break;
-    case 2:
+    case GIMMICK_GATE_ENTRY_LIST:
         GimmickGate_AddListEntryMessages(work);
         break;
     }
@@ -947,14 +999,14 @@ void GimmickGate_AddEntryMessages(GimmickGateWork *work) {
 void GimmickGate_AddEntryMessage(GimmickGateWork *work, GimmickGateBoardEntry *entry, u32 index) {
     ElboardMessageArg arg;
 
-    arg.kind = sMessageKinds[index];
+    arg.animation = sMessageAnimations[index];
     arg.name = sBoardNames[index];
     arg.plName = sBoardPlNames[index];
-    arg.messageArc = 2;
-    arg.messageFile = 0x2b;
+    arg.messageArc = ARCID_SYSTEM_MESSAGE;
+    arg.messageFile = TEXT_BANK_GYM_INSECT;
     arg.messageId = entry->messageId;
     arg.wordSet = NULL;
-    GimmickGate_AddBoardMessage(work, &arg, 8, entry);
+    GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ENTRY, entry);
 }
 
 void GimmickGate_AddListEntryMessages(GimmickGateWork *work) {
@@ -1067,19 +1119,19 @@ void GimmickGate_GetRoamerZones(GimmickGateWork *work, GimmickGateZoneList *list
     if (EncountSave_HasActiveEntry(save)) {
         version = getGameVersion();
         switch (version) {
-        case 0x16:
+        case VERSION_WHITE2:
             slot = 0;
             break;
-        case 0x17:
+        case VERSION_BLACK2:
             slot = 1;
             break;
         }
         switch (slot) {
         case 0:
-            weather = 6;
+            weather = WEATHER_THUNDERSTORM;
             break;
         case 1:
-            weather = 7;
+            weather = WEATHER_GUSTY_RAIN;
             break;
         }
         zone = EncountSave_GetRoamingPkmZone(save, (u8)slot);
@@ -1094,15 +1146,15 @@ BOOL Scrcmd_FieldGimmickGate_GimmickGateViewBoard(VM *vm, FieldScriptEnv *env) {
     ScriptWork *scriptWork;
     GameSystem *gsys;
     Field *field;
-    u32 id;
+    u32 duration;
     GameEvent *event;
 
     scriptWork = FieldScriptEnv_GetScriptWork(env);
     gsys = FieldScriptEnv_GetGameSystem(env);
     field = GSYS_GetField(gsys);
-    id = ScriptReadAny(vm, env);
-    GFL_SndSEPlay(0x547);
-    event = GimmickGateEvent_Create(gsys, field, id);
+    duration = ScriptReadAny(vm, env);
+    GFL_SndSEPlay(SEQ_SE_MESSAGE);
+    event = GimmickGateEvent_Create(gsys, field, duration);
     ScriptWork_CallEvent(scriptWork, event);
     return TRUE;
 }
