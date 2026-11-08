@@ -1648,7 +1648,7 @@ u16 GetWinBGM(BtlMainModule *mainModule) {
 }
 
 u16 GetStudioEndingBGM0(BtlMainModule *mainModule) {
-    return mainModule->setup->studioGoodEndingBgm;
+    return mainModule->setup->studioFlopEndingBgm;
 }
 
 u16 GetStudioEndingBGM2(BtlMainModule *mainModule) {

@@ -2486,7 +2486,8 @@ static s32 PkwdBook_ReadTouch(PkwdBookWork *wk, u32 page) {
 static void PkwdBook_LoadCast(PkwdBookWork *wk, u32 movie) {
     PkwdBook_FreeCast(wk);
     wk->party = PokeParty_Create(wk->heapId);
-    EventPokewood_CreateCastPartyFromSave(wk->param->playerInfo, wk->party, wk->heapId, movie, 1);
+    EventPokewood_CreateCastPartyFromSave(wk->param->playerInfo, wk->party, wk->heapId, movie,
+                                          POKEWOOD_CAST_SIDE_OPPONENT);
     PkwdBook_ReadCast(wk);
 }
 
