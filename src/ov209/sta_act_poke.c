@@ -1,6 +1,7 @@
 #include "types.h"
 #include "app/musical/mus_item_draw.h"
 #include "app/musical/mus_poke_draw.h"
+#include "app/musical/musical_system.h"
 #include "app/musical/sta_act_effect.h"
 #include "app/musical/sta_act_poke.h"
 #include "app/musical/sta_acting.h"
@@ -65,8 +66,8 @@ StaActPokeSys *StaActPoke_InitSystem(HeapID heapId, StaActing *stage, MusPokeDra
         sys->pokes[i].active = FALSE;
         sys->pokes[i].update = FALSE;
     }
-    sys->shadowMaterial =
-        BillboardActorScene_AddMaterialArcTex(sys->billboardActor, ARCID_MUSICAL, 29, 3, 0x33, 64, 64);
+    sys->shadowMaterial = BillboardActorScene_AddMaterialArcTex(sys->billboardActor, ARCID_MUSICAL, 29, 3,
+                                                                BILLBOARD_ACTOR_TEXSIZE_64X64, 64, 64);
     return sys;
 }
 
@@ -162,10 +163,10 @@ static void StaActPoke_UpdateItems(StaActPokeSys *sys, StaActPoke *poke) {
 
         // A Pokémon facing the other way wears its left props on the right
         if (poke->flip == TRUE) {
-            if (i == 7) {
-                equipPos = 8;
-            } else if (i == 8) {
-                equipPos = 7;
+            if (i == MUS_POKE_DRAW_EQUIP_HAND_R) {
+                equipPos = MUS_POKE_DRAW_EQUIP_HAND_L;
+            } else if (i == MUS_POKE_DRAW_EQUIP_HAND_L) {
+                equipPos = MUS_POKE_DRAW_EQUIP_HAND_R;
             } else if (i == 0) {
                 equipPos = 1;
             } else if (i == 1) {
@@ -202,7 +203,7 @@ static void StaActPoke_UpdateItems(StaActPokeSys *sys, StaActPoke *poke) {
                     if (MusItemDraw_GetItemFlag7(poke->items[i]) == TRUE) {
                         pos.z = poke->pos.z - FX32_CONST(20);
                     } else {
-                        if (equipPos == 7 || equipPos == 8) {
+                        if (equipPos == MUS_POKE_DRAW_EQUIP_HAND_R || equipPos == MUS_POKE_DRAW_EQUIP_HAND_L) {
                             pos.z = poke->pos.z + FX32_CONST(10) - (poke->equips[i]->slot << 11);
                         } else {
                             pos.z = poke->pos.z + FX32_CONST(5) - (poke->equips[i]->slot << 11);
@@ -302,7 +303,7 @@ StaActPoke *StaActPoke_CreatePoke(StaActPokeSys *sys, MusicalPoke *musPoke) {
         u16 itemId = musPoke->equips[i].itemId;
 
         poke->equips[i] = &musPoke->equips[i];
-        if (itemId != 0xff) {
+        if (itemId != MUSICAL_ITEM_NONE) {
             poke->showItem[i] = TRUE;
             poke->itemRes[i] = MusItemDraw_LoadTexResource(itemId);
             poke->items[i] = MusItemDraw_AddItem(sys->itemDraw, itemId, poke->itemRes[i], &poke->pos);

@@ -570,12 +570,12 @@ static void MusicalEvent_TakeShot(MusicalEventWork *work) {
             GFL_MsgDataFree(msgData);
         }
         for (j = 0; j < 8; j++) {
-            shot->pokes[pos].equips[j].itemId = 0xff;
+            shot->pokes[pos].equips[j].itemId = MUSICAL_ITEM_NONE;
             shot->pokes[pos].equips[j].rotation = 0;
-            shot->pokes[pos].equips[j].pos = 10;
+            shot->pokes[pos].equips[j].pos = MUSICAL_SAVED_EQUIP_NONE;
         }
         for (j = 0; j < 9; j++) {
-            if (poke->equips[j].itemId != 0xff) {
+            if (poke->equips[j].itemId != MUSICAL_ITEM_NONE) {
                 slot = poke->equips[j].slot;
                 shot->pokes[pos].equips[slot].itemId = poke->equips[j].itemId;
                 shot->pokes[pos].equips[slot].rotation = poke->equips[j].rotation;

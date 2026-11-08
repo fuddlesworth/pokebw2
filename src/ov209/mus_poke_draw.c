@@ -11,13 +11,6 @@
 // Overlay 209's mus_poke_draw.c: the musical's Pokémon, each a sprite of musical_mcss.c with its front and maybe its
 // back, and the places of its props, which the sprite's marker cells give as it is drawn
 
-// The marker cells: two of kinds 4 and 5, and one for each prop position from kind 7
-enum {
-    MUS_POKE_DRAW_CELL_MARK4 = 4,
-    MUS_POKE_DRAW_CELL_MARK5,
-    MUS_POKE_DRAW_CELL_EQUIP = 7,
-};
-
 static void MusPokeDraw_CellCallback(u32 kind, MusicalMcssCellInfo *info, void *work);
 static void MusPokeDraw_GetLoadInfo(MusicalPoke *musPoke, MCSSLoadInfo *info, BOOL back);
 
@@ -256,5 +249,6 @@ static void MusPokeDraw_GetLoadInfo(MusicalPoke *musPoke, MCSSLoadInfo *info, BO
     info->multiCells = MusicalMcss_GetMultiCellsDataNo(info->arcId, species, form, sex, rare, dir, FALSE);
     info->multiCellAnime = MusicalMcss_GetMultiCellAnimeDataNo(info->arcId, species, form, sex, rare, dir, FALSE);
     info->bin = MusicalMcss_GetBinFileDataNo(info->arcId, species, form, sex, rare, dir, FALSE);
+    // This renderer uses the shared loader word as personality, unlike the standard MCSS heap selector.
     info->unk20 = musPoke->personality;
 }

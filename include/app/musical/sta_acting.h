@@ -10,6 +10,13 @@
 #include "app/musical/sta_act_obj.h"
 #include "struct_decls.h"
 
+// The trigger for scheduling the stage-owned Pokemon's next hand prop
+enum {
+    STA_ACTING_NPC_TIMING_PROGRAMMED_DELAY = 0,
+    STA_ACTING_NPC_TIMING_ON_APPEAL = 1,
+    STA_ACTING_NPC_TIMING_ON_ITEM_USE = 2,
+};
+
 StaActPokeSys *StaActing_GetPokeSys(StaActing *stage);
 StaActPoke *StaActing_GetPoke(StaActing *stage, u8 pos);
 // How far the stage has scrolled, in pixels
@@ -33,8 +40,8 @@ void StaActing_SetScrollFixed(StaActing *stage, BOOL fixed);
 // The buttons of the player's props
 void StaActing_EnableButtons(StaActing *stage);
 void StaActing_DisableButtons(StaActing *stage);
-// When the other Pokémon use their props, chosen at random by a timing, 0 to 2, and for timing 1 only when the
-// Pokémon at pos appeals
+// When the other Pokémon use their props, selected by STA_ACTING_NPC_TIMING_*; ON_APPEAL only affects the
+// Pokémon at pos
 void StaActing_SetNpcItemTiming(StaActing *stage, u32 timing, u8 pos);
 StaActObjSys *StaActing_GetObjSys(StaActing *stage);
 StaActObj *StaActing_GetObj(StaActing *stage, u8 index);
@@ -65,7 +72,7 @@ void StaActing_ClearMessage(StaActing *stage);
 void StaActing_PlayStrm(StaActing *stage, u16 seq);
 void StaActing_PlaySeq(StaActing *stage, u16 seq);
 void StaActing_StopSeq(StaActing *stage);
-void StaActing_PlayWave(StaActing *stage, u16 waveArc, u16 a2, u16 a3);
+void StaActing_PlayWave(StaActing *stage, u16 waveArc, u16 index, u16 srcIndex);
 void StaActing_PlayBgm(StaActing *stage, u32 bgm);
 void StaActing_StopBgm(StaActing *stage);
 // Overlay 210's table of the props, which the item draw system holds

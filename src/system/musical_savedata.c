@@ -46,7 +46,7 @@ void MusicalSave_ClearEquips(MusicalSave *musical) {
     u8 i;
 
     for (i = 0; i < 8; i++) {
-        musical->equips[i].pos = 10;
+        musical->equips[i].pos = MUSICAL_SAVED_EQUIP_NONE;
     }
 }
 

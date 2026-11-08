@@ -23,6 +23,8 @@ typedef struct {
     u32 multiCells;
     u32 multiCellAnime;
     u32 bin;
+    // The default MCSS file-loading path uses 1 to select the tail heap. The separate musical renderer
+    // instead uses this word as the Spinda personality; there is no uniform meaning across both loaders.
     u32 unk20;
 } MCSSLoadInfo;
 

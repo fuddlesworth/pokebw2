@@ -15,6 +15,13 @@
 #include "system/gf_font.h"
 #include "system/vm.h"
 
+// The repeat timer keeps running, ends a period, or finishes its final period
+enum {
+    STA_SCRIPT_REPEAT_RUNNING = 0,
+    STA_SCRIPT_REPEAT_PERIOD_COMPLETE = 1,
+    STA_SCRIPT_REPEAT_DONE = 2,
+};
+
 // Overlay 209's script_command.c: the commands of the stage's scripts. Each reads its arguments from the script as
 // 32-bit words. A command that moves something over time starts a task, which frees its work when it is done, and
 // most of them can make the script wait for it
@@ -160,11 +167,11 @@ static u32 StaScript_UpdateRepeat(StaScriptRepeat *repeat) {
         repeat->repeat--;
         repeat->count = 0;
         if (repeat->repeat == 0) {
-            return 2;
+            return STA_SCRIPT_REPEAT_DONE;
         }
-        return 1;
+        return STA_SCRIPT_REPEAT_PERIOD_COMPLETE;
     }
-    return 0;
+    return STA_SCRIPT_REPEAT_RUNNING;
 }
 
 static BOOL StaScriptCmd_End(VM *vm, void *work) {
@@ -349,7 +356,7 @@ static BOOL StaScriptCmd_ButtonEnable(VM *vm, void *work) {
     StaActScriptSys *sys = script->sys;
 
     StaActing_EnableButtons(sys->stage);
-    StaActing_SetNpcItemTiming(sys->stage, 0, 0);
+    StaActing_SetNpcItemTiming(sys->stage, STA_ACTING_NPC_TIMING_PROGRAMMED_DELAY, 0);
     return FALSE;
 }
 
@@ -656,7 +663,7 @@ static BOOL StaScriptCmd_AppealScript(VM *vm, void *work) {
     u32 file = VM_Read32(script->vm);
 
     StaActing_StartAppealScript(sys->stage, file, pos);
-    StaActing_SetNpcItemTiming(sys->stage, 1, pos);
+    StaActing_SetNpcItemTiming(sys->stage, STA_ACTING_NPC_TIMING_ON_APPEAL, pos);
     return FALSE;
 }
 
@@ -713,7 +720,7 @@ static void StaScript_PokeJumpTask(TCB *tcb, void *data) {
     StaScriptJumpWork *jump = data;
     StaActPokeSys *pokeSys = StaActing_GetPokeSys(jump->repeat.stage);
 
-    if (StaScript_UpdateRepeat(&jump->repeat) == 2) {
+    if (StaScript_UpdateRepeat(&jump->repeat) == STA_SCRIPT_REPEAT_DONE) {
         VecFx32 offset = { 0, 0, 0 };
 
         StaActPoke_SetPositionOffset(pokeSys, jump->poke, &offset);
@@ -1092,9 +1099,9 @@ static void StaScript_EmitterTask(TCB *tcb, void *data) {
     StaScriptEmitterWork *emitter = data;
     u32 ret = StaScript_UpdateRepeat(&emitter->repeat);
 
-    if (ret == 2) {
+    if (ret == STA_SCRIPT_REPEAT_DONE) {
         StaActScript_DelTask(emitter->sys, emitter->task);
-    } else if (ret == 1) {
+    } else if (ret == STA_SCRIPT_REPEAT_PERIOD_COMPLETE) {
         VecFx32 pos;
 
         pos.x = (emitter->min.x + GFL_RandomLCAlt(emitter->range.x)) / 16;
@@ -1327,10 +1334,10 @@ static BOOL StaScriptCmd_PlayWave(VM *vm, void *work) {
     StaActScript *script = work;
     StaActScriptSys *sys = script->sys;
     u32 seq = VM_Read32(script->vm);
-    u32 a1 = VM_Read32(script->vm);
-    u32 a2 = VM_Read32(script->vm);
+    u32 index = VM_Read32(script->vm);
+    u32 srcIndex = VM_Read32(script->vm);
 
-    StaActing_PlayWave(sys->stage, StaScript_GetWaveArc(StaScript_ConvertSeq(seq)), a1, a2);
+    StaActing_PlayWave(sys->stage, StaScript_GetWaveArc(StaScript_ConvertSeq(seq)), index, srcIndex);
     return FALSE;
 }
 

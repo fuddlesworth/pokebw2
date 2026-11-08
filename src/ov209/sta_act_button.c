@@ -205,20 +205,20 @@ static void StaActButton_LoadItemTexture(StaActButton *sys, u8 index, u16 itemId
     DC_FlushRange(texData, texSize);
     yStart = 0;
     switch (size) {
-    case 0x22:
+    case BILLBOARD_ACTOR_TEXSIZE_32X32:
         // 32 by 32
         xStart = 2;
         yStart = 2;
         width = 4;
         height = 4;
         break;
-    case 0x23:
+    case BILLBOARD_ACTOR_TEXSIZE_32X64:
         // 32 by 64
         xStart = 2;
         width = 4;
         height = 8;
         break;
-    case 0x32:
+    case BILLBOARD_ACTOR_TEXSIZE_64X32:
         // 64 by 32
         xStart = 0;
         width = 8;

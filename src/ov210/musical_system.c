@@ -14,8 +14,6 @@
 // read from the save data
 #define MUSICAL_PROGRAM_DOWNLOAD 4
 
-#define MUSICAL_ITEM_NONE 0xff
-
 BOOL MusicalSystem_CanJoin(PartyPkm *pkm) {
     BOOL result = FALSE;
 
@@ -33,7 +31,7 @@ MusicalPoke *MusicalSystem_InitPokeFromPkm(PartyPkm *pkm, HeapID heapId) {
     int i;
     MusicalPoke *poke = GFL_HeapAllocate(heapId, sizeof(MusicalPoke), TRUE, "musical_system.c", 147);
 
-    poke->owner = 4;
+    poke->owner = MUSICAL_POKE_OWNER_NONE;
     poke->pkm = pkm;
     poke->points = 0;
     for (i = 0; i < 9; i++) {
@@ -53,7 +51,7 @@ MusicalPoke *MusicalSystem_InitPoke(u16 species, u8 sex, u8 form, u8 rare, u32 p
     int i;
     MusicalPoke *poke = GFL_HeapAllocate(heapId, sizeof(MusicalPoke), TRUE, "musical_system.c", 171);
 
-    poke->owner = 4;
+    poke->owner = MUSICAL_POKE_OWNER_NONE;
     poke->pkm = NULL;
     poke->points = 0;
     for (i = 0; i < 9; i++) {
@@ -80,9 +78,9 @@ Ov210Work *MusicalSystem_InitProgramData(HeapID heapId) {
     work->msgArc = NULL;
     work->script = NULL;
     work->soundData = NULL;
-    work->sound[0] = NULL;
-    work->sound[1] = NULL;
-    work->sound[2] = NULL;
+    work->sound[MUSICAL_SOUND_SEQUENCE] = NULL;
+    work->sound[MUSICAL_SOUND_BANK] = NULL;
+    work->sound[MUSICAL_SOUND_WAVE_ARCHIVE] = NULL;
     return work;
 }
 
@@ -129,15 +127,15 @@ void MusicalSystem_LoadProgramData(Ov210Work *work, SaveControl *save, GameData 
     work->soundDataSize = size0 + 12 + size1 + size2;
     soundData = GFL_HeapAllocate(heapId, work->soundDataSize, TRUE, "musical_system.c", 266);
     work->soundData = soundData;
-    work->sound[0] = soundData + 3;
-    work->sound[1] = (void *)((u32)work->sound[0] + size0);
-    work->sound[2] = (void *)((u32)work->sound[0] + size0 + size1);
-    soundData[0] = size0;
-    soundData[1] = size1;
-    soundData[2] = size2;
-    GFL_ArcToolRead(arc, 4, work->sound[0]);
-    GFL_ArcToolRead(arc, 3, work->sound[1]);
-    GFL_ArcToolRead(arc, 5, work->sound[2]);
+    work->sound[MUSICAL_SOUND_SEQUENCE] = soundData + 3;
+    work->sound[MUSICAL_SOUND_BANK] = (void *)((u32)work->sound[MUSICAL_SOUND_SEQUENCE] + size0);
+    work->sound[MUSICAL_SOUND_WAVE_ARCHIVE] = (void *)((u32)work->sound[MUSICAL_SOUND_SEQUENCE] + size0 + size1);
+    soundData[MUSICAL_SOUND_SEQUENCE] = size0;
+    soundData[MUSICAL_SOUND_BANK] = size1;
+    soundData[MUSICAL_SOUND_WAVE_ARCHIVE] = size2;
+    GFL_ArcToolRead(arc, 4, work->sound[MUSICAL_SOUND_SEQUENCE]);
+    GFL_ArcToolRead(arc, 3, work->sound[MUSICAL_SOUND_BANK]);
+    GFL_ArcToolRead(arc, 5, work->sound[MUSICAL_SOUND_WAVE_ARCHIVE]);
     GFL_ArcToolFree(arc);
 
     if (program >= MUSICAL_PROGRAM_DOWNLOAD) {

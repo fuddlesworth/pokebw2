@@ -1,6 +1,7 @@
 #include "types.h"
 #include "app/musical/mus_item_draw.h"
 #include "app/musical/mus_poke_draw.h"
+#include "app/musical/musical_system.h"
 #include "app/musical/sta_act_audience.h"
 #include "app/musical/sta_act_bg.h"
 #include "app/musical/sta_act_button.h"
@@ -42,6 +43,9 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
+
+// Print through the immediate queue instead of a timed stream
+#define STA_ACTING_PRINT_NOW 0xff
 
 // Overlay 209's sta_acting.c: the musical's stage. It plays the program's scripts with the Pokémon, the background,
 // the objects, the effects, the lights and the audience, follows the Pokémon in the limelight, and runs the props
@@ -341,7 +345,7 @@ StaActing *StaActing_Init(MusicalStageParam *param, HeapID heapId) {
     stage->vblankTcb = GFL_VBlankTCBAdd(StaActing_VBlank, stage, 64);
     if (stage->param->comm == NULL) {
         for (i = 0; i < 4; i++) {
-            if (stage->param->pokes[i]->owner == 0) {
+            if (stage->param->pokes[i]->owner == MUSICAL_POKE_OWNER_EVENT) {
                 stage->playerPos = i;
                 break;
             }
@@ -384,9 +388,9 @@ StaActing *StaActing_Init(MusicalStageParam *param, HeapID heapId) {
     StaActing_InitAppealEffect(stage);
     GFL_NetSetIconScreen(FALSE, stage->heapId);
     StaActing_LoadBg(stage, 0);
-    stage->sound[0] = stage->param->ov210->sound[0];
-    stage->sound[1] = stage->param->ov210->sound[1];
-    stage->sound[2] = stage->param->ov210->sound[2];
+    stage->sound[MUSICAL_SOUND_SEQUENCE] = stage->param->ov210->sound[MUSICAL_SOUND_SEQUENCE];
+    stage->sound[MUSICAL_SOUND_BANK] = stage->param->ov210->sound[MUSICAL_SOUND_BANK];
+    stage->sound[MUSICAL_SOUND_WAVE_ARCHIVE] = stage->param->ov210->sound[MUSICAL_SOUND_WAVE_ARCHIVE];
     stage->lastVBlankCount = OS_GetVBlankCount();
     return stage;
 }
@@ -829,7 +833,7 @@ static void StaActing_InitMessage(StaActing *stage) {
 
 static void StaActing_UpdateMessage(StaActing *stage) {
     GFL_TCBExMgrUpdate(stage->tcbExMgr);
-    if (stage->printStream != NULL && PrintStream_GetState(stage->printStream) == 2) {
+    if (stage->printStream != NULL && PrintStream_GetState(stage->printStream) == PRINT_STREAM_DONE) {
         PrintStream_Delete(stage->printStream);
         stage->printStream = NULL;
     }
@@ -853,7 +857,7 @@ void StaActing_PrintMessage(StaActing *stage, u16 msgId, u32 wait) {
     }
     GFL_BitmapFill(BmpWin_GetBitmap(stage->msgWin), 0);
     stage->msgStr = GFL_MsgDataLoadStrbufNew(stage->msgData, msgId);
-    if (wait != 0xff) {
+    if (wait != STA_ACTING_PRINT_NOW) {
         stage->printStream = PrintStream_Create(stage->msgWin, 0, 0, stage->msgStr, stage->font, wait, stage->tcbExMgr,
                                                 2, stage->heapId, 0);
     } else {
@@ -887,7 +891,7 @@ static void StaActing_UpdateAudience(StaActing *stage) {
         for (i = 0; i < 4; i++) {
             StaActAudience_SetCheerPoke(stage->audience, i, FALSE);
         }
-        StaActAudience_SetLookLight(stage->audience, 0xff);
+        StaActAudience_SetLookLight(stage->audience, STA_ACT_AUDIENCE_NONE);
         stage->followPos = STA_ACTING_NO_POKE;
         stage->followLight = STA_ACTING_NO_LIGHT;
         for (i = 0; i < 4; i++) {
@@ -949,7 +953,7 @@ static void StaActing_UpdateRanks(StaActing *stage) {
 
 void StaActing_PlayStrm(StaActing *stage, u16 seq) {
     stage->strmPlaying = TRUE;
-    GFL_SndBGMSetLoadedData(stage->sound[0], stage->sound[1], seq);
+    GFL_SndBGMSetLoadedData(stage->sound[MUSICAL_SOUND_SEQUENCE], stage->sound[MUSICAL_SOUND_BANK], seq);
 }
 
 void StaActing_PlaySeq(StaActing *stage, u16 seq) {
@@ -962,13 +966,13 @@ void StaActing_StopSeq(StaActing *stage) {
     GFL_SndBGMStopSeq();
 }
 
-void StaActing_PlayWave(StaActing *stage, u16 waveArc, u16 a2, u16 a3) {
-    GFL_SndReplaceWave(waveArc, a2, stage->sound[2], a3);
+void StaActing_PlayWave(StaActing *stage, u16 waveArc, u16 index, u16 srcIndex) {
+    GFL_SndReplaceWave(waveArc, index, stage->sound[MUSICAL_SOUND_WAVE_ARCHIVE], srcIndex);
 }
 
 void StaActing_PlayBgm(StaActing *stage, u32 bgm) {
     stage->bgmPlaying = TRUE;
-    GFL_SndBGMPlay(bgm, 0xffff);
+    GFL_SndBGMPlay(bgm, SND_CHANNEL_MASK_ALL);
 }
 
 void StaActing_StopBgm(StaActing *stage) {
@@ -1044,7 +1048,7 @@ static void StaActing_UpdateItemUse(StaActing *stage) {
                 } else if (stage->useEquip[i] == MUS_POKE_DRAW_EQUIP_HAND_L) {
                     stage->handPropUsed[i][1] = TRUE;
                 }
-                StaActing_SetNpcItemTiming(stage, 2, i);
+                StaActing_SetNpcItemTiming(stage, STA_ACTING_NPC_TIMING_ON_ITEM_USE, i);
             }
         }
         if (userCount != 0) {
@@ -1084,7 +1088,7 @@ static void StaActing_UpdateItemUse(StaActing *stage) {
                 } else if (equip == MUS_POKE_DRAW_EQUIP_HAND_L) {
                     stage->handPropUsed[i][1] = TRUE;
                 }
-                StaActing_SetNpcItemTiming(stage, 2, i);
+                StaActing_SetNpcItemTiming(stage, STA_ACTING_NPC_TIMING_ON_ITEM_USE, i);
             }
         }
     }
@@ -1161,11 +1165,14 @@ void StaActing_SetNpcItemTiming(StaActing *stage, u32 timing, u8 pos) {
             BOOL hand[2] = { FALSE, FALSE };
             MusicalPoke *poke = stage->param->pokes[i];
 
-            if (poke->owner == 2 && StaActing_IsPokeUsingItem(stage, i) != TRUE && stage->npcUseWait[i] == 0) {
-                if (poke->equips[MUS_POKE_DRAW_EQUIP_HAND_R].itemId != 0xff && stage->handPropUsed[i][0] == FALSE) {
+            if (poke->owner == MUSICAL_POKE_OWNER_STAGE && StaActing_IsPokeUsingItem(stage, i) != TRUE &&
+                stage->npcUseWait[i] == 0) {
+                if (poke->equips[MUS_POKE_DRAW_EQUIP_HAND_R].itemId != MUSICAL_ITEM_NONE &&
+                    stage->handPropUsed[i][0] == FALSE) {
                     hand[0] = TRUE;
                 }
-                if (poke->equips[MUS_POKE_DRAW_EQUIP_HAND_L].itemId != 0xff && stage->handPropUsed[i][1] == FALSE) {
+                if (poke->equips[MUS_POKE_DRAW_EQUIP_HAND_L].itemId != MUSICAL_ITEM_NONE &&
+                    stage->handPropUsed[i][1] == FALSE) {
                     hand[1] = TRUE;
                 }
                 if (hand[0] != FALSE || hand[1] != FALSE) {
@@ -1179,13 +1186,13 @@ void StaActing_SetNpcItemTiming(StaActing *stage, u32 timing, u8 pos) {
                         equip = StaActing_RandomHand();
                     }
                     switch (timing) {
-                    case 1:
+                    case STA_ACTING_NPC_TIMING_ON_APPEAL:
                         if (poke->handPropUse == STA_ACTING_USE_ON_APPEAL && i == pos) {
                             stage->npcUseWait[i] = 30 + GFL_RandomMTRange(30);
                             stage->npcUseEquip[i] = equip;
                         }
                         break;
-                    case 2:
+                    case STA_ACTING_NPC_TIMING_ON_ITEM_USE:
                         if (poke->handPropUse == STA_ACTING_USE_OFTEN && GFL_RandomMTRange(100) < 50) {
                             stage->npcUseWait[i] = 60 + GFL_RandomMTRange(60);
                             stage->npcUseEquip[i] = equip;
@@ -1195,7 +1202,7 @@ void StaActing_SetNpcItemTiming(StaActing *stage, u32 timing, u8 pos) {
                             stage->npcUseEquip[i] = equip;
                         }
                         break;
-                    case 0:
+                    case STA_ACTING_NPC_TIMING_PROGRAMMED_DELAY:
                         if (poke->handPropUse != 0 && poke->handPropUse < STA_ACTING_USE_ON_APPEAL) {
                             s8 jitter = GFL_RandomMTRange(121) - 60;
                             int wait = poke->handPropUse + jitter;
