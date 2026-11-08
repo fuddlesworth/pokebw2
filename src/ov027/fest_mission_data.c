@@ -17,7 +17,10 @@
 #define MISSION_VERSION_BIT 0
 #endif
 
-const u8 data_ov027_021711c0[8] = { 0, 1, 1, 3, 2, 2, 0, 0 };
+// The word kind for each mission-header kind; 0 and 3 have no target-word handler.
+const u8 gFestMissionTargetWordKinds[8] = {
+    0, FEST_TARGET_SPECIES, FEST_TARGET_SPECIES, 3, FEST_TARGET_ITEM, FEST_TARGET_ITEM, 0, 0
+};
 
 FestivalText *getTextFileForFestMissions(HeapID heapId) {
     FestivalText *text = GFL_HeapAllocate(heapId, sizeof(FestivalText), TRUE, "fest_mission_data.c", 0x46);
@@ -96,7 +99,8 @@ void FestMission_GetMessage(FestivalText *text, StrBuf *dest, const FestMissionC
     WordSet *wordSet = GFL_WordSetSystemCreate(2, 0x49, HEAPID_TAIL(heapId));
     StrBuf *message = GFL_StrBufCreate(0x25, HEAPID_TAIL(heapId));
 
-    FestMission_SetTargetWord(wordSet, message, 0, data_ov027_021711c0[mission->header.kind], mission->info.target);
+    FestMission_SetTargetWord(wordSet, message, 0, gFestMissionTargetWordKinds[mission->header.kind],
+                              mission->info.target);
     WordSetNumber(wordSet, 1, mission->info.count, 3, 0, 1);
     GFL_MsgDataLoadStrbuf(text->message, mission->info.messageId, message);
     GFL_WordSetFormatStrbuf(wordSet, dest, message);
@@ -108,7 +112,8 @@ void FestMission_GetResultMessage(FestivalText *text, StrBuf *dest, const FestMi
     WordSet *wordSet = GFL_WordSetSystemCreate(2, 0x49, HEAPID_TAIL(heapId));
     StrBuf *message = GFL_StrBufCreate(0xa1, HEAPID_TAIL(heapId));
 
-    FestMission_SetTargetWord(wordSet, message, 0, data_ov027_021711c0[mission->header.kind], mission->info.target);
+    FestMission_SetTargetWord(wordSet, message, 0, gFestMissionTargetWordKinds[mission->header.kind],
+                              mission->info.target);
     WordSetNumber(wordSet, 1, mission->info.count, 5, 0, 1);
     GFL_MsgDataLoadStrbuf(text->message, mission->info.resultMessageId, message);
     GFL_WordSetFormatStrbuf(wordSet, dest, message);
