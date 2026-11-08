@@ -482,8 +482,10 @@ def script_imports(script: str) -> list[str]:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
                 continue
             nodes.extend(ast.iter_child_nodes(node))
+            # A module imported from its package (from tools.data import narc) is the package's module
             names = ([alias.name for alias in node.names] if isinstance(node, ast.Import) else
-                     [node.module] if isinstance(node, ast.ImportFrom) and node.module and not node.level else [])
+                     [node.module, *(f"{node.module}.{alias.name}" for alias in node.names)]
+                     if isinstance(node, ast.ImportFrom) and node.module and not node.level else [])
             for name in names:
                 for candidate in (ROOT / (name.replace(".", "/") + ".py"), path.parent / f"{name}.py"):
                     if candidate.is_file() and candidate.is_relative_to(ROOT / "tools"):

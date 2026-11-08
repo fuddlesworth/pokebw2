@@ -28,6 +28,10 @@ NPC = struct.Struct("<12HI8s")
 WARP = struct.Struct("<HHBBH12s")
 TRIGGER = struct.Struct("<5H10sH")
 PLACEHOLDER = bytes(4)
+# What LoadZoneEntities reads a zone's file into, without checking its size: EventData's initScriptOffset, cache and
+# rest (include/field/event_data.h). A larger file overwrites the heap past EventData and the game freezes entering the
+# zone, so pack refuses one. The game's largest is 2,396 bytes.
+EVENTS_BUFFER = 4 + 0x880 + 0x100
 NO_ZONE = 0xFFFF
 
 
@@ -213,7 +217,13 @@ def pack(root: Path, output: Path):
             members.append(PLACEHOLDER)
             continue
         path = root / file_name(zone)
-        members.append(events_bytes(load(path, schema), label(path)))
+        data = events_bytes(load(path, schema), label(path))
+        if len(data) > EVENTS_BUFFER:
+            raise DataError(f"{label(path)}: the zone's events take {len(data)} bytes, past the {EVENTS_BUFFER} that "
+                            f"LoadZoneEntities reads them into; the game would freeze entering the zone. A background "
+                            f"event takes {BG.size} bytes, an NPC {NPC.size}, a warp {WARP.size} and a trigger "
+                            f"{TRIGGER.size}")
+        members.append(data)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(write_narc(members))
 

@@ -1395,7 +1395,10 @@ describe the fields.
 Each zone's events are `res/field/events/<zone>.json`, named after its constant, as pokeplatinum's `res/field/events/`:
 the zone's entities file (`a/1/2/6`), which `LoadZoneEntities` reads. It has the zone's background events, such as
 signs, its NPCs, its warps, its triggers and its init scripts, and `res/field/events/events.schema.json` documents each
-field, with swan's names and layouts (`include/field/zone.h`, `include/field/field_actor.h`).
+field, with swan's names and layouts (`include/field/zone.h`, `include/field/field_actor.h`). `LoadZoneEntities` reads
+the whole file into `EventData` without checking its size, so a zone's packed events must fit its 2,436 bytes (the
+game's largest take 2,396): a background event takes 20 bytes, an NPC 36, a warp 20 and a trigger 22, and the build
+stops at a zone past the limit, since the game would freeze entering it.
 
 ```json
 {
