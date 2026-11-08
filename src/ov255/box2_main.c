@@ -2912,7 +2912,7 @@ int Box2Main_NameInputCall(Box2SysWork *syswk) {
     work->name = GFL_StrBufCreate(20, HEAPID_BOX2);
     loadBoxNameToStrbuf(syswk->param->boxes, syswk->tray, work->name);
     work->param = setupNameEntry(HEAPID_BOX2, NAME_ENTRY_BOX, 0, 0, 8, work->name, gameInfo);
-    work->param->skipChecks = 1;
+    work->param->skipChecks = NAME_ENTRY_SKIP_DIGIT_LIMIT;
     QueueGameProc(syswk->procManager, OVERLAY_ID(280), &NAME_ENTRY_PROC_FUNCTIONS, work->param);
     syswk->subProcWork = work;
     return 0;

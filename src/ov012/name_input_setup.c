@@ -23,7 +23,7 @@ NameEntryParam *setupNameEntry(HeapID heapId, u32 mode, u32 gender, u32 sexAndFo
     param->gameInfo = gameInfo;
     param->skipChecks = 0;
     if (mode == NAME_ENTRY_GAME_SYNC_ID) {
-        param->skipChecks = 3;
+        param->skipChecks = NAME_ENTRY_SKIP_DIGIT_AND_PROFANITY_CHECKS;
     }
     param->name = GFL_StrBufCreate(NAME_ENTRY_NAME_LENGTH, heapId);
     if (name != NULL) {

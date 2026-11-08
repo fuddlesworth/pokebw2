@@ -33,9 +33,19 @@ enum {
     NAME_ENTRY_POKEMON_RENAME,
 };
 
+// The digit/profanity checks that skipChecks bypasses; other name validation still runs.
+enum {
+    NAME_ENTRY_SKIP_DIGIT_LIMIT = 1,
+    NAME_ENTRY_SKIP_PROFANITY_CHECK = 2,
+    NAME_ENTRY_SKIP_DIGIT_AND_PROFANITY_CHECKS = 3,
+};
+
+// The friend name entry uses its key icon when no trainer avatar is available.
+#define NAME_ENTRY_FRIEND_KEY_ICON 0xffff
+
 typedef struct {
     u32 mode;
-    // The gender, or the Pokémon's species
+    // The player's gender, a Pokémon's species, or a friend's Union avatar/key-icon selector
     u16 gender;
     // The Pokémon's form, and its sex in the high byte
     u16 sexAndForm;
