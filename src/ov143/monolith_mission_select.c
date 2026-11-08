@@ -48,6 +48,30 @@
 #include "system/text_speed.h"
 #include "system/wordset.h"
 
+// The sole return-button rectangle's index
+#define MONOLITH_MISSION_TOUCH_RETURN 0
+
+// The highest cleared level retained by the save, before converting to a selectable zero-based level
+enum {
+    MONOLITH_MISSION_CLEAR_NONE = 0,
+    MONOLITH_MISSION_CLEAR_LEVEL_1 = 1,
+    MONOLITH_MISSION_CLEAR_LEVEL_2 = 2,
+    MONOLITH_MISSION_CLEAR_LEVEL_3 = 3,
+};
+
+// The window slots, shared by their bitmap and print-window arrays
+enum {
+    MONOLITH_MISSION_WINDOW_MESSAGE = 0,
+    MONOLITH_MISSION_WINDOW_TITLE = 1,
+};
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_MISSION_INIT_SETUP = 0,
+    MONOLITH_MISSION_INIT_DRAW_LIST = 1,
+    MONOLITH_MISSION_INIT_WAIT_TITLE_PRINT = 2,
+};
+
 // The BGs of the message window, of the frame and of the list
 #define MONOLITH_MISSION_BG_TEXT 4
 #define MONOLITH_MISSION_BG_FRAME 5
@@ -99,9 +123,9 @@ enum {
 // The value of a mission's header.version that makes it available in this version alone: 2 in Black 2, 1 in White 2.
 // 0 is available in both, and 4 to 7 need a download
 #ifdef BLACK2
-#define MONOLITH_MISSION_UNLOCK_VERSION 2
+#define MONOLITH_MISSION_UNLOCK_VERSION FEST_MISSION_AVAILABILITY_BLACK2
 #else
-#define MONOLITH_MISSION_UNLOCK_VERSION 1
+#define MONOLITH_MISSION_UNLOCK_VERSION FEST_MISSION_AVAILABILITY_WHITE2
 #endif
 
 // The length of the cheat code in keys
@@ -390,7 +414,7 @@ static BOOL MonolithMission_Init(GameProc *proc, u32 *state, void *param, void *
     BOOL printing;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_MISSION_INIT_SETUP:
         mfw = GFL_ProcInitSubsystem(proc, sizeof(MonolithMissionWork), HEAPID_MONOLITH);
         MI_CpuFill8(mfw, 0, sizeof(MonolithMissionWork));
         mfw->scroll = 8 << 8;
@@ -420,7 +444,7 @@ static BOOL MonolithMission_Init(GameProc *proc, u32 *state, void *param, void *
         MonolithTool_SetTextVisible(&mfw->startButton, FALSE);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_MISSION_INIT_DRAW_LIST:
         if (MonolithMission_DrawList(mfw, screen->work, mfw->count) == TRUE) {
             MonolithMission_UpdateRows(mfw);
             mfw->rowsChanged = TRUE;
@@ -432,7 +456,7 @@ static BOOL MonolithMission_Init(GameProc *proc, u32 *state, void *param, void *
             (*state)++;
         }
         break;
-    case 2:
+    case MONOLITH_MISSION_INIT_WAIT_TITLE_PRINT:
         printing = FALSE;
         PrintWindow_Flush(&mfw->titlePrint, screen->work->printQueue);
         if (PrintWindow_IsPrinted(&mfw->titlePrint) == FALSE) {
@@ -459,11 +483,11 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
     FestMissionConfig mission;
     u16 picked;
     s16 level;
-    u8 bootState;
+    u8 commNo;
 
     GSYS_GetGameCommSystem(screen->param->gsys);
-    MonolithTool_UpdatePanel(screen, 1);
-    MonolithTool_UpdatePanel(screen, 3);
+    MonolithTool_UpdatePanel(screen, PALFADE_BUFFER_SUB_BG);
+    MonolithTool_UpdatePanel(screen, PALFADE_BUFFER_SUB_OBJ);
     MonolithMission_UpdateReturnButton(mfw);
     MonolithMission_UpdateStartButton(screen->work, mfw);
     PrintWindow_Flush(&mfw->titlePrint, screen->work->printQueue);
@@ -499,9 +523,9 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
     case MONOLITH_MISSION_SEQ_INPUT:
         pressed = GCTX_HIDGetPressedKeys();
         hit = GFL_HIDGetTouchPressedRect(sMonolithMissionTouchRects);
-        if (hit == 0 || (pressed & PAD_BUTTON_B)) {
+        if (hit == MONOLITH_MISSION_TOUCH_RETURN || (pressed & PAD_BUTTON_B)) {
             MonolithTool_PressReturnButton(&mfw->returnButton);
-            if (hit == 0) {
+            if (hit == MONOLITH_MISSION_TOUCH_RETURN) {
                 GCTX_HIDSetUsingTouch(TRUE);
             } else {
                 GCTX_HIDSetUsingTouch(FALSE);
@@ -539,8 +563,8 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
         }
         break;
     case MONOLITH_MISSION_SEQ_ASK:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             MonolithMission_ShowStartMessage(screen, mfw);
             (*state)++;
         }
@@ -561,15 +585,16 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
                 *state = MONOLITH_MISSION_SEQ_JOIN;
             } else {
                 mfw->selected = MONOLITH_MISSION_NONE;
-                MonolithTool_SetPanelPulse(screen, TRUE, 1);
-                MonolithTool_SetTextCursor(screen, &mfw->startButton, 1, 0xff, 3);
+                MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+                MonolithTool_SetTextCursor(screen, &mfw->startButton, 1, MONOLITH_TEXT_CURSOR_NONE,
+                                           PALFADE_BUFFER_SUB_OBJ);
                 *state = MONOLITH_MISSION_SEQ_INPUT;
             }
         }
         break;
     case MONOLITH_MISSION_SEQ_JOIN:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             MonolithMission_ShowMessageExpanded(mfw, screen->work, 48);
             mfw->joined = TRUE;
             (*state)++;
@@ -589,8 +614,8 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
             GFL_SndSEPlay(SEQ_SE_MESSAGE);
             MonolithMission_ClearMessage(mfw);
             GameCommSys_LogMissionJoined(GSYS_GetGameCommSystem(screen->param->gsys));
-            MonolithTool_SetPanelPulse(screen, TRUE, 1);
-            MonolithTool_SetTextCursor(screen, &mfw->startButton, 1, 0xff, 3);
+            MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+            MonolithTool_SetTextCursor(screen, &mfw->startButton, 1, MONOLITH_TEXT_CURSOR_NONE, PALFADE_BUFFER_SUB_OBJ);
             if (GFL_HIDIsTouchPressed()) {
                 *state = MONOLITH_MISSION_SEQ_WAIT_TOUCH_RELEASE;
             } else {
@@ -604,22 +629,22 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
         }
         break;
     case MONOLITH_MISSION_SEQ_RETURN:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH &&
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH &&
             !MonolithTool_IsReturnButtonBlinking(&mfw->returnButton)) {
             picked = mfw->ids[mfw->selected];
             mfw->selected = MONOLITH_MISSION_NONE;
             if (mfw->joined) {
-                bootState = GameCommSys_BootCheck(mfw->comm);
+                commNo = GameCommSys_BootCheck(mfw->comm);
                 level = mfw->level;
                 if (mfw->flags & MONOLITH_MISSION_FLAG_CHEAT) {
                     level = MONOLITH_MISSION_LEVEL_CHEAT;
                 }
                 FestivalText_LoadMission(mfw->festText, picked, level, &mission);
                 LinkFestival_StartMission(mfw->festival, &mission, 0);
-                if (bootState == 1) {
+                if (commNo == GAME_COMM_NO_BEACON_SEARCH) {
                     *state = MONOLITH_MISSION_SEQ_END;
-                } else if (bootState == 0) {
+                } else if (commNo == GAME_COMM_NO_NULL) {
                     *state = MONOLITH_MISSION_SEQ_BOOT_COMM;
                 } else {
                     GameCommSys_ExitReq(mfw->comm);
@@ -631,7 +656,7 @@ static BOOL MonolithMission_Main(GameProc *proc, u32 *state, void *param, void *
         }
         break;
     case MONOLITH_MISSION_SEQ_WAIT_DISCONNECT:
-        if (GameCommSys_BootCheck(mfw->comm) == 0) {
+        if (GameCommSys_BootCheck(mfw->comm) == GAME_COMM_NO_NULL) {
             if (GFL_NetErrCheck() == FALSE) {
                 GameCommSys_ClearCounter(mfw->comm);
             }
@@ -743,12 +768,13 @@ static void MonolithMission_CreateWindows(MonolithMissionWork *mfw, MonolithWork
     LoadSysMsgBoxBGChar(MONOLITH_MISSION_BG_TEXT, 1, 0, HEAPID_MONOLITH);
     PaletteFade_LoadNCLREx(wk->fade, ARCID_WINFRAME, GetSysMsgBoxPaletteDatID(0), HEAPID_MONOLITH,
                            PALFADE_BUFFER_SUB_BG, 0x20, 11 * 0x10, 0);
-    mfw->windows[0] = BmpWin_CreateDynamic(MONOLITH_MISSION_BG_TEXT, 1, 19, 30, 4, 13, TRUE);
-    GFL_BitmapFill(BmpWin_GetBitmap(mfw->windows[0]), 0xff);
-    mfw->windows[1] = BmpWin_CreateDynamic(MONOLITH_MISSION_BG_TEXT, 0, 0, 32, 3, 13, TRUE);
-    BmpWin_FlushMap(mfw->windows[1]);
+    mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE] =
+        BmpWin_CreateDynamic(MONOLITH_MISSION_BG_TEXT, 1, 19, 30, 4, 13, TRUE);
+    GFL_BitmapFill(BmpWin_GetBitmap(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE]), 0xff);
+    mfw->windows[MONOLITH_MISSION_WINDOW_TITLE] = BmpWin_CreateDynamic(MONOLITH_MISSION_BG_TEXT, 0, 0, 32, 3, 13, TRUE);
+    BmpWin_FlushMap(mfw->windows[MONOLITH_MISSION_WINDOW_TITLE]);
     GFL_BGSysLoadScr(MONOLITH_MISSION_BG_TEXT);
-    PrintWindow_Init(&mfw->titlePrint, mfw->windows[1]);
+    PrintWindow_Init(&mfw->titlePrint, mfw->windows[MONOLITH_MISSION_WINDOW_TITLE]);
 }
 
 static void MonolithMission_FreeWindows(MonolithMissionWork *mfw) {
@@ -771,10 +797,10 @@ static void MonolithMission_ShowMessage(MonolithMissionWork *mfw, MonolithWork *
     GFL_ASSERT(mfw->print_stream == NULL);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 15);
     mfw->msgStr = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, msgId);
-    mfw->print_stream = PrintStream_Create(mfw->windows[0], 0, 0, mfw->msgStr, wk->font, TextSpeed_GetCurrentWait(),
-                                           wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
-    BmpWin_FlushMap(mfw->windows[0]);
-    BmpWin_DrawFrame(mfw->windows[0], TRUE, 1, 11);
+    mfw->print_stream = PrintStream_Create(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE], 0, 0, mfw->msgStr, wk->font,
+                                           TextSpeed_GetCurrentWait(), wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
+    BmpWin_FlushMap(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE]);
+    BmpWin_DrawFrame(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE], TRUE, 1, 11);
 }
 
 static void MonolithMission_ShowMessageExpanded(MonolithMissionWork *mfw, MonolithWork *wk, u32 msgId) {
@@ -786,10 +812,10 @@ static void MonolithMission_ShowMessageExpanded(MonolithMissionWork *mfw, Monoli
     mfw->msgStr = GFL_StrBufCreate(256, HEAPID_MONOLITH);
     GFL_WordSetFormatStrbuf(wk->wordSet, mfw->msgStr, str);
     GFL_StrBufFree(str);
-    mfw->print_stream = PrintStream_Create(mfw->windows[0], 0, 0, mfw->msgStr, wk->font, TextSpeed_GetCurrentWait(),
-                                           wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
-    BmpWin_FlushMap(mfw->windows[0]);
-    BmpWin_DrawFrame(mfw->windows[0], TRUE, 1, 11);
+    mfw->print_stream = PrintStream_Create(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE], 0, 0, mfw->msgStr, wk->font,
+                                           TextSpeed_GetCurrentWait(), wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
+    BmpWin_FlushMap(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE]);
+    BmpWin_DrawFrame(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE], TRUE, 1, 11);
 }
 
 static BOOL MonolithMission_UpdateMessage(MonolithWork *wk, MonolithMissionWork *mfw) {
@@ -797,16 +823,16 @@ static BOOL MonolithMission_UpdateMessage(MonolithWork *wk, MonolithMissionWork 
 }
 
 static void MonolithMission_ClearMessage(MonolithMissionWork *mfw) {
-    GFLBitmap *bitmap = BmpWin_GetBitmap(mfw->windows[0]);
+    GFLBitmap *bitmap = BmpWin_GetBitmap(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE]);
 
     GFL_ASSERT(mfw->print_stream != NULL);
     PrintStream_Delete(mfw->print_stream);
     mfw->print_stream = NULL;
     GFL_StrBufFree(mfw->msgStr);
     mfw->msgStr = NULL;
-    BmpWin_ClearFrame(mfw->windows[0], FALSE);
+    BmpWin_ClearFrame(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE], FALSE);
     GFL_BitmapFill(bitmap, 0xff);
-    BmpWin_FlushChar(mfw->windows[0]);
+    BmpWin_FlushChar(mfw->windows[MONOLITH_MISSION_WINDOW_MESSAGE]);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
 }
 
@@ -1167,17 +1193,17 @@ static void MonolithMission_UpdateCursor(MonolithScreenParam *screen, MonolithMi
     if (mfw->cursorChanged == TRUE) {
         MonolithMission_HighlightRow(mfw, mfw->cursor);
         if (mfw->cursor == MONOLITH_MISSION_NONE) {
-            MonolithTool_SetPanelPulse(screen, FALSE, 1);
+            MonolithTool_SetPanelPulse(screen, FALSE, PALFADE_BUFFER_SUB_BG);
         } else if ((mfw->cursorBy == MONOLITH_MISSION_CURSOR_TAP && mfw->cursor == mfw->prevCursor2) ||
                    (mfw->cursorBy == MONOLITH_MISSION_CURSOR_KEYS && mfw->cursor == mfw->prevCursor)) {
             mfw->selected = mfw->cursor;
             if (mfw->cursorBy == MONOLITH_MISSION_CURSOR_KEYS) {
-                MonolithTool_FlashPanel(screen, 1);
+                MonolithTool_FlashPanel(screen, PALFADE_BUFFER_SUB_BG);
             } else {
-                MonolithTool_SetTextPicked(screen, &mfw->startButton, 1, 0, 3);
+                MonolithTool_SetTextPicked(screen, &mfw->startButton, 1, 0, PALFADE_BUFFER_SUB_OBJ);
             }
         } else {
-            MonolithTool_SetPanelPulse(screen, TRUE, 1);
+            MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
         }
         GFL_BGSysQueueScrLoad(MONOLITH_MISSION_BG_LIST);
         mfw->cursorChanged = FALSE;
@@ -1257,7 +1283,7 @@ static void MonolithMission_InitState(MonolithScreenParam *screen, MonolithMissi
     mfw->level = 0;
     mfw->codeProgress = 0;
     for (i = 0; i < MONOLITH_MISSION_LIST_MAX; i++) {
-        mfw->records[i].clearedLevel = 0;
+        mfw->records[i].clearedLevel = MONOLITH_MISSION_CLEAR_NONE;
         mfw->records[i].flags = 0;
     }
     mfw->font = GFL_FontCreate(23, 3, 0, FALSE, HEAPID_MONOLITH);
@@ -1271,7 +1297,7 @@ static void MonolithMission_InitState(MonolithScreenParam *screen, MonolithMissi
 // Tells the top screen which mission and level the cursor is on
 static void MonolithMission_UpdateFocus(MonolithScreenParam *screen, MonolithMissionWork *mfw) {
     if (mfw->cursor == MONOLITH_MISSION_NONE) {
-        screen->state->missionIndex = 0xff;
+        screen->state->missionIndex = MONOLITH_MISSION_INFO_NONE;
         screen->state->missionLevel = 0;
     } else {
         screen->state->missionIndex = mfw->ids[mfw->cursor];
@@ -1353,14 +1379,14 @@ static void MonolithMission_UpdateClearedIcons(MonolithMissionWork *mfw) {
         u32 index = i + first;
         u8 cleared = mfw->records[index].clearedLevel;
 
-        if (cleared == 0) {
+        if (cleared == MONOLITH_MISSION_CLEAR_NONE) {
             MonolithMission_SetIconVisible(mfw, MONOLITH_MISSION_ICON_CLEARED + i, FALSE);
         } else {
-            if (cleared == 1) {
+            if (cleared == MONOLITH_MISSION_CLEAR_LEVEL_1) {
                 MonolithMission_SetIconSequence(mfw, MONOLITH_MISSION_ICON_CLEARED + i, 12);
-            } else if (cleared == 2) {
+            } else if (cleared == MONOLITH_MISSION_CLEAR_LEVEL_2) {
                 MonolithMission_SetIconSequence(mfw, MONOLITH_MISSION_ICON_CLEARED + i, 13);
-            } else if (cleared >= 3) {
+            } else if (cleared >= MONOLITH_MISSION_CLEAR_LEVEL_3) {
                 MonolithMission_SetIconSequence(mfw, MONOLITH_MISSION_ICON_CLEARED + i, 14);
             } else {
                 continue;
@@ -1462,16 +1488,16 @@ static BOOL MonolithMission_IsAvailable(MonolithScreenParam *screen, MonolithMis
     }
     available = FALSE;
     switch (mfw->missions[index].header.version) {
-    case 0:
+    case FEST_MISSION_AVAILABILITY_BOTH:
         available = TRUE;
         break;
     case MONOLITH_MISSION_UNLOCK_VERSION:
         available = TRUE;
         break;
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    case FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_2:
+    case FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_3:
+    case FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_4:
+    case FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_5:
         playerInfo = GetGameDataPlayerInfo(gameData);
         available = isOneShotDRObtained(getTrainerGameInfoAddress(GameData_GetSaveControl(gameData)),
                                         mfw->missions[index].header.version - 2, playerInfo);

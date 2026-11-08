@@ -25,6 +25,15 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// The end marker in a mission-info window table's BG field
+#define MONOLITH_MISSION_INFO_WINDOW_END 0xff
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_MISSION_INFO_INIT_SETUP = 0,
+    MONOLITH_MISSION_INFO_INIT_WAIT_PRINT = 1,
+};
+
 // The BGs of the text and of the background
 #define MONOLITH_MISSION_INFO_BG_TEXT 0
 #define MONOLITH_MISSION_INFO_BG 2
@@ -43,9 +52,6 @@ enum {
     MONOLITH_MISSION_INFO_WINDOW_BEST_COUNT_LABEL,
     MONOLITH_MISSION_INFO_WINDOW_BEST_COUNT,
 };
-
-// No mission
-#define MONOLITH_MISSION_INFO_NONE 0xff
 
 enum {
     MONOLITH_MISSION_INFO_SEQ_MAIN,
@@ -117,7 +123,7 @@ static const MonolithMissionInfoWindow sMonolithMissionInfoWindows[] = {
     { 0, 2, 0, 28, 3, 13 },  { 0, 2, 4, 28, 8, 13 },   { 0, 2, 15, 12, 2, 13 },
     { 0, 2, 17, 12, 2, 13 }, { 0, 2, 19, 12, 2, 13 },  { 0, 14, 15, 15, 2, 13 },
     { 0, 14, 17, 15, 2, 13 }, { 0, 14, 19, 15, 2, 13 }, { 0, 14, 21, 15, 2, 13 },
-    { 0xff, 0, 0, 0, 0, 0 },
+    { MONOLITH_MISSION_INFO_WINDOW_END, 0, 0, 0, 0, 0 },
 };
 
 // clang-format on
@@ -148,13 +154,13 @@ static BOOL MonolithMissionInfo_Init(GameProc *proc, u32 *state, void *param, vo
     int i;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_MISSION_INFO_INIT_SETUP:
         miw = GFL_ProcInitSubsystem(proc, sizeof(MonolithMissionInfoWork), HEAPID_MONOLITH);
         MI_CpuFill8(miw, 0, sizeof(MonolithMissionInfoWork));
         MonolithMissionInfo_Setup(screen, miw);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_MISSION_INFO_INIT_WAIT_PRINT:
         miw = work;
         printing = FALSE;
         for (i = 0; i < MONOLITH_MISSION_INFO_WINDOW_COUNT; i++) {
@@ -255,7 +261,7 @@ static void MonolithMissionInfo_CreateWindows(MonolithWork *wk, MonolithMissionI
     int i;
 
     for (i = 0; i < MONOLITH_MISSION_INFO_WINDOW_COUNT; i++, info++) {
-        if (info->bg == 0xff) {
+        if (info->bg == MONOLITH_MISSION_INFO_WINDOW_END) {
             break;
         }
         miw->windows[i] =
@@ -283,7 +289,7 @@ static void MonolithMissionInfo_DrawAll(MonolithScreenParam *screen, MonolithWor
     int i;
 
     for (i = 0; i < MONOLITH_MISSION_INFO_WINDOW_COUNT; i++) {
-        if (i != 0 && sMonolithMissionInfoTexts[i].y != -1) {
+        if (i != MONOLITH_MISSION_INFO_WINDOW_TITLE && sMonolithMissionInfoTexts[i].y != -1) {
             StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, sMonolithMissionInfoTexts[i].msgId);
 
             PrintWindow_PrintNoColor(&miw->prints[i], wk->printQueue, 0, sMonolithMissionInfoTexts[i].y, str, wk->font);
@@ -436,7 +442,7 @@ static void MonolithMissionInfo_ClearAll(MonolithMissionInfoWork *miw) {
     int i;
 
     for (i = 0; i < MONOLITH_MISSION_INFO_WINDOW_COUNT; i++) {
-        if (i != 0) {
+        if (i != MONOLITH_MISSION_INFO_WINDOW_TITLE) {
             MonolithMissionInfo_ClearWindow(miw, i);
         }
     }

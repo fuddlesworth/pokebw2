@@ -21,6 +21,20 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// The window slots, shared by their bitmap and print-window arrays
+enum {
+    MONOLITH_STATUS_WINDOW_TITLE = 0,
+    MONOLITH_STATUS_WINDOW_TOTAL_LEVEL = 1,
+    MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS = 2,
+    MONOLITH_STATUS_WINDOW_UNLOCKED_POWERS = 3,
+};
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_STATUS_INIT_SETUP = 0,
+    MONOLITH_STATUS_INIT_WAIT_PRINT = 1,
+};
+
 // The BGs of the text and of the background
 #define MONOLITH_STATUS_BG_TEXT 0
 #define MONOLITH_STATUS_BG 2
@@ -93,7 +107,7 @@ static BOOL MonolithStatus_Init(GameProc *proc, u32 *state, void *param, void *w
     int i;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_STATUS_INIT_SETUP:
         sw = GFL_ProcInitSubsystem(proc, sizeof(MonolithStatusWork), HEAPID_MONOLITH);
         MI_CpuFill8(sw, 0, sizeof(MonolithStatusWork));
         MonolithStatus_CreateBGs(sw);
@@ -102,7 +116,7 @@ static BOOL MonolithStatus_Init(GameProc *proc, u32 *state, void *param, void *w
         MonolithStatus_Draw(screen, screen->work, sw);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_STATUS_INIT_WAIT_PRINT:
         sw = work;
         printing = FALSE;
         for (i = 0; i < MONOLITH_STATUS_WINDOW_COUNT; i++) {
@@ -181,18 +195,21 @@ static void MonolithStatus_LoadScreen(MonolithScreenParam *screen, MonolithWork 
 static void MonolithStatus_CreateWindows(MonolithWork *wk, MonolithStatusWork *sw) {
     int i;
 
-    sw->windows[0] = BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 0, 30, 3, 13, TRUE);
-    BmpWin_FlushChar(sw->windows[0]);
-    BmpWin_FlushMap(sw->windows[0]);
-    sw->windows[1] = BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 8, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(sw->windows[1]);
-    BmpWin_FlushMap(sw->windows[1]);
-    sw->windows[2] = BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 11, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(sw->windows[2]);
-    BmpWin_FlushMap(sw->windows[2]);
-    sw->windows[3] = BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 14, 30, 2, 13, TRUE);
-    BmpWin_FlushChar(sw->windows[3]);
-    BmpWin_FlushMap(sw->windows[3]);
+    sw->windows[MONOLITH_STATUS_WINDOW_TITLE] = BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 0, 30, 3, 13, TRUE);
+    BmpWin_FlushChar(sw->windows[MONOLITH_STATUS_WINDOW_TITLE]);
+    BmpWin_FlushMap(sw->windows[MONOLITH_STATUS_WINDOW_TITLE]);
+    sw->windows[MONOLITH_STATUS_WINDOW_TOTAL_LEVEL] =
+        BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 8, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(sw->windows[MONOLITH_STATUS_WINDOW_TOTAL_LEVEL]);
+    BmpWin_FlushMap(sw->windows[MONOLITH_STATUS_WINDOW_TOTAL_LEVEL]);
+    sw->windows[MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS] =
+        BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 11, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(sw->windows[MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS]);
+    BmpWin_FlushMap(sw->windows[MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS]);
+    sw->windows[MONOLITH_STATUS_WINDOW_UNLOCKED_POWERS] =
+        BmpWin_CreateDynamic(MONOLITH_STATUS_BG_TEXT, 2, 14, 30, 2, 13, TRUE);
+    BmpWin_FlushChar(sw->windows[MONOLITH_STATUS_WINDOW_UNLOCKED_POWERS]);
+    BmpWin_FlushMap(sw->windows[MONOLITH_STATUS_WINDOW_UNLOCKED_POWERS]);
     for (i = 0; i < MONOLITH_STATUS_WINDOW_COUNT; i++) {
         PrintWindow_Init(&sw->prints[i], sw->windows[i]);
     }
@@ -220,22 +237,24 @@ static void MonolithStatus_Draw(MonolithScreenParam *screen, MonolithWork *wk, M
     expanded = GFL_StrBufCreate(256, HEAPID_MONOLITH);
 
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 0, str);
-    PrintWindow_PrintNoColor(&sw->prints[0], wk->printQueue, 0, 4, str, wk->font);
+    PrintWindow_PrintNoColor(&sw->prints[MONOLITH_STATUS_WINDOW_TITLE], wk->printQueue, 0, 4, str, wk->font);
 
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 7, str);
     WordSetNumber(wk->wordSet, 0, levels->level2 + levels->level1, 5, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
-    PrintWindow_PrintNoColor(&sw->prints[1], wk->printQueue, 0, 0, expanded, wk->font);
+    PrintWindow_PrintNoColor(&sw->prints[MONOLITH_STATUS_WINDOW_TOTAL_LEVEL], wk->printQueue, 0, 0, expanded, wk->font);
 
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 9, str);
     WordSetNumber(wk->wordSet, 0, levels->level2, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
-    PrintWindow_PrintNoColor(&sw->prints[2], wk->printQueue, 0, 0, expanded, wk->font);
+    PrintWindow_PrintNoColor(&sw->prints[MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS], wk->printQueue, 0, 0, expanded,
+                             wk->font);
 
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 8, str);
     WordSetNumber(wk->wordSet, 0, levels->level1, 4, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
-    PrintWindow_PrintNoColor(&sw->prints[2], wk->printQueue, 120, 0, expanded, wk->font);
+    PrintWindow_PrintNoColor(&sw->prints[MONOLITH_STATUS_WINDOW_BLACK_WHITE_LEVELS], wk->printQueue, 120, 0, expanded,
+                             wk->font);
 
     GFL_MsgDataLoadStrbuf(wk->msgMonolith, 10, str);
     if (visited == TRUE) {
@@ -247,7 +266,8 @@ static void MonolithStatus_Draw(MonolithScreenParam *screen, MonolithWork *wk, M
         WordSetNumber(wk->wordSet, 0, 0, 4, 0, TRUE);
     }
     GFL_WordSetFormatStrbuf(wk->wordSet, expanded, str);
-    PrintWindow_PrintNoColor(&sw->prints[3], wk->printQueue, 0, 0, expanded, wk->font);
+    PrintWindow_PrintNoColor(&sw->prints[MONOLITH_STATUS_WINDOW_UNLOCKED_POWERS], wk->printQueue, 0, 0, expanded,
+                             wk->font);
 
     GFL_StrBufFree(str);
     GFL_StrBufFree(expanded);

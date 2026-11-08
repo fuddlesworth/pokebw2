@@ -45,6 +45,22 @@
 #include "system/text_speed.h"
 #include "system/wordset.h"
 
+// The sole return-button rectangle's index
+#define MONOLITH_POWER_TOUCH_RETURN 0
+
+// The window slots, shared by their bitmap and print-window arrays
+enum {
+    MONOLITH_POWER_WINDOW_MESSAGE = 0,
+    MONOLITH_POWER_WINDOW_TITLE = 1,
+};
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_POWER_INIT_SETUP = 0,
+    MONOLITH_POWER_INIT_DRAW_LIST = 1,
+    MONOLITH_POWER_INIT_WAIT_TITLE_PRINT = 2,
+};
+
 // The BGs of the message window, of the frame and of the list
 #define MONOLITH_POWER_BG_TEXT 4
 #define MONOLITH_POWER_BG_FRAME 5
@@ -115,7 +131,7 @@ typedef struct {
     // Each row of the list drawn into a bitmap, its pass power and whether it can't be received
     GFLBitmap *listBitmaps[MONOLITH_POWER_LIST_MAX];
     u32 ids[MONOLITH_POWER_LIST_MAX];
-    u32 states[MONOLITH_POWER_LIST_MAX];
+    u32 availability[MONOLITH_POWER_LIST_MAX];
     u8 count;
     u8 drawnCount;
     // The message window and the title's
@@ -237,7 +253,7 @@ static BOOL MonolithPower_Init(GameProc *proc, u32 *state, void *param, void *wo
     BOOL printing;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_POWER_INIT_SETUP:
         mpw = GFL_ProcInitSubsystem(proc, sizeof(MonolithPowerWork), HEAPID_MONOLITH);
         MI_CpuFill8(mpw, 0, sizeof(MonolithPowerWork));
         mpw->scroll = 8 << 8;
@@ -263,7 +279,7 @@ static BOOL MonolithPower_Init(GameProc *proc, u32 *state, void *param, void *wo
         MonolithPower_LoadEquipped(screen, mpw);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_POWER_INIT_DRAW_LIST:
         if (MonolithPower_DrawList(mpw, screen->work) == TRUE) {
             MonolithPower_UpdateRows(mpw);
             mpw->rowsChanged = TRUE;
@@ -275,7 +291,7 @@ static BOOL MonolithPower_Init(GameProc *proc, u32 *state, void *param, void *wo
             (*state)++;
         }
         break;
-    case 2:
+    case MONOLITH_POWER_INIT_WAIT_TITLE_PRINT:
         printing = FALSE;
         PrintWindow_Flush(&mpw->titlePrint, screen->work->printQueue);
         if (PrintWindow_IsPrinted(&mpw->titlePrint) == FALSE) {
@@ -303,8 +319,8 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
     GameCommSys *comm;
 
     GSYS_GetGameCommSystem(screen->param->gsys);
-    MonolithTool_UpdatePanel(screen, 1);
-    MonolithTool_UpdatePanel(screen, 3);
+    MonolithTool_UpdatePanel(screen, PALFADE_BUFFER_SUB_BG);
+    MonolithTool_UpdatePanel(screen, PALFADE_BUFFER_SUB_OBJ);
     MonolithPower_UpdateReturnButton(mpw);
     MonolithPower_UpdateReceiveButton(screen->work, mpw);
     PrintWindow_Flush(&mpw->titlePrint, screen->work->printQueue);
@@ -347,9 +363,9 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
     case MONOLITH_POWER_SEQ_INPUT:
         pressed = GCTX_HIDGetPressedKeys();
         hit = GFL_HIDGetTouchPressedRect(sMonolithPowerTouchRects);
-        if (hit == 0 || (pressed & PAD_BUTTON_B)) {
+        if (hit == MONOLITH_POWER_TOUCH_RETURN || (pressed & PAD_BUTTON_B)) {
             MonolithTool_PressReturnButton(&mpw->returnButton);
-            if (hit == 0) {
+            if (hit == MONOLITH_POWER_TOUCH_RETURN) {
                 GCTX_HIDSetUsingTouch(TRUE);
             } else {
                 GCTX_HIDSetUsingTouch(FALSE);
@@ -371,8 +387,8 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
             MonolithTool_SetTextVisible(&mpw->receiveButton, FALSE);
         } else {
             screen->state->focusPower = mpw->ids[mpw->cursor];
-            screen->state->focusPowerState = mpw->states[mpw->cursor];
-            if (mpw->states[mpw->cursor] == 0) {
+            screen->state->focusPowerAvailability = mpw->availability[mpw->cursor];
+            if (mpw->availability[mpw->cursor] == MONOLITH_POWER_RECEIVABLE) {
                 MonolithTool_SetTextVisible(&mpw->receiveButton, TRUE);
             } else {
                 MonolithTool_SetTextVisible(&mpw->receiveButton, FALSE);
@@ -391,8 +407,8 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
         }
         break;
     case MONOLITH_POWER_SEQ_ASK:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             MonolithPower_ShowMessage(mpw, screen->work, 34);
             (*state)++;
         }
@@ -413,15 +429,16 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
                 *state = MONOLITH_POWER_SEQ_RECEIVE;
             } else {
                 mpw->selected = MONOLITH_POWER_NONE;
-                MonolithTool_SetPanelPulse(screen, TRUE, 1);
-                MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, 0xff, 3);
+                MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+                MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, MONOLITH_TEXT_CURSOR_NONE,
+                                           PALFADE_BUFFER_SUB_OBJ);
                 *state = MONOLITH_POWER_SEQ_INPUT;
             }
         }
         break;
     case MONOLITH_POWER_SEQ_RECEIVE:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             loadPassPowerToStrbuf(screen->work->wordSet, 0, mpw->ids[mpw->selected]);
             MonolithPower_ShowMessageExpanded(mpw, screen->work, 36);
             *state = MONOLITH_POWER_SEQ_RECEIVED;
@@ -470,8 +487,9 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
             GameCommSys_LogPassPowerReceived(comm, GameData_GetNetID(GSYS_GetGameData(screen->param->gsys)),
                                              screen->param->netId);
             mpw->selected = MONOLITH_POWER_NONE;
-            MonolithTool_SetPanelPulse(screen, TRUE, 1);
-            MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, 0xff, 3);
+            MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+            MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, MONOLITH_TEXT_CURSOR_NONE,
+                                       PALFADE_BUFFER_SUB_OBJ);
             if (GFL_HIDIsTouchPressed()) {
                 *state = MONOLITH_POWER_SEQ_WAIT_TOUCH_RELEASE;
             } else {
@@ -485,8 +503,8 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
         }
         break;
     case MONOLITH_POWER_SEQ_RETURN:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH &&
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH &&
             MonolithTool_IsReturnButtonBlinking(&mpw->returnButton) == FALSE) {
             screen->next = MONOLITH_SCREEN_MENU;
             screen->state->menuCursor = MONOLITH_MENU_PASS_POWER;
@@ -494,8 +512,8 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
         }
         break;
     case MONOLITH_POWER_SEQ_FULL:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             MonolithPower_ShowMessage(mpw, screen->work, 72);
             *state = MONOLITH_POWER_SEQ_WAIT_FULL;
         }
@@ -514,20 +532,21 @@ static BOOL MonolithPower_Main(GameProc *proc, u32 *state, void *param, void *wo
             MonolithTool_FreeReturnPowerMenu(mpw->app_menu_work);
             mpw->app_menu_work = NULL;
             MonolithPower_ClearMessage(mpw);
-            if (pos != 3) {
+            if (pos != MONOLITH_RETURN_POWER_MENU_CANCEL) {
                 mpw->returnSlot = pos;
                 *state = MONOLITH_POWER_SEQ_EXCHANGE;
             } else {
                 mpw->selected = MONOLITH_POWER_NONE;
-                MonolithTool_SetPanelPulse(screen, TRUE, 1);
-                MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, 0xff, 3);
+                MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+                MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, MONOLITH_TEXT_CURSOR_NONE,
+                                           PALFADE_BUFFER_SUB_OBJ);
                 *state = MONOLITH_POWER_SEQ_INPUT;
             }
         }
         break;
     case MONOLITH_POWER_SEQ_EXCHANGE:
-        if (MonolithTool_GetPanelMode(screen, 1) != PANEL_MODE_FLASH &&
-            MonolithTool_GetPanelMode(screen, 3) != PANEL_MODE_FLASH) {
+        if (MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_BG) != PANEL_MODE_FLASH &&
+            MonolithTool_GetPanelMode(screen, PALFADE_BUFFER_SUB_OBJ) != PANEL_MODE_FLASH) {
             loadPassPowerToStrbuf(screen->work->wordSet, 0, screen->state->equipped[mpw->returnSlot]);
             loadPassPowerToStrbuf(screen->work->wordSet, 1, mpw->ids[mpw->selected]);
             MonolithPower_ShowMessageExpanded(mpw, screen->work, 73);
@@ -616,12 +635,12 @@ static void MonolithPower_CreateWindows(MonolithPowerWork *mpw, MonolithWork *wk
     LoadSysMsgBoxBGChar(MONOLITH_POWER_BG_TEXT, 1, 0, HEAPID_MONOLITH);
     PaletteFade_LoadNCLREx(wk->fade, ARCID_WINFRAME, GetSysMsgBoxPaletteDatID(0), HEAPID_MONOLITH,
                            PALFADE_BUFFER_SUB_BG, 0x20, 11 * 0x10, 0);
-    mpw->windows[0] = BmpWin_CreateDynamic(MONOLITH_POWER_BG_TEXT, 1, 19, 30, 4, 13, TRUE);
-    GFL_BitmapFill(BmpWin_GetBitmap(mpw->windows[0]), 0xff);
-    mpw->windows[1] = BmpWin_CreateDynamic(MONOLITH_POWER_BG_TEXT, 0, 0, 32, 3, 13, TRUE);
-    BmpWin_FlushMap(mpw->windows[1]);
+    mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE] = BmpWin_CreateDynamic(MONOLITH_POWER_BG_TEXT, 1, 19, 30, 4, 13, TRUE);
+    GFL_BitmapFill(BmpWin_GetBitmap(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]), 0xff);
+    mpw->windows[MONOLITH_POWER_WINDOW_TITLE] = BmpWin_CreateDynamic(MONOLITH_POWER_BG_TEXT, 0, 0, 32, 3, 13, TRUE);
+    BmpWin_FlushMap(mpw->windows[MONOLITH_POWER_WINDOW_TITLE]);
     GFL_BGSysLoadScr(MONOLITH_POWER_BG_TEXT);
-    PrintWindow_Init(&mpw->titlePrint, mpw->windows[1]);
+    PrintWindow_Init(&mpw->titlePrint, mpw->windows[MONOLITH_POWER_WINDOW_TITLE]);
 }
 
 static void MonolithPower_FreeWindows(MonolithPowerWork *mpw) {
@@ -644,10 +663,10 @@ static void MonolithPower_ShowMessage(MonolithPowerWork *mpw, MonolithWork *wk, 
     GFL_ASSERT(mpw->print_stream == NULL);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 15);
     mpw->msgStr = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, msgId);
-    mpw->print_stream = PrintStream_Create(mpw->windows[0], 0, 0, mpw->msgStr, wk->font, TextSpeed_GetCurrentWait(),
-                                           wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
-    BmpWin_FlushMap(mpw->windows[0]);
-    BmpWin_DrawFrame(mpw->windows[0], TRUE, 1, 11);
+    mpw->print_stream = PrintStream_Create(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE], 0, 0, mpw->msgStr, wk->font,
+                                           TextSpeed_GetCurrentWait(), wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
+    BmpWin_FlushMap(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
+    BmpWin_DrawFrame(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE], TRUE, 1, 11);
 }
 
 static void MonolithPower_ShowMessageExpanded(MonolithPowerWork *mpw, MonolithWork *wk, u32 msgId) {
@@ -659,10 +678,10 @@ static void MonolithPower_ShowMessageExpanded(MonolithPowerWork *mpw, MonolithWo
     mpw->msgStr = GFL_StrBufCreate(256, HEAPID_MONOLITH);
     GFL_WordSetFormatStrbuf(wk->wordSet, mpw->msgStr, str);
     GFL_StrBufFree(str);
-    mpw->print_stream = PrintStream_Create(mpw->windows[0], 0, 0, mpw->msgStr, wk->font, TextSpeed_GetCurrentWait(),
-                                           wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
-    BmpWin_FlushMap(mpw->windows[0]);
-    BmpWin_DrawFrame(mpw->windows[0], TRUE, 1, 11);
+    mpw->print_stream = PrintStream_Create(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE], 0, 0, mpw->msgStr, wk->font,
+                                           TextSpeed_GetCurrentWait(), wk->tcbMgr, 10, HEAPID_MONOLITH, 15);
+    BmpWin_FlushMap(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
+    BmpWin_DrawFrame(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE], TRUE, 1, 11);
 }
 
 static BOOL MonolithPower_UpdateMessage(MonolithWork *wk, MonolithPowerWork *mpw) {
@@ -673,16 +692,16 @@ static BOOL MonolithPower_UpdateMessage(MonolithWork *wk, MonolithPowerWork *mpw
 }
 
 static void MonolithPower_ClearMessage(MonolithPowerWork *mpw) {
-    GFLBitmap *bitmap = BmpWin_GetBitmap(mpw->windows[0]);
+    GFLBitmap *bitmap = BmpWin_GetBitmap(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
 
     GFL_ASSERT(mpw->print_stream != NULL);
     PrintStream_Delete(mpw->print_stream);
     mpw->print_stream = NULL;
     GFL_StrBufFree(mpw->msgStr);
     mpw->msgStr = NULL;
-    BmpWin_ClearFrame(mpw->windows[0], FALSE);
+    BmpWin_ClearFrame(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE], FALSE);
     GFL_BitmapFill(bitmap, 0xff);
-    BmpWin_FlushChar(mpw->windows[0]);
+    BmpWin_FlushChar(mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
 }
 
@@ -710,20 +729,20 @@ static void MonolithPower_CreateList(MonolithScreenParam *screen, MonolithPowerW
         mpw->ids[i] = HIGH_LINK_POWER_NONE;
     }
     mpw->ids[count] = HIGH_LINK_POWER_NONE;
-    mpw->states[count] = 1;
+    mpw->availability[count] = MONOLITH_POWER_UNAVAILABLE;
     mpw->listBitmaps[count] = GFL_BitmapCreate(23, 2, 0x20, HEAPID_MONOLITH);
     count++;
     for (power = 0; power < PASS_POWER_COUNT; power++) {
         unlocked = CheckPassPowerUnlocked(wk->passPowerData, power, levels, screen->param->powerFlags);
         if (unlocked != PASS_POWER_LOCKED) {
             mpw->ids[count] = power;
-            mpw->states[count] = unlocked;
+            mpw->availability[count] = unlocked;
             mpw->listBitmaps[count] = GFL_BitmapCreate(23, 2, 0x20, HEAPID_MONOLITH);
             count++;
         }
     }
     mpw->ids[count] = HIGH_LINK_POWER_NONE;
-    mpw->states[count] = 1;
+    mpw->availability[count] = MONOLITH_POWER_UNAVAILABLE;
     mpw->listBitmaps[count] = GFL_BitmapCreate(23, 2, 0x20, HEAPID_MONOLITH);
     mpw->count = count + 1;
 }
@@ -746,7 +765,7 @@ static BOOL MonolithPower_DrawList(MonolithPowerWork *mpw, MonolithWork *wk) {
         if (i >= 1 && i < mpw->count - 1) {
             GFL_MsgDataLoadStrbuf(mpw->msgPowerNames, mpw->ids[i], str);
             GFL_TextRendererDrawToBitmapEx(mpw->listBitmaps[i], 0, 0, str, wk->font,
-                                           sMonolithPowerListColors[mpw->states[i]]);
+                                           sMonolithPowerListColors[mpw->availability[i]]);
         }
         if (++drawn >= 100) {
             break;
@@ -875,7 +894,7 @@ static BOOL MonolithPower_Input(MonolithScreenParam *screen, MonolithPowerWork *
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             MonolithPower_SetCursor(mpw, mpw->cursor, MONOLITH_POWER_CURSOR_KEYS);
             GCTX_HIDSetUsingTouch(FALSE);
-            if (mpw->states[mpw->cursor] == 0) {
+            if (mpw->availability[mpw->cursor] == MONOLITH_POWER_RECEIVABLE) {
                 GFL_SndSEPlay(SEQ_SE_DECIDE1);
             } else {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
@@ -944,7 +963,7 @@ static BOOL MonolithPower_Input(MonolithScreenParam *screen, MonolithPowerWork *
                 if (row != MONOLITH_POWER_NONE) {
                     picked = TRUE;
                     index = row;
-                    if (mpw->states[index] == 0) {
+                    if (mpw->availability[index] == MONOLITH_POWER_RECEIVABLE) {
                         GFL_SndSEPlay(SEQ_SE_SELECT1);
                     } else {
                         GFL_SndSEPlay(SEQ_SE_BEEP);
@@ -1026,21 +1045,21 @@ static void MonolithPower_UpdateCursor(MonolithScreenParam *screen, MonolithPowe
     if (mpw->cursorChanged == TRUE) {
         MonolithPower_HighlightRow(mpw, mpw->cursor);
         if (mpw->cursor == MONOLITH_POWER_NONE) {
-            MonolithTool_SetPanelPulse(screen, FALSE, 1);
+            MonolithTool_SetPanelPulse(screen, FALSE, PALFADE_BUFFER_SUB_BG);
         } else if ((mpw->cursorBy == MONOLITH_POWER_CURSOR_TAP && mpw->cursor == mpw->prevCursor2) ||
                    (mpw->cursorBy == MONOLITH_POWER_CURSOR_KEYS && mpw->cursor == mpw->prevCursor)) {
-            if (mpw->states[mpw->cursor] == 0) {
+            if (mpw->availability[mpw->cursor] == MONOLITH_POWER_RECEIVABLE) {
                 mpw->selected = mpw->cursor;
                 if (mpw->cursorBy == MONOLITH_POWER_CURSOR_KEYS) {
-                    MonolithTool_FlashPanel(screen, 1);
+                    MonolithTool_FlashPanel(screen, PALFADE_BUFFER_SUB_BG);
                 } else {
-                    MonolithTool_SetTextPicked(screen, &mpw->receiveButton, 1, 0, 3);
+                    MonolithTool_SetTextPicked(screen, &mpw->receiveButton, 1, 0, PALFADE_BUFFER_SUB_OBJ);
                 }
             } else if (mpw->cursorBy == MONOLITH_POWER_CURSOR_TAP) {
-                MonolithTool_SetPanelPulse(screen, TRUE, 1);
+                MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
             }
         } else {
-            MonolithTool_SetPanelPulse(screen, TRUE, 1);
+            MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
         }
         GFL_BGSysQueueScrLoad(MONOLITH_POWER_BG_LIST);
         mpw->cursorChanged = FALSE;
@@ -1123,7 +1142,7 @@ static void MonolithPower_LoadEquipped(MonolithScreenParam *screen, MonolithPowe
         passPower = screen->state->equipped[j];
         for (i = 0; i < MONOLITH_POWER_LIST_MAX; i++) {
             if (passPower == mpw->ids[i]) {
-                mpw->states[i] = 1;
+                mpw->availability[i] = MONOLITH_POWER_UNAVAILABLE;
                 break;
             }
         }
@@ -1153,8 +1172,8 @@ static int MonolithPower_WaitReceived(MonolithScreenParam *screen, MonolithPower
     if (GFL_HIDIsTouchPressed() || (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
         MonolithPower_ClearMessage(mpw);
         mpw->selected = MONOLITH_POWER_NONE;
-        MonolithTool_SetPanelPulse(screen, TRUE, 1);
-        MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, 0xff, 3);
+        MonolithTool_SetPanelPulse(screen, TRUE, PALFADE_BUFFER_SUB_BG);
+        MonolithTool_SetTextCursor(screen, &mpw->receiveButton, 1, MONOLITH_TEXT_CURSOR_NONE, PALFADE_BUFFER_SUB_OBJ);
         GFL_SndSEPlay(SEQ_SE_MESSAGE);
         if (mpw->flags & MONOLITH_POWER_FLAG_FULL) {
             if (mpw->returnSlot != -1) {
@@ -1191,7 +1210,7 @@ static void MonolithPower_RedrawRow(MonolithScreenParam *screen, MonolithPowerWo
 
     GFL_MsgDataLoadStrbuf(mpw->msgPowerNames, mpw->ids[index], str);
     GFL_TextRendererDrawToBitmapEx(mpw->listBitmaps[index], 0, 0, str, screen->work->font,
-                                   sMonolithPowerRowColors[mpw->states[index]]);
+                                   sMonolithPowerRowColors[mpw->availability[index]]);
     GFL_StrBufFree(str);
 }
 
@@ -1202,20 +1221,20 @@ static void MonolithPower_Equip(MonolithScreenParam *screen, MonolithPowerWork *
     if (screen->state->equipped[slot] != HIGH_LINK_POWER_NONE) {
         index = MonolithPower_FindPower(mpw, screen->state->equipped[slot]);
         if (index != -1) {
-            mpw->states[index] = 0;
+            mpw->availability[index] = MONOLITH_POWER_RECEIVABLE;
             MonolithPower_RedrawRow(screen, mpw, index);
         }
         screen->state->equipped[slot] = passPower;
         index = MonolithPower_FindPower(mpw, passPower);
         if (index != -1) {
-            mpw->states[index] = 1;
+            mpw->availability[index] = MONOLITH_POWER_UNAVAILABLE;
             MonolithPower_RedrawRow(screen, mpw, index);
         }
     } else {
         screen->state->equipped[slot] = passPower;
         index = MonolithPower_FindPower(mpw, passPower);
         if (index != -1) {
-            mpw->states[index] = 1;
+            mpw->availability[index] = MONOLITH_POWER_UNAVAILABLE;
             MonolithPower_RedrawRow(screen, mpw, index);
         }
     }
@@ -1249,9 +1268,9 @@ static void MonolithPower_SetDim(MonolithPowerWork *mpw, BOOL dim) {
 
 static void MonolithPower_UpdateKeyCursor(MonolithPowerWork *mpw, BOOL printing) {
     if (printing == FALSE) {
-        KeyCursor_UpdateWait(mpw->keyCursor, mpw->windows[0]);
+        KeyCursor_UpdateWait(mpw->keyCursor, mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
     } else if (mpw->print_stream != NULL) {
-        KeyCursor_Update(mpw->keyCursor, mpw->print_stream, mpw->windows[0]);
+        KeyCursor_Update(mpw->keyCursor, mpw->print_stream, mpw->windows[MONOLITH_POWER_WINDOW_MESSAGE]);
     }
 }
 

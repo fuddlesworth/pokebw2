@@ -18,6 +18,19 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 
+// The window slots, shared by their bitmap and print-window arrays
+enum {
+    MONOLITH_POWER_INFO_WINDOW_TITLE = 0,
+    MONOLITH_POWER_INFO_WINDOW_EQUIPPED = 1,
+    MONOLITH_POWER_INFO_WINDOW_DESCRIPTION = 2,
+};
+
+// The phases of this screen's initialization task
+enum {
+    MONOLITH_POWER_INFO_INIT_SETUP = 0,
+    MONOLITH_POWER_INFO_INIT_WAIT_PRINT = 1,
+};
+
 // The BGs of the text and of the background
 #define MONOLITH_POWER_INFO_BG_TEXT 0
 #define MONOLITH_POWER_INFO_BG 2
@@ -95,7 +108,7 @@ static BOOL MonolithPowerInfo_Init(GameProc *proc, u32 *state, void *param, void
     int i;
 
     switch (*state) {
-    case 0:
+    case MONOLITH_POWER_INFO_INIT_SETUP:
         piw = GFL_ProcInitSubsystem(proc, sizeof(MonolithPowerInfoWork), HEAPID_MONOLITH);
         MI_CpuFill8(piw, 0, sizeof(MonolithPowerInfoWork));
         piw->shownPower = HIGH_LINK_POWER_NONE;
@@ -106,7 +119,7 @@ static BOOL MonolithPowerInfo_Init(GameProc *proc, u32 *state, void *param, void
         MonolithPowerInfo_DrawEquipped(screen, screen->work, piw);
         (*state)++;
         break;
-    case 1:
+    case MONOLITH_POWER_INFO_INIT_WAIT_PRINT:
         piw = work;
         printing = FALSE;
         for (i = 0; i < MONOLITH_POWER_INFO_WINDOW_COUNT; i++) {
@@ -154,11 +167,11 @@ static BOOL MonolithPowerInfo_Main(GameProc *proc, u32 *state, void *param, void
         return FALSE;
     }
     if (*state == MONOLITH_POWER_INFO_SEQ_MAIN) {
-        if (screen->state->equipChanged == TRUE && printed[1] == TRUE) {
+        if (screen->state->equipChanged == TRUE && printed[MONOLITH_POWER_INFO_WINDOW_EQUIPPED] == TRUE) {
             MonolithPowerInfo_DrawEquipped(screen, screen->work, piw);
             screen->state->equipChanged = FALSE;
         }
-        if (screen->state->focusPower != piw->shownPower && printed[2] == TRUE) {
+        if (screen->state->focusPower != piw->shownPower && printed[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION] == TRUE) {
             MonolithPowerInfo_DrawDescription(screen, screen->work, piw);
             piw->shownPower = screen->state->focusPower;
         }
@@ -204,15 +217,18 @@ static void MonolithPowerInfo_LoadGraphics(MonolithWork *wk) {
 static void MonolithPowerInfo_CreateWindows(MonolithWork *wk, MonolithPowerInfoWork *piw) {
     int i;
 
-    piw->windows[0] = BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 0, 28, 3, 13, TRUE);
-    BmpWin_FlushChar(piw->windows[0]);
-    BmpWin_FlushMap(piw->windows[0]);
-    piw->windows[1] = BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 4, 28, 8, 13, TRUE);
-    BmpWin_FlushChar(piw->windows[1]);
-    BmpWin_FlushMap(piw->windows[1]);
-    piw->windows[2] = BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 15, 28, 9, 13, TRUE);
-    BmpWin_FlushChar(piw->windows[2]);
-    BmpWin_FlushMap(piw->windows[2]);
+    piw->windows[MONOLITH_POWER_INFO_WINDOW_TITLE] =
+        BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 0, 28, 3, 13, TRUE);
+    BmpWin_FlushChar(piw->windows[MONOLITH_POWER_INFO_WINDOW_TITLE]);
+    BmpWin_FlushMap(piw->windows[MONOLITH_POWER_INFO_WINDOW_TITLE]);
+    piw->windows[MONOLITH_POWER_INFO_WINDOW_EQUIPPED] =
+        BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 4, 28, 8, 13, TRUE);
+    BmpWin_FlushChar(piw->windows[MONOLITH_POWER_INFO_WINDOW_EQUIPPED]);
+    BmpWin_FlushMap(piw->windows[MONOLITH_POWER_INFO_WINDOW_EQUIPPED]);
+    piw->windows[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION] =
+        BmpWin_CreateDynamic(MONOLITH_POWER_INFO_BG_TEXT, 2, 15, 28, 9, 13, TRUE);
+    BmpWin_FlushChar(piw->windows[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION]);
+    BmpWin_FlushMap(piw->windows[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION]);
     for (i = 0; i < MONOLITH_POWER_INFO_WINDOW_COUNT; i++) {
         PrintWindow_Init(&piw->prints[i], piw->windows[i]);
     }
@@ -230,7 +246,7 @@ static void MonolithPowerInfo_FreeWindows(MonolithPowerInfoWork *piw) {
 static void MonolithPowerInfo_DrawTitle(MonolithWork *wk, MonolithPowerInfoWork *piw) {
     StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, 39);
 
-    PrintWindow_PrintNoColor(&piw->prints[0], wk->printQueue, 0, 4, str, wk->font);
+    PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_TITLE], wk->printQueue, 0, 4, str, wk->font);
     GFL_StrBufFree(str);
 }
 
@@ -240,7 +256,7 @@ static void MonolithPowerInfo_DrawEquipped(MonolithScreenParam *screen, Monolith
     StrBuf *str;
     s16 i;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(piw->windows[1]), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(piw->windows[MONOLITH_POWER_INFO_WINDOW_EQUIPPED]), 0);
     for (i = 0; i < 3; i++) {
         u8 passPower = screen->state->equipped[i];
 
@@ -248,14 +264,16 @@ static void MonolithPowerInfo_DrawEquipped(MonolithScreenParam *screen, Monolith
             PassPowerData *powers = wk->passPowerData;
 
             str = GFL_MsgDataLoadStrbufNew(wk->msgPowerNames, powers[passPower].name);
-            PrintWindow_PrintNoColor(&piw->prints[1], wk->printQueue, 0, i * 16, str, wk->font);
+            PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_EQUIPPED], wk->printQueue, 0, i * 16, str,
+                                     wk->font);
             GFL_StrBufFree(str);
             drawn = TRUE;
         }
     }
     if (drawn == FALSE) {
         str = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, 40);
-        PrintWindow_PrintNoColor(&piw->prints[1], wk->printQueue, 0, 0, str, wk->font);
+        PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_EQUIPPED], wk->printQueue, 0, 0, str,
+                                 wk->font);
         GFL_StrBufFree(str);
     }
 }
@@ -273,12 +291,12 @@ static void MonolithPowerInfo_DrawDescription(MonolithScreenParam *screen, Monol
     u32 msgId;
     u32 level;
 
-    GFL_BitmapFill(BmpWin_GetBitmap(piw->windows[2]), 0);
+    GFL_BitmapFill(BmpWin_GetBitmap(piw->windows[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION]), 0);
     if (passPower != HIGH_LINK_POWER_NONE) {
         if (MonolithPowerInfo_FindEquipped(screen, passPower) != -1) {
             show = TRUE;
         }
-        if (screen->state->focusPowerState == 0) {
+        if (screen->state->focusPowerAvailability == MONOLITH_POWER_RECEIVABLE) {
             show = TRUE;
         }
         if (show == TRUE) {
@@ -287,8 +305,10 @@ static void MonolithPowerInfo_DrawDescription(MonolithScreenParam *screen, Monol
             format = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, 41);
             str = GFL_StrBufCreate(64, HEAPID_MONOLITH);
             GFL_WordSetFormatStrbuf(wk->wordSet, str, format);
-            PrintWindow_PrintNoColor(&piw->prints[2], wk->printQueue, 0, 4, info, wk->font);
-            PrintWindow_PrintNoColor(&piw->prints[2], wk->printQueue, 112, 52, str, wk->font);
+            PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION], wk->printQueue, 0, 4, info,
+                                     wk->font);
+            PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION], wk->printQueue, 112, 52, str,
+                                     wk->font);
             GFL_StrBufFree(info);
             GFL_StrBufFree(format);
             GFL_StrBufFree(str);
@@ -307,12 +327,13 @@ static void MonolithPowerInfo_DrawDescription(MonolithScreenParam *screen, Monol
             format = GFL_MsgDataLoadStrbufNew(wk->msgMonolith, msgId);
             str = GFL_StrBufCreate(128, HEAPID_MONOLITH);
             GFL_WordSetFormatStrbuf(wk->wordSet, str, format);
-            PrintWindow_PrintNoColor(&piw->prints[2], wk->printQueue, 0, 4, str, wk->font);
+            PrintWindow_PrintNoColor(&piw->prints[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION], wk->printQueue, 0, 4, str,
+                                     wk->font);
             GFL_StrBufFree(str);
             GFL_StrBufFree(format);
         }
     } else {
-        BmpWin_FlushChar(piw->windows[2]);
+        BmpWin_FlushChar(piw->windows[MONOLITH_POWER_INFO_WINDOW_DESCRIPTION]);
     }
 }
 

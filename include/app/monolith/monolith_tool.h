@@ -11,6 +11,10 @@
 #include "system/app_taskmenu.h"
 #include "system/wordset.h"
 
+// Fixed cursor and return-menu indices
+#define MONOLITH_TEXT_CURSOR_NONE 0xff
+#define MONOLITH_RETURN_POWER_MENU_CANCEL 3
+
 // The Entralink monolith's helpers that its screens share (monolith_tool.c, the ROM's name): text shown as actors on
 // a frame, the panels' palette effects, the return button, the yes/no and pass power menus, and the bar of the White
 // and Black levels. The names are ours

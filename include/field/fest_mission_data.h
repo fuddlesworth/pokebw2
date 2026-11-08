@@ -8,6 +8,17 @@
 #include "gfl/str.h"
 #include "struct_decls.h"
 
+// The availability codes stored in FestMissionHeader.version; download codes name their receipt flag
+enum {
+    FEST_MISSION_AVAILABILITY_BOTH = 0,
+    FEST_MISSION_AVAILABILITY_WHITE2 = 1,
+    FEST_MISSION_AVAILABILITY_BLACK2 = 2,
+    FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_2 = 4,
+    FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_3 = 5,
+    FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_4 = 6,
+    FEST_MISSION_AVAILABILITY_DOWNLOAD_FLAG_5 = 7,
+};
+
 // The Funfest missions' data and text, overlay 27's fest_mission_data.c
 
 struct FestivalText {
