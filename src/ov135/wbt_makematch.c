@@ -1,6 +1,7 @@
 #include "field/wbt_makematch.h"
 #include "types.h"
 #include "battle/trainer_data.h"
+#include "constants/pokemon.h"
 #include "constants/types.h"
 #include "field/battle_facility.h"
 #include "field/wbt.h"
@@ -38,7 +39,7 @@ typedef struct {
     MATHRandContext32 rand;
     // Per Trainer of the table: 0 when it isn't up for the pick, 1 when it is, 2 when it was picked
     u8 *status;
-    // Per Trainer of the table: 0 when the player has beaten it, 1 otherwise
+    // Per Trainer: 0 for an eligible, tracked, unbeaten Trainer; otherwise 1
     u8 *encountered;
 } WbtMakeMatch;
 
@@ -68,6 +69,12 @@ enum {
     WBT_SLOT_NUMBER,
 };
 
+// Packed bracket entry: index 0, with the PLAYER kind in its high byte.
+enum { WBT_BRACKET_PLAYER_VALUE = 0xff00 };
+
+// The table entry whose displayed name comes from the player's rival-name save.
+enum { WBT_RIVAL_TRAINER_INDEX = 0x37 };
+
 // Any, for the count of Trainers the player has beaten
 #define WBT_ANY 2
 
@@ -88,15 +95,15 @@ static int WbtMakeMatch_PickRank(WbtMakeMatch *m, u32 rank, u8 count);
 static BOOL WbtMakeMatch_IsEligible(const WbtMatchParam *param, WbtTrainer *trainer);
 static void WbtMakeMatch_InitStatus(WbtMakeMatch *m, WbtSave *record);
 static void WbtMakeMatch_PickDownloaded(const WbtUnk18A *slots, WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament1(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament10(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournaments5To9(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickChampions(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickWorldLeaders(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickRegionalLeaders(WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickDefault(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament11(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament12(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament14(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament13(WbtMakeMatch *m, WbtBracketEntry *result);
-static void WbtMakeMatch_PickTournament15(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickFirstDriftveil(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickRental(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickMix(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickRentalMaster(WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickMixMaster(WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickTypeExpert(WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickBracket(GameData *gameData, WbtMatchParam *param, WbtBracketEntry *result);
 static void WbtMakeMatch_ShuffleEntrants(MATHRandContext32 *rand, WbtEntrant **items, u32 count);
@@ -136,7 +143,7 @@ static void WbtMakeMatch_GetPicks(WbtMakeMatch *m, WbtBracketEntry *result) {
     u32 i;
 
     count = 0;
-    result[count++].value = 0xff00;
+    result[count++].value = WBT_BRACKET_PLAYER_VALUE;
     for (i = 0; i < m->param->trainerCount; i++) {
         if (m->status[i] == WBT_STATUS_PICKED && count < 8) {
             result[count].kind = WBT_KIND_TABLE;
@@ -217,28 +224,28 @@ static int WbtMakeMatch_PickRank(WbtMakeMatch *m, u32 rank, u8 count) {
 // Whether the tournament takes the Trainer
 static BOOL WbtMakeMatch_IsEligible(const WbtMatchParam *param, WbtTrainer *trainer) {
     switch (param->tournament) {
-    case 14:
+    case WBT_TOURNAMENT_MIX:
         return trainer->inTournament14;
-    case 15:
+    case WBT_TOURNAMENT_MIX_MASTER:
         return trainer->inTournament15;
-    case 12:
+    case WBT_TOURNAMENT_RENTAL:
         return trainer->inTournament12;
-    case 13:
+    case WBT_TOURNAMENT_RENTAL_MASTER:
         return trainer->inTournament13;
-    case 1:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
+    case WBT_TOURNAMENT_CHAMPIONS:
+    case WBT_TOURNAMENT_UNOVA_LEADERS:
+    case WBT_TOURNAMENT_KANTO_LEADERS:
+    case WBT_TOURNAMENT_JOHTO_LEADERS:
+    case WBT_TOURNAMENT_HOENN_LEADERS:
+    case WBT_TOURNAMENT_SINNOH_LEADERS:
         return trainer->tournament == param->tournament;
     case WBT_TOURNAMENT_TYPE_EXPERT:
         return trainer->expertType == param->type || trainer->expertType == TYPE_NULL;
-    case 4:
+    case WBT_TOURNAMENT_DRIFTVEIL:
         return trainer->inTournament4;
-    case 11:
+    case WBT_TOURNAMENT_DRIFTVEIL_FIRST:
         return trainer->inTournament11;
-    case 10:
+    case WBT_TOURNAMENT_WORLD_LEADERS:
         return trainer->inTournament10;
     case WBT_TOURNAMENT_DOWNLOADED:
         return TRUE;
@@ -280,7 +287,7 @@ static void WbtMakeMatch_PickDownloaded(const WbtUnk18A *slots, WbtMakeMatch *m,
         order[j] = tmp;
     }
     MI_CpuFill8(result, 0, 8 * sizeof(WbtBracketEntry));
-    result[i++].value = 0xff00;
+    result[i++].value = WBT_BRACKET_PLAYER_VALUE;
     for (; i < 8; i++) {
         int slot = i - 1;
 
@@ -307,15 +314,15 @@ static void WbtMakeMatch_PickDownloaded(const WbtUnk18A *slots, WbtMakeMatch *m,
 }
 
 // Tournament 1 takes its Trainers in the order of the table
-static void WbtMakeMatch_PickTournament1(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickChampions(WbtMakeMatch *m, WbtBracketEntry *result) {
     int i;
     int count;
 
     MI_CpuFill8(result, 0, 8 * sizeof(WbtBracketEntry));
     count = 0;
-    result[count++].value = 0xff00;
+    result[count++].value = WBT_BRACKET_PLAYER_VALUE;
     for (i = 0; i < m->param->trainerCount; i++) {
-        if (m->param->trainers[i].tournament == 1) {
+        if (m->param->trainers[i].tournament == WBT_TOURNAMENT_CHAMPIONS) {
             result[count].kind = WBT_KIND_TABLE;
             result[count].index = i;
             count++;
@@ -327,13 +334,13 @@ static void WbtMakeMatch_PickTournament1(WbtMakeMatch *m, WbtBracketEntry *resul
 }
 
 // Tournament 10
-static void WbtMakeMatch_PickTournament10(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickWorldLeaders(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 7);
     WbtMakeMatch_GetPicks(m, result);
 }
 
 // Tournaments 5 to 9
-static void WbtMakeMatch_PickTournaments5To9(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickRegionalLeaders(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 7);
     WbtMakeMatch_GetPicks(m, result);
 }
@@ -347,7 +354,7 @@ static void WbtMakeMatch_PickDefault(WbtMakeMatch *m, WbtBracketEntry *result) {
 }
 
 // Tournament 11
-static void WbtMakeMatch_PickTournament11(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickFirstDriftveil(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 5, 1);
     WbtMakeMatch_PickRank(m, 4, 1);
     WbtMakeMatch_PickRank(m, 3, 1);
@@ -356,7 +363,7 @@ static void WbtMakeMatch_PickTournament11(WbtMakeMatch *m, WbtBracketEntry *resu
 }
 
 // Tournament 12
-static void WbtMakeMatch_PickTournament12(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickRental(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 2);
     WbtMakeMatch_PickRank(m, 2, 2);
     WbtMakeMatch_PickRank(m, 1, 3);
@@ -364,7 +371,7 @@ static void WbtMakeMatch_PickTournament12(WbtMakeMatch *m, WbtBracketEntry *resu
 }
 
 // Tournament 14
-static void WbtMakeMatch_PickTournament14(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickMix(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 2);
     WbtMakeMatch_PickRank(m, 2, 2);
     WbtMakeMatch_PickRank(m, 1, 3);
@@ -372,13 +379,13 @@ static void WbtMakeMatch_PickTournament14(WbtMakeMatch *m, WbtBracketEntry *resu
 }
 
 // Tournament 13
-static void WbtMakeMatch_PickTournament13(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickRentalMaster(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 7);
     WbtMakeMatch_GetPicks(m, result);
 }
 
 // Tournament 15
-static void WbtMakeMatch_PickTournament15(WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickMixMaster(WbtMakeMatch *m, WbtBracketEntry *result) {
     WbtMakeMatch_PickRank(m, 3, 7);
     WbtMakeMatch_GetPicks(m, result);
 }
@@ -403,36 +410,36 @@ static void WbtMakeMatch_PickBracket(GameData *gameData, WbtMatchParam *param, W
     default:
         WbtMakeMatch_PickDefault(m, result);
         break;
-    case 1:
-        WbtMakeMatch_PickTournament1(m, result);
+    case WBT_TOURNAMENT_CHAMPIONS:
+        WbtMakeMatch_PickChampions(m, result);
         break;
     case WBT_TOURNAMENT_TYPE_EXPERT:
         WbtMakeMatch_PickTypeExpert(m, result);
         break;
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-        WbtMakeMatch_PickTournaments5To9(m, result);
+    case WBT_TOURNAMENT_UNOVA_LEADERS:
+    case WBT_TOURNAMENT_KANTO_LEADERS:
+    case WBT_TOURNAMENT_JOHTO_LEADERS:
+    case WBT_TOURNAMENT_HOENN_LEADERS:
+    case WBT_TOURNAMENT_SINNOH_LEADERS:
+        WbtMakeMatch_PickRegionalLeaders(m, result);
         break;
-    case 10:
-        WbtMakeMatch_PickTournament10(m, result);
+    case WBT_TOURNAMENT_WORLD_LEADERS:
+        WbtMakeMatch_PickWorldLeaders(m, result);
         break;
-    case 11:
-        WbtMakeMatch_PickTournament11(m, result);
+    case WBT_TOURNAMENT_DRIFTVEIL_FIRST:
+        WbtMakeMatch_PickFirstDriftveil(m, result);
         break;
-    case 14:
-        WbtMakeMatch_PickTournament14(m, result);
+    case WBT_TOURNAMENT_MIX:
+        WbtMakeMatch_PickMix(m, result);
         break;
-    case 15:
-        WbtMakeMatch_PickTournament15(m, result);
+    case WBT_TOURNAMENT_MIX_MASTER:
+        WbtMakeMatch_PickMixMaster(m, result);
         break;
-    case 12:
-        WbtMakeMatch_PickTournament12(m, result);
+    case WBT_TOURNAMENT_RENTAL:
+        WbtMakeMatch_PickRental(m, result);
         break;
-    case 13:
-        WbtMakeMatch_PickTournament13(m, result);
+    case WBT_TOURNAMENT_RENTAL_MASTER:
+        WbtMakeMatch_PickRentalMaster(m, result);
         break;
     case WBT_TOURNAMENT_DOWNLOADED:
         WbtMakeMatch_PickDownloaded(param->downloadSlots, m, result);
@@ -554,19 +561,19 @@ static void WbtEntrant_SetPlayer(WbtEntrant *entrant, WbtSystem *sys, GameData *
     PlayerInfo *playerInfo = GetGameDataPlayerInfo(gameData);
     void *wbtSave = GameData_GetWbtSave(gameData);
     u16 objCode = 0xe7;
-    u8 isFemale = 0;
+    u8 playerTrainerClass = 0;
     u8 gender = getTrainerGender(playerInfo);
     u8 rank = 3;
 
-    if (WbtSave_GetCount(wbtSave, 0x11)) {
+    if (WbtSave_GetCount(wbtSave, WBT_RECORD_CHAMPIONS)) {
         rank = 4;
     }
-    if (gender == 1) {
+    if (gender == GENDER_FEMALE) {
         objCode = 0xf0;
-        isFemale = 1;
+        playerTrainerClass = 1;
     }
     WbtEntrant_Set(entrant, WBT_ENTRANT_KIND_PLAYER, 0, gender, rank, 0, 0, FALSE,
-                   WbtTool_GetPartyMainType(sys->playerParty, sys->seed), objCode, isFemale, 1);
+                   WbtTool_GetPartyMainType(sys->playerParty, sys->seed), objCode, playerTrainerClass, 1);
     textCopy(playerInfo->name, entrant->name);
 }
 
@@ -627,7 +634,7 @@ static void WbtMakeMatch_SetEntrants(WbtSystem *sys, GameData *gameData, WbtBrac
         default:
             WbtEntrant_SetFromTable(sys, sys->heapId, entrant, result[i].index);
             // The rival's number in the table, whose name the player chose
-            if (result[i].index == 0x37) {
+            if (result[i].index == WBT_RIVAL_TRAINER_INDEX) {
                 GFL_StrBufLoadString(entrant->name,
                                      getPtrToRivalName(getHollow_RivalData(GameData_GetSaveControl(gameData))));
             }
@@ -639,10 +646,10 @@ static void WbtMakeMatch_SetEntrants(WbtSystem *sys, GameData *gameData, WbtBrac
             rankIndex++;
         }
         switch (sys->tournament) {
-        case 12:
-        case 13:
-        case 14:
-        case 15:
+        case WBT_TOURNAMENT_RENTAL:
+        case WBT_TOURNAMENT_RENTAL_MASTER:
+        case WBT_TOURNAMENT_MIX:
+        case WBT_TOURNAMENT_MIX_MASTER:
             entrant->type = TYPE_NULL;
             break;
         }
@@ -670,7 +677,7 @@ void WbtMakeMatch_Make(WbtSystem *sys, GameData *gameData) {
 }
 
 u8 WbtMakeMatch_GetBattlePoints(WbtSystem *sys) {
-    if (sys->tournament == 1 || sys->tournament == 10) {
+    if (sys->tournament == WBT_TOURNAMENT_CHAMPIONS || sys->tournament == WBT_TOURNAMENT_WORLD_LEADERS) {
         u8 total;
         int i;
 
@@ -751,7 +758,8 @@ void WbtMakeMatch_ReadPick(WbtSystem *sys, PokeListParam *param) {
     MI_CpuCopy8(param->picked, sys->castSlots, sizeof(sys->castSlots));
     sys->listIndex = param->index;
     sys->listResult = param->result;
-    if (sys->listResult != 0 || sys->listIndex == 7 || sys->listIndex == 8) {
+    if (sys->listResult != POKELIST_RESULT_DONE || sys->listIndex == POKELIST_CURSOR_CANCEL ||
+        sys->listIndex == POKELIST_CURSOR_CLOSE) {
         *sys->resultVar = 0;
     } else {
         *sys->resultVar = 1;
@@ -759,7 +767,7 @@ void WbtMakeMatch_ReadPick(WbtSystem *sys, PokeListParam *param) {
 }
 
 PokeParty *WbtMakeMatch_GetParty(WbtSystem *sys, GameData *gameData) {
-    if (sys->tournament == 12 || sys->tournament == 13) {
+    if (sys->tournament == WBT_TOURNAMENT_RENTAL || sys->tournament == WBT_TOURNAMENT_RENTAL_MASTER) {
         return sys->initialParty;
     }
     if (sys->useBattleBox == 0) {
@@ -781,17 +789,17 @@ void WbtMakeMatch_SetupPokeList(WbtSystem *sys, GameData *gameData, PokeListPara
 
     PokeListParam_Setup(param, gameData, POKELIST_MODE_BATTLE_TEAM_CANCEL, WbtMakeMatch_GetParty(sys, gameData));
     switch (sys->style) {
-    case 0:
+    case WBT_STYLE_SINGLE:
     default:
         mode = 0;
         break;
-    case 1:
+    case WBT_STYLE_DOUBLE:
         mode = 1;
         break;
-    case 2:
+    case WBT_STYLE_TRIPLE:
         mode = 3;
         break;
-    case 3:
+    case WBT_STYLE_ROTATION:
         mode = 4;
         break;
     }
