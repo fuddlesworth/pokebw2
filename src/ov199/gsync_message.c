@@ -25,6 +25,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include "text/system/gsync_menu.h"
 
 #define GSYNC_MESSAGE_WIN_MAX 12
 
@@ -219,10 +220,10 @@ AppTaskMenu *GSyncMessage_CreateYesNo(GSyncMessage *msg, int pos) {
     init.width = 13;
     init.height = 3;
     msg->yesNoItems[0].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, 4, msg->yesNoItems[0].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GsyncMenu_Text_Yes, msg->yesNoItems[0].str);
     msg->yesNoItems[0].color = PRINT_COLOR(14, 15, 0);
     msg->yesNoItems[1].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, 5, msg->yesNoItems[1].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GsyncMenu_Text_No, msg->yesNoItems[1].str);
     msg->yesNoItems[1].color = PRINT_COLOR(14, 15, 0);
     menu = AppTaskMenu_Create(&init, msg->menuRes);
     GFL_StrBufFree(msg->yesNoItems[0].str);

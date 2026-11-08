@@ -7,6 +7,8 @@
 #include "app/gsync/pdwacc_disp.h"
 #include "app/gsync/pdwacc_message.h"
 #include "constants/sound.h"
+#include "constants/text_banks.h"
+#include "gfl/backup_system.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/heap.h"
@@ -23,9 +25,7 @@
 #include "system/app_taskmenu.h"
 #include "system/game_data.h"
 #include "system/wipe.h"
-
-// The request that creates the account, sending the save data
-#define PDWACC_REQUEST_CREATE 9
+#include "text/system/0107.h"
 
 typedef struct PdwAccWork PdwAccWork;
 typedef void (*PdwAccStateFunc)(PdwAccWork *wk);
@@ -72,7 +72,7 @@ static void PdwAcc_StateWaitCreate(PdwAccWork *wk);
 static void PdwAcc_StateCreate(PdwAccWork *wk);
 static void PdwAcc_StateIdOnlyWait(PdwAccWork *wk);
 static void PdwAcc_StateShowIdOnly(PdwAccWork *wk);
-static void PdwAcc_OnDisconnect(void *work, int a1, int code, int error);
+static void PdwAcc_OnDwcError(void *work, int code, int errorType, int error);
 static BOOL PdwAcc_ProcInit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL PdwAcc_ProcMain(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL PdwAcc_ProcExit(GameProc *proc, u32 *state, void *param, void *work);
@@ -86,11 +86,11 @@ const GameProcFunctions PDWACC_PROC_FUNCTIONS = {
 // Returns whether the HTTP status is an error, and shows it
 static BOOL PdwAcc_CheckHttpStatus(PdwAccWork *wk, int status) {
     switch (status) {
-    case 503:
+    case GSYNC_HTTP_STATUS_SERVICE_UNAVAILABLE:
         wk->error = GSYNC_ERROR_SERVICE_UNAVAILABLE;
         PdwAcc_ChangeState(wk, PdwAcc_StateError, 153);
         return TRUE;
-    case 502:
+    case GSYNC_HTTP_STATUS_BAD_GATEWAY:
         wk->error = GSYNC_ERROR_BAD_GATEWAY;
         PdwAcc_ChangeState(wk, PdwAcc_StateError, 157);
         return TRUE;
@@ -134,9 +134,9 @@ static void PdwAcc_StateWaitSavedMessage(PdwAccWork *wk) {
 static void PdwAcc_StateWaitSave(PdwAccWork *wk) {
     int result = GameData_UpdateSave(wk->gameData);
 
-    if (result == 2 || result == 3) {
+    if (result == SAVE_RESULT_OK || result == SAVE_RESULT_NG) {
         wk->saving = FALSE;
-        PdwAccMessage_PrintStream(wk->msg, 11);
+        PdwAccMessage_PrintStream(wk->msg, Bank0107_Text_GameSyncIdHas_2);
         PdwAcc_ChangeState(wk, PdwAcc_StateWaitSavedMessage, 254);
     }
 }
@@ -150,7 +150,7 @@ static void PdwAcc_StateStartSave(PdwAccWork *wk) {
 }
 
 static void PdwAcc_StateSave(PdwAccWork *wk) {
-    PdwAccMessage_PrintStream(wk->msg, 6);
+    PdwAccMessage_PrintStream(wk->msg, Bank0107_Text_SavingDontTurnOff);
     PdwAccMessage_StartWaitIcon(wk->msg);
     PdwAcc_ChangeState(wk, PdwAcc_StateStartSave, 274);
 }
@@ -166,14 +166,14 @@ static void PdwAcc_StateIdNext(PdwAccWork *wk) {
 static void PdwAcc_StateIdWait(PdwAccWork *wk) {
     if (GCTX_HIDGetPressedKeys()) {
         PdwAccMessage_ShowGSyncId(wk->msg, wk->profileId, wk->profileId);
-        PdwAccMessage_PrintInfo(wk->msg, 9);
+        PdwAccMessage_PrintInfo(wk->msg, Bank0107_Text_UseComputerAccessPokemon_2);
         PdwAcc_ChangeState(wk, PdwAcc_StateIdNext, 298);
     }
 }
 
 static void PdwAcc_StateShowId(PdwAccWork *wk) {
     PdwAccMessage_ShowGSyncId(wk->msg, wk->profileId, wk->profileId);
-    PdwAccMessage_PrintInfo(wk->msg, 8);
+    PdwAccMessage_PrintInfo(wk->msg, Bank0107_Text_GameSyncIdHas);
     PdwAcc_ChangeState(wk, PdwAcc_StateIdWait, 316);
 }
 
@@ -190,13 +190,13 @@ static void PdwAcc_StateError(PdwAccWork *wk) {
         NHttpRap_EndRequest(wk->http);
     }
     if (wk->error == GSYNC_ERROR_SERVICE_UNAVAILABLE) {
-        msgId = 22;
+        msgId = Bank0107_Text_ServerExperiencingHighTraffic;
     } else if (wk->error == GSYNC_ERROR_BAD_GATEWAY) {
-        msgId = 23;
+        msgId = Bank0107_Text_ServerUndergoingMaintenanceDetails;
     } else if (wk->error == GSYNC_ERROR_HTTP) {
-        msgId = 20;
+        msgId = Bank0107_Text_CommunicationErrorOccurredPlease_4;
     } else if (wk->error >= 11) {
-        msgId = 20;
+        msgId = Bank0107_Text_CommunicationErrorOccurredPlease_4;
     }
     PdwAccMessage_PrintInfo(wk->msg, msgId);
     PdwAcc_ChangeState(wk, PdwAcc_StateErrorWait, 359);
@@ -209,7 +209,7 @@ static void PdwAcc_StateWaitCreateMessage(PdwAccWork *wk) {
 }
 
 static void PdwAcc_StateCreateStart(PdwAccWork *wk) {
-    PdwAccMessage_PrintStream(wk->msg, 3);
+    PdwAccMessage_PrintStream(wk->msg, Bank0107_Text_CreatingDataPleaseWait);
     PdwAccMessage_StartWaitIcon(wk->msg);
     PdwAcc_ChangeState(wk, PdwAcc_StateWaitCreateMessage, 379);
 }
@@ -235,7 +235,7 @@ static void PdwAcc_StateCreateAsk(PdwAccWork *wk) {
 }
 
 static void PdwAcc_StateStart(PdwAccWork *wk) {
-    PdwAccMessage_PrintStream(wk->msg, 2);
+    PdwAccMessage_PrintStream(wk->msg, Bank0107_Text_OkCreateDataPlay);
     PdwAcc_ChangeState(wk, PdwAcc_StateCreateAsk, 439);
 }
 
@@ -261,7 +261,7 @@ static void PdwAcc_StateCreate(PdwAccWork *wk) {
     u32 size;
 
     if (GFL_NetIsInitialized()) {
-        if (NHttpRap_SendRequest(PDWACC_REQUEST_CREATE, wk->http)) {
+        if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_ACCOUNT_CREATE_UPLOAD, wk->http)) {
             void *data = SaveControl_GetUploadData(wk->save, &size);
 
             NHTTPSetPostDataRaw(NHttpRap_GetConnection(wk->http), data, 0x80000);
@@ -283,11 +283,11 @@ static void PdwAcc_StateIdOnlyWait(PdwAccWork *wk) {
 
 static void PdwAcc_StateShowIdOnly(PdwAccWork *wk) {
     PdwAccMessage_ShowGSyncId(wk->msg, wk->profileId, wk->profileId);
-    PdwAccMessage_PrintInfo(wk->msg, 7);
+    PdwAccMessage_PrintInfo(wk->msg, Bank0107_Text_UseComputerAccessPokemon);
     PdwAcc_ChangeState(wk, PdwAcc_StateIdOnlyWait, 572);
 }
 
-static void PdwAcc_OnDisconnect(void *work, int a1, int code, int error) {
+static void PdwAcc_OnDwcError(void *work, int code, int errorType, int error) {
     PdwAccWork *wk = work;
 
     if (wk->http != NULL) {
@@ -310,10 +310,10 @@ static BOOL PdwAcc_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
     wk->profileId = PlayerInfo_GetProfileId(GetGameDataPlayerInfo(pdwParam->gameData));
     if (GFL_NetIsInitialized()) {
         wk->http = NHttpRap_Create(pdwParam->heapId, wk->profileId, pdwParam->loginBuffer);
-        DWCRap_SetErrorFunc(PdwAcc_OnDisconnect, wk);
+        DWCRap_SetErrorFunc(PdwAcc_OnDwcError, wk);
     }
     wk->disp = PdwAccDisp_Create(wk->heapId);
-    wk->msg = PdwAccMessage_Create(wk->heapId, 107);
+    wk->msg = PdwAccMessage_Create(wk->heapId, TEXT_BANK_0107);
     GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, wk->heapId);
     GFL_SndBGMPlay(SEQ_BGM_GAME_SYNC, SND_CHANNEL_MASK_ALL);
     switch (pdwParam->mode) {

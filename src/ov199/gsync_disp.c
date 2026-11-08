@@ -6,6 +6,7 @@
 #include "app/gsync/gsync_disp.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
+#include "constants/pokemon.h"
 #include "constants/species.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -791,11 +792,11 @@ void GSyncDisp_SetFloatPokemon(GSyncDisp *disp, int index, int species, int form
     TPokeData *data = LoadTPokeData(disp->heapId);
 
     if (species != SPECIES_NONE && species <= SPECIES_GENESECT) {
-        if (GetFieldPokemonActorLUTIndex_(data, species, sex, form) != 0xffff) {
+        if (GetFieldPokemonActorLUTIndex_(data, species, sex, form) != TPOKE_INDEX_NONE) {
             disp->floats[index].id = species;
             disp->floats[index].form = form;
-            if (sex > 2) {
-                sex = 0;
+            if (sex > GENDER_UNKNOWN) {
+                sex = GENDER_MALE;
             }
             disp->floats[index].sex = sex;
         }
