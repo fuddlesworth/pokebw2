@@ -1,6 +1,6 @@
 # Pokémon Black 2 and White 2
 
-A work-in-progress decompilation of Pokémon Black 2 and White 2, with a long-term goal of a native PC port.
+A work-in-progress decompilation of Pokémon Black 2 and White 2.
 Both USA/Europe ROMs rebuild byte for byte from the same source tree.
 
 ## Progress
@@ -56,6 +56,30 @@ CI compiles every C file for both versions; fork PRs must verify ROM matching lo
 | [Scripts](docs/scripts.md) | Trainer AI, battle animation and field scripts |
 | [Configs and ROMs](docs/configs.md) | dsd configuration and ROM structure |
 | [Tools](tools/README.md) | Tool reference |
+
+## Credits
+
+This project builds on the work of others:
+
+- **Names:** [swan](https://github.com/ds-pokemon-hacking/swan) by DS Pokémon Hacking, the source of the symbol,
+  type and field names imported here.
+- **References:** [pret](https://github.com/pret)'s
+  [pokeplatinum](https://github.com/pret/pokeplatinum), [pokeheartgold](https://github.com/pret/pokeheartgold),
+  [pokediamond](https://github.com/pret/pokediamond) and [pokeemerald](https://github.com/pret/pokeemerald), whose
+  layout, build and conventions this project follows; ntrtwl's
+  [NitroSDK](https://github.com/ntrtwl/NitroSDK) and [NitroSystem](https://github.com/ntrtwl/NitroSystem)
+  reconstructions; and [aletheia](https://github.com/Project-Holon/aletheia), the Black 1 decompilation, whose map of
+  the SDK libraries' objects placed many of our library files.
+- **Tools:** [ds-decomp](https://github.com/AetiasHax/ds-decomp) and [ds-rom](https://github.com/AetiasHax/ds-rom) by AetiasHax, used through our forks;
+  the MWCC packages from [decomp.aetias.com](https://decomp.aetias.com);
+  [objdiff](https://github.com/encounter/objdiff) and [sjiswrap](https://github.com/encounter/sjiswrap) by encounter;
+  [wibo](https://github.com/decompals/wibo) by decompals; [decomp-permuter](https://github.com/simonlindholm/decomp-permuter)
+  by simonlindholm; [Apicula](https://github.com/scurest/apicula) by scurest, for exporting models; and
+  [ByteMatch](https://bytematch.dev) for progress tracking.
+- **Data and assets:** the cell and animation converter `nitro_cells.py` by Michael Neuberger, from
+  [pokegrey](https://github.com/DeltaDX117/pokegrey); the whole-model writer, new map models and texture imports by
+  bjayers, from [Paper White 2](https://github.com/bjayers/paperwhite2); and the per-species folder layout of
+  [pokeemerald-expansion](https://github.com/rh-hideout/pokeemerald-expansion).
 
 ## License
 
