@@ -5970,7 +5970,7 @@
      ]
     },
     "1058": {
-     "handler": "func_ov056_021e77b0",
+     "handler": "Scrcmd_WbtEntrance_GetCantEnterMessage",
      "overlay": 56,
      "args": [
       "var"

@@ -14354,6 +14354,7 @@ overlays/ov056 0x021e76b4 Scrcmd_WbtEntrance_CheckRegulation
 overlays/ov056 0x021e76f4 Scrcmd_WbtEntrance_GetRegulationId
 overlays/ov056 0x021e7710 Scrcmd_WbtEntrance_CheckEntryParties
 overlays/ov056 0x021e7750 Scrcmd_WbtEntrance_CallEntryPartySelect
+overlays/ov056 0x021e77b0 Scrcmd_WbtEntrance_GetCantEnterMessage
 overlays/ov056 0x021e7808 Scrcmd_WbtEntrance_SetUseBattleBox
 overlays/ov056 0x021e784c Scrcmd_WbtEntrance_MakeRentalParty
 overlays/ov056 0x021e7894 Scrcmd_WbtEntrance_GetSlotTrainerObjCodes
@@ -14365,6 +14366,7 @@ overlays/ov056 0x021e7a4c Scrcmd_WbtEntrance_CallPokeSelect
 overlays/ov056 0x021e7a9c Scrcmd_WbtEntrance_ShowDownloads
 overlays/ov056 0x021e7b00 Scrcmd_WbtEntrance_ShowWinRecord
 overlays/ov056 0x021e7b58 Scrcmd_WbtEntrance_Download
+overlays/ov056 0x021e7ba4 sRegulationMessages
 overlays/ov057 0x021e75c0 WbtStadium_LoadRivalName
 overlays/ov057 0x021e75e4 WbtStadium_LoadPartySpeciesName
 overlays/ov057 0x021e760c Scrcmd_WbtStadium_GetOpponentObjCode

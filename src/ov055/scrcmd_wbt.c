@@ -288,7 +288,7 @@ const FieldScriptCommand WBT_SCRIPT_COMMANDS[] = {
     Scrcmd_WbtStadium_SwitchLights,
     Scrcmd_WbtStadium_PlayCrowd,
     Scrcmd_WbtEntrance_GetRegulationId,
-    func_ov056_021e77b0,
+    Scrcmd_WbtEntrance_GetCantEnterMessage,
     Scrcmd_WbtEntrance_CheckEntryParties,
     Scrcmd_WbtStadium_SetNamePlates,
     (FieldScriptCommand)0xFFFFFFFF,

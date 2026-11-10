@@ -1960,6 +1960,7 @@ overlays/ov056 0x021e7b50 overlay_id 22
 overlays/ov056 0x021e7b54 reloc_module overlay(22)
 overlays/ov056 0x021e7b9c overlay_id 5
 overlays/ov056 0x021e7ba0 reloc_module overlay(5)
+overlays/ov056 0x021e7bb5 remove_symbol
 overlays/ov057 0x021e7614 reloc_module overlay(55)
 overlays/ov057 0x021e7642 reloc_module overlay(55)
 overlays/ov057 0x021e76ca reloc_module overlay(55)
