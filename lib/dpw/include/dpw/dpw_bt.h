@@ -9,9 +9,24 @@
 // when the call went well). The ROM has no strings of this library's own, so the DpwBt_ names are guesses after the
 // server's pages
 
-// The result produced after DpwBt_Cancel stops an active request.
+// The results of a request that did not go well. The pages' answers give CROWDED and INVALID_NUMBER, and
+// DpwBt_Cancel gives CANCELED. ERROR is a request that cannot start, an answer the library does not know, or a fatal
+// error of the game statistics client, which the screen leaves to the Wi-Fi library's own error screen.
 enum {
+    // The train's room is full; the screen reports it as "The Wi-Fi Train is very crowded"
+    DPW_BT_RESULT_CROWDED = -1,
+    // The train's number is not one the server has
+    DPW_BT_RESULT_INVALID_NUMBER = -3,
+    // DpwBt_Cancel stopped the request
     DPW_BT_RESULT_CANCELED = -4,
+    DPW_BT_RESULT_ERROR = -5,
+};
+
+// The server's state, which DpwBt_GetServerState's and DpwBt_SetProfile's answers give through the result:
+// the train service is in maintenance or crowded
+enum {
+    DPW_BT_SERVER_STATE_MAINTENANCE = 1,
+    DPW_BT_SERVER_STATE_CROWDED = 2,
 };
 
 // Starts and ends the library, for the player's ID and friend key, and runs it every frame

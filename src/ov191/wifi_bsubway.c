@@ -341,7 +341,7 @@ typedef struct {
 typedef struct {
     // The server library's error, when negative
     s32 dpwResult;
-    // The server's state, which nothing sets
+    // The server's state, a DPW_BT_SERVER_STATE_*, which nothing sets
     u32 serverState;
     // Whether the request ran out of time
     u16 timeout;
@@ -1008,12 +1008,12 @@ static BOOL WifiBSubwayError_WaitDpw(WifiBSubwayError *error, s32 *result) {
         case -7:
         case -6:
         case DPW_BT_RESULT_CANCELED:
-        case -3:
+        case DPW_BT_RESULT_INVALID_NUMBER:
         case -2:
-        case -1:
+        case DPW_BT_RESULT_CROWDED:
             error->dpwResult = dpwResult;
             break;
-        case -5:
+        case DPW_BT_RESULT_ERROR:
             GFL_NetErrShow(TRUE);
             break;
         default:
@@ -1056,7 +1056,7 @@ static u32 WifiBSubwayError_GetMessage(const WifiBSubwayError *error) {
         case -6:
             message = WifiBsubway_Text_UnableConnectWiFi_2;
             break;
-        case -1:
+        case DPW_BT_RESULT_CROWDED:
             message = WifiBsubway_Text_WiFiTrainVery_2;
             break;
         case -7:
@@ -1065,7 +1065,7 @@ static u32 WifiBSubwayError_GetMessage(const WifiBSubwayError *error) {
         case DPW_BT_RESULT_CANCELED:
             message = WifiBsubway_Text_WereDisconnectedFromWi;
             break;
-        case -3:
+        case DPW_BT_RESULT_INVALID_NUMBER:
             message = WifiBsubway_Text_NumberCannotSpecifiedWi;
             break;
         default:
@@ -1074,10 +1074,10 @@ static u32 WifiBSubwayError_GetMessage(const WifiBSubwayError *error) {
         }
     } else if (error->serverState != 0) {
         switch (error->serverState) {
-        case 1:
+        case DPW_BT_SERVER_STATE_MAINTENANCE:
             message = WifiBsubway_Text_WiFiTrainCurrently;
             break;
-        case 2:
+        case DPW_BT_SERVER_STATE_CROWDED:
             message = WifiBsubway_Text_WiFiTrainVery;
             break;
         }
