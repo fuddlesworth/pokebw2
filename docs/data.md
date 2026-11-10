@@ -1577,8 +1577,9 @@ build again byte for byte, stays its `.nftr` file, as `dump` says.
 A particle resource is converted by `tools/data/nitro_particles.py`, which `dump` and `pack` call, from the format as
 NitroSystem's particle library reads it (`SPLManager_LoadResources` in `lib/spl/`). `particles.json`, which
 `res/particles/particles.schema.json` describes, has the emitters in order, which the game creates by their index
-(`SPLManager_CreateEmitter`), and the textures. An emitter has its header's fields (`SPLResourceHeader`) under
-`lib/spl`'s names, then the blocks that follow it where it has them, under the names of `SPLResource`'s pointers:
+(`SPLManager_CreateEmitter`), and the textures. An emitter has its header's fields (`SPLResourceHeader`) under the
+data format's own names, which the packer fixes and which do not follow the struct's field names, then the blocks that
+follow it where it has them, under the names of `SPLResource`'s pointers:
 `scaleAnim`, `colorAnim`, `alphaAnim`, `textureAnim`, `childResource` and the behaviors (`gravityBehavior` to
 `convergenceBehavior`); the packer sets the header's flags of the blocks from the blocks there are. Fixed-point fields
 are the integers the game keeps, in 4096ths, angles in 65536ths of a turn, and the animations run over a particle's

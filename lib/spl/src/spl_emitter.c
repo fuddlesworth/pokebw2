@@ -85,7 +85,7 @@ void SPLEmitter_Init(SPLEmitter *emitter, SPLResource *resource, const VecFx32 *
     emitter->particles.count = emitter->childParticles.count = 0;
     emitter->updateCallback = NULL;
     emitter->userDataPtr = NULL;
-    emitter->unk98 = 0;
+    emitter->userData = 0;
 }
 
 void SPLEmitter_Update(SPLManager *mgr, SPLEmitter *emitter) {
