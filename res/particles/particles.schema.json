@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "A particle resource: res/particles/<archive>/<member>/particles.json, or res/graphics/<archive>/<member>/particles.json",
-    "description": "A particle resource (SPA) of ARCID_BTLV_EFFVM_PARTICLES (a/0/0/6), which btlv_effvm.c and intro_particle.c load, or of another archive: its emitters, which SPLManager_LoadResources reads and SPLManager_CreateEmitter creates by their index, and its textures, whose pixels are the PNGs beside it. Fields have lib/spl's names. tools/data/nitro_particles.py builds the resource from them for tools/data/graphics_archive.py, computing its header, its emitters' flags of the blocks they have, its texture animations' counts and its textures' headers. Fixed-point fields are the integers the game keeps: fx32 and fx16 in 4096ths, angles in 65536ths of a turn, and a particle's life, over which the animations run, from 0 to 255.",
+    "description": "A particle resource (SPA) of ARCID_BTLV_EFFVM_PARTICLES (a/0/0/6), which btlv_effvm.c and intro_particle.c load, or of another archive: its emitters, which SPLManager_LoadResources reads and SPLManager_CreateEmitter creates by their index, and its textures, whose pixels are the PNGs beside it. Fields have the data format's own names, fixed by the packer, and do not follow lib/spl's. tools/data/nitro_particles.py builds the resource from them for tools/data/graphics_archive.py, computing its header, its emitters' flags of the blocks they have, its texture animations' counts and its textures' headers. Fixed-point fields are the integers the game keeps: fx32 and fx16 in 4096ths, angles in 65536ths of a turn, and a particle's life, over which the animations run, from 0 to 255.",
     "type": "object",
     "additionalProperties": false,
     "required": [ "emitters", "textures" ],
@@ -78,7 +78,7 @@
                 "flipTextureT": { "type": "boolean", "description": "Flips the texture down" },
                 "polygonX": { "$ref": "#/$defs/fx16", "description": "Where the polygon is drawn across from the particle, in 4096ths of its size" },
                 "polygonY": { "$ref": "#/$defs/fx16", "description": "Where the polygon is drawn up from the particle, in 4096ths of its size" },
-                "unused": { "$ref": "#/$defs/unused", "description": "Fields the library doesn't read that the file doesn't leave 0: unk3a, unk43, unk54, and unk4c, the 30 bits after flipTextureT" },
+                "unused": { "$ref": "#/$defs/unused", "description": "Fields the library doesn't read that the file doesn't leave 0, by the data format's own keys: unk3a, unk43, unk54, and unk4c, the 30 bits after flipTextureT" },
                 "scaleAnim": {
                     "type": "object", "additionalProperties": false, "required": [ "start", "mid", "end", "in", "out", "loop" ],
                     "description": "The animation of the particles' scale (SPLScaleAnim), over the axes of scaleAnimDir: from start to mid until in, mid until out, and to end from there",
@@ -243,7 +243,7 @@
         "textureName": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+$" },
         "unused": {
             "type": "object", "additionalProperties": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
-            "description": "The bits of a block that the library never reads, by their field's name in lib/spl (or unk and their word's offset, for unnamed bits, as a number of those bits), where the game's file doesn't leave them 0; the packer writes 0 for the rest"
+            "description": "The bits of a block that the library never reads, by the data format's own key for them, which the packer fixes and which doesn't follow lib/spl's field names (or unk and their word's offset, for unnamed bits, as a number of those bits), where the game's file doesn't leave them 0; the packer writes 0 for the rest"
         },
         "color": {
             "type": "object", "additionalProperties": false, "required": [ "red", "green", "blue" ],

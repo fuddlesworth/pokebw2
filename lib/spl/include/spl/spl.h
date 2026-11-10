@@ -7,7 +7,8 @@
 
 // Nintendo's SPL particle library (lib/spl), decompiled from this game's code: a manager of emitters made from a
 // resource file's particle definitions. The public functions keep the names pret's Platinum decompilation gives
-// them, and the resource file's unused fields the names its HeartGold one gives them for the same layout.
+// them, and the resource file's unused fields take the names its HeartGold headers give them, except the one those
+// headers leave unnamed, which stays named by its offset.
 
 // The library's doubly linked lists, of emitters and of particles, which start with these links
 typedef struct SPLNode {
@@ -167,8 +168,8 @@ typedef struct {
     u8 scaleVariance;
     u8 lifeTimeVariance;
     u8 velocityVariance;
-    // The word's fourth byte, which the resource file leaves unused
-    u8 padding;
+    // The fourth byte of the random-attenuation word, which the library never reads; pret leaves it unnamed
+    u8 unk43;
     u8 emissionInterval;
     u8 baseAlpha;
     // The part of their velocity particles keep each frame, as 384 more than this out of 512
