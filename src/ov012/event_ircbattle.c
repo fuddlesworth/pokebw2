@@ -397,7 +397,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
         evolution->species = work->trade.evolveSpecies;
         evolution->partyIndex = 0;
         evolution->method = work->trade.evolveMethod;
-        evolution->unkC = 1;
+        evolution->fromField = 1;
         evolution->canCancel = FALSE;
         work->trade.evolution = evolution;
         GSYS_QueueProc(gsys, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS, evolution);
