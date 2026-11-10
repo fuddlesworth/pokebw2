@@ -181,11 +181,6 @@ enum {
     ROTATE_SEQ_WAIT_ANIMATION = 2,
 };
 
-// GetAllyClientID returns4 when that client does not exist.
-enum {
-    EFFECT_CLIENT_NONE = 4,
-};
-
 static u32 BtlvEffect_GetStudioMode(BtlMainModule *mainModule);
 static u32 BtlvEffect_GetStudioParam(BtlMainModule *mainModule);
 static void BtlvEffect_Stop(void);
@@ -267,7 +262,7 @@ BtlvEffectSetup *BtlvEffect_CreateSetup(BtlMainModule *mainModule, BtlvScu *scu,
         u8 partnerId = GetPlayerAllyClientID(mainModule);
 
         trainerTypes[side * 2] = GetClientTrainerClass(mainModule, playerId);
-        if (partnerId != EFFECT_CLIENT_NONE) {
+        if (partnerId != BTL_CLIENT_NONE) {
             trainerTypes[(side ^ 1) * 2] = GetClientTrainerClass(mainModule, partnerId);
         }
         trainerTypes[1] = GetClientTrainerClass(mainModule, GetPlayerOpponentClientID(mainModule, 0));

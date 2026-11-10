@@ -8413,7 +8413,7 @@ static void HandlerAllySwitch(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     allyId = monId;
     switch (BtlServerFlow_GetBattleStyle(flow)) {
     case 1:
-        if (BtlServerFlow_GetAllyClientID(flow, GetClientIDFromMonID(monId)) == 4) {
+        if (BtlServerFlow_GetAllyClientID(flow, GetClientIDFromMonID(monId)) == BTL_CLIENT_NONE) {
             allyPos = GetPosOnSameSide(pos, 0);
             if (allyPos == pos) {
                 allyPos = GetPosOnSameSide(pos, 1);

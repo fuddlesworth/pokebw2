@@ -768,7 +768,7 @@ static BOOL BtlvScd_CommandInit(s32 *seq, void *arg) {
         if (side == 0) {
             playerClient = GetPlayerClientID(scd->mainModule);
             otherClient = GetPlayerAllyClientID(scd->mainModule);
-            if (style == BTL_STYLE_DOUBLE && otherClient != 4) {
+            if (style == BTL_STYLE_DOUBLE && otherClient != BTL_CLIENT_NONE) {
                 if (playerClient < otherClient) {
                     parties[0] = GetClientParty(scd->pokeCon, playerClient);
                     counts[0] = GetNumMonsInParty(parties[0]);
@@ -821,7 +821,8 @@ static BOOL BtlvScd_CommandInit(s32 *seq, void *arg) {
             u8 firstClient;
             u8 secondClient;
 
-            if (BtlSetup_GetBattleType(scd->mainModule) == 0 || BtlSetup_GetBattleType(scd->mainModule) == 4) {
+            if (BtlSetup_GetBattleType(scd->mainModule) == BTL_TYPE_WILD ||
+                BtlSetup_GetBattleType(scd->mainModule) == BTL_TYPE_CAPTURE_DEMO) {
                 break;
             }
             firstClient = GetPlayerOpponentClientID(scd->mainModule, 0);

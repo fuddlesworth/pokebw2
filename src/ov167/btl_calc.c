@@ -746,7 +746,7 @@ void BtlClientIDList_Init(BtlClientIDList *list) {
     u32 i;
 
     for (i = 0; i < 4; i++) {
-        list->clientIds[i] = 4;
+        list->clientIds[i] = BTL_CLIENT_NONE;
     }
     list->count = 0;
 }
@@ -758,7 +758,7 @@ void BtlClientIDList_Add(BtlClientIDList *list, u8 clientId) {
         if (clientId == list->clientIds[i]) {
             return;
         }
-        if (list->clientIds[i] == 4) {
+        if (list->clientIds[i] == BTL_CLIENT_NONE) {
             list->clientIds[i] = clientId;
             list->count++;
             return;
