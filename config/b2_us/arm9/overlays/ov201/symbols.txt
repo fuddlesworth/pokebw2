@@ -115,9 +115,6 @@ sPOKE_NET_SSL_CaInfoList kind:data(any) addr:0x021b7b9c
 sPOKE_NET_SSL_CaInfo kind:data(any) addr:0x021b7ba0
 sPOKE_NET_SSL_CaDn kind:data(any) addr:0x021b7bb4
 sPOKE_NET_SSL_CaModulo kind:data(any) addr:0x021b7c0c
-data_ov201_021b81bd kind:bss addr:0x021b81bd ambiguous
-data_ov201_021b8279 kind:bss addr:0x021b8279 ambiguous
-data_ov201_021b83b5 kind:bss addr:0x021b83b5 ambiguous
 data_ov201_021b84a0 kind:bss addr:0x021b84a0
 gPOKE_NET_Control kind:bss addr:0x021b8ca0
 data_ov201_021b8ca6 kind:bss addr:0x021b8ca6
@@ -127,14 +124,6 @@ data_ov201_021b8f14 kind:bss addr:0x021b8f14
 data_ov201_021b8fd4 kind:bss addr:0x021b8fd4
 data_ov201_021b8fec kind:bss addr:0x021b8fec
 sPOKE_NET_SslConnection kind:bss addr:0x021b90b8
-data_ov201_021b9175 kind:bss addr:0x021b9175 ambiguous
-data_ov201_021b9189 kind:bss addr:0x021b9189 ambiguous
-data_ov201_021b9195 kind:bss addr:0x021b9195 ambiguous
-data_ov201_021b919d kind:bss addr:0x021b919d ambiguous
-data_ov201_021b93ec kind:bss addr:0x021b93ec ambiguous
-data_ov201_021b95ec kind:bss addr:0x021b95ec ambiguous
-data_ov201_021b97f4 kind:bss addr:0x021b97f4 ambiguous
 sPOKE_NET_SSL_Connection kind:bss addr:0x021b98e8
 sPOKE_NET_SSL_Entropy kind:bss addr:0x021b98ec
 sPOKE_NET_SSL_DefaultConnection kind:bss addr:0x021b990c
-data_ov201_021b9964 kind:bss addr:0x021b9964 ambiguous

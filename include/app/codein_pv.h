@@ -19,6 +19,8 @@
 
 // The most digits a code has
 #define CODEIN_CODE_MAX 12
+// A Friend Code's digits come in three groups of four
+#define CODEIN_FRIEND_CODE_BLOCK 4
 #define CODEIN_BAR_COUNT 2
 #define CODEIN_BUTTON_COUNT 2
 // The lower screen's keys: the ten digits, then Back and OK
@@ -118,9 +120,9 @@ typedef struct {
     // Where the code starts for each focus, none and the three groups
     s16 focusX[CODEIN_BLOCK_COUNT + 1];
     CodeInRange range[CODEIN_BLOCK_COUNT];
-    u32 unk228;
+    u32 unk228; // never accessed
     int state;
-    int unk230;
+    int unk230; // reset with the state, never read
     int seq;
     int count;
     int codeMax;
@@ -136,7 +138,7 @@ typedef struct {
     ClActUnit *unit;
     u32 plttRes[CODEIN_RES_COUNT];
     u32 charRes[CODEIN_RES_COUNT];
-    u32 unk278[CODEIN_RES_COUNT];
+    u32 unk278[CODEIN_RES_COUNT]; // never accessed
     u32 cellAnimRes[CODEIN_RES_COUNT];
     PaletteFade *fade;
     ButtonMan *buttons;

@@ -22,6 +22,7 @@ typedef struct {
     u8 LangCode;
     char SvlToken[POKE_NET_SVL_TOKEN_LENGTH + 1];
     u8 padding133;
+    // Nothing in the ROM sets or reads it: the client copies the block whole, and the server's use is unknown
     u32 unk134;
 } POKE_NET_REQUESTCOMMON_AUTH;
 
@@ -114,15 +115,17 @@ typedef struct {
     u8 Sign[POKE_NET_GDS_BATTLEDATA_SIGN_SIZE];
 } POKE_NET_GDS_REQUEST_BATTLEDATA_REGIST;
 
-// What a search of battle videos asks for: a species, a battle mode with the mask of its bits that count, and the
-// version of the server's data
+// What a search of battle videos asks for: a species, a battle mode with the mask of its bits that count, where
+// the players live, and the version of the server's data
 typedef struct {
     u16 MonsNo;
     u16 BattleMode;
     u16 BattleModeMask;
-    u8 unk6;
-    u8 unk7;
+    // The country and the area (the province within it) that the players live in, 0xff for any
+    u8 Country;
+    u8 Area;
     u32 ServerVersion;
+    // Nothing in the ROM sets or reads it: the game clears it with the rest of the condition
     u32 unkC;
 } POKE_NET_GDS_BATTLEDATA_SEARCHCONDITION;
 

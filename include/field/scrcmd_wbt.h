@@ -18,7 +18,7 @@ BOOL Scrcmd_WbtEntrance_CheckRegulation(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_GetRegulationId(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_CheckEntryParties(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_CallEntryPartySelect(VM *vm, FieldScriptEnv *env);
-BOOL func_ov056_021e77b0(VM *vm, FieldScriptEnv *env);
+BOOL Scrcmd_WbtEntrance_GetCantEnterMessage(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_SetUseBattleBox(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_MakeRentalParty(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_WbtEntrance_GetSlotTrainerObjCodes(VM *vm, FieldScriptEnv *env);
