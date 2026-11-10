@@ -29,7 +29,8 @@
 #define OBJ_CODE_SP_POKE_SWORD 374
 
 #define CURVE_ARC_FILE 3
-#define CURVE_TYPE 10
+// The curve's frames that GFL_G3DCurveCreateToLoadBuffer loads at a time, into the work block's buffer
+#define CURVE_PRELOAD_COUNT 10
 
 enum {
     CURVE_STATE_IDLE,
@@ -292,6 +293,7 @@ void SpPokeGimmickB_Update(Field *field) {
                     curve->phase = CURVE_PHASE_NONE;
                 }
             }
+            // The curve's frames at which actor 2 appears: 554 in its still form, 835 with its sword
             switch (GFL_G3DCurveGetNowFrame(curve->curve) >> FX32_SHIFT) {
             case 554:
                 curve->phase++;
@@ -327,7 +329,7 @@ void SpPokeGimmick_StartChase(Field *field, u16 actorId) {
     VecFx32 pos;
 
     curve->curve = GFL_G3DCurveCreateToLoadBuffer(Field_GetHeapID(field), ARCID_SP_POKE_CURVE, CURVE_ARC_FILE,
-                                                  CURVE_TYPE, curve->buffer, sizeof(curve->buffer));
+                                                  CURVE_PRELOAD_COUNT, curve->buffer, sizeof(curve->buffer));
     curve->actor = FindFieldActor(Field_GetActorSystem(field), actorId);
     if (curve->actor != NULL) {
         SetActorMovementFlag(curve->actor, ACTOR_MOVEMENT_FLAG_SP_POKE);
