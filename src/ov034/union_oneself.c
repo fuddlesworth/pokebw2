@@ -1679,7 +1679,7 @@ static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Fiel
         evolution->species = 0;
         evolution->partyIndex = 0;
         evolution->method = 0;
-        evolution->unkC = 1;
+        evolution->fromField = 1;
         evolution->canCancel = FALSE;
         param->evolution = evolution;
         param->next = 0;

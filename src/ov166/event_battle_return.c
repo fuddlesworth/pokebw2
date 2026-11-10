@@ -49,8 +49,14 @@ enum {
 // Set once the player knows whose PC the boxes are
 #define FLAG_BATTLE_RETURN_BOX_MESSAGE 0x96b
 
+// An entry of file 0 of archive 151 by the field environment's bgType; BtlvEffectBgData in btlv_effect.c names the
+// record whole, and only the terrain of Burmy's form is read here
 typedef struct {
-    u8 unk00[0x16];
+    u8 light;
+    u8 seasonal;
+    u8 fieldIds[20];
+    // The stage of each of the battle's 20 terrains, which is also the terrain Burmy changes its form for, then two
+    // bytes that are 0x30 in every record
     u8 burmyTerrain[0x16];
 } BattleBgData;
 
@@ -329,7 +335,7 @@ static BOOL EventBattleReturn_Main(GameProc *proc, u32 *state, void *param, void
                     demo->species = species;
                     demo->partyIndex = evolveSlot;
                     demo->method = method;
-                    demo->unkC = 0;
+                    demo->fromField = 0;
                     demo->canCancel = TRUE;
                     wk->evolutionDemo = demo;
                     QueueGameProc(wk->procManager, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS, demo);

@@ -237,7 +237,7 @@ GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void 
             evolutionParam->species = species;
             evolutionParam->partyIndex = work->partyIndex;
             evolutionParam->method = method;
-            evolutionParam->unkC = 1;
+            evolutionParam->fromField = 1;
             evolutionParam->canCancel = FALSE;
             work->evolutionParam = evolutionParam;
             GameEvent_ChainNext(event,
