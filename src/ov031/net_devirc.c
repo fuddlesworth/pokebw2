@@ -40,7 +40,7 @@ static BOOL NetDevIrc_Init(HeapID heapId, GFLNetSys *sys, BOOL (*callback)(BOOL 
 }
 
 static BOOL NetDevIrc_Begin(void (*callback)(BOOL ok)) {
-    IrcLink_Ping();
+    IRC_Connect();
     return TRUE;
 }
 

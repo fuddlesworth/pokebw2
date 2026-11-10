@@ -1435,8 +1435,8 @@ Same code, other `sp` offsets or frame size.
   pointer, the stores are told apart by offset and are independent, so the constant can be built ahead of stores
   written before it. An explicit alignment on the global (Loops: "An explicit alignment") also keeps MWCC from
   turning `F *f = &G` back into direct accesses, and the stores through it are then independent too: `lib/irc`'s
-  `IrcLink_SendFrame`, whose `IrcFrame` is aligned, builds the zero of the checksum bytes, which is also its copy
-  loop's counter, before storing `id` and `cmd` through `IrcFrameData *frame = &IrcFrame` (or a pointer to its
+  `IRCi_Send`, whose `IrcFrame` is aligned, builds the zero of the checksum bytes, which is also its copy
+  loop's counter, before storing `id` and `command` through `IrcFrameData *frame = &IrcFrame` (or a pointer to its
   `header`), and after them when it stores to `IrcFrame` directly; without the attribute `frame` keeps them chained.
   Such a pointer, passed to several calls, is also loaded from the pool again before each call, where MWCC otherwise
   keeps the global's address in a saved register: `printsys.c`'s `GFL_TextRendererDrawToBitmap` and
@@ -3237,7 +3237,7 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   `while (TRUE)` with a `break` or `return` inside, as the Join Avenue's walks through its data are.
 - At `-O2,p` no loop is rotated and no empty loop is dropped, in every function: a `for` or `while` loop is entered
   with a `b` to its test at the end, as at `-O4,p` only in a function that reads an aligned object (below). A loop
-  that the original rotates then matches only as a guarded `do`/`while`: at `-O2,p`, `lib/irc`'s `IrcLink_Checksum`,
+  that the original rotates then matches only as a guarded `do`/`while`: at `-O2,p`, `lib/irc`'s `IRCi_CalcSum`,
   which reads no object, needs `if (i < size) { do { ... } while (++i < size); }` with `i = 0`, where at `-O4,p` a
   plain `for` gives it. Loops that `-O2,p` matches and `-O4,p` rotates or drops, in some functions of a file only,
   ask whether those functions read an aligned object.
@@ -3359,9 +3359,9 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   declared `extern VCTSendInfo sSendInfo ATTRIBUTE_ALIGN(32);`. Under the attribute `VCT_StartStreaming` matches with
   `if (!session)`, while `session == NULL` shares the zero with the return value and is 4 bytes short. Loops that keep
   the `b` only in the functions that read one object therefore ask whether that object is aligned (their rows).
-  `lib/irc`'s `IrcLink_IsRecvIgnored` and `IrcLink_ValidateFrame` keep their empty loops, probably of debug output
-  compiled out, because they read `IrcFrame`, the one object that `IrcLink_SendFrame`, whose loops keep their `b`,
-  reads. Under the attribute `IrcLink_Poll` matches with `if (IrcLink.connectCallback)`, while `!= NULL` compares with
+  `lib/irc`'s `IRCi_CheckLength` and `IRCi_CheckPacket` keep their empty loops, probably of debug output
+  compiled out, because they read `IrcFrame`, the one object that `IRCi_Send`, whose loops keep their `b`,
+  reads. Under the attribute `IRC_Move` matches with `if (IrcLink.connectCallback)`, while `!= NULL` compares with
   the zero it has just stored (`cmp r2, r1` for the original's `cmp r2, #0`; An instruction too many or too few:
   "A pointer compared with `NULL`").
   Multiboot's beacon `bsendBuff` (`mb_gameinfo.c`, at `0x021a4820` after a 0x1c-byte gap) is another: with it aligned,
@@ -3399,12 +3399,12 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
   effect: it reads the file's statics by name and keeps both calls in its two waits, while `IrCheck_SendByte` and
   `IrCheck_RecvByte`, which reach the transfer through a pointer, fold theirs. Its layout doesn't show which static is
   aligned, or to what: the overlay's sections start 32-aligned anyway, and 4 to 32 on `sTransfer` all match. The other
-  copy of this driver, `lib/irc/src/irc_spi.c` (overlay 031), agrees: `IrcSpi_Recv` and `IrcSpi_Send`, the two
+  copy of this driver, `lib/irc/src/irc_spi.c` (overlay 031), agrees: `IRCi_Read` and `IRCi_Write`, the two
   functions that read `IrcSpi` by name, keep the original's unrotated loops only with an alignment on an object they
   read, and `IrcSpi` sits at `0x02176970`, right after the previous file's last object and on a 16-byte boundary but
   not a 32-byte one, so 4 to 16 fit it, and both files use 4. Under the attribute `IrCheck_ReadId` also needs each
   wait's start tick in a variable of its own, the local of an inline `IrCheck_Wait60us` (the infrared library's
-  `IrcSpi_Wait60us`): one `start` set before both waits swaps two registers (`r4`/`r6`), which it doesn't with the
+  `IRCi_WaitCommand`): one `start` set before both waits swaps two registers (`r4`/`r6`), which it doesn't with the
   five passes above off.
   Two `_ull_mul` calls where ours multiplies once, in one function of a file, ask whether it reads an aligned object.
 - Where a member's alignment is written changes what it does. After the name (`BtlvMcss *work ATTRIBUTE_ALIGN(4);`), a
