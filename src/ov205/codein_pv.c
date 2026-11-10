@@ -125,7 +125,7 @@ void CodeIn_InitParam(CodeInWork *wk) {
         // For a Friend Code and for a single number
         int focusX[2][CODEIN_BLOCK_COUNT] = { { 56, 20, 8 }, { 56, 12, 0 } };
 
-        if (wk->param.blocks[0] != 4) {
+        if (wk->param.blocks[0] != CODEIN_FRIEND_CODE_BLOCK) {
             kind = 1;
         }
         for (i = 0; i < CODEIN_BLOCK_COUNT; i++) {
