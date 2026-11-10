@@ -119,7 +119,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
                 evolution->species = species;
                 evolution->partyIndex = 0;
                 evolution->method = method;
-                evolution->unkC = 1;
+                evolution->fromField = 1;
                 evolution->canCancel = FALSE;
                 GFL_OvlUnload(OVERLAY_APP_UI);
                 QueueGameProc(wk->procManager, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS,
@@ -163,7 +163,7 @@ int WorldTrade_Demo_Main(WorldTradeWork *wk, int seq) {
                     evolution->species = species;
                     evolution->partyIndex = 0;
                     evolution->method = method;
-                    evolution->unkC = 1;
+                    evolution->fromField = 1;
                     evolution->canCancel = FALSE;
                     GFL_OvlUnload(OVERLAY_APP_UI);
                     QueueGameProc(wk->procManager, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS,
