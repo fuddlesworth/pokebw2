@@ -402,7 +402,12 @@ def plan_fix(version: str, module: str, addr: int, action: str, argument: str):
         addend = int(argument, 0)
         if f" add:{addend:#x} " in lines[index]:
             return
-        to = int(re.search(r"to:(0x[0-9a-f]+)", lines[index]).group(1), 16)
+        target = re.search(r"to:(0x[0-9a-f]+)", lines[index])
+        if target is None:
+            # A later fix at the same address, such as link_time_const, can replace the relocation with a word that
+            # has no target address for the addend to move: the fix is then already moot, so a replay skips it.
+            return
+        to = int(target.group(1), 16)
         lines[index] = re.sub(r"to:0x[0-9a-f]+", f"to:{to - addend:#010x} add:{addend:#x}", lines[index])
     else:
         sys.exit(f"unknown action {action!r}")
