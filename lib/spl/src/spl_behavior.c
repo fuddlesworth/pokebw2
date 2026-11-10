@@ -40,13 +40,13 @@ void SPLBehavior_ApplySpin(const void *behavior, SPLParticle *particle, VecFx32 
     MtxFx33 rot;
 
     switch (spin->axis) {
-    case 0:
+    case SPL_SPIN_AXIS_X:
         MTX_RotX33_(&rot, FX_SinIdx(spin->angle), FX_CosIdx(spin->angle));
         break;
-    case 1:
+    case SPL_SPIN_AXIS_Y:
         MTX_RotY33_(&rot, FX_SinIdx(spin->angle), FX_CosIdx(spin->angle));
         break;
-    case 2:
+    case SPL_SPIN_AXIS_Z:
         MTX_RotZ33_(&rot, FX_SinIdx(spin->angle), FX_CosIdx(spin->angle));
         break;
     }

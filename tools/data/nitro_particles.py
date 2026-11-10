@@ -9,8 +9,9 @@ members, each a directory of:
 
 - particles.json (particles.schema.json in res/particles/): the resource's emitters, in order, which the game creates by
   their index (SPLManager_CreateEmitter), and its textures, in order. An emitter has the fields of the resource header
-  (SPLResourceHeader) under lib/spl's names, then the blocks it has of the ones that may follow, under the names of
-  SPLResource's pointers: the scale, color, alpha and texture animations, the child resource and the six behaviors.
+  (SPLResourceHeader) under the data format's own names, which the packer fixes and which do not follow the struct's
+  field names, then the blocks it has of the ones that may follow, under the names of SPLResource's pointers: the scale,
+  color, alpha and texture animations, the child resource and the six behaviors.
   Which blocks follow is the header's flags (hasScaleAnim and the rest), which the packer sets from the blocks there
   are, as SPLManager_LoadResources reads them. Fixed-point fields are the integers the game keeps, the schema saying
   in what units; colors are {red, green, blue}, 0 to 31 each; the enumerations are names, lib/spl's in lower case;
@@ -69,9 +70,9 @@ REPEATS = ["none", "s", "t", "st"]
 COMPUTED, UNUSED, VEC32, VEC16, RGB = "computed", "unused", "vec32", "vec16", "rgb"
 TEXTURE, TEXTURES = "texture", "textures"
 
-# A block's layout, as lib/spl's structs give it: (name, format, kind) for a field, or (format, [(name, bits, kind),
-# ...]) for a word of bitfields from the lowest bit. The bits a struct leaves unnamed are named unk and the offset of
-# their word, as lib/spl names its unknown fields
+# A block's layout, as lib/spl's structs give it by offset: (name, format, kind) for a field, or (format, [(name, bits,
+# kind), ...]) for a word of bitfields from the lowest bit. The names are the data format's own, fixed by the packer,
+# and do not follow the structs' field names; unnamed bits are unk and the offset of their word.
 HEADER = [
     ("I", [("emissionType", 4, EMISSION_TYPES), ("drawType", 2, DRAW_TYPES), ("emissionAxis", 2, AXES),
            ("hasScaleAnim", 1, COMPUTED), ("hasColorAnim", 1, COMPUTED), ("hasAlphaAnim", 1, COMPUTED),
