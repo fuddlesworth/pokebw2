@@ -1,6 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/zones.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/field_camera.h"
@@ -24,12 +25,11 @@
 
 // Castelia City's gym. Stepping onto a ride sends the player along a 3D curve with a model around them, then to a
 // destination. Two objects of the gym show whether event flags 0x109 and 0x10a are set, and the first opens a ride.
-// Zone 488 has two rides that are not stepped onto from a direction, and none of the gym's objects or fog
+// Zone 488 has two rides that are not stepped onto from a direction, and none of the gym's objects or fog are set up
+// there. The name is the ROM's own, from GFL_HeapAllocate's file argument.
 
 #define GIMMICK_ID 1
 #define GIMMICK_STATE_ID 6
-
-#define ZONE_488 488
 
 #define FLAG_OBJECT_0 0x109
 
@@ -73,7 +73,7 @@ typedef struct {
     u8 width;
     u8 depth;
     u32 flags;
-    u32 value;
+    u32 height;
 } GymArea;
 
 typedef struct {
@@ -109,6 +109,7 @@ typedef struct {
 } RideWork;
 
 typedef struct {
+    // The allocation is zero-filled, and no code reads or writes this part
     u8 unk0[0x28];
     FieldActor *playerActor;
     GymInsectWork *gym;
@@ -206,7 +207,7 @@ void GymInsect_Init(Field *field) {
     wk->playerActor = FieldPlayer_GetActor(wk->player);
     wk->camera = Field_GetCameraSystem(field);
     wk->eventWork = GameData_GetEventWork(wk->gameData);
-    wk->inZone488 = Field_GetPlayerStateZoneID(field) == ZONE_488;
+    wk->inZone488 = Field_GetPlayerStateZoneID(field) == ZONE_CASTELIA_CITY_GYM_2;
     eventWork = GameData_GetEventWork(wk->gameData);
     for (i = 0; i < OBJECT_COUNT; i++) {
         wk->objectFlags[i] = EventWork_FlagGet(eventWork, FLAG_OBJECT_0 + i);
@@ -581,7 +582,7 @@ static void GymInsect_InitAreas(Field *field) {
     HeightExList *list = FieldG3DMapper_GetHeightEx(Field_GetG3DMapper(field));
 
     for (i = 0; i < NELEMS(sAreas); i++) {
-        HeightEx_SetArea(i, sAreas[i].x, sAreas[i].z, sAreas[i].width, sAreas[i].depth, sAreas[i].value,
+        HeightEx_SetArea(i, sAreas[i].x, sAreas[i].z, sAreas[i].width, sAreas[i].depth, sAreas[i].height,
                          sAreas[i].flags, list);
     }
 }
