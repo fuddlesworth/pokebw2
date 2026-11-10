@@ -11,12 +11,9 @@ ShakeEnd kind:function(thumb,size=0xc) addr:0x021eeea4
 ShakeMove kind:function(thumb,size=0xa8) addr:0x021eeeb0
 GetZoneGimmick kind:function(thumb,size=0x34) addr:0x021eef58
 data_ov108_021eef8c kind:data(any) addr:0x021eef8c
-data_ov108_021eef99 kind:data(any) addr:0x021eef99 ambiguous
 sZoneGimmicks kind:data(any) addr:0x021eef9c
 data_ov108_021eefa0 kind:data(any) addr:0x021eefa0
-data_ov108_021eefe1 kind:data(any) addr:0x021eefe1 ambiguous
 sGimmickFuncs kind:data(any) addr:0x021eefec
 data_ov108_021eeff0 kind:data(any) addr:0x021eeff0
 data_ov108_021eeff4 kind:data(any) addr:0x021eeff4
-data_ov108_021ef011 kind:data(any) addr:0x021ef011 ambiguous
 data_ov108_021ef080 kind:data(any) addr:0x021ef080
