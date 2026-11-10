@@ -105,13 +105,13 @@ void DpwBt_Process(void) {
             } else {
                 switch (*(u8 *)sDpwBtWork.resultData) {
                 case 2:
-                    sDpwBtWork.result = -3;
+                    sDpwBtWork.result = DPW_BT_RESULT_INVALID_NUMBER;
                     break;
                 case 5:
                     sDpwBtWork.result = -2;
                     break;
                 default:
-                    sDpwBtWork.result = -5;
+                    sDpwBtWork.result = DPW_BT_RESULT_ERROR;
                     break;
                 }
             }
@@ -136,16 +136,16 @@ void DpwBt_Process(void) {
                 sDpwBtWork.result = 0;
                 break;
             case 2:
-                sDpwBtWork.result = -3;
+                sDpwBtWork.result = DPW_BT_RESULT_INVALID_NUMBER;
                 break;
             case 4:
-                sDpwBtWork.result = -1;
+                sDpwBtWork.result = DPW_BT_RESULT_CROWDED;
                 break;
             case 5:
                 sDpwBtWork.result = -2;
                 break;
             default:
-                sDpwBtWork.result = -5;
+                sDpwBtWork.result = DPW_BT_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -169,16 +169,16 @@ void DpwBt_Process(void) {
                 sDpwBtWork.result = 0;
                 break;
             case 3:
-                sDpwBtWork.result = 1;
+                sDpwBtWork.result = DPW_BT_SERVER_STATE_MAINTENANCE;
                 break;
             case 4:
-                sDpwBtWork.result = 2;
+                sDpwBtWork.result = DPW_BT_SERVER_STATE_CROWDED;
                 break;
             case 5:
                 sDpwBtWork.result = -2;
                 break;
             default:
-                sDpwBtWork.result = -5;
+                sDpwBtWork.result = DPW_BT_RESULT_ERROR;
                 break;
             }
             DWCi_EncSessionShutdown();
@@ -205,16 +205,16 @@ void DpwBt_Process(void) {
                     sDpwBtWork.result = 0;
                     break;
                 case 3:
-                    sDpwBtWork.result = 1;
+                    sDpwBtWork.result = DPW_BT_SERVER_STATE_MAINTENANCE;
                     break;
                 case 4:
-                    sDpwBtWork.result = 2;
+                    sDpwBtWork.result = DPW_BT_SERVER_STATE_CROWDED;
                     break;
                 case 5:
                     sDpwBtWork.result = -2;
                     break;
                 default:
-                    sDpwBtWork.result = -5;
+                    sDpwBtWork.result = DPW_BT_RESULT_ERROR;
                     break;
                 }
             }
@@ -265,7 +265,7 @@ void DpwBt_GetRoomNumber(int kind) {
         sDpwBtWork.state = 2;
     } else {
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -5;
+        sDpwBtWork.result = DPW_BT_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -279,7 +279,7 @@ void DpwBt_Download(int kind, int room, void *result) {
         sDpwBtWork.state = 4;
     } else {
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -5;
+        sDpwBtWork.result = DPW_BT_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -298,7 +298,7 @@ void DpwBt_Upload(int kind, int room, u8 win, const void *team, const void *sign
         sDpwBtWork.state = 6;
     } else {
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -5;
+        sDpwBtWork.result = DPW_BT_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -334,7 +334,7 @@ void DpwBt_GetServerState(void) {
         sDpwBtWork.state = 8;
     } else {
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -5;
+        sDpwBtWork.result = DPW_BT_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -348,7 +348,7 @@ void DpwBt_SetProfile(Dpw_Common_Profile *profile, Dpw_Common_ProfileResult *res
         sDpwBtWork.state = 10;
     } else {
         sDpwBtWork.state = 0xc;
-        sDpwBtWork.result = -5;
+        sDpwBtWork.result = DPW_BT_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
@@ -376,13 +376,13 @@ static int DpwBtMapGamestatsError(int group) {
         result = -6;
         break;
     case 7:
-        result = -5;
+        result = DPW_BT_RESULT_ERROR;
         break;
     default:
         result = -6;
         break;
     }
-    if (result != -5) {
+    if (result != DPW_BT_RESULT_ERROR) {
         if (DWC_UpdateConnection()) {
             result = -6;
         }
