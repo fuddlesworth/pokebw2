@@ -83,15 +83,15 @@ static void NetIrc_SendPacket(const u8 *data, u8 size, u8 cmd, u8 turn) {
         MI_CpuCopy8(data, NetIrcSys.packet.data, _IRC_SEND_SIZE);
     }
     NetIrcSys.packet.crc = getCRC16(&NetIrcSys.packet.cmd, size + 0xc);
-    IrcLink_Send((u8 *)&NetIrcSys.packet, size + 0xe, cmd);
+    IRC_Send((u8 *)&NetIrcSys.packet, size + 0xe, cmd);
 }
 
 void NetIrc_Init(u32 timeout, u8 gameCode) {
     MI_CpuFill8(&NetIrcSys, 0, sizeof(NetIrcSys));
     NetIrcSys.timeout = timeout;
     NetIrcSys.tgid = WM_GetNextTgid();
-    IrcLink_Reset(3);
-    IrcLink_SetRecvCallback(NetIrc_OnFrame);
+    IRC_Init(3);
+    IRC_SetRecvCallback(NetIrc_OnFrame);
     NetIrcSys.packet.senderId = GFL_RandomLC(0);
     if (NetIrcSys.packet.senderId == 0) {
         NetIrcSys.packet.senderId = 1;
@@ -105,7 +105,7 @@ void NetDevIrc_SetTimeout(u32 frames) {
 
 void NetIrc_Exit(void) {
     if (NetIrcSys.initialize == TRUE) {
-        IrcLink_Close();
+        IRC_Shutdown();
     }
     NetIrcSys.initialize = FALSE;
 }
@@ -269,8 +269,8 @@ BOOL NetIrc_IsError(void) {
 }
 
 void NetIrc_StartLink(void) {
-    NetIrcSys.isParent = IrcLink_IsParent();
-    NetIrcSys.peerSession = IrcLink_GetPeerId();
+    NetIrcSys.isParent = IRC_IsSender();
+    NetIrcSys.peerSession = IRC_GetUnitNumber();
     NetIrcSys.running = TRUE;
     NetIrcSys.sendTurn = 0;
     NetIrcSys.recvTurn = 0xe;
@@ -280,8 +280,8 @@ void NetIrc_StartLink(void) {
 }
 
 static void NetIrc_RefreshRole(void) {
-    NetIrcSys.isParent = IrcLink_IsParent();
-    NetIrcSys.peerSession = IrcLink_GetPeerId();
+    NetIrcSys.isParent = IRC_IsSender();
+    NetIrcSys.peerSession = IRC_GetUnitNumber();
 }
 
 static u8 NetIrc_GetIsParent(void) {
@@ -289,7 +289,7 @@ static u8 NetIrc_GetIsParent(void) {
 }
 
 BOOL NetDevIrc_IsConnected(void) {
-    if (IrcLink_IsLinked() == TRUE) {
+    if (IRC_IsConnect() == TRUE) {
         return TRUE;
     }
     if (NetIrcSys.elapsed < NetIrcSys.timeout || (NetIrcSys.elapsed == 0 && NetIrcSys.timeout == 0)) {
@@ -303,7 +303,7 @@ BOOL NetIrc_GetPeerSeen(void) {
 }
 
 BOOL NetIrc_IsLinked(void) {
-    return IrcLink_IsLinked();
+    return IRC_IsConnect();
 }
 
 void NetIrc_Update(void) {
@@ -313,13 +313,13 @@ void NetIrc_Update(void) {
         return;
     }
     if (sys->elapsed == 0) {
-        IrcLink_Poll();
+        IRC_Move();
     }
     if (sys->running == TRUE) {
         if (sys->elapsed != 0) {
-            if (IrcLink_IsLinked() == TRUE) {
+            if (IRC_IsConnect() == TRUE) {
                 sys->elapsed = 0;
-                if (IrcLink_IsParent() == TRUE) {
+                if (IRC_IsSender() == TRUE) {
                     sys->send_turn = FALSE;
                 } else {
                     sys->send_turn = TRUE;
@@ -330,33 +330,33 @@ void NetIrc_Update(void) {
             } else if (sys->elapsed < NETIRC_RELINK_FRAMES) {
                 sys->elapsed++;
             } else if (sys->elapsed == NETIRC_RELINK_FRAMES) {
-                IrcLink_Reset(3);
-                IrcLink_SetRecvCallback(NetIrc_OnFrame);
+                IRC_Init(3);
+                IRC_SetRecvCallback(NetIrc_OnFrame);
                 sys->elapsed++;
             } else {
-                IrcLink_Poll();
+                IRC_Move();
                 if (sys->elapsed < sys->timeout) {
                     if (sys->isParent == TRUE && sys->elapsed % 5 == 0) {
-                        IrcLink_Ping();
+                        IRC_Connect();
                     }
                     sys->elapsed++;
                 } else {
                     sys->running = FALSE;
                     sys->timedOut = TRUE;
                     NetHandle_Forget(1 - NetIrc_GetNetId());
-                    IrcLink_Close();
+                    IRC_Shutdown();
                 }
             }
-        } else if (!IrcLink_IsLinked()) {
+        } else if (!IRC_IsConnect()) {
             if (sys->timeout != 0) {
-                IrcLink_Close();
+                IRC_Shutdown();
                 sys->elapsed = 1;
             } else {
                 sys->running = FALSE;
                 sys->timedOut = TRUE;
                 sys->elapsed = 0xffff;
                 NetHandle_Forget(1 - NetIrc_GetNetId());
-                IrcLink_Close();
+                IRC_Shutdown();
             }
         }
     }

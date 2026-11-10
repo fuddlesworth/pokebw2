@@ -946,7 +946,7 @@ text to `grep -n` there. Entries without a key come from later work and still be
 - The same in an outer loop around an inner one: begin its body with the inner loop,
   `while (head[i] != NULL) { p = head[i]; ... }`. (matching.md: "whose body begins with another loop")
 - An empty loop that the original keeps and `-O4,p` drops: the function reads an aligned object (`lib/irc`'s
-  `IrcLink_IsRecvIgnored`). (matching.md: "An explicit alignment")
+  `IRCi_CheckLength`). (matching.md: "An explicit alignment")
 - `mov rN, #bound` on a search loop's normal exit, before `cmp rN, #bound`: an inline search that returns its `size`
   argument after the loop. (matching.md: "A search loop whose normal exit")
 - A static loaded in the loop on each pass where the ROM loads it once below the entry test, with a store through

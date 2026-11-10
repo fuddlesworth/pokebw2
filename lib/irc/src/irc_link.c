@@ -1,6 +1,8 @@
 // Overlay 31, the third of its four files (see net_devirc.c): the link of frames between the two machines. One pings,
 // the other answers, and then they send each other frames that carry a checksum, over the SPI bus of irc_spi.c.
-// Built with the game's compiler and flags as part of lib/irc, whose name is ours.
+// This is the SDK's libirc irc.c, from TwlSDK's add-ins; lib/irc is this project's directory name. The functions and
+// the state enum take the SDK's names, which Black 1's decompilation (https://github.com/Project-Holon/aletheia)
+// recovered from libirc.a's irc.o; the structs below are this project's reconstruction of the SDK's separate statics.
 #include "irc/irc_link.h"
 #include "irc_spi.h"
 #include "nitro/os.h"
@@ -10,43 +12,51 @@
 
 // Where the link is on the way to a connection: the machine that pings is the parent and the one that answers the child
 enum {
-    IRC_STATE_IDLE,
-    IRC_STATE_PING_SENT,
-    IRC_STATE_REPLIED,
-    IRC_STATE_PARENT_LINKED,
-    IRC_STATE_CHILD_LINKED,
+    IRC_ST_DISCONNECT,
+    IRC_ST_WAIT_RESPONSE,
+    IRC_ST_WAIT_ACK,
+    IRC_ST_SENDER,
+    IRC_ST_RECEIVER,
 };
 
-// The state of the link of frames
+// The state of the link of frames, one struct over what the SDK keeps as separate statics. The DWARF's
+// sStatus.status is the flat state here and sStatus.flg_connect is flgConnect.
 typedef struct {
-    u8 unk00;
-    u32 errorCount;
+    // The SDK's retry_count: cleared when the state resets and when a frame's checksum is good
+    u8 retryCount;
+    // The SDK's cnt_retry: incremented by IRCi_Restore
+    u32 cntRetry;
     // Called with each frame of data, with the number of bytes, its command and its ID
-    void (*recvCallback)(u8 *data, u8 size, u8 cmd, u8 id);
-    // Called when the link ends, and when the other side accepts it
-    void (*closeCallback)(int a0);
+    void (*recvCallback)(u8 *data, u8 size, u8 command, u8 id);
+    // Called when the link ends, with whether it timed out
+    void (*closeCallback)(BOOL isError);
     // Never set. The call keeps the peer's ID in r0 and a zero in r1, so it takes both
-    void (*connectCallback)(u8 id, int a1);
-    BOOL resend;
-    // Whether this machine pinged and got the reply
-    BOOL isParent;
-    BOOL pinging;
+    void (*connectCallback)(u8 unitId, BOOL isSender);
+    // The SDK's flg_restore: set by IRCi_Restore, cleared by a reset or a connection
+    BOOL flgRestore;
+    // Whether this machine is the sender: it pinged and got the reply
+    BOOL isSender;
+    // The SDK's isTry: whether a connection attempt is underway
+    BOOL isTry;
+    // The SDK's sStatus.status
     int state;
-    BOOL linked;
-    u64 tick;
+    // The SDK's sStatus.flg_connect: whether the link is connected
+    BOOL flgConnect;
+    // When the last ping or frame was, in ticks
+    u64 timeout;
 } IrcLinkData;
 
 // The head of a frame: the command, the ID of the link and the checksum
 typedef struct {
-    u8 cmd;
+    u8 command;
     u8 id;
     u8 sumLo;
     u8 sumHi;
-} IrcFrameHeader;
+} IRCHeader;
 
 // A frame as it goes over the infrared: its head and the data
 typedef struct {
-    IrcFrameHeader header;
+    IRCHeader header;
     u8 data[0xb4];
 } IrcFrameData;
 
@@ -56,26 +66,27 @@ typedef struct {
     u8 peer;
 } IrcLinkIdData;
 
-static u16 IrcLink_Checksum(const u8 *data, u32 size);
-static void IrcLink_OnError(void);
-static void IrcLink_ClearState(void);
-static void IrcLink_SendFrame(const u8 *data, u8 size, u8 cmd, u8 id);
-static void IrcLink_Finish(int a0);
-static void IrcLink_Nop(void);
-static BOOL IrcLink_IsRecvIgnored(u8 size);
-static BOOL IrcLink_CheckPingTimeout(void);
-static BOOL IrcLink_ValidateFrame(u8 size);
-static void IrcLink_SetLocalId(u8 id);
+static u16 IRCi_CalcSum(const u8 *data, u32 size);
+static void IRCi_Restore(void);
+static void IRCi_ResetState(void);
+static void IRCi_Send(const u8 *data, u8 size, u8 command, u8 id);
+static void IRCi_Finish(int n);
+static void IRCi_Nop(void);
+static BOOL IRCi_CheckLength(u8 size);
+static BOOL IRCi_CheckTimeout(void);
+static BOOL IRCi_CheckPacket(u8 size);
+static void IRC_SetUnitNumber(u8 unitId);
 
 static IrcLinkIdData IrcLinkIds = { 0xff, 0xff };
 static IrcLinkData IrcLink;
-// Aligned, as the original's IrcLink_SendFrame, IrcLink_IsRecvIgnored and IrcLink_ValidateFrame show: at -O4,p MWCC
+// Aligned, as the original's IRCi_Send, IRCi_CheckLength and IRCi_CheckPacket show: at -O4,p MWCC
 // rotates a function's loops and drops its empty ones unless it reads an object with an explicit alignment, and the
-// frame is the only object IrcLink_SendFrame reads. To what it was aligned is a guess: 4 and 8 both fit its address,
-// right after IrcLink and on an 8-byte boundary but not a 16-byte one.
+// frame is the only object IRCi_Send reads. To what it was aligned is a guess: 4 and 8 both fit its address,
+// right after IrcLink and on an 8-byte boundary but not a 16-byte one. The original's symbols also give the data at
+// IrcFrame.data its own object (aletheia's gIrcBufferPayload, named IrcFramePayload here).
 static IrcFrameData IrcFrame ATTRIBUTE_ALIGN(4);
 
-static u16 IrcLink_Checksum(const u8 *data, u32 size) {
+static u16 IRCi_CalcSum(const u8 *data, u32 size) {
     u32 sum = 0x80;
     u32 i;
 
@@ -93,53 +104,53 @@ static u16 IrcLink_Checksum(const u8 *data, u32 size) {
     return sum;
 }
 
-static void IrcLink_OnError(void) {
-    IrcLink.resend = TRUE;
-    IrcLink.errorCount++;
+static void IRCi_Restore(void) {
+    IrcLink.flgRestore = TRUE;
+    IrcLink.cntRetry++;
 }
 
-static void IrcLink_ClearState(void) {
-    IrcLink.unk00 = 0;
-    IrcLink.state = IRC_STATE_IDLE;
-    IrcLink.linked = FALSE;
-    IrcLink.resend = FALSE;
-    IrcLink.pinging = FALSE;
-    IrcLink.isParent = FALSE;
-    IrcLink.errorCount = 0;
+static void IRCi_ResetState(void) {
+    IrcLink.retryCount = 0;
+    IrcLink.state = IRC_ST_DISCONNECT;
+    IrcLink.flgConnect = FALSE;
+    IrcLink.flgRestore = FALSE;
+    IrcLink.isTry = FALSE;
+    IrcLink.isSender = FALSE;
+    IrcLink.cntRetry = 0;
 }
 
-void IrcLink_Reset(u8 id) {
-    IrcSpi_Init();
-    IrcSpi_Recv((u8 *)&IrcFrame);
-    IrcLink_ClearState();
-    IrcLink_SetLocalId(id);
+void IRC_Init(u8 unitId) {
+    IRCi_Init();
+    IRCi_Read((u8 *)&IrcFrame);
+    IRCi_ResetState();
+    IRC_SetUnitNumber(unitId);
     IrcLinkIds.peer = 0xff;
     IrcLink.connectCallback = NULL;
     IrcLink.recvCallback = NULL;
     IrcLink.closeCallback = NULL;
 }
 
-void IrcLink_Ping(void) {
-    if (!IrcLink.linked && !IrcLink.pinging) {
+void IRC_Connect(void) {
+    if (!IrcLink.flgConnect && !IrcLink.isTry) {
         u8 ping;
 
-        IrcLink.pinging = TRUE;
+        IrcLink.isTry = TRUE;
         ping = IRC_CMD_PING ^ IRC_XOR;
-        IrcSpi_Send(&ping, 1);
-        IrcLink.state = IRC_STATE_PING_SENT;
-        IrcLink.tick = OS_GetTick();
+        IRCi_Write(&ping, 1);
+        IrcLink.state = IRC_ST_WAIT_RESPONSE;
+        IrcLink.timeout = OS_GetTick();
     }
 }
 
-BOOL IrcLink_IsParent(void) {
-    return IrcLink.isParent;
+BOOL IRC_IsSender(void) {
+    return IrcLink.isSender;
 }
 
-BOOL IrcLink_IsLinked(void) {
-    return IrcLink.linked;
+BOOL IRC_IsConnect(void) {
+    return IrcLink.flgConnect;
 }
 
-static void IrcLink_SendFrame(const u8 *data, u8 size, u8 cmd, u8 id) {
+static void IRCi_Send(const u8 *data, u8 size, u8 command, u8 id) {
     IrcFrameData *frame = &IrcFrame;
     u8 *dst;
     u8 *raw;
@@ -147,63 +158,63 @@ static void IrcLink_SendFrame(const u8 *data, u8 size, u8 cmd, u8 id) {
     u16 sum;
 
     frame->header.id = id;
-    frame->header.cmd = cmd;
+    frame->header.command = command;
     frame->header.sumLo = 0;
     frame->header.sumHi = 0;
     dst = IrcFrame.data;
     for (i = 0; i < size; i++) {
         *dst++ = *data++;
     }
-    size += sizeof(IrcFrameHeader);
+    size += sizeof(IRCHeader);
     raw = (u8 *)&IrcFrame;
-    sum = IrcLink_Checksum(raw, size);
+    sum = IRCi_CalcSum(raw, size);
     frame->header.sumLo = sum;
     frame->header.sumHi = sum >> 8;
     for (i = 0; i < size; i++) {
         raw[i] ^= IRC_XOR;
     }
     // The original loads IrcFrame's address again for the call rather than passing raw
-    IrcSpi_Send((u8 *)&IrcFrame, size);
+    IRCi_Write((u8 *)&IrcFrame, size);
 }
 
-static void IrcLink_Finish(int a0) {
-    if (IrcLink.linked && !IrcLink.isParent && a0 == 0) {
-        IrcLink_SendFrame(NULL, 0, IRC_CMD_CLOSE, IrcLinkIds.local);
+static void IRCi_Finish(int n) {
+    if (IrcLink.flgConnect && !IrcLink.isSender && n == 0) {
+        IRCi_Send(NULL, 0, IRC_CMD_CLOSE, IrcLinkIds.local);
     }
     if (IrcLink.closeCallback) {
-        IrcLink.closeCallback(a0);
+        IrcLink.closeCallback(n);
     }
-    IrcLink_ClearState();
+    IRCi_ResetState();
 }
 
-void IrcLink_Close(void) {
-    IrcLink_Finish(0);
-    IrcSpi_Release();
+void IRC_Shutdown(void) {
+    IRCi_Finish(0);
+    IRCi_End();
 }
 
-void IrcLink_Send(const u8 *data, u8 size, u8 cmd) {
-    if (IrcLink.linked) {
-        IrcLink_SendFrame(data, size, cmd, IrcLinkIds.local);
+void IRC_Send(const u8 *data, u8 size, u8 command) {
+    if (IrcLink.flgConnect) {
+        IRCi_Send(data, size, command, IrcLinkIds.local);
     }
 }
 
-static void IrcLink_Nop(void) {
+static void IRCi_Nop(void) {
 }
 
-static BOOL IrcLink_IsRecvIgnored(u8 size) {
+static BOOL IRCi_CheckLength(u8 size) {
     u32 i;
 
     if (size == 1) {
-        if (IrcLink.linked) {
+        if (IrcLink.flgConnect) {
             return TRUE;
         }
-        if (IrcFrame.header.cmd != IRC_CMD_PING) {
+        if (IrcFrame.header.command != IRC_CMD_PING) {
             return TRUE;
         }
         return FALSE;
     }
     if (size == 2 || size == 3) {
-        // Empty loops, probably of debug output compiled out
+        // A frame too short to hold a header: the empty loops are probably debug output compiled out
         for (i = 0; i < 4; i++) {
         }
         for (i = 0; i < size; i++) {
@@ -213,19 +224,19 @@ static BOOL IrcLink_IsRecvIgnored(u8 size) {
     return FALSE;
 }
 
-static BOOL IrcLink_CheckPingTimeout(void) {
-    if (!IrcLink.linked && !IrcLink.pinging) {
+static BOOL IRCi_CheckTimeout(void) {
+    if (!IrcLink.flgConnect && !IrcLink.isTry) {
         return FALSE;
     }
-    if (OS_TicksToMilliSeconds(OS_GetTick() - IrcLink.tick) < IRC_PING_TIMEOUT) {
+    if (OS_TicksToMilliSeconds(OS_GetTick() - IrcLink.timeout) < IRC_PING_TIMEOUT) {
         return FALSE;
     }
-    IrcLink_Finish(1);
-    IrcLink.pinging = FALSE;
+    IRCi_Finish(1);
+    IrcLink.isTry = FALSE;
     return TRUE;
 }
 
-static BOOL IrcLink_ValidateFrame(u8 size) {
+static BOOL IRCi_CheckPacket(u8 size) {
     IrcFrameData *frame = &IrcFrame;
     u8 *raw = (u8 *)&IrcFrame;
     u32 i;
@@ -233,130 +244,130 @@ static BOOL IrcLink_ValidateFrame(u8 size) {
     u16 sum;
 
     if (size == 1) {
-        if (frame->header.cmd == IRC_CMD_PING) {
+        if (frame->header.command == IRC_CMD_PING) {
             return TRUE;
         }
         return FALSE;
     }
-    if (size < sizeof(IrcFrameHeader)) {
+    if (size < sizeof(IRCHeader)) {
         return FALSE;
     }
     stored = frame->header.sumLo + (frame->header.sumHi << 8);
     frame->header.sumLo = 0;
     frame->header.sumHi = 0;
-    sum = IrcLink_Checksum(raw, size);
+    sum = IRCi_CalcSum(raw, size);
     frame->header.sumLo = stored;
     frame->header.sumHi = stored >> 8;
     if (stored == sum) {
-        IrcLink.unk00 = 0;
+        IrcLink.retryCount = 0;
         return TRUE;
     }
-    if (IrcLink.linked) {
+    if (IrcLink.flgConnect) {
         for (i = 0; i < size; i++) {
         }
-        IrcLink_OnError();
+        IRCi_Restore();
     }
     return FALSE;
 }
 
-BOOL IrcLink_Poll(void) {
+BOOL IRC_Move(void) {
     IrcFrameData *frame;
-    u8 size = IrcSpi_Recv((u8 *)&IrcFrame);
+    u8 size = IRCi_Read((u8 *)&IrcFrame);
 
-    if (IrcLink_IsRecvIgnored(size)) {
+    if (IRCi_CheckLength(size)) {
         size = 0;
     }
     if (size == 0) {
-        if (IrcLink_CheckPingTimeout()) {
+        if (IRCi_CheckTimeout()) {
             return TRUE;
         }
         return FALSE;
     }
-    if (!IrcLink_ValidateFrame(size)) {
+    if (!IRCi_CheckPacket(size)) {
         return FALSE;
     }
-    IrcLink.tick = OS_GetTick();
+    IrcLink.timeout = OS_GetTick();
     frame = &IrcFrame;
-    if (frame->header.cmd < IRC_CMD_MIN) {
-        if (!IrcLink.linked) {
+    if (frame->header.command < IRC_CMD_MIN) {
+        if (!IrcLink.flgConnect) {
             return FALSE;
         }
         if (frame->header.id != IrcLinkIds.local) {
             return FALSE;
         }
     }
-    switch (frame->header.cmd) {
+    switch (frame->header.command) {
     case IRC_CMD_PING:
         switch (IrcLink.state) {
-        case IRC_STATE_IDLE:
+        case IRC_ST_DISCONNECT:
             break;
-        case IRC_STATE_PING_SENT:
-            IrcLink.state = IRC_STATE_REPLIED;
-            IrcLink_SendFrame(NULL, 0, IRC_CMD_REPLY, IrcLinkIds.local);
+        case IRC_ST_WAIT_RESPONSE:
+            IrcLink.state = IRC_ST_WAIT_ACK;
+            IRCi_Send(NULL, 0, IRC_CMD_REPLY, IrcLinkIds.local);
             break;
-        case IRC_STATE_REPLIED:
-        case IRC_STATE_PARENT_LINKED:
-        case IRC_STATE_CHILD_LINKED:
+        case IRC_ST_WAIT_ACK:
+        case IRC_ST_SENDER:
+        case IRC_ST_RECEIVER:
             break;
         }
-        if (!IrcLink.pinging) {
-            IrcLink.pinging = TRUE;
-            IrcLink.state = IRC_STATE_REPLIED;
-            IrcLink.isParent = FALSE;
-            if (size <= 1 || IrcLink.linked) {
-                IrcLink_SendFrame(NULL, 0, IRC_CMD_REPLY, IrcLinkIds.local);
-                if (IrcLink.linked) {
-                    IrcLink_OnError();
+        if (!IrcLink.isTry) {
+            IrcLink.isTry = TRUE;
+            IrcLink.state = IRC_ST_WAIT_ACK;
+            IrcLink.isSender = FALSE;
+            if (size <= 1 || IrcLink.flgConnect) {
+                IRCi_Send(NULL, 0, IRC_CMD_REPLY, IrcLinkIds.local);
+                if (IrcLink.flgConnect) {
+                    IRCi_Restore();
                 }
-                IrcLink_Nop();
+                IRCi_Nop();
             }
         }
         break;
     case IRC_CMD_REPLY:
-        if (IrcLink.state == IRC_STATE_PING_SENT) {
-            IrcLink.state = IRC_STATE_PARENT_LINKED;
-            IrcLink.isParent = TRUE;
+        if (IrcLink.state == IRC_ST_WAIT_RESPONSE) {
+            IrcLink.state = IRC_ST_SENDER;
+            IrcLink.isSender = TRUE;
             IrcLinkIds.peer = frame->header.id;
             if (frame->header.id == IrcLinkIds.local) {
-                IrcLink_SendFrame(NULL, 0, IRC_CMD_ACCEPT, IrcLinkIds.local);
-                IrcLink.linked = TRUE;
-                IrcLink.resend = FALSE;
-                IrcLink.pinging = FALSE;
+                IRCi_Send(NULL, 0, IRC_CMD_ACCEPT, IrcLinkIds.local);
+                IrcLink.flgConnect = TRUE;
+                IrcLink.flgRestore = FALSE;
+                IrcLink.isTry = FALSE;
             }
         }
         break;
     case IRC_CMD_ACCEPT:
-        if (IrcLink.state == IRC_STATE_REPLIED) {
-            IrcLink.state = IRC_STATE_CHILD_LINKED;
+        if (IrcLink.state == IRC_ST_WAIT_ACK) {
+            IrcLink.state = IRC_ST_RECEIVER;
             IrcLinkIds.peer = frame->header.id;
-            IrcLink.linked = TRUE;
-            IrcLink.resend = FALSE;
-            IrcLink.pinging = FALSE;
+            IrcLink.flgConnect = TRUE;
+            IrcLink.flgRestore = FALSE;
+            IrcLink.isTry = FALSE;
             if (IrcLink.connectCallback) {
                 IrcLink.connectCallback(frame->header.id, 0);
             }
         }
         break;
     case IRC_CMD_RESEND:
-        IrcLink_OnError();
+        IRCi_Restore();
         break;
     default:
-        if (IrcLink.resend != TRUE && IrcLink.linked) {
-            IrcLink.recvCallback(IrcFrame.data, size - sizeof(IrcFrameHeader), IrcFrame.header.cmd, IrcFrame.header.id);
+        if (IrcLink.flgRestore != TRUE && IrcLink.flgConnect) {
+            IrcLink.recvCallback(IrcFrame.data, size - sizeof(IRCHeader), IrcFrame.header.command, IrcFrame.header.id);
         }
         break;
     }
     return FALSE;
 }
 
-void IrcLink_SetRecvCallback(void (*callback)(u8 *data, u8 size, u8 cmd, u8 id)) {
+void IRC_SetRecvCallback(void (*callback)(u8 *data, u8 size, u8 command, u8 id)) {
     IrcLink.recvCallback = callback;
 }
 
-static void IrcLink_SetLocalId(u8 id) {
-    IrcLinkIds.local = id;
+static void IRC_SetUnitNumber(u8 unitId) {
+    IrcLinkIds.local = unitId;
 }
 
-u8 IrcLink_GetPeerId(void) {
+u8 IRC_GetUnitNumber(void) {
     return IrcLinkIds.peer;
 }
