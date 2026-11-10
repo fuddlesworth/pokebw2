@@ -59,10 +59,10 @@ static BOOL CodeIn_ProcInit(GameProc *proc, u32 *state, void *param, void *work)
         int blocks[CODEIN_BLOCK_COUNT];
         CodeInParam *friendCode;
 
-        blocks[0] = 4;
-        blocks[1] = 4;
-        blocks[2] = 4;
-        friendCode = CodeInParam_Create(HEAPID_CODEIN, 0, 0, FRIEND_CODE_LENGTH, blocks);
+        blocks[0] = CODEIN_FRIEND_CODE_BLOCK;
+        blocks[1] = CODEIN_FRIEND_CODE_BLOCK;
+        blocks[2] = CODEIN_FRIEND_CODE_BLOCK;
+        friendCode = CodeInParam_Create(HEAPID_CODEIN, CODEIN_MODE_FRIEND_CODE, 0, FRIEND_CODE_LENGTH, blocks);
         wk->param = *friendCode;
         GFL_HeapFree(friendCode);
     } else {

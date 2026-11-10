@@ -4169,8 +4169,7 @@
     .2byte \a0
     .endm
 
-    // func_ov056_021e77b0
-    .macro Plugin6_Cmd1058 a0
+    .macro GetCantEnterMessage a0
     FieldCommand 1058
     .2byte \a0
     .endm

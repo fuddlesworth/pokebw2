@@ -6,7 +6,7 @@ Scrcmd_WbtEntrance_CheckRegulation kind:function(thumb,size=0x3e) addr:0x021e76b
 Scrcmd_WbtEntrance_GetRegulationId kind:function(thumb,size=0x1a) addr:0x021e76f4
 Scrcmd_WbtEntrance_CheckEntryParties kind:function(thumb,size=0x40) addr:0x021e7710
 Scrcmd_WbtEntrance_CallEntryPartySelect kind:function(thumb,size=0x5e) addr:0x021e7750
-func_ov056_021e77b0 kind:function(thumb,size=0x58) addr:0x021e77b0
+Scrcmd_WbtEntrance_GetCantEnterMessage kind:function(thumb,size=0x58) addr:0x021e77b0
 Scrcmd_WbtEntrance_SetUseBattleBox kind:function(thumb,size=0x44) addr:0x021e7808
 Scrcmd_WbtEntrance_MakeRentalParty kind:function(thumb,size=0x48) addr:0x021e784c
 Scrcmd_WbtEntrance_GetSlotTrainerObjCodes kind:function(thumb,size=0xf2) addr:0x021e7894
@@ -18,5 +18,4 @@ Scrcmd_WbtEntrance_CallPokeSelect kind:function(thumb,size=0x50) addr:0x021e7a4c
 Scrcmd_WbtEntrance_ShowDownloads kind:function(thumb,size=0x64) addr:0x021e7a9c
 Scrcmd_WbtEntrance_ShowWinRecord kind:function(thumb,size=0x58) addr:0x021e7b00
 Scrcmd_WbtEntrance_Download kind:function(thumb,size=0x4c) addr:0x021e7b58
-data_ov056_021e7ba4 kind:data(any) addr:0x021e7ba4
-data_ov056_021e7bb5 kind:data(any) addr:0x021e7bb5 ambiguous
+sRegulationMessages kind:data(any) addr:0x021e7ba4
