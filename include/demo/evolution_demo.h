@@ -19,9 +19,9 @@ typedef struct {
     u8 partyIndex;
     // EVO_METHOD_*
     u8 method;
-    // Set, the demo pushes and brings back the music that was playing, and picks a move to forget on overlay 207's
-    // screen instead of overlay 287's
-    u32 unkC;
+    // Set when a field event starts the demo: it pushes and brings back the music that was playing, and picks a move
+    // to forget on overlay 207's summary screen instead of overlay 287's battle party list
+    u32 fromField;
     // Whether B stops the evolution. The demo clears it for an evolution by item
     BOOL canCancel;
 } EvolutionDemoParam;
