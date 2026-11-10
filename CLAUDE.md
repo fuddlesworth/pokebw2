@@ -102,6 +102,7 @@ a rule here changes, change it there too.
 | Mark complete | `.venv/bin/python tools/decomp/mark_complete.py src/X.c` |
 | Name a symbol | `.venv/bin/python tools/decomp/rename_symbol.py func_ov033_0217acd4 Name` |
 | What is left to name | `.venv/bin/python tools/decomp/naming_report.py [--module ov033]` |
+| Which remaining functions are linker veneers | `.venv/bin/python tools/decomp/naming_report.py --veneers` |
 | Script commands after renaming handlers | `.venv/bin/python tools/script/sync_handler_names.py` |
 | Rename a constant of `generated/` and its uses | `.venv/bin/python tools/data/rename_constant.py OLD NEW` |
 | Progress of the local build | `ninja progress` |
