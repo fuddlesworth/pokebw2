@@ -474,7 +474,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         evolution->species = wk->trade.evolveSpecies;
         evolution->partyIndex = 0;
         evolution->method = wk->trade.evolveMethod;
-        evolution->unkC = 1;
+        evolution->fromField = 1;
         evolution->canCancel = FALSE;
         wk->trade.evolution = evolution;
         GSYS_QueueProcAsEvent(wk->event, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS, evolution);

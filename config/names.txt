@@ -23561,7 +23561,7 @@ overlays/ov180 0x0219b094 IrcRankingStepMan_SetDone
 overlays/ov180 0x0219b09c IrcRanking_StepFadeIn
 overlays/ov180 0x0219b104 IrcRanking_StepFadeOut
 overlays/ov180 0x0219b140 IrcRanking_StepInput
-overlays/ov180 0x0219b380 IrcRanking_StepScrollToSelf
+overlays/ov180 0x0219b380 IrcRanking_StepScrollToLatest
 overlays/ov180 0x0219b4d0 IrcRankingBG_Init
 overlays/ov180 0x0219b6bc IrcRankingBG_Free
 overlays/ov180 0x0219b730 IrcRankingBG_VBlank
@@ -23582,7 +23582,7 @@ overlays/ov180 0x0219bac0 IrcRankingList_Free
 overlays/ov180 0x0219bb48 IrcRankingList_Settle
 overlays/ov180 0x0219bbc4 IrcRankingList_Move
 overlays/ov180 0x0219bc80 IrcRankingList_GetScroll
-overlays/ov180 0x0219bc8c IrcRankingList_FindSelf
+overlays/ov180 0x0219bc8c IrcRankingList_FindLatest
 overlays/ov180 0x0219bcd4 IrcRankingList_GetScrollMax
 overlays/ov180 0x0219bce0 IrcRankingList_Redraw
 overlays/ov180 0x0219be04 IrcRankingList_Transfer

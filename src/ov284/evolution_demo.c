@@ -550,7 +550,7 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
             break;
         }
         if (result == TWO_CHOICE_MENU_FIRST) {
-            if (demoParam->unkC) {
+            if (demoParam->fromField) {
                 wk->state = EVOLUTION_DEMO_WAIT_FADE_OV207;
                 GFL_FadeSet(3, 0, 16, 0);
             } else {
@@ -868,7 +868,7 @@ static void EvolutionDemo_FreeGraphics(EvolutionDemoParam *param, EvolutionDemoW
 
 // Fades out the music that was playing, to push it once it is quiet
 static void EvolutionDemo_InitBGM(EvolutionDemoParam *param, EvolutionDemoWork *wk) {
-    if (param->unkC) {
+    if (param->fromField) {
         GFL_SndBGMFadeOut(30);
     }
     wk->bgm = BGM_FADE_OUT;
@@ -881,7 +881,7 @@ static void EvolutionDemo_UpdateBGM(EvolutionDemoParam *param, EvolutionDemoWork
     switch (wk->bgm) {
     case BGM_FADE_OUT:
         if (GFL_SndBGMIsFading() == FALSE) {
-            if (param->unkC) {
+            if (param->fromField) {
                 GFL_SndBGMSetPaused(TRUE);
                 GFL_SndBGMPush();
             }
@@ -928,7 +928,7 @@ static BOOL EvolutionDemo_IsBGMFadingOut(EvolutionDemoParam *param, EvolutionDem
 
 // Brings back the music that was playing
 static void EvolutionDemo_RestoreBGM(EvolutionDemoParam *param, EvolutionDemoWork *wk) {
-    if (wk->bgm == BGM_IDLE && param->unkC) {
+    if (wk->bgm == BGM_IDLE && param->fromField) {
         GFL_SndBGMPop();
         GFL_SndBGMSetPaused(FALSE);
         GFL_SndBGMFadeIn(60);

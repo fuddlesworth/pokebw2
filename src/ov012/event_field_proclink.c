@@ -964,7 +964,7 @@ void *script_evo(FieldAppCallWork *work, s32 appParam, s32 prevAppId, const void
         param->species = species;
         param->partyIndex = partyParam->index;
         param->method = method;
-        param->unkC = 1;
+        param->fromField = 1;
         param->canCancel = TRUE;
     }
     return param;

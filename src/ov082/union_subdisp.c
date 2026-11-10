@@ -50,6 +50,14 @@ enum {
     CONTENT_MESSAGE,
 };
 
+// A line's palette bank: each gender's colours, the ordinary one and the lit one of a touched line
+enum {
+    LINE_PALETTE_MALE,
+    LINE_PALETTE_MALE_LIT,
+    LINE_PALETTE_FEMALE,
+    LINE_PALETTE_FEMALE_LIT,
+};
+
 // A line is 7 tiles high, 56 pixels
 #define LINE_TILES 7
 #define LINE_HEIGHT 56
@@ -88,7 +96,7 @@ struct UnionSubdisp {
     // The icon that is selected, and whether the knob is held
     u8 selected;
     u8 holdingKnob;
-    u16 unk32;
+    u16 unk32; // 0x32 never accessed
     UnionSubdispFlash flash[LINE_COUNT];
     PrintQueue *queue;
     Font *font;
@@ -539,7 +547,7 @@ static void UnionSubdisp_UpdateChat(UnionSubdisp *work, UnionVisitorList *list) 
 static void UnionSubdisp_DrawLine(UnionSubdisp *work, UnionVisitor *chat, u8 line) {
     u16 *screen = GFL_BGSysIsScrHeapExists(BG_LINES);
     u16 *row = screen + SCREEN_ROW_WORDS * line;
-    int palette = chat->gender == 0 ? 0 : 2;
+    int palette = chat->gender == GENDER_MALE ? LINE_PALETTE_MALE : LINE_PALETTE_FEMALE;
     BmpWin **window;
     StrBuf *strbuf;
     StrBuf *name;
@@ -600,10 +608,10 @@ static void UnionSubdisp_DrawLine(UnionSubdisp *work, UnionVisitor *chat, u8 lin
     GFL_StrBufLoadString(name, chat->name);
     PrintQueue_PrintColor(work->queue, BmpWin_GetBitmap(*window), 0, 0, name, work->font, PRINT_COLOR_LINE);
     GFL_StrBufFree(name);
-    if (chat->subKind != 0) {
+    if (chat->subKind != UNION_CHAT_RELATION_NONE) {
         u32 message = UnionSubdisp_Text_Friend;
 
-        if (chat->subKind != 1) {
+        if (chat->subKind != UNION_CHAT_RELATION_FRIEND) {
             message = UnionSubdisp_Text_Player;
         }
         strbuf = GFL_MsgDataLoadStrbufNew(work->msgData, message);
@@ -921,20 +929,20 @@ static BOOL UnionSubdisp_SetLinePalette(UnionSubdisp *work, int line, BOOL touch
     u16 palette = screen[line * SCREEN_ROW_WORDS] >> 12;
 
     switch (palette) {
-    case 0:
-    case 1:
+    case LINE_PALETTE_MALE:
+    case LINE_PALETTE_MALE_LIT:
         if (touched == FALSE) {
-            palette = 0;
+            palette = LINE_PALETTE_MALE;
         } else {
-            palette = 1;
+            palette = LINE_PALETTE_MALE_LIT;
         }
         break;
-    case 2:
-    case 3:
+    case LINE_PALETTE_FEMALE:
+    case LINE_PALETTE_FEMALE_LIT:
         if (touched == FALSE) {
-            palette = 2;
+            palette = LINE_PALETTE_FEMALE;
         } else {
-            palette = 3;
+            palette = LINE_PALETTE_FEMALE_LIT;
         }
         break;
     default:

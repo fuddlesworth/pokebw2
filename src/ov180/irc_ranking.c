@@ -42,7 +42,8 @@
 
 // The ranking of the compatibility checker: its graphics, the list of the trainers of the trainer log with their rows
 // and the scrolling of the list, the stylus and the keys that scroll it, the fling it goes on with, the labels over
-// the list and the steps of the screen. Names are ours
+// the list and the steps of the screen. Names are ours, except the reserved fields and the latest row's names,
+// which are aletheia's (github.com/Project-Holon/aletheia, src/game/ov106/irc_ranking.c)
 
 #define HEAP_ID 0x43
 #define BG_COUNT 8
@@ -82,14 +83,14 @@ typedef struct {
     StrBuf *name;
     u32 value : 7;
     u32 count : 10;
-    // The palette of the row, from whether the trainer is the player, the rank and whether the trainer was met today
+    // The palette of the row, from whether the trainer is the latest one met, the rank and the trainer's sex
     u32 palette : 8;
     u32 rank : 7;
     u16 species;
     u8 form;
     u8 sex;
     u8 isEgg;
-    u8 isSelf;
+    u8 isLatest;
 } IrcRankingEntry;
 
 typedef struct {
@@ -112,7 +113,7 @@ typedef struct {
 
 typedef struct {
     ClActUnit *unit;
-    u32 unk4[4];
+    u32 reserved[4];
 } IrcRankingClAct;
 
 typedef struct {
@@ -156,7 +157,7 @@ typedef struct {
     BmpWin *windows[2];
     Font *font;
     MsgData *msgData;
-    u32 unk578[4];
+    u8 reserved[16];
     WordSet *wordSet;
     TCB *vblankTask;
     // Whether the rows have been redrawn and are to be sent to VRAM
@@ -237,7 +238,7 @@ struct IrcRankingWork {
     GameData *gameData;
     IrcRankingLabel *labels[LABEL_COUNT];
     IrcRankingData *ranking;
-    // How long the list has scrolled to the player's row
+    // How long the list has scrolled to the latest row
     s16 autoScrollFrames;
     u32 palette;
 };
@@ -260,7 +261,7 @@ enum {
 static void IrcRanking_StepFadeIn(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk);
 static void IrcRanking_StepFadeOut(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk);
 static void IrcRanking_StepInput(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk);
-static void IrcRanking_StepScrollToSelf(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk);
+static void IrcRanking_StepScrollToLatest(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk);
 static void IrcRankingBG_Init(IrcRankingBG *bg, GameData *gameData, HeapID heapId);
 static void IrcRankingBG_Free(IrcRankingBG *bg);
 static void IrcRankingBG_VBlank(IrcRankingBG *bg);
@@ -282,7 +283,7 @@ static void IrcRankingList_Free(IrcRankingList *list);
 static void IrcRankingList_Settle(IrcRankingList *list);
 static void IrcRankingList_Move(IrcRankingList *list, s16 delta);
 static s16 IrcRankingList_GetScroll(IrcRankingList *list);
-static s16 IrcRankingList_FindSelf(const IrcRankingList *list);
+static s16 IrcRankingList_FindLatest(const IrcRankingList *list);
 static s16 IrcRankingList_GetScrollMax(IrcRankingList *list);
 static void IrcRankingList_Redraw(IrcRankingList *list);
 static void IrcRankingList_Transfer(IrcRankingList *list);
@@ -522,11 +523,11 @@ static void IrcRanking_StepFadeIn(IrcRankingStepMan *mgr, int *state, IrcRanking
     case STEP_FADE_DONE:
         // BUG: the list reports -1 when the player is not in it, and this compares with 0xffff
 #ifdef BUGFIX
-        if (IrcRankingList_FindSelf(&wk->list) != -1) {
+        if (IrcRankingList_FindLatest(&wk->list) != -1) {
 #else
-        if (IrcRankingList_FindSelf(&wk->list) != 0xffff) {
+        if (IrcRankingList_FindLatest(&wk->list) != 0xffff) {
 #endif
-            IrcRankingStepMan_SetStep(&wk->stepMan, IrcRanking_StepScrollToSelf);
+            IrcRankingStepMan_SetStep(&wk->stepMan, IrcRanking_StepScrollToLatest);
         } else {
             IrcRankingStepMan_SetStep(mgr, IrcRanking_StepInput);
         }
@@ -598,9 +599,9 @@ static void IrcRanking_StepInput(IrcRankingStepMan *mgr, int *state, IrcRankingW
     IrcAppBar_Update(wk->button);
 }
 
-// Scrolls the list to the player's row, faster the longer it takes
-static void IrcRanking_StepScrollToSelf(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk) {
-    s16 target = IrcRankingList_FindSelf(&wk->list) - ROW_HEIGHT * 8;
+// Scrolls the list to the latest row, faster the longer it takes
+static void IrcRanking_StepScrollToLatest(IrcRankingStepMan *mgr, int *state, IrcRankingWork *wk) {
+    s16 target = IrcRankingList_FindLatest(&wk->list) - ROW_HEIGHT * 8;
     s16 scroll;
     s16 scrollMax;
     s16 frames;
@@ -893,13 +894,13 @@ static s16 IrcRankingList_GetScroll(IrcRankingList *list) {
     return list->scroll;
 }
 
-// The scroll of the player's row, or -1
-static s16 IrcRankingList_FindSelf(const IrcRankingList *list) {
+// The scroll of the latest row, or -1
+static s16 IrcRankingList_FindLatest(const IrcRankingList *list) {
     int i;
     BOOL found = FALSE;
 
     for (i = 0; i < list->count; i++) {
-        if (list->rows[i].entry->isSelf) {
+        if (list->rows[i].entry->isLatest) {
             found = TRUE;
             break;
         }
@@ -1162,7 +1163,7 @@ static IrcRankingData *IrcRankingData_Create(GameData *gameData, HeapID heapId) 
     IrcRankingEntry *entry;
     u8 prevValue;
     u8 prevRank;
-    u8 self;
+    u8 latest;
     u32 i;
 
     MI_CpuFill8(ranking, 0, sizeof(u32) + count * sizeof(IrcRankingEntry));
@@ -1170,9 +1171,9 @@ static IrcRankingData *IrcRankingData_Create(GameData *gameData, HeapID heapId) 
     if (count != 0) {
         prevValue = 0x80;
         prevRank = 0;
-        self = TrainerLogSave_GetLastSlot(log);
+        latest = TrainerLogSave_GetLastSlot(log);
         for (i = 0; i < ranking->count; i++) {
-            u8 met;
+            u8 male;
 
             entry = &ranking->entries[i];
             entry->name = GFL_StrBufCreate(8, heapId);
@@ -1184,40 +1185,40 @@ static IrcRankingData *IrcRankingData_Create(GameData *gameData, HeapID heapId) 
             } else if (entry->value == prevValue) {
                 entry->rank = prevRank;
             }
-            met = TrainerLogSave_IsEntryMale(log, i);
-            if (self == i) {
+            male = TrainerLogSave_IsEntryMale(log, i);
+            if (latest == i) {
                 u32 base = 1;
 
-                if (met) {
+                if (male) {
                     base = 0;
                 }
                 entry->palette = (base + 1) * 5;
-                entry->isSelf = TRUE;
+                entry->isLatest = TRUE;
             } else if (entry->rank == 1) {
                 u32 base = 0;
 
-                if (!met) {
+                if (!male) {
                     base = 5;
                 }
                 entry->palette = base + 2;
             } else if (entry->rank == 2) {
                 u32 base = 0;
 
-                if (!met) {
+                if (!male) {
                     base = 5;
                 }
                 entry->palette = base + 3;
             } else if (entry->rank == 3) {
                 u32 base = 0;
 
-                if (!met) {
+                if (!male) {
                     base = 5;
                 }
                 entry->palette = base + 4;
             } else {
                 u32 base = 0;
 
-                if (!met) {
+                if (!male) {
                     base = 5;
                 }
                 entry->palette = base + 1;

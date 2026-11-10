@@ -250,7 +250,7 @@ static BOOL UnionCommand_Trade(GameSystem *gsys, UnionSystem *unisys, Field *fie
         evolution->species = trade->evolveSpecies;
         evolution->partyIndex = 0;
         evolution->method = trade->evolveMethod;
-        evolution->unkC = 1;
+        evolution->fromField = 1;
         evolution->canCancel = FALSE;
         trade->evolution = evolution;
         GSYS_QueueProc(gsys, OVERLAY_EVOLUTION_DEMO, &EVOLUTION_DEMO_PROC_FUNCTIONS, evolution);
