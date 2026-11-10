@@ -7,7 +7,7 @@
 
 // Nintendo's SPL particle library (lib/spl), decompiled from this game's code: a manager of emitters made from a
 // resource file's particle definitions. The public functions keep the names pret's Platinum decompilation gives
-// them. The fields named unk* are ones the library never reads
+// them, and the resource file's unused fields the names its HeartGold one gives them for the same layout.
 
 // The library's doubly linked lists, of emitters and of particles, which start with these links
 typedef struct SPLNode {
@@ -159,7 +159,7 @@ typedef struct {
     s16 minRotation;
     s16 maxRotation;
     u16 initAngle;
-    u8 unk3a[2];
+    u16 reserved;
     // How long the emitter emits for, or 0 for as long as it lives
     u16 emitterLifeTime;
     u16 particleLifeTime;
@@ -167,7 +167,8 @@ typedef struct {
     u8 scaleVariance;
     u8 lifeTimeVariance;
     u8 velocityVariance;
-    u8 unk43;
+    // The word's fourth byte, which the resource file leaves unused
+    u8 padding;
     u8 emissionInterval;
     u8 baseAlpha;
     // The part of their velocity particles keep each frame, as 384 more than this out of 512
@@ -189,7 +190,8 @@ typedef struct {
     // Where the polygon is drawn relative to the particle, in its own units
     fx16 polygonX;
     fx16 polygonY;
-    u32 unk54;
+    // A word the game can use for its own data
+    u32 userData;
 } SPLResourceHeader;
 
 // The animations of a particle's scale, color, alpha and texture over its life, which runs from 0 to 255. Each fades
@@ -331,6 +333,13 @@ typedef struct {
     u16 axis;
 } SPLSpinBehavior;
 
+// The axis a spin behavior turns the particles about
+enum {
+    SPL_SPIN_AXIS_X,
+    SPL_SPIN_AXIS_Y,
+    SPL_SPIN_AXIS_Z,
+};
+
 // A plane at height y that particles crossing it die at or bounce off
 typedef struct {
     fx32 y;
@@ -406,7 +415,8 @@ struct SPLEmitter {
     VecFx16 crossAxis2;
     SPLEmitterUpdateCallback updateCallback;
     void *userDataPtr;
-    u32 unk98;
+    // A word the game can use for its own data
+    u32 userData;
 };
 
 typedef struct {
@@ -436,8 +446,8 @@ typedef struct {
     u32 textureSize;
     u32 paletteOffset;
     u32 paletteSize;
-    u32 unk14;
-    u32 unk18;
+    u32 unused0;
+    u32 unused1;
     // The size of the header, texture and palette, to the next texture
     u32 resourceSize;
 } SPLTextureResource;
@@ -448,11 +458,11 @@ typedef struct {
     u32 version;
     u16 resourceCount;
     u16 textureCount;
-    u32 unkC;
+    u32 reserved0;
     u32 resourceSize;
     u32 textureSize;
     u32 textureOffset;
-    u32 unk1C;
+    u32 reserved1;
 } SPLFileHeader;
 
 // A texture of the resource file, once uploaded to VRAM
