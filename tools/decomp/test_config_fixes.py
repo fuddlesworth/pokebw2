@@ -361,6 +361,27 @@ class OrphanRelocationTests(ConfigFixFixture):
             "outside source module")
 
 
+class RelocChainReplayTests(ConfigFixFixture):
+    """A later fix at one address can replace the relocation an earlier fix changed, so a replay must skip it."""
+
+    def test_reloc_addend_before_link_time_const_replays_idempotently(self):
+        # config/fixes.txt records this pair at 0x02004fb0: reloc_addend 0x948, then link_time_const
+        # SDK_AUTOLOAD_LIST. dsd's pointer into the object becomes the linker script's word.
+        for version, addr, target in [("b2_us", 0x5010, 0x1000), ("w2_us", 0x6010, 0x2000)]:
+            self.relocs(version).write_text(f"from:{addr:#010x} kind:load to:{target:#010x} module:main\n")
+        fixes.save_fixes([(MODULE, 0x5010, "reloc_addend", "0x948"),
+                          (MODULE, 0x5010, "link_time_const", "SDK_AUTOLOAD_LIST")])
+        self.cli("apply")
+        for version, addr in [("b2_us", 0x5010), ("w2_us", 0x6010)]:
+            self.assertEqual(self.relocs(version).read_text(),
+                             f"from:{addr:#010x} kind:link_time_const(SDK_AUTOLOAD_LIST)\n")
+        # The addend fix's target is gone: a replay finds the address already at its last fix and changes nothing.
+        self.assertIsNone(fixes.plan_fix("b2_us", MODULE, 0x5010, "reloc_addend", "0x948"))
+        after = self.snapshot()
+        self.cli("apply")
+        self.assertEqual(self.snapshot(), after)
+
+
 
 class SectionPrefixTests(ConfigFixFixture):
     def prefix_fixture(self, crossing=False):

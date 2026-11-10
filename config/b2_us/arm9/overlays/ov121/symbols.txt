@@ -36,7 +36,6 @@ CasteliaRushBalloon_Hide kind:function(thumb,size=0x1a) addr:0x021efb64
 sPasserbyUpdateFuncs kind:data(any) addr:0x021efb80
 sPasserbyStartFuncs kind:data(any) addr:0x021efb88
 sBalloonY kind:data(any) addr:0x021efb90
-data_ov121_021efb91 kind:data(any) addr:0x021efb91 ambiguous
 sBalloonX kind:data(any) addr:0x021efba0
 CASTELIA_RUSH_PROC_DEF kind:data(any) addr:0x021efbb0 ambiguous
 sPasserbyTemplate kind:data(any) addr:0x021efbe0
