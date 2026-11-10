@@ -193,8 +193,8 @@ BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 search_mo
     gdsrap->send.condition.MonsNo = species;
     gdsrap->send.condition.BattleMode = BattleModeBitTbl[search_mode_no].mode;
     gdsrap->send.condition.BattleModeMask = BattleModeBitTbl[search_mode_no].mask;
-    gdsrap->send.condition.unk6 = a3;
-    gdsrap->send.condition.unk7 = a4;
+    gdsrap->send.condition.Country = a3;
+    gdsrap->send.condition.Area = a4;
     gdsrap->send.condition.ServerVersion = BATTLE_REC_VERSION;
     gdsrap->searchType = POKE_NET_GDS_BATTLEDATA_SEARCHTYPE_CONDITION;
     gdsrap->sendReq = POKE_NET_GDS_REQCODE_BATTLEDATA_SEARCH;
