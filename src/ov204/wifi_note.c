@@ -144,6 +144,10 @@ enum {
 
 #define FRIEND_LIST_PAGE_COUNT 4
 #define FRIEND_LIST_PAGE_SIZE 8
+// The page's two columns of four friends, which the cursor moves down before it goes across
+#define FRIEND_LIST_COLUMN_SIZE 4
+// The index of the cancel item that both of the roster's menus end with
+#define FRIEND_LIST_MENU_CANCEL 3
 // The cursor's positions after a page's friends
 enum {
     FRIEND_LIST_POS_RETURN = 8,
@@ -202,10 +206,21 @@ enum {
     FRIEND_INFO_INPUT_NEXT,
 };
 
+// The touch areas of a record, by their table: the arrow for the next friend, for the previous one, then the return
+// and X buttons
+enum {
+    FRIEND_INFO_TOUCH_NEXT,
+    FRIEND_INFO_TOUCH_PREV,
+    FRIEND_INFO_TOUCH_RETURN,
+    FRIEND_INFO_TOUCH_EXIT,
+};
+
 #define FRIEND_INFO_AREA_COUNT 3
 #define FRIEND_INFO_SCREEN_COUNT 4
 #define FRIEND_INFO_WINDOW_COUNT 10
 #define FRIEND_INFO_SCROLL_FRAMES 8
+// The tab to draw when only the row of tabs is loaded, with no tab over it
+#define FRIEND_INFO_TAB_NONE 0xff
 
 // The keys that take the cursor back from the touch screen
 #define WIFI_NOTE_KEYS (PAD_BUTTON_A | PAD_BUTTON_B | PAD_PLUS_KEY_MASK | PAD_BUTTON_X | PAD_BUTTON_Y)
@@ -458,6 +473,8 @@ enum {
     MENU_NO,
 };
 
+// The frames a color of a picked button's flash lasts
+#define BUTTON_FLASH_FRAMES 4
 // The flash of a picked button: its palette is dim, then lit, twice
 enum {
     BUTTON_SEQ_START,
@@ -2036,8 +2053,8 @@ static void WifiNoteFriendList_InitDraw(WifiNoteFriendList *list, WifiNoteData *
         list->menuItems[1][i].color = WIFI_NOTE_MENU_COLOR;
         list->menuItems[1][i].type = 0;
     }
-    list->menuItems[0][3].type = APP_TASKMENU_ITEM_RETURN;
-    list->menuItems[1][3].type = APP_TASKMENU_ITEM_RETURN;
+    list->menuItems[0][FRIEND_LIST_MENU_CANCEL].type = APP_TASKMENU_ITEM_RETURN;
+    list->menuItems[1][FRIEND_LIST_MENU_CANCEL].type = APP_TASKMENU_ITEM_RETURN;
     list->yesNoItems[0].str = GFL_MsgDataLoadStrbufNew(draw->msgData, WifiNote_Text_Yes);
     list->yesNoItems[0].color = WIFI_NOTE_MENU_COLOR;
     list->yesNoItems[0].type = 0;
@@ -2176,36 +2193,36 @@ static u32 WifiNoteFriendList_Keys(WifiNoteFriendList *list, WifiNoteData *data,
     turn = FALSE;
     if (GCTX_HIDGetTypedKeys() & PAD_KEY_UP) {
         if (list->pos == 0) {
-            list->pos = 3;
-        } else if (list->pos == 4) {
-            list->pos = 7;
+            list->pos = FRIEND_LIST_COLUMN_SIZE - 1;
+        } else if (list->pos == FRIEND_LIST_COLUMN_SIZE) {
+            list->pos = FRIEND_LIST_PAGE_SIZE - 1;
         } else {
             list->pos--;
         }
         moved = TRUE;
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_DOWN) {
-        if (list->pos == 3) {
+        if (list->pos == FRIEND_LIST_COLUMN_SIZE - 1) {
             list->pos = 0;
-        } else if (list->pos == 7) {
-            list->pos = 4;
+        } else if (list->pos == FRIEND_LIST_PAGE_SIZE - 1) {
+            list->pos = FRIEND_LIST_COLUMN_SIZE;
         } else {
             list->pos++;
         }
         moved = TRUE;
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_LEFT) {
-        if (list->pos < 4) {
-            list->pos += 4;
+        if (list->pos < FRIEND_LIST_COLUMN_SIZE) {
+            list->pos += FRIEND_LIST_COLUMN_SIZE;
             turn = TRUE;
             next = FALSE;
         } else {
-            list->pos -= 4;
+            list->pos -= FRIEND_LIST_COLUMN_SIZE;
         }
         moved = TRUE;
     } else if (GCTX_HIDGetTypedKeys() & PAD_KEY_RIGHT) {
-        if (list->pos < 4) {
-            list->pos += 4;
+        if (list->pos < FRIEND_LIST_COLUMN_SIZE) {
+            list->pos += FRIEND_LIST_COLUMN_SIZE;
         } else {
-            list->pos -= 4;
+            list->pos -= FRIEND_LIST_COLUMN_SIZE;
             turn = TRUE;
             next = TRUE;
         }
@@ -2412,7 +2429,7 @@ static u32 WifiNoteFriendList_UpdateMenu(WifiNoteFriendList *list, WifiNoteData 
     } else {
         return FRIEND_LIST_SEQ_MENU;
     }
-    if (pos == 3) {
+    if (pos == FRIEND_LIST_MENU_CANCEL) {
         data->touch = GCTX_HIDIsUsingTouch();
         seq = FRIEND_LIST_SEQ_MAIN;
     } else {
@@ -3088,15 +3105,16 @@ static u32 WifiNoteFriendInfo_Touch(WifiNoteFriendInfo *info, WifiNoteData *data
         return FRIEND_INFO_SEQ_MAIN;
     }
     *touched = TRUE;
-    if (hit == 0) {
+    if (hit == FRIEND_INFO_TOUCH_NEXT) {
         return WifiNoteFriendInfo_Decide(info, data, draw, FRIEND_INFO_INPUT_NEXT);
     }
-    if (hit == 1) {
+    if (hit == FRIEND_INFO_TOUCH_PREV) {
         return WifiNoteFriendInfo_Decide(info, data, draw, FRIEND_INFO_INPUT_PREV);
     }
-    if (hit == 2) {
+    if (hit == FRIEND_INFO_TOUCH_RETURN) {
         return WifiNoteFriendInfo_Decide(info, data, draw, FRIEND_INFO_INPUT_RETURN);
     }
+    // FRIEND_INFO_TOUCH_EXIT has no comparison; this last return is its default, the X button
     return WifiNoteFriendInfo_Decide(info, data, draw, FRIEND_INFO_INPUT_EXIT);
 }
 
@@ -3137,7 +3155,7 @@ static BOOL WifiNoteFriendInfo_Scroll(WifiNoteFriendInfo *info, WifiNoteData *da
     if (info->scrollCount > FRIEND_INFO_SCROLL_FRAMES) {
         WifiNoteFriendInfo_SetPage(info, data, draw, 0, info->page, heapId);
         WifiNoteDraw_SetArrowsAnimating(draw, TRUE);
-        WifiNoteFriendInfo_DrawTabs(info, draw, 0xff);
+        WifiNoteFriendInfo_DrawTabs(info, draw, FRIEND_INFO_TAB_NONE);
         return TRUE;
     }
     scroll = info->scrollCount * 256 / FRIEND_INFO_SCROLL_FRAMES;
@@ -3297,7 +3315,7 @@ static void WifiNoteFriendInfo_SetPage(WifiNoteFriendInfo *info, WifiNoteData *d
     }
 }
 
-// Draws the row of the record's tabs, and a tab over it as the current one unless it is 0xff
+// Draws the row of the record's tabs, and a tab over it as the current one unless it is FRIEND_INFO_TAB_NONE
 static void WifiNoteFriendInfo_DrawTabs(WifiNoteFriendInfo *info, WifiNoteDraw *draw, u32 tab) {
     if (info->tabLayout == 1) {
         GFL_BGSysLoadScrArea(2, 0, 20, 32, 4, draw->screens.screen[1]->rawData, 0, 12,
@@ -3306,7 +3324,7 @@ static void WifiNoteFriendInfo_DrawTabs(WifiNoteFriendInfo *info, WifiNoteDraw *
         GFL_BGSysLoadScrArea(2, 0, 20, 32, 4, draw->screens.screen[1]->rawData, 0, 20,
                              draw->screens.screen[1]->screenWidth / 8, draw->screens.screen[1]->screenHeight / 8);
     }
-    if (tab == 0xff) {
+    if (tab == FRIEND_INFO_TAB_NONE) {
         GFL_BGSysQueueScrLoad(2);
         return;
     }
@@ -3589,7 +3607,7 @@ static BOOL WifiNoteModeSelect_UpdateButton(WifiNoteModeSelect *select) {
         break;
     case BUTTON_SEQ_DIM_FIRST:
         select->buttonCount++;
-        if (select->buttonCount == 4) {
+        if (select->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteModeSelect_SetButtonPalette(select->cursor, 2);
             select->buttonCount = 0;
             select->buttonSeq++;
@@ -3597,7 +3615,7 @@ static BOOL WifiNoteModeSelect_UpdateButton(WifiNoteModeSelect *select) {
         break;
     case BUTTON_SEQ_LIT_FIRST:
         select->buttonCount++;
-        if (select->buttonCount == 4) {
+        if (select->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteModeSelect_SetButtonPalette(select->cursor, 1);
             select->buttonCount = 0;
             select->buttonSeq++;
@@ -3605,7 +3623,7 @@ static BOOL WifiNoteModeSelect_UpdateButton(WifiNoteModeSelect *select) {
         break;
     case BUTTON_SEQ_DIM_SECOND:
         select->buttonCount++;
-        if (select->buttonCount == 4) {
+        if (select->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteModeSelect_SetButtonPalette(select->cursor, 2);
             select->buttonCount = 0;
             select->buttonSeq++;
@@ -3613,7 +3631,7 @@ static BOOL WifiNoteModeSelect_UpdateButton(WifiNoteModeSelect *select) {
         break;
     case BUTTON_SEQ_LIT_SECOND:
         select->buttonCount++;
-        if (select->buttonCount == 4) {
+        if (select->buttonCount == BUTTON_FLASH_FRAMES) {
             select->buttonSeq = 0;
             select->buttonCount = 0;
             return FALSE;
@@ -3624,7 +3642,8 @@ static BOOL WifiNoteModeSelect_UpdateButton(WifiNoteModeSelect *select) {
 }
 
 static void WifiNoteFriendList_SetButtonPalette(u32 pos, u32 palette) {
-    GFL_BGSysSetScrPaletteNo(2, pos / 4 * 14 + 2, pos % 4 * 4 + 4, 14, 4, palette);
+    GFL_BGSysSetScrPaletteNo(2, pos / FRIEND_LIST_COLUMN_SIZE * 14 + 2, pos % FRIEND_LIST_COLUMN_SIZE * 4 + 4, 14, 4,
+                             palette);
     GFL_BGSysQueueScrLoad(2);
 }
 
@@ -3670,7 +3689,7 @@ static BOOL WifiNoteFriendList_UpdateButton(WifiNoteFriendList *list) {
         break;
     case BUTTON_SEQ_DIM_FIRST:
         list->buttonCount++;
-        if (list->buttonCount == 4) {
+        if (list->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteFriendList_SetButtonPalette(list->pos, 2);
             list->buttonCount = 0;
             list->buttonSeq++;
@@ -3678,7 +3697,7 @@ static BOOL WifiNoteFriendList_UpdateButton(WifiNoteFriendList *list) {
         break;
     case BUTTON_SEQ_LIT_FIRST:
         list->buttonCount++;
-        if (list->buttonCount == 4) {
+        if (list->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteFriendList_SetButtonPalette(list->pos, 1);
             list->buttonCount = 0;
             list->buttonSeq++;
@@ -3686,7 +3705,7 @@ static BOOL WifiNoteFriendList_UpdateButton(WifiNoteFriendList *list) {
         break;
     case BUTTON_SEQ_DIM_SECOND:
         list->buttonCount++;
-        if (list->buttonCount == 4) {
+        if (list->buttonCount == BUTTON_FLASH_FRAMES) {
             WifiNoteFriendList_SetButtonPalette(list->pos, 2);
             list->buttonCount = 0;
             list->buttonSeq++;
@@ -3694,7 +3713,7 @@ static BOOL WifiNoteFriendList_UpdateButton(WifiNoteFriendList *list) {
         break;
     case BUTTON_SEQ_LIT_SECOND:
         list->buttonCount++;
-        if (list->buttonCount == 4) {
+        if (list->buttonCount == BUTTON_FLASH_FRAMES) {
             list->buttonSeq = 0;
             list->buttonCount = 0;
             return FALSE;
