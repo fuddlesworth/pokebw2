@@ -59,8 +59,8 @@ every section.
   `file_compilers` and `file_flags`), `lib/dwcutilui/` (that utility's main loop, screens,
   keyboards and selectable objects, and the helpers under them: resources, messages, heap, OAM, cells, fades, text,
   input, interrupts, lists, OBJ characters, strings, VRAM banks, tasks and display, built with the game's compiler and
-  flags but unsigned `char`; the name is ours) and `lib/irc/` (the infrared link, overlay 31's last two files, built
-  with the game's compiler and flags; the name is ours).
+  flags but unsigned `char`; the name is ours) and `lib/irc/` (the SDK's libirc, from TwlSDK's add-ins: the infrared
+  link, overlay 31's last two files, built with the game's compiler and flags; the directory name is ours).
   NitroSDK and TwlSDK are built with the game's compiler, `dsi/1.1p1`, and DWC with `dsi/1.2` (only
   `DWCi_Acc_CreateTempLoginId` tells them apart, and it matches from 1.2 on): NitroSDK as ARM code by default, with most of
   its ARM9 main files Thumb through `file_flags`, and TwlSDK and DWC as Thumb by default, with their ARM files (the LTD
