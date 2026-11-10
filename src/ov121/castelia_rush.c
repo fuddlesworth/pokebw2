@@ -8,6 +8,7 @@
 #include "constants/script_text_banks.h"
 #include "field/castelia_rush.h"
 #include "field/field.h"
+#include "field/field_acmd.h"
 #include "field/field_actor.h"
 #include "field/field_msgbg.h"
 #include "field/zone.h"
@@ -320,7 +321,7 @@ static void Passerby_Init(CasteliaRushPasserby *passerby, MMSys *actorSys, u16 z
     passerby->id = index + PASSERBY_FIRST_ID;
     for (i = 0; i < config->scriptCount; i++) {
         if (objCode == config->scripts[i].objCode) {
-            passerby->scrId = config->scripts[i].scripts[rand % 6];
+            passerby->scrId = config->scripts[i].scripts[rand % NELEMS(config->scripts[i].scripts)];
             break;
         }
     }
@@ -531,23 +532,25 @@ static void CasteliaRush_FillLanes(CasteliaRushConfig *config, CasteliaRush *rus
     }
 }
 
+// The walk acmd of the crowd's step, the walk that takes the step's frames a tile: the frame count of a walk is in
+// its acmd's name, and ACMD_WALK_UPHILL_4F is the one that takes 6
 static u16 CasteliaRushConfig_GetWalkAcmd(const CasteliaRushConfig *config) {
     if (config->stepFrames == 2) {
-        return 20;
+        return ACMD_WALK_2F;
     }
     if (config->stepFrames == 4) {
-        return 16;
+        return ACMD_WALK_4F;
     }
     if (config->stepFrames == 6) {
-        return 76;
+        return ACMD_WALK_UPHILL_4F;
     }
     if (config->stepFrames == 8) {
-        return 12;
+        return ACMD_WALK_8F;
     }
     if (config->stepFrames == 16) {
-        return 8;
+        return ACMD_WALK_16F;
     }
-    return 12;
+    return ACMD_WALK_8F;
 }
 
 static void Passerby_StartWalker(CasteliaRushPasserby *passerby) {

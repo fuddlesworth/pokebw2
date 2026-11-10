@@ -2276,6 +2276,7 @@ overlays/ov107 0x021ef212 reloc_module overlay(36)
 overlays/ov111 0x021ef0a6 reloc_module overlay(36)
 overlays/ov120 0x021eefca reloc_module overlay(36)
 overlays/ov120 0x021ef0d6 reloc_module overlay(36)
+overlays/ov121 0x021efb91 remove_symbol
 overlays/ov121 0x021efb94 remove_reloc
 overlays/ov123 0x021eef70 reloc_module overlay(36)
 overlays/ov127 0x021ef132 reloc_module overlay(36)
