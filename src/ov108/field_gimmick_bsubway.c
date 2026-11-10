@@ -1,4 +1,5 @@
 #include "types.h"
+#include "constants/zones.h"
 #include "field/field.h"
 #include "field/field_effect.h"
 #include "field/field_g3d_mapper.h"
@@ -13,16 +14,17 @@
 // to 76 keeps this in its gimmick state's user data. Zone 75's train shakes the map now and then; the others load
 // the field effect of the train, which script plugin 1 starts and drives
 
+// The zone's work in the gimmick state, which the save block keeps; the reserved bytes are part of that layout and
+// this gimmick does not use them
 typedef struct {
-    u16 unk0;
-    // The zone's entry in sZoneGimmicks and sGimmickFuncs
-    u16 index;
+    u16 reserved00;
+    // The zone's entry in sGimmickFuncs
+    u16 handlerIndex;
     u16 gimmickId;
-    u16 unk6;
+    u8 reserved06[2];
     u32 zoneId;
     u16 heapId;
-    u16 unkE;
-    u8 unk10[12];
+    u8 reserved0E[14];
     GameSystem *gsys;
     Field *field;
     // A TrainWork, or zone 75's ShakeWork
@@ -70,8 +72,10 @@ static void ShakeMove(BSubwayGimmickWork *work, Field *field);
 static void GetZoneGimmick(u32 zoneId, u32 *gimmickId, u32 *index);
 
 static const BSubwayZoneGimmick sZoneGimmicks[10] = {
-    { 67, 0x10 }, { 68, 0x11 }, { 69, 0x12 }, { 70, 0x13 }, { 71, 0x14 },
-    { 72, 0x15 }, { 73, 0x16 }, { 75, 0x17 }, { 76, 0x18 }, { 74, 0x1f },
+    { ZONE_GEAR_STATION_2, 0x10 }, { ZONE_GEAR_STATION_3, 0x11 }, { ZONE_GEAR_STATION_4, 0x12 },
+    { ZONE_GEAR_STATION_5, 0x13 }, { ZONE_GEAR_STATION_6, 0x14 }, { ZONE_GEAR_STATION_7, 0x15 },
+    { ZONE_GEAR_STATION_8, 0x16 }, { ZONE_BATTLE_SUBWAY, 0x17 },  { ZONE_BATTLE_SUBWAY_2, 0x18 },
+    { ZONE_GEAR_STATION_9, 0x1f },
 };
 
 // clang-format off
@@ -105,14 +109,14 @@ void FieldGimmickBSubway_Setup(Field *field) {
     zoneId = Field_GetPlayerStateZoneID(field);
     GetZoneGimmick(zoneId, &gimmickId, &index);
     work = GimmickState_GetUserData(state, gimmickId);
-    work->index = index;
+    work->handlerIndex = index;
     work->gimmickId = gimmickId;
     work->zoneId = zoneId;
     work->heapId = heapId;
     work->gsys = gsys;
     work->field = field;
-    if (sGimmickFuncs[work->index].setup != NULL) {
-        sGimmickFuncs[work->index].setup(work, field);
+    if (sGimmickFuncs[work->handlerIndex].setup != NULL) {
+        sGimmickFuncs[work->handlerIndex].setup(work, field);
     }
 }
 
@@ -127,8 +131,8 @@ void FieldGimmickBSubway_End(Field *field) {
     state = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
     GetZoneGimmick(Field_GetPlayerStateZoneID(field), &gimmickId, &index);
     work = GimmickState_GetUserData(state, gimmickId);
-    if (sGimmickFuncs[work->index].end != NULL) {
-        sGimmickFuncs[work->index].end(work, field);
+    if (sGimmickFuncs[work->handlerIndex].end != NULL) {
+        sGimmickFuncs[work->handlerIndex].end(work, field);
     }
 }
 
@@ -192,7 +196,7 @@ void FieldGimmickBSubway_StopShake(Field *field) {
     ShakeWork *shake;
 
     state = GameData_GetGimmickState(GSYS_GetGameData(Field_GetGameSystem(field)));
-    if (Field_GetPlayerStateZoneID(field) == 75) {
+    if (Field_GetPlayerStateZoneID(field) == ZONE_BATTLE_SUBWAY) {
         work = GimmickState_GetUserData(state, 0x17);
         if (work != NULL) {
             shake = work->data;
