@@ -174,6 +174,11 @@ typedef struct {
     s16 y;
 } GeonetRegionPlace;
 
+// GeonetCountryPlace.state of a country that has regions of its own, whose places stand for it
+enum {
+    GEONET_COUNTRY_STATE_SUBDIVIDED = 2,
+};
+
 typedef struct {
     u8 bg;
     u8 x;
@@ -892,7 +897,7 @@ static void Geonet_LoadPlaces(GeonetWork *work) {
     country = countries + 1;
     for (i = 1; i < count; i++) {
         // A country with regions has its regions' places instead
-        if (country->state != 2) {
+        if (country->state != GEONET_COUNTRY_STATE_SUBDIVIDED) {
             Geonet_AddPlace(work, work->placeCount, country->x, country->y, i, 0);
             work->placeCount++;
         }

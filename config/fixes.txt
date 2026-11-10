@@ -2287,6 +2287,10 @@ overlays/ov128 0x021eefe0 remove_reloc
 overlays/ov129 0x021eef5c reloc_module overlay(36)
 overlays/ov129 0x021efb22 reloc_module overlay(36)
 overlays/ov129 0x021efc40 reloc_module overlay(36)
+overlays/ov129 0x021efe00 remove_symbol
+overlays/ov129 0x021f0001 remove_symbol
+overlays/ov129 0x021f0086 remove_symbol
+overlays/ov129 0x021f0105 remove_symbol
 overlays/ov132 0x021eee32 reloc_module overlay(36)
 overlays/ov132 0x021ef184 reloc_module overlay(36)
 overlays/ov133 0x021eedca reloc_module overlay(36)

@@ -53,13 +53,9 @@ sActorsA kind:data(any) addr:0x021efd74
 sActorsB kind:data(any) addr:0x021efd94
 sActorsC kind:data(any) addr:0x021efdc4
 sActorPositions kind:data(any) addr:0x021efdf4
-data_ov129_021efe00 kind:data(any) addr:0x021efe00 ambiguous
 sResourcesA kind:data(any) addr:0x021efe3c
 sActorsD kind:data(any) addr:0x021efe9c
 sResourcesB kind:data(any) addr:0x021efefc
 sResourcesC kind:data(any) addr:0x021eff80
-data_ov129_021f0001 kind:data(any) addr:0x021f0001 ambiguous
 sResourcesD kind:data(any) addr:0x021f0010
-data_ov129_021f0086 kind:data(any) addr:0x021f0086 ambiguous
-data_ov129_021f0105 kind:data(any) addr:0x021f0105 ambiguous
 data_ov129_021f0120 kind:data(any) addr:0x021f0120
