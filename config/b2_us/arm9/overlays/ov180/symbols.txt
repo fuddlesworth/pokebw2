@@ -10,7 +10,7 @@ IrcRankingStepMan_SetDone kind:function(thumb,size=0x6) addr:0x0219b094
 IrcRanking_StepFadeIn kind:function(thumb,size=0x68) addr:0x0219b09c
 IrcRanking_StepFadeOut kind:function(thumb,size=0x3a) addr:0x0219b104
 IrcRanking_StepInput kind:function(thumb,size=0x240) addr:0x0219b140
-IrcRanking_StepScrollToSelf kind:function(thumb,size=0x150) addr:0x0219b380
+IrcRanking_StepScrollToLatest kind:function(thumb,size=0x150) addr:0x0219b380
 IrcRankingBG_Init kind:function(thumb,size=0x1ec) addr:0x0219b4d0
 IrcRankingBG_Free kind:function(thumb,size=0x74) addr:0x0219b6bc
 IrcRankingBG_VBlank kind:function(thumb,size=0x8) addr:0x0219b730
@@ -31,7 +31,7 @@ IrcRankingList_Free kind:function(thumb,size=0x88) addr:0x0219bac0
 IrcRankingList_Settle kind:function(thumb,size=0x7c) addr:0x0219bb48
 IrcRankingList_Move kind:function(thumb,size=0xbc) addr:0x0219bbc4
 IrcRankingList_GetScroll kind:function(thumb,size=0xc) addr:0x0219bc80
-IrcRankingList_FindSelf kind:function(thumb,size=0x48) addr:0x0219bc8c
+IrcRankingList_FindLatest kind:function(thumb,size=0x48) addr:0x0219bc8c
 IrcRankingList_GetScrollMax kind:function(thumb,size=0xc) addr:0x0219bcd4
 IrcRankingList_Redraw kind:function(thumb,size=0x124) addr:0x0219bce0
 IrcRankingList_Transfer kind:function(thumb,size=0x48) addr:0x0219be04
@@ -70,7 +70,6 @@ IrcRankingLabel_Update kind:function(thumb,size=0x2e) addr:0x0219cba0
 IrcRankingLabel_GetPosition kind:function(thumb,size=0x7a) addr:0x0219cbd0
 IRC_RANKING_PROC_FUNCTIONS kind:data(any) addr:0x0219cc4c
 sIrcRankingUpVector kind:data(any) addr:0x0219cc58
-data_ov180_0219cc59 kind:data(any) addr:0x0219cc59 ambiguous
 sIrcRankingLCDConfig kind:data(any) addr:0x0219cc64
 sIrcRankingClActSetup kind:data(any) addr:0x0219cc74
 sIrcRankingLabelDefs kind:data(any) addr:0x0219cc90
