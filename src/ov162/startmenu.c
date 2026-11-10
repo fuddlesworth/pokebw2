@@ -1864,7 +1864,7 @@ static void StartMenu_OpenYesNo(StartMenuWork *wk) {
     setup.x = 24;
     setup.y = 13;
     setup.palette = 15;
-    setup.unk4 = 0;
+    setup.frameChar = 0;
     wk->dialog = ShopUI_CreateConfirmDialog(&setup, 1, 14, 0, HEAPID_STARTMENU);
 }
 

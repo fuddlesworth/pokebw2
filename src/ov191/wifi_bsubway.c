@@ -1830,7 +1830,7 @@ static void WifiBSubwayView_SetNumber(WifiBSubwayView *view, u32 index, u32 numb
 }
 
 static void WifiBSubwayView_StartYesNo(WifiBSubwayView *view) {
-    sWifiBSubwayYesNoSetup.unk4 = view->yesNoFrameChars;
+    sWifiBSubwayYesNoSetup.frameChar = view->yesNoFrameChars;
     view->yesNo =
         ShopUI_CreateConfirmDialog(&sWifiBSubwayYesNoSetup, view->yesNoFrameChars, FRAME_PALETTE, 0, view->heapId);
 }

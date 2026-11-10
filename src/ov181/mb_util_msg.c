@@ -391,7 +391,7 @@ void MBUtilMsg_CreateConfirm(MBUtilMsg *msg, u32 unused) {
     msg->confirmSetup.x = 24;
     msg->confirmSetup.y = 13;
     msg->confirmSetup.palette = 14;
-    msg->confirmSetup.unk4 = 0;
+    msg->confirmSetup.frameChar = 0;
     msg->confirm = ShopUI_CreateConfirmDialog(&msg->confirmSetup, 1, 13, 0, msg->heapId);
 }
 
