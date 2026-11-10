@@ -78,6 +78,15 @@ GameEvent *JoinAvenueNameEntry_Create(u16 target, GameSystem *gsys, u16 *result,
 GameEvent *Regulation_CreatePartyCheckTask(GameSystem *gsys, u32 pickFromParty, Regulation *regulation, u16 *result,
                                            HeapID heapId);
 u32 Regulation_CheckTeams(GameSystem *gsys, u32 pickFromParty, Regulation *regulation, HeapID heapId);
+// The team that enters: the party, the Battle Box, cancel, or neither when neither can enter or the team picked fails
+// the regulation. The event Regulation_CreatePartyCheckTask returns writes the player's choice to its result in its
+// callback; when it returns NULL there is no choice to make and it has written the result itself
+enum {
+    TEAM_SELECT_PARTY,
+    TEAM_SELECT_BATTLE_BOX,
+    TEAM_SELECT_CANCEL,
+    TEAM_SELECT_NONE,
+};
 // PartySelectList_Delete's result, the row the player picked
 enum {
     PARTY_SELECT_PARTY,

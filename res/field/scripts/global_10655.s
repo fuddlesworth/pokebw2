@@ -627,7 +627,7 @@ L_08CC:
     VMStackPushConst 3
     VMStackCmp CMP_EQ
     VMJumpIf CMP_STACK, L_0970
-    Plugin6_Cmd1058 0x8010
+    GetCantEnterMessage 0x8010
     WorkCmpConst 0x8010, 60
     VMJumpIf CMP_EQ, L_08F6
     VMJump L_0904
