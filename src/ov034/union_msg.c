@@ -260,10 +260,10 @@ static const ListMenuRow sMenuFourLauncher[3] = {
 
 // clang-format off
 static const ListMenuRow sMenuFormat[5] = {
-    { UnionRoomMessages_Text_SingleBattle, { 0x0 } },
-    { UnionRoomMessages_Text_DoubleBattle, { 0x1 } },
-    { UnionRoomMessages_Text_TripleBattle, { 0x2 } },
-    { UnionRoomMessages_Text_RotationBattle, { 0x3 } },
+    { UnionRoomMessages_Text_SingleBattle, { UNION_BATTLE_FORMAT_SINGLE } },
+    { UnionRoomMessages_Text_DoubleBattle, { UNION_BATTLE_FORMAT_DOUBLE } },
+    { UnionRoomMessages_Text_TripleBattle, { UNION_BATTLE_FORMAT_TRIPLE } },
+    { UnionRoomMessages_Text_RotationBattle, { UNION_BATTLE_FORMAT_ROTATION } },
     { UnionRoomMessages_Text_Cancel_5, { .sub = sMenuTwo } },
 };
 
@@ -324,7 +324,7 @@ static const ListMenuRequest sMenuRulesRequest = { 3, 3, 0, 0x0d, 0,    0, 1, 0x
 
 static const struct {
     u8 count;
-    u8 unk01[3];
+    u8 pad[3];
 } sActivityPlayerCounts[27] = {
     { 2 }, { 2 }, { 2 }, { 5 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 },
     { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 2 }, { 4 }, { 4 }, { 4 }, { 4 }, { 2 }, { 5 }, { 5 },
@@ -819,11 +819,11 @@ u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL
 
     if (ruleSel[3] == UNION_RULE_MENU_PLAYERS) {
         if (ret == (u32)sMenuTwo) {
-            if (ruleSel[0] == 4) {
-                ruleSel[0] = 0;
+            if (ruleSel[0] == UNION_BATTLE_FORMAT_MULTI) {
+                ruleSel[0] = UNION_BATTLE_FORMAT_SINGLE;
             }
         } else if (ret == (u32)sMenuFour) {
-            ruleSel[0] = 4;
+            ruleSel[0] = UNION_BATTLE_FORMAT_MULTI;
         }
     }
 
@@ -834,7 +834,7 @@ u32 UnionMsg_UpdateRuleMenu(UnionSystem *unisys, BOOL *picked, u8 *ruleSel, BOOL
         }
         switch (ruleSel[3]) {
         case UNION_RULE_MENU_FORMAT:
-            if (ret < 5) {
+            if (ret < UNION_BATTLE_FORMAT_MAX) {
                 ruleSel[0] = ret;
                 *picked = TRUE;
                 return UNION_RULE_MENU_TWO;
