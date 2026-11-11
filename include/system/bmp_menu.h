@@ -82,7 +82,9 @@ typedef struct {
     u8 x;
     u8 y;
     u8 palette;
-    u16 unk4;
+    // The frame's character position: ov191 stores view->yesNoFrameChars here and passes that same value as
+    // ShopUI_CreateConfirmDialog's frameChar; ov190 passes the field itself
+    u16 frameChar;
 } ConfirmDialogSetup;
 
 // The yes choice returned by ConfirmDialog_Update; no/B and waiting use BMPMENU_CANCEL and BMPMENU_NULL.

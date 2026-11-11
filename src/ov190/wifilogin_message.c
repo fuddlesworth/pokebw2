@@ -367,7 +367,7 @@ u8 WifiLoginMessage_GetNoticeBG(u32 style) {
 BmpMenu *WifiLoginMessage_CreateConfirmDialog(WifiLoginMessage *msg, u32 layout, u32 cursorPos) {
     ConfirmDialogSetup setup = { 1, 0, 0, 11, 0 };
 
-    setup.unk4 = msg->frameChars;
+    setup.frameChar = msg->frameChars;
     switch (layout) {
     case WIFILOGIN_MENU_LAYOUT_HIGH:
         setup.x = 24;
@@ -378,5 +378,5 @@ BmpMenu *WifiLoginMessage_CreateConfirmDialog(WifiLoginMessage *msg, u32 layout,
         setup.y = 19;
         break;
     }
-    return ShopUI_CreateConfirmDialog(&setup, setup.unk4, 12, cursorPos, msg->heapId);
+    return ShopUI_CreateConfirmDialog(&setup, setup.frameChar, 12, cursorPos, msg->heapId);
 }

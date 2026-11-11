@@ -985,7 +985,7 @@ static void BtlRecSel_InitYesNo(BtlRecSelParam *param, BtlRecSelWork *work) {
     work->yesNoSetup.x = 24;
     work->yesNoSetup.y = 13;
     work->yesNoSetup.palette = PALETTE_YESNO;
-    work->yesNoSetup.unk4 = chars;
+    work->yesNoSetup.frameChar = chars;
 }
 
 static void BtlRecSel_FreeYesNo(BtlRecSelParam *param, BtlRecSelWork *work) {

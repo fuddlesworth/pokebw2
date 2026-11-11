@@ -46,6 +46,9 @@
 
 #define ACTOR_COUNT 6
 
+// The records' entry that counts the Pokémon nicknamed
+#define RECORD_NICKNAMES 30
+
 // The steps of the process
 enum {
     EGG_DEMO_WAIT,
@@ -190,7 +193,7 @@ static BOOL EggDemo_Init(GameProc *proc, u32 *state, void *param, void *work) {
     wk->dialogState = DIALOG_CLOSED;
     EggDemo_InitGraphics(param, wk);
     EggDemo_InitBGM(param, wk);
-    GFL_FadeSet(3, 16, 16, 0);
+    GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 16, 0);
     wk->procManager = CreateGameProcManager(wk->heapId);
     GFL_NetSetIconScreen(0, wk->heapId);
     return TRUE;
@@ -230,7 +233,7 @@ static BOOL EggDemo_Main(GameProc *proc, u32 *state, void *param, void *work) {
     case EGG_DEMO_WAIT:
         if (wk->wait == 0) {
             wk->state = EGG_DEMO_FADE_IN;
-            GFL_FadeSet(3, 16, 0, -16);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, -16);
         } else {
             wk->wait--;
         }
@@ -312,12 +315,12 @@ static BOOL EggDemo_Main(GameProc *proc, u32 *state, void *param, void *work) {
         answer = EggDemo_GetAnswer(param, wk);
         if (answer == ANSWER_NO) {
             wk->state = EGG_DEMO_WAIT_BGM_END;
-            GFL_FadeSet(3, 0, 16, 2);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 2);
             EggDemo_FadeOutBGM(param, wk);
             GCTX_HIDSetUsingTouch(0);
         } else if (answer == ANSWER_YES) {
             wk->state = EGG_DEMO_WAIT_FADE_NAME;
-            GFL_FadeSet(3, 0, 16, 0);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
             GCTX_HIDSetUsingTouch(0);
         }
         break;
@@ -339,7 +342,7 @@ static BOOL EggDemo_Main(GameProc *proc, u32 *state, void *param, void *work) {
                 PokeParty_GetParam(demoParam->pkm, PKM_PARAM_NICKNAME, oldName);
                 PokeParty_SetParam(demoParam->pkm, PKM_PARAM_NICKNAME, (u32)name);
                 if (NameEntryParam_CompareName(wk->nameEntryParam, oldName) == FALSE) {
-                    RecordAddOne(GameData_GetRecords(demoParam->gameData), 30);
+                    RecordAddOne(GameData_GetRecords(demoParam->gameData), RECORD_NICKNAMES);
                 }
                 GFL_StrBufFree(oldName);
                 GFL_StrBufFree(name);
@@ -708,7 +711,7 @@ static void EggDemo_InitDialog(EggDemoParam *param, EggDemoWork *wk) {
     wk->dialogSetup.x = 24;
     wk->dialogSetup.y = 13;
     wk->dialogSetup.palette = 1;
-    wk->dialogSetup.unk4 = pos;
+    wk->dialogSetup.frameChar = pos;
     wk->answer = ANSWER_NONE;
 }
 
