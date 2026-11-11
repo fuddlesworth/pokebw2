@@ -289,6 +289,10 @@ enum {
 // The flags of the positions of the kind type around pos
 #define BTL_EXPOS_FLAGS(type, pos) (((type) << 8) | (pos))
 
+// The client ID that means no client: what GetAllyClientID returns when that client does not exist, and what a
+// position or a list holds while it has no client
+#define BTL_CLIENT_NONE 4
+
 u8 ExpandPosFlags(BtlMainModule *mainModule, u16 posFlags, u8 *out);
 u8 GetOpposingPos(BtlMainModule *mainModule, u8 pos, u8 index);
 u8 ExpandPosFlagsToMonIDs(BtlMainModule *mainModule, BtlPokeCon *pokeCon, u16 posFlags, u8 *monIds);
