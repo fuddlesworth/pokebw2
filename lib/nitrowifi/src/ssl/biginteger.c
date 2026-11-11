@@ -116,18 +116,25 @@ static void CPSi_big_sub_small(u16 *dst, const u16 *src, u32 value, int n) {
     }
 }
 
+// CPSi_big_compare's result
+enum {
+    BIGINT_CMP_LESS = -1,
+    BIGINT_CMP_EQUAL,
+    BIGINT_CMP_GREATER,
+};
+
 static int CPSi_big_compare(const u16 *a, const u16 *b, int n) {
     int i;
 
     for (i = n - 1; i >= 0; i--) {
         if (a[i] > b[i]) {
-            return 1;
+            return BIGINT_CMP_GREATER;
         }
         if (a[i] < b[i]) {
-            return -1;
+            return BIGINT_CMP_LESS;
         }
     }
-    return 0;
+    return BIGINT_CMP_EQUAL;
 }
 
 // Adds value into digits starting at index, propagating the carry, without touching digits below index
@@ -378,10 +385,10 @@ static void CPSi_big_montmult(u16 *acc, u16 *scratch, const u16 *multiplier, int
     MI_CpuFill8(acc + n - modLen, 0, modLen * 2);
 
     switch (CPSi_big_compare(acc, modulus, n)) {
-    case 0:
+    case BIGINT_CMP_EQUAL:
         MI_CpuFill8(acc, 0, n * 2);
         break;
-    case 1:
+    case BIGINT_CMP_GREATER:
         CPSi_big_sub(acc, acc, modulus, n);
         break;
     }
