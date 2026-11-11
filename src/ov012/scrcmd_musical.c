@@ -65,6 +65,14 @@ BOOL ScriptNative_MusicalCommBootWait(VM *vm, void *arg);
 BOOL ScriptNative_MusicalCommEndWait(VM *vm, void *arg);
 BOOL ScriptNative_MusicalPokesRecvWait(VM *vm, void *arg);
 
+// What Scrcmd_Musical_MusicalCall does: plays the show with the party Pokémon at the argument, alone or online, or
+// opens the photos of the shows played
+enum {
+    MUSICAL_CALL_OFFLINE_SHOW = 0,
+    MUSICAL_CALL_ONLINE_SHOW = 1,
+    MUSICAL_CALL_PHOTO = 2,
+};
+
 BOOL Scrcmd_Musical_MusicalCall(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
@@ -82,9 +90,9 @@ BOOL Scrcmd_Musical_MusicalCall(VM *vm, FieldScriptEnv *env) {
     ScriptWork_GetFieldWork(work);
     arg = ScriptReadAny(vm, env);
     kind = VM_Read8(vm);
-    if (kind <= 1) {
+    if (kind <= MUSICAL_CALL_ONLINE_SHOW) {
         commWork = GameData_GetMusicalCommWork(gameData);
-        online = kind != 0 ? TRUE : FALSE;
+        online = kind != MUSICAL_CALL_OFFLINE_SHOW ? TRUE : FALSE;
         event = GameEvent_Create(gsys, NULL, MusicalCallEvent_Callback, sizeof(MusicalCallEvent));
         data = GameEvent_GetData(event);
         MI_CpuFill8(data, 0, sizeof(MusicalCallEvent));
@@ -164,7 +172,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
     gameData = FieldScriptEnv_GetGameData(env);
     save = getMusicalInfoBlkAddress(gameData);
     event = NULL;
-    if (kind >= 30) {
+    if (kind >= MUSICAL_INFO_PLAYER_POS) {
         commWork = GameData_GetMusicalCommWork(gameData);
         if (commWork == NULL) {
             *result = 0;
@@ -173,16 +181,16 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         event = commWork->event;
     }
     switch (kind) {
-    case 0:
+    case MUSICAL_INFO_SHOW_COUNT:
         *result = MusicalSave_GetShowCount(save);
         break;
-    case 1:
+    case MUSICAL_INFO_WIN_COUNT:
         *result = MusicalSave_GetWinCount(save);
         break;
-    case 2:
+    case MUSICAL_INFO_LAST_POINTS:
         *result = MusicalSave_GetLastPoints(save);
         break;
-    case 3:
+    case MUSICAL_INFO_MOST_PROP_KIND:
         best = 0;
         mostIndex = 4;
         for (i = 0; i < 4; i++) {
@@ -196,13 +204,13 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         }
         *result = mostIndex;
         break;
-    case 4:
+    case MUSICAL_INFO_PROGRAM:
         *result = MusicalSave_GetProgram(save);
         break;
-    case 5:
+    case MUSICAL_INFO_SET_PROGRAM:
         MusicalSave_SetProgram(save, arg);
         break;
-    case 6:
+    case MUSICAL_INFO_HAS_WORN_PROP:
         *result = 0;
         for (i = 0; i < 4; i++) {
             if (MusicalSave_GetPropKindCount(save, i) != 0) {
@@ -210,14 +218,14 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
             }
         }
         break;
-    case 7:
+    case MUSICAL_INFO_HAS_SHOT:
         if (MusicalSave_GetShot(save)->month == 0) {
             *result = FALSE;
         } else {
             *result = TRUE;
         }
         break;
-    case 8:
+    case MUSICAL_INFO_LEAST_PROP_KIND:
         best = 0xff;
         fewestIndex = 4;
         for (i = 0; i < 4; i++) {
@@ -229,7 +237,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         }
         *result = fewestIndex;
         break;
-    case 9:
+    case MUSICAL_INFO_FIRST_MOST_PROP_KIND:
         best = 0;
         firstIndex = 4;
         for (i = 0; i < 4; i++) {
@@ -241,7 +249,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         }
         *result = firstIndex;
         break;
-    case 10:
+    case MUSICAL_INFO_SECOND_MOST_PROP_KIND:
         topIndex = 4;
         secondValue = 0;
         most = 0;
@@ -261,7 +269,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         }
         *result = second;
         break;
-    case 11:
+    case MUSICAL_INFO_CAN_JOIN_COUNT:
         count = 0;
         party = GameData_GetParty(gameData);
         value = PokeParty_GetPkmCount(party);
@@ -272,61 +280,61 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         }
         *result = count;
         break;
-    case 12:
+    case MUSICAL_INFO_CAN_JOIN_POKE:
         if (MusicalSystem_CanJoin(PokeParty_GetPkm(GameData_GetParty(gameData), arg)) == TRUE) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 13:
+    case MUSICAL_INFO_HAS_EQUIP:
         entries = MusicalSave_GetEquips(save);
         *result = 0;
         for (i = 0; i < 8; i++) {
-            if (entries[i].pos != 10) {
+            if (entries[i].pos != MUSICAL_SAVED_EQUIP_NONE) {
                 *result = 1;
             }
         }
         break;
-    case 14:
+    case MUSICAL_INFO_HAS_DIST_PROGRAM:
         if (MusicalSave_HasDistProgram(save) == TRUE) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 15:
+    case MUSICAL_INFO_HAS_PROP:
         if (MusicalSave_HasProp(save, arg) == TRUE) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 30:
+    case MUSICAL_INFO_PLAYER_POS:
         *result = MusicalEvent_GetPlayerPos(event);
         break;
-    case 31:
+    case MUSICAL_INFO_MAX_POINTS:
         *result = MusicalEvent_GetMaxPoints(event);
         break;
-    case 32:
+    case MUSICAL_INFO_MIN_POINTS:
         *result = MusicalEvent_GetMinPoints(event);
         break;
-    case 33:
+    case MUSICAL_INFO_POINTS:
         *result = MusicalEvent_GetPoints(event, arg);
         break;
-    case 35:
+    case MUSICAL_INFO_ENTRY_INDEX:
         *result = MusicalEvent_GetEntryIndex(event, arg);
         break;
-    case 36:
+    case MUSICAL_INFO_TOP_KIND:
         *result = MusicalEvent_GetTopPropKind(event);
         break;
-    case 37:
+    case MUSICAL_INFO_POS_AT_RANK:
         *result = MusicalEvent_GetPosAtRank(event, arg);
         break;
-    case 38:
+    case MUSICAL_INFO_BEST_PROP_KIND:
         *result = MusicalEvent_GetBestPropKind(event, arg);
         break;
-    case 39:
+    case MUSICAL_INFO_OWNER_TRAINER_CLASS:
         *result = MusicalEvent_GetOwnerTrainerClass(event, arg);
         break;
     }
@@ -341,7 +349,7 @@ BOOL Scrcmd_Musical_MusicalGetAudienceGift(VM *vm, FieldScriptEnv *env) {
         MusicalSave_GetAudienceGift(getMusicalInfoBlkAddress(FieldScriptEnv_GetGameData(env)), arg);
 
     switch (kind) {
-    case 0:
+    case MUSICAL_GIFT_HAS_GIFT:
         switch (entry->topKind) {
         case 0:
             *result = 24;
@@ -360,16 +368,16 @@ BOOL Scrcmd_Musical_MusicalGetAudienceGift(VM *vm, FieldScriptEnv *env) {
             break;
         }
         break;
-    case 1:
+    case MUSICAL_GIFT_COMMENT:
         *result = arg + 5;
         break;
-    case 2:
+    case MUSICAL_GIFT_COMMENT_WITH_PROP:
         *result = arg + 15;
         break;
-    case 3:
+    case MUSICAL_GIFT_HAS_PROP:
         *result = entry->hasProp;
         break;
-    case 4:
+    case MUSICAL_GIFT_PROP:
         *result = entry->prop;
         break;
     }
@@ -404,16 +412,16 @@ BOOL Scrcmd_Musical_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
     u8 points[4];
 
     switch (kind) {
-    case 0:
+    case MUSICAL_WORD_NAME:
         save = getMusicalInfoBlkAddress(FieldScriptEnv_GetGameData(env));
         str = GFL_StrBufCreate(0x26, heapId);
         GFL_StrBufLoadFixedString(str, MusicalSave_GetName(save), 0x26);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         break;
-    case 1:
-    case 8:
-        if (kind == 1) {
+    case MUSICAL_WORD_PROP_NAME:
+    case MUSICAL_WORD_PROP_NAME_ARTICLE:
+        if (kind == MUSICAL_WORD_PROP_NAME) {
             msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_PROP_NAMES, heapId);
         } else {
             msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_MUSICAL, heapId);
@@ -423,32 +431,32 @@ BOOL Scrcmd_Musical_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         break;
-    case 2:
+    case MUSICAL_WORD_PROGRAM_TITLE:
         str = MusicalEvent_GetProgramTitle(GameData_GetMusicalCommWork(gameData)->event, heapId);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         break;
-    case 3:
+    case MUSICAL_WORD_AUDIENCE:
         msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         break;
-    case 4:
+    case MUSICAL_WORD_STYLE:
         msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg + 4);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         break;
-    case 5:
+    case MUSICAL_WORD_OWNER_NAME:
         MusicalEvent_WordSetOwnerName(GameData_GetMusicalCommWork(gameData)->event, arg, wordSet, wordIndex);
         break;
-    case 6:
+    case MUSICAL_WORD_POKE_NAME:
         MusicalEvent_WordSetPokeName(GameData_GetMusicalCommWork(gameData)->event, arg, wordSet, wordIndex);
         break;
-    case 7:
+    case MUSICAL_WORD_RANKING:
         musical = getMusicalInfoBlkAddress(FieldScriptEnv_GetGameData(env));
         for (i = 0; i < 4; i++) {
             order[i] = i;
@@ -538,7 +546,7 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
     result = ScriptReadVar(vm, env);
     lost = FALSE;
     commWork = NULL;
-    if (kind != 0 && kind != 21) {
+    if (kind != MUSICAL_COMM_CREATE && kind != MUSICAL_COMM_CHECK_NET_ERROR) {
         commWork = GameData_GetMusicalCommWork(gameData);
         if (commWork->event != NULL) {
             MusicalEvent_CheckNetError(commWork->event);
@@ -548,32 +556,32 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
         }
     }
     switch (kind) {
-    case 0:
+    case MUSICAL_COMM_CREATE:
         MusicalCommWork_Create(work, gameData);
         break;
-    case 1:
+    case MUSICAL_COMM_FREE:
         MusicalCommWork_Free(commWork, gameData);
         break;
-    case 10:
+    case MUSICAL_COMM_BOOT:
         MusicalCommWork_BootComm(commWork, gsys, GSYS_GetGameCommSystem(gsys), arg);
         break;
-    case 11:
+    case MUSICAL_COMM_QUIT:
         MusicalCommWork_QuitComm(commWork);
         VM_SetNativeCallback(vm, ScriptNative_MusicalCommEndWait);
         return TRUE;
-    case 12:
+    case MUSICAL_COMM_LEADER_MENU:
         commWork->result = result;
         commWork->menu = CommEntryMenu_Create(GetGameDataPlayerInfo(gameData), field, 2, 4, HEAPID_GAMEEVENT,
                                               COMM_ENTRY_MENU_LEADER, COMM_ENTRY_MENU_MUSICAL, NULL);
         VM_SetNativeCallback(vm, ScriptNative_MusicalLeaderMenuWait);
         return TRUE;
-    case 13:
+    case MUSICAL_COMM_SELECT_LEADER_MENU:
         commWork->result = result;
         commWork->menu = CommEntryMenu_Create(GetGameDataPlayerInfo(gameData), field, 2, 4, HEAPID_GAMEEVENT,
                                               COMM_ENTRY_MENU_SELECT_LEADER, COMM_ENTRY_MENU_MUSICAL, NULL);
         VM_SetNativeCallback(vm, ScriptNative_MusicalSelectLeaderMenuWait);
         return TRUE;
-    case 14:
+    case MUSICAL_COMM_SEND_TIMING:
         allowed = TRUE;
         if (commWork->comm != NULL && arg == 0x8e) {
             for (i = 0; i < 4; i++) {
@@ -594,22 +602,22 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
             return TRUE;
         }
         break;
-    case 15:
+    case MUSICAL_COMM_WAIT_SCRIPT:
         if (commWork->comm != NULL && !lost) {
             VM_SetNativeCallback(vm, ScriptNative_MusicalScriptRecvWait);
             return TRUE;
         }
         break;
-    case 16:
+    case MUSICAL_COMM_WAIT_BOOT:
         VM_SetNativeCallback(vm, ScriptNative_MusicalCommBootWait);
         return TRUE;
-    case 17:
+    case MUSICAL_COMM_WAIT_POKES:
         if (commWork->comm != NULL && !lost) {
             VM_SetNativeCallback(vm, ScriptNative_MusicalPokesRecvWait);
             return TRUE;
         }
         break;
-    case 18:
+    case MUSICAL_COMM_START_IRC_MATCH:
         holder = GFL_HeapAllocate(HEAPID_TAIL(HEAPID_GAMEEVENT), sizeof(MusicalIrcMatchHolder), TRUE,
                                   "scrcmd_musical.c", 1004);
         holder->env = env;
@@ -627,22 +635,22 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
                                        gsys, field, OVERLAY_IRCBATTLEMATCH, &IRCBATTLEMATCH_PROC_FUNCTIONS,
                                        &commWork->ircMatch, MusicalIrcMatch_OnReturn, holder));
         return TRUE;
-    case 19:
+    case MUSICAL_COMM_IS_LOST:
         if (commWork->comm != NULL && lost == TRUE) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 20:
+    case MUSICAL_COMM_IS_CONNECTED:
         if (commWork->comm != NULL) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 21:
-    case 22:
+    case MUSICAL_COMM_CHECK_NET_ERROR:
+    case MUSICAL_COMM_CHECK_NET_ERROR_2:
         if (GFL_NetErrCheck()) {
             GSYS_SetNetErrorPending(gsys, 1);
             *result = 1;
@@ -652,7 +660,7 @@ BOOL Scrcmd_Musical_MusicalComm(VM *vm, FieldScriptEnv *env) {
             *result = FALSE;
         }
         break;
-    case 100:
+    case MUSICAL_COMM_NONE:
         break;
     }
     return FALSE;
@@ -704,29 +712,37 @@ void MusicalCommWork_QuitComm(MusicalCommWork *work) {
     }
 }
 
+// The steps of the musical call's event: it runs the show, ends the communication and frees the work
+enum {
+    MUSICAL_CALL_STEP_CHAIN_EVENT,
+    MUSICAL_CALL_STEP_QUIT_COMM,
+    MUSICAL_CALL_STEP_WAIT_COMM_END,
+    MUSICAL_CALL_STEP_FREE,
+};
+
 GameEventReturnCode MusicalCallEvent_Callback(GameEvent *event, u32 *state, void *arg) {
     MusicalCallEvent *data = arg;
     GameData *gameData = GSYS_GetGameData(GameEvent_GetGameSystem(event));
     GameCommSys *comm;
 
     switch (*state) {
-    case 0:
+    case MUSICAL_CALL_STEP_CHAIN_EVENT:
         GameEvent_ChainNext(event, data->event);
         (*state)++;
         break;
-    case 1:
+    case MUSICAL_CALL_STEP_QUIT_COMM:
         GameData_GetFieldSoundSystem(gameData);
         MusicalCommWork_QuitComm(data->work);
         (*state)++;
         break;
-    case 2:
+    case MUSICAL_CALL_STEP_WAIT_COMM_END:
         comm = GSYS_GetGameCommSystem(GameEvent_GetGameSystem(event));
         if (data->online && GameCommSys_BootCheck(comm)) {
             break;
         }
         (*state)++;
         break;
-    case 3:
+    case MUSICAL_CALL_STEP_FREE:
         if (GFL_NetIsEnded() == TRUE || !data->online) {
             if (data->online == TRUE) {
                 GSYS_TryBootGameComm(GameEvent_GetGameSystem(event));
@@ -746,6 +762,7 @@ GameEventReturnCode MusicalDressUpEvent_Callback(GameEvent *event, u32 *state, v
 
     GSYS_GetGameData(gsys);
     GSYS_GetField(gsys);
+    // States 0 to 2 and 5 only advance the state, so they keep their numbers: nothing tells them apart
     switch (*state) {
     case 0:
         (*state)++;
@@ -906,7 +923,7 @@ BOOL ScriptNative_MusicalCommBootWait(VM *vm, void *arg) {
     gameData = FieldScriptEnv_GetGameData(env);
     comm = GSYS_GetGameCommSystem(gsys);
     commWork = GameData_GetMusicalCommWork(gameData);
-    if (GameCommSys_BootCheck(comm) == 4) {
+    if (GameCommSys_BootCheck(comm) == GAME_COMM_NO_MUSICAL) {
         commWork->comm = GameCommSys_GetWork(comm);
         return TRUE;
     }
@@ -931,7 +948,7 @@ BOOL ScriptNative_MusicalCommEndWait(VM *vm, void *arg) {
             return TRUE;
         }
     }
-    if (GameCommSys_BootCheck(comm) == 0) {
+    if (GameCommSys_BootCheck(comm) == GAME_COMM_NO_NULL) {
         return TRUE;
     }
     return FALSE;
@@ -964,32 +981,32 @@ BOOL Scrcmd_Musical_DreamWorldItems(VM *vm, FieldScriptEnv *env) {
     s32 count = DreamWorldSave_CountItems(dreamWorld);
     GameEvent *event;
 
-    if (GSYS_GetField(gsys) == NULL && kind != 0) {
+    if (GSYS_GetField(gsys) == NULL && kind != DREAM_WORLD_ITEMS_HAS_ITEMS) {
         return FALSE;
     }
     switch (kind) {
-    case 0:
+    case DREAM_WORLD_ITEMS_HAS_ITEMS:
         *result = DreamWorldSave_CountItems(dreamWorld) > 0 ? TRUE : FALSE;
         break;
-    case 1:
+    case DREAM_WORLD_ITEMS_HAS_UNRECEIVABLE:
         if (PdwPostman_CountUnreceivable(gameData, heapId, dreamWorld) < count) {
             *result = TRUE;
         } else {
             *result = FALSE;
         }
         break;
-    case 2:
+    case DREAM_WORLD_ITEMS_OPEN_LIST:
         event = PdwPostman_CreateListEvent(gsys);
         ScriptWork_CallEvent(FieldScriptEnv_GetScriptWork(env), event);
         return TRUE;
-    case 3:
+    case DREAM_WORLD_ITEMS_RECEIVE:
         PdwPostman_ReceiveItems(gameData, heapId, dreamWorld);
         break;
-    case 5:
+    case DREAM_WORLD_ITEMS_ITEM_NAME:
         loadItemsNameToStrbuf(ScriptWork_GetWordSet(FieldScriptEnv_GetScriptWork(env)), 0,
                               PdwPostman_GetUnreceivableItem(gameData, heapId, dreamWorld, *result));
         break;
-    case 4:
+    case DREAM_WORLD_ITEMS_COUNT_UNRECEIVABLE:
         *result = PdwPostman_CountUnreceivable(gameData, heapId, dreamWorld);
         break;
     }
