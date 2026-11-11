@@ -38,18 +38,18 @@ void *G2_GetBG2ScrPtr(void) {
     u32 screenBase = (bgcnt & REG_G2_BG0CNT_SCREENBASE_MASK) >> REG_G2_BG0CNT_SCREENBASE_SHIFT;
 
     switch (mode) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
+    case GX_BGMODE_0:
+    case GX_BGMODE_1:
+    case GX_BGMODE_2:
+    case GX_BGMODE_3:
+    case GX_BGMODE_4:
         return (void *)(HW_BG_VRAM + offset + screenBase * 0x800);
-    case 5:
+    case GX_BGMODE_5:
         if (bgcnt & REG_G2_BG0CNT_COLORMODE_MASK) {
             return (void *)(HW_BG_VRAM + screenBase * 0x4000);
         }
         return (void *)(HW_BG_VRAM + offset + screenBase * 0x800);
-    case 6:
+    case GX_BGMODE_6:
         return (void *)HW_BG_VRAM;
     default:
         return NULL;
@@ -63,18 +63,18 @@ void *G2S_GetBG2ScrPtr(void) {
     u32 screenBase = (bgcnt & REG_G2_BG0CNT_SCREENBASE_MASK) >> REG_G2_BG0CNT_SCREENBASE_SHIFT;
 
     switch (mode) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
+    case GX_BGMODE_0:
+    case GX_BGMODE_1:
+    case GX_BGMODE_2:
+    case GX_BGMODE_3:
+    case GX_BGMODE_4:
         return (void *)(HW_DB_BG_VRAM + screenBase * 0x800);
-    case 5:
+    case GX_BGMODE_5:
         if (bgcnt & REG_G2_BG0CNT_COLORMODE_MASK) {
             return (void *)(HW_DB_BG_VRAM + screenBase * 0x4000);
         }
         return (void *)(HW_DB_BG_VRAM + screenBase * 0x800);
-    case 6:
+    case GX_BGMODE_6:
         return NULL;
     default:
         return NULL;
@@ -89,18 +89,18 @@ void *G2_GetBG3ScrPtr(void) {
     u32 screenBase = (bgcnt & REG_G2_BG0CNT_SCREENBASE_MASK) >> REG_G2_BG0CNT_SCREENBASE_SHIFT;
 
     switch (mode) {
-    case 0:
-    case 1:
-    case 2:
+    case GX_BGMODE_0:
+    case GX_BGMODE_1:
+    case GX_BGMODE_2:
         return (void *)(HW_BG_VRAM + offset + screenBase * 0x800);
-    case 3:
-    case 4:
-    case 5:
+    case GX_BGMODE_3:
+    case GX_BGMODE_4:
+    case GX_BGMODE_5:
         if (bgcnt & REG_G2_BG0CNT_COLORMODE_MASK) {
             return (void *)(HW_BG_VRAM + screenBase * 0x4000);
         }
         return (void *)(HW_BG_VRAM + offset + screenBase * 0x800);
-    case 6:
+    case GX_BGMODE_6:
         return NULL;
     default:
         return NULL;
@@ -114,18 +114,18 @@ void *G2S_GetBG3ScrPtr(void) {
     u32 screenBase = (bgcnt & REG_G2_BG0CNT_SCREENBASE_MASK) >> REG_G2_BG0CNT_SCREENBASE_SHIFT;
 
     switch (mode) {
-    case 0:
-    case 1:
-    case 2:
+    case GX_BGMODE_0:
+    case GX_BGMODE_1:
+    case GX_BGMODE_2:
         return (void *)(HW_DB_BG_VRAM + screenBase * 0x800);
-    case 3:
-    case 4:
-    case 5:
+    case GX_BGMODE_3:
+    case GX_BGMODE_4:
+    case GX_BGMODE_5:
         if (bgcnt & REG_G2_BG0CNT_COLORMODE_MASK) {
             return (void *)(HW_DB_BG_VRAM + screenBase * 0x4000);
         }
         return (void *)(HW_DB_BG_VRAM + screenBase * 0x800);
-    case 6:
+    case GX_BGMODE_6:
         return NULL;
     default:
         return NULL;
