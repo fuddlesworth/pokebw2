@@ -61,6 +61,8 @@ enum {
 
 // The frames the data sharing exchanges, and the number of slots whose change the flow keeps
 #define DOWNLOAD_PLAY_SYS_FRAME_NO 16
+// The steps of the data sharing, after which the step goes back to the first
+#define DOWNLOAD_PLAY_SYS_STEP_COUNT 36
 
 // A frame of the data sharing: the code that says what the sender wants, a word that goes with it, and the data
 typedef struct {

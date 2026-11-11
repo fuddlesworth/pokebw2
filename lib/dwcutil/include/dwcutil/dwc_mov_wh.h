@@ -86,10 +86,10 @@ typedef struct {
     // The three words at the end of the parent's part of the work, which its file leaves to the helper to clear
     u32 unk_13a8;
     // What fills the WEP key and gives the mode to set the wireless to
-    WHWepKeySetup unk_13ac;
+    WHWepKeySetup wepKeySetup;
     u32 unk_13b0;
     u8 unk_13b4[0xc];
-    // The WEP key that unk_13ac fills
+    // The WEP key that wepKeySetup fills
     u16 wepKey[0x10];
     // The data sharing, the set it works in, and the one that the key sharing uses
     WMDataSharingInfo dataSharing;

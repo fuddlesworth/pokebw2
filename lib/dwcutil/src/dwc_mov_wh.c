@@ -57,7 +57,7 @@ void DWCi_MOV_WH_MemInit(void *loaderContext) {
     sWork = loaderContext;
     sWork->sysState = WIH_STATE_STOP;
     sWork->unk_13a8 = 0;
-    sWork->unk_13ac = NULL;
+    sWork->wepKeySetup = NULL;
     sWork->unk_13b0 = 0;
 }
 
@@ -104,7 +104,7 @@ static void DWCi_MOV_WH_StateOutSetParentParam(void *arg) {
         DWCi_MOV_WH_ChangeSysState(WIH_STATE_ERROR);
         return;
     }
-    if (sWork->unk_13ac != NULL) {
+    if (sWork->wepKeySetup != NULL) {
         if (!DWCi_MOV_WH_StateInSetParentWEPKey()) {
             DWCi_MOV_WH_ChangeSysState(WIH_STATE_ERROR);
         }
@@ -121,7 +121,7 @@ static BOOL DWCi_MOV_WH_StateInSetParentWEPKey(void) {
     WMErrCode result;
 
     DWCi_MOV_WH_ChangeSysState(WIH_STATE_BUSY);
-    wepMode = sWork->unk_13ac(sWork->wepKey, &sWork->sParentParam);
+    wepMode = sWork->wepKeySetup(sWork->wepKey, &sWork->sParentParam);
     result = WM_SetWEPKey(DWCi_MOV_WH_StateOutSetParentWEPKey, wepMode, sWork->wepKey);
     if (result != WM_ERRCODE_OPERATING) {
         DWCi_MOV_WH_SetError(result);

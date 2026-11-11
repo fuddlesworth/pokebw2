@@ -403,7 +403,8 @@ static void _DWCi_MOV_MovUserID(void) {
     case WIH_STATE_KEYSHARING:
         Parent_StepDataShare(0, sDownloadPlaySysWork->dataShareStep,
                              sDownloadPlaySysWork->sendData +
-                                 (sDownloadPlaySysWork->dataShareStep % 16) * sizeof(sDownloadPlaySysWork->gameData));
+                                 (sDownloadPlaySysWork->dataShareStep % DOWNLOAD_PLAY_SYS_FRAME_NO) *
+                                     sizeof(sDownloadPlaySysWork->gameData));
         Parent_data_receive_progress();
         if (sDownloadPlaySysWork->state == DOWNLOAD_PLAY_SYS_STATE_ERROR) {
             break;
@@ -538,7 +539,7 @@ static void Parent_data_receive_progress(void) {
                     sDownloadPlaySysWork->hostCount++;
                     if (!(sDownloadPlaySysWork->hostCount & 1)) {
                         sDownloadPlaySysWork->dataShareStep++;
-                        if (sDownloadPlaySysWork->dataShareStep >= 36) {
+                        if (sDownloadPlaySysWork->dataShareStep >= DOWNLOAD_PLAY_SYS_STEP_COUNT) {
                             sDownloadPlaySysWork->dataShareStep = 0;
                         }
                     }
