@@ -26,6 +26,14 @@ and the startup code copies initializer pointers through the first zero. The fin
 registration. Resolving the compiled objects' calls and pool references reproduces each original
 ITCM image byte for byte, including the existing original-SDK assembly routines.
 
+The DTCM and autoloads 2 and 3 start the same way: each autoload's `sinit_start` is its first byte, so its first gap is
+its empty static-initializer list's zero terminator and the zero fill to its first object (autoloads 2 and 3 hold
+nothing else). The zero fill that aligns a module section's end to 32 bytes is the linker's too: the DTCM's `.bss` after
+its eight bytes, the end of ARM9 main's `.data` after `fs_overlay_digest.c`, and the end of overlay 81's `.data`. These
+gaps stay in the link, which needs their bytes, but `tools/build/complete_report.py` leaves them out of the report's
+files, after checking each against the object dsd wrote for it: they are no file to decompile. Any other gap counts as
+a file still to find.
+
 ### Overlay 0
 
 3 of 3 functions are in source files.
