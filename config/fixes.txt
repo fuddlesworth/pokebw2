@@ -2918,6 +2918,15 @@ overlays/ov189 0x021acda4 section_start lib/dwc/src/nd/nd.c:.rodata
 overlays/ov189 0x021acea0 section_end lib/dwc/src/enc/dwc_encsession.c:.rodata
 overlays/ov189 0x021acea0 section_start lib/dwc/src/crypt/crypt.c:.rodata
 overlays/ov189 0x021ae0cc section_start lib/dwc/src/nd/nd.c:.data
+overlays/ov189 0x021ae301 remove_symbol
+overlays/ov189 0x021ae335 remove_symbol
+overlays/ov189 0x021ae395 remove_symbol
+overlays/ov189 0x021ae3dc remove_symbol
+overlays/ov189 0x021ae3f1 remove_symbol
+overlays/ov189 0x021ae45d remove_symbol
+overlays/ov189 0x021ae499 remove_symbol
+overlays/ov189 0x021ae4c9 remove_symbol
+overlays/ov189 0x021ae4f5 remove_symbol
 overlays/ov189 0x021b2840 add_data data_ov189_021b2840
 overlays/ov189 0x021b2840 remove_symbol
 overlays/ov189 0x021b2850 add_data data_ov189_021b2850

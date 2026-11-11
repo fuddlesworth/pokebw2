@@ -12,6 +12,51 @@
 // answer go through the compiler's built-in memcpy (__memcpy), which copies a constant size in place; the larger copies
 // call memcpy
 
+// Where a call is: the state of the call that is out, one more while its cancel waits for the session to end,
+// DPW_TR_STATE_IDLE when none is out, DPW_TR_STATE_DONE when one has ended with its result, and
+// DPW_TR_STATE_UNINITIALIZED after DpwTr_End
+enum {
+    DPW_TR_STATE_UNINITIALIZED = 0,
+    DPW_TR_STATE_IDLE = 1,
+    DPW_TR_STATE_UPLOAD = 2,
+    DPW_TR_STATE_UPLOAD_CANCELED = 3,
+    DPW_TR_STATE_UPLOAD_FINISH = 4,
+    DPW_TR_STATE_UPLOAD_FINISH_CANCELED = 5,
+    DPW_TR_STATE_DOWNLOAD = 6,
+    DPW_TR_STATE_DOWNLOAD_CANCELED = 7,
+    DPW_TR_STATE_TRADE_RESULT = 8,
+    DPW_TR_STATE_TRADE_RESULT_CANCELED = 9,
+    DPW_TR_STATE_DELETE_FINISH = 10,
+    DPW_TR_STATE_DELETE_FINISH_CANCELED = 11,
+    DPW_TR_STATE_RETURN_FINISH = 12,
+    DPW_TR_STATE_RETURN_FINISH_CANCELED = 13,
+    DPW_TR_STATE_SEARCH = 14,
+    DPW_TR_STATE_SEARCH_CANCELED = 15,
+    DPW_TR_STATE_EXCHANGE = 16,
+    DPW_TR_STATE_EXCHANGE_CANCELED = 17,
+    DPW_TR_STATE_EXCHANGE_FINISH = 18,
+    DPW_TR_STATE_EXCHANGE_FINISH_CANCELED = 19,
+    DPW_TR_STATE_SERVER_STATE = 20,
+    DPW_TR_STATE_SERVER_STATE_CANCELED = 21,
+    DPW_TR_STATE_SET_PROFILE = 22,
+    DPW_TR_STATE_SET_PROFILE_CANCELED = 23,
+    DPW_TR_STATE_DONE = 0x18,
+};
+
+// The code in the first byte of a page's answer, where the result the library keeps from it has a name: 1 success (and
+// the info and setProfile pages' normal state), 2 already deposited, 3 not found, 4 not traded (the trade result
+// page), 5 already traded, 7 crowded and 14 the server in maintenance. The pages' answers 6 and 8 to 13 give results
+// that have no name, so they stay numbers
+enum {
+    DPW_TR_ANSWER_SUCCESS = 1,
+    DPW_TR_ANSWER_ALREADY_DEPOSITED = 2,
+    DPW_TR_ANSWER_NOT_FOUND = 3,
+    DPW_TR_ANSWER_NOT_TRADED = 4,
+    DPW_TR_ANSWER_ALREADY_TRADED = 5,
+    DPW_TR_ANSWER_CROWDED = 7,
+    DPW_TR_ANSWER_SERVER_MAINTENANCE = 14,
+};
+
 // The state of the library: where the call is, what it ended with, the player's ID and friend key, and the request
 // that is sent: the Pokémon, the signature that goes with it and the size of the signature. The answer of the server
 // starts with two codes
@@ -26,16 +71,17 @@ typedef struct DpwTrWork {
     u32 signatureSize;
     u8 code[2];
     void *resultData;
+    // Zeroed with the static, but never read or written: nothing shows what it holds
     u32 unk1CC;
 } DpwTrWork;
 
-static int DpwTrMapGamestatsError(int group);
+static int DpwTrMapGamestatsError(DWCErrorType group);
 
 static DpwTrWork sDpwTrWork;
 static int sDpwTrServerType;
 
 void DpwTr_Init(s32 pid, u64 friendKey, int server) {
-    sDpwTrWork.state = 1;
+    sDpwTrWork.state = DPW_TR_STATE_IDLE;
     sDpwTrWork.result = 0;
     sDpwTrWork.pid = pid;
     sDpwTrWork.friendKey.low = (u32)friendKey;
@@ -63,29 +109,29 @@ void DpwTr_Process(void) {
     DWCErrorType group;
 
     switch (sDpwTrWork.state) {
-    case 2:
+    case DPW_TR_STATE_UPLOAD:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
-            case 2:
+            case DPW_TR_ANSWER_ALREADY_DEPOSITED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
-            case 3:
+            case DPW_TR_ANSWER_NOT_FOUND:
                 sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
-            case 7:
+            case DPW_TR_ANSWER_CROWDED:
                 sDpwTrWork.result = DPW_TR_RESULT_CROWDED;
                 break;
             case 12:
@@ -106,7 +152,7 @@ void DpwTr_Process(void) {
             case 11:
                 sDpwTrWork.result = -11;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -117,32 +163,32 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 4:
+    case DPW_TR_STATE_UPLOAD_FINISH:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
-            case 2:
+            case DPW_TR_ANSWER_ALREADY_DEPOSITED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
-            case 3:
+            case DPW_TR_ANSWER_NOT_FOUND:
                 sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
-            case 5:
+            case DPW_TR_ANSWER_ALREADY_TRADED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -153,29 +199,29 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 6:
+    case DPW_TR_STATE_DOWNLOAD:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
-            memcpy(sDpwTrWork.resultData, answer, 0x128);
-            if (size == 0x128) {
+            memcpy(sDpwTrWork.resultData, answer, sizeof(Dpw_Tr_Data));
+            if (size == sizeof(Dpw_Tr_Data)) {
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
-                case 5:
+                case DPW_TR_ANSWER_ALREADY_TRADED:
                     sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                     break;
-                case 3:
+                case DPW_TR_ANSWER_NOT_FOUND:
                     sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                     break;
-                case 14:
+                case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                     sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
@@ -187,32 +233,32 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 8:
+    case DPW_TR_STATE_TRADE_RESULT:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
-            memcpy(sDpwTrWork.resultData, answer, 0x128);
-            if (size == 0x128) {
+            memcpy(sDpwTrWork.resultData, answer, sizeof(Dpw_Tr_Data));
+            if (size == sizeof(Dpw_Tr_Data)) {
                 sDpwTrWork.result = DPW_TR_TRADE_TRADED;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
-                case 5:
+                case DPW_TR_ANSWER_ALREADY_TRADED:
                     sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                     break;
-                case 3:
+                case DPW_TR_ANSWER_NOT_FOUND:
                     sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                     break;
-                case 4:
+                case DPW_TR_ANSWER_NOT_TRADED:
                     sDpwTrWork.result = DPW_TR_TRADE_NOT_TRADED;
                     break;
-                case 14:
+                case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                     sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
@@ -224,29 +270,29 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 10:
+    case DPW_TR_STATE_DELETE_FINISH:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
-            case 5:
+            case DPW_TR_ANSWER_ALREADY_TRADED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
-            case 3:
+            case DPW_TR_ANSWER_NOT_FOUND:
                 sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -257,32 +303,32 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 12:
+    case DPW_TR_STATE_RETURN_FINISH:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
-            case 5:
+            case DPW_TR_ANSWER_ALREADY_TRADED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_TRADED;
                 break;
-            case 2:
+            case DPW_TR_ANSWER_ALREADY_DEPOSITED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
-            case 3:
+            case DPW_TR_ANSWER_NOT_FOUND:
                 sDpwTrWork.result = DPW_TR_RESULT_NOT_FOUND;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -293,28 +339,28 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 14:
+    case DPW_TR_STATE_SEARCH:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
-            __memcpy(sDpwTrWork.resultData, answer, 2);
+            __memcpy(sDpwTrWork.resultData, answer, sizeof(sDpwTrWork.code));
             switch (*(u8 *)sDpwTrWork.resultData) {
-            case 1:
-                if ((u32)(size - 2) >= 0x128) {
-                    sDpwTrWork.result = (u32)(size - 2) / 0x128;
+            case DPW_TR_ANSWER_SUCCESS:
+                if ((u32)(size - 2) >= sizeof(Dpw_Tr_Data)) {
+                    sDpwTrWork.result = (u32)(size - 2) / sizeof(Dpw_Tr_Data);
                     memcpy(sDpwTrWork.resultData, answer + 2, size - 2);
-                } else if (size == 2) {
+                } else if (size == sizeof(sDpwTrWork.code)) {
                     sDpwTrWork.result = 0;
                 }
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -325,23 +371,23 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 16:
+    case DPW_TR_STATE_EXCHANGE:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
-            memcpy(sDpwTrWork.resultData, answer, 0x128);
-            if (size == 0x128) {
+            memcpy(sDpwTrWork.resultData, answer, sizeof(Dpw_Tr_Data));
+            if (size == sizeof(Dpw_Tr_Data)) {
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
-                case 2:
+                case DPW_TR_ANSWER_ALREADY_DEPOSITED:
                     sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                     break;
                 case 12:
@@ -362,7 +408,7 @@ void DpwTr_Process(void) {
                 case 11:
                     sDpwTrWork.result = -11;
                     break;
-                case 14:
+                case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                     sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
@@ -374,26 +420,26 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 18:
+    case DPW_TR_STATE_EXCHANGE_FINISH:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = DPW_TR_RESULT_SUCCESS;
                 break;
-            case 2:
+            case DPW_TR_ANSWER_ALREADY_DEPOSITED:
                 sDpwTrWork.result = DPW_TR_RESULT_ALREADY_DEPOSITED;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             }
@@ -401,29 +447,29 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 20:
+    case DPW_TR_STATE_SERVER_STATE:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
             __memcpy(sDpwTrWork.code, answer, sizeof(sDpwTrWork.code));
             switch (sDpwTrWork.code[0]) {
-            case 1:
+            case DPW_TR_ANSWER_SUCCESS:
                 sDpwTrWork.result = 0;
                 break;
             case 6:
                 sDpwTrWork.result = 1;
                 break;
-            case 7:
+            case DPW_TR_ANSWER_CROWDED:
                 sDpwTrWork.result = 2;
                 break;
-            case 14:
+            case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                 sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                 break;
             default:
@@ -434,32 +480,32 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 22:
+    case DPW_TR_STATE_SET_PROFILE:
         switch (DWCi_EncSessionProcess()) {
         case GAMESTATS_STATE_FAILED:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             DWC_GetLastErrorEx(&type, &group);
             sDpwTrWork.result = DpwTrMapGamestatsError(group);
             DWCi_EncSessionShutdown();
             break;
         case GAMESTATS_STATE_DONE:
-            sDpwTrWork.state = 0x18;
+            sDpwTrWork.state = DPW_TR_STATE_DONE;
             answer = DWCi_EncSessionGetResponse(&size);
-            __memcpy(sDpwTrWork.resultData, answer, 2);
-            if (size == 8) {
+            __memcpy(sDpwTrWork.resultData, answer, sizeof(sDpwTrWork.code));
+            if (size == sizeof(Dpw_Common_ProfileResult)) {
                 sDpwTrWork.result = 0;
             } else {
                 switch (*(u8 *)sDpwTrWork.resultData) {
-                case 1:
+                case DPW_TR_ANSWER_SUCCESS:
                     sDpwTrWork.result = 0;
                     break;
                 case 6:
                     sDpwTrWork.result = 1;
                     break;
-                case 7:
+                case DPW_TR_ANSWER_CROWDED:
                     sDpwTrWork.result = 2;
                     break;
-                case 14:
+                case DPW_TR_ANSWER_SERVER_MAINTENANCE:
                     sDpwTrWork.result = DPW_TR_RESULT_SERVER_MAINTENANCE;
                     break;
                 default:
@@ -471,22 +517,22 @@ void DpwTr_Process(void) {
             break;
         }
         break;
-    case 0:
-    case 1:
-    case 0x18:
+    case DPW_TR_STATE_UNINITIALIZED:
+    case DPW_TR_STATE_IDLE:
+    case DPW_TR_STATE_DONE:
         break;
-    case 3:
-    case 5:
-    case 7:
-    case 9:
-    case 11:
-    case 13:
-    case 15:
-    case 17:
-    case 19:
-    case 21:
-    case 23:
-        sDpwTrWork.state = 0x18;
+    case DPW_TR_STATE_UPLOAD_CANCELED:
+    case DPW_TR_STATE_UPLOAD_FINISH_CANCELED:
+    case DPW_TR_STATE_DOWNLOAD_CANCELED:
+    case DPW_TR_STATE_TRADE_RESULT_CANCELED:
+    case DPW_TR_STATE_DELETE_FINISH_CANCELED:
+    case DPW_TR_STATE_RETURN_FINISH_CANCELED:
+    case DPW_TR_STATE_SEARCH_CANCELED:
+    case DPW_TR_STATE_EXCHANGE_CANCELED:
+    case DPW_TR_STATE_EXCHANGE_FINISH_CANCELED:
+    case DPW_TR_STATE_SERVER_STATE_CANCELED:
+    case DPW_TR_STATE_SET_PROFILE_CANCELED:
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_CANCELED;
         DWCi_EncSessionShutdown();
         break;
@@ -494,15 +540,15 @@ void DpwTr_Process(void) {
 }
 
 void DpwTr_End(void) {
-    sDpwTrWork.state = 0;
+    sDpwTrWork.state = DPW_TR_STATE_UNINITIALIZED;
 }
 
 BOOL DpwTr_IsFinished(void) {
     switch (sDpwTrWork.state) {
-    case 1:
+    case DPW_TR_STATE_IDLE:
         return TRUE;
-    case 0x18:
-        sDpwTrWork.state = 1;
+    case DPW_TR_STATE_DONE:
+        sDpwTrWork.state = DPW_TR_STATE_IDLE;
         return TRUE;
     default:
         return FALSE;
@@ -514,15 +560,15 @@ s32 DpwTr_GetResult(void) {
 }
 
 void DpwTr_Upload(const Dpw_Tr_Data *data, const void *sign, u32 size) {
-    memcpy(sDpwTrWork.request, data, 0x128);
+    memcpy(sDpwTrWork.request, data, sizeof(Dpw_Tr_Data));
     sDpwTrWork.requestId = 0;
     memcpy(sDpwTrWork.signature, sign, size);
     sDpwTrWork.signatureSize = size;
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/post.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x1b0, NULL) == 0) {
-        sDpwTrWork.state = 2;
+        sDpwTrWork.state = DPW_TR_STATE_UPLOAD;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -533,9 +579,9 @@ void DpwTr_UploadFinish(void) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/post_finish.asp", sDpwTrWork.pid, sDpwTrWork.request, 8, NULL) ==
         0) {
-        sDpwTrWork.state = 4;
+        sDpwTrWork.state = DPW_TR_STATE_UPLOAD_FINISH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -545,9 +591,9 @@ void DpwTr_Download(Dpw_Tr_Data *result) {
     sDpwTrWork.resultData = result;
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/get.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x1b0, NULL) == 0) {
-        sDpwTrWork.state = 6;
+        sDpwTrWork.state = DPW_TR_STATE_DOWNLOAD;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -558,9 +604,9 @@ void DpwTr_GetTradeResult(Dpw_Tr_Data *result) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/result.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x1b0, NULL) ==
         0) {
-        sDpwTrWork.state = 8;
+        sDpwTrWork.state = DPW_TR_STATE_TRADE_RESULT;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -570,9 +616,9 @@ void DpwTr_DeleteFinish(void) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/delete.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x1b0, NULL) ==
         0) {
-        sDpwTrWork.state = 10;
+        sDpwTrWork.state = DPW_TR_STATE_DELETE_FINISH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -581,9 +627,9 @@ void DpwTr_DeleteFinish(void) {
 void DpwTr_ReturnFinish(void) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/return.asp", sDpwTrWork.pid, sDpwTrWork.request, 0, NULL) == 0) {
-        sDpwTrWork.state = 12;
+        sDpwTrWork.state = DPW_TR_STATE_RETURN_FINISH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -592,49 +638,49 @@ void DpwTr_ReturnFinish(void) {
 // Cancels the call that is running, and waits for the next state
 void DpwTr_Cancel(void) {
     switch (sDpwTrWork.state) {
-    case 2:
+    case DPW_TR_STATE_UPLOAD:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 3;
+        sDpwTrWork.state = DPW_TR_STATE_UPLOAD_CANCELED;
         break;
-    case 4:
+    case DPW_TR_STATE_UPLOAD_FINISH:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 5;
+        sDpwTrWork.state = DPW_TR_STATE_UPLOAD_FINISH_CANCELED;
         break;
-    case 6:
+    case DPW_TR_STATE_DOWNLOAD:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 7;
+        sDpwTrWork.state = DPW_TR_STATE_DOWNLOAD_CANCELED;
         break;
-    case 8:
+    case DPW_TR_STATE_TRADE_RESULT:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 9;
+        sDpwTrWork.state = DPW_TR_STATE_TRADE_RESULT_CANCELED;
         break;
-    case 10:
+    case DPW_TR_STATE_DELETE_FINISH:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 11;
+        sDpwTrWork.state = DPW_TR_STATE_DELETE_FINISH_CANCELED;
         break;
-    case 12:
+    case DPW_TR_STATE_RETURN_FINISH:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 13;
+        sDpwTrWork.state = DPW_TR_STATE_RETURN_FINISH_CANCELED;
         break;
-    case 14:
+    case DPW_TR_STATE_SEARCH:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 15;
+        sDpwTrWork.state = DPW_TR_STATE_SEARCH_CANCELED;
         break;
-    case 16:
+    case DPW_TR_STATE_EXCHANGE:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 17;
+        sDpwTrWork.state = DPW_TR_STATE_EXCHANGE_CANCELED;
         break;
-    case 18:
+    case DPW_TR_STATE_EXCHANGE_FINISH:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 19;
+        sDpwTrWork.state = DPW_TR_STATE_EXCHANGE_FINISH_CANCELED;
         break;
-    case 20:
+    case DPW_TR_STATE_SERVER_STATE:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 21;
+        sDpwTrWork.state = DPW_TR_STATE_SERVER_STATE_CANCELED;
         break;
-    case 22:
+    case DPW_TR_STATE_SET_PROFILE:
         DWCi_EncSessionCancel();
-        sDpwTrWork.state = 23;
+        sDpwTrWork.state = DPW_TR_STATE_SET_PROFILE_CANCELED;
         break;
     }
 }
@@ -645,9 +691,9 @@ void DpwTr_Search(const Dpw_Tr_PokemonSearchData *search, s32 maxNum, Dpw_Tr_Dat
     sDpwTrWork.request[6] = maxNum;
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/search.asp", sDpwTrWork.pid, sDpwTrWork.request, 7, NULL) == 0) {
-        sDpwTrWork.state = 14;
+        sDpwTrWork.state = DPW_TR_STATE_SEARCH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -658,9 +704,9 @@ void DpwTr_SearchEx(const Dpw_Tr_PokemonSearchDataEx *search, Dpw_Tr_Data *resul
     __memcpy(sDpwTrWork.request, search, sizeof(*search));
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/search.asp", sDpwTrWork.pid, sDpwTrWork.request, 8, NULL) == 0) {
-        sDpwTrWork.state = 14;
+        sDpwTrWork.state = DPW_TR_STATE_SEARCH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -668,16 +714,16 @@ void DpwTr_SearchEx(const Dpw_Tr_PokemonSearchDataEx *search, Dpw_Tr_Data *resul
 
 void DpwTr_Exchange(s32 id, const Dpw_Tr_Data *upload, Dpw_Tr_Data *result, const void *sign, u32 size) {
     sDpwTrWork.resultData = result;
-    memcpy(sDpwTrWork.request, upload, 0x128);
+    memcpy(sDpwTrWork.request, upload, sizeof(Dpw_Tr_Data));
     sDpwTrWork.requestId = id;
     memcpy(sDpwTrWork.signature, sign, size);
     sDpwTrWork.signatureSize = size;
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/exchange.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x1b0, NULL) ==
         0) {
-        sDpwTrWork.state = 16;
+        sDpwTrWork.state = DPW_TR_STATE_EXCHANGE;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -688,9 +734,9 @@ void DpwTr_ExchangeFinish(void) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/exchange_finish.asp", sDpwTrWork.pid, sDpwTrWork.request, 8,
                                 NULL) == 0) {
-        sDpwTrWork.state = 18;
+        sDpwTrWork.state = DPW_TR_STATE_EXCHANGE_FINISH;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -699,9 +745,9 @@ void DpwTr_ExchangeFinish(void) {
 void DpwTr_GetServerState(void) {
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/worldexchange/info.asp", sDpwTrWork.pid, sDpwTrWork.request, 0, NULL) == 0) {
-        sDpwTrWork.state = 20;
+        sDpwTrWork.state = DPW_TR_STATE_SERVER_STATE;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
@@ -713,37 +759,37 @@ void DpwTr_SetProfile(Dpw_Common_Profile *profile, Dpw_Common_ProfileResult *res
     sDpwTrWork.resultData = result;
     DWCi_EncSessionInitialize(sDpwTrServerType, DPW_GAMESTATS_KEY);
     if (DWCi_EncSessionGetAsync("/web/common/setProfile.asp", sDpwTrWork.pid, sDpwTrWork.request, 0x64, NULL) == 0) {
-        sDpwTrWork.state = 22;
+        sDpwTrWork.state = DPW_TR_STATE_SET_PROFILE;
     } else {
-        sDpwTrWork.state = 0x18;
+        sDpwTrWork.state = DPW_TR_STATE_DONE;
         sDpwTrWork.result = DPW_TR_RESULT_ERROR;
         DWCi_EncSessionShutdown();
     }
 }
 
 // The result of a failure of the game statistics client, from its group of errors
-static int DpwTrMapGamestatsError(int group) {
+static int DpwTrMapGamestatsError(DWCErrorType group) {
     int result;
 
     switch (group) {
-    case 0:
-    case 1:
-    case 2:
+    case DWC_ETYPE_NO_ERROR:
+    case DWC_ETYPE_LIGHT:
+    case DWC_ETYPE_SHOW_ERROR:
         result = -15;
         break;
-    case 3:
+    case DWC_ETYPE_SHUTDOWN_FM:
         result = -14;
         break;
-    case 5:
+    case DWC_ETYPE_SHUTDOWN_ND:
         result = -14;
         break;
-    case 4:
+    case DWC_ETYPE_SHUTDOWN_GHTTP:
         result = -15;
         break;
-    case 6:
+    case DWC_ETYPE_DISCONNECT:
         result = -14;
         break;
-    case 7:
+    case DWC_ETYPE_FATAL:
         result = DPW_TR_RESULT_ERROR;
         break;
     default:
