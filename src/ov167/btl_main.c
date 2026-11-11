@@ -345,7 +345,7 @@ void BtlMain_SetSetupSeq(BtlMainSeq *seq, BtlMainModule *mainModule, BtlSetup *s
     u32 i;
 
     for (i = 0; i < BTL_POS_MAX; i++) {
-        mainModule->posClientIds[i] = 4;
+        mainModule->posClientIds[i] = BTL_CLIENT_NONE;
     }
     if (setup->fieldSituation.commMode == 0) {
         switch (setup->battleStyle) {
@@ -2211,7 +2211,7 @@ u8 GetAllyClientID(BtlMainModule *mainModule, u8 clientId) {
     u8 allyId = (clientId + 2) & 3;
 
     if (!DoesClientExist(mainModule, allyId)) {
-        allyId = 4;
+        allyId = BTL_CLIENT_NONE;
     }
     return allyId;
 }

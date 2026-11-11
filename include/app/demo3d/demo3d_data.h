@@ -88,7 +88,8 @@ typedef struct {
 typedef struct {
     // The camera's animation in ARCID_DEMO3D_RESOURCE
     u16 cameraFile;
-    u16 unk2;
+    // Reserved: 0xffff in every demo's set-up and never read
+    u16 reserved02;
     // The zone whose light the demo takes
     u16 zoneId;
     // The camera's animation has 30 frames a second: every frame takes two

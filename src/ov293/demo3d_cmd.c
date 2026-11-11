@@ -71,7 +71,8 @@ enum {
 
 typedef struct {
     Demo3DCmdSys *sys;
-    u8 unk4;
+    // Never read or written
+    u8 state;
     u8 param;
     u8 player;
     s32 frames;
@@ -83,7 +84,8 @@ typedef struct {
 
 typedef struct {
     Demo3DCmdSys *sys;
-    u32 unk4;
+    // Never read or written
+    u32 reserved;
     u8 state;
     u8 push;
     u8 pop;
@@ -95,7 +97,8 @@ typedef struct {
 
 typedef struct {
     Demo3DCmdSys *sys;
-    u32 unk4;
+    // Never read or written
+    u32 state;
     u32 screens;
     u32 planes;
     s32 frames;
@@ -109,7 +112,8 @@ typedef struct {
 
 typedef struct {
     Demo3DCmdSys *sys;
-    u32 unk4;
+    // Never read or written
+    u32 reserved;
     s8 state;
     s8 start;
     s8 peak;

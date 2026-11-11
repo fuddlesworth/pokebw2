@@ -22,7 +22,8 @@
 #define LIGHT_COUNT 4
 
 typedef struct {
-    u32 unk0;
+    // The BG system's state: never read or written
+    u32 state;
 } Demo3DBG;
 
 typedef struct {
@@ -30,7 +31,8 @@ typedef struct {
 } Demo3DClAct;
 
 typedef struct {
-    u32 unk0;
+    // The G3D system's tag: never read or written
+    u32 tag;
     G3DLight *lights;
 } Demo3DG3dSys;
 
