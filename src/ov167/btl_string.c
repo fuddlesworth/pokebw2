@@ -208,7 +208,7 @@ static void SetTrainerClassName(WordSet *wordSet, u8 index, u8 clientId) {
 static void SetTrainerName(WordSet *wordSet, u8 index, u8 clientId) {
     u32 trainerClass;
 
-    if (clientId != 4) {
+    if (clientId != BTL_CLIENT_NONE) {
         if (IsClientNPCTrainer(sWork.mainModule, clientId)) {
             StrBuf *name = GetClientTrainerName(sWork.mainModule, clientId, &trainerClass);
             GFL_WordSetSetStrbuf(wordSet, index, name, TrainerClass_GetSex(trainerClass), 1, 2);
