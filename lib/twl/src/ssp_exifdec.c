@@ -12,14 +12,11 @@
 #define EXIF_TAG_SOFTWARE 0x131
 #define EXIF_TAG_DATE_TIME 0x132
 #define EXIF_TAG_JPEG_INTERCHANGE_FORMAT 0x201
-#define EXIF_TAG_EXIF_IFD 0x8769
-#define EXIF_TAG_MAKER_NOTE 0x927c
 #define EXIF_TAG_INTEROPERABILITY_IFD 0xa005
 
-// The tags of the maker note: its first entry, which holds the signature, then the application's two blocks
-#define MAKER_NOTE_TAG_SIGNATURE 0x1000
-#define MAKER_NOTE_TAG_DATA_1 0x1001
-#define MAKER_NOTE_TAG_DATA_2 0x1002
+// The byte order marks of the TIFF header: "II" for little-endian and "MM" for big-endian
+#define TIFF_LITTLE_ENDIAN 0x4949
+#define TIFF_BIG_ENDIAN 0x4d4d
 
 // The offsets in the TIFF structure are from its header, 12 bytes into the APP1 segment
 #define TIFF_HEADER_OFFSET 0xc
@@ -40,7 +37,7 @@ static u16 sMakerNoteData1Size;
 static u16 sMakerNoteData2Size;
 static u32 sMakerNoteData1;
 static u32 sMakerNoteData2;
-BOOL data_ov257_021b6240;
+BOOL SSP_JpegDecoderSignMode;
 static char sDateTime[20];
 static char sSoftware[32];
 
@@ -115,9 +112,9 @@ static int GetAPP1(u8 *data, u32 size, u32 pos, int *posOut, u32 option) {
 
     // The byte order is read into the variable the IFD loops read the tags into
     tag = GetWord(data, pos + 8, bigEndian);
-    if (tag == 0x4949) {
+    if (tag == TIFF_LITTLE_ENDIAN) {
         bigEndian = FALSE;
-    } else if (tag != 0x4d4d) {
+    } else if (tag != TIFF_BIG_ENDIAN) {
         return EXIF_RESULT_ERROR;
     }
 
@@ -203,7 +200,8 @@ static int GetAPP1(u8 *data, u32 size, u32 pos, int *posOut, u32 option) {
             firstCount = GetLong(data, pos + 6, bigEndian);
             GetLong(data, pos + 10, bigEndian);
             pos += 0xe;
-            if (firstTag == MAKER_NOTE_TAG_SIGNATURE && firstType == 7 && firstCount == SSP_SIGNATURE_SIZE) {
+            if (firstTag == MAKER_NOTE_TAG_SIGNATURE && firstType == EXIF_TYPE_UNDEFINED &&
+                firstCount == SSP_SIGNATURE_SIZE) {
                 count = entries - 1;
                 if (pos + count * 12 >= size) {
                     return EXIF_RESULT_ERROR;

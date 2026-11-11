@@ -35,6 +35,9 @@ static BOOL NWMi_CheckFirmDataParamIntegrity(void);
 // a word whose upper half is the CRC-16 of the 12 bytes that follow it
 #define NWM_SETTINGS_PTR 0x02fffdfc
 
+// The 802.11 information element that holds a vendor's own data
+#define NWM_INFO_ELEMENT_VENDOR 0xdd
+
 // The data, in memory: sUnloaded (set when the exit callback's unload is done) and sBlockBuf (the block that the
 // command 8 copies for the ARM7). -ipa function lays out the tentative statics in the reverse of their declarations
 static u32 sBlockBuf[0x210 / 4];
@@ -289,7 +292,7 @@ NWMInfoElements *NWM_GetVenderInfoElements(NWMBssDesc *bssDesc, u8 elementID, co
     u8 *element = (u8 *)bssDesc->elements;
     u8 *end = element + bssDesc->length - NWM_BSS_DESC_ELEMENTS_OFFSET;
 
-    if (elementID != 0xdd) {
+    if (elementID != NWM_INFO_ELEMENT_VENDOR) {
         return NULL;
     }
     while (element + element[1] + 2 <= end) {
