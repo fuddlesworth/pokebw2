@@ -17,7 +17,8 @@
 #define BG_COUNT 8
 
 typedef struct {
-    u32 unk0;
+    // The BG system's state: never read or written
+    u32 state;
 } PkwdSelectScreenBG;
 
 typedef struct {
@@ -27,7 +28,8 @@ typedef struct {
 struct PkwdSelectScreenGraphic {
     PkwdSelectScreenBG bg;
     PkwdSelectScreenClAct clact;
-    u32 unk8;
+    // The 3D system of the template that this is copied from, which this does not use
+    u32 unused8;
     TCB *vblankTask;
 };
 
