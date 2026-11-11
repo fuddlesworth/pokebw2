@@ -35,25 +35,26 @@ static const u16 sBgCharNames[2] = { 0, 0x180 };
 
 static DWCUtilTextWork *sTextWork;
 
-// The direction of the font's text, from how its glyphs are rotated
+// The direction of the font's text, from how its glyphs are rotated: NNSG2dFontGlyphFlag's rotation in bits 1 and 2
+// with NNS_G2D_FONT_FLAG_TBRL in bit 0, in the pairs that NNS_G2dCharCanvasDrawChar takes them in
 static inline NNSiG2dTextDirection DWCUtilText_GetDirection(const NNSG2dFont *font) {
     NNSiG2dTextDirection dir = { 0, 0 };
 
     switch (font->pRes->pGlyph->flags) {
-    case 0:
-    case 7:
+    case NNS_G2D_FONT_FLAG_ROT_0:
+    case NNS_G2D_FONT_FLAG_ROT_270 | NNS_G2D_FONT_FLAG_TBRL:
         dir.x = 1;
         break;
-    case 1:
-    case 2:
+    case NNS_G2D_FONT_FLAG_ROT_0 | NNS_G2D_FONT_FLAG_TBRL:
+    case NNS_G2D_FONT_FLAG_ROT_90:
         dir.y = 1;
         break;
-    case 3:
-    case 4:
+    case NNS_G2D_FONT_FLAG_ROT_90 | NNS_G2D_FONT_FLAG_TBRL:
+    case NNS_G2D_FONT_FLAG_ROT_180:
         dir.x = -1;
         break;
-    case 5:
-    case 6:
+    case NNS_G2D_FONT_FLAG_ROT_180 | NNS_G2D_FONT_FLAG_TBRL:
+    case NNS_G2D_FONT_FLAG_ROT_270:
         dir.y = -1;
         break;
     }

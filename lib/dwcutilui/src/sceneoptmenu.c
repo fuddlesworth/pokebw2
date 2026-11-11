@@ -130,7 +130,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -147,7 +147,7 @@ static void input(void) {
 
     for (i = 0; i < 3; i++) {
         if (DWCi_TPlCheckTrigger(sButtonRects[i])) {
-            DWCi_BTNlSet(1);
+            DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
             sOptionMenu.selection = i;
             DWCi_FOCUSlDisp4(sCursorRects[sOptionMenu.selection][0], sCursorRects[sOptionMenu.selection][2],
                              sCursorRects[sOptionMenu.selection][1], sCursorRects[sOptionMenu.selection][3]);
@@ -155,13 +155,13 @@ static void input(void) {
         }
     }
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(1);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
     } else if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     } else if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     }
 }
 
@@ -173,14 +173,14 @@ static void button(void) {
     DWCWiFiInfo info;
 
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         DWCi_BM_GetWiFiInfo(&info);
         if (sOptionMenu.selection != 0 && info.attestedUserId == 0) {
             DWCi_SNDlPlay(9);
-            DWCi_BTNlSetForce(-1);
+            DWCi_BTNlSetForce(DWC_UTIL_BUTTON_NONE);
             return;
         }
         DWCi_SNDlPlay(6);
@@ -242,7 +242,7 @@ static void endScene2(void) {
 
 // Up and down move the cursor through the three buttons, wrapping around
 static void moveFocus(int direction) {
-    if (direction == 1) {
+    if (direction == DWC_UTIL_DIRECTION_UP) {
         sOptionMenu.selection = FX_ModS32(sOptionMenu.selection + 2, 3);
     } else {
         sOptionMenu.selection = FX_ModS32(sOptionMenu.selection + 1, 3);

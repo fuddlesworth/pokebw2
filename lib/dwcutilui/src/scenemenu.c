@@ -82,7 +82,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -99,7 +99,7 @@ static void input(void) {
 
     for (i = 0; i < 2; i++) {
         if (DWCi_TPlCheckTrigger(sButtonRects[i])) {
-            DWCi_BTNlSet(1);
+            DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
             sMainMenu.selection = i;
             DWCi_FOCUSlDisp4(sCursorRects[sMainMenu.selection][0], sCursorRects[sMainMenu.selection][2],
                              sCursorRects[sMainMenu.selection][1], sCursorRects[sMainMenu.selection][3]);
@@ -107,17 +107,17 @@ static void input(void) {
         }
     }
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(1);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
     } else if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     } else if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     } else if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
     } else if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
 }
 
@@ -126,11 +126,11 @@ static void draw(void) {
 
 static void button(void) {
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         DWCi_SNDlPlay(7);
         DWCi_ChangeScene(DWCi_SceneEnd);
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         DWCi_SNDlPlay(6);
         dispPushButton();
         DWCi_ChangeScene(endScene);

@@ -51,7 +51,7 @@ static void DWCUtilTopMenu_InstructionsWaitFadeIn(void) {
 }
 
 static void DWCUtilTopMenu_InstructionsWaitButtons(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(DWCUtilTopMenu_InstructionsMain);
     }
@@ -65,7 +65,7 @@ static void DWCUtilTopMenu_InstructionsMain(void) {
 
 static void DWCUtilTopMenu_InstructionsHandleInput(void) {
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     }
 }
 
@@ -73,7 +73,7 @@ static void func_ov182_021afb0c(void) {
 }
 
 static void DWCUtilTopMenu_InstructionsHandleChoice(void) {
-    if (DWCi_BTNlGet() == 0) {
+    if (DWCi_BTNlGet() == DWC_UTIL_BUTTON_CANCEL) {
         DWCi_SNDlPlay(6);
         DWCi_ChangeScene(DWCUtilTopMenu_InstructionsDisableButtons);
     }

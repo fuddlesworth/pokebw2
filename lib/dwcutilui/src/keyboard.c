@@ -500,16 +500,16 @@ static void key(void) {
     int key;
 
     if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
     }
     if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     }
     if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
     if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     }
     if (DWCi_IPTlCheckTrigger(1)) {
         key = sKeyboard->cursorPos;
@@ -689,11 +689,11 @@ static void moveFocus(int direction) {
 
     sKeyboard->cursorPos = sNavigation[previous][direction];
     next = sKeyboard->cursorPos;
-    if (next == 0x2e && direction == 3) {
+    if (next == 0x2e && direction == DWC_UTIL_DIRECTION_DOWN) {
         sKeyboard->lastPos = previous;
-    } else if (next == 0x33 && (direction == 1 || direction == 3)) {
+    } else if (next == 0x33 && (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
         sKeyboard->lastPos = previous;
-    } else if (next == 0x34 && (direction == 1 || direction == 3)) {
+    } else if (next == 0x34 && (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
         if (previous != 0x2e) {
             sKeyboard->lastPos = previous;
         }

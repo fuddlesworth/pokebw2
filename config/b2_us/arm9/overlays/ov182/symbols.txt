@@ -1236,7 +1236,6 @@ sErrorCodePos kind:data(any) addr:0x021c0120
 data_ov182_021c0122 kind:data(any) addr:0x021c0122
 sAddressButtonPalettes kind:data(any) addr:0x021c013c
 sAddressTitleLabels kind:data(any) addr:0x021c013f
-data_ov182_021c0150 kind:data(any) addr:0x021c0150 ambiguous
 sAddressRowItems kind:data(any) addr:0x021c015e
 sAddressLabelOffsets kind:data(any) addr:0x021c0167
 sAddressItemRows kind:data(any) addr:0x021c0170
@@ -1256,7 +1255,6 @@ sScreenApCells kind:data(any) addr:0x021c0240
 sScreenApMsgSlots kind:data(any) addr:0x021c0244
 sScreenApButtonPos kind:data(any) addr:0x021c024c
 data_ov182_021c024e kind:data(any) addr:0x021c024e
-data_ov182_021c0260 kind:data(any) addr:0x021c0260 ambiguous
 sScreenApTouchRects kind:data(any) addr:0x021c0264
 sScreenApCursorRects kind:data(any) addr:0x021c029c
 data_ov182_021c029e kind:data(any) addr:0x021c029e
@@ -1268,7 +1266,6 @@ data_ov182_021c02dc kind:data(any) addr:0x021c02dc
 data_ov182_021c02f4 kind:data(any) addr:0x021c02f4
 sScreenWayMsgSlots kind:data(any) addr:0x021c02f8
 sScreenWayMoves kind:data(any) addr:0x021c02ff
-data_ov182_021c0302 kind:data(any) addr:0x021c0302 ambiguous
 data_ov182_021c0320 kind:data(any) addr:0x021c0320
 sScreenWayTouchRects kind:data(any) addr:0x021c0338
 sScreenWayCursorRects kind:data(any) addr:0x021c0378

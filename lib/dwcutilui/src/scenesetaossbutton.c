@@ -95,7 +95,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         sPageStep3.task = DWCi_TSKlForm(1, taskVBlank, NULL, 0x78);
         DWCi_ChangeScene(procScene);
     }
@@ -133,9 +133,9 @@ static void procScene(void) {
 
 static void input(void) {
     if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IsFold()) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     }
 }
 
@@ -144,7 +144,7 @@ static void draw(void) {
 
 // Cancels the setup
 static void button(void) {
-    if (DWCi_BTNlGet() == 0 && sPageStep3.task != NULL) {
+    if (DWCi_BTNlGet() == DWC_UTIL_BUTTON_CANCEL && sPageStep3.task != NULL) {
         DWCi_TSKlDelete(1, sPageStep3.task);
         sPageStep3.task = NULL;
         DWCi_BTNlDisable();
