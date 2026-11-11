@@ -171,11 +171,11 @@ void DreamWorldSave_SetResultIndex(DreamWorldSave *dreamWorld, int value) {
 }
 
 u32 DreamWorldSave_GetFlag(DreamWorldSave *dreamWorld) {
-    return dreamWorld->unk1A6_7;
+    return dreamWorld->resultReceived;
 }
 
 void DreamWorldSave_SetFlag(DreamWorldSave *dreamWorld, u32 value) {
-    dreamWorld->unk1A6_7 = (u8)value;
+    dreamWorld->resultReceived = (u8)value;
 }
 
 DreamWorldSave *getDreamWorldStuffAddress(SaveControl *save) {

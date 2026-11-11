@@ -281,8 +281,8 @@ u32 TournamentEntry_GetField(TournamentEntry *tournament, u32 field) {
     case TOURNAMENT_FIELD_END_DAY:
         value = tournament->endDay;
         break;
-    case TOURNAMENT_FIELD_UNK15B:
-        value = tournament->unk15B;
+    case TOURNAMENT_FIELD_REGISTRATION_STATE:
+        value = tournament->registrationState;
         break;
     case TOURNAMENT_FIELD_VARIANT:
         value = tournament->variant;
@@ -323,8 +323,8 @@ void TournamentEntry_SetField(TournamentEntry *tournament, u32 field, u32 value)
     case TOURNAMENT_FIELD_END_DAY:
         tournament->endDay = value;
         break;
-    case TOURNAMENT_FIELD_UNK15B:
-        tournament->unk15B = value;
+    case TOURNAMENT_FIELD_REGISTRATION_STATE:
+        tournament->registrationState = value;
         break;
     case TOURNAMENT_FIELD_VARIANT:
         tournament->variant = value;

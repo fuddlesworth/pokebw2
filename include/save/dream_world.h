@@ -32,9 +32,10 @@ struct DreamWorldSave {
     u8 mode;
     // Set once the Game Sync ID was shown
     u8 idShown;
-    // The index of the chosen result entry, DREAM_WORLD_RESULT_INDEX_NONE for none, and a flag with it
+    // The index of the chosen result entry, DREAM_WORLD_RESULT_INDEX_NONE for none, and whether a result came back
+    // from the Dream World, which the Wi-Fi list's phrase-input script checks and clears
     u8 resultIndex : 7;
-    u8 unk1A6_7 : 1;
+    u8 resultReceived : 1;
     u8 unk1A7;
     u8 unk1A8;
     u8 unk1A9;

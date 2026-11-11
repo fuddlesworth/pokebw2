@@ -1,6 +1,7 @@
 #include "types.h"
 #include "constants/language.h"
 #include "constants/pokemon.h"
+#include "constants/sound.h"
 #include "constants/species.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
@@ -718,12 +719,14 @@ static u16 PokeDex_LookupEvaluation(const PokeDexEvaluation *table, int count) {
     }
 }
 
-void PokeDex_GetEvaluationParams(PokeDexSave *pokedex, u16 mode, HeapID heapId, u16 *message, u16 *count, u16 *unk) {
-    static const PokeDexEvaluation unovaUnks[] = {
-        { 39, 1311 }, { 99, 1312 }, { 159, 1313 }, { 229, 1314 }, { 296, 1315 }, { 0, 1316 },
+void PokeDex_GetEvaluationParams(PokeDexSave *pokedex, u16 mode, HeapID heapId, u16 *message, u16 *count, u16 *jingle) {
+    static const PokeDexEvaluation unovaJingles[] = {
+        { 39, SEQ_ME_HYOUKA1 },  { 99, SEQ_ME_HYOUKA2 },  { 159, SEQ_ME_HYOUKA3 },
+        { 229, SEQ_ME_HYOUKA4 }, { 296, SEQ_ME_HYOUKA5 }, { 0, SEQ_ME_HYOUKA6 },
     };
-    static const PokeDexEvaluation nationalUnks[] = {
-        { 159, 1311 }, { 349, 1312 }, { 449, 1313 }, { 549, 1314 }, { 635, 1315 }, { 0, 1316 },
+    static const PokeDexEvaluation nationalJingles[] = {
+        { 159, SEQ_ME_HYOUKA1 }, { 349, SEQ_ME_HYOUKA2 }, { 449, SEQ_ME_HYOUKA3 },
+        { 549, SEQ_ME_HYOUKA4 }, { 635, SEQ_ME_HYOUKA5 }, { 0, SEQ_ME_HYOUKA6 },
     };
     static const PokeDexEvaluation unovaSeenMessages[] = {
         { 14, 4 },   { 29, 5 },   { 44, 6 },   { 64, 7 },   { 84, 8 },   { 104, 9 },  { 134, 10 }, { 164, 11 },
@@ -742,37 +745,37 @@ void PokeDex_GetEvaluationParams(PokeDexSave *pokedex, u16 mode, HeapID heapId, 
     PokeDex_IsNationalObtained(pokedex);
     *message = 5;
     *count = 0;
-    *unk = 1311;
+    *jingle = SEQ_ME_HYOUKA1;
     switch (mode) {
     case POKEDEX_EVALUATION_REGIONAL_CAUGHT:
         *count = PokeDex_GetCaughtNoUnova(pokedex, heapId);
         if (PokeDex_IsCompleteUnova(pokedex, heapId) == TRUE) {
             *message = 33;
-            *unk = 1316;
+            *jingle = SEQ_ME_HYOUKA6;
             return;
         }
         *message = PokeDex_LookupEvaluation(unovaCaughtMessages, *count);
-        *unk = PokeDex_LookupEvaluation(unovaUnks, PokeDex_GetCaughtNoUnovaPermissive(pokedex, heapId));
+        *jingle = PokeDex_LookupEvaluation(unovaJingles, PokeDex_GetCaughtNoUnovaPermissive(pokedex, heapId));
         break;
     case POKEDEX_EVALUATION_REGIONAL_SEEN:
         *count = PokeDex_GetSeenNoUnova(pokedex, heapId);
         if (PokeDex_IsSeenAllUnova(pokedex, heapId) == TRUE) {
             *message = 18;
-            *unk = 1316;
+            *jingle = SEQ_ME_HYOUKA6;
             return;
         }
         *message = PokeDex_LookupEvaluation(unovaSeenMessages, *count);
-        *unk = PokeDex_LookupEvaluation(unovaUnks, PokeDex_GetSeenNoUnovaPermissive(pokedex, heapId));
+        *jingle = PokeDex_LookupEvaluation(unovaJingles, PokeDex_GetSeenNoUnovaPermissive(pokedex, heapId));
         break;
     case POKEDEX_EVALUATION_NATIONAL_CAUGHT:
         *count = PokeDex_GetCaughtNo(pokedex, heapId);
         if (PokeDex_IsCompleteNational(pokedex) == TRUE) {
             *message = 60;
-            *unk = 1316;
+            *jingle = SEQ_ME_HYOUKA6;
             return;
         }
         *message = PokeDex_LookupEvaluation(nationalCaughtMessages, *count);
-        *unk = PokeDex_LookupEvaluation(nationalUnks, PokeDex_GetCaughtNoPermissive(pokedex));
+        *jingle = PokeDex_LookupEvaluation(nationalJingles, PokeDex_GetCaughtNoPermissive(pokedex));
         break;
     }
 }

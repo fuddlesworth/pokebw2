@@ -217,7 +217,7 @@ static void DigitalCardCheck_TaskStart(WifiBattleMatchTask *task, u32 *seq, void
     TournamentEntry *entry = TournamentBlock_GetEntry(
         getTournamentBlockAddress(GameData_GetSaveControl(check->param.gameData)), check->param.mode);
     u32 field2 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID);
-    u32 cardType = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+    u32 cardType = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE);
 
     if (field2 != 0 && cardType == CARD_TYPE_1) {
         WifiBattleMatchTask_SetFunc(task, DigitalCardCheck_TaskCardType1);
@@ -334,7 +334,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
         entry = TournamentBlock_GetEntry(getTournamentBlockAddress(save), check->param.mode);
         box = getBattleBox(save);
         BattleBoxSave_ClearFlags(box, check->param.mode == DIGITAL_CARD_CHECK_WIFI ? 1 : 2);
-        TournamentEntry_SetField(entry, TOURNAMENT_FIELD_UNK15B, 4);
+        TournamentEntry_SetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 4);
         *seq = CARD1_START_SAVE;
         break;
     case CARD1_START_SAVE:
@@ -470,7 +470,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
         entry = TournamentBlock_GetEntry(getTournamentBlockAddress(save), check->param.mode);
         box = getBattleBox(save);
         BattleBoxSave_ClearFlags(box, check->param.mode == DIGITAL_CARD_CHECK_WIFI ? 1 : 2);
-        TournamentEntry_SetField(entry, TOURNAMENT_FIELD_UNK15B, 4);
+        TournamentEntry_SetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 4);
         *seq = CARD2_START_SAVE;
         break;
     case CARD2_START_SAVE:

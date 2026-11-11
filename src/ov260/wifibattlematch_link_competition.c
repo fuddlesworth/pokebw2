@@ -767,10 +767,11 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_CHECK_LOCAL_REGISTRATION:
-        if (link->param->account->registrationState == TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B)) {
+        if (link->param->account->registrationState ==
+            TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE)) {
             *seq = COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION;
-        } else if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B) == WBM_REGISTRATION_WITHDRAWN ||
-                   TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B) == 5) {
+        } else if (TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE) == WBM_REGISTRATION_WITHDRAWN ||
+                   TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE) == 5) {
             *seq = COMPETITION_ENTRY_UPDATE_SERVER_REGISTRATION;
         } else {
             *seq = COMPETITION_ENTRY_CHECK_CLOSED_REGISTRATION;
@@ -802,9 +803,9 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+        request.registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE);
         request.profileId = WifiBattleMatchNet_GetGSID(link->net);
-        link->param->account->registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+        link->param->account->registrationState = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE);
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
         *seq = COMPETITION_ENTRY_WAIT_REGISTRATION_UPDATE;
         break;
@@ -1136,7 +1137,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
 
         MI_CpuCopy8(&link->serverEntry, link->entry, sizeof(link->serverEntry));
         BattleBoxSave_ClearFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_TEAM_REQUIRED);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, WBM_REGISTRATION_TEAM_REQUIRED);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_RATING, 0);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_WIN, 0);
         RndMatchData_SetParam(param->record, RNDMATCH_RECORD_COMPETITION, RNDMATCH_FIELD_LOSE, 0);
@@ -1452,7 +1453,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         previous = TournamentBlock_GetTeam(getTournamentBlockAddress(save), 0);
         party = convertBoxedPokeSetToParty(battleBox, HEAPID_TAIL(HEAPID_WIFIBATTLEMATCH));
         BattleBoxSave_SetFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_COMPLETE);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, WBM_REGISTRATION_COMPLETE);
         TournamentTeam_SetFromParty(previous, party);
         GFL_HeapFree(party);
         *seq = COMPETITION_REGISTER_START_SAVE;
@@ -2814,7 +2815,7 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
 
         link->hadBattleBox = BattleBoxSave_CheckFlags(battleBox, 1);
         BattleBoxSave_ClearFlags(battleBox, 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_PERIOD_ENDED);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, WBM_REGISTRATION_PERIOD_ENDED);
         GameData_StartSave(param->param->gameData);
         *seq = COMPETITION_PERIOD_WAIT_SAVE;
         break;
@@ -2956,7 +2957,7 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         break;
     case COMPETITION_UNREGISTER_UNLOCK_TEAM_AND_SAVE:
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(param->param->gameData)), 1);
-        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_UNK15B, WBM_REGISTRATION_WITHDRAWN);
+        TournamentEntry_SetField(link->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, WBM_REGISTRATION_WITHDRAWN);
         GameData_StartSave(param->param->gameData);
         *seq = COMPETITION_UNREGISTER_WAIT_SAVE;
         break;

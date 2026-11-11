@@ -12,7 +12,8 @@ struct WorldTradeData {
     PartyPkm pkm;
     u8 unkDC[0x10];
     u16 flag;
-    u16 unkEE;
+    // The box the deposited Pokémon returns to
+    u16 returnBox;
     // When the deposited Pokémon was traded away, and when the player last traded for a deposited one, as
     // year << 24 | month << 16 | day << 8 | week
     u32 depositTradeDate;

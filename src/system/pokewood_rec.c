@@ -125,7 +125,7 @@ PokewoodBlock *getPokewoodBlock(void) {
     return sBlock;
 }
 
-u32 Pokewood_GetLoadedMovieField(u32 field, u32 a1) {
+u32 Pokewood_GetLoadedMovieField(u32 field, PartyPkm *pkm) {
     switch (field) {
     case POKEWOOD_BLOCK_FIELD_MOVIE:
         return sBlock->info.movie;
@@ -137,7 +137,7 @@ u32 Pokewood_GetLoadedMovieField(u32 field, u32 a1) {
     case POKEWOOD_BLOCK_FIELD_PKM_0 + 3:
     case POKEWOOD_BLOCK_FIELD_PKM_0 + 4:
     case POKEWOOD_BLOCK_FIELD_PKM_5:
-        BattleRecTool_LoadPkm(&sBlock->party.pkm[field - POKEWOOD_BLOCK_FIELD_PKM_0], (PartyPkm *)a1);
+        BattleRecTool_LoadPkm(&sBlock->party.pkm[field - POKEWOOD_BLOCK_FIELD_PKM_0], pkm);
         return 1;
     case POKEWOOD_BLOCK_FIELD_AUDIENCE_COUNT:
         return sBlock->audienceCount;

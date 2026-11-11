@@ -163,8 +163,8 @@ u32 Pokewood_LoadDownloadedMovie(SaveControl *save, HeapID heapId, u32 slot);
 // Whether the loaded movie has data and its checksum is right
 BOOL Pokewood_IsLoadedMovieValid(void);
 PokewoodBlock *getPokewoodBlock(void);
-// A field of the loaded movie
-u32 Pokewood_GetLoadedMovieField(u32 field, u32 a1);
+// A field of the loaded movie, and the destination of a Pokémon field
+u32 Pokewood_GetLoadedMovieField(u32 field, PartyPkm *pkm);
 // Loads the default movie into the Pokewood block and checks its checksum, whatever the arguments are
 u32 loadPokewoodAndCheck(SaveControl *save, HeapID heapId, u32 slot);
 // Copies the Pokewood block to dest

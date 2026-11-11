@@ -54,7 +54,7 @@ u8 getOSBirthdayDay(AdventureSave *adventure) {
 }
 
 void buildAdventureTimeBlk(AdventureTime *time) {
-    time->unk0 = 1;
+    time->valid = 1;
     RTC_GetCachedDateTime(&time->date, &time->time);
     time->day = RTC_ConvertDateToDay(&time->date);
     time->startSeconds = RTC_ConvertDateTimeToSecond(&time->date, &time->time);

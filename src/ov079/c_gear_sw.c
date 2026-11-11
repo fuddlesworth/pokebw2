@@ -2129,7 +2129,7 @@ static BOOL CGearSw_LoadSkin(CGearSw *work, GameSystem *gsys) {
                 loaded = TRUE;
                 GFL_BGSysLoadChar(5, picture, 0x1fe0, 0);
                 GFL_BGSysUploadStdPalette(5, &picture->chars[0x1fe0], 0x20, 13 * 0x20);
-                GFL_BGSysBufferScrDefault(5, picture->unk2000, sizeof(picture->unk2000));
+                GFL_BGSysBufferScrDefault(5, picture->screen, sizeof(picture->screen));
                 GFL_BGSysSetScrPaletteNo(5, 0, 0, 32, 24, 13);
                 GFL_BGSysLoadScr(5);
                 CGearSw_SetSkinBlend(work);

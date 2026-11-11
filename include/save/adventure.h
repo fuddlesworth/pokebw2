@@ -7,7 +7,8 @@
 
 // The game's clock, at 0x10 in the adventure data save block
 struct AdventureTime {
-    u32 unk0;
+    // Whether the clock was built; EvTime_Update does nothing while it is 0
+    u32 valid;
     // When the clock was last checked
     RTCDate date;
     RTCTime time;
