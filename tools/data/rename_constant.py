@@ -6,8 +6,10 @@
 
 The name is replaced as a whole word in the lists and in the tracked sources, headers, data, scripts and docs, and a
 data file or directory named after the constant, such as res/field/zones/castelia_city_12.json, is renamed with it. A
-message file's IDs and its header, text/<archive>/<bank>.h, are renamed with it too. The new name must not be taken
-already. The C files it changes are formatted again with clang-format, since a longer name can push a line past the
+message file's IDs and its header, text/<archive>/<bank>.h, are renamed with it too, and a moved file's or
+directory's path from the repository's root (res/text/system/<bank>.txt) wherever a packer, configure.py, a schema or
+a doc names it. A bare file name can't be told from another file's, so the mentions of one are listed to check by
+hand. The new name must not be taken already. The C files it changes are formatted again with clang-format, since a longer name can push a line past the
 column limit or move an include. Rebuild afterwards: the build checks that nothing still uses the old name.
 """
 import argparse
@@ -25,7 +27,8 @@ from tools.data.species_data import directory as species_directory  # noqa: E402
 from tools.text.text_data import bank_prefix  # noqa: E402
 
 ROOT = LISTS_DIR.parent
-PATHS = ["res", "generated", "src", "include", "lib", "docs", "tools"]
+# configure.py lists the data files that the packers read, as their dependencies
+PATHS = ["res", "generated", "src", "include", "lib", "docs", "tools", "configure.py"]
 SUFFIXES = {".txt", ".s", ".inc", ".c", ".h", ".cpp", ".md", ".py", ".json"}
 # The C that the Standards workflow formats with clang-format; tools/ holds the style checker's misformatted fixtures
 FORMATTED = ("src/", "include/", "lib/")
@@ -122,12 +125,40 @@ def plan(old: str, new: str, lists: dict) -> tuple[list, list]:
                         rf"\g<1>{new_item}\g<2>", old_item))
     for old_path, new_path in moves:
         if old_path.parent.parent == ROOT / "res/text":
-            renames.append((re.compile(rf"\b{re.escape(bank_prefix(old_path))}(?=\w)"), bank_prefix(new_path),
-                            bank_prefix(old_path)))
+            renames.append(prefix_rename(old_path, new_path))
             header = f"text/{old_path.parent.name}/"
             renames.append((re.compile(rf"(?<=[\"<]){re.escape(header + old_path.stem)}\.h(?=[\">])"),
                             f"{header}{new_path.stem}.h", header + old_path.stem + ".h"))
+    # A packer, configure.py, a schema or a doc can name a moved file or directory by its path from the repository's
+    # root: the path follows the move
+    for old_path, new_path in moves:
+        renames.append(path_rename(old_path, new_path))
     return moves, renames
+
+
+def prefix_rename(old_path: Path, new_path: Path):
+    """The rewrite of a message file's ID prefix (Title_Text_): in its IDs, and alone, as a schema's pattern holds it,
+    but not inside a longer prefix that ends with it (ScriptTitle_Text_)."""
+    old, new = bank_prefix(old_path), bank_prefix(new_path)
+    return re.compile(rf"\b{re.escape(old)}"), new, old
+
+
+def path_rename(old_path: Path, new_path: Path):
+    """The rewrite of a moved file's or directory's path from the repository's root, as a whole path: not a longer
+    path that starts with it, such as title_2.txt for title.txt, but a directory's path inside a longer one."""
+    old, new = old_path.relative_to(ROOT).as_posix(), new_path.relative_to(ROOT).as_posix()
+    return re.compile(rf"(?<![\w./-]){re.escape(old)}(?![\w.-])"), new, old
+
+
+def leftover_mentions(moves) -> list[str]:
+    """Where a moved file is still named by its bare file name, which no rename can tell from another file's of that
+    name: each is for a person to check."""
+    names = sorted({old_path.name for old_path, _ in moves if old_path.suffix})
+    if not names:
+        return []
+    found = subprocess.run(["git", "grep", "-nwF", *(arg for name in names for arg in ("-e", name)), "--", *PATHS],
+                           cwd=ROOT, capture_output=True, text=True).stdout
+    return found.splitlines()
 
 
 def main():
@@ -187,6 +218,10 @@ def main():
         subprocess.run([sys.executable, str(ROOT / script), "relink", str(ROOT / models)], cwd=ROOT, check=True)
     reformat(formatted)
     print(f"renamed {len(pairs)} constant{'s' if len(pairs) > 1 else ''} in {changed} files")
+    leftovers = leftover_mentions(moves)
+    if leftovers:
+        print("these still name a moved file by its bare name, check them by hand:")
+        print("\n".join(f"  {line[:160]}" for line in leftovers))
 
 
 def reformat(files):
