@@ -1217,7 +1217,7 @@ static void ShopUI_FreeListMenu(ShopUIWork *wk) {
 static u32 ShopUI_LoadMsgData(ShopUIWork *wk, u32 shopId) {
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_SCRCMD_SHOP, wk->heapId);
     wk->itemInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ITEM_DESCRIPTIONS, wk->heapId);
-    wk->moveInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_13, wk->heapId);
+    wk->moveInfoMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MOVE_DESCRIPTIONS, wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
     wk->message = GFL_StrBufCreate(200, wk->heapId);
     wk->tcbManager = GFL_TCBExMgrCreate(wk->heapId, wk->heapId, 32, 32);

@@ -73,7 +73,7 @@ static BOOL MarineTubeBoard_Init(GameProc *proc, u32 *state, void *param, void *
     wk->heapId = HEAPID_MARINE_TUBE_BOARD;
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_9, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MARINE_TUBE_BOARD, wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
     wk->graphic = MarineTubeBoardGraphic_Create(1, wk->heapId);
     gender = GetGameDataPlayerInfo(gameData)->gender;

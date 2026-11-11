@@ -29,7 +29,7 @@
 #include "system/game_system.h"
 #include "system/pms_word.h"
 #include "system/vm.h"
-#include "text/system/s019a_cgear_control_warning.h"
+#include "text/system/c_gear_power_warning.h"
 
 typedef struct {
     BmpWin *window;
@@ -182,8 +182,7 @@ BOOL Scrcmd_PokeDisp_CGearControlWarning(VM *vm, FieldScriptEnv *env) {
     FieldMsgBG *msgBGSys = Field_GetMsgBGSys(fieldWork->field);
 
     if (VM_Read16(vm)) {
-        MsgData *msgData =
-            GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_S019A_CGEAR_CONTROL_WARNING, heapId);
+        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_C_GEAR_POWER_WARNING, heapId);
         BmpWin *window = BmpWin_CreateStatic(2, 1, 1, 30, 10, 14, 0x40);
         StrBuf *strbuf;
 
@@ -192,7 +191,7 @@ BOOL Scrcmd_PokeDisp_CGearControlWarning(VM *vm, FieldScriptEnv *env) {
         BmpWin_FlushMap(window);
         BmpWin_DrawFrame(window, 0, 1, 13);
         strbuf = GFL_StrBufCreate(180, heapId);
-        GFL_MsgDataLoadStrbuf(msgData, S019aCgearControlWarning_Text_WarningPleaseTurnC, strbuf);
+        GFL_MsgDataLoadStrbuf(msgData, CGearPowerWarning_Text_WarningPleaseTurnC, strbuf);
         GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), 0, 0, strbuf, MsgBGPrinter_GetFont(msgBGSys));
         BmpWin_FlushChar(window);
         GFL_BGSysQueueScrLoad(2);

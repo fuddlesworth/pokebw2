@@ -95,7 +95,7 @@ enum {
     POKELIST_HELD_ITEM_ANM_MAIL = 1,
 };
 
-// Offsets from BtlMain11_Text_WontHaveAnyEffect in the item refusal messages
+// Offsets from PartyList_Text_WontHaveAnyEffect in the item refusal messages
 enum {
     POKELIST_ITEM_MESSAGE_NO_EFFECT,
     POKELIST_ITEM_MESSAGE_FAINTED,

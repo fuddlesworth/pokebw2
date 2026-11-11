@@ -37,8 +37,8 @@
         },
         "name": {
             "type": "string",
-            "pattern": "^LoadBattleTypeTextToStrbuf_Text_",
-            "description": "The regulation's name, a message of res/text/system/load_battle_type_text_to_strbuf.txt (makeStrbufLoadBattleTypeText)"
+            "pattern": "^BattleTypeNames_Text_",
+            "description": "The regulation's name, a message of res/text/system/battle_type_names.txt (makeStrbufLoadBattleTypeText)"
         },
         "unk1": {
             "type": "integer",

@@ -233,7 +233,7 @@ CtvtGameCamTask *CtvtGameCam_StartTask(CtvtGameCam *cam, HeapID heapId) {
     task->heapId = heapId;
     task->font = GFL_FontCreate(23, 0, 0, FALSE, heapId);
     task->printQueue = PrintQueue_Create(0x800, heapId);
-    task->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW, heapId);
+    task->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_VIDEO_CHAT, heapId);
     task->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     task->graphic = CtvtGameCamGraphic_Create(1, heapId);
     CtvtGameCam_LoadBG(heapId);

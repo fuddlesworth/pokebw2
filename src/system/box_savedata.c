@@ -9,7 +9,7 @@
 #include "pml/poke_party.h"
 #include "save/box.h"
 #include "save/save_control.h"
-#include "text/system/btl_pokeparam_box_main_save_init.h"
+#include "text/system/box.h"
 
 // The PC boxes: the main block with the open box, the names, the wallpapers and how many boxes are open, and one
 // block per box of 30 Pokémon. The name is the ROM's string, and trayNum, pos, BOX_MAX_TRAY, BOX_MAX_POS and
@@ -58,10 +58,10 @@ static void BoxMainSave_Init(BoxMainSave *main) {
         }
     }
     main->flags = 0;
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_BOX_MAIN_SAVE_INIT, HEAPID_USER);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BOX, HEAPID_USER);
     if (msgData != NULL) {
         for (i = 0; i < BOX_MAX_TRAY; i++) {
-            GFL_MsgDataLoadRawStr(msgData, BtlPokeparamBoxMainSaveInit_Text_Box1 + i, main->names[i], BOX_NAME_LENGTH);
+            GFL_MsgDataLoadRawStr(msgData, Box_Text_Box1 + i, main->names[i], BOX_NAME_LENGTH);
         }
         GFL_MsgDataFree(msgData);
     }

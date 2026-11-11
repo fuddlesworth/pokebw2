@@ -98,8 +98,8 @@ static BOOL WorldTradeProc_Init(GameProc *proc, u32 *state, void *param, void *w
     wk->lobbyMsgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_P2PMATCH, HEAPID_WORLDTRADE);
     wk->systemMsgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_ERROR, HEAPID_WORLDTRADE);
     wk->monsNameManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_NAMES, HEAPID_WORLDTRADE);
-    wk->countryNameManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
-                                                TEXT_BANK_EVENT_MAPCHANGE_LOAD_COUNTRY_TO_STRBUF, HEAPID_WORLDTRADE);
+    wk->countryNameManager =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_COUNTRY_NAMES, HEAPID_WORLDTRADE);
 
     WorldTrade_InitWork(wk, wtParam);
     GFL_BGSysInitVRAM(0);

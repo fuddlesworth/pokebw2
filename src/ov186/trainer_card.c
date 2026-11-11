@@ -478,7 +478,7 @@ static void TrainerCard_LoadMessages(TrainerCardWork *wk) {
     int i;
 
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_4, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TRAINER_CARD, wk->heapId);
     wk->numBuf = GFL_StrBufCreate(4, wk->heapId);
     wk->nameBuf = GFL_StrBufCreate(32, wk->heapId);
     wk->tmpBuf = GFL_StrBufCreate(33, wk->heapId);

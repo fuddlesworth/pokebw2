@@ -21,7 +21,7 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // The party list in a battle's team selection: the partners' teams of a multi battle shown beside the player's, the
 // battle's messages, and the time left to pick
@@ -268,9 +268,9 @@ static inline void PokeListBattle_CreateSexWindow(PokeListWork *wk, PokeListPart
     partnerPkm->sexWindow = BmpWin_CreateDynamic(4, tileX + 3, tileY, 3, 2, 13, TRUE);
     if (isEgg == FALSE) {
         if (sex == GENDER_MALE) {
-            PokeList_PrintString(wk, partnerPkm->sexWindow, BtlMain11_Text_Empty_5, subX + 4, 0, 0x14c0);
+            PokeList_PrintString(wk, partnerPkm->sexWindow, PartyList_Text_Empty_5, subX + 4, 0, 0x14c0);
         } else if (sex == GENDER_FEMALE) {
-            PokeList_PrintString(wk, partnerPkm->sexWindow, BtlMain11_Text_Empty_6, subX + 4, 0, 0xc80);
+            PokeList_PrintString(wk, partnerPkm->sexWindow, PartyList_Text_Empty_6, subX + 4, 0, 0xc80);
         }
     }
 }
@@ -286,7 +286,7 @@ static inline void PokeListBattle_CreateLevelWindow(PokeListWork *wk, PokeListPa
         WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
 
         WordSetNumber(wordSet, 0, level, 3, 0, TRUE);
-        PokeList_PrintWordSetStringSmall(wk, partnerPkm->levelWindow, wordSet, BtlMain11_Text_L, subX, 0, 0x3c40);
+        PokeList_PrintWordSetStringSmall(wk, partnerPkm->levelWindow, wordSet, PartyList_Text_L, subX, 0, 0x3c40);
         GFL_WordSetSystemFree(wordSet);
     }
 }
@@ -379,11 +379,11 @@ static void PokeListBattle_PrintMessage(PokeListWork *wk) {
             GFL_StrBufLoadString(name, wk->param->partners[1].name);
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetString(wk, wk->message, 0, name, wk->param->partners[1].gender);
-            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_StandingBy);
+            PokeListMessage_Print(wk, wk->message, PartyList_Text_StandingBy);
             PokeListMessage_FreeWordSet(wk, wk->message);
             GFL_StrBufFree(name);
         } else {
-            PokeListMessage_Print(wk, wk->message, wk->param->battleMsg + BtlMain11_Text_StandingBy);
+            PokeListMessage_Print(wk, wk->message, wk->param->battleMsg + PartyList_Text_StandingBy);
         }
     }
 }
@@ -393,7 +393,7 @@ static void PokeListBattle_CreateTimer(PokeListWork *wk) {
 
     wk->timerWindows[0] = BmpWin_CreateDynamic(4, 7, 21, 11, 3, 14, TRUE);
     wk->timerWindows[1] = BmpWin_CreateDynamic(4, 20, 21, 5, 3, 14, TRUE);
-    label = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_TimeLimit);
+    label = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_TimeLimit);
     PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(wk->timerWindows[0]), 0, 4, label, wk->font, 0x3c40);
     GFL_StrBufFree(label);
     wk->timerWindowDirty[0] = TRUE;
@@ -417,10 +417,10 @@ static void PokeListBattle_UpdateTimer(PokeListWork *wk) {
         s32 width;
 
         if (minutes == 0) {
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_55);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_Empty_55);
             WordSetNumber(wordSet, 1, seconds, 2, 1, TRUE);
         } else {
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_54);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_Empty_54);
             WordSetNumber(wordSet, 0, minutes, 2, 1, TRUE);
             WordSetNumber(wordSet, 1, seconds, 2, 2, TRUE);
         }

@@ -36,7 +36,7 @@ from tools.text.text_ids import message_numbers  # noqa: E402
 PROGRAMS = 4
 FIRST_ARCHIVE = 112  # ARCID_MUSICAL_PROGRAM, a/1/1/2
 # The performers' names are these messages, and their Pokémon's the same lines of musical_event.txt (musical_event.c)
-NAMES = Path(__file__).resolve().parents[2] / "res/text/system/btl_main_9.txt"
+NAMES = Path(__file__).resolve().parents[2] / "res/text/system/musical_npc_names.txt"
 # The waves are a wave archive of the sound archive's format
 WAVES_SCHEMA = Path(__file__).resolve().parents[2] / "res/sound/wave_archive.schema.json"
 

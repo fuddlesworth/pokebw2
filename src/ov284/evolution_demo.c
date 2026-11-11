@@ -1125,8 +1125,7 @@ static void EvolutionDemo_InitMsg(EvolutionDemoParam *param, EvolutionDemoWork *
     GFL_BGSysQueueScrLoad(BmpWin_GetBGIndex(window));
     wk->frameChars = LoadCursorImageEndOfHeap(1, 2, 0, wk->graphicHeapId);
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVOLUTION_DEMO, wk->graphicHeapId);
-    wk->moveMsgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVOLUTION_DEMO_BTL_MAIN, wk->graphicHeapId);
+    wk->moveMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MOVE_LEARNING, wk->graphicHeapId);
     wk->tcbExManager = GFL_TCBExMgrCreate(wk->graphicHeapId, wk->graphicHeapId, 1, 0);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 15);
     wk->message = NULL;

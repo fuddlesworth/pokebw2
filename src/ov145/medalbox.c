@@ -45,7 +45,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/title_10.h"
+#include "text/system/medal_box.h"
 
 // The Medal Box screen: the medal case and the medal under the cursor on the top screen, and on the touch screen
 // the columns of medals, which scroll sideways, with the names of the middle column's medals beside them or, in the
@@ -126,8 +126,8 @@ enum {
 enum {
     MSG_UI,
     MSG_MEDAL_NAMES,
+    MSG_MEDAL_DESCRIPTIONS,
     MSG_MEDAL_HINTS,
-    MSG_MEDAL_INFO,
     MSG_COUNT,
 };
 
@@ -365,18 +365,18 @@ static const BGSysVRAMConfig sMedalBoxVRAMConfig = {
 
 // The menu's buttons in each of the orders: the view, the orders but the current one, and the way back
 static const int sMedalBoxMenuItems[6][APP_TASKMENU_ITEM_MAX] = {
-    { Title10_Text_Columns, Title10_Text_MedalsOnly, Title10_Text_HintMedalsOnly, Title10_Text_DisplayByType,
-      Title10_Text_DisplayByName, Title10_Text_NewestFirst, Title10_Text_Back, MENU_ITEM_NONE },
-    { Title10_Text_Columns, Title10_Text_MedalsOnly, Title10_Text_HintMedalsOnly, Title10_Text_DisplayByType,
-      Title10_Text_DisplayByName, Title10_Text_Revert, Title10_Text_Back, MENU_ITEM_NONE },
-    { Title10_Text_Columns, Title10_Text_HintMedalsOnly, Title10_Text_DisplayByType, Title10_Text_DisplayByName,
-      Title10_Text_NewestFirst, Title10_Text_Revert, Title10_Text_Back, MENU_ITEM_NONE },
-    { Title10_Text_Columns, Title10_Text_MedalsOnly, Title10_Text_DisplayByType, Title10_Text_DisplayByName,
-      Title10_Text_NewestFirst, Title10_Text_Revert, Title10_Text_Back, MENU_ITEM_NONE },
-    { Title10_Text_Columns, Title10_Text_MedalsOnly, Title10_Text_HintMedalsOnly, Title10_Text_DisplayByType,
-      Title10_Text_NewestFirst, Title10_Text_Revert, Title10_Text_Back, MENU_ITEM_NONE },
-    { Title10_Text_Columns, Title10_Text_MedalsOnly, Title10_Text_HintMedalsOnly, Title10_Text_DisplayByName,
-      Title10_Text_NewestFirst, Title10_Text_Revert, Title10_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_MedalsOnly, MedalBox_Text_HintMedalsOnly, MedalBox_Text_DisplayByType,
+      MedalBox_Text_DisplayByName, MedalBox_Text_NewestFirst, MedalBox_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_MedalsOnly, MedalBox_Text_HintMedalsOnly, MedalBox_Text_DisplayByType,
+      MedalBox_Text_DisplayByName, MedalBox_Text_Revert, MedalBox_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_HintMedalsOnly, MedalBox_Text_DisplayByType, MedalBox_Text_DisplayByName,
+      MedalBox_Text_NewestFirst, MedalBox_Text_Revert, MedalBox_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_MedalsOnly, MedalBox_Text_DisplayByType, MedalBox_Text_DisplayByName,
+      MedalBox_Text_NewestFirst, MedalBox_Text_Revert, MedalBox_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_MedalsOnly, MedalBox_Text_HintMedalsOnly, MedalBox_Text_DisplayByType,
+      MedalBox_Text_NewestFirst, MedalBox_Text_Revert, MedalBox_Text_Back, MENU_ITEM_NONE },
+    { MedalBox_Text_Columns, MedalBox_Text_MedalsOnly, MedalBox_Text_HintMedalsOnly, MedalBox_Text_DisplayByName,
+      MedalBox_Text_NewestFirst, MedalBox_Text_Revert, MedalBox_Text_Back, MENU_ITEM_NONE },
 };
 
 static const MedalBoxBG sMedalBoxBGs[BG_COUNT] = {
@@ -535,10 +535,11 @@ static void MedalBoxApp_InitData(MedalBoxApp *work) {
 
     work->medalBox = SaveControl_GetMedalBox(GameData_GetSaveControl(work->param->gameData));
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
-    work->msgData[MSG_UI] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_10, heapId);
+    work->msgData[MSG_UI] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_BOX, heapId);
     work->msgData[MSG_MEDAL_NAMES] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_NAMES, heapId);
-    work->msgData[MSG_MEDAL_HINTS] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_11, heapId);
-    work->msgData[MSG_MEDAL_INFO] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_12, heapId);
+    work->msgData[MSG_MEDAL_DESCRIPTIONS] =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_DESCRIPTIONS, heapId);
+    work->msgData[MSG_MEDAL_HINTS] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_HINTS, heapId);
     MedalBoxDataSys_Init(&work->data, work->param->gameData, work->heapId);
     MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_OLDEST);
     work->caseY = FX32_CONST(-160);
@@ -549,8 +550,8 @@ static void MedalBoxApp_InitData(MedalBoxApp *work) {
 static void MedalBoxApp_FreeData(MedalBoxApp *work) {
     MedalBoxDataSys_Free(&work->data);
     GFL_MsgDataFree(work->msgData[MSG_UI]);
-    GFL_MsgDataFree(work->msgData[MSG_MEDAL_INFO]);
     GFL_MsgDataFree(work->msgData[MSG_MEDAL_HINTS]);
+    GFL_MsgDataFree(work->msgData[MSG_MEDAL_DESCRIPTIONS]);
     GFL_MsgDataFree(work->msgData[MSG_MEDAL_NAMES]);
     GFL_FontFree(work->font);
 }
@@ -1515,16 +1516,16 @@ static void MedalBoxApp_DrawInfo(MedalBoxApp *work, MedalBoxEntry *medal, BOOL s
     }
     GFL_BitmapFill(BmpWin_GetBitmap(work->windows[WINDOW_INFO]), color & 0x1f);
     if (show == FALSE && rank != MEDAL_RANK_MAX) {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_MedalCollectionGoal);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_MedalCollectionGoal);
 
         PrintWindow_Print(&work->printWindows[WINDOW_INFO], work->printQueue, 8, 8, str, work->font, color);
         GFL_StrBufFree(str);
     }
     if (show == TRUE) {
         if (medal->status == MEDAL_STATUS_OBTAINED) {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_MedalsCollected);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_MedalsCollected);
         } else {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_HintMedals);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_HintMedals);
         }
         PrintWindow_Print(&work->printWindows[WINDOW_INFO], work->printQueue, 8, 8, str, work->font, color);
         GFL_StrBufFree(str);
@@ -1534,7 +1535,7 @@ static void MedalBoxApp_DrawInfo(MedalBoxApp *work, MedalBoxEntry *medal, BOOL s
     goal = MedalBox_GetNextRankRequirement(work->medalBox) + 1;
     if (show == TRUE) {
         buf = GFL_StrBufCreate(20, work->heapId);
-        str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_Empty_2);
+        str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_Empty_2);
         if (medal->status == MEDAL_STATUS_OBTAINED) {
             WordSetNumber(wordSet, 0, obtained, 3, 1, TRUE);
             WordSetNumber(wordSet, 1, total, 3, 1, TRUE);
@@ -1549,7 +1550,7 @@ static void MedalBoxApp_DrawInfo(MedalBoxApp *work, MedalBoxEntry *medal, BOOL s
     }
     if (show == FALSE && rank != MEDAL_RANK_MAX) {
         StrBuf *buf = GFL_StrBufCreate(20, work->heapId);
-        StrBuf *format = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_Empty);
+        StrBuf *format = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_Empty);
 
         WordSetNumber(wordSet, 0, goal, 3, 1, TRUE);
         GFL_WordSetFormatStrbuf(wordSet, buf, format);
@@ -1577,13 +1578,13 @@ static void MedalBoxApp_DrawInfo(MedalBoxApp *work, MedalBoxEntry *medal, BOOL s
         WordSetNumber(wordSet, 1, medal->month, 3, 0, TRUE);
         WordSetNumber(wordSet, 2, medal->day, 3, 0, TRUE);
         if (medal->status == MEDAL_STATUS_OBTAINED) {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_DateObtained);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_DateObtained);
         } else {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_DateReceived);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_DateReceived);
         }
         PrintWindow_Print(&work->printWindows[WINDOW_INFO], work->printQueue, 232, 80, str, work->font, color);
         GFL_StrBufFree(str);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_20);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_20);
         GFL_WordSetFormatStrbuf(wordSet, buf, format);
         PrintWindow_Print(&work->printWindows[WINDOW_INFO], work->printQueue, 232, 96, buf, work->font, color);
         GFL_StrBufFree(format);
@@ -1591,9 +1592,9 @@ static void MedalBoxApp_DrawInfo(MedalBoxApp *work, MedalBoxEntry *medal, BOOL s
     }
     if (show == TRUE) {
         if (medal->status == MEDAL_STATUS_OBTAINED) {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_MEDAL_HINTS], medal->id);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_MEDAL_DESCRIPTIONS], medal->id);
         } else {
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_MEDAL_INFO], medal->id);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_MEDAL_HINTS], medal->id);
         }
         PrintWindow_Print(&work->printWindows[WINDOW_INFO], work->printQueue, 20, 128, str, work->font, color);
         GFL_StrBufFree(str);
@@ -2158,35 +2159,35 @@ static BOOL MedalBoxApp_SeqMenu(MedalBoxApp *work) {
         GFL_BGSysSetBGPriority(MedalBoxApp_GetBG(BG_MAIN_MESSAGE), 2);
         work->subSeq++;
         switch (sMedalBoxMenuItems[work->data.sort][pos]) {
-        case Title10_Text_Browser:
-        case Title10_Text_Columns:
+        case MedalBox_Text_Browser:
+        case MedalBox_Text_Columns:
             MedalBoxApp_SetSeq(work, SEQ_CHANGE_VIEW);
             break;
-        case Title10_Text_MedalsOnly:
+        case MedalBox_Text_MedalsOnly:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_MEDALS_ONLY);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_HintMedalsOnly:
+        case MedalBox_Text_HintMedalsOnly:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_HINTS_ONLY);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_DisplayByType:
+        case MedalBox_Text_DisplayByType:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_TYPE);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_NewestFirst:
+        case MedalBox_Text_NewestFirst:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_NEWEST);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_DisplayByName:
+        case MedalBox_Text_DisplayByName:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_NAME);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_Revert:
+        case MedalBox_Text_Revert:
             MedalBoxDataSys_Sort(&work->data, MEDALBOX_SORT_OLDEST);
             MedalBoxApp_SetSeq(work, SEQ_SORT);
             break;
-        case Title10_Text_Back:
+        case MedalBox_Text_Back:
         default:
             if (!GCTX_HIDIsUsingTouch()) {
                 MedalBoxApp_SetCursor(work, work->cursor, TRUE);
@@ -2216,10 +2217,10 @@ static void MedalBoxApp_OpenMenu(MedalBoxApp *work) {
             if (i == 0) {
                 if (work->view == VIEW_NAMES) {
                     work->menuItems[work->menuItemCount].str =
-                        GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_Browser);
+                        GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_Browser);
                 } else {
                     work->menuItems[work->menuItemCount].str =
-                        GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_Columns);
+                        GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_Columns);
                 }
             } else {
                 work->menuItems[work->menuItemCount].str =
@@ -2246,7 +2247,7 @@ static void MedalBoxApp_OpenMenu(MedalBoxApp *work) {
     BmpWin_FlushMap(work->messageWindow);
     LoadSysMsgBox(MedalBoxApp_GetBG(BG_MAIN_MESSAGE), 1, 12, 0, work->heapId);
     BmpWin_DrawFrame(work->messageWindow, 1, 1, 12);
-    str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_HowShouldMedalsDisplayed);
+    str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_HowShouldMedalsDisplayed);
     GFL_BitmapFill(BmpWin_GetBitmap(work->messageWindow), 15);
     BmpWin_FlushChar(work->messageWindow);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(work->messageWindow), 0, 0, str, work->font);
@@ -2394,13 +2395,13 @@ static BOOL MedalBoxApp_SeqFavorite(MedalBoxApp *work) {
         }
         switch (work->favoriteResult) {
         case FAVORITE_SET:
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_RegisteringFavoriteMedalWill);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_RegisteringFavoriteMedalWill);
             break;
         case FAVORITE_REMOVED:
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_Removed);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_Removed);
             break;
         case FAVORITE_HINT:
-            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_HintMedalCannotRegistered);
+            str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_HintMedalCannotRegistered);
             break;
         }
         MedalBoxApp_ShowMessage(work, str);
@@ -2565,7 +2566,7 @@ static BOOL MedalBoxApp_SeqManual(MedalBoxApp *work) {
         work->subSeq++;
         break;
     case MANUAL_STEP_SHOW: {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], Title10_Text_ManualWedgedInsideMedal);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData[MSG_UI], MedalBox_Text_ManualWedgedInsideMedal);
 
         MedalBoxApp_ShowMessage(work, str);
         GFL_StrBufFree(str);

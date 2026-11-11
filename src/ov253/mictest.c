@@ -33,7 +33,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
-#include "text/system/intro_btl_server_flow.h"
+#include "text/system/mic_test.h"
 
 // The microphone test, which the title screen starts by holding Down, X and Y: the player speaks into the
 // microphone, and the louder, the more the speaker on the screen shakes and the more notes it sends up. The Back
@@ -596,7 +596,7 @@ static void MicTest_VBlankBG(MicTestBG *bg) {
 static void MicTest_CreateWindows(MicTestBG *bg, u32 heapId) {
     int i;
 
-    bg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INTRO_BTL_SERVER_FLOW, heapId);
+    bg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MIC_TEST, heapId);
     for (i = 0; i < WINDOW_COUNT; i++) {
         const MicTestWindowSetup *setup = &sMicTestWindowSetups[i];
         GFLBitmap *bitmap;

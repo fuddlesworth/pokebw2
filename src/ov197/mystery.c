@@ -481,7 +481,7 @@ static BOOL MysteryProc_Init(GameProc *proc, u32 *state, void *param, void *work
     MysteryActors_Init(&wk->actors, MysteryGraphic_GetClactUnit(wk->graphic), HEAPID_MYSTERY);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_MYSTERY);
     wk->queue = PrintQueue_CreateDefault(HEAPID_MYSTERY);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_14, HEAPID_MYSTERY);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MYSTERY_GIFT, HEAPID_MYSTERY);
     wk->scriptMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, HEAPID_MYSTERY);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_MYSTERY);
     wk->seq = MysterySeq_Create(wk, MysterySeq_Start, HEAPID_MYSTERY);

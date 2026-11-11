@@ -38,7 +38,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_4.h"
+#include "text/system/ir_compat_menu.h"
 
 // The first screen of the compatibility checker: its graphics, its windows, the two buttons, the hearts that float up
 // the background and the steps of the screen, which also make the link with the other player. The ROM has no string for
@@ -324,8 +324,8 @@ const GameProcFunctions IRC_COMPAT_MENU_PROC_FUNCTIONS = {
 static const BGSysLCDConfig sIrcCompatMenuLCDConfig = { GX_DISPMODE_GRAPHICS, GX_BGMODE_0, GX_BGMODE_1, GX_BG0_AS_2D };
 
 static const IrcCompatMenuButtonDef sIrcCompatMenuButtonDefs[2] = {
-    { BtlMain4_Text_BeginCheck, 3, 2, 26, 5, 11 },
-    { BtlMain4_Text_Ranking, 3, 14, 26, 5, 4 },
+    { IrCompatMenu_Text_BeginCheck, 3, 2, 26, 5, 11 },
+    { IrCompatMenu_Text_Ranking, 3, 14, 26, 5, 4 },
 };
 
 static const u32 sIrcCompatMenuBGModes[BG_COUNT] = { BGMODE_TEXT, BGMODE_TEXT, BGMODE_TEXT, BGMODE_TEXT,
@@ -380,9 +380,9 @@ static BOOL IrcCompatMenu_Init(GameProc *proc, u32 *state, void *param, void *wo
     IrcCompatMenuButtons_Init(&wk->buttons, 2, sIrcCompatMenuButtonDefs, 2, &wk->text, HEAP_ID);
     IrcCompatMenuWindow_Init(&wk->messageWindow, 5, 1, 18, 30, 5, 8, HEAP_ID);
     BmpWin_DrawFrame(wk->messageWindow.window, 0, (u16)wk->bg.frameChars, 6);
-    IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_TapMenuTouchScreen, 0, 0);
+    IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_TapMenuTouchScreen, 0, 0);
     IrcCompatMenuWindow_InitWithColor(&wk->titleWindow, 7, 6, 3, 20, 5, 8, 1, TRUE, HEAP_ID);
-    IrcCompatMenuWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, BtlMain4_Text_FeelingCheck);
+    IrcCompatMenuWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, IrCompatMenu_Text_FeelingCheck);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_X, 0x1000);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_Y, 0x1000);
     GFL_BGSysAdjustBGOriginReq(7, BG_CENTER_SET_X, 0x80);
@@ -631,7 +631,7 @@ static void IrcCompatMenuText_Init(IrcCompatMenuText *text, HeapID heapId) {
     GFL_TextRndInitColorIndexLUT();
     text->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     text->queue = PrintQueue_CreateDefault(heapId);
-    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_4, heapId);
+    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_COMPAT_MENU, heapId);
     text->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_SUB_BG, 0, 0x20, heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_MAIN_BG, 0, 0x20, heapId);
@@ -740,7 +740,7 @@ static void IrcCompatMenu_StepConnect(IrcCompatMenuWork *wk, u16 *state) {
         IrcAppBar_Reset(wk->button);
         IrcAppBar_SetLabel(wk->button, IRC_APPBAR_LABEL_CANCEL);
         GFL_BGSysLoadScr(0);
-        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_TapMenuTouchScreen, 0, 0);
+        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_TapMenuTouchScreen, 0, 0);
         IrcCompatMenuButtons_Reset(&wk->buttons);
         return;
     }
@@ -764,7 +764,8 @@ static void IrcCompatMenu_StepConnect(IrcCompatMenuWork *wk, u16 *state) {
         *state = CONNECT_PRINT_CHECKING;
         break;
     case CONNECT_PRINT_CHECKING:
-        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_CheckingPleaseMaintainInfrared, 0, 0);
+        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_CheckingPleaseMaintainInfrared, 0,
+                                     0);
         *state = CONNECT_SYNC;
         break;
     case CONNECT_SYNC:
@@ -836,7 +837,8 @@ static void IrcCompatMenu_StepConnect(IrcCompatMenuWork *wk, u16 *state) {
             break;
         }
         GFL_SndSEPlay(SEQ_SE_SYS_12);
-        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_YouveCreatedInfraredConnection, 0, 0);
+        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_YouveCreatedInfraredConnection, 0,
+                                     0);
         *state = CONNECT_WAIT_FINISH;
         break;
     case CONNECT_WAIT_FINISH:
@@ -891,7 +893,8 @@ static void IrcCompatMenu_StepMenu(IrcCompatMenuWork *wk, u16 *state) {
         }
         break;
     case MENU_START_CONNECT:
-        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_CreateInfraredConnectionStart, 0, 0);
+        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_CreateInfraredConnectionStart, 0,
+                                     0);
         IrcAppBar_SetLabel(wk->button, IRC_APPBAR_LABEL_BACK);
         IrcAppBar_SetActive(wk->button, FALSE);
         IrcCompatMenu_SetStep(wk, IrcCompatMenu_StepConnect);
@@ -922,7 +925,7 @@ static void IrcCompatMenu_StepFinish(IrcCompatMenuWork *wk, u16 *state) {
 static void IrcCompatMenu_StepReturn(IrcCompatMenuWork *wk, u16 *state) {
     switch (*state) {
     case RETURN_PRINT:
-        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain4_Text_TapMenuTouchScreen, 0, 0);
+        IrcCompatMenuWindow_PrintMsg(&wk->messageWindow, &wk->text, IrCompatMenu_Text_TapMenuTouchScreen, 0, 0);
         CompatibleIrcSys_ResetCounts(wk->param->sys);
         CompatibleIrcSys_ResetState(wk->param->sys);
         *state = RETURN_END_NET;

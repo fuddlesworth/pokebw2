@@ -250,7 +250,7 @@ void HallOfFamePCMain_SetBlend(void) {
 }
 
 void HallOfFamePCMain_InitMsg(HallOfFamePCWork *wk) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_3, HEAPID_HALL_OF_FAME_PC);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_HALL_OF_FAME_PC, HEAPID_HALL_OF_FAME_PC);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_HALL_OF_FAME_PC);
     wk->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, HEAPID_HALL_OF_FAME_PC);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_HALL_OF_FAME_PC);

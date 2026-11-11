@@ -33,7 +33,7 @@
 #include "system/printsys.h"
 #include "system/str_tool.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_title.h"
+#include "text/system/pokedex_detail.h"
 
 // pokedex_info.c, zukan_info.c by the ROM's own string: a Pokémon's Pokédex entry on one screen. Its sprite, its types,
 // its footprint, and in windows its name, number, category, height, weight and description, in the game's language or
@@ -261,7 +261,7 @@ static const u32 sLabelMessages[POKEDEX_INFO_STRBUF_COUNT] = {
 };
 // clang-format off
 static const u16 sMsgBanks[POKEDEX_INFO_MSG_COUNT] = {
-    TEXT_BANK_BTL_SERVER_FLOW_TITLE,
+    TEXT_BANK_POKEDEX_DETAIL,
     TEXT_BANK_SPECIES_CATEGORIES,
     TEXT_BANK_POKEDEX_HEIGHTS,
     TEXT_BANK_POKEDEX_WEIGHTS,
@@ -907,7 +907,7 @@ static void PokedexInfo_PrintEntry(PokedexInfo *info) {
 
     if (info->mode != POKEDEX_INFO_MODE_DETAIL) {
         PokedexInfo_PrintMessage(info->heapId, info->windows[POKEDEX_INFO_WINDOW_LABEL], labels, info->printQueue,
-                                 info->font, BtlServerFlowTitle_Text_PokedexRegistrationCompleted, 0, 5, COLOR_TEXT,
+                                 info->font, PokedexDetail_Text_PokedexRegistrationCompleted, 0, 5, COLOR_TEXT,
                                  PRINT_ALIGN_CENTER, NULL);
     }
 
@@ -993,7 +993,7 @@ static void PokedexInfo_PrintEntryInLanguage(PokedexInfo *info, unsigned int lan
 
     if (info->mode != POKEDEX_INFO_MODE_DETAIL) {
         PokedexInfo_PrintMessage(info->heapId, info->windows[POKEDEX_INFO_WINDOW_LABEL], labels, info->printQueue,
-                                 info->font, BtlServerFlowTitle_Text_PokedexRegistrationCompleted, 0, 5, COLOR_TEXT,
+                                 info->font, PokedexDetail_Text_PokedexRegistrationCompleted, 0, 5, COLOR_TEXT,
                                  PRINT_ALIGN_CENTER, NULL);
     }
 

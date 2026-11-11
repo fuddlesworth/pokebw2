@@ -44,7 +44,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_7.h"
+#include "text/system/ir_rhythm_check.h"
 
 // The Rhythm Check of the compatibility checker: its graphics, its windows, the countdown, the sparkles of the taps,
 // the flash of the background, the taps that the two players compare, the link that sends them and the steps of the
@@ -424,14 +424,14 @@ static BOOL IrcRhythmCheck_Init(GameProc *proc, u32 *state, void *param, void *w
     BmpWin_DrawFrame(wk->messageWindow.window, 0, (u16)wk->graphic.bg.frameChars, 6);
     IrcRhythmFlash_Init(&wk->flash, HEAP_ID);
     if (wk->param->gsys != NULL) {
-        IrcRhythmWindow_PrintMsgPlayer(&wk->messageWindow, &wk->text, BtlMain7_Text_TapTouchScreen10,
+        IrcRhythmWindow_PrintMsgPlayer(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_TapTouchScreen10,
                                        wk->param->profile, 0, 0, HEAP_ID);
     } else {
-        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain7_Text_TapTouchScreen10, 0, 0);
+        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_TapTouchScreen10, 0, 0);
     }
     IrcRhythmCountdown_Init(&wk->countdown, &wk->graphic, HEAP_ID);
     IrcRhythmWindow_InitWithColor(&wk->titleWindow, 7, 6, 3, 20, 5, 8, 1, TRUE, HEAP_ID);
-    IrcRhythmWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, BtlMain7_Text_RhythmCheck);
+    IrcRhythmWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, IrRhythmCheck_Text_RhythmCheck);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_X, 0x1000);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_Y, 0x1000);
     GFL_BGSysAdjustBGOriginReq(7, BG_CENTER_SET_X, 0x80);
@@ -696,7 +696,7 @@ static void IrcRhythmText_Init(IrcRhythmText *text, int fontType, HeapID heapId)
         break;
     }
     text->queue = PrintQueue_CreateDefault(heapId);
-    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_7, heapId);
+    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_RHYTHM_CHECK, heapId);
     text->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_SUB_BG, 0x1c0, 0x20, heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_MAIN_BG, 0x1c0, 0x20, heapId);
@@ -931,7 +931,8 @@ static void IrcRhythmCheck_StepTap(IrcRhythmCheckWork *wk, u16 *state) {
     }
     if (IrcRhythmData_IsFull(data)) {
         if (!wk->scoring) {
-            IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain7_Text_CheckCompleteCreateInfrared, 0, 0);
+            IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_CheckCompleteCreateInfrared, 0,
+                                     0);
             GFL_SndSEPlay(SEQ_SE_SYS_21);
             wk->scoring = TRUE;
         }
@@ -970,7 +971,8 @@ static void IrcRhythmCheck_StepResult(IrcRhythmCheckWork *wk, u16 *state) {
         }
         break;
     case RESULT_PRINT_CHECKING:
-        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain7_Text_CheckingPleaseMaintainInfrared, 0, 0);
+        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_CheckingPleaseMaintainInfrared, 0,
+                                 0);
         *state = RESULT_SEND_TAPS;
         break;
     case RESULT_SEND_TAPS:
@@ -995,7 +997,8 @@ static void IrcRhythmCheck_StepResult(IrcRhythmCheckWork *wk, u16 *state) {
             break;
         }
         GFL_SndSEPlay(SEQ_SE_SYS_12);
-        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain7_Text_YouveCreatedInfraredConnection, 0, 0);
+        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_YouveCreatedInfraredConnection, 0,
+                                 0);
         *state = RESULT_WAIT_SCORE;
         break;
     case RESULT_WAIT_SCORE:
@@ -1047,7 +1050,8 @@ static void IrcRhythmCheck_StepInterrupted(IrcRhythmCheckWork *wk, u16 *state) {
         *state = INTERRUPTED_PRINT;
         break;
     case INTERRUPTED_PRINT:
-        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain7_Text_ConnectionInterruptedPleaseRealign, 0, 0);
+        IrcRhythmWindow_PrintMsg(&wk->messageWindow, &wk->text, IrRhythmCheck_Text_ConnectionInterruptedPleaseRealign,
+                                 0, 0);
         *state = INTERRUPTED_EXCHANGE_IDS;
         break;
     case INTERRUPTED_EXCHANGE_IDS:

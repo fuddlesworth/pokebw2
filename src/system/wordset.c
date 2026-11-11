@@ -247,8 +247,7 @@ void GFL_WordSetLoadStr(WordSet *wordSet, u32 index, const u16 *str) {
 }
 
 void loadCountryToStrbuf(WordSet *wordSet, u32 index, u32 country) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_MAPCHANGE_LOAD_COUNTRY_TO_STRBUF,
-                                          wordSet->heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_COUNTRY_NAMES, wordSet->heapId);
 
     if (msgData != NULL) {
         if (country < GFL_MsgDataGetLineCount(msgData)) {

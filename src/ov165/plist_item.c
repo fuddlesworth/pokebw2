@@ -18,7 +18,7 @@
 #include "system/game_comm.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // Using an item from the bag on a Pokémon of the party list, and the stats shown after a level up. The ROM doesn't
 // name this file; it is named for what it does
@@ -237,11 +237,11 @@ u32 PokeList_GetItemMenuMessage(PokeListWork *wk, u16 item) {
     switch (PokeList_GetItemEffect(item)) {
     case POKELIST_ITEM_EFFECT_PP_UP:
     case POKELIST_ITEM_EFFECT_PP_MAX:
-        return BtlMain11_Text_BoostPpWhichMove;
+        return PartyList_Text_BoostPpWhichMove;
     case POKELIST_ITEM_EFFECT_RESTORE_PP:
-        return BtlMain11_Text_RestoreWhichMove;
+        return PartyList_Text_RestoreWhichMove;
     }
-    return BtlMain11_Text_RestoreWhichMove;
+    return PartyList_Text_RestoreWhichMove;
 }
 
 // Changes Arceus's type to the plate it holds
@@ -273,7 +273,7 @@ static void PokeList_ShowItemMessage(PokeListWork *wk, u32 offset, void (*doneFu
     wk->param->result = POKELIST_RESULT_ITEM_DONE;
     PokeListMessage_CreateWordSet(wk, wk->message);
     PokeListMessage_SetItemName(wk, wk->message, 0, wk->param->item);
-    PokeList_ShowMessage(wk, offset + BtlMain11_Text_WontHaveAnyEffect, TRUE, doneFunc);
+    PokeList_ShowMessage(wk, offset + PartyList_Text_WontHaveAnyEffect, TRUE, doneFunc);
     PokeListMessage_FreeWordSet(wk, wk->message);
 }
 
@@ -308,7 +308,7 @@ u32 PokeList_ShowItemResult(PokeListWork *wk, u32 move) {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_SetNumber(wk, wk->message, 1, level + 1, 3);
-        PokeList_ShowMessage(wk, BtlMain11_Text_ElevatedLv, TRUE, PokeList_LevelUpMessageDone);
+        PokeList_ShowMessage(wk, PartyList_Text_ElevatedLv, TRUE, PokeList_LevelUpMessageDone);
         PokeListMessage_FreeWordSet(wk, wk->message);
         name = GFL_StrBufCreate(12, wk->heapId);
         PokeParty_GetParam(wk->pkm, PKM_PARAM_NICKNAME, name);
@@ -320,22 +320,22 @@ u32 PokeList_ShowItemResult(PokeListWork *wk, u32 move) {
         break;
     }
     case POKELIST_ITEM_EFFECT_CURE_SLEEP:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_WokeUp);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_WokeUp);
         break;
     case POKELIST_ITEM_EFFECT_CURE_POISON:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_CuredItsPoisoning);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_CuredItsPoisoning);
         break;
     case POKELIST_ITEM_EFFECT_CURE_BURN:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_SBurnHealed);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_SBurnHealed);
         break;
     case POKELIST_ITEM_EFFECT_CURE_FREEZE:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_ThawedOut);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_ThawedOut);
         break;
     case POKELIST_ITEM_EFFECT_CURE_PARALYSIS:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_CuredParalysis);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_CuredParalysis);
         break;
     case POKELIST_ITEM_EFFECT_CURE_ALL_STATUS:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_BecameHealthy);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_BecameHealthy);
         break;
     case POKELIST_ITEM_EFFECT_RESTORE_HP:
     case POKELIST_ITEM_EFFECT_REVIVE:
@@ -349,7 +349,7 @@ u32 PokeList_ShowItemResult(PokeListWork *wk, u32 move) {
     case POKELIST_ITEM_EFFECT_RAISE_SPEED_EV:
     case POKELIST_ITEM_EFFECT_RAISE_SP_ATTACK_EV:
     case POKELIST_ITEM_EFFECT_RAISE_SP_DEFENSE_EV:
-        PokeList_ShowStatMessage(wk, BtlMain11_Text_SBaseRose, effect - POKELIST_ITEM_EFFECT_RAISE_HP_EV);
+        PokeList_ShowStatMessage(wk, PartyList_Text_SBaseRose, effect - POKELIST_ITEM_EFFECT_RAISE_HP_EV);
         break;
     case POKELIST_ITEM_EFFECT_LOWER_HP_EV:
     case POKELIST_ITEM_EFFECT_LOWER_ATTACK_EV:
@@ -360,11 +360,11 @@ u32 PokeList_ShowItemResult(PokeListWork *wk, u32 move) {
         u16 stat = effect - POKELIST_ITEM_EFFECT_LOWER_HP_EV;
 
         if (PokeList_HasEffort(wk->pkm, PKM_PARAM_EV_HP + stat, wk->param->item) == FALSE) {
-            PokeList_ShowStatMessage(wk, BtlMain11_Text_BecameMoreFriendlyIts, stat);
+            PokeList_ShowStatMessage(wk, PartyList_Text_BecameMoreFriendlyIts, stat);
         } else if (PokeParty_GetParam(wk->pkm, PKM_PARAM_HAPPINESS, NULL) == 255) {
-            PokeList_ShowStatMessage(wk, BtlMain11_Text_AdoresItsBaseFell, stat);
+            PokeList_ShowStatMessage(wk, PartyList_Text_AdoresItsBaseFell, stat);
         } else {
-            PokeList_ShowStatMessage(wk, BtlMain11_Text_BecameMoreFriendlyHowever, stat);
+            PokeList_ShowStatMessage(wk, PartyList_Text_BecameMoreFriendlyHowever, stat);
         }
         break;
     }
@@ -372,11 +372,11 @@ u32 PokeList_ShowItemResult(PokeListWork *wk, u32 move) {
     case POKELIST_ITEM_EFFECT_PP_MAX:
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetMoveName(wk, wk->message, 0, move);
-        PokeList_ShowMessage(wk, BtlMain11_Text_SPpIncreased, TRUE, PokeList_MessageDoneItem);
+        PokeList_ShowMessage(wk, PartyList_Text_SPpIncreased, TRUE, PokeList_MessageDoneItem);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     case POKELIST_ITEM_EFFECT_RESTORE_PP:
-        PokeList_ShowPkmMessage(wk, BtlMain11_Text_PpRestored);
+        PokeList_ShowPkmMessage(wk, PartyList_Text_PpRestored);
         break;
     case POKELIST_ITEM_EFFECT_UNUSABLE:
         break;
@@ -392,9 +392,9 @@ static void PokeList_ItemHealDone(PokeListWork *wk) {
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     if (wk->prevHp != 0) {
         PokeListMessage_SetNumber(wk, wk->message, 1, hp - wk->prevHp, 3);
-        PokeList_ShowMessage(wk, BtlMain11_Text_SHpRestoredBy, TRUE, PokeList_MessageDoneItem);
+        PokeList_ShowMessage(wk, PartyList_Text_SHpRestoredBy, TRUE, PokeList_MessageDoneItem);
     } else {
-        PokeList_ShowMessage(wk, BtlMain11_Text_RecoveredFromFainting, TRUE, PokeList_MessageDoneItem);
+        PokeList_ShowMessage(wk, PartyList_Text_RecoveredFromFainting, TRUE, PokeList_MessageDoneItem);
     }
     PokeListMessage_FreeWordSet(wk, wk->message);
 }
@@ -404,9 +404,9 @@ static void PokeList_ItemReviveDone(PokeListWork *wk) {
     PokeListMessage_CreateWordSet(wk, wk->message);
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     if (PokeList_FindItemTarget(wk) != -1) {
-        PokeList_ShowMessage(wk, BtlMain11_Text_RecoveredFromFainting, TRUE, PokeList_ItemReviveNext);
+        PokeList_ShowMessage(wk, PartyList_Text_RecoveredFromFainting, TRUE, PokeList_ItemReviveNext);
     } else {
-        PokeList_ShowMessage(wk, BtlMain11_Text_RecoveredFromFainting, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, PartyList_Text_RecoveredFromFainting, TRUE, PokeList_MessageDoneExit);
     }
     PokeListMessage_FreeWordSet(wk, wk->message);
 }
@@ -462,10 +462,10 @@ void PokeList_UpdateLevelUp(PokeListWork *wk) {
             if (gain >= 10) {
                 bigGain = TRUE;
             }
-            name = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_MaxHp + i);
+            name = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_MaxHp + i);
             PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(wk->statsWindow), 0, i * 16, name, wk->font, 0x440);
             GFL_StrBufFree(name);
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_52);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_Empty_52);
             str = GFL_StrBufCreate(32, wk->heapId);
             wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
             WordSetNumber(wordSet, 0, gain, 3, 0, TRUE);
@@ -479,7 +479,7 @@ void PokeList_UpdateLevelUp(PokeListWork *wk) {
         }
         for (row = 0; row < 6; row++) {
             u8 x = bigGain == TRUE ? 72 : 80;
-            StrBuf *plus = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_51);
+            StrBuf *plus = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_Empty_51);
 
             PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(wk->statsWindow), x, row * 16, plus, wk->font,
                                   0x440);
@@ -507,7 +507,7 @@ void PokeList_UpdateLevelUp(PokeListWork *wk) {
         GFL_BitmapFillArea(BmpWin_GetBitmap(wk->statsWindow), 80, 0, 32, 96, 15);
         for (i = 0; i < 6; i++) {
             u32 stat = PokeParty_GetParam(wk->pkm, sStatParams[i], NULL);
-            StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain11_Text_Empty_52);
+            StrBuf *format = GFL_MsgDataLoadStrbufNew(wk->msgData, PartyList_Text_Empty_52);
             StrBuf *str = GFL_StrBufCreate(32, wk->heapId);
             WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
             u16 width;
@@ -554,13 +554,13 @@ void PokeList_UpdateLevelUp(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
+            PokeList_ShowMessage(wk, PartyList_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_LearnMessageDone);
+            PokeList_ShowMessage(wk, PartyList_Text_Learned, TRUE, PokeList_LearnMessageDone);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;

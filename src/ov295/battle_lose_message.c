@@ -21,7 +21,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/title_5.h"
+#include "text/system/battle_lose_message.h"
 
 enum {
     STATE_SETUP,
@@ -81,13 +81,13 @@ static BOOL BattleLoseMessage_Main(GameProc *proc, u32 *state, void *param, void
         GX_DisableBankForLCDC();
         BattleLoseMessage_InitBGs(msg->heapId);
         msg->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, msg->heapId);
-        msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_5, msg->heapId);
+        msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_LOSE_MESSAGE, msg->heapId);
         msg->wordSet = GFL_WordSetSystemCreateDefault(msg->heapId);
         msg->window = BmpWin_CreateDynamic(0, 2, 7, 27, 15, 13, 1);
         if (msg->returnNonLeague == 0) {
-            BattleLoseMessage_PrintMessage(msg, Title5_Text_ScurriedBackHomeProtecting, 6, 0);
+            BattleLoseMessage_PrintMessage(msg, BattleLoseMessage_Text_ScurriedBackHomeProtecting, 6, 0);
         } else {
-            BattleLoseMessage_PrintMessage(msg, Title5_Text_ScurriedPokemonCenterProtecting, 6, 0);
+            BattleLoseMessage_PrintMessage(msg, BattleLoseMessage_Text_ScurriedPokemonCenterProtecting, 6, 0);
         }
         window = msg->window;
         BmpWin_FlushChar(window);

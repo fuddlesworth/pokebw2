@@ -10,7 +10,7 @@
 #include "pml/poke_party.h"
 #include "system/app_menu_common.h"
 #include "system/app_taskmenu.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // The party list's menus: what to do with a Pokémon, yes or no, and the buttons of a battle's selection
 
@@ -34,30 +34,30 @@ static StrBuf *PokeListMenu_GetItemName(PokeListWork *wk, PokeListMenu *menu, in
 
 // The message of each item
 static const u32 sItemNames[] = {
-    BtlMain11_Text_Summary,
+    PartyList_Text_Summary,
     0,
     0,
-    BtlMain11_Text_Switch,
-    BtlMain11_Text_Item,
-    BtlMain11_Text_Mail,
-    BtlMain11_Text_Quit,
-    BtlMain11_Text_Store,
+    PartyList_Text_Switch,
+    PartyList_Text_Item,
+    PartyList_Text_Mail,
+    PartyList_Text_Quit,
+    PartyList_Text_Store,
     0,
-    BtlMain11_Text_Give,
-    BtlMain11_Text_Take_2,
-    BtlMain11_Text_Confirm_2,
-    BtlMain11_Text_Read,
-    BtlMain11_Text_Take,
-    BtlMain11_Text_Yes,
-    BtlMain11_Text_No,
-    0,
-    0,
+    PartyList_Text_Give,
+    PartyList_Text_Take_2,
+    PartyList_Text_Confirm_2,
+    PartyList_Text_Read,
+    PartyList_Text_Take,
+    PartyList_Text_Yes,
+    PartyList_Text_No,
     0,
     0,
-    BtlMain11_Text_Enter,
-    BtlMain11_Text_NoEntry,
-    BtlMain11_Text_Move,
-    BtlMain11_Text_MoveMail,
+    0,
+    0,
+    PartyList_Text_Enter,
+    PartyList_Text_NoEntry,
+    PartyList_Text_Move,
+    PartyList_Text_MoveMail,
 };
 
 PokeListMenu *PokeListMenu_Create(PokeListWork *wk) {

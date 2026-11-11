@@ -17,7 +17,7 @@
 #include "save/pokedex_savedata.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/game_start_3.h"
+#include "text/system/pokedex_list.h"
 
 // The windows and text of the Pokédex's list. The ROM doesn't name this file; pokedex_list_bmp.c is a guess after the
 // search screen's pokedex_search_bmp.c
@@ -138,10 +138,10 @@ static void PokedexListBmp_LoadWindowBG(PokedexListWork *wk, u32 window) {
 static void PokedexListBmp_PutTitle(PokedexListWork *wk) {
     PokedexListBmp_LoadWindowBG(wk, POKEDEX_LIST_WIN_TITLE);
     if (PokeDex_GetMode(wk->param->pokedex) == DEX_NATIONAL) {
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_TITLE, GameStart3_Text_NationalPokedex, 0, 4, COLOR_ITEM,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_TITLE, PokedexList_Text_NationalPokedex, 0, 4, COLOR_ITEM,
                              PRINT_ALIGN_LEFT);
     } else {
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_TITLE, GameStart3_Text_UnovaPokedex, 0, 4, COLOR_ITEM,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_TITLE, PokedexList_Text_UnovaPokedex, 0, 4, COLOR_ITEM,
                              PRINT_ALIGN_LEFT);
     }
     PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_TITLE]);
@@ -158,18 +158,18 @@ static void PokedexListBmp_PutModes(PokedexListWork *wk) {
     national = PokeDex_IsNationalObtained(wk->param->pokedex);
     habitat = PokeDex_IsHabitatListEnabled(wk->param->pokedex);
     if (national == TRUE && habitat == TRUE) {
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_UNOVA, GameStart3_Text_Unova, 2, 7, COLOR_BUTTON, PRINT_ALIGN_LEFT);
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_NATIONAL, GameStart3_Text_National, 2, 6, COLOR_BUTTON,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_UNOVA, PokedexList_Text_Unova, 2, 7, COLOR_BUTTON, PRINT_ALIGN_LEFT);
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_NATIONAL, PokedexList_Text_National, 2, 6, COLOR_BUTTON,
                              PRINT_ALIGN_LEFT);
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_HABITAT, GameStart3_Text_Habitat, 2, 5, COLOR_BUTTON,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_HABITAT, PokedexList_Text_Habitat, 2, 5, COLOR_BUTTON,
                              PRINT_ALIGN_LEFT);
         PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_UNOVA]);
         PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_NATIONAL]);
         PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_HABITAT]);
     } else if (national == FALSE && habitat == TRUE) {
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_NATIONAL, GameStart3_Text_Unova, 2, 6, COLOR_BUTTON,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_NATIONAL, PokedexList_Text_Unova, 2, 6, COLOR_BUTTON,
                              PRINT_ALIGN_LEFT);
-        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_HABITAT, GameStart3_Text_Habitat, 2, 5, COLOR_BUTTON,
+        PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_HABITAT, PokedexList_Text_Habitat, 2, 5, COLOR_BUTTON,
                              PRINT_ALIGN_LEFT);
         PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_NATIONAL]);
         PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_HABITAT]);
@@ -189,13 +189,13 @@ void PokedexListBmp_PutCounts(PokedexListWork *wk) {
     }
     PokedexListBmp_LoadWindowBG(wk, POKEDEX_LIST_WIN_SEEN);
     PokedexListBmp_LoadWindowBG(wk, POKEDEX_LIST_WIN_CAUGHT);
-    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_SEEN, GameStart3_Text_Seen, 72, 4, COLOR_COUNT, PRINT_ALIGN_RIGHT);
+    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_SEEN, PokedexList_Text_Seen, 72, 4, COLOR_COUNT, PRINT_ALIGN_RIGHT);
     WordSetNumber(wk->wordSet, 0, seen, 3, 0, TRUE);
-    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_SEEN, GameStart3_Text_Empty, 104, 4, COLOR_COUNT,
+    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_SEEN, PokedexList_Text_Empty, 104, 4, COLOR_COUNT,
                                PRINT_ALIGN_RIGHT);
-    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_CAUGHT, GameStart3_Text_Obtained, 88, 4, COLOR_COUNT, PRINT_ALIGN_RIGHT);
+    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_CAUGHT, PokedexList_Text_Obtained, 88, 4, COLOR_COUNT, PRINT_ALIGN_RIGHT);
     WordSetNumber(wk->wordSet, 0, caught, 3, 0, TRUE);
-    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_CAUGHT, GameStart3_Text_Empty, 120, 4, COLOR_COUNT,
+    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_CAUGHT, PokedexList_Text_Empty, 120, 4, COLOR_COUNT,
                                PRINT_ALIGN_RIGHT);
     PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_SEEN]);
     PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_CAUGHT]);
@@ -203,10 +203,10 @@ void PokedexListBmp_PutCounts(PokedexListWork *wk) {
 
 void PokedexListBmp_PutSearchCount(PokedexListWork *wk) {
     PokedexListBmp_LoadWindowBG(wk, POKEDEX_LIST_WIN_CAUGHT);
-    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_CAUGHT, GameStart3_Text_SearchResults, 88, 4, COLOR_COUNT,
+    PokedexListBmp_Print(wk, POKEDEX_LIST_WIN_CAUGHT, PokedexList_Text_SearchResults, 88, 4, COLOR_COUNT,
                          PRINT_ALIGN_RIGHT);
     WordSetNumber(wk->wordSet, 0, wk->param->count, 3, 0, TRUE);
-    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_CAUGHT, GameStart3_Text_Empty, 120, 4, COLOR_COUNT,
+    PokedexListBmp_PrintFormat(wk, POKEDEX_LIST_WIN_CAUGHT, PokedexList_Text_Empty, 120, 4, COLOR_COUNT,
                                PRINT_ALIGN_RIGHT);
     PokedexListBmp_PutWindow(&wk->windows[POKEDEX_LIST_WIN_CAUGHT]);
 }
@@ -219,7 +219,7 @@ void PokedexListBmp_PrintItem(PokedexListWork *wk, PrintWindow *window, StrBuf *
     if (PokeDex_GetMode(wk->param->pokedex) != DEX_NATIONAL) {
         number = wk->regionalNumbers[number];
     }
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, GameStart3_Text_Empty_4);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, PokedexList_Text_Empty_4);
     WordSetNumber(wk->wordSet, 0, number, 3, 2, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, strbuf);
     GFL_StrBufFree(strbuf);

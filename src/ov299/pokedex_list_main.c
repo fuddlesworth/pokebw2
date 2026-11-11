@@ -27,7 +27,7 @@
 #include "system/palanm.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/game_start_3.h"
+#include "text/system/pokedex_list.h"
 
 // The Pokédex's list: its BGs and graphics, its fades, the touch bar that slides in and the list of the species. The
 // ROM doesn't name this file; pokedex_list_main.c is a guess after the search screen's pokedex_search_main.c
@@ -392,7 +392,7 @@ void PokedexListMain_ExitWindow(void) {
 }
 
 void PokedexListMain_InitMsg(PokedexListWork *wk) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GAME_START_3, HEAPID_POKEDEX_LIST);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_LIST, HEAPID_POKEDEX_LIST);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_POKEDEX_LIST);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_POKEDEX_LIST);
     wk->printQueue = PrintQueue_CreateDefault(HEAPID_POKEDEX_LIST);
@@ -499,7 +499,7 @@ void PokedexListMain_InitList(PokedexListWork *wk) {
             GFL_StrBufFree(name);
             FrameList_AddItem(wk->frameList, 1, wk->param->list[i] | POKEDEX_LIST_ITEM_SEEN);
         } else {
-            wk->names[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, GameStart3_Text_Empty_3);
+            wk->names[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, PokedexList_Text_Empty_3);
             FrameList_AddItem(wk->frameList, 2, wk->param->list[i]);
         }
     }

@@ -52,7 +52,7 @@
 #include "system/time_icon.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers.h"
+#include "text/system/spin_trade.h"
 
 // spin_trade_main.c (the ROM's guru2_main.c, from its allocations): the Spin Trade's screen with the disc. The Eggs
 // drop onto the disc, which the parent spins while every player's touches of the button make the Eggs jump; when the
@@ -1012,7 +1012,7 @@ static void SpinTradeMain_ClearReceived(SpinTradeMainWork *g2m) {
 }
 
 static int SpinTradeMainSeq_Init(SpinTradeMainWork *g2m) {
-    SpinTradeMain_PrintMsg(g2m, AbilityHandlers_Text_PleaseStandBy);
+    SpinTradeMain_PrintMsg(g2m, SpinTrade_Text_PleaseStandBy);
     g2m->seq = SEQ_FADE_IN_WAIT;
     return SEQ_RESULT_WAIT;
 }
@@ -1558,7 +1558,7 @@ static int SpinTradeMainSeq_ResultNamesWait(SpinTradeMainWork *g2m) {
     for (i = 0; i < g2m->playerCount; i++) {
         SpinTradeMain_ClearName(g2m, i);
     }
-    SpinTradeMain_PrintEggMsg(g2m, AbilityHandlers_Text_ReceivedSEgg, g2m->members[g2m->frontEgg->netId]);
+    SpinTradeMain_PrintEggMsg(g2m, SpinTrade_Text_ReceivedSEgg, g2m->members[g2m->frontEgg->netId]);
     SpinTradeMain_PlayME(SEQ_ME_ITEM);
     g2m->seq = SEQ_RESULT_MESSAGE_WAIT;
     return SEQ_RESULT_WAIT;
@@ -1598,7 +1598,7 @@ static int SpinTradeMainSeq_Bonus(SpinTradeMainWork *g2m) {
     } else if (item > last) {
         item = last;
     }
-    SpinTradeMain_PrintItemMsg(g2m, AbilityHandlers_Text_LandedBonusAreaReceived, item);
+    SpinTradeMain_PrintItemMsg(g2m, SpinTrade_Text_LandedBonusAreaReceived, item);
     added = BagSave_AddItem(GameData_GetBag(g2m->g2p->param->gameData), item, 1, HEAPID_SPIN_TRADE);
     SpinTradeMain_PlayME(SEQ_ME_ITEM);
     if (added == TRUE) {
@@ -1626,7 +1626,7 @@ static int SpinTradeMainSeq_BagFullBefore(SpinTradeMainWork *g2m) {
     } else if (!SpinTradeMain_IsMEPlaying()) {
         g2m->wait = 0;
         g2m->seq = SEQ_BAG_FULL_WAIT;
-        SpinTradeMain_PrintMsg(g2m, AbilityHandlers_Text_OhNoBagFull);
+        SpinTradeMain_PrintMsg(g2m, SpinTrade_Text_OhNoBagFull);
     }
     return SEQ_RESULT_WAIT;
 }
@@ -1645,7 +1645,7 @@ static int SpinTradeMainSeq_SyncSave(SpinTradeMainWork *g2m) {
     NetHandle *handle = NetHandle_GetOwn();
 
     RecordAddOne(g2m->g2p->param->records, 90);
-    SpinTradeMain_PrintMsg(g2m, AbilityHandlers_Text_SavingDontTurnOff);
+    SpinTradeMain_PrintMsg(g2m, SpinTrade_Text_SavingDontTurnOff);
     NetHandle_SendTimingPair(handle, SPIN_TRADE_SYNC_SAVE, SPIN_TRADE_SYNC_CLASS);
     g2m->seq = SEQ_SYNC_SAVE_WAIT;
     GCTX_HIDBlockSoftReset(8);
@@ -1682,7 +1682,7 @@ static int SpinTradeMainSeq_Save(SpinTradeMainWork *g2m) {
 }
 
 static int SpinTradeMainSeq_BadEgg(SpinTradeMainWork *g2m) {
-    SpinTradeMain_PrintMsg(g2m, AbilityHandlers_Text_ThereEggCantTraded);
+    SpinTradeMain_PrintMsg(g2m, SpinTrade_Text_ThereEggCantTraded);
     g2m->seq = SEQ_BAD_EGG_WAIT;
     return SEQ_RESULT_WAIT;
 }
@@ -1703,7 +1703,7 @@ static int SpinTradeMainSeq_SyncEnd(SpinTradeMainWork *g2m) {
     if (!g2m->error) {
         NetHandle_SendTimingPair(handle, SPIN_TRADE_SYNC_END, SPIN_TRADE_SYNC_CLASS);
     }
-    SpinTradeMain_PrintMsg(g2m, AbilityHandlers_Text_CommunicatingPleaseStandBy_2);
+    SpinTradeMain_PrintMsg(g2m, SpinTrade_Text_CommunicatingPleaseStandBy_2);
     g2m->seq = SEQ_SYNC_END_WAIT;
     return SEQ_RESULT_WAIT;
 }
@@ -2121,7 +2121,7 @@ static void SpinTradeMain_InitMsg(SpinTradeMainWork *g2m) {
     PaletteFade_LoadNCLR(g2m->fade, ARCID_WINFRAME, 3, HEAPID_SPIN_TRADE, 0, 0x20, 14 * 16);
     PaletteFade_LoadNCLR(g2m->fade, ARCID_FONT, 5, HEAPID_SPIN_TRADE, 0, 0x20, 15 * 16);
     msg->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_SPIN_TRADE);
-    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS, HEAPID_SPIN_TRADE);
+    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPIN_TRADE, HEAPID_SPIN_TRADE);
     msg->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_SPIN_TRADE);
     msg->msgWindow = BmpWin_CreateDynamic(1, 2, 19, 26, 4, 15, TRUE);
     msg->strbuf = GFL_StrBufCreate(0x100, HEAPID_SPIN_TRADE);

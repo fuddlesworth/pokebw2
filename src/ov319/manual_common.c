@@ -34,8 +34,8 @@ ManualCommon *ManualCommon_Create(GameData *gameData, HeapID heapId) {
     common->titleQueue = PrintQueue_CreateDefault(common->heapId);
     common->queue = PrintQueue_CreateDefault(common->heapId);
     common->touchBarQueue = PrintQueue_CreateDefault(common->heapId);
-    common->msgSystem = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_7, common->heapId);
-    common->msgManual = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_8, common->heapId);
+    common->msgSystem = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MANUAL_MENU, common->heapId);
+    common->msgManual = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MANUAL_TOPICS, common->heapId);
     common->arc = GFL_ArcSysCreateFileHandle(ARCID_MANUAL, common->heapId);
     common->imageArc = GFL_ArcSysCreateFileHandle(ARCID_MANUAL_IMAGE, common->heapId);
     GFL_G2DIOLoadNCLR(ARCID_FONT, 5, PALTYPE_SUB_BG, 0, 2 * 0x20, 0x20, common->heapId);

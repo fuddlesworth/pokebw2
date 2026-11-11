@@ -8,7 +8,7 @@ from the ROM once, and pack builds the archive from them, which the build does.
 <n>.json is regulation n (Regulation in regulation.h), which PokeRegulation_Load and PokeRegulation_LoadNew read by
 number for the Union Room, the Wi-Fi and wireless battles, the Battle Subway, Pokéstar Studios and the field's
 battles: the rules a team must meet, the level it is set to, and the battle it is for. Its name is a message of
-res/text/system/load_battle_type_text_to_strbuf.txt, species and items are their SPECIES_* and ITEM_* constants, and the
+res/text/system/battle_type_names.txt, species and items are their SPECIES_* and ITEM_* constants, and the
 bit arrays are lists. Both versions have the same regulations. regulation.schema.json describes the fields.
 """
 import argparse
@@ -22,7 +22,7 @@ from tools.data.narc import read_narc, write_narc  # noqa: E402
 from tools.text.text_ids import message_numbers  # noqa: E402
 
 ARCHIVE = "a/1/0/6"
-NAMES = ROOT / "res/text/system/load_battle_type_text_to_strbuf.txt"
+NAMES = ROOT / "res/text/system/battle_type_names.txt"
 SPECIES_BYTES, ITEM_BYTES, AC_BYTES = 0x52, 0x4C, 7
 REGULATION = struct.Struct(f"<6BH2B{SPECIES_BYTES}s{ITEM_BYTES}sHBB{AC_BYTES}s9B")
 assert REGULATION.size == 0xBC

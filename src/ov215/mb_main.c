@@ -32,7 +32,7 @@
 #include "system/text_speed.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_2.h"
+#include "text/system/mailbox.h"
 
 // The mailbox screen's set-up: the display, the BGs and their graphics, the frames, the text, the menus, the mails of
 // the list and the palette changes. The ROM doesn't name this file; the name is a guess, after box2_main.c
@@ -317,14 +317,14 @@ void MailBox_CreateYesNoMenu(MailBoxWork *work) {
 
 void MailBox_CreateMenuResources(MailBoxWork *work) {
     static const MailBoxMenuItem sMailBoxMainMenuItems[4] = {
-        { BtlServerFlow2_Text_Read, 0 },
-        { BtlServerFlow2_Text_Erase, 0 },
-        { BtlServerFlow2_Text_Give, 0 },
-        { BtlServerFlow2_Text_Cancel_2, APP_TASKMENU_ITEM_RETURN },
+        { Mailbox_Text_Read, 0 },
+        { Mailbox_Text_Erase, 0 },
+        { Mailbox_Text_Give, 0 },
+        { Mailbox_Text_Cancel_2, APP_TASKMENU_ITEM_RETURN },
     };
     static const MailBoxMenuItem sMailBoxYesNoItems[2] = {
-        { BtlServerFlow2_Text_Yes, 0 },
-        { BtlServerFlow2_Text_No, 0 },
+        { Mailbox_Text_Yes, 0 },
+        { Mailbox_Text_No, 0 },
     };
     u16 i;
 

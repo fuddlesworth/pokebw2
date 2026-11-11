@@ -377,7 +377,7 @@ DATA_PACKS = [
     # The battle backgrounds' types, fields and stages, and the battle regulations
     ("tools/data/battle_bg_data.py", "res/battle/backgrounds", ["a/1/5/1"], False),
     ("tools/data/regulation_data.py", "res/battle/regulations", ["a/1/0/6"], False,
-     ["res/text/system/load_battle_type_text_to_strbuf.txt"]),
+     ["res/text/system/battle_type_names.txt"]),
     # The areas' edge color tables and their billboard actors' material colors
     ("tools/data/area_color_data.py", "res/lighting", ["a/0/1/5", "a/1/7/3"], False),
     ("tools/data/flash_data.py", "res/field/flash", ["a/1/4/9"], False),  # The zones where Flash can be used
@@ -448,9 +448,9 @@ DATA_PACKS = [
     ("tools/data/download_play_icon_data.py", "res/download_play",
      ["dl_rom/icon_b.char", "dl_rom/icon_b.plt", "dl_rom/icon_w.char", "dl_rom/icon_w.plt"], False),
     # The musical's four programs: their data, messages, stage scripts (PACK_SCRIPTS) and sound, with the performers'
-    # names of btl_main_9.txt and the wave archives' schema
+    # names of musical_npc_names.txt and the wave archives' schema
     ("tools/data/musical_program_data.py", "res/musicals/programs", ["a/1/1/2", "a/1/1/3", "a/1/1/4", "a/1/1/5"],
-     False, ["res/text/system/btl_main_9.txt", "res/sound/wave_archive.schema.json"]),
+     False, ["res/text/system/musical_npc_names.txt", "res/sound/wave_archive.schema.json"]),
 ]
 # The archives of Nitro resources and data, each a directory named after its ARCID_* constant, which gives its file, in
 # the root for what it holds (graphics_archive.ARCHIVE_ROOTS)

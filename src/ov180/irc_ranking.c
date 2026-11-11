@@ -38,7 +38,7 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_5.h"
+#include "text/system/ir_ranking.h"
 
 // The ranking of the compatibility checker: its graphics, the list of the trainers of the trainer log with their rows
 // and the scrolling of the list, the stylus and the keys that scroll it, the fling it goes on with, the labels over
@@ -405,7 +405,7 @@ static BOOL IrcRanking_Init(GameProc *proc, u32 *state, void *param, void *work)
     }
     wk->queue = PrintQueue_CreateDefault(HEAP_ID);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAP_ID);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_5, HEAP_ID);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_RANKING, HEAP_ID);
     wk->ranking = IrcRankingData_Create(wk->gameData, HEAP_ID);
     IrcRankingGraphic_Create(&wk->graphic, wk->gameData, HEAP_ID);
     wk->bmpOam = BmpOam_Init(HEAP_ID, IrcRankingGraphic_GetUnit(&wk->graphic));
@@ -667,11 +667,11 @@ static void IrcRankingBG_Init(IrcRankingBG *bg, GameData *gameData, HeapID heapI
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_MAIN_BG, 0x1c0, 0x20, heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_SUB_BG, 0x1c0, 0x20, heapId);
     GFL_ArcToolFree(bg->arc);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_5, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_RANKING, heapId);
     font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     bg->titleWindow = BmpWin_CreateDynamic(0, 3, 1, 26, 2, 14, TRUE);
     GFL_BitmapFill(BmpWin_GetBitmap(bg->titleWindow), 15);
-    format = GFL_MsgDataLoadStrbufNew(msgData, BtlMain5_Text_SFeelingRanking);
+    format = GFL_MsgDataLoadStrbufNew(msgData, IrRanking_Text_SFeelingRanking);
     IrcRanking_PrintCentered(bg->titleWindow, format, GetGameDataPlayerInfo(gameData), font);
     GFL_StrBufFree(format);
     GFL_FontFree(font);

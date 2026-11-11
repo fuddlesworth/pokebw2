@@ -23,7 +23,7 @@
 #include "system/app_menu_common.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/title_7.h"
+#include "text/system/manual_menu.h"
 
 // The manual's touch bar, named after the ROM's "manual_touchbar.c": the common touch bar's close and return icons,
 // a window of text beside them, and the two arrows that turn the explanation's pages, which this file draws and
@@ -334,7 +334,7 @@ static void ManualTouchBar_PrintCategoryPrompt(ManualTouchBar *bar) {
 
     PrintQueue_Clear(bar->common->touchBarQueue);
     GFL_BitmapFill(BmpWin_GetBitmap(bar->windows[WINDOW_TEXT]), 0);
-    str = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, Title7_Text_PleaseSelectCategory);
+    str = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, ManualMenu_Text_PleaseSelectCategory);
     PrintQueue_PrintColor(bar->common->touchBarQueue, BmpWin_GetBitmap(bar->windows[WINDOW_TEXT]),
                           sManualTouchBarTextX[MANUAL_TOUCHBAR_MODE_CATEGORY], 4, str, bar->common->font, TEXT_COLOR);
     GFL_StrBufFree(str);
@@ -347,7 +347,7 @@ static void ManualTouchBar_PrintTitlePrompt(ManualTouchBar *bar) {
 
     PrintQueue_Clear(bar->common->touchBarQueue);
     GFL_BitmapFill(BmpWin_GetBitmap(bar->windows[WINDOW_TEXT]), 0);
-    str = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, Title7_Text_PleaseSelectWhatWant);
+    str = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, ManualMenu_Text_PleaseSelectWhatWant);
     PrintQueue_PrintColor(bar->common->touchBarQueue, BmpWin_GetBitmap(bar->windows[WINDOW_TEXT]),
                           sManualTouchBarTextX[MANUAL_TOUCHBAR_MODE_TITLE], 4, str, bar->common->font, TEXT_COLOR);
     GFL_StrBufFree(str);
@@ -363,7 +363,7 @@ static void ManualTouchBar_PrintPage(ManualTouchBar *bar) {
     PrintQueue_Clear(bar->common->touchBarQueue);
     GFL_BitmapFill(BmpWin_GetBitmap(bar->windows[WINDOW_TEXT]), 0);
     wordSet = GFL_WordSetSystemCreateDefault(bar->common->heapId);
-    format = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, Title7_Text_Empty);
+    format = GFL_MsgDataLoadStrbufNew(bar->common->msgSystem, ManualMenu_Text_Empty);
     str = GFL_StrBufCreate(16, bar->common->heapId);
     WordSetNumber(wordSet, 0, bar->page + 1, 1, 0, TRUE);
     WordSetNumber(wordSet, 1, bar->pageCount, 1, 0, TRUE);

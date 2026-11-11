@@ -40,7 +40,7 @@
 #include "system/poke_icon.h"
 #include "system/version.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_2.h"
+#include "text/system/key_system.h"
 
 // Pokémon Dream Radar: receiving the Pokémon and items that the 3DS game writes to the card. A legendary Pokémon
 // appears in a flash of light before the rest show up as icons. Named after the ROM's assertion string
@@ -398,7 +398,7 @@ void CygnusFlow_SeqMenu(KeySystemSeq *seq, int *state, void *work) {
         (*state)++;
         break;
     case MENU_SEQ_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ReceiveResearchDataFrom_2,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ReceiveResearchDataFrom_2,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
@@ -503,7 +503,7 @@ static void CygnusFlow_SeqNothing(KeySystemSeq *seq, int *state, void *work) {
         (*state)++;
         break;
     case NOTHING_SEQ_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_PokemonDreamRadarsResearch,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_PokemonDreamRadarsResearch,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
@@ -513,7 +513,7 @@ static void CygnusFlow_SeqNothing(KeySystemSeq *seq, int *state, void *work) {
         }
         break;
     case NOTHING_SEQ_PRINT_INITIALIZING:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_InitializingResearchData,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_InitializingResearchData,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
@@ -532,7 +532,7 @@ static void CygnusFlow_SeqNothing(KeySystemSeq *seq, int *state, void *work) {
         }
         break;
     case NOTHING_SEQ_PRINT_INITIALIZED:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ResearchDataInitializedStart,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ResearchDataInitializedStart,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
@@ -591,7 +591,7 @@ static void CygnusFlow_SeqReading(KeySystemSeq *seq, int *state, void *work) {
         (*state)++;
         break;
     case READING_SEQ_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ConnectingPokemonDreamRadar,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ConnectingPokemonDreamRadar,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
@@ -677,7 +677,7 @@ static void CygnusFlow_SeqShowLegend(KeySystemSeq *seq, int *state, void *work) 
         GFL_BGSysQueueScrLoad(2);
         CygnusData_GetEntry(wk->cygnusData, CygnusData_FindLegend(wk->cygnusData, wk->timer), &type, &species);
         WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)species);
-        str = KeySystem_LoadFormattedStr(wk->wordSet, wk->msgData, AbilityHandlers2_Text_Arrived, HEAPID_KEY_SYSTEM);
+        str = KeySystem_LoadFormattedStr(wk->wordSet, wk->msgData, KeySystem_Text_Arrived, HEAPID_KEY_SYSTEM);
         KeySystemMsgWin_PrintStr(wk->msgWin, str, KEY_SYSTEM_MSG_STREAM_NO_CURSOR);
         GFL_StrBufFree(str);
         (*state)++;
@@ -717,7 +717,7 @@ static void CygnusFlow_SeqReceiveAll(KeySystemSeq *seq, int *state, void *work) 
         (*state)++;
         break;
     case RECEIVE_ALL_SEQ_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ReceivingResearchDataFrom,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ReceivingResearchDataFrom,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
@@ -740,7 +740,7 @@ static void CygnusFlow_SeqReceiveAll(KeySystemSeq *seq, int *state, void *work) 
         break;
     case RECEIVE_ALL_SEQ_PRINT_SAVED:
         GFL_SndSEPlay(SEQ_SE_SAVE);
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ResearchDataWrittenSaved,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ResearchDataWrittenSaved,
                                  KEY_SYSTEM_MSG_STREAM_NO_CURSOR);
         (*state)++;
         break;
@@ -757,7 +757,7 @@ static void CygnusFlow_SeqReceiveAll(KeySystemSeq *seq, int *state, void *work) 
         break;
     case RECEIVE_ALL_SEQ_PRINT_POKEMON:
         if (CygnusData_CountPokemon(wk->cygnusData)) {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_TransferredReceivedPokemonPc,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_TransferredReceivedPokemonPc,
                                      KEY_SYSTEM_MSG_STREAM);
             (*state)++;
         } else {
@@ -771,8 +771,7 @@ static void CygnusFlow_SeqReceiveAll(KeySystemSeq *seq, int *state, void *work) 
         break;
     case RECEIVE_ALL_SEQ_PRINT_ITEMS:
         if (CygnusData_CountItems(wk->cygnusData)) {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ReceivedItemSWere,
-                                     KEY_SYSTEM_MSG_STREAM);
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ReceivedItemSWere, KEY_SYSTEM_MSG_STREAM);
             (*state)++;
         } else {
             *state = RECEIVE_ALL_SEQ_END;
@@ -851,8 +850,8 @@ static void CygnusFlow_MenuSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
     KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
 
 static BOOL CygnusFlow_MenuSceneMain(void *work) {
@@ -874,7 +873,7 @@ static void CygnusFlow_MenuSceneExit(void *work) {
 static void CygnusFlow_MsgSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
 
 static BOOL CygnusFlow_MsgSceneMain(void *work) {
@@ -894,7 +893,7 @@ static void CygnusFlow_ReceiveSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
     ClActor_SetVisible(KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_LOADING, heapId), TRUE);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
 
 static BOOL CygnusFlow_ReceiveSceneMain(void *work) {
@@ -1627,8 +1626,8 @@ static void CygnusFlow_ShowScreen(KeySystemWork *wk) {
     KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_DREAM_RADAR_MENU);
     KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
     KeySystem_CreateTitleWin(wk, 21, HEAPID_KEY_SYSTEM);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_Nintendo3dsLink, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
     GFL_BGSysQueueScrLoad(0);
     GFL_BGSysQueueScrLoad(2);
     KeySystemBG_StartFade(wk->bg, KEY_SYSTEM_BG_FADE_3_TO_4, 1);
@@ -1648,11 +1647,11 @@ static u32 CygnusFlow_GetState(KeySystemWork *wk, u32 *msgId) {
     eventWork = GameData_GetEventWork(wk->param->gameData);
     if (SaveControl_IsDataAlreadyPresent(save)) {
         if (!EventWork_FlagGet(eventWork, CYGNUS_FLAG)) {
-            *msgId = AbilityHandlers2_Text_ReceiveResearchDataPlay;
+            *msgId = KeySystem_Text_ReceiveResearchDataPlay;
             return CYGNUS_FLOW_CANT_RECEIVE;
         }
     } else {
-        *msgId = AbilityHandlers2_Text_ResearchDataCannotSent;
+        *msgId = KeySystem_Text_ResearchDataCannotSent;
         return CYGNUS_FLOW_CANT_RECEIVE;
     }
     if (CygnusData_GetState(wk->cygnusData) == CYGNUS_STATE_INVALID) {
@@ -1660,15 +1659,15 @@ static u32 CygnusFlow_GetState(KeySystemWork *wk, u32 *msgId) {
     }
     dataState = CygnusData_GetState(wk->cygnusData);
     if (dataState == CYGNUS_STATE_NONE) {
-        *msgId = AbilityHandlers2_Text_ThereNoResearchData;
+        *msgId = KeySystem_Text_ThereNoResearchData;
         return CYGNUS_FLOW_CANT_RECEIVE;
     }
     if (dataState == CYGNUS_STATE_RECEIVED) {
-        *msgId = AbilityHandlers2_Text_ThereNoResearchData_2;
+        *msgId = KeySystem_Text_ThereNoResearchData_2;
         return CYGNUS_FLOW_CANT_RECEIVE;
     }
     if (BoxSaveAccessor_CountEmptySlots(GameData_GetBoxSaveAccessor(wk->param->gameData)) < 6) {
-        *msgId = AbilityHandlers2_Text_ReceiveResearchDataMust;
+        *msgId = KeySystem_Text_ReceiveResearchDataMust;
         return CYGNUS_FLOW_CANT_RECEIVE;
     }
     return CYGNUS_FLOW_RECEIVE;

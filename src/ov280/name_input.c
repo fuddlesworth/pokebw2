@@ -46,7 +46,7 @@
 #include "system/str_tool.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_btl_main.h"
+#include "text/system/name_input.h"
 
 // The name entry screen: a name field along the top, a keyboard of keys that the keys or the touch screen pick, and the
 // icon of whatever is being named. Overlay 280, with the graphics of name_input_graphic.c and the tables of
@@ -547,8 +547,7 @@ BOOL NameEntry_ProcInit(GameProc *proc, u32 *state, void *arg, void *unused) {
 
     work->font = GFL_FontCreate(ARCID_FONT, 0, 1, FALSE, HEAPID_NAME_INPUT);
     work->queue = PrintQueue_Create(0x1000, HEAPID_NAME_INPUT);
-    work->msgData =
-        GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, HEAPID_NAME_INPUT);
+    work->msgData = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, HEAPID_NAME_INPUT);
     work->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_NAME_INPUT);
     work->graphic = NameInputGraphic_Create(GX_DISP_SELECT_SUB_MAIN, HEAPID_NAME_INPUT);
     work->bmpOam = BmpOam_Init(HEAPID_NAME_INPUT, NameInputGraphic_GetClActUnit(work->graphic));
@@ -2925,10 +2924,10 @@ static void NameEntryIcon_Init(NameEntryIcon *icon, u32 type, u32 species, u32 f
         labelSetup.paletteOffset = 0;
         icon->labelActor = BmpOam_ActorAdd(bmpOam, &labelSetup);
         if (sex == GENDER_FEMALE) {
-            messageId = AbilityHandlersBtlMain_Text_Empty_6;
+            messageId = NameInput_Text_Empty_6;
             color = 50 << 6;
         } else {
-            messageId = AbilityHandlersBtlMain_Text_Empty_5;
+            messageId = NameInput_Text_Empty_5;
             color = 83 << 6;
         }
         icon->label = GFL_MsgDataLoadStrbufNew(msgData, messageId);
@@ -3455,16 +3454,16 @@ static void NameEntryTask_Input(NameEntryTask *task, u32 *state, NameEntryWork *
             if (!NameEntry_IsNameAcceptable(work)) {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
                 if (work->param->mode == NAME_ENTRY_PLAYER || work->param->mode == NAME_ENTRY_RIVAL) {
-                    NameEntryMessage_Print(&work->message, AbilityHandlersBtlMain_Text_PleaseEnterName);
+                    NameEntryMessage_Print(&work->message, NameInput_Text_PleaseEnterName);
                 } else {
-                    NameEntryMessage_Print(&work->message, AbilityHandlersBtlMain_Text_PleaseEnterSomething);
+                    NameEntryMessage_Print(&work->message, NameInput_Text_PleaseEnterSomething);
                 }
                 work->messagePending = TRUE;
                 break;
             }
             if (work->param->mode == NAME_ENTRY_GAME_SYNC_ID && !NameEntry_IsGameSyncIdValid(work)) {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
-                NameEntryMessage_Print(&work->message, AbilityHandlersBtlMain_Text_GameSyncIdWrong);
+                NameEntryMessage_Print(&work->message, NameInput_Text_GameSyncIdWrong);
                 work->messagePending = TRUE;
                 break;
             }
@@ -3476,7 +3475,7 @@ static void NameEntryTask_Input(NameEntryTask *task, u32 *state, NameEntryWork *
             if (!(work->param->skipChecks & NAME_ENTRY_SKIP_DIGIT_LIMIT) &&
                 ProfWord_HasManyDigits(work->box.text, work->box.length, HEAPID_NAME_INPUT)) {
                 GFL_SndSEPlay(SEQ_SE_BEEP);
-                NameEntryMessage_Print(&work->message, AbilityHandlersBtlMain_Text_NumbersMayContainOnly);
+                NameEntryMessage_Print(&work->message, NameInput_Text_NumbersMayContainOnly);
                 work->messagePending = TRUE;
                 break;
             }

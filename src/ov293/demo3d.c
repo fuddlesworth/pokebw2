@@ -91,7 +91,7 @@ static BOOL Demo3D_Init(GameProc *proc, u32 *state, void *param, void *work) {
     demo->heapId = HEAPID_DEMO3D;
     demo->param = demoParam;
     demo->graphic = Demo3DGraphic_Create(1, demoParam->demoId, demo->heapId);
-    demo->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INTRO_BTL_SERVER_FLOW, demo->heapId);
+    demo->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MIC_TEST, demo->heapId);
     demo->printQueue = PrintQueue_CreateDefault(demo->heapId);
     GFL_BGSysSetBGEnabled(6, FALSE);
     GFL_BGSysSetBGEnabled(4, FALSE);

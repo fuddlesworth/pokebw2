@@ -34,7 +34,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/title_4.h"
+#include "text/system/funfest_mission_app.h"
 
 // The Funfest mission screen: the mission, the player's score and the ranking while it runs, and its result, rewards
 // and records when it is over. The ROM has no name for this file; "fmission_app.c" is a guess from its graphic file's,
@@ -170,19 +170,19 @@ static const s16 sFMissionAppTimeline[] = { 0, 60, 120, 180, 240, 241, -1 };
 static const s16 sFMissionAppRankingWindows[] = { 8, 9, 10, 11, 13, 14, 15, -1 };
 
 static const FMissionAppLabel sFMissionAppLabels[] = {
-    { Title4_Text_TimeLeft, 1 },
-    { Title4_Text_NumberPlayers, 2 },
-    { Title4_Text_Objective, 3 },
-    { Title4_Text_TotalScore, 4 },
+    { FunfestMissionApp_Text_TimeLeft, 1 },
+    { FunfestMissionApp_Text_NumberPlayers, 2 },
+    { FunfestMissionApp_Text_Objective, 3 },
+    { FunfestMissionApp_Text_TotalScore, 4 },
     { -1, -1 },
 };
 
 static const FMissionAppUnitText sFMissionAppUnitTexts[] = {
-    { Title4_Text_Empty_78, Title4_Text_Empty_74, Title4_Text_SScore_5 },
-    { Title4_Text_Empty_75, Title4_Text_Empty_66, Title4_Text_SScore_2 },
-    { Title4_Text_Empty_65, Title4_Text_Empty_69, Title4_Text_SScore },
-    { Title4_Text_Empty_76, Title4_Text_Empty_72, Title4_Text_SScore_3 },
-    { Title4_Text_Empty_77, Title4_Text_Empty_73, Title4_Text_SScore_4 },
+    { FunfestMissionApp_Text_Empty_78, FunfestMissionApp_Text_Empty_74, FunfestMissionApp_Text_SScore_5 },
+    { FunfestMissionApp_Text_Empty_75, FunfestMissionApp_Text_Empty_66, FunfestMissionApp_Text_SScore_2 },
+    { FunfestMissionApp_Text_Empty_65, FunfestMissionApp_Text_Empty_69, FunfestMissionApp_Text_SScore },
+    { FunfestMissionApp_Text_Empty_76, FunfestMissionApp_Text_Empty_72, FunfestMissionApp_Text_SScore_3 },
+    { FunfestMissionApp_Text_Empty_77, FunfestMissionApp_Text_Empty_73, FunfestMissionApp_Text_SScore_4 },
 };
 
 const GameProcFunctions FMISSION_APP_PROC_FUNCTIONS = { FMissionApp_Init, FMissionApp_Main, FMissionApp_Exit };
@@ -206,7 +206,7 @@ static BOOL FMissionApp_Init(GameProc *proc, u32 *state, void *param, void *data
     work->graphic = FMissionAppGra_Create(0, work->heapId);
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
-    work->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_4, work->heapId);
+    work->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FUNFEST_MISSION_APP, work->heapId);
     work->msgData[1] = NULL;
     work->printQueue = PrintQueue_CreateDefault(work->heapId);
     work->tcbManager = GFL_TCBExMgrCreate(work->heapId, work->heapId, 32, 32);
@@ -457,15 +457,15 @@ static void FMissionApp_DrawRanking(FMissionApp *work) {
     }
     FMissionApp_ClearRanking(work);
     if (!(work->flags & FLAG_ALONE)) {
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Score);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Score);
         FMissionAppDraw_Print(work, 8, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_SCORE, 13, 64, 0, PRINT_ALIGN_RIGHT);
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Rank);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Rank);
         FMissionAppDraw_Print(work, 9, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_RANK, 14, 152, 0, PRINT_ALIGN_RIGHT);
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_TopScore);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_TopScore);
         FMissionAppDraw_Print(work, 10, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_BEST_NAME, 11, 0, 0, PRINT_ALIGN_LEFT);
@@ -712,18 +712,18 @@ static void FMissionApp_DrawResult(FMissionApp *work) {
     if (work->flags & FLAG_STEP_TITLE) {
         FMissionApp_PrintText(work, TEXT_MISSION, 0, 0, 4, PRINT_ALIGN_LEFT);
         FMissionAppDraw_SetLevelIcon(work, 1);
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_NumberPlayers);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_NumberPlayers);
         FMissionAppDraw_Print(work, 1, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionAppDraw_SetActorVisible(work, FMISSION_APP_ACTOR_UPPER, 0, TRUE);
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Objective);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Objective);
         FMissionAppDraw_Print(work, 2, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_TotalScore);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_TotalScore);
         FMissionAppDraw_Print(work, 3, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         if (work->flags & FLAG_TIMED) {
-            strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_TimeLeft_2);
+            strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_TimeLeft_2);
             FMissionAppDraw_Print(work, 4, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
             GFL_StrBufFree(strbuf);
         }
@@ -767,38 +767,38 @@ static void FMissionApp_DrawResultRanking(FMissionApp *work) {
     if (!(work->flags & FLAG_STEP_RANKING)) {
         return;
     }
-    strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Score);
+    strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Score);
     FMissionAppDraw_Print(work, 8, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
     GFL_StrBufFree(strbuf);
     FMissionApp_PrintText(work, TEXT_SCORE, 15, 64, 0, PRINT_ALIGN_RIGHT);
     if (work->flags & FLAG_NEW_BEST) {
         FMissionAppDraw_SetActorVisible(work, FMISSION_APP_ACTOR_RECORD, 0, TRUE);
     }
-    strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Rank);
+    strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Rank);
     FMissionAppDraw_Print(work, 9, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
     GFL_StrBufFree(strbuf);
     FMissionApp_PrintText(work, TEXT_RANK, 16, 152, 0, PRINT_ALIGN_RIGHT);
     if (!(work->flags & FLAG_ALONE)) {
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_TopScore);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_TopScore);
         FMissionAppDraw_Print(work, 10, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_BEST_NAME, 11, 0, 0, PRINT_ALIGN_LEFT);
         FMissionApp_PrintText(work, TEXT_BEST_SCORE, 17, 64, 0, PRINT_ALIGN_RIGHT);
     }
     if (work->flags & FLAG_CLEARED) {
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Reward);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Reward);
         FMissionAppDraw_Print(work, 12, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_ITEM, 18, 128, 0, PRINT_ALIGN_RIGHT);
     }
     if (work->flags & FLAG_BONUS) {
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_BonusScore);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_BonusScore);
         FMissionAppDraw_Print(work, 13, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_BONUS, 19, 48, 0, PRINT_ALIGN_RIGHT);
     }
     if (work->flags & FLAG_ITEM2) {
-        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_DoubleScore);
+        strbuf = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_DoubleScore);
         FMissionAppDraw_Print(work, 14, 0, 0, strbuf, PRINT_ALIGN_LEFT, FMISSION_APP_COLOR_TEXT);
         GFL_StrBufFree(strbuf);
         FMissionApp_PrintText(work, TEXT_ITEM2, 20, 128, 0, PRINT_ALIGN_RIGHT);
@@ -808,7 +808,7 @@ static void FMissionApp_DrawResultRanking(FMissionApp *work) {
 // Prints one of the screen's texts into a window
 static void FMissionApp_PrintText(FMissionApp *work, int text, int window, int x, int y, u32 align) {
     // Nothing reads this pair of messages
-    static const s16 unused[] = { Title4_Text_Empty_70, Title4_Text_Empty_79 };
+    static const s16 unused[] = { FunfestMissionApp_Text_Empty_70, FunfestMissionApp_Text_Empty_79 };
     StrBuf *strbuf;
     StrBuf *format;
     u32 index = work->param->missionConfig->info.index;
@@ -831,7 +831,7 @@ static void FMissionApp_PrintText(FMissionApp *work, int text, int window, int x
     } else if (text == TEXT_PLAYERS) {
         WordSetNumber(work->wordSet, 0, work->ranking.count, 3, 0, TRUE);
         strbuf = GFL_StrBufCreate(128, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Empty_66);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Empty_66);
         GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
         GFL_StrBufFree(format);
     } else if (text == TEXT_RANK) {
@@ -840,7 +840,7 @@ static void FMissionApp_PrintText(FMissionApp *work, int text, int window, int x
         WordSetNumber(work->wordSet, 0, work->ranking.count, 3, 0, TRUE);
         WordSetNumber(work->wordSet, 1, rank, 3, 0, TRUE);
         strbuf = GFL_StrBufCreate(128, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Of);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Of);
         GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
         GFL_StrBufFree(format);
     } else if (text == TEXT_SCORE) {
@@ -884,13 +884,13 @@ static void FMissionApp_PrintText(FMissionApp *work, int text, int window, int x
         loadItemText(work->wordSet, 0, work->result.item, plural, FALSE);
         WordSetNumber(work->wordSet, 1, count, 2, 0, TRUE);
         strbuf = GFL_StrBufCreate(128, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Empty_70);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Empty_70);
         GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
         GFL_StrBufFree(format);
     } else if (text == TEXT_BONUS) {
         WordSetNumber(work->wordSet, 0, work->result.bonusCount, 2, 0, TRUE);
         strbuf = GFL_StrBufCreate(128, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Empty_71);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Empty_71);
         GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
         GFL_StrBufFree(format);
     } else if (text == TEXT_ITEM2) {
@@ -903,7 +903,7 @@ static void FMissionApp_PrintText(FMissionApp *work, int text, int window, int x
         loadItemText(work->wordSet, 0, work->result.item2, plural, FALSE);
         WordSetNumber(work->wordSet, 1, count, 2, 0, TRUE);
         strbuf = GFL_StrBufCreate(128, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Empty_70);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Empty_70);
         GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
         GFL_StrBufFree(format);
     }
@@ -1066,10 +1066,12 @@ static void FMissionApp_MoveLogEntry(FMissionApp *work, int from, int to) {
 static void FMissionApp_PrintLabels(FMissionApp *work, u32 unused) {
     // Nothing reads this table of the screen's messages
     static const s16 messages[] = {
-        Title4_Text_TimeLeft, Title4_Text_NumberPlayers, Title4_Text_Objective,  Title4_Text_TotalScore,
-        Title4_Text_Reward,   Title4_Text_Score,         Title4_Text_Rank,       Title4_Text_TopScore,
-        Title4_Text_Empty_68, Title4_Text_TimeLeft_2,    Title4_Text_BonusScore, Title4_Text_DoubleScore,
-        Title4_Text_Empty_66, Title4_Text_Empty_71,      Title4_Text_Empty_70,   Title4_Text_Of,
+        FunfestMissionApp_Text_TimeLeft,   FunfestMissionApp_Text_NumberPlayers, FunfestMissionApp_Text_Objective,
+        FunfestMissionApp_Text_TotalScore, FunfestMissionApp_Text_Reward,        FunfestMissionApp_Text_Score,
+        FunfestMissionApp_Text_Rank,       FunfestMissionApp_Text_TopScore,      FunfestMissionApp_Text_Empty_68,
+        FunfestMissionApp_Text_TimeLeft_2, FunfestMissionApp_Text_BonusScore,    FunfestMissionApp_Text_DoubleScore,
+        FunfestMissionApp_Text_Empty_66,   FunfestMissionApp_Text_Empty_71,      FunfestMissionApp_Text_Empty_70,
+        FunfestMissionApp_Text_Of,
     };
     int i;
 

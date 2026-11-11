@@ -37,8 +37,7 @@ Regulation *TournamentEntry_GetRegulation(TournamentEntry *entry) {
 }
 
 static void loadBattleTypeTextToStrbuf(Regulation *regulation, StrBuf *strbuf) {
-    MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LOAD_BATTLE_TYPE_TEXT_TO_STRBUF, HEAPID_USER);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_TYPE_NAMES, HEAPID_USER);
 
     GFL_MsgDataLoadStrbuf(msgData, regulation->name, strbuf);
     GFL_MsgDataFree(msgData);

@@ -43,7 +43,7 @@
 #include "system/version.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/event_mapchange_2.h"
+#include "text/system/geonet.h"
 
 // Geonet, the globe of the Pokémon Centers: the player registers where they live, and the globe shows the places of
 // the people they have traded and battled with. The ROM has no name for this file; "geonet.c" is a guess. It is the
@@ -387,9 +387,9 @@ static const GeonetMarkFile sGeonetMarkFiles[] = {
 
 // clang-format off
 static const GeonetMenuItem sGeonetMenuItems[] = {
-    {EventMapchange2_Text_SeeList, MENU_SEE_LIST},
-    {EventMapchange2_Text_Register, MENU_REGISTER},
-    {EventMapchange2_Text_Cancel, MENU_CANCEL},
+    {Geonet_Text_SeeList, MENU_SEE_LIST},
+    {Geonet_Text_Register, MENU_REGISTER},
+    {Geonet_Text_Cancel, MENU_CANCEL},
 };
 
 // clang-format on
@@ -526,7 +526,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
     case SEQ_INIT: {
         ArcTool *arc;
 
-        work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_MAPCHANGE_2, work->heapId);
+        work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GEONET, work->heapId);
         arc = GFL_ArcSysCreateFileHandle(ARCID_GEONET, work->heapId);
         Geonet_Load3D(work, arc);
         Geonet_LoadBG(work, arc);
@@ -546,7 +546,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         }
         break;
     case SEQ_WELCOME:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_WelcomeGeonetHighTech, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_WelcomeGeonetHighTech, TRUE) == TRUE) {
             if (work->myCountry == COUNTRY_NONE) {
                 *state = SEQ_MENU_MESSAGE;
             } else {
@@ -555,7 +555,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         }
         break;
     case SEQ_MENU_MESSAGE:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_WhatWouldLike, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_WhatWouldLike, TRUE) == TRUE) {
             Geonet_CreateMenu(work, &sGeonetMenuWindow, &sGeonetMenuHeader, sGeonetMenuItems);
             *state = SEQ_MENU;
         }
@@ -586,7 +586,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         }
         break;
     case SEQ_REGISTER_MESSAGE:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_CanRegisterLocationInformation, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_CanRegisterLocationInformation, TRUE) == TRUE) {
             work->yesNo =
                 ShopUI_CreateConfirmDialog(&sGeonetYesNoSetup, FRAME_MENU_CHAR, FRAME_MENU_PALETTE, 0, work->heapId);
             *state = SEQ_REGISTER_CONFIRM;
@@ -609,12 +609,11 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         break;
     case SEQ_COUNTRY_LIST:
         work->selCountry = COUNTRY_NONE;
-        Geonet_CreateCountryList(work, &sGeonetListWindow, &sGeonetListHeader,
-                                 TEXT_BANK_EVENT_MAPCHANGE_LOAD_COUNTRY_TO_STRBUF);
+        Geonet_CreateCountryList(work, &sGeonetListWindow, &sGeonetListHeader, TEXT_BANK_COUNTRY_NAMES);
         *state = SEQ_COUNTRY_MESSAGE;
         break;
     case SEQ_COUNTRY_MESSAGE:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_PleaseSelectLocationWhere, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_PleaseSelectLocationWhere, TRUE) == TRUE) {
             *state = SEQ_COUNTRY_SELECT;
         }
         break;
@@ -655,7 +654,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         break;
     }
     case SEQ_REGION_MESSAGE:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_PleaseSelectAreaWhere, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_PleaseSelectAreaWhere, TRUE) == TRUE) {
             *state = SEQ_REGION_SELECT;
         }
         break;
@@ -688,7 +687,7 @@ static BOOL Geonet_Main(GeonetWork *work, u32 *state) {
         *state = SEQ_PLACE_MESSAGE;
         break;
     case SEQ_PLACE_MESSAGE:
-        if (Geonet_PrintMessage(work, EventMapchange2_Text_MayNotChangeLocation, TRUE) == TRUE) {
+        if (Geonet_PrintMessage(work, Geonet_Text_MayNotChangeLocation, TRUE) == TRUE) {
             work->yesNo =
                 ShopUI_CreateConfirmDialog(&sGeonetYesNoSetup, FRAME_MENU_CHAR, FRAME_MENU_PALETTE, 0, work->heapId);
             *state = SEQ_PLACE_CONFIRM;
@@ -1095,8 +1094,8 @@ static void Geonet_LoadBG(GeonetWork *work, ArcTool *arc) {
 }
 
 static void Geonet_InitButtons(GeonetWork *work) {
-    work->buttonText[BUTTON_VIEW] = GFL_MsgDataLoadStrbufNew(work->msgData, EventMapchange2_Text_View);
-    work->buttonText[BUTTON_QUIT] = GFL_MsgDataLoadStrbufNew(work->msgData, EventMapchange2_Text_Quit);
+    work->buttonText[BUTTON_VIEW] = GFL_MsgDataLoadStrbufNew(work->msgData, Geonet_Text_View);
+    work->buttonText[BUTTON_QUIT] = GFL_MsgDataLoadStrbufNew(work->msgData, Geonet_Text_Quit);
     work->buttonRes = AppTaskMenuRes_Create(2, 9, work->font, work->queue, work->heapId);
     work->buttonItems[BUTTON_VIEW].str = work->buttonText[BUTTON_VIEW];
     work->buttonItems[BUTTON_VIEW].color = PRINT_COLOR(14, 15, 3);
@@ -1290,7 +1289,7 @@ static void Geonet_ShowRegisteredPlace(GeonetWork *work) {
     work->windows[WINDOW_PLACE].window = Geonet_CreateWindow(&sGeonetPlaceWindow, TRUE);
     loadCountryToStrbuf(work->wordSet, 0, work->myCountry);
     loadCountryAreaToStrbuf(work->wordSet, 1, work->myCountry, work->myRegion);
-    GFL_MsgDataLoadStrbuf(work->msgData, EventMapchange2_Text_RegisteredLocation, format);
+    GFL_MsgDataLoadStrbuf(work->msgData, Geonet_Text_RegisteredLocation, format);
     GFL_WordSetFormatStrbuf(work->wordSet, strbuf, format);
     Geonet_Print(work, &work->windows[WINDOW_PLACE].print, work->windows[WINDOW_PLACE].window, strbuf, 0, 0);
     GFL_StrBufFree(format);
@@ -1390,7 +1389,7 @@ static void Geonet_UpdateInfo(GeonetWork *work) {
         StrBuf *strbuf = GFL_StrBufCreate(0x400, work->heapId);
 
         GFL_BitmapFill(BmpWin_GetBitmap(work->windows[WINDOW_INFO].window), 15);
-        GFL_MsgDataLoadStrbuf(work->msgData, EventMapchange2_Text_DisplayRegisteredLocationsLine, strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, Geonet_Text_DisplayRegisteredLocationsLine, strbuf);
         Geonet_Print(work, &work->windows[WINDOW_INFO].print, work->windows[WINDOW_INFO].window, strbuf, 0, 0);
         GFL_StrBufFree(strbuf);
     } else if (Geonet_FindNearestPlace(work, &index)) {
@@ -1701,7 +1700,7 @@ static BOOL Geonet_LoadPlaceNames(u32 country, u32 region, StrBuf *countryName, 
     BOOL hasRegions = FALSE;
     MsgData *msgData;
 
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_MAPCHANGE_LOAD_COUNTRY_TO_STRBUF, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_COUNTRY_NAMES, heapId);
     GFL_MsgDataLoadStrbuf(msgData, country, countryName);
     GFL_MsgDataFree(msgData);
     if (subdivided == 0) {

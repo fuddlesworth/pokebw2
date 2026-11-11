@@ -181,7 +181,7 @@ ShortcutMenuApp *ShortcutMenu_Create(GameData *gameData, u32 mode, ShortcutMenuP
         ClActor_SetAutoAnim(work->clactActors[i], TRUE);
     }
 
-    work->menuMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_4, heapId);
+    work->menuMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SHORTCUT_MENU, heapId);
     work->menuFont = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, menuHeapId);
     work->menuQueue = PrintQueue_Create(0x1000, heapId);
     shortcut = SaveControl_GetShortcutSaveCore(GameData_GetSaveControl(gameData));

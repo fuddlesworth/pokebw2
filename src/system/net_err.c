@@ -28,7 +28,7 @@
 #include "system/main.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/startmenu_gfl_net_err_disp_message.h"
+#include "text/system/net_error.h"
 #include "text/system/wifi_error.h"
 
 // The network error screen: a window on BG1 of the main screen with the error's message, until A or B is pressed, over
@@ -742,12 +742,11 @@ static void GFL_NetErrDispMessage(u32 fatal, BOOL disconnecting) {
         }
     } else {
         WordSetNumber(wordSet, 0, work->stateError, 5, 2, TRUE);
-        msgData =
-            GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU_GFL_NET_ERR_DISP_MESSAGE, HEAPID_USER);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NET_ERROR, HEAPID_USER);
         if (fatal == TRUE) {
-            message = StartmenuGflNetErrDispMessage_Text_CommunicationErrorPleaseTurn;
+            message = NetError_Text_CommunicationErrorPleaseTurn;
         } else {
-            message = StartmenuGflNetErrDispMessage_Text_CommunicationError;
+            message = NetError_Text_CommunicationError;
         }
     }
     src = GFL_MsgDataLoadStrbufNew(msgData, message);

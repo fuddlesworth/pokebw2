@@ -24,7 +24,7 @@
 #include "system/dsi.h"
 #include "system/game_data.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_2.h"
+#include "text/system/key_system.h"
 
 // Phases of KeySystemKeyAnim_Unlock.
 enum {
@@ -370,10 +370,10 @@ static void KeySystemKeySelect_SetupDifficulty(KeySystemKeySelect *keySelect, Ke
     ClActor *cursor;
 
     setup->count = 4;
-    setup->items[GAME_DIFFICULTY_EASY].msgId = AbilityHandlers2_Text_EasyMode;
-    setup->items[GAME_DIFFICULTY_NORMAL].msgId = AbilityHandlers2_Text_NormalMode;
-    setup->items[GAME_DIFFICULTY_CHALLENGE].msgId = AbilityHandlers2_Text_ChallengeMode;
-    setup->items[KEY_DIFFICULTY_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
+    setup->items[GAME_DIFFICULTY_EASY].msgId = KeySystem_Text_EasyMode;
+    setup->items[GAME_DIFFICULTY_NORMAL].msgId = KeySystem_Text_NormalMode;
+    setup->items[GAME_DIFFICULTY_CHALLENGE].msgId = KeySystem_Text_ChallengeMode;
+    setup->items[KEY_DIFFICULTY_MENU_BACK].msgId = KeySystem_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectDifficulty;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_EASY)) {
         ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_FIRST), TRUE);
@@ -417,13 +417,13 @@ static void KeySystemKeySelect_SetupCity(KeySystemKeySelect *keySelect, KeySyste
 
     setup->count = KEY_CITY_MENU_COUNT;
 #ifdef BLACK2
-    setup->items[KEY_CITY_MENU_DEFAULT].msgId = AbilityHandlers2_Text_BlackCity;
-    setup->items[KEY_CITY_MENU_OTHER].msgId = AbilityHandlers2_Text_WhiteForest;
+    setup->items[KEY_CITY_MENU_DEFAULT].msgId = KeySystem_Text_BlackCity;
+    setup->items[KEY_CITY_MENU_OTHER].msgId = KeySystem_Text_WhiteForest;
 #else
-    setup->items[KEY_CITY_MENU_DEFAULT].msgId = AbilityHandlers2_Text_WhiteForest;
-    setup->items[KEY_CITY_MENU_OTHER].msgId = AbilityHandlers2_Text_BlackCity;
+    setup->items[KEY_CITY_MENU_DEFAULT].msgId = KeySystem_Text_WhiteForest;
+    setup->items[KEY_CITY_MENU_OTHER].msgId = KeySystem_Text_BlackCity;
 #endif
-    setup->items[KEY_CITY_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
+    setup->items[KEY_CITY_MENU_BACK].msgId = KeySystem_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectCity;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_CITY)) {
         ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_SECOND), TRUE);
@@ -471,10 +471,10 @@ static void KeySystemKeySelect_SetupChamber(KeySystemKeySelect *keySelect, KeySy
     ClActor *cursor;
 
     setup->count = 4;
-    setup->items[KEY_INFO_CHAMBER_ROCK_PEAK].msgId = AbilityHandlers2_Text_RockPeakChamber;
-    setup->items[KEY_INFO_CHAMBER_IRON].msgId = AbilityHandlers2_Text_IronChamber;
-    setup->items[KEY_INFO_CHAMBER_ICEBERG].msgId = AbilityHandlers2_Text_IcebergChamber;
-    setup->items[KEY_CHAMBER_MENU_BACK].msgId = AbilityHandlers2_Text_Back;
+    setup->items[KEY_INFO_CHAMBER_ROCK_PEAK].msgId = KeySystem_Text_RockPeakChamber;
+    setup->items[KEY_INFO_CHAMBER_IRON].msgId = KeySystem_Text_IronChamber;
+    setup->items[KEY_INFO_CHAMBER_ICEBERG].msgId = KeySystem_Text_IcebergChamber;
+    setup->items[KEY_CHAMBER_MENU_BACK].msgId = KeySystem_Text_Back;
     keySelect->select = KeySystemKeySelect_SelectChamber;
     if (!keyEnabler(keySelect->keyInfo, KEY_SYSTEM_KEY_IRON)) {
         ClActor_SetVisible(KeySystemClAct_GetActor(keySelect->clact, KEY_SYSTEM_ACTOR_LOCK_SECOND), TRUE);
@@ -514,19 +514,19 @@ static int KeySystemKeySelect_SelectChamber(int index, KeySystemKeySelect *keySe
 }
 
 u16 KeySystemFlow_GetDifficultyMsg(KeyInfoSave *keyInfo) {
-    return GetGameDifficulty(keyInfo) + AbilityHandlers2_Text_ChangeDifficultyCurrentMode;
+    return GetGameDifficulty(keyInfo) + KeySystem_Text_ChangeDifficultyCurrentMode;
 }
 
 u16 KeySystemFlow_GetCityMsg(KeyInfoSave *keyInfo) {
 #ifdef BLACK2
-    return KeyInfo_GetCityKey(keyInfo) + AbilityHandlers2_Text_SwapWhiteForestBlack;
+    return KeyInfo_GetCityKey(keyInfo) + KeySystem_Text_SwapWhiteForestBlack;
 #else
-    return AbilityHandlers2_Text_SwapWhiteForestBlack_2 - KeyInfo_GetCityKey(keyInfo);
+    return KeySystem_Text_SwapWhiteForestBlack_2 - KeyInfo_GetCityKey(keyInfo);
 #endif
 }
 
 u16 KeySystemFlow_GetChamberMsg(KeyInfoSave *keyInfo) {
-    return KeyInfo_GetChamberKey(keyInfo) + AbilityHandlers2_Text_ChangeWhatLiesBeyond;
+    return KeyInfo_GetChamberKey(keyInfo) + KeySystem_Text_ChangeWhatLiesBeyond;
 }
 
 u16 KeySystemFlow_GetSettingsMsg(KeyInfoSave *keyInfo, u16 item) {
@@ -538,7 +538,7 @@ u16 KeySystemFlow_GetSettingsMsg(KeyInfoSave *keyInfo, u16 item) {
     case KEY_LIST_CHAMBER:
         return KeySystemFlow_GetChamberMsg(keyInfo);
     case KEY_LIST_BACK:
-        return AbilityHandlers2_Text_GoBackKeySystems;
+        return KeySystem_Text_GoBackKeySystems;
     }
     return 0;
 }
@@ -566,9 +566,9 @@ BOOL KeySystemFlow_FormatKeyMsg(KeySystemWork *wk, int key, BOOL receive) {
     if (exchange) {
         // With the other player's name or without it
         if (wk->partnerSaveInfo.hasSave) {
-            msgId = receive ? AbilityHandlers2_Text_EasyModeUnlockedBy : AbilityHandlers2_Text_SentEasyKey;
+            msgId = receive ? KeySystem_Text_EasyModeUnlockedBy : KeySystem_Text_SentEasyKey;
         } else {
-            msgId = receive ? AbilityHandlers2_Text_EasyModeUnlockedBy_2 : AbilityHandlers2_Text_SentEasyKey_2;
+            msgId = receive ? KeySystem_Text_EasyModeUnlockedBy_2 : KeySystem_Text_SentEasyKey_2;
         }
         // The city key has a message for each city
         if (key == KEY_SYSTEM_KEY_CITY) {

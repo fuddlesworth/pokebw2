@@ -30,7 +30,7 @@
 #include "save/tournament_block.h"
 #include "save/wifi_list.h"
 #include "system/game_data.h"
-#include "text/system/ability_handlers_btl_main.h"
+#include "text/system/name_input.h"
 #include "text/system/wifi_error.h"
 
 enum {
@@ -393,9 +393,9 @@ typedef struct {
 
 // The name that a player gets when the check refuses theirs, by the version
 #ifdef BLACK2
-#define WBM_DEFAULT_NAME AbilityHandlersBtlMain_Text_Kuro
+#define WBM_DEFAULT_NAME NameInput_Text_Kuro
 #else
-#define WBM_DEFAULT_NAME AbilityHandlersBtlMain_Text_Shiro
+#define WBM_DEFAULT_NAME NameInput_Text_Shiro
 #endif
 
 struct WifiBattleMatchNet {
@@ -1840,8 +1840,7 @@ static void WifiBattleMatchNet_OnPersonReceived(int netId, int size, const void 
 
         JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_ARRIVAL_METHOD, JOIN_AVE_ARRIVAL_RANDOM_MATCHUP);
         if (p_wk->opponentNameRejected != 0) {
-            MsgData *msgData =
-                GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, p_wk->msgHeapId);
+            MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, p_wk->msgHeapId);
             StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, WBM_DEFAULT_NAME);
 
             GFL_MsgDataFree(msgData);
@@ -2918,8 +2917,7 @@ BOOL WifiBattleMatchNet_NameCheckMain(WifiBattleMatchNet *p_wk, u32 *out) {
         *out = p_wk->nameCheck.badWordCount > 0;
     }
     if (done == 1 && *out == 1) {
-        MsgData *msgData =
-            GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, p_wk->msgHeapId);
+        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, p_wk->msgHeapId);
         StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, WBM_DEFAULT_NAME);
 
         GFL_MsgDataFree(msgData);

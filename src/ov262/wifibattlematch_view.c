@@ -379,7 +379,7 @@ static void WifiBattleMatchView_BlendColor(NNS_GFD_DST_TYPE type, u16 *dst, cons
 // Prints two numbers with a message between them, ending at the right of the window
 static void WifiBattleMatchView_PrintCounts(PrintWindow *printWindow, PrintQueue *queue, Font *font, u32 count1,
                                             u32 count2, HeapID heapId) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_12, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FRACTION, heapId);
     WordSet *wordSet = GFL_WordSetSystemCreateDefault(heapId);
     StrBuf *text = GFL_StrBufCreate(0x20, heapId);
     u16 right = BmpWin_GetSizeX(printWindow->window) * 8;

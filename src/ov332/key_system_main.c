@@ -29,7 +29,7 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/script/global_10520.h"
-#include "text/system/ability_handlers_2.h"
+#include "text/system/key_system.h"
 
 // Phases of KeySystem_SeqFadeIn.
 enum {
@@ -802,7 +802,7 @@ void KeySystem_Setup(KeySystemWork *wk, HeapID heapId) {
     wk->graphic = KeySystemGraphic_Create(1, heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     wk->printQueue = PrintQueue_CreateDefault(heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_2, heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_KEY_SYSTEM, heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(heapId);
     wk->strBuf = GFL_StrBufCreate(128, heapId);
     wk->bg = KeySystemBG_Create(heapId);
@@ -924,8 +924,8 @@ void KeySystem_CreateYesNoMenu(KeySystemWork *wk, HeapID heapId) {
     setup.palette = 14;
     setup.framePalette = 15;
     setup.frameChar = 1;
-    setup.msgIds[KEY_SYSTEM_YES_NO_YES] = AbilityHandlers2_Text_Yes;
-    setup.msgIds[KEY_SYSTEM_YES_NO_NO] = AbilityHandlers2_Text_No;
+    setup.msgIds[KEY_SYSTEM_YES_NO_YES] = KeySystem_Text_Yes;
+    setup.msgIds[KEY_SYSTEM_YES_NO_NO] = KeySystem_Text_No;
     setup.count = KEY_SYSTEM_YES_NO_COUNT;
     setup.cancelable = TRUE;
     setup.cancelValue = KEY_SYSTEM_YES_NO_NO;
@@ -979,8 +979,7 @@ static void KeySystem_SeqSaveCorrupted(KeySystemSeq *seq, int *state, void *work
         (*state)++;
         break;
     case UNOVA_CORRUPT_SAVE_STEP_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavedGameDataCorrupted,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_SavedGameDataCorrupted, KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
     case UNOVA_CORRUPT_SAVE_STEP_WAIT_MESSAGE:
@@ -1014,8 +1013,7 @@ static void KeySystem_SeqTopMenu(KeySystemSeq *seq, int *state, void *work) {
         KeySystemList_Update(wk->list);
         if (KeySystemList_IsChanged(wk->list) && KeySystemMsgWin_IsDone(wk->infoWin)) {
             KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData,
-                                     KeySystemList_GetCursor(wk->list) +
-                                         AbilityHandlers2_Text_CommunicatePokemonBlackVersion,
+                                     KeySystemList_GetCursor(wk->list) + KeySystem_Text_CommunicatePokemonBlackVersion,
                                      KEY_SYSTEM_MSG_PRINT);
         }
         if (KeySystemList_IsDecided(wk->list)) {
@@ -1121,15 +1119,15 @@ static void KeySystemTopScene_Init(void *work, HeapID heapId) {
         setup.items[i].x = 3;
         setup.items[i].y = (setup.items[i].height + 3) * i + 5;
     }
-    setup.items[0].msgId = AbilityHandlers2_Text_KeySystem_2;
-    setup.items[1].msgId = AbilityHandlers2_Text_MemoryLink;
-    setup.items[2].msgId = AbilityHandlers2_Text_Nintendo3dsLink;
-    setup.items[3].msgId = AbilityHandlers2_Text_Back_2;
+    setup.items[0].msgId = KeySystem_Text_KeySystem_2;
+    setup.items[1].msgId = KeySystem_Text_MemoryLink;
+    setup.items[2].msgId = KeySystem_Text_Nintendo3dsLink;
+    setup.items[3].msgId = KeySystem_Text_Back_2;
     wk->list = KeySystemList_Create(&setup, heapId);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
     KeySystem_CreateInfoWin(wk, heapId);
     KeySystemMsgWin_PrintMsg(wk->infoWin, wk->msgData,
-                             KeySystemList_GetCursor(wk->list) + AbilityHandlers2_Text_CommunicatePokemonBlackVersion,
+                             KeySystemList_GetCursor(wk->list) + KeySystem_Text_CommunicatePokemonBlackVersion,
                              KEY_SYSTEM_MSG_PRINT);
     KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_COMMON);
 }
@@ -1164,8 +1162,8 @@ static void KeySystemMsgScene_Init(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
     KeySystem_CreateMsgWin(wk, heapId);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_MainMenu, KEY_SYSTEM_MSG_PRINT);
     KeySystemBG_LoadScreen(wk->bg, 2, KEY_SYSTEM_SCREEN_COMMON);
 }
 

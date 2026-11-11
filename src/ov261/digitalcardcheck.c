@@ -18,7 +18,7 @@
 #include "system/game_data.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/event_fishing.h"
+#include "text/system/wifi_battle_match.h"
 
 enum {
     CARD_CONFIRM_CHOICE_YES = 0,
@@ -187,7 +187,7 @@ DigitalCardCheck *DigitalCardCheck_Create(const DigitalCardCheckParam *param, He
     check->param = *param;
     check->heapId = heapId;
     WifiBattleMatchRes_LoadBG(check->param.seq, WIFIBATTLEMATCH_BG_CARD, heapId);
-    check->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, heapId);
+    check->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_BATTLE_MATCH, heapId);
     check->wordSet = GFL_WordSetSystemCreate(8, 64, heapId);
     check->task = WifiBattleMatchTask_Create(check, DigitalCardCheck_TaskStart, heapId);
     return check;
@@ -262,7 +262,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
     case CARD1_SHOW_STATUS:
         DigitalCardCheck_ClearMessage(check);
         DigitalCardCheck_SetBGEnabled(check, 1);
-        DigitalCardCheck_Print(check, EventFishing_Text_ParticipatingCompetitionPleaseRegister, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_ParticipatingCompetitionPleaseRegister, 1);
         *seq = CARD1_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD1_OPEN_MENU);
         break;
@@ -283,7 +283,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD1_SHOW_WARNING:
-        DigitalCardCheck_Print(check, EventFishing_Text_OnceUnregisteredWillNot_3, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_OnceUnregisteredWillNot_3, 1);
         *seq = CARD1_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD1_OPEN_WARNING_MENU);
         break;
@@ -304,7 +304,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD1_SHOW_CONFIRM:
-        DigitalCardCheck_Print(check, EventFishing_Text_WillUnregisteredSureAbout_2, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_WillUnregisteredSureAbout_2, 1);
         *seq = CARD1_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD1_OPEN_CONFIRM_MENU);
         break;
@@ -325,7 +325,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD1_SHOW_UNREGISTERING:
-        DigitalCardCheck_Print(check, EventFishing_Text_BeingUnregisteredDontTurn, 2);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_BeingUnregisteredDontTurn, 2);
         *seq = CARD1_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD1_UNREGISTER);
         break;
@@ -350,7 +350,7 @@ static void DigitalCardCheck_TaskCardType1(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD1_SHOW_UNREGISTERED:
-        DigitalCardCheck_Print(check, EventFishing_Text_HaveBeenUnregisteredFrom, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_HaveBeenUnregisteredFrom, 1);
         *seq = CARD1_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD1_HIDE_CARD);
         break;
@@ -398,7 +398,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
     case CARD2_SHOW_STATUS:
         DigitalCardCheck_ClearMessage(check);
         DigitalCardCheck_SetBGEnabled(check, 1);
-        DigitalCardCheck_Print(check, EventFishing_Text_ParticipatingCompetitionBattleBox, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_ParticipatingCompetitionBattleBox, 1);
         *seq = CARD2_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD2_OPEN_MENU);
         break;
@@ -419,7 +419,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD2_SHOW_WARNING:
-        DigitalCardCheck_Print(check, EventFishing_Text_OnceUnregisteredWillNot_2, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_OnceUnregisteredWillNot_2, 1);
         *seq = CARD2_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD2_OPEN_WARNING_MENU);
         break;
@@ -440,7 +440,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD2_SHOW_CONFIRM:
-        DigitalCardCheck_Print(check, EventFishing_Text_WillUnregisteredSureAbout_2, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_WillUnregisteredSureAbout_2, 1);
         *seq = CARD2_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD2_OPEN_CONFIRM_MENU);
         break;
@@ -461,7 +461,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD2_SHOW_UNREGISTERING:
-        DigitalCardCheck_Print(check, EventFishing_Text_BeingUnregisteredDontTurn, 2);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_BeingUnregisteredDontTurn, 2);
         *seq = CARD2_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD2_UNREGISTER);
         break;
@@ -486,7 +486,7 @@ static void DigitalCardCheck_TaskCardType2(WifiBattleMatchTask *task, u32 *seq, 
         }
         break;
     case CARD2_SHOW_UNREGISTERED:
-        DigitalCardCheck_Print(check, EventFishing_Text_BattleBoxHasBeen_2, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_BattleBoxHasBeen_2, 1);
         *seq = CARD2_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, CARD2_HIDE_CARD);
         break;
@@ -530,7 +530,7 @@ static void DigitalCardCheck_TaskCardType3(WifiBattleMatchTask *task, u32 *seq, 
     case CARD3_SHOW_STATUS:
         DigitalCardCheck_ClearMessage(check);
         DigitalCardCheck_SetBGEnabled(check, 1);
-        DigitalCardCheck_Print(check, EventFishing_Text_CompetitionHasAlreadyEnded, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_CompetitionHasAlreadyEnded, 1);
         *seq = CARD3_WAIT_MESSAGE;
         break;
     case CARD3_WAIT_MESSAGE:
@@ -587,7 +587,7 @@ static void DigitalCardCheck_TaskCardType4(WifiBattleMatchTask *task, u32 *seq, 
     case CARD4_SHOW_STATUS:
         DigitalCardCheck_ClearMessage(check);
         DigitalCardCheck_SetBGEnabled(check, 1);
-        DigitalCardCheck_Print(check, EventFishing_Text_UnregisteredFromCompetition, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_UnregisteredFromCompetition, 1);
         *seq = CARD4_WAIT_MESSAGE;
         break;
     case CARD4_WAIT_MESSAGE:
@@ -644,7 +644,7 @@ static void DigitalCardCheck_TaskCardType5(WifiBattleMatchTask *task, u32 *seq, 
     case CARD5_SHOW_STATUS:
         DigitalCardCheck_ClearMessage(check);
         DigitalCardCheck_SetBGEnabled(check, 1);
-        DigitalCardCheck_Print(check, EventFishing_Text_YouveBeenUnregisteredFrom, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_YouveBeenUnregisteredFrom, 1);
         *seq = CARD5_WAIT_MESSAGE;
         break;
     case CARD5_WAIT_MESSAGE:
@@ -682,7 +682,7 @@ static void DigitalCardCheck_TaskNoCard(WifiBattleMatchTask *task, u32 *seq, voi
 
     switch (*seq) {
     case CARD_NONE_SHOW:
-        DigitalCardCheck_Print(check, EventFishing_Text_DontHaveAnyDigital, 1);
+        DigitalCardCheck_Print(check, WifiBattleMatch_Text_DontHaveAnyDigital, 1);
         *seq = CARD_NONE_WAIT;
         break;
     case CARD_NONE_WAIT:
@@ -818,8 +818,8 @@ static void DigitalCardCheck_OpenMenu(DigitalCardCheck *check, u32 kind) {
     param.frameChar = 1;
     switch (kind) {
     case MENU_YES_NO:
-        param.msgIds[0] = EventFishing_Text_Yes_4;
-        param.msgIds[1] = EventFishing_Text_No_4;
+        param.msgIds[0] = WifiBattleMatch_Text_Yes_4;
+        param.msgIds[1] = WifiBattleMatch_Text_No_4;
         param.count = 2;
         param.canCancel = 1;
         param.cancelValue = 1;
@@ -827,15 +827,15 @@ static void DigitalCardCheck_OpenMenu(DigitalCardCheck *check, u32 kind) {
         param.cursorRow = 1;
         break;
     case MENU_BACK:
-        param.msgIds[0] = EventFishing_Text_Back;
+        param.msgIds[0] = WifiBattleMatch_Text_Back;
         param.count = 1;
         param.canCancel = 1;
         param.cancelValue = 0;
         layout = CARD_MENU_LAYOUT_NARROW;
         break;
     case MENU_UNREGISTER_BACK:
-        param.msgIds[0] = EventFishing_Text_Unregister;
-        param.msgIds[1] = EventFishing_Text_Back;
+        param.msgIds[0] = WifiBattleMatch_Text_Unregister;
+        param.msgIds[1] = WifiBattleMatch_Text_Back;
         param.count = 2;
         param.canCancel = 1;
         param.cancelValue = 1;

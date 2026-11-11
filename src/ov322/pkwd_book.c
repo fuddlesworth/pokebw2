@@ -47,7 +47,7 @@
 #include "system/str_tool.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/event_pass_power_startmenu.h"
+#include "text/system/pokewood_cast_names.h"
 #include "text/system/pokewood_lines.h"
 
 // Pokéstar Studios' scenario book: the list of the movies that the player can film on the lower screen, and the
@@ -990,7 +990,7 @@ static void PkwdBook_InitScreen(PkwdBookWork *wk) {
     wk->msgData[MSG_TRAINER_CLASSES] =
         GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TRAINER_CLASS_NAMES, wk->heapId);
     wk->msgData[MSG_COSTARS] =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PASS_POWER_STARTMENU, wk->heapId);
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEWOOD_CAST_NAMES, wk->heapId);
     PkwdBook_LoadRoleNames(wk);
     PkwdBook_Unused2(wk);
     PkwdBook_ListMovies(wk);
@@ -2143,10 +2143,9 @@ static void PkwdBook_PrintCast(PkwdBookWork *wk, BOOL keepLabels) {
         movie = PkwdBook_GetMovie(wk, wk->selected);
         PkwdBook_PrintText(wk, TRUE, 2, 1, 0, wk->roleNames[movie], PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
         if (gender == 0) {
-            costar = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + EventPassPowerStartmenu_Text_BrycenMan);
+            costar = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + PokewoodCastNames_Text_BrycenMan);
         } else {
-            costar =
-                GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + EventPassPowerStartmenu_Text_BrycenMan_5);
+            costar = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + PokewoodCastNames_Text_BrycenMan_5);
         }
         buf = GFL_StrBufCreate(16, wk->heapId);
         GFL_StrBufUncompress(buf, costar);

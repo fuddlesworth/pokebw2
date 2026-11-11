@@ -414,7 +414,7 @@ BOOL Scrcmd_Musical_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
     case 1:
     case 8:
         if (kind == 1) {
-            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_13, heapId);
+            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_PROP_NAMES, heapId);
         } else {
             msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_MUSICAL, heapId);
         }
@@ -429,14 +429,14 @@ BOOL Scrcmd_Musical_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
         GFL_StrBufFree(str);
         break;
     case 3:
-        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
         GFL_MsgDataFree(msgData);
         break;
     case 4:
-        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, heapId);
         str = GFL_MsgDataLoadStrbufNew(msgData, arg + 4);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, str, 0, 1, 2);
         GFL_StrBufFree(str);
@@ -485,7 +485,7 @@ BOOL Scrcmd_Musical_WordSetMusicalInfo(VM *vm, FieldScriptEnv *env) {
         } else {
             messages[2] = order[3] + 4;
         }
-        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, heapId);
         for (i = 0; i < 3; i++) {
             str = GFL_MsgDataLoadStrbufNew(msgData, messages[i]);
             GFL_WordSetSetStrbuf(wordSet, i, str, 0, 1, 2);

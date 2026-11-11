@@ -29,7 +29,7 @@
 #include "system/dsi.h"
 #include "system/game_data.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_2.h"
+#include "text/system/key_system.h"
 
 // Phases of DataConvert_SeqMenu.
 enum {
@@ -389,7 +389,7 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
     case MEMORY_WIRELESS_STEP_PRINT_PROMPT:
         KeySystem_CreateMsgWin(wk, HEAPID_KEY_SYSTEM);
         GFL_BGSysQueueScrLoad(0);
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_LaunchDsWirelessCommunications,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_LaunchDsWirelessCommunications,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
@@ -436,15 +436,15 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
         }
         wk->msgStrs[0] = GFL_StrBufCreate(128, HEAPID_KEY_SYSTEM);
 #ifdef BLACK2
-        wk->msgStrs[1] = GFL_MsgDataLoadStrbufNew(wk->msgData, AbilityHandlers2_Text_PokemonBlackVersion2);
+        wk->msgStrs[1] = GFL_MsgDataLoadStrbufNew(wk->msgData, KeySystem_Text_PokemonBlackVersion2);
 #else
-        wk->msgStrs[1] = GFL_MsgDataLoadStrbufNew(wk->msgData, AbilityHandlers2_Text_PokemonWhiteVersion2);
+        wk->msgStrs[1] = GFL_MsgDataLoadStrbufNew(wk->msgData, KeySystem_Text_PokemonWhiteVersion2);
 #endif
         if (hasSave) {
             WordSetNumber(wk->wordSet, 0, getTrainerID(GetGameDataPlayerInfo(wk->param->gameData)), 5, 2, TRUE);
-            str = GFL_MsgDataLoadStrbufNew(wk->msgData, AbilityHandlers2_Text_MemoryLinkId);
+            str = GFL_MsgDataLoadStrbufNew(wk->msgData, KeySystem_Text_MemoryLinkId);
         } else {
-            str = GFL_MsgDataLoadStrbufNew(wk->msgData, AbilityHandlers2_Text_MemoryLink_3);
+            str = GFL_MsgDataLoadStrbufNew(wk->msgData, KeySystem_Text_MemoryLink_3);
         }
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->msgStrs[0], str);
         GFL_StrBufFree(str);
@@ -473,7 +473,7 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
         *state = MEMORY_WIRELESS_STEP_END_SCENE;
         break;
     case MEMORY_WIRELESS_STEP_CONNECT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ActivatingMemoryLinkPlease,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ActivatingMemoryLinkPlease,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         {
             KeySystemNetOv181End end = { FALSE, 0, NULL };
@@ -496,19 +496,19 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
             *state = MEMORY_WIRELESS_STEP_CHECK_LINKED_PLAYER;
             break;
         case MB_DATACONV_RESULT_TIMEOUT:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_UnableConnectOtherDs,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_UnableConnectOtherDs,
                                      KEY_SYSTEM_MSG_STREAM);
             *state = MEMORY_WIRELESS_STEP_WAIT_ERROR;
             break;
         case MB_DATACONV_RESULT_CHILD_ERROR_2:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ErrorReadingSaveFile,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ErrorReadingSaveFile,
                                      KEY_SYSTEM_MSG_STREAM);
             *state = MEMORY_WIRELESS_STEP_WAIT_ERROR;
             break;
         case MB_DATACONV_RESULT_CHILD_ERROR_1:
         case MB_DATACONV_RESULT_CHILD_ERROR_3:
         default:
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_GameInsertedNotCompatible,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_GameInsertedNotCompatible,
                                      KEY_SYSTEM_MSG_STREAM);
             *state = MEMORY_WIRELESS_STEP_WAIT_ERROR;
             break;
@@ -528,8 +528,7 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
         KeySystemMsgWin_SetColor(wk->msgWin, PRINT_COLOR(1, 2, 15));
         KeySystemMsgWin_DrawFrame(wk->msgWin, 1, 15);
         GFL_BGSysQueueScrLoad(0);
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavedGameFileTrying,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_SavedGameFileTrying, KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIRELESS_STEP_CREATE_REPLACE_MENU;
         break;
     case MEMORY_WIRELESS_STEP_CREATE_REPLACE_MENU:
@@ -544,8 +543,8 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
             setup.palette = 14;
             setup.framePalette = 15;
             setup.frameChar = 1;
-            setup.msgIds[KEY_SYSTEM_YES_NO_YES] = AbilityHandlers2_Text_Yes;
-            setup.msgIds[KEY_SYSTEM_YES_NO_NO] = AbilityHandlers2_Text_No;
+            setup.msgIds[KEY_SYSTEM_YES_NO_YES] = KeySystem_Text_Yes;
+            setup.msgIds[KEY_SYSTEM_YES_NO_NO] = KeySystem_Text_No;
             setup.count = KEY_SYSTEM_YES_NO_COUNT;
             setup.cancelable = TRUE;
             setup.cancelValue = KEY_SYSTEM_YES_NO_NO;
@@ -583,16 +582,16 @@ static void DataConvert_SeqWireless(KeySystemSeq *seq, int *state, void *work) {
         break;
     case MEMORY_WIRELESS_STEP_PRINT_RESULT:
         if (wk->transferResult) {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkSuccessfulSomething,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkSuccessfulSomething,
                                      KEY_SYSTEM_MSG_STREAM_FAST);
         } else {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkSuccessful,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkSuccessful,
                                      KEY_SYSTEM_MSG_STREAM_FAST);
         }
         *state = MEMORY_WIRELESS_STEP_WAIT_RESULT;
         break;
     case MEMORY_WIRELESS_STEP_PRINT_CANCELED:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkCanceledMemory,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkCanceledMemory,
                                  KEY_SYSTEM_MSG_STREAM_FAST);
         *state = MEMORY_WIRELESS_STEP_WAIT_RESULT;
         break;
@@ -659,7 +658,7 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         break;
     // Nothing goes to states 6 to 9
     case MEMORY_WIFI_STEP_PRINT_STATUS_WAIT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_CommunicatingPleaseStandBy_2,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_CommunicatingPleaseStandBy_2,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
@@ -694,8 +693,7 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         }
         break;
     case MEMORY_WIFI_STEP_PRINT_ID_PROMPT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_PleaseEnterGameSync,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_PleaseEnterGameSync, KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
     case MEMORY_WIFI_STEP_WAIT_ID_PROMPT:
@@ -734,7 +732,7 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         *state = MEMORY_WIFI_STEP_DOWNLOAD_SAVE;
         break;
     case MEMORY_WIFI_STEP_DOWNLOAD_SAVE:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_LinkingSavedGameFile,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_LinkingSavedGameFile,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         {
             KeySystemNetWifiPost post = { 0, KEY_NET_WIFI_RESULT_UNSET, NULL, 0 };
@@ -817,8 +815,7 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         KeySystemMsgWin_SetColor(wk->msgWin, PRINT_COLOR(1, 2, 15));
         KeySystemMsgWin_DrawFrame(wk->msgWin, 1, 15);
         GFL_BGSysQueueScrLoad(0);
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavedGameFileTrying,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_SavedGameFileTrying, KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIFI_STEP_CREATE_REPLACE_MENU;
         break;
     case MEMORY_WIFI_STEP_CREATE_REPLACE_MENU:
@@ -833,8 +830,8 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
             setup.palette = 14;
             setup.framePalette = 15;
             setup.frameChar = 1;
-            setup.msgIds[KEY_SYSTEM_YES_NO_YES] = AbilityHandlers2_Text_Yes;
-            setup.msgIds[KEY_SYSTEM_YES_NO_NO] = AbilityHandlers2_Text_No;
+            setup.msgIds[KEY_SYSTEM_YES_NO_YES] = KeySystem_Text_Yes;
+            setup.msgIds[KEY_SYSTEM_YES_NO_NO] = KeySystem_Text_No;
             setup.count = KEY_SYSTEM_YES_NO_COUNT;
             setup.cancelable = TRUE;
             setup.cancelValue = KEY_SYSTEM_YES_NO_NO;
@@ -872,17 +869,16 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         break;
     case MEMORY_WIFI_STEP_PRINT_RESULT:
         if (wk->transferResult) {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkSuccessfulSomething,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkSuccessfulSomething,
                                      KEY_SYSTEM_MSG_STREAM_FAST);
         } else {
-            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkSuccessful,
+            KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkSuccessful,
                                      KEY_SYSTEM_MSG_STREAM_FAST);
         }
         *state = MEMORY_WIFI_STEP_WAIT_FINAL_MESSAGE;
         break;
     case MEMORY_WIFI_STEP_PRINT_INVALID_ID:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_GameSyncIdInvalid,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_GameSyncIdInvalid, KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIFI_STEP_WAIT_RETRY_MESSAGE;
         break;
     case MEMORY_WIFI_STEP_WAIT_RETRY_MESSAGE:
@@ -891,17 +887,16 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         }
         break;
     case MEMORY_WIFI_STEP_PRINT_CANCELED:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_MemoryLinkCanceledMemory,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_MemoryLinkCanceledMemory,
                                  KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIFI_STEP_WAIT_FINAL_MESSAGE;
         break;
     case MEMORY_WIFI_STEP_PRINT_WRONG_GAME:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_GameSyncIdNot, KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_GameSyncIdNot, KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIFI_STEP_WAIT_RETRY_MESSAGE;
         break;
     case MEMORY_WIFI_STEP_PRINT_NEEDS_GAME_SYNC:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_PleaseUseGameSync,
-                                 KEY_SYSTEM_MSG_STREAM);
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_PleaseUseGameSync, KEY_SYSTEM_MSG_STREAM);
         *state = MEMORY_WIFI_STEP_WAIT_FINAL_MESSAGE;
         break;
     case MEMORY_WIFI_STEP_WAIT_FINAL_MESSAGE:
@@ -941,7 +936,7 @@ static void DataConvert_SeqWifi(KeySystemSeq *seq, int *state, void *work) {
         KeySystemSeq_Pop(seq);
         break;
     case MEMORY_WIFI_STEP_PRINT_SERVICE_ENDED:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_ServiceNoLongerAvailable,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_ServiceNoLongerAvailable,
                                  KEY_SYSTEM_MSG_STREAM);
         // BUG: The message starts again every frame, and the next state is never reached. It never shows, since nothing
         // goes to states 6 to 9, which lead here
@@ -964,7 +959,7 @@ static void DataConvert_SeqSave(KeySystemSeq *seq, int *state, void *work) {
 
     switch (*state) {
     case MEMORY_SAVE_STEP_PRINT_WAIT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_SavingDontTurnOff,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_SavingDontTurnOff,
                                  KEY_SYSTEM_MSG_PRINT_WAIT_ICON);
         (*state)++;
         break;
@@ -989,7 +984,7 @@ static void DataConvert_SeqSave(KeySystemSeq *seq, int *state, void *work) {
         *state = MEMORY_SAVE_STEP_PRINT_DONE;
         break;
     case MEMORY_SAVE_STEP_PRINT_DONE:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_WritingSavedGameFile,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_WritingSavedGameFile,
                                  KEY_SYSTEM_MSG_STREAM_FAST);
         *state = MEMORY_SAVE_STEP_WAIT_DONE;
         break;
@@ -1119,7 +1114,7 @@ static void DataConvert_SeqMemoryInfo(KeySystemSeq *seq, int *state, void *work)
         (*state)++;
         break;
     case MEMORY_INFO_STEP_PRINT:
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, wk->choice + AbilityHandlers2_Text_ListenCressChiliCilans,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, wk->choice + KeySystem_Text_ListenCressChiliCilans,
                                  KEY_SYSTEM_MSG_STREAM);
         (*state)++;
         break;
@@ -1367,7 +1362,7 @@ static void DataConvert_MenuSceneInit(void *work, HeapID heapId) {
     KeySystemListSetup setup;
     int i;
 
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MemoryLink_2, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_MemoryLink_2, KEY_SYSTEM_MSG_PRINT);
     MI_CpuFill8(&setup, 0, sizeof(KeySystemListSetup));
     setup.bg = 1;
     setup.unk04 = 14;
@@ -1388,14 +1383,14 @@ static void DataConvert_MenuSceneInit(void *work, HeapID heapId) {
         setup.items[i].x = 3;
         setup.items[i].y = (setup.items[i].height + 3) * i + 5;
     }
-    setup.items[0].msgId = AbilityHandlers2_Text_LinkViaDsWireless;
-    setup.items[1].msgId = AbilityHandlers2_Text_LinkViaNintendoWfc;
+    setup.items[0].msgId = KeySystem_Text_LinkViaDsWireless;
+    setup.items[1].msgId = KeySystem_Text_LinkViaNintendoWfc;
     if (DataConvert_HasMemories(wk)) {
-        setup.items[2].msgId = AbilityHandlers2_Text_MemoryList;
-        setup.items[3].msgId = AbilityHandlers2_Text_Back_3;
+        setup.items[2].msgId = KeySystem_Text_MemoryList;
+        setup.items[3].msgId = KeySystem_Text_Back_3;
         setup.count = 4;
     } else {
-        setup.items[2].msgId = AbilityHandlers2_Text_Back_3;
+        setup.items[2].msgId = KeySystem_Text_Back_3;
     }
     wk->list = KeySystemList_Create(&setup, heapId);
     KeySystem_CreateInfoWin(wk, heapId);
@@ -1440,11 +1435,11 @@ static void DataConvert_LinkSceneInit(void *work, HeapID heapId) {
     KeySystemMsgWin_SetColor(wk->msgWin, PRINT_COLOR(1, 2, 15));
     KeySystemMsgWin_DrawFrame(wk->msgWin, 1, 15);
     if (!SaveControl_IsDataAlreadyPresent(GameData_GetSaveControl(wk->param->gameData))) {
-        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_PleaseInsertPokemonBlack_2,
+        KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_PleaseInsertPokemonBlack_2,
                                  KEY_SYSTEM_MSG_PRINT);
     } else {
         PlayerInfo *player = GetGameDataPlayerInfo(wk->param->gameData);
-        StrBuf *src = GFL_MsgDataLoadStrbufNew(wk->msgData, AbilityHandlers2_Text_PleaseInsertPokemonBlack);
+        StrBuf *src = GFL_MsgDataLoadStrbufNew(wk->msgData, KeySystem_Text_PleaseInsertPokemonBlack);
         StrBuf *dest = GFL_StrBufCreate(337, heapId);
 
         WordSetNumber(wk->wordSet, 0, getTrainerID(player), 5, 2, TRUE);
@@ -1495,8 +1490,8 @@ static void DataConvert_WifiSceneInit(void *work, HeapID heapId) {
     wk->msgWin = KeySystemMsgWin_Create(0, 2, 4, 28, 16, 14, wk->font, HEAPID_KEY_SYSTEM);
     KeySystemMsgWin_SetColor(wk->msgWin, PRINT_COLOR(1, 2, 15));
     KeySystemMsgWin_DrawFrame(wk->msgWin, 1, 15);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MemoryLink_2, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_MemoryLink_2, KEY_SYSTEM_MSG_PRINT);
 }
 
 static BOOL DataConvert_WifiSceneMain(void *work) {
@@ -1519,7 +1514,7 @@ static void DataConvert_MemoryListSceneInit(void *work, HeapID heapId) {
     KeySystemScrollListSetup setup;
     int i;
 
-    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, AbilityHandlers2_Text_MemoryList_2, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->titleWin, wk->msgData, KeySystem_Text_MemoryList_2, KEY_SYSTEM_MSG_PRINT);
     MI_CpuFill8(&setup, 0, sizeof(KeySystemScrollListSetup));
     setup.msgData = wk->msgData;
     setup.font = wk->font;
@@ -1527,7 +1522,7 @@ static void DataConvert_MemoryListSceneInit(void *work, HeapID heapId) {
     setup.arrowDown = KeySystemClAct_Create(&wk->clact, KEY_SYSTEM_ACTOR_SCROLL_DOWN, heapId);
     for (i = 0; i < MEMORY_COUNT; i++) {
         if (DataConvert_IsMemoryOpen(wk, i)) {
-            setup.msgIds[setup.count] = i + AbilityHandlers2_Text_TripleTeam;
+            setup.msgIds[setup.count] = i + KeySystem_Text_TripleTeam;
             setup.values[setup.count] = i;
             if (DataConvert_IsMemorySeen(wk, i)) {
                 setup.icons[setup.count] =
@@ -1536,7 +1531,7 @@ static void DataConvert_MemoryListSceneInit(void *work, HeapID heapId) {
             setup.count++;
         }
     }
-    setup.msgIds[setup.count] = AbilityHandlers2_Text_Back_4;
+    setup.msgIds[setup.count] = KeySystem_Text_Back_4;
     setup.values[setup.count] = MEMORY_LIST_BACK;
     setup.icons[setup.count] = NULL;
     setup.count++;
@@ -1588,7 +1583,7 @@ static void DataConvert_MsgSceneInit(void *work, HeapID heapId) {
     KeySystemWork *wk = work;
 
     KeySystem_CreateMsgWin(wk, heapId);
-    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, AbilityHandlers2_Text_Empty, KEY_SYSTEM_MSG_PRINT);
+    KeySystemMsgWin_PrintMsg(wk->msgWin, wk->msgData, KeySystem_Text_Empty, KEY_SYSTEM_MSG_PRINT);
 }
 
 static BOOL DataConvert_MsgSceneMain(void *work) {

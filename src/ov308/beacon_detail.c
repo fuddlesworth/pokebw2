@@ -305,9 +305,8 @@ static void BeaconDetail_InitSystems(BeaconDetailWork *work) {
     work->printQueue = PrintQueue_Create(0x800, work->heapId);
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
     work->wordSet = GFL_WordSetSystemCreate(8, 64, work->heapId);
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU, work->heapId);
-    work->countryMsgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_MAPCHANGE_LOAD_COUNTRY_TO_STRBUF, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BEACON_DETAIL, work->heapId);
+    work->countryMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_COUNTRY_NAMES, work->heapId);
     work->formatBuf = GFL_StrBufCreate(145, work->heapId);
     work->textBuf = GFL_StrBufCreate(145, work->heapId);
     work->unk144 = GFL_StrBufCreate(145, work->heapId);

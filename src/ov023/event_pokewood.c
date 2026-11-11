@@ -39,7 +39,7 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "text/system/event_pass_power_startmenu.h"
+#include "text/system/pokewood_cast_names.h"
 
 // The kinds of movie event, in PokewoodMovieParam's kind
 enum {
@@ -313,18 +313,18 @@ void EventPokewood_CreateCastPartyFromSave(PlayerInfo *playerInfo, PokeParty *de
 // The first message of the movie's lines in the bank of its trainers' names, by the kind of the trainer and the sex
 static u32 EventPokewood_GetTitleMsgBase(u32 kind, u32 gender) {
     if (kind == POKEWOOD_KIND_FILM && gender == GENDER_MALE) {
-        return EventPassPowerStartmenu_Text_Brycen;
+        return PokewoodCastNames_Text_Brycen;
     }
     if (kind == POKEWOOD_KIND_FILM && gender == GENDER_FEMALE) {
-        return EventPassPowerStartmenu_Text_Brycen_8;
+        return PokewoodCastNames_Text_Brycen_8;
     }
     if (kind == POKEWOOD_KIND_WATCH && gender == GENDER_MALE) {
-        return EventPassPowerStartmenu_Text_BrycenMan;
+        return PokewoodCastNames_Text_BrycenMan;
     }
     if (kind == POKEWOOD_KIND_WATCH && gender == GENDER_FEMALE) {
-        return EventPassPowerStartmenu_Text_BrycenMan_5;
+        return PokewoodCastNames_Text_BrycenMan_5;
     }
-    return EventPassPowerStartmenu_Text_Brycen;
+    return PokewoodCastNames_Text_Brycen;
 }
 
 // Gives a trainer of the battle the class and name that the movie has for its kind
@@ -342,7 +342,7 @@ static void EventPokewood_SetupMovieTrainer(u32 movie, u32 kind, BtlSetupTrainer
     } else if (kind == POKEWOOD_KIND_WATCH) {
         trainer->trainerClass = file->trainerClass[gender * 2 + 1];
     }
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PASS_POWER_STARTMENU, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEWOOD_CAST_NAMES, heapId);
     msgBase = EventPokewood_GetTitleMsgBase(kind, gender);
     GFL_MsgDataLoadStrbuf(msgData, msgBase + movie, trainer->name);
     GFL_MsgDataFree(msgData);
@@ -1129,7 +1129,7 @@ static void EventPokewood_SetupRecordedOpponent(BtlSetup *setup, HeapID heapId) 
 // Shows the cast that has Pokéstar-only species under their names
 static void EventPokewood_ShowCastNames(BtlSetup *setup, HeapID heapId) {
     MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PASS_POWER_STARTMENU, HEAPID_TAIL(heapId));
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEWOOD_CAST_NAMES, HEAPID_TAIL(heapId));
     PokewoodCastFile *file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_CAST, setup->studioMovie, HEAPID_TAIL(heapId));
     PokeParty *party = setup->party[1];
     int i;

@@ -36,7 +36,7 @@ static void WbtTournament_LoadWinCounts(GameData *gameData, u16 *counts);
 static BOOL WbtTournament_IsOpenByCounts(GameData *gameData, u32 tournament, u16 *counts);
 
 void WbtTool_LoadTrainerName(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_NAMES, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
@@ -45,7 +45,7 @@ void WbtTool_LoadTrainerName(HeapID heapId, u32 message, StrBuf *strbuf) {
 }
 
 void WbtTool_LoadTrainerClassName(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_2, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_CLASS_NAMES, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);

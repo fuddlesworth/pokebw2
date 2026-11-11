@@ -1,6 +1,6 @@
 {
     "$schema": "regulation.schema.json",
-    "name": "LoadBattleTypeTextToStrbuf_Text_LauncherBattle",
+    "name": "BattleTypeNames_Text_LauncherBattle",
     "unk1": 3,
     "min_count": 6,
     "max_count": 6,

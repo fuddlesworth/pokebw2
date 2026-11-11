@@ -26,7 +26,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
-#include "text/system/s019a_cgear_control_warning.h"
+#include "text/system/c_gear_power_warning.h"
 
 // The touch screen that asks whether to turn the C-Gear on or off, named after the ROM's "c_gear_power_onoff.c". The
 // mode picks the sequence: with the C-Gear off it offers to turn it on, with it on it offers to turn it off, and with
@@ -230,7 +230,7 @@ void CGearPowerOnOff_Update(CGearPowerOnOff *work, BOOL active) {
 static void CGearPowerOnOff_Init(CGearPowerOnOff *work, HeapID heapId) {
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     GFL_TextRndResetColorIndexLUT();
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_S019A_CGEAR_CONTROL_WARNING, heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_C_GEAR_POWER_WARNING, heapId);
     work->printQueue = PrintQueue_CreateDefault(heapId);
     CGearPowerOnOff_InitBG(work, heapId);
     CGearPowerOnOff_CreateMenuRes(work, heapId);
@@ -359,8 +359,8 @@ static void CGearPowerOnOff_PrintMessageResized(CGearPowerOnOff *work, BmpWin *w
 
 static void CGearPowerOnOff_CreateYesNo(CGearPowerOnOff *work, HeapID heapId) {
     sYesNoInit.heapId = heapId;
-    sYesNoItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, S019aCgearControlWarning_Text_Yes);
-    sYesNoItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, S019aCgearControlWarning_Text_No);
+    sYesNoItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, CGearPowerWarning_Text_Yes);
+    sYesNoItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, CGearPowerWarning_Text_No);
     work->yesNoMenu = AppTaskMenu_CreateFastFlash(&sYesNoInit, work->menuRes);
     AppTaskMenu_SetLocked(work->yesNoMenu, TRUE);
     GFL_StrBufFree(sYesNoItems[0].str);
@@ -391,8 +391,8 @@ static BOOL CGearPowerOnOff_IsYesNoFinished(CGearPowerOnOff *work) {
 static BOOL CGearPowerOnOff_SeqPowerOn(CGearPowerOnOff *work) {
     switch (work->seq) {
     case SEQ_ON_ASK:
-        CGearPowerOnOff_PrintMessage(work, work->messageWindow, S019aCgearControlWarning_Text_TurnCGearEstablish);
-        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, S019aCgearControlWarning_Text_WarningPleaseTurnC);
+        CGearPowerOnOff_PrintMessage(work, work->messageWindow, CGearPowerWarning_Text_TurnCGearEstablish);
+        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, CGearPowerWarning_Text_WarningPleaseTurnC);
         CGearPowerOnOff_CreateYesNo(work, work->heapId);
         GameData_SetCGearPowerRequest(GSYS_GetGameData(work->gsys), 0);
         work->seq++;
@@ -416,7 +416,7 @@ static BOOL CGearPowerOnOff_SeqPowerOn(CGearPowerOnOff *work) {
         break;
     case SEQ_ON_SHOW_NOTICE:
         CGearPowerOnOff_PrintMessageResized(work, work->messageWindow,
-                                            S019aCgearControlWarning_Text_WhenCommunicationsClosingSystem, 6);
+                                            CGearPowerWarning_Text_WhenCommunicationsClosingSystem, 6);
         KeyCursor_Draw(work->keyCursor, BmpWin_GetBitmap(work->messageWindow), WINDOW_BG_COLOR);
         work->seq++;
         break;
@@ -449,8 +449,8 @@ static BOOL CGearPowerOnOff_SeqPowerOn(CGearPowerOnOff *work) {
 static BOOL CGearPowerOnOff_SeqPowerOff(CGearPowerOnOff *work) {
     switch (work->seq) {
     case SEQ_OFF_ASK:
-        CGearPowerOnOff_PrintMessage(work, work->messageWindow, S019aCgearControlWarning_Text_WillTurnCGear);
-        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, S019aCgearControlWarning_Text_WarningPleaseTurnC);
+        CGearPowerOnOff_PrintMessage(work, work->messageWindow, CGearPowerWarning_Text_WillTurnCGear);
+        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, CGearPowerWarning_Text_WarningPleaseTurnC);
         CGearPowerOnOff_CreateYesNo(work, work->heapId);
         GameData_SetCGearPowerRequest(GSYS_GetGameData(work->gsys), 0);
         work->seq++;
@@ -498,7 +498,7 @@ static BOOL CGearPowerOnOff_SeqNoWireless(CGearPowerOnOff *work) {
         BmpWin_SetPosY(work->explanationWindow, 6);
         BmpWin_FlushChar(work->explanationWindow);
         BmpWin_FlushMap(work->explanationWindow);
-        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, S019aCgearControlWarning_Text_CGearCannotTurned);
+        CGearPowerOnOff_PrintMessage(work, work->explanationWindow, CGearPowerWarning_Text_CGearCannotTurned);
         GameData_SetCGearPowerRequest(GSYS_GetGameData(work->gsys), 0);
         work->seq++;
         break;

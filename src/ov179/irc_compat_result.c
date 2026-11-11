@@ -547,7 +547,7 @@ static void IrcCompatText_Init(IrcCompatText *text, BOOL keepFont, HeapID heapId
         text->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     }
     text->queue = PrintQueue_CreateDefault(heapId);
-    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_6, heapId);
+    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_COMPAT_RESULT, heapId);
     text->wordSet = GFL_WordSetSystemCreateDefault(heapId);
 }
 

@@ -16,7 +16,7 @@
 #include "gfl/ui.h"
 #include "system/app_taskmenu.h"
 #include "system/printsys.h"
-#include "text/system/title_7.h"
+#include "text/system/manual_menu.h"
 
 // The manual's first screen, named after the ROM's "manual_top.c": two buttons, for the categories and for all the
 // titles
@@ -155,10 +155,10 @@ static void ManualTop_CreateMenu(ManualTop *top) {
     u8 i;
 
     top->res = AppTaskMenuRes_Create(5, 4, top->common->font, top->common->queue, top->common->heapId);
-    items[BUTTON_CATEGORY].str = GFL_MsgDataLoadStrbufNew(top->common->msgSystem, Title7_Text_ViewCategories);
+    items[BUTTON_CATEGORY].str = GFL_MsgDataLoadStrbufNew(top->common->msgSystem, ManualMenu_Text_ViewCategories);
     items[BUTTON_CATEGORY].color = BUTTON_COLOR;
     items[BUTTON_CATEGORY].type = 0;
-    items[BUTTON_TITLE].str = GFL_MsgDataLoadStrbufNew(top->common->msgSystem, Title7_Text_ShowAll);
+    items[BUTTON_TITLE].str = GFL_MsgDataLoadStrbufNew(top->common->msgSystem, ManualMenu_Text_ShowAll);
     items[BUTTON_TITLE].color = BUTTON_COLOR;
     items[BUTTON_TITLE].type = 0;
     for (i = 0; i < BUTTON_COUNT; i++) {

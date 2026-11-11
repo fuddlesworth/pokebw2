@@ -13,7 +13,7 @@
 #include "gfl/str.h"
 #include "nitro/mi.h"
 #include "system/app_taskmenu.h"
-#include "text/system/btl_main_4.h"
+#include "text/system/ir_compat_menu.h"
 
 // irc_appbar.c, a ROM name: the compatibility checker's CANCEL and BACK button. The names are descriptive guesses
 
@@ -79,10 +79,10 @@ IrcAppBar *IrcAppBar_Create(u32 unused0, ClActUnit *unit, u8 bg, u8 palette, u8 
     IrcAppBar_LoadObjRes(bar, vramType, surface, unused5, palette, objPalette, heapId);
     bar->res = AppTaskMenuRes_Create(bg, palette, font, queue, heapId);
     IrcAppBar_CreateActor(bar, unit, unused0, isSub, GFL_BGSysGetBGPriority(bg), heapId);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_4, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_COMPAT_MENU, heapId);
     MI_CpuFill8(&item, 0, sizeof(AppTaskMenuItem));
     item.color = 0x39e3;
-    item.str = GFL_MsgDataLoadStrbufNew(msgData, BtlMain4_Text_Cancel);
+    item.str = GFL_MsgDataLoadStrbufNew(msgData, IrCompatMenu_Text_Cancel);
     item.type = APP_TASKMENU_ITEM_RETURN;
     bar->win = AppTaskMenuWin_Create(bar->res, &item, 19, 21, 13, heapId);
     GFL_StrBufFree(item.str);
@@ -164,10 +164,10 @@ void IrcAppBar_SetLabel(IrcAppBar *bar, int label) {
         AppTaskMenuItem item;
 
         AppTaskMenuWin_Free(bar->win);
-        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_4, bar->heapId);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_COMPAT_MENU, bar->heapId);
         MI_CpuFill8(&item, 0, sizeof(AppTaskMenuItem));
         item.color = 0x39e3;
-        item.str = GFL_MsgDataLoadStrbufNew(msgData, BtlMain4_Text_Cancel + label);
+        item.str = GFL_MsgDataLoadStrbufNew(msgData, IrCompatMenu_Text_Cancel + label);
         item.type = APP_TASKMENU_ITEM_RETURN;
         bar->win = AppTaskMenuWin_Create(bar->res, &item, 19, 21, 13, bar->heapId);
         GFL_StrBufFree(item.str);

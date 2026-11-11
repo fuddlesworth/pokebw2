@@ -42,7 +42,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_3.h"
+#include "text/system/ir_sync_check.h"
 
 // The Sync Check of the compatibility checker: its graphics, its windows, the two 3D thumbs that follow the stylus, the
 // traces of the thumbs that the two players compare, the link that sends them and the steps of the screen. The ROM has
@@ -446,7 +446,7 @@ static BOOL IrcSyncCheck_Init(GameProc *proc, u32 *state, void *param, void *wor
     IrcSyncCheckWindow_Init(&wk->messageWindow, 5, 1, 18, 30, 5, 8, HEAP_ID);
     BmpWin_DrawFrame(wk->messageWindow.window, 0, (u16)wk->graphic.bg.frameChars, 6);
     IrcSyncCheckWindow_InitWithColor(&wk->titleWindow, 7, 6, 3, 20, 5, 8, 1, TRUE, HEAP_ID);
-    IrcSyncCheckWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, BtlMain3_Text_SyncCheck);
+    IrcSyncCheckWindow_PrintMsgCentered(&wk->titleWindow, &wk->text, IrSyncCheck_Text_SyncCheck);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_X, 0x1000);
     GFL_BGSysScaleBGReq(7, BG_SCALE_SET_Y, 0x1000);
     GFL_BGSysAdjustBGOriginReq(7, BG_CENTER_SET_X, 0x80);
@@ -841,7 +841,7 @@ static void IrcSyncCheckText_Init(IrcSyncCheckText *text, BOOL keepFont, HeapID 
         text->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     }
     text->queue = PrintQueue_CreateDefault(heapId);
-    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_3, heapId);
+    text->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_SYNC_CHECK, heapId);
     text->wordSet = GFL_WordSetSystemCreateDefault(heapId);
 }
 
@@ -996,15 +996,16 @@ static void IrcSyncCheck_StepWaitFirst(IrcSyncCheckWork *wk, u16 *state) {
         switch (*state) {
         case WAIT_FIRST_STEP_PRINT:
             if (IrcSyncTrace_IsDone(&wk->traceA)) {
-                IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_PleaseRemoveBothThumbs, 0, 0);
+                IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_PleaseRemoveBothThumbs, 0,
+                                            0);
             } else {
                 if (wk->param->gsys != NULL) {
                     IrcSyncCheckWindow_PrintMsgPlayer(&wk->messageWindow, &wk->text,
-                                                      BtlMain3_Text_PlaceLeftThumbOutline, wk->param->profile, 0, 0,
+                                                      IrSyncCheck_Text_PlaceLeftThumbOutline, wk->param->profile, 0, 0,
                                                       HEAP_ID);
                 } else {
-                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_PlaceLeftThumbOutline, 0,
-                                                0);
+                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_PlaceLeftThumbOutline,
+                                                0, 0);
                 }
             }
             thumbs = IrcSyncCheckGraphic_GetThumbs(&wk->graphic);
@@ -1026,17 +1027,18 @@ static void IrcSyncCheck_StepWaitFirst(IrcSyncCheckWork *wk, u16 *state) {
                 IrcSyncCheckThumbs_Place(thumbs, 0, first->x, first->y);
                 GFL_SndSEPlay(SEQ_SE_SYS_18);
                 if (IrcSyncTrace_IsDone(&wk->traceA)) {
-                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_KeepLeftThumbSteady, 0, 0);
+                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_KeepLeftThumbSteady, 0,
+                                                0);
                     IrcSyncCheck_ShowOutlines(OUTLINE_FIRST | OUTLINE_SECOND, HEAP_ID);
                     IrcSyncCheck_SetStepAt(wk, IrcSyncCheck_StepTraceA, TRACE_A_STEP_WAIT_SECOND);
                 } else {
                     if (wk->param->gsys != NULL) {
                         IrcSyncCheckWindow_PrintMsgPlayer(&wk->messageWindow, &wk->text,
-                                                          BtlMain3_Text_CheckingHowSynchronized, wk->param->profile, 0,
-                                                          0, HEAP_ID);
+                                                          IrSyncCheck_Text_CheckingHowSynchronized, wk->param->profile,
+                                                          0, 0, HEAP_ID);
                     } else {
                         IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text,
-                                                    BtlMain3_Text_CheckingHowSynchronized, 0, 0);
+                                                    IrSyncCheck_Text_CheckingHowSynchronized, 0, 0);
                     }
                     IrcSyncCheck_SetStep(wk, IrcSyncCheck_StepTraceA);
                 }
@@ -1045,9 +1047,9 @@ static void IrcSyncCheck_StepWaitFirst(IrcSyncCheckWork *wk, u16 *state) {
                     wk->hintTimer = 0;
                     wk->hintToggle ^= 1;
                     if (wk->hintToggle) {
-                        IrcSyncCheck_PrintMsgNamed(&wk->messageWindow, wk, BtlMain3_Text_IfNothingHappensPlace);
+                        IrcSyncCheck_PrintMsgNamed(&wk->messageWindow, wk, IrSyncCheck_Text_IfNothingHappensPlace);
                     } else {
-                        IrcSyncCheck_PrintMsgNamed(&wk->messageWindow, wk, BtlMain3_Text_PlaceLeftThumbOutline);
+                        IrcSyncCheck_PrintMsgNamed(&wk->messageWindow, wk, IrSyncCheck_Text_PlaceLeftThumbOutline);
                     }
                 }
             }
@@ -1074,7 +1076,8 @@ static void IrcSyncCheck_StepTraceA(IrcSyncCheckWork *wk, u16 *state) {
         case TRACE_A_STEP_FIRST:
             if (IrcSyncRect_IsHeld(&sIrcSyncCheckRectFirst, &point)) {
                 if (IrcSyncTrace_Update(trace, &sIrcSyncCheckRectFirst)) {
-                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_KeepLeftThumbSteady, 0, 0);
+                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_KeepLeftThumbSteady, 0,
+                                                0);
                     IrcSyncCheck_ShowOutlines(OUTLINE_FIRST | OUTLINE_SECOND, HEAP_ID);
                     *state = TRACE_A_STEP_WAIT_SECOND;
                 }
@@ -1083,7 +1086,8 @@ static void IrcSyncCheck_StepTraceA(IrcSyncCheckWork *wk, u16 *state) {
                 IrcSyncCheckThumbs_Place(thumbs, 0, point.x, point.y);
             } else {
                 if (IrcSyncTrace_IsDone(trace)) {
-                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_KeepLeftThumbSteady, 0, 0);
+                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_KeepLeftThumbSteady, 0,
+                                                0);
                     IrcSyncCheck_ShowOutlines(OUTLINE_FIRST | OUTLINE_SECOND, HEAP_ID);
                     *state = TRACE_A_STEP_WAIT_SECOND;
                 } else {
@@ -1097,11 +1101,11 @@ static void IrcSyncCheck_StepTraceA(IrcSyncCheckWork *wk, u16 *state) {
                 IrcSyncCheck_ShowOutlines(0, HEAP_ID);
                 if (wk->param->gsys != NULL) {
                     IrcSyncCheckWindow_PrintMsgPlayer(&wk->messageWindow, &wk->text,
-                                                      BtlMain3_Text_CheckingHowSynchronized, wk->param->profile, 0, 0,
-                                                      HEAP_ID);
+                                                      IrSyncCheck_Text_CheckingHowSynchronized, wk->param->profile, 0,
+                                                      0, HEAP_ID);
                 } else {
-                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_CheckingHowSynchronized, 0,
-                                                0);
+                    IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_CheckingHowSynchronized,
+                                                0, 0);
                 }
                 IrcSyncCheck_SetStep(wk, IrcSyncCheck_StepTraceB);
                 thumbs = IrcSyncCheckGraphic_GetThumbs(&wk->graphic);
@@ -1138,7 +1142,7 @@ static void IrcSyncCheck_StepTraceB(IrcSyncCheckWork *wk, u16 *state) {
             if (IrcSyncRect_IsHeld(&sIrcSyncCheckRectSecond, &point)) {
                 if (IrcSyncTrace_Update(trace, &sIrcSyncCheckRectSecond)) {
                     IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text,
-                                                BtlMain3_Text_CheckCompleteCreateInfrared, 0, 0);
+                                                IrSyncCheck_Text_CheckCompleteCreateInfrared, 0, 0);
                     GFL_SndSEPlay(SEQ_SE_SYS_21);
                     IrcSyncCheck_SetStep(wk, IrcSyncCheck_StepResult);
                 }
@@ -1183,7 +1187,8 @@ static void IrcSyncCheck_StepResult(IrcSyncCheckWork *wk, u16 *state) {
         *state = RESULT_PRINT_CHECKING;
         break;
     case RESULT_PRINT_CHECKING:
-        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_CheckingPleaseMaintainInfrared, 0, 0);
+        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_CheckingPleaseMaintainInfrared, 0,
+                                    0);
         *state = RESULT_SEND_TRACES;
         break;
     case RESULT_SEND_TRACES:
@@ -1221,7 +1226,8 @@ static void IrcSyncCheck_StepResult(IrcSyncCheckWork *wk, u16 *state) {
             break;
         }
         GFL_SndSEPlay(SEQ_SE_SYS_12);
-        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_YouveCreatedInfraredConnection, 0, 0);
+        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_YouveCreatedInfraredConnection, 0,
+                                    0);
         wk->counter = 0;
         *state = RESULT_WAIT_SCORE;
         break;
@@ -1271,8 +1277,8 @@ static void IrcSyncCheck_StepInterrupted(IrcSyncCheckWork *wk, u16 *state) {
         *state = INTERRUPTED_STEP_PRINT;
         break;
     case INTERRUPTED_STEP_PRINT:
-        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, BtlMain3_Text_ConnectionInterruptedPleaseCreate, 0,
-                                    0);
+        IrcSyncCheckWindow_PrintMsg(&wk->messageWindow, &wk->text, IrSyncCheck_Text_ConnectionInterruptedPleaseCreate,
+                                    0, 0);
         *state = INTERRUPTED_STEP_EXCHANGE_IDS;
         break;
     case INTERRUPTED_STEP_EXCHANGE_IDS:

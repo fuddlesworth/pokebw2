@@ -32,7 +32,7 @@
 #include "system/palanm.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
-#include "text/system/btl_pokeparam_box_main_save_init.h"
+#include "text/system/box.h"
 
 // The PC box's sequences: one function per state of the box, run each frame by Box2Seq_Main, each returning the
 // next state. Names are ours
@@ -447,86 +447,82 @@ static void SortRangeEnds(Box2SysWork *syswk);
 
 // The menus' items: a message and whether the item closes the menu. MWCC sorts static data by size, unstably, so
 // tables of one size are declared in the order that lays them out as the ROM has them
-static const Box2MenuItem sGiveItemMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Give, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sDreamWorldMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Tuck, BOX2_MENU_ITEM_PLAIN },
-                                                { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sHeldItemMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Move_3, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Bag, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sBoxMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_SwitchBox, BOX2_MENU_ITEM_PLAIN },
-                                         { BtlPokeparamBoxMainSaveInit_Text_Wallpaper, BOX2_MENU_ITEM_PLAIN },
-                                         { BtlPokeparamBoxMainSaveInit_Text_Name, BOX2_MENU_ITEM_PLAIN },
-                                         { BtlPokeparamBoxMainSaveInit_Text_Cancel, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sBattleBoxMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Move_2, BOX2_MENU_ITEM_PLAIN },
-                                               { BtlPokeparamBoxMainSaveInit_Text_Summary, BOX2_MENU_ITEM_PLAIN },
-                                               { BtlPokeparamBoxMainSaveInit_Text_HeldItems, BOX2_MENU_ITEM_PLAIN },
-                                               { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sDepositMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Deposit, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Summary, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Marking, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Release, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sGiveItemMenu[] = { { Box_Text_Give, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sDreamWorldMenu[] = { { Box_Text_Tuck, BOX2_MENU_ITEM_PLAIN },
+                                                { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sHeldItemMenu[] = { { Box_Text_Move_3, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Bag, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sBoxMenu[] = { { Box_Text_SwitchBox, BOX2_MENU_ITEM_PLAIN },
+                                         { Box_Text_Wallpaper, BOX2_MENU_ITEM_PLAIN },
+                                         { Box_Text_Name, BOX2_MENU_ITEM_PLAIN },
+                                         { Box_Text_Cancel, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sBattleBoxMenu[] = { { Box_Text_Move_2, BOX2_MENU_ITEM_PLAIN },
+                                               { Box_Text_Summary, BOX2_MENU_ITEM_PLAIN },
+                                               { Box_Text_HeldItems, BOX2_MENU_ITEM_PLAIN },
+                                               { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sDepositMenu[] = { { Box_Text_Deposit, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Summary, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Marking, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Release, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
 // The wallpaper themes and their wallpapers, the special ones on two pages
-static const Box2MenuItem sSpecialMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Monochrome, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_TeamPlasma, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Movie, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Pwt, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sMiscMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_PokeCenter, BOX2_MENU_ITEM_PLAIN },
-                                          { BtlPokeparamBoxMainSaveInit_Text_Machine, BOX2_MENU_ITEM_PLAIN },
-                                          { BtlPokeparamBoxMainSaveInit_Text_Checks, BOX2_MENU_ITEM_PLAIN },
-                                          { BtlPokeparamBoxMainSaveInit_Text_Simple, BOX2_MENU_ITEM_PLAIN },
-                                          { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sThemeMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Scenery1, BOX2_MENU_ITEM_PLAIN },
-                                           { BtlPokeparamBoxMainSaveInit_Text_Scenery2, BOX2_MENU_ITEM_PLAIN },
-                                           { BtlPokeparamBoxMainSaveInit_Text_Scenery3, BOX2_MENU_ITEM_PLAIN },
-                                           { BtlPokeparamBoxMainSaveInit_Text_Misc, BOX2_MENU_ITEM_PLAIN },
-                                           { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sScenery1Menu[] = { { BtlPokeparamBoxMainSaveInit_Text_Forest, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_City, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Desert, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Savanna, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sScenery2Menu[] = { { BtlPokeparamBoxMainSaveInit_Text_Crag, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Volcano, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Snow, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Cave, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sScenery3Menu[] = { { BtlPokeparamBoxMainSaveInit_Text_Beach, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Seafloor, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_River, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Sky, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sWithdrawMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Withdraw, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Summary, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Marking, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Release, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sThemeMenuSpecial[] = { { BtlPokeparamBoxMainSaveInit_Text_Special, BOX2_MENU_ITEM_PLAIN },
-                                                  { BtlPokeparamBoxMainSaveInit_Text_Scenery1, BOX2_MENU_ITEM_PLAIN },
-                                                  { BtlPokeparamBoxMainSaveInit_Text_Scenery2, BOX2_MENU_ITEM_PLAIN },
-                                                  { BtlPokeparamBoxMainSaveInit_Text_Scenery3, BOX2_MENU_ITEM_PLAIN },
-                                                  { BtlPokeparamBoxMainSaveInit_Text_Misc, BOX2_MENU_ITEM_PLAIN },
-                                                  { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sSpecialMenuNext[] = { { BtlPokeparamBoxMainSaveInit_Text_Monochrome, BOX2_MENU_ITEM_PLAIN },
-                                                 { BtlPokeparamBoxMainSaveInit_Text_TeamPlasma, BOX2_MENU_ITEM_PLAIN },
-                                                 { BtlPokeparamBoxMainSaveInit_Text_Movie, BOX2_MENU_ITEM_PLAIN },
-                                                 { BtlPokeparamBoxMainSaveInit_Text_Pwt, BOX2_MENU_ITEM_PLAIN },
-                                                 { BtlPokeparamBoxMainSaveInit_Text_Next, BOX2_MENU_ITEM_PLAIN },
-                                                 { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sSpecialMenu2[] = { { BtlPokeparamBoxMainSaveInit_Text_Kyurem1, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Kyurem2, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Reshiram, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Zekrom, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Previous, BOX2_MENU_ITEM_PLAIN },
-                                              { BtlPokeparamBoxMainSaveInit_Text_Back, BOX2_MENU_ITEM_ARROW } };
-static const Box2MenuItem sArrangeMenu[] = { { BtlPokeparamBoxMainSaveInit_Text_Move, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Summary, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_HeldItems, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Marking, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Release, BOX2_MENU_ITEM_PLAIN },
-                                             { BtlPokeparamBoxMainSaveInit_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sSpecialMenu[] = { { Box_Text_Monochrome, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_TeamPlasma, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Movie, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Pwt, BOX2_MENU_ITEM_PLAIN },
+                                             { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sMiscMenu[] = { { Box_Text_PokeCenter, BOX2_MENU_ITEM_PLAIN },
+                                          { Box_Text_Machine, BOX2_MENU_ITEM_PLAIN },
+                                          { Box_Text_Checks, BOX2_MENU_ITEM_PLAIN },
+                                          { Box_Text_Simple, BOX2_MENU_ITEM_PLAIN },
+                                          { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sThemeMenu[] = { { Box_Text_Scenery1, BOX2_MENU_ITEM_PLAIN },
+                                           { Box_Text_Scenery2, BOX2_MENU_ITEM_PLAIN },
+                                           { Box_Text_Scenery3, BOX2_MENU_ITEM_PLAIN },
+                                           { Box_Text_Misc, BOX2_MENU_ITEM_PLAIN },
+                                           { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sScenery1Menu[] = { { Box_Text_Forest, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_City, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Desert, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Savanna, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sScenery2Menu[] = { { Box_Text_Crag, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Volcano, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Snow, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Cave, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sScenery3Menu[] = { { Box_Text_Beach, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Seafloor, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_River, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Sky, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Back, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sWithdrawMenu[] = { { Box_Text_Withdraw, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Summary, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Marking, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Release, BOX2_MENU_ITEM_PLAIN },
+                                              { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW } };
+static const Box2MenuItem sThemeMenuSpecial[] = {
+    { Box_Text_Special, BOX2_MENU_ITEM_PLAIN },  { Box_Text_Scenery1, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Scenery2, BOX2_MENU_ITEM_PLAIN }, { Box_Text_Scenery3, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Misc, BOX2_MENU_ITEM_PLAIN },     { Box_Text_Back, BOX2_MENU_ITEM_ARROW }
+};
+static const Box2MenuItem sSpecialMenuNext[] = {
+    { Box_Text_Monochrome, BOX2_MENU_ITEM_PLAIN }, { Box_Text_TeamPlasma, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Movie, BOX2_MENU_ITEM_PLAIN },      { Box_Text_Pwt, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Next, BOX2_MENU_ITEM_PLAIN },       { Box_Text_Back, BOX2_MENU_ITEM_ARROW }
+};
+static const Box2MenuItem sSpecialMenu2[] = {
+    { Box_Text_Kyurem1, BOX2_MENU_ITEM_PLAIN },  { Box_Text_Kyurem2, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Reshiram, BOX2_MENU_ITEM_PLAIN }, { Box_Text_Zekrom, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Previous, BOX2_MENU_ITEM_PLAIN }, { Box_Text_Back, BOX2_MENU_ITEM_ARROW }
+};
+static const Box2MenuItem sArrangeMenu[] = {
+    { Box_Text_Move, BOX2_MENU_ITEM_PLAIN },      { Box_Text_Summary, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_HeldItems, BOX2_MENU_ITEM_PLAIN }, { Box_Text_Marking, BOX2_MENU_ITEM_PLAIN },
+    { Box_Text_Release, BOX2_MENU_ITEM_PLAIN },   { Box_Text_Cancel_2, BOX2_MENU_ITEM_ARROW }
+};
 
 static const Box2SubProc sSubProcs[] = {
     { Box2Main_PokeStatusCall, Box2Main_PokeStatusExit, BOX2SEQ_SUMMARY_RETURN },

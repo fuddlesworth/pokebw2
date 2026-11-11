@@ -28,7 +28,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_title.h"
+#include "text/system/pokedex_detail.h"
 #include "text/system/yes_no.h"
 
 // The nickname question of the Pokédex registration
@@ -140,8 +140,8 @@ PokedexNickname *PokedexNickname_Create(HeapID heapId, PartyPkm *pkm, StrBuf *bo
 
     wordSet = GFL_WordSetSystemCreateDefault(nickname->heapId);
     setPartyPokemonSpeciesNameToStrbuf(wordSet, 0, nickname->pkm);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_TITLE, nickname->heapId);
-    template = GFL_MsgDataLoadStrbufNew(msgData, BtlServerFlowTitle_Text_GiveNicknameCaught + nickname->isNPokemon);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_DETAIL, nickname->heapId);
+    template = GFL_MsgDataLoadStrbufNew(msgData, PokedexDetail_Text_GiveNicknameCaught + nickname->isNPokemon);
     nickname->message = GFL_StrBufCreate(0x60, nickname->heapId);
     GFL_WordSetFormatStrbuf(wordSet, nickname->message, template);
     GFL_StrBufFree(template);

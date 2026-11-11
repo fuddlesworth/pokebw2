@@ -374,10 +374,10 @@ static void Monolith_CreateText(MonolithWork *wk) {
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 1, FALSE, HEAPID_MONOLITH);
     wk->printQueue = PrintQueue_CreateDefault(HEAPID_MONOLITH);
     wk->wordSet = GFL_WordSetSystemCreate(4, 64, HEAPID_MONOLITH);
-    wk->msgBlank = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_8, HEAPID_MONOLITH);
+    wk->msgBlank = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MONOLITH_BLANK, HEAPID_MONOLITH);
     wk->msgPowerNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PASS_POWERS, HEAPID_MONOLITH);
     wk->msgPowerInfo = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MONOLITH_POWER_INFO, HEAPID_MONOLITH);
-    wk->msgMonolith = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_TITLE, HEAPID_MONOLITH);
+    wk->msgMonolith = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MONOLITH_MENU, HEAPID_MONOLITH);
 }
 
 static void Monolith_FreeText(MonolithWork *wk) {

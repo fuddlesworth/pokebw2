@@ -1,12 +1,12 @@
-GameStart2_Text_Empty =                \x{ffff}
-GameStart2_Text_Empty_2 =              \x{ffff}
-GameStart2_Text_Empty_3 =                   \x{ffff}
-GameStart2_Text_Empty_4 =      \x{ffff}
-GameStart2_Text_Empty_5 =                                                                                                                                       \x{ffff}
-GameStart2_Text_Empty_6 =        \x{ffff}
-GameStart2_Text_Empty_7 =      \x{ffff}
-GameStart2_Text_Boy = BOY
-GameStart2_Text_Girl = GIRL
-GameStart2_Text_Yes = YES
-GameStart2_Text_No = NO
+GameStartDebug_Text_Empty =                \x{ffff}
+GameStartDebug_Text_Empty_2 =              \x{ffff}
+GameStartDebug_Text_Empty_3 =                   \x{ffff}
+GameStartDebug_Text_Empty_4 =      \x{ffff}
+GameStartDebug_Text_Empty_5 =                                                                                                                                       \x{ffff}
+GameStartDebug_Text_Empty_6 =        \x{ffff}
+GameStartDebug_Text_Empty_7 =      \x{ffff}
+GameStartDebug_Text_Boy = BOY
+GameStartDebug_Text_Girl = GIRL
+GameStartDebug_Text_Yes = YES
+GameStartDebug_Text_No = NO
 \pad{1c}

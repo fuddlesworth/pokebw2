@@ -47,7 +47,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wipe.h"
-#include "text/system/startmenu_2.h"
+#include "text/system/ir_battle_menu.h"
 
 #define IRC_MENU_BUTTON_WIN_MAX 4
 
@@ -545,7 +545,7 @@ static void IrcMenu_LoadGraphics(IrcMenuWork *wk) {
     wk->unk2F8 = 0;
     wk->strBuf = GFL_StrBufCreate(300, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU_2, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_BATTLE_MENU, wk->heapId);
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_IRCBATTLE, wk->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 1, PALTYPE_MAIN_BG, 0, 0, wk->heapId);
@@ -579,8 +579,8 @@ static void IrcMenu_LoadSubscreenLayout(IrcMenuWork *wk, u32 fileId) {
 }
 
 static void IrcMenu_ShowMainMenu(IrcMenuWork *wk) {
-    u32 msgIds[] = { Startmenu2_Text_Battle, Startmenu2_Text_Trade, Startmenu2_Text_FeelingCheck,
-                     Startmenu2_Text_FriendCode };
+    u32 msgIds[] = { IrBattleMenu_Text_Battle, IrBattleMenu_Text_Trade, IrBattleMenu_Text_FeelingCheck,
+                     IrBattleMenu_Text_FriendCode };
 
     IrcMenu_LoadSubscreenLayout(wk, 11);
     IrcMenu_CreateMainButtons(wk);
@@ -693,7 +693,7 @@ static BOOL IrcMenu_MainTouch(u32 button, IrcMenuWork *wk) {
     case IRC_MENU_MAIN_TRADE:
     case IRC_MENU_MAIN_TRADE_2:
         if (howManyPartyPokesAreNotEggs(GameData_GetParty(wk->gameData)) < 2) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_NeedLeastTwoPokemon, wk->strBuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_NeedLeastTwoPokemon, wk->strBuf);
             IrcMenu_PrintMessage(wk, FALSE);
             IrcMenu_SetStateAtLine(wk, IrcMenu_WaitMessageTouch, 1011);
         } else {
@@ -732,7 +732,7 @@ static void IrcMenu_MainUpdate(IrcMenuWork *wk) {
 }
 
 static void IrcMenu_ShowPlayerCountMenu(IrcMenuWork *wk) {
-    u32 msgIds[] = { Startmenu2_Text_BattlesTwo, Startmenu2_Text_BattlesFour };
+    u32 msgIds[] = { IrBattleMenu_Text_BattlesTwo, IrBattleMenu_Text_BattlesFour };
 
     IrcMenu_CreatePlayerCountButtons(wk);
     IrcMenu_LoadSubscreenLayout(wk, 12);
@@ -820,8 +820,8 @@ static BOOL IrcMenu_PlayerCountTouch(u32 button, IrcMenuWork *wk) {
 }
 
 static void IrcMenu_ShowBattleTypeMenu(IrcMenuWork *wk) {
-    u32 msgIds[] = { Startmenu2_Text_SingleBattle, Startmenu2_Text_DoubleBattle, Startmenu2_Text_TripleBattle,
-                     Startmenu2_Text_RotationBattle };
+    u32 msgIds[] = { IrBattleMenu_Text_SingleBattle, IrBattleMenu_Text_DoubleBattle, IrBattleMenu_Text_TripleBattle,
+                     IrBattleMenu_Text_RotationBattle };
 
     IrcMenu_CreateBattleTypeButtons(wk);
     IrcMenu_LoadSubscreenLayout(wk, 13);
@@ -894,7 +894,7 @@ static BOOL IrcMenu_BattleBoxTouch(u32 button, IrcMenuWork *wk) {
 }
 
 static void IrcMenu_ShowBattleBoxMenu(IrcMenuWork *wk) {
-    u32 msgIds[] = { Startmenu2_Text_BattleUsingBattleBox, Startmenu2_Text_BattleUsingParty };
+    u32 msgIds[] = { IrBattleMenu_Text_BattleUsingBattleBox, IrBattleMenu_Text_BattleUsingParty };
 
     IrcMenu_CreateBattleBoxButtons(wk);
     IrcMenu_LoadSubscreenLayout(wk, 13);
@@ -1142,10 +1142,10 @@ static void IrcMenu_CreateYesNoMenu(IrcMenuWork *wk) {
     init.width = 13;
     init.height = 3;
     wk->yesNoItems[0].str = GFL_StrBufCreate(100, wk->heapId);
-    GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_Yes, wk->yesNoItems[0].str);
+    GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_Yes, wk->yesNoItems[0].str);
     wk->yesNoItems[0].color = PRINT_COLOR(14, 15, 3);
     wk->yesNoItems[1].str = GFL_StrBufCreate(100, wk->heapId);
-    GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_No, wk->yesNoItems[1].str);
+    GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_No, wk->yesNoItems[1].str);
     wk->yesNoItems[1].color = PRINT_COLOR(14, 15, 3);
     wk->yesNoItems[0].type = 0;
     wk->yesNoItems[1].type = 0;
@@ -1208,7 +1208,7 @@ static void IrcMenu_PrintMessage(IrcMenuWork *wk, BOOL instant) {
 static void IrcMenu_AskSave(IrcMenuWork *wk) {
     IrcMenu_SetDimmed(wk, TRUE);
     GFL_BGSysFillScrAsync(5, 0);
-    GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_WouldLikeSaveGame, wk->strBuf);
+    GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_WouldLikeSaveGame, wk->strBuf);
     IrcMenu_PrintMessage(wk, FALSE);
     IrcMenu_SetStateAtLine(wk, IrcMenu_WaitSaveQuestion, 0x76a);
 }
@@ -1249,11 +1249,11 @@ static void IrcMenu_HandleSaveAnswer(IrcMenuWork *wk) {
     if (AppTaskMenu_IsFlashFinished(wk->yesNoMenu)) {
         if (AppTaskMenu_GetCursorPos(wk->yesNoMenu) == 0) {
             if (SaveControl_IsNewGameOverSave(GameData_GetSaveControl(wk->gameData))) {
-                GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_ThereAlreadySavedGame, wk->strBuf);
+                GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_ThereAlreadySavedGame, wk->strBuf);
                 IrcMenu_PrintMessage(wk, FALSE);
                 IrcMenu_SetStateAtLine(wk, IrcMenu_WaitSaveErrorDismiss, 0x7c2);
             } else {
-                GFL_MsgDataLoadStrbuf(wk->msgData, Startmenu2_Text_SavingDontTurnOff, wk->strBuf);
+                GFL_MsgDataLoadStrbuf(wk->msgData, IrBattleMenu_Text_SavingDontTurnOff, wk->strBuf);
                 IrcMenu_PrintMessage(wk, TRUE);
                 IrcMenu_CreateWaitIcon(wk);
                 IrcMenu_SetStateAtLine(wk, IrcMenu_StartSave, 0x7c8);

@@ -8,7 +8,7 @@
 #include "pml/poke_party.h"
 #include "save/box.h"
 #include "save/save_control.h"
-#include "text/system/btl_pokeparam_box_main_save_init.h"
+#include "text/system/box.h"
 
 // The battle box: the box of six Pokémon kept for link and Wi-Fi battles, with its name and the flags that lock
 // it. The ROM has no string for the file, so the name is a guess (swan's getBattleBox). Block 0x31.
@@ -27,9 +27,9 @@ void BattleBoxSave_Init(BattleBoxSave *battleBox) {
     for (i = 0; i < BATTLE_BOX_SLOTS; i++) {
         PML_PkmInit(&battleBox->pkm[0][i]);
     }
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_BOX_MAIN_SAVE_INIT, HEAPID_USER);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BOX, HEAPID_USER);
     if (msgData != NULL) {
-        GFL_MsgDataLoadRawStr(msgData, BtlPokeparamBoxMainSaveInit_Text_Box1, battleBox->name, BATTLE_BOX_NAME_LENGTH);
+        GFL_MsgDataLoadRawStr(msgData, Box_Text_Box1, battleBox->name, BATTLE_BOX_NAME_LENGTH);
         GFL_MsgDataFree(msgData);
     }
 }

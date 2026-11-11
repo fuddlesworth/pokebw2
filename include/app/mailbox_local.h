@@ -50,7 +50,7 @@ enum {
 #define HEAPID_MAILBOX_VIEW 0x66
 
 // The message file of the mailbox's texts, which the battle server flow's second file holds
-#define MAILBOX_MSG_FILE TEXT_BANK_BTL_SERVER_FLOW_2
+#define MAILBOX_MSG_FILE TEXT_BANK_MAILBOX
 
 #define MAILBOX_PAGE_SIZE 10
 #define MAILBOX_NO_MAIL 0xff

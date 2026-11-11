@@ -11,7 +11,7 @@
 #include "system/bmp_oam.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_pokeparam_3.h"
+#include "text/system/hall_of_fame_pc.h"
 
 // The Hall of Fame PC's text: the page's title, the page number and the chosen Pokémon's data. The ROM doesn't name
 // this file; the name is a guess, after box2_bmp.c
@@ -55,13 +55,13 @@ void HallOfFamePCBmp_PutTitle(HallOfFamePCWork *wk) {
     GFL_BitmapFill(BmpWin_GetBitmap(wk->win[HALL_OF_FAME_PC_BMP_WIN_TITLE].window), 0);
 
     if (wk->param->mode == HALL_OF_FAME_PC_MODE_FIRST_CLEAR) {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_CompletedFirstAdventure);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_CompletedFirstAdventure);
 
         PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_TITLE], wk->printQueue, 0, 0, str, wk->font,
                         HALL_OF_FAME_PC_BMP_COLOR_BLACK, PRINT_ALIGN_LEFT);
         GFL_StrBufFree(str);
     } else {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_HallFameNo);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_HallFameNo);
 
         WordSetNumber(wk->wordSet, 0, team->number, 4, 0, TRUE);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
@@ -71,7 +71,7 @@ void HallOfFamePCBmp_PutTitle(HallOfFamePCWork *wk) {
     }
 
     {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_20);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_20);
 
         WordSetNumber(wk->wordSet, 0, team->date.year, 2, 2, TRUE);
         WordSetNumber(wk->wordSet, 1, team->date.month, 2, 2, TRUE);
@@ -98,13 +98,13 @@ void HallOfFamePCBmp_PutPage(HallOfFamePCWork *wk) {
     GFL_BitmapFill(wk->pageBitmap, 0);
 
     // The slash in the middle, the page before it and the number of pages after it
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty);
     slashWidth = GFL_FontGetBlockWidth(str, wk->font, 0);
     x = (40 - slashWidth) / 2;
     GFL_TextRendererDrawToBitmapEx(wk->pageBitmap, x, 4, str, wk->font, HALL_OF_FAME_PC_BMP_COLOR_PAGE);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_2);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_2);
     WordSetNumber(wk->wordSet, 0, wk->page + 1, 2, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
     GFL_TextRendererDrawToBitmapEx(wk->pageBitmap, x - GFL_FontGetBlockWidth(wk->expandBuf, wk->font, 0), 4,
@@ -127,7 +127,7 @@ void HallOfFamePCBmp_PutPokeInfo(HallOfFamePCWork *wk) {
     GFL_BitmapFill(BmpWin_GetBitmap(wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO].window), 0);
 
     // The species and its sex, which the names of both Nidoran have
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_3);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_3);
     WordSet_LoadSpeciesName(wk->wordSet, 0, poke->species);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
     PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 0, 0, wk->expandBuf, wk->font,
@@ -136,14 +136,14 @@ void HallOfFamePCBmp_PutPokeInfo(HallOfFamePCWork *wk) {
 
     if (poke->sex == 0) {
         if (poke->species != SPECIES_NIDORAN_M) {
-            str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_4);
+            str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_4);
             PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 64, 0, str, wk->font,
                             HALL_OF_FAME_PC_BMP_COLOR_BLUE, PRINT_ALIGN_LEFT);
             GFL_StrBufFree(str);
         }
     } else if (poke->sex == 1) {
         if (poke->species != SPECIES_NIDORAN_F) {
-            str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_5);
+            str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_5);
             PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 64, 0, str, wk->font,
                             HALL_OF_FAME_PC_BMP_COLOR_RED, PRINT_ALIGN_LEFT);
             GFL_StrBufFree(str);
@@ -151,13 +151,13 @@ void HallOfFamePCBmp_PutPokeInfo(HallOfFamePCWork *wk) {
     }
 
     // The level
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_L);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_L);
     width = GFL_FontGetBlockWidth(str, wk->smallFont, 0);
     PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 80, 4, str, wk->smallFont,
                     HALL_OF_FAME_PC_BMP_COLOR_BLACK, PRINT_ALIGN_LEFT);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_6);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_6);
     WordSetNumber(wk->wordSet, 0, poke->level, 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
     PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 80 + width, 0, wk->expandBuf, wk->font,
@@ -165,14 +165,14 @@ void HallOfFamePCBmp_PutPokeInfo(HallOfFamePCWork *wk) {
     GFL_StrBufFree(str);
 
     // The nickname and the trainer's name
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Name);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Name);
     GFL_WordSetSetStrbuf(wk->wordSet, 0, poke->nickname, 0, 1, 2);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
     PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 0, 24, wk->expandBuf, wk->font,
                     HALL_OF_FAME_PC_BMP_COLOR_BLACK, PRINT_ALIGN_LEFT);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Ot);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Ot);
     GFL_WordSetSetStrbuf(wk->wordSet, 0, poke->trainerName, 0, 1, 2);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
     PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, 0, 48, wk->expandBuf, wk->font,
@@ -181,7 +181,7 @@ void HallOfFamePCBmp_PutPokeInfo(HallOfFamePCWork *wk) {
 
     // The moves, in two columns
     for (i = 0; i < 4; i++) {
-        str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam3_Text_Empty_7 + i);
+        str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFamePc_Text_Empty_7 + i);
         loadMoveNameToStrbuf(wk->wordSet, 0, poke->moves[i]);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->expandBuf, str);
         PrintStrAligned(&wk->win[HALL_OF_FAME_PC_BMP_WIN_INFO], wk->printQueue, (i & 1) * 96, 88 + (i >> 1) * 16,

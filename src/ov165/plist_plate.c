@@ -20,7 +20,7 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // A Pokémon's plate in the party list: its name, level, HP, icon, ball, item and status
 
@@ -293,16 +293,16 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
         WordSet *wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
 
         loadPokemonNicknameToStrbuf(wordSet, 0, plate->pkm);
-        PokeList_PrintWordSetString(wk, plate->window, wordSet, BtlMain11_Text_Empty, 41, 9, 0x440);
+        PokeList_PrintWordSetString(wk, plate->window, wordSet, PartyList_Text_Empty, 41, 9, 0x440);
         GFL_WordSetSystemFree(wordSet);
     }
     if (numbersOnly == FALSE && PokeParty_GetParam(plate->pkm, PKM_PARAM_SHOW_SEX, NULL) == TRUE) {
         u32 sex = PokeParty_GetParam(plate->pkm, PKM_PARAM_SEX, NULL);
 
         if (sex == GENDER_MALE) {
-            PokeList_PrintString(wk, plate->window, BtlMain11_Text_Empty_5, 105, 9, 0x14c0);
+            PokeList_PrintString(wk, plate->window, PartyList_Text_Empty_5, 105, 9, 0x14c0);
         } else if (sex == GENDER_FEMALE) {
-            PokeList_PrintString(wk, plate->window, BtlMain11_Text_Empty_6, 105, 9, 0xc80);
+            PokeList_PrintString(wk, plate->window, PartyList_Text_Empty_6, 105, 9, 0xc80);
         }
     }
     if (showLearn == FALSE) {
@@ -311,9 +311,9 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
 
             WordSetNumber(wordSet, 0, PokeParty_GetLevel(plate->pkm), 3, 0, TRUE);
             if (numbersOnly == FALSE) {
-                PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_L, 9, 35, 0x440);
+                PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_L, 9, 35, 0x440);
             } else {
-                PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_L, 9, 35, 0x440);
+                PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_L, 9, 35, 0x440);
             }
             GFL_WordSetSystemFree(wordSet);
             ClActor_SetVisible(plate->statusIcon, FALSE);
@@ -346,11 +346,11 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
         u32 msgId;
 
         if (plate->entry == POKELIST_ENTRY_ABLE) {
-            msgId = BtlMain11_Text_NotEntered;
+            msgId = PartyList_Text_NotEntered;
         } else if (plate->entry == POKELIST_ENTRY_UNABLE) {
-            msgId = BtlMain11_Text_Banned;
+            msgId = PartyList_Text_Banned;
         } else {
-            msgId = plate->entry + BtlMain11_Text_First;
+            msgId = plate->entry + PartyList_Text_First;
         }
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
@@ -360,25 +360,25 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
         switch (PokeList_CheckLearnMove(wk, plate->pkm, plate->index)) {
         case POKELIST_LEARN_EMPTY_SLOT:
         case POKELIST_LEARN_REPLACE_MOVE:
-            msgId = BtlMain11_Text_Able;
+            msgId = PartyList_Text_Able;
             break;
         case POKELIST_LEARN_UNABLE:
-            msgId = BtlMain11_Text_Unable;
+            msgId = PartyList_Text_Unable;
             break;
         case POKELIST_LEARN_KNOWN:
-            msgId = BtlMain11_Text_Learned_2;
+            msgId = PartyList_Text_Learned_2;
             break;
         }
         PokeList_PrintString(wk, plate->window, msgId, 29, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
     } else if (wk->param->mode == POKELIST_MODE_EVOLUTION_ITEM) {
-        u32 msgId = PokeList_CanEvolveWithItem(wk, plate->pkm, wk->param->item) == FALSE ? BtlMain11_Text_Unable_2
-                                                                                         : BtlMain11_Text_Able_2;
+        u32 msgId = PokeList_CanEvolveWithItem(wk, plate->pkm, wk->param->item) == FALSE ? PartyList_Text_Unable_2
+                                                                                         : PartyList_Text_Able_2;
 
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
         ClActor_SetVisible(plate->hpBar, FALSE);
     } else if (wk->wasMusicalMode == TRUE) {
-        u32 msgId = MusicalSystem_CanJoin(plate->pkm) == TRUE ? BtlMain11_Text_Able_3 : BtlMain11_Text_Banned_2;
+        u32 msgId = MusicalSystem_CanJoin(plate->pkm) == TRUE ? PartyList_Text_Able_3 : PartyList_Text_Banned_2;
 
         PokeList_PrintString(wk, plate->window, msgId, 46, 31, 0x440);
     } else {
@@ -386,23 +386,23 @@ static void PokeListPlate_DrawInfo(PokeListWork *wk, PokeListPlate *plate, BOOL 
 
         WordSetNumber(wordSet, 0, PokeParty_GetParam(plate->pkm, PKM_PARAM_MAX_HP, NULL), 3, 0, TRUE);
         if (numbersOnly == FALSE) {
-            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_2, 91, 35, 0x440);
+            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_Empty_2, 91, 35, 0x440);
         } else {
-            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_2, 91, 35, 0x440);
+            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_Empty_2, 91, 35, 0x440);
         }
         GFL_WordSetSystemFree(wordSet);
         wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
         WordSetNumber(wordSet, 0, plate->hp, 3, 1, TRUE);
         if (numbersOnly == FALSE) {
-            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_3, 57, 35, 0x440);
+            PokeList_PrintWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_Empty_3, 57, 35, 0x440);
         } else {
-            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, BtlMain11_Text_Empty_3, 57, 35, 0x440);
+            PokeList_DrawWordSetStringSmall(wk, plate->window, wordSet, PartyList_Text_Empty_3, 57, 35, 0x440);
         }
         GFL_WordSetSystemFree(wordSet);
         if (numbersOnly == FALSE) {
-            PokeList_PrintStringSmall(wk, plate->window, BtlMain11_Text_Empty_4, 82, 35, 0x440);
+            PokeList_PrintStringSmall(wk, plate->window, PartyList_Text_Empty_4, 82, 35, 0x440);
         } else {
-            PokeList_DrawStringSmall(wk, plate->window, BtlMain11_Text_Empty_4, 82, 35, 0x440);
+            PokeList_DrawStringSmall(wk, plate->window, PartyList_Text_Empty_4, 82, 35, 0x440);
         }
     }
     item = PokeParty_GetParam(plate->pkm, PKM_PARAM_ITEM, NULL);
@@ -465,7 +465,7 @@ static void PokeListPlate_DrawEgg(PokeListWork *wk, PokeListPlate *plate) {
     StrBuf *name = GFL_MsgDataLoadStrbufNew(g_PMLSpeciesNamesResident, SPECIES_EGG);
 
     GFL_WordSetSetStrbuf(wordSet, 0, name, 0, 1, 2);
-    PokeList_PrintWordSetString(wk, plate->window, wordSet, BtlMain11_Text_Empty, 41, 9, 0x440);
+    PokeList_PrintWordSetString(wk, plate->window, wordSet, PartyList_Text_Empty, 41, 9, 0x440);
     GFL_StrBufFree(name);
     GFL_WordSetSystemFree(wordSet);
     ClActor_SetVisible(plate->hpBar, FALSE);

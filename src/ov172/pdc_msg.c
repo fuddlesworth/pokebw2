@@ -24,7 +24,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_10.h"
+#include "text/system/entree_forest_capture.h"
 
 // The BG of the message window
 #define PDC_MSG_BG 1
@@ -105,7 +105,7 @@ PdcMsg *PdcMsg_Create(Font *font, const Config *config, TCBExManager *tcbManager
     GFL_BGSysCreateBG(PDC_MSG_BG, &sMsgBGSetup, BGMODE_TEXT);
     msg->heapId = heapId;
     msg->tcbManager = tcbManager;
-    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_10, msg->heapId);
+    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ENTREE_FOREST_CAPTURE, msg->heapId);
     msg->font = font;
     msg->printWait = TextSpeed_GetWait(Config_GetTextSpeed(config));
     msg->strbuf = GFL_StrBufCreate(256, heapId);
@@ -136,7 +136,7 @@ void PdcMsg_Free(PdcMsg *msg) {
 }
 
 void PdcMsg_StartSawDream(PdcMsg *msg, PdcWork *pdc) {
-    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, BtlMain10_Text_PokemonSawDreamAppeared);
+    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, EntreeForestCapture_Text_PokemonSawDreamAppeared);
 
     loadPokemonNicknameToStrbuf(msg->wordSet, 0, PdcWork_GetPkm(pdc));
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, src);
@@ -145,7 +145,7 @@ void PdcMsg_StartSawDream(PdcMsg *msg, PdcWork *pdc) {
 }
 
 void PdcMsg_StartWhatWill(PdcMsg *msg, PdcWork *pdc) {
-    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, BtlMain10_Text_WhatWill);
+    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, EntreeForestCapture_Text_WhatWill);
 
     copyVarForText(msg->wordSet, 0, PdcWork_GetPlayerInfo(pdc));
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, src);
@@ -154,7 +154,7 @@ void PdcMsg_StartWhatWill(PdcMsg *msg, PdcWork *pdc) {
 }
 
 void PdcMsg_StartComeHere(PdcMsg *msg, PdcWork *pdc) {
-    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, BtlMain10_Text_ComeHere);
+    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, EntreeForestCapture_Text_ComeHere);
 
     loadPokemonNicknameToStrbuf(msg->wordSet, 0, PdcWork_GetPkm(pdc));
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, src);
@@ -163,7 +163,7 @@ void PdcMsg_StartComeHere(PdcMsg *msg, PdcWork *pdc) {
 }
 
 void PdcMsg_StartJoinedParty(PdcMsg *msg, PdcWork *pdc) {
-    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, BtlMain10_Text_YesHasJoinedParty);
+    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, EntreeForestCapture_Text_YesHasJoinedParty);
 
     loadPokemonNicknameToStrbuf(msg->wordSet, 0, PdcWork_GetPkm(pdc));
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, src);
@@ -172,7 +172,7 @@ void PdcMsg_StartJoinedParty(PdcMsg *msg, PdcWork *pdc) {
 }
 
 void PdcMsg_StartLeft(PdcMsg *msg, PdcWork *pdc) {
-    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, BtlMain10_Text_Left);
+    StrBuf *src = GFL_MsgDataLoadStrbufNew(msg->msgData, EntreeForestCapture_Text_Left);
 
     copyVarForText(msg->wordSet, 0, PdcWork_GetPlayerInfo(pdc));
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, src);

@@ -23,7 +23,7 @@
 #include "save/shortcut.h"
 #include "system/rtc.h"
 #include "system/wipe.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // The form changes that items make on the party list, with their particles, and the checks for them. Named after
 // the ROM's string "plist_demo.c"
@@ -77,7 +77,7 @@ void PokeListDemo_End(PokeListWork *wk) {
     case POKELIST_DEMO_TOGGLE_THERIAN:
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-        PokeList_ShowMessage(wk, BtlMain11_Text_ChangedForme, TRUE, doneFunc);
+        PokeList_ShowMessage(wk, PartyList_Text_ChangedForme, TRUE, doneFunc);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     default:

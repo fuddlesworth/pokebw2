@@ -28,7 +28,7 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/script/global_10520.h"
-#include "text/system/entree_forest.h"
+#include "text/system/battle_championship_flow.h"
 
 enum {
     CHAMP_TOP_CHOICE_WIFI = 0,
@@ -350,7 +350,7 @@ static void BattleChampionshipFlow_DeleteSeq(BattleChampionshipFlow *wk) {
 
 static void BattleChampionshipFlow_CreateUI(BattleChampionshipFlow *wk) {
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ENTREE_FOREST, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_CHAMPIONSHIP_FLOW, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
     wk->msgBox = WifiBattleMatchMsgBox_Create(0, 15, 14, 10, wk->printQueue, wk->font, wk->heapId);
 }
@@ -624,7 +624,7 @@ static void BattleChampionshipFlow_MenuTaskTop(WifiBattleMatchTask *task, u32 *s
 
     switch (*seq) {
     case CHAMP_TOP_SHOW_PROMPT:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_WelcomeBattleCompetition);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_WelcomeBattleCompetition);
         *seq = CHAMP_TOP_WAIT_PROMPT;
         break;
     case CHAMP_TOP_WAIT_PROMPT:
@@ -664,7 +664,7 @@ static void BattleChampionshipFlow_MenuTaskIntro(WifiBattleMatchTask *task, u32 
 
     switch (*seq) {
     case CHAMP_INTRO_SHOW:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_ThereTwoKindsBattle);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_ThereTwoKindsBattle);
         *seq = CHAMP_INTRO_WAIT;
         break;
     case CHAMP_INTRO_WAIT:
@@ -681,7 +681,7 @@ static void BattleChampionshipFlow_MenuTaskWifi(WifiBattleMatchTask *task, u32 *
 
     switch (*seq) {
     case CHAMP_WIFI_SHOW_PROMPT:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_WillParticipateWiFi);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_WillParticipateWiFi);
         *seq = CHAMP_WIFI_WAIT_PROMPT;
         break;
     case CHAMP_WIFI_WAIT_PROMPT:
@@ -725,7 +725,7 @@ static void BattleChampionshipFlow_MenuTaskWifiInfo(WifiBattleMatchTask *task, u
 
     switch (*seq) {
     case CHAMP_WIFI_INFO_SHOW:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_ParticipateWiFiCompetition);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_ParticipateWiFiCompetition);
         *seq = CHAMP_WIFI_INFO_WAIT;
         break;
     case CHAMP_WIFI_INFO_WAIT:
@@ -804,7 +804,7 @@ static void BattleChampionshipFlow_MenuTaskLive(WifiBattleMatchTask *task, u32 *
 
     switch (*seq) {
     case CHAMP_LIVE_MENU_SHOW_PROMPT:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_WillParticipateLiveCompetition);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_WillParticipateLiveCompetition);
         *seq = CHAMP_LIVE_MENU_WAIT_PROMPT;
         break;
     case CHAMP_LIVE_MENU_WAIT_PROMPT:
@@ -849,7 +849,7 @@ static void BattleChampionshipFlow_MenuTaskLiveInfo(WifiBattleMatchTask *task, u
 
     switch (*seq) {
     case CHAMP_LIVE_INFO_SHOW:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_CanCheckInformationRegarding);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_CanCheckInformationRegarding);
         *seq = CHAMP_LIVE_INFO_WAIT;
         break;
     case CHAMP_LIVE_INFO_WAIT:
@@ -905,7 +905,7 @@ static void BattleChampionshipFlow_MenuTaskWifiEntry(WifiBattleMatchTask *task, 
         *seq = CHAMP_WIFI_ENTRY_SHOW_SAVING;
         break;
     case CHAMP_WIFI_ENTRY_SHOW_OTHER_CONSOLE:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_SinceSystemTurnedOff);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_SinceSystemTurnedOff);
         *seq = CHAMP_WIFI_ENTRY_WAIT_OTHER_CONSOLE;
         break;
     case CHAMP_WIFI_ENTRY_WAIT_OTHER_CONSOLE:
@@ -915,7 +915,7 @@ static void BattleChampionshipFlow_MenuTaskWifiEntry(WifiBattleMatchTask *task, 
         }
         break;
     case CHAMP_WIFI_ENTRY_SHOW_INTERRUPTED:
-        BattleChampionshipFlow_MenuPrint(menu, EntreeForest_Text_SinceSystemTurnedOff);
+        BattleChampionshipFlow_MenuPrint(menu, BattleChampionshipFlow_Text_SinceSystemTurnedOff);
         *seq = CHAMP_WIFI_ENTRY_WAIT_INTERRUPTED;
         break;
     case CHAMP_WIFI_ENTRY_WAIT_INTERRUPTED:
@@ -924,8 +924,8 @@ static void BattleChampionshipFlow_MenuTaskWifiEntry(WifiBattleMatchTask *task, 
         }
         break;
     case CHAMP_WIFI_ENTRY_SHOW_SAVING:
-        WifiBattleMatchMsgBox_Print(menu->param.msgBox, menu->param.msgData, EntreeForest_Text_SavingDontTurnOff,
-                                    WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
+        WifiBattleMatchMsgBox_Print(menu->param.msgBox, menu->param.msgData,
+                                    BattleChampionshipFlow_Text_SavingDontTurnOff, WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = CHAMP_WIFI_ENTRY_START_SAVE;
         break;
     case CHAMP_WIFI_ENTRY_START_SAVE:
@@ -969,7 +969,7 @@ static void BattleChampionshipFlow_MenuTaskReward(WifiBattleMatchTask *task, u32
         break;
     case CHAMP_REWARD_SHOW_INTRO:
         WifiBattleMatchMsgBox_Print(menu->param.msgBox, menu->param.msgData,
-                                    EntreeForest_Text_RecognizeAchievementBattlePresent,
+                                    BattleChampionshipFlow_Text_RecognizeAchievementBattlePresent,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = CHAMP_REWARD_WAIT_INTRO;
         break;
@@ -981,7 +981,7 @@ static void BattleChampionshipFlow_MenuTaskReward(WifiBattleMatchTask *task, u32
     case CHAMP_REWARD_SHOW_POINTS:
         GFL_SndBGMPush();
         GFL_SndBGMPlay(SEQ_ME_BPGET, SND_CHANNEL_MASK_ALL);
-        text = GFL_MsgDataLoadStrbufNew(menu->param.msgData, EntreeForest_Text_ReceivedBp);
+        text = GFL_MsgDataLoadStrbufNew(menu->param.msgData, BattleChampionshipFlow_Text_ReceivedBp);
         copyVarForText(menu->wordSet, 0, GetGameDataPlayerInfo(menu->param.gameData));
         WordSetNumber(menu->wordSet, 1, GameData_GetCounter(menu->param.gameData), 2, 0, 1);
         GFL_WordSetFormatStrbuf(menu->wordSet, menu->strBuf, text);
@@ -1009,8 +1009,8 @@ static void BattleChampionshipFlow_MenuTaskReward(WifiBattleMatchTask *task, u32
         }
         break;
     case CHAMP_REWARD_SHOW_SAVING:
-        WifiBattleMatchMsgBox_Print(menu->param.msgBox, menu->param.msgData, EntreeForest_Text_SavingDontTurnOff,
-                                    WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
+        WifiBattleMatchMsgBox_Print(menu->param.msgBox, menu->param.msgData,
+                                    BattleChampionshipFlow_Text_SavingDontTurnOff, WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = CHAMP_REWARD_START_SAVE;
         break;
     case CHAMP_REWARD_START_SAVE:

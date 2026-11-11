@@ -39,7 +39,7 @@
 #include "system/printsys.h"
 #include "system/season.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_title.h"
+#include "text/system/pokedex_detail.h"
 
 // The detail screen's habitat map page, which the ROM does not name: the town map on the main screen with the areas
 // where the Pokémon lives in each season, and a cursor to pick a place for the Pokédex's habitat list
@@ -1145,7 +1145,7 @@ static void PokedexDetailMap_CreateWindows(PokedexDetailMapParam *param, Pokedex
         GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[i]), 0);
         BmpWin_FlushChar(wk->windows[i]);
     }
-    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_TITLE, param->heapId);
+    wk->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_DETAIL, param->heapId);
     wk->msgData[1] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, param->heapId);
 }
 
@@ -2022,7 +2022,7 @@ static void PokedexDetailMap_LoadPokemon(PokedexDetailMapParam *param, PokedexDe
     PrintQueue_Clear(wk->printQueues[WINDOW_NAME]);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[WINDOW_NAME]), 0);
     wordSet = GFL_WordSetSystemCreateDefault(param->heapId);
-    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], BtlServerFlowTitle_Text_SArea);
+    format = GFL_MsgDataLoadStrbufNew(wk->msgData[0], PokedexDetail_Text_SArea);
     name = GFL_StrBufCreate(64, param->heapId);
     WordSet_LoadSpeciesName(wordSet, 0, species);
     GFL_WordSetFormatStrbuf(wordSet, name, format);
@@ -2144,7 +2144,7 @@ static void PokedexDetailMap_FreeHabitat(PokedexHabitat *habitat) {
 
 static void PokedexDetailMap_PrintSeason(PokedexDetailMapParam *param, PokedexDetailMapWork *wk,
                                          PokedexDetailCommon *common) {
-    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], BtlServerFlowTitle_Text_Spring + wk->season);
+    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], PokedexDetail_Text_Spring + wk->season);
     u16 width = GFL_FontGetBlockWidth(strbuf, wk->font, 0);
     int windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[WINDOW_SEASON]));
     u16 x = (windowWidth - width) / 2;
@@ -2209,7 +2209,7 @@ static void PokedexDetailMap_ShowAreas(PokedexDetailMapParam *param, PokedexDeta
 
     if (wk->found == FALSE) {
         if (!unknownShown) {
-            StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], BtlServerFlowTitle_Text_AreaUnknown);
+            StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], PokedexDetail_Text_AreaUnknown);
             u16 width = GFL_FontGetBlockWidth(strbuf, wk->font, 0);
             int windowWidth = GFL_BitmapGetWidth(BmpWin_GetBitmap(wk->windows[WINDOW_UNKNOWN]));
             u16 x = (windowWidth - width) / 2;
@@ -2238,7 +2238,7 @@ static void PokedexDetailMap_ShowAreas(PokedexDetailMapParam *param, PokedexDeta
 
 static void PokedexDetailMap_PrintButton(PokedexDetailMapParam *param, PokedexDetailMapWork *wk,
                                          PokedexDetailCommon *common, BOOL active) {
-    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], BtlServerFlowTitle_Text_ViewDetails);
+    StrBuf *strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], PokedexDetail_Text_ViewDetails);
 
     if (active == TRUE) {
         PrintQueue_PrintColor(wk->printQueues[WINDOW_BUTTON], BmpWin_GetBitmap(wk->windows[WINDOW_BUTTON]), 0, 5,

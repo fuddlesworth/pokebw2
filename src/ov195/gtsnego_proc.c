@@ -40,8 +40,8 @@
 #include "system/pms.h"
 #include "system/pms_data.h"
 #include "system/wipe.h"
-#include "text/system/ability_handlers_btl_main.h"
 #include "text/system/gtsnego_proc.h"
+#include "text/system/name_input.h"
 
 // The network commands, and the timings the machines synchronize on
 #define GTSNEGO_NET_CMD_BASE 0x2200
@@ -55,9 +55,9 @@ enum {
 
 // The name that replaces a partner's name with bad words
 #ifdef BLACK2
-#define GTSNEGO_DEFAULT_NAME_MSG AbilityHandlersBtlMain_Text_Kuro
+#define GTSNEGO_DEFAULT_NAME_MSG NameInput_Text_Kuro
 #else
-#define GTSNEGO_DEFAULT_NAME_MSG AbilityHandlersBtlMain_Text_Shiro
+#define GTSNEGO_DEFAULT_NAME_MSG NameInput_Text_Shiro
 #endif
 
 // The search's kinds
@@ -577,8 +577,7 @@ static void GtsNego_StateWaitNameCheck(GtsNegoWork *wk) {
     }
     if (done) {
         if (bad) {
-            MsgData *msgData =
-                GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, HEAPID_GTSNEGO);
+            MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, HEAPID_GTSNEGO);
             StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, GTSNEGO_DEFAULT_NAME_MSG);
 
             GFL_MsgDataFree(msgData);

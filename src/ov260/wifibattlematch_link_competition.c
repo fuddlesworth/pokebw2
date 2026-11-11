@@ -49,7 +49,7 @@
 #include "system/pms_data.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/event_fishing.h"
+#include "text/system/wifi_battle_match.h"
 
 enum {
     COMPETITION_PHASE_FADE_IN = 0,
@@ -516,7 +516,7 @@ static BOOL WifiBattleMatchLink_CompetitionInit(GameProc *proc, u32 *state, void
     link->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, 0, HEAPID_WIFIBATTLEMATCH_LINK);
     link->printQueue = PrintQueue_CreateDefault(HEAPID_WIFIBATTLEMATCH_LINK);
     link->msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, HEAPID_WIFIBATTLEMATCH_LINK);
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_BATTLE_MATCH, HEAPID_WIFIBATTLEMATCH_LINK);
     link->wordSet = GFL_WordSetSystemCreate(8, 0x40, HEAPID_WIFIBATTLEMATCH_LINK);
     link->net = WifiBattleMatchNet_Create(link->param->netData, linkParam->param->gameData, linkParam->loginBuffer,
                                           HEAPID_WIFIBATTLEMATCH_LINK);
@@ -645,7 +645,7 @@ static void WifiBattleMatchLink_CompetitionTaskAccount(WifiBattleMatchTask *task
         }
         break;
     case COMPETITION_ACCOUNT_SHOW_SEARCH_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingCompetitionData,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SearchingCompetitionData,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_ACCOUNT_REQUEST_ACCOUNT;
         break;
@@ -683,7 +683,7 @@ static void WifiBattleMatchLink_CompetitionTaskAccount(WifiBattleMatchTask *task
         }
         break;
     case COMPETITION_ACCOUNT_SHOW_UNREGISTERED_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_GameSyncIdHas,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_GameSyncIdHas,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_ACCOUNT_WAIT_UNREGISTERED_MESSAGE;
         break;
@@ -787,13 +787,13 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_ENDED_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_NoCompetitionsHaveBeen,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_NoCompetitionsHaveBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
     case COMPETITION_ENTRY_SHOW_UNAVAILABLE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_NoCompetitionsHaveBeen,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_NoCompetitionsHaveBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -846,7 +846,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_DOWNLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CheckingCompetitionDetails,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CheckingCompetitionDetails,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_START_DOWNLOAD);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -912,7 +912,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_NO_CURRENT_COMPETITION:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereNoCurrentCompetitions,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ThereNoCurrentCompetitions,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_END);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -957,7 +957,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_PROMPT_UPDATE_REGISTERED_BOX:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ParticipateWiFiCompetition_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ParticipateWiFiCompetition_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_REGISTERED_UPDATE_MENU);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -982,7 +982,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_EXPLAIN_REGISTERED_UPDATE_REQUIRED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CannotParticipateWithoutUpdating,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CannotParticipateWithoutUpdating,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_REGISTERED_QUIT_MENU);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1007,7 +1007,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_PROMPT_UPDATE_ENTRY:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ParticipateWiFiCompetition,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ParticipateWiFiCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_ENTRY_UPDATE_MENU);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1032,7 +1032,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_EXPLAIN_ENTRY_UPDATE_REQUIRED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CannotParticipateWithoutUpdating,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CannotParticipateWithoutUpdating,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_CREATE_ENTRY_QUIT_MENU);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1066,7 +1066,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         *seq = COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE;
         break;
     case COMPETITION_ENTRY_SHOW_UPLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_UPLOAD_EMPTY_PARTY);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1124,7 +1124,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_ID_UPDATE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PlayerIdWillUpdated,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_PlayerIdWillUpdated,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SAVE_NEW_COMPETITION);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1154,13 +1154,13 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_SAVE_FAILED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_UnableUpdateDigitalPlayer,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_UnableUpdateDigitalPlayer,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_END);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
         break;
     case COMPETITION_ENTRY_SHOW_RECORD_DOWNLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataDontTurn,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ReceivingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_DOWNLOAD_RECORD);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1196,7 +1196,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_ENTRY_SHOW_RECORD_UPDATE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PlayerIdWillUpdated,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_PlayerIdWillUpdated,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_ENTRY_SAVE_UPDATED_RECORD);
         *seq = COMPETITION_ENTRY_WAIT_MESSAGE;
@@ -1263,7 +1263,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_PROMPT_REGISTER_TEAM:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxWillRegistered,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_BattleBoxWillRegistered,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_REGISTER_MENU);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1288,7 +1288,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_PROMPT_QUIT_REGISTRATION:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitRegistration,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_QuitRegistration,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_QUIT_MENU);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1313,7 +1313,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_CONFIRM_QUIT_COMPETITION:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetitionRegistration,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_QuitCompetitionRegistration,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_CREATE_CONFIRM_QUIT_MENU);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1361,13 +1361,13 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_SHOW_INVALID_TEAM:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ConditionsTournamentHaveNot,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ConditionsTournamentHaveNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
         break;
     case COMPETITION_REGISTER_SHOW_EMPTY_TEAM:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereNoPokemonBattle,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ThereNoPokemonBattle,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1379,7 +1379,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_SHOW_CHECKING_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_START_SERVER_CHECK);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1417,7 +1417,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         }
         break;
     case COMPETITION_REGISTER_SHOW_SERVER_REJECTION:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ThereProblemPokemonThey,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_LOGOUT);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1498,7 +1498,7 @@ static void WifiBattleMatchLink_CompetitionTaskRegister(WifiBattleMatchTask *tas
         break;
     case COMPETITION_REGISTER_SHOW_COMPLETE_MESSAGE:
         WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_REGISTERED);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionRegistrationComplete,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CompetitionRegistrationComplete,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_REGISTER_START_COMPETITION_MENU);
         *seq = COMPETITION_REGISTER_WAIT_MESSAGE;
@@ -1552,7 +1552,7 @@ static void WifiBattleMatchLink_CompetitionTaskMenu(WifiBattleMatchTask *task, u
         break;
     case COMPETITION_MENU_FLOW_SHOW_BATTLE_PROMPT:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PokemonCompetitionOverNintendo,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_PokemonCompetitionOverNintendo,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_CREATE_BATTLE_MENU);
         *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
@@ -1607,7 +1607,7 @@ static void WifiBattleMatchLink_CompetitionTaskMenu(WifiBattleMatchTask *task, u
         break;
     case COMPETITION_MENU_FLOW_SHOW_TEAM_CHECK_MESSAGE:
         WifiBattleMatchLink_CompetitionFillBattleBoxParty(param->player, link);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_START_TEAM_CHECK);
         *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
@@ -1638,7 +1638,7 @@ static void WifiBattleMatchLink_CompetitionTaskMenu(WifiBattleMatchTask *task, u
         WifiBattleMatchTask_SetFunc(task, WifiBattleMatchLink_CompetitionTaskMatch);
         break;
     case COMPETITION_MENU_FLOW_SHOW_INVALID_TEAM:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ThereProblemPokemonThey_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ThereProblemPokemonThey_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_MENU_FLOW_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MENU_FLOW_LOGOUT_INVALID_TEAM);
@@ -1692,7 +1692,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     }
     switch (*seq) {
     case COMPETITION_MATCH_SHOW_PREPARATION_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_ReceivingDataPleaseWait,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_ReceivingDataPleaseWait,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CHECK_PERIOD_CONNECTION);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
@@ -1788,7 +1788,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     case COMPETITION_MATCH_SHOW_SEARCH_MESSAGE:
         link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, TRUE);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SearchingOpponent_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_START_SEARCH);
@@ -1864,7 +1864,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
                 StrBuf *name;
 
                 fixCount++;
-                msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING,
+                msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_BATTLE_MATCH,
                                              HEAPID_TAIL(HEAPID_WIFIBATTLEMATCH_LINK));
                 name = GFL_MsgDataLoadStrbufNew(msgData, HEAPID_TAIL(HEAPID_WIFIBATTLEMATCH_LINK));
                 GFL_StrBufStoreString(name, otherPlayer->info.name, 8);
@@ -2075,7 +2075,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     case COMPETITION_MATCH_SHOW_OPPONENT_FOUND:
         WifiBattleMatchLinkIcon_SetShown(link->linkIcon, FALSE);
         GFL_SndSEPlay(SEQ_SE_SYS_74);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OpponentHasBeenFound_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_OpponentHasBeenFound_2,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_WAIT_OPPONENT_FOUND_DELAY);
@@ -2141,7 +2141,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
     case COMPETITION_MATCH_SHOW_TEAM_SELECTION_MESSAGE:
         DWCRapCommon_EndSubHeap();
         GFL_BGSysSetBGEnabled(0, TRUE);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PleaseChoosePokemon,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_PleaseChoosePokemon,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_WAIT_TEAM_SELECTION_DELAY);
@@ -2165,7 +2165,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_MATCH_PROMPT_QUIT:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetition,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_QuitCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CREATE_QUIT_MENU);
@@ -2190,7 +2190,7 @@ static void WifiBattleMatchLink_CompetitionTaskMatch(WifiBattleMatchTask *task, 
         }
         break;
     case COMPETITION_MATCH_PROMPT_CONTINUE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WantContinueBattling,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_WantContinueBattling,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_MATCH_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_MATCH_CREATE_CONTINUE_MENU);
@@ -2327,7 +2327,7 @@ static void WifiBattleMatchLink_CompetitionTaskResult(WifiBattleMatchTask *task,
         *seq = COMPETITION_RESULT_SHOW_REPORT_MESSAGE;
         break;
     case COMPETITION_RESULT_SHOW_REPORT_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_RESULT_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_RESULT_START_REPORT);
@@ -2422,7 +2422,7 @@ static void WifiBattleMatchLink_CompetitionTaskResult(WifiBattleMatchTask *task,
         }
         break;
     case COMPETITION_RESULT_SHOW_RESULTS_SENT:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleResultsWereSent,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_BattleResultsWereSent,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_RESULT_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_RESULT_SHOW_RESULT_SCREEN);
@@ -2446,7 +2446,7 @@ static void WifiBattleMatchLink_CompetitionTaskAfterBattle(WifiBattleMatchTask *
 
     switch (*seq) {
     case COMPETITION_AFTER_BATTLE_SHOW_SAVE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_AFTER_BATTLE_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_AFTER_BATTLE_START_SAVE);
@@ -2527,7 +2527,7 @@ static void WifiBattleMatchLink_CompetitionTaskContinue(WifiBattleMatchTask *tas
         break;
     case COMPETITION_CONTINUE_SHOW_BATTLE_PROMPT:
         GFL_BGSysSetBGEnabled(0, TRUE);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_PokemonWiFiCompetition,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_PokemonWiFiCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_CONTINUE_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_CONTINUE_CREATE_MENU);
@@ -2589,7 +2589,7 @@ static void WifiBattleMatchLink_CompetitionTaskCancel(WifiBattleMatchTask *task,
 
     switch (*seq) {
     case COMPETITION_CANCEL_PROMPT_QUIT:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitCompetition,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_QuitCompetition,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_CANCEL_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_CANCEL_CREATE_MENU);
@@ -2627,7 +2627,7 @@ static void WifiBattleMatchLink_CompetitionTaskLogout(WifiBattleMatchTask *task,
 
     switch (*seq) {
     case COMPETITION_LOGOUT_SHOW_SAVE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_LOGOUT_START_SAVE);
         *seq = COMPETITION_LOGOUT_WAIT_MESSAGE;
@@ -2642,7 +2642,7 @@ static void WifiBattleMatchLink_CompetitionTaskLogout(WifiBattleMatchTask *task,
         }
         break;
     case COMPETITION_LOGOUT_SHOW_UPLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_LOGOUT_UPLOAD_LOGOUT);
         *seq = COMPETITION_LOGOUT_WAIT_MESSAGE;
@@ -2784,13 +2784,13 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
         *seq = COMPETITION_PERIOD_SHOW_ENDED;
         break;
     case COMPETITION_PERIOD_SHOW_NOT_STARTED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionYouveRegisteredNot,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CompetitionYouveRegisteredNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_END);
         break;
     case COMPETITION_PERIOD_SHOW_ENDED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CompetitionTimeHasRun,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CompetitionTimeHasRun,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_CHECK_REGISTRATION);
@@ -2804,7 +2804,7 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
         }
         break;
     case COMPETITION_PERIOD_SHOW_SAVE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_UNLOCK_TEAM_AND_SAVE);
@@ -2834,13 +2834,13 @@ static void WifiBattleMatchLink_CompetitionTaskCheckPeriod(WifiBattleMatchTask *
         break;
     case COMPETITION_PERIOD_SHOW_TEAM_UNLOCKED:
         WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE);
         break;
     case COMPETITION_PERIOD_SHOW_UPLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_PERIOD_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_PERIOD_POST_PERIOD_ENDED);
@@ -2893,13 +2893,13 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         }
         break;
     case COMPETITION_UNREGISTER_SHOW_NOT_REGISTERED:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_CurrentlyHaveRegisteredNo,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_CurrentlyHaveRegisteredNo,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_END);
         break;
     case COMPETITION_UNREGISTER_PROMPT_UNREGISTER:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_OnceUnregisteredWillNot,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_OnceUnregisteredWillNot,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_CREATE_UNREGISTER_MENU);
@@ -2924,7 +2924,7 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         }
         break;
     case COMPETITION_UNREGISTER_PROMPT_CONFIRM_UNREGISTER:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_WillUnregisteredSureAbout,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_WillUnregisteredSureAbout,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_CREATE_CONFIRM_MENU);
@@ -2949,7 +2949,7 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         }
         break;
     case COMPETITION_UNREGISTER_SHOW_SAVE_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SavingDontTurnOff,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SavingDontTurnOff,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_UNLOCK_TEAM_AND_SAVE);
@@ -2971,13 +2971,13 @@ static void WifiBattleMatchLink_CompetitionTaskUnregister(WifiBattleMatchTask *t
         break;
     case COMPETITION_UNREGISTER_SHOW_TEAM_UNLOCKED:
         WifiBattleMatchLink_CompetitionSetCardPage(link, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_BattleBoxHasBeen,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_BattleBoxHasBeen,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_SHOW_UPLOAD_MESSAGE);
         break;
     case COMPETITION_UNREGISTER_SHOW_UPLOAD_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SendingDataDontTurn_2,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SendingDataDontTurn_2,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         *seq = COMPETITION_UNREGISTER_WAIT_MESSAGE;
         WifiBattleMatchTask_SetReturnSeq(task, COMPETITION_UNREGISTER_POST_UNREGISTER);
@@ -3187,43 +3187,43 @@ static void WifiBattleMatchLink_CompetitionCreateMenu(WifiBattleMatchLinkCompeti
         menuParam.cursorRow = 1;
         // fall through
     case COMPETITION_MENU_YES_NO:
-        menuParam.msgIds[0] = EventFishing_Text_Yes_2;
-        menuParam.msgIds[1] = EventFishing_Text_No_2;
+        menuParam.msgIds[0] = WifiBattleMatch_Text_Yes_2;
+        menuParam.msgIds[1] = WifiBattleMatch_Text_No_2;
         menuParam.count = 2;
         menuParam.canCancel = TRUE;
         menuParam.cancelValue = 1;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
     case COMPETITION_MENU_JOIN_INFO_CANCEL:
-        menuParam.msgIds[0] = EventFishing_Text_Join;
-        menuParam.msgIds[1] = EventFishing_Text_Info;
-        menuParam.msgIds[2] = EventFishing_Text_Cancel;
+        menuParam.msgIds[0] = WifiBattleMatch_Text_Join;
+        menuParam.msgIds[1] = WifiBattleMatch_Text_Info;
+        menuParam.msgIds[2] = WifiBattleMatch_Text_Cancel;
         menuParam.count = 3;
         menuParam.canCancel = TRUE;
         menuParam.cancelValue = 2;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
     case COMPETITION_MENU_REGISTER:
-        menuParam.msgIds[0] = EventFishing_Text_Yes_3;
-        menuParam.msgIds[1] = EventFishing_Text_No_3;
+        menuParam.msgIds[0] = WifiBattleMatch_Text_Yes_3;
+        menuParam.msgIds[1] = WifiBattleMatch_Text_No_3;
         menuParam.count = 2;
         menuParam.canCancel = TRUE;
         menuParam.cancelValue = 1;
         link->menu = WifiBattleMatchMenu_CreateBottomRight(&menuParam, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
     case COMPETITION_MENU_BATTLE:
-        menuParam.msgIds[0] = EventFishing_Text_Battle;
-        menuParam.msgIds[1] = EventFishing_Text_CancelParticipation;
-        menuParam.msgIds[2] = EventFishing_Text_Cancel_2;
+        menuParam.msgIds[0] = WifiBattleMatch_Text_Battle;
+        menuParam.msgIds[1] = WifiBattleMatch_Text_CancelParticipation;
+        menuParam.msgIds[2] = WifiBattleMatch_Text_Cancel_2;
         menuParam.count = 3;
         menuParam.canCancel = TRUE;
         menuParam.cancelValue = 2;
         link->menu = WifiBattleMatchMenu_Create(&menuParam, 3, 6, 26, 6, HEAPID_WIFIBATTLEMATCH_LINK);
         break;
     case COMPETITION_MENU_BATTLE_AGAIN:
-        menuParam.msgIds[0] = EventFishing_Text_Battle_2;
-        menuParam.msgIds[1] = EventFishing_Text_CancelParticipation_2;
-        menuParam.msgIds[2] = EventFishing_Text_Cancel_3;
+        menuParam.msgIds[0] = WifiBattleMatch_Text_Battle_2;
+        menuParam.msgIds[1] = WifiBattleMatch_Text_CancelParticipation_2;
+        menuParam.msgIds[2] = WifiBattleMatch_Text_Cancel_3;
         menuParam.count = 3;
         menuParam.canCancel = TRUE;
         menuParam.cancelValue = 2;
@@ -3345,7 +3345,7 @@ static u32 WifiBattleMatchLink_CompetitionUpdateCancel(WifiBattleMatchLinkCompet
         }
         break;
     case COMPETITION_SEARCH_CANCEL_SHOW_QUIT_PROMPT:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_QuitSearchingSomeoneBattle,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_QuitSearchingSomeoneBattle,
                                     WIFIBATTLEMATCH_MSG_STREAM_KEY);
         link->cancelSeq++;
         break;
@@ -3369,7 +3369,7 @@ static u32 WifiBattleMatchLink_CompetitionUpdateCancel(WifiBattleMatchLinkCompet
             link->cancelSeq = COMPETITION_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE;
             break;
         case WBM_MENU_NO:
-            WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_SearchingOpponent,
+            WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_SearchingOpponent,
                                         WIFIBATTLEMATCH_MSG_QUEUE);
             link->cancelSeq = COMPETITION_SEARCH_CANCEL_IDLE;
             return CANCEL_DECLINED;
@@ -3377,7 +3377,7 @@ static u32 WifiBattleMatchLink_CompetitionUpdateCancel(WifiBattleMatchLinkCompet
         }
         break;
     case COMPETITION_SEARCH_CANCEL_SHOW_DISCONNECT_MESSAGE:
-        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, EventFishing_Text_AwaitingCommunicationPleaseStand,
+        WifiBattleMatchMsgBox_Print(link->msgBox, link->msgData, WifiBattleMatch_Text_AwaitingCommunicationPleaseStand,
                                     WIFIBATTLEMATCH_MSG_QUEUE_WAIT_ICON);
         link->cancelSeq++;
         break;

@@ -324,8 +324,8 @@ LiveBattleMatchFlow *LiveBattleMatchFlow_Create(const LiveBattleMatchFlowParam *
     wk->hasVideo = BattleRec_HasVideo();
     WifiBattleMatchRes_LoadBG(wk->param.seq, WIFIBATTLEMATCH_BG_CHAMPIONSHIP, heapId);
     wk->wordSet = GFL_WordSetSystemCreate(8, 0x40, heapId);
-    wk->msgMain = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_PHRASE_INPUT, heapId);
-    wk->msgCard = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_FISHING, heapId);
+    wk->msgMain = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LIVE_BATTLE_MATCH_FLOW, heapId);
+    wk->msgCard = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_BATTLE_MATCH, heapId);
     wk->font = GFL_FontCreate(0x17, 3, 0, 0, heapId);
     wk->task = WifiBattleMatchTask_Create(wk, LiveBattleMatchFlow_StepInit, heapId);
     wk->irc = LiveBattleMatchIrc_Create(wk->param.gameData, heapId);

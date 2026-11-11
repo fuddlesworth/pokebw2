@@ -62,7 +62,7 @@
 #include "system/union_view.h"
 #include "system/version.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_btl_main.h"
+#include "text/system/name_input.h"
 #include "text/system/wifi_bsubway.h"
 
 // The Wi-Fi Battle Subway's screen: its proc, the three things it does with the Battle Subway's server (sending the
@@ -78,9 +78,9 @@
 
 // The name the player gets when the server finds a bad word in theirs
 #ifdef BLACK2
-#define DEFAULT_NAME_MSG AbilityHandlersBtlMain_Text_Kuro
+#define DEFAULT_NAME_MSG NameInput_Text_Kuro
 #else
-#define DEFAULT_NAME_MSG AbilityHandlersBtlMain_Text_Shiro
+#define DEFAULT_NAME_MSG NameInput_Text_Shiro
 #endif
 
 #define TEAM_POKEMON_COUNT 3
@@ -801,7 +801,7 @@ static u32 WifiBSubwayUpload_WaitCheckName(WifiBSubwayUpload *upload, HeapID hea
         return NAME_CHECK_WAIT;
     }
     if (done == TRUE && bad == TRUE) {
-        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, heapId);
+        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, heapId);
         StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, DEFAULT_NAME_MSG);
 
         GFL_MsgDataFree(msgData);

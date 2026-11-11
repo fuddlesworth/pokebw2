@@ -597,7 +597,7 @@ static void PStaSkill_PrintMoveDetail(PStatusWork *wk, PStaSkillWork *skill) {
         PStatus_PrintFormattedToWindow(wk, skill->windows[10], wordSet, 0x97, 81, 1, PRINT_COLOR(1, 2, 0));
         GFL_WordSetSystemFree(wordSet);
     }
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_13, wk->heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MOVE_DESCRIPTIONS, wk->heapId);
     str = GFL_MsgDataLoadStrbufNew(msgData, move);
     PrintQueue_PrintColor(wk->printQueue, BmpWin_GetBitmap(skill->windows[11]), 1, 1, str, wk->font,
                           PRINT_COLOR(1, 2, 0));

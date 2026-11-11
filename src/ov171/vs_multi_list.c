@@ -29,7 +29,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/egg_demo.h"
+#include "text/system/battle_party_list.h"
 
 // vs_multi_list.c: the list of both teams' Pokémon that a multi battle shows before it starts. The Pokémon of the
 // teams' first three slots show on two boards that slide in from the sides, with their icons, names, levels and HP
@@ -396,7 +396,7 @@ static void VsMultiList_LoadBG(VsMultiListWork *wk) {
 }
 
 static void VsMultiList_InitText(VsMultiListWork *wk) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EGG_DEMO, HEAPID_VS_MULTI_LIST);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_PARTY_LIST, HEAPID_VS_MULTI_LIST);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_VS_MULTI_LIST);
     wk->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, HEAPID_VS_MULTI_LIST);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_VS_MULTI_LIST);
@@ -494,7 +494,7 @@ static void VsMultiList_FlushText(VsMultiListWork *wk) {
 static void VsMultiList_DrawName(VsMultiListWork *wk, u32 index) {
     BmpWin *window = wk->printWindows[index].window;
     StrBuf *name = GFL_StrBufCreate(12, BG_HEAP);
-    StrBuf *template = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty);
+    StrBuf *template = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty);
 
     loadPokemonNicknameToStrbuf(wk->wordSet, 0, wk->pkm[index]);
     GFL_WordSetFormatStrbuf(wk->wordSet, name, template);
@@ -506,14 +506,14 @@ static void VsMultiList_DrawName(VsMultiListWork *wk, u32 index) {
         u32 sex = PokeParty_GetSex(wk->pkm[index]);
 
         if (sex == GENDER_MALE) {
-            StrBuf *symbol = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty_16);
+            StrBuf *symbol = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty_16);
 
             PrintWindow_Print(&wk->printWindows[index], wk->printQueue,
                               BmpWin_GetSizeX(window) * 8 - GFL_FontGetBlockWidth(symbol, wk->font, 0), 7, symbol,
                               wk->font, PRINT_COLOR(10, 11, 0));
             GFL_StrBufFree(symbol);
         } else if (sex == GENDER_FEMALE) {
-            StrBuf *symbol = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty_17);
+            StrBuf *symbol = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty_17);
 
             PrintWindow_Print(&wk->printWindows[index], wk->printQueue,
                               BmpWin_GetSizeX(window) * 8 - GFL_FontGetBlockWidth(symbol, wk->font, 0), 7, symbol,
@@ -525,7 +525,7 @@ static void VsMultiList_DrawName(VsMultiListWork *wk, u32 index) {
 
 static void VsMultiList_DrawLevel(VsMultiListWork *wk, u32 index) {
     StrBuf *text = GFL_StrBufCreate(32, BG_HEAP);
-    StrBuf *template = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_L);
+    StrBuf *template = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_L);
 
     WordSetNumber(wk->wordSet, 0, PokeParty_GetParam(wk->pkm[index], PKM_PARAM_LEVEL, NULL), 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, text, template);
@@ -537,20 +537,20 @@ static void VsMultiList_DrawLevel(VsMultiListWork *wk, u32 index) {
 // Prints the Pokémon's HP, a slash and its maximum HP, around the middle of the window
 static void VsMultiList_DrawHP(VsMultiListWork *wk, u32 index) {
     StrBuf *text = GFL_StrBufCreate(32, BG_HEAP);
-    StrBuf *slash = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty_8);
+    StrBuf *slash = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty_8);
     u8 slashWidth = GFL_FontGetBlockWidth(slash, wk->smallFont, 0);
     u8 x = 92 - slashWidth / 2;
     StrBuf *number;
 
     PrintWindow_Print(&wk->printWindows[index], wk->printQueue, x, 32, slash, wk->smallFont, PRINT_COLOR(15, 14, 0));
     GFL_StrBufFree(slash);
-    number = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty_9);
+    number = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty_9);
     WordSetNumber(wk->wordSet, 0, PokeParty_GetParam(wk->pkm[index], PKM_PARAM_HP, NULL), 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, text, number);
     PrintWindow_Print(&wk->printWindows[index], wk->printQueue, x - GFL_FontGetBlockWidth(text, wk->smallFont, 0), 32,
                       text, wk->smallFont, PRINT_COLOR(15, 14, 0));
     GFL_StrBufFree(number);
-    number = GFL_MsgDataLoadStrbufNew(wk->msgData, EggDemo_Text_Empty_9);
+    number = GFL_MsgDataLoadStrbufNew(wk->msgData, BattlePartyList_Text_Empty_9);
     WordSetNumber(wk->wordSet, 0, PokeParty_GetParam(wk->pkm[index], PKM_PARAM_MAX_HP, NULL), 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, text, number);
     PrintWindow_Print(&wk->printWindows[index], wk->printQueue, x + slashWidth, 32, text, wk->smallFont,

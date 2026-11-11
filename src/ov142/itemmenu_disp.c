@@ -40,7 +40,7 @@
 #include "system/scroll_bar.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/btl_main.h"
+#include "text/system/bag_menu.h"
 
 // The bag's screens: BGs, windows, OBJ, the drawing of the item list and of the item under the cursor, and the menus'
 // windows. The ROM doesn't name this file; it is named after itemmenu.c for what it holds
@@ -503,12 +503,12 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
     move = PML_ItemGetTMMoveID(slot->item);
     pocket = BagSave_GetExistingItemPocket(work->bag, slot->item);
     if (move == MOVE_NONE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_97, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_97, work->strbuf);
         ItemMenu_SetItemName(work, 0, slot->item);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, &work->itemNameWindow, work->expandBuf, 0, 4, ITEMMENU_TEXT_COLOR);
         if (ItemMenuDisp_ShowsCount(pocket)) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_X, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_X, work->strbuf);
             WordSetNumber(work->wordSet, 0, slot->count, 3, 0, TRUE);
             GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
             ItemMenuDisp_Print(work, &work->countWindow, work->expandBuf, 0, 4, ITEMMENU_TEXT_COLOR);
@@ -519,10 +519,10 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
     } else {
         hm = PML_ItemGetHMID(slot->item);
         if (hm == ITEM_TM_HM_NONE) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_No, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_No, work->strbuf);
             WordSetNumber(work->wordSet, 0, PML_ItemGetTMBitMask(slot->item) + 1, 2, 2, TRUE);
         } else {
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Hidden, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Hidden, work->strbuf);
             WordSetNumber(work->wordSet, 0, hm + 1, 2, 2, TRUE);
         }
         loadMoveNameToStrbuf(work->wordSet, 1, move);
@@ -533,7 +533,7 @@ void ItemMenuDisp_DrawItemInfo(ItemMenuWork *work) {
     }
     if (work->pocket == BAG_POCKET_FREE_SPACE) {
         ItemMenu_SetPocketName(work, 0, pocket);
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_100, work->strbuf);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         x = (96 - GFL_FontGetBlockWidth(work->expandBuf, work->font, 0)) / 2;
         ItemMenuDisp_Print(work, &work->pocketLabelWindow, work->expandBuf, x, 0, ITEMMENU_TEXT_COLOR);
@@ -593,9 +593,9 @@ void ItemMenuDisp_Exit(ItemMenuWork *work) {
 static void ItemMenuDisp_DrawMenuTitle(ItemMenuWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->menuTitleWindow.window), 0);
     if (ItemMenu_CountFilterActions(work) > 2 && work->pocket == BAG_POCKET_FREE_SPACE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_CannotFind, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_CannotFind, work->strbuf);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_ItsEmpty, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_ItsEmpty, work->strbuf);
     }
     ItemMenuDisp_Print(work, &work->menuTitleWindow, work->strbuf, 0, 4, ITEMMENU_TEXT_COLOR);
 }
@@ -624,15 +624,15 @@ void ItemMenuDisp_CreateWindows(ItemMenuWork *work) {
     work->selIconCel = ClActSys_LoadCellAnims(arc, 1, 0, work->heapId);
     GFL_ArcToolFree(arc);
 
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Type, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Type, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 8, 4, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Category, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Category, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 8, 24, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Power, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Power, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 112, 4, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Accuracy, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Accuracy, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 112, 24, ITEMMENU_TEXT_COLOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Pp, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Pp, work->strbuf);
     ItemMenuDisp_Print(work, &work->tmInfoWindow, work->strbuf, 208, 4, ITEMMENU_TEXT_COLOR);
     if (GCTX_HIDIsUsingTouch() == FALSE) {
         ItemMenuDisp_DrawItemInfo(work);
@@ -817,7 +817,7 @@ void ItemMenuDisp_DrawList(ItemMenuWork *work) {
             color = PRINT_COLOR(4, 3, 13);
         }
         GFL_BitmapFill(work->rowNameBitmaps[i], 13);
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_96, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_96, work->strbuf);
         move = PML_ItemGetTMMoveID(slot->item);
         if (move == MOVE_NONE) {
             ItemMenu_SetItemName(work, 0, slot->item);
@@ -1109,17 +1109,17 @@ void ItemMenuDisp_OpenFilterMenu(ItemMenuWork *work, u8 count) {
         action = work->freeSpaceMenuActions[i];
         if (action == ITEMMENU_FILTER_ACTION_ALL) {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_All, work->menuItems[i].str);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_All, work->menuItems[i].str);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
             work->menuItems[i].type = 0;
         } else if (action == ITEMMENU_FILTER_ACTION_CANCEL) {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Cancel, work->menuItems[i].str);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Cancel, work->menuItems[i].str);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
             work->menuItems[i].type = APP_TASKMENU_ITEM_RETURN;
         } else {
             work->menuItems[i].str = GFL_StrBufCreate(100, work->heapId);
-            GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_100, work->strbuf);
             loadBagPocketNameToStrbuf(work->wordSet, 0, action);
             GFL_WordSetFormatStrbuf(work->wordSet, work->menuItems[i].str, work->strbuf);
             work->menuItems[i].color = ITEMMENU_MENU_COLOR;
@@ -1160,24 +1160,24 @@ static void ItemMenuDisp_DrawTMInfo(ItemMenuWork *work, u32 move) {
     GFL_BitmapFillArea(BmpWin_GetBitmap(window->window), 176, 0, 32, 40, 0);
     GFL_BitmapFillArea(BmpWin_GetBitmap(window->window), 232, 0, 24, 24, 0);
     if (power <= 1) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_15, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_15, work->strbuf);
         ItemMenuDisp_Print(work, window, work->strbuf, 176, 4, ITEMMENU_TEXT_COLOR);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_63, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_63, work->strbuf);
         WordSetNumber(work->wordSet, 0, power, 3, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 176, 4, ITEMMENU_TEXT_COLOR);
     }
     if (accuracy == 0 || PML_MoveIsAlwaysHit(move) == TRUE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_15, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_15, work->strbuf);
         ItemMenuDisp_Print(work, window, work->strbuf, 176, 24, ITEMMENU_TEXT_COLOR);
     } else {
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_63, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_63, work->strbuf);
         WordSetNumber(work->wordSet, 0, accuracy, 3, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 176, 24, ITEMMENU_TEXT_COLOR);
     }
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_62, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_62, work->strbuf);
     WordSetNumber(work->wordSet, 0, pp, 2, 0, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, window, work->expandBuf, 232, 4, ITEMMENU_TEXT_COLOR);
@@ -1209,7 +1209,7 @@ void ItemMenuDisp_ShowMessageNow(ItemMenuWork *work) {
 
 // Says what the player does with the item
 void ItemMenuDisp_SetItemMenuMessage(ItemMenuWork *work, u32 item) {
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Selected, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Selected, work->strbuf);
     ItemMenu_SetItemName(work, 0, item);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
 }
@@ -1265,7 +1265,7 @@ void ItemMenuDisp_DrawPocketName(ItemMenuWork *work, u32 pocket) {
     u32 x;
 
     GFL_BitmapFill(BmpWin_GetBitmap(work->pocketNameWindow.window), 0);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_100, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_100, work->strbuf);
     loadBagPocketNameToStrbuf(work->wordSet, 0, pocket);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     x = (96 - GFL_FontGetBlockWidth(work->expandBuf, work->font, 0)) / 2;
@@ -1277,10 +1277,10 @@ void ItemMenuDisp_DrawPocketName(ItemMenuWork *work, u32 pocket) {
 void ItemMenuDisp_DrawMoney(ItemMenuWork *work) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->moneyValueWindow.window), 0);
     GFL_BitmapFill(BmpWin_GetBitmap(work->moneyWindow.window), 0);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Money, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Money, work->strbuf);
     ItemMenuDisp_Print(work, &work->moneyWindow, work->strbuf, 0, 4, ITEMMENU_TITLE_COLOR);
     ItemMenuDisp_TransferScreen(&work->moneyWindow);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_54, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_54, work->strbuf);
     WordSetNumber(work->wordSet, 0, getCash(getTrainerCardDataBlkAddress(work->gameData)), 7, 1, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, &work->moneyValueWindow, work->expandBuf, 0, 4, ITEMMENU_TITLE_COLOR);
@@ -1317,11 +1317,11 @@ void ItemMenuDisp_OpenYesNoMenu(ItemMenuWork *work) {
     init.width = 8;
     init.height = 3;
     work->menuItems[0].str = GFL_StrBufCreate(100, work->heapId);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Yes, work->menuItems[0].str);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Yes, work->menuItems[0].str);
     work->menuItems[0].color = ITEMMENU_MENU_COLOR;
     work->menuItems[0].type = 0;
     work->menuItems[1].str = GFL_StrBufCreate(100, work->heapId);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_No_2, work->menuItems[1].str);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_No_2, work->menuItems[1].str);
     work->menuItems[1].color = ITEMMENU_MENU_COLOR;
     work->menuItems[1].type = 0;
     work->taskMenu = AppTaskMenu_Create(&init, work->taskMenuRes);
@@ -1360,7 +1360,7 @@ void ItemMenuDisp_DrawQuantityFrame(ItemMenuWork *work) {
 // Draws the quantity, and the price when selling
 void ItemMenuDisp_DrawQuantity(ItemMenuWork *work, s32 quantity) {
     GFL_BitmapFill(BmpWin_GetBitmap(work->quantityWindow.window), 5);
-    GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_X, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_X, work->strbuf);
     WordSetNumber(work->wordSet, 0, quantity, 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
     ItemMenuDisp_Print(work, &work->quantityWindow, work->expandBuf, 0, 0, PRINT_COLOR(15, 14, 5));
@@ -1369,7 +1369,7 @@ void ItemMenuDisp_DrawQuantity(ItemMenuWork *work, s32 quantity) {
         PrintWindow *window = &work->priceWindow;
         s32 price = ItemMenu_GetSellPrice(work->item, work->quantity, work->heapId);
         GFL_BitmapFill(BmpWin_GetBitmap(window->window), 5);
-        GFL_MsgDataLoadStrbuf(work->msgData, BtlMain_Text_Empty_56, work->strbuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BagMenu_Text_Empty_56, work->strbuf);
         WordSetNumber(work->wordSet, 0, price, 7, 0, TRUE);
         GFL_WordSetFormatStrbuf(work->wordSet, work->expandBuf, work->strbuf);
         ItemMenuDisp_Print(work, window, work->expandBuf, 0, 0, PRINT_COLOR(15, 14, 5));

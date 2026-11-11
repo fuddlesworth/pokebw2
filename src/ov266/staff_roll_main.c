@@ -775,7 +775,7 @@ static void StaffRoll_FreeVBlank(StaffRollWork *work) {
 }
 
 static void StaffRoll_InitMsg(StaffRollWork *work) {
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_15, HEAPID_STAFF_ROLL);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STAFF_ROLL, HEAPID_STAFF_ROLL);
     work->strbuf = GFL_StrBufCreate(128, HEAPID_STAFF_ROLL);
     work->fonts[0] = GFL_FontCreate(ARCID_FONT, 0, 1, FALSE, HEAPID_STAFF_ROLL);
     work->fonts[1] = GFL_FontCreate(ARCID_FONT, 2, 1, FALSE, HEAPID_STAFF_ROLL);

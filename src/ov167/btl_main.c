@@ -53,13 +53,13 @@
 #include "system/ringtone_sys.h"
 #include "system/text_speed.h"
 #include "system/time_icon.h"
-#include "text/system/ability_handlers_btl_main.h"
+#include "text/system/name_input.h"
 
 // The name shown for a link opponent whose name is hidden: the other version's
 #ifdef BLACK2
-#define TEXT_HIDDEN_TRAINER_NAME AbilityHandlersBtlMain_Text_Kuro
+#define TEXT_HIDDEN_TRAINER_NAME NameInput_Text_Kuro
 #else
-#define TEXT_HIDDEN_TRAINER_NAME AbilityHandlersBtlMain_Text_Shiro
+#define TEXT_HIDDEN_TRAINER_NAME NameInput_Text_Shiro
 #endif
 
 // The first mon ID of each client
@@ -1126,8 +1126,7 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
                     TrainerData_SetFromPlayer(&mainModule->trainers[i], mainModule->heapId, info);
                     if (i != mainModule->playerClientId && setup->hideOpponentNames) {
                         j = 0;
-                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN,
-                                                     mainModule->heapId);
+                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, mainModule->heapId);
                         strBuf = GFL_MsgDataLoadStrbufNew(msgData, TEXT_HIDDEN_TRAINER_NAME);
                         GFL_MsgDataFree(msgData);
                         str = GFL_StrBufGetStringPtr(strBuf);
@@ -1138,8 +1137,7 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
                         GFL_StrBufFree(strBuf);
                         copyTrainerName(mainModule->trainers[i].playerInfo, name);
                         GFL_StrBufFree(mainModule->trainers[i].name);
-                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN,
-                                                     mainModule->heapId);
+                        msgData = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, mainModule->heapId);
                         strBuf = GFL_MsgDataLoadStrbufNew(msgData, TEXT_HIDDEN_TRAINER_NAME);
                         GFL_MsgDataFree(msgData);
                         mainModule->trainers[i].name = strBuf;

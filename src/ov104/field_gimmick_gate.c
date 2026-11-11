@@ -35,7 +35,7 @@
 #include "system/version.h"
 #include "system/wordset.h"
 #include "system/zone_weather.h"
-#include "text/system/gym_insect.h"
+#include "text/system/gate_news_board.h"
 
 #define GIMMICK_GATE_WEATHER_NONE 0xffff
 #define GIMMICK_GATE_ZONE_NONE 0xffff
@@ -227,21 +227,21 @@ static const u32 sEntrySlots[3] = { GIMMICK_GATE_SLOT_NEWS_FIRST, GIMMICK_GATE_S
 
 // Messages for the weathers, as GimmickGateZoneList gives them
 static u32 sWeatherMessages[WEATHER_MAX] = {
-    GymInsect_Text_Sunny,
-    GymInsect_Text_Snowy,
-    GymInsect_Text_Rainy,
-    GymInsect_Text_Sandstorm,
-    GymInsect_Text_Blizzard,
-    GymInsect_Text_Hail,
-    GymInsect_Text_VeryUnusualThunderstormHappening,
-    GymInsect_Text_VeryUnusualStrongStorm,
-    GymInsect_Text_VeryUnusualDiamondDust,
-    GymInsect_Text_Misty,
-    GymInsect_Text_Misty,
-    GymInsect_Text_Misty,
-    GymInsect_Text_Sandstorm_2,
-    GymInsect_Text_Misty,
-    GymInsect_Text_Misty,
+    GateNewsBoard_Text_Sunny,
+    GateNewsBoard_Text_Snowy,
+    GateNewsBoard_Text_Rainy,
+    GateNewsBoard_Text_Sandstorm,
+    GateNewsBoard_Text_Blizzard,
+    GateNewsBoard_Text_Hail,
+    GateNewsBoard_Text_VeryUnusualThunderstormHappening,
+    GateNewsBoard_Text_VeryUnusualStrongStorm,
+    GateNewsBoard_Text_VeryUnusualDiamondDust,
+    GateNewsBoard_Text_Misty,
+    GateNewsBoard_Text_Misty,
+    GateNewsBoard_Text_Misty,
+    GateNewsBoard_Text_Sandstorm_2,
+    GateNewsBoard_Text_Misty,
+    GateNewsBoard_Text_Misty,
 };
 
 void GimmickGate_Setup(Field *field) {
@@ -687,7 +687,7 @@ void GimmickGate_AddDateMessage(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_DATE];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_DATE];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.messageId = work->zoneData->messageIds[0];
     arg.wordSet = wordSet;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_DATE, 0);
@@ -712,7 +712,7 @@ void GimmickGate_AddWeatherMessage(GimmickGateWork *work) {
     GimmickGate_GetWeatherZones(work, &list);
     wordSet = GFL_WordSetSystemCreate(4, 0x100, work->heapId);
     placeMessages = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PLACE_NAMES, work->heapId);
-    weatherMessages = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GYM_INSECT, work->heapId);
+    weatherMessages = GFL_MsgSysLoadData(0, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GATE_NEWS_BOARD, work->heapId);
     for (i = 0; i < 4; i++) {
         if (list.zones[i] == ZONE_MAX) {
             continue;
@@ -721,7 +721,7 @@ void GimmickGate_AddWeatherMessage(GimmickGateWork *work) {
         placeName = GFL_MsgDataLoadStrbufNew(placeMessages, ZoneData_GetPlaceNameID(list.zones[i]));
         weatherName = GFL_MsgDataLoadStrbufNew(weatherMessages, sWeatherMessages[weather]);
         formatSet = GFL_WordSetSystemCreate(2, 0x100, work->heapId);
-        template = GFL_MsgDataLoadStrbufNew(weatherMessages, GymInsect_Text_Empty_57);
+        template = GFL_MsgDataLoadStrbufNew(weatherMessages, GateNewsBoard_Text_Empty_57);
         formatted = GFL_StrBufCreate(0x40, work->heapId);
         GFL_WordSetSetStrbuf(formatSet, 0, placeName, 0, 1, 0);
         GFL_WordSetSetStrbuf(formatSet, 1, weatherName, 0, 1, 0);
@@ -753,7 +753,7 @@ void GimmickGate_AddWeatherMessage(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_WEATHER];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_WEATHER];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.messageId = message;
     arg.wordSet = wordSet;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_WEATHER, 0);
@@ -782,7 +782,7 @@ void GimmickGate_AddSwarmMessage(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_SWARM];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_SWARM];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.messageId = work->zoneData->messageIds[2];
     arg.wordSet = wordSet;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_SWARM, 0);
@@ -821,7 +821,7 @@ void GimmickGate_AddWeekdayMessage3(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.wordSet = 0;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_FIRST, 0);
 }
@@ -858,7 +858,7 @@ void GimmickGate_AddWeekdayMessage4(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_SECOND];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_SECOND];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.wordSet = 0;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_SECOND, 0);
 }
@@ -895,7 +895,7 @@ void GimmickGate_AddWeekdayMessage5(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_THIRD];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_THIRD];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.wordSet = 0;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ROTATION_THIRD, 0);
 }
@@ -932,7 +932,7 @@ void GimmickGate_AddWeekdayMessage6(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_WEEKDAY];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_WEEKDAY];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.wordSet = 0;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_WEEKDAY, 0);
 }
@@ -949,22 +949,22 @@ void GimmickGate_AddHallOfFameMessage(GimmickGateWork *work) {
     GimmickGate_GetHallOfFameSpecies(work, species, &count);
     switch (count) {
     case 1:
-        message = GymInsect_Text_WelcomeHallFameWon;
+        message = GateNewsBoard_Text_WelcomeHallFameWon;
         break;
     case 2:
-        message = GymInsect_Text_WelcomeHallFameWon_2;
+        message = GateNewsBoard_Text_WelcomeHallFameWon_2;
         break;
     case 3:
-        message = GymInsect_Text_WelcomeHallFameWon_3;
+        message = GateNewsBoard_Text_WelcomeHallFameWon_3;
         break;
     case 4:
-        message = GymInsect_Text_WelcomeHallFameWon_4;
+        message = GateNewsBoard_Text_WelcomeHallFameWon_4;
         break;
     case 5:
-        message = GymInsect_Text_WelcomeHallFameWon_5;
+        message = GateNewsBoard_Text_WelcomeHallFameWon_5;
         break;
     case 6:
-        message = GymInsect_Text_WelcomeHallFameWon_6;
+        message = GateNewsBoard_Text_WelcomeHallFameWon_6;
         break;
     }
     for (i = 0; i < count; i++) {
@@ -975,7 +975,7 @@ void GimmickGate_AddHallOfFameMessage(GimmickGateWork *work) {
     arg.name = sBoardNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
     arg.plName = sBoardPlNames[GIMMICK_GATE_SLOT_NEWS_FIRST];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.messageId = message;
     arg.wordSet = wordSet;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_HALL_OF_FAME, 0);
@@ -1003,7 +1003,7 @@ void GimmickGate_AddEntryMessage(GimmickGateWork *work, GimmickGateBoardEntry *e
     arg.name = sBoardNames[index];
     arg.plName = sBoardPlNames[index];
     arg.messageArc = ARCID_SYSTEM_MESSAGE;
-    arg.messageFile = TEXT_BANK_GYM_INSECT;
+    arg.messageFile = TEXT_BANK_GATE_NEWS_BOARD;
     arg.messageId = entry->messageId;
     arg.wordSet = NULL;
     GimmickGate_AddBoardMessage(work, &arg, GIMMICK_GATE_MESSAGE_ENTRY, entry);

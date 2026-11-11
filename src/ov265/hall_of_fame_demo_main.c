@@ -218,7 +218,8 @@ void HallOfFameDemoMain_SetBlendAlpha(void) {
 }
 
 void HallOfFameDemoMain_InitMsg(HallOfFameDemoWork *wk) {
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_2, HEAPID_HALL_OF_FAME_DEMO);
+    wk->msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_HALL_OF_FAME_DEMO, HEAPID_HALL_OF_FAME_DEMO);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_HALL_OF_FAME_DEMO);
     wk->fontSmall = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, HEAPID_HALL_OF_FAME_DEMO);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_HALL_OF_FAME_DEMO);

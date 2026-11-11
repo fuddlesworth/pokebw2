@@ -1,6 +1,6 @@
 {
     "$schema": "regulation.schema.json",
-    "name": "LoadBattleTypeTextToStrbuf_Text_TripleBattle",
+    "name": "BattleTypeNames_Text_TripleBattle",
     "unk1": 1,
     "min_count": 3,
     "max_count": 6,

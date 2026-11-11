@@ -563,7 +563,7 @@ static void MusicalEvent_TakeShot(MusicalEventWork *work) {
         } else {
             msgId = MusicalProgram_GetNpcNameMsg(work->program,
                                                  MusicalEvent_GetNpcIndex(work, MusicalEvent_GetEntryIndex(work, pos)));
-            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_9, HEAPID_GAMEEVENT);
+            msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_NPC_NAMES, HEAPID_GAMEEVENT);
             str = GFL_MsgDataLoadStrbufNew(msgData, msgId);
             GFL_StrBufStoreString(str, shot->pokes[pos].name, 8);
             GFL_StrBufFree(str);
@@ -982,7 +982,7 @@ void MusicalEvent_WordSetOwnerName(MusicalEventWork *work, u8 pos, WordSet *word
     }
     if (!done) {
         msgId = MusicalProgram_GetNpcNameMsg(work->program, MusicalEvent_GetNpcIndex(work, index));
-        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_9, HEAPID_GAMEEVENT);
+        msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_NPC_NAMES, HEAPID_GAMEEVENT);
         name = GFL_MsgDataLoadStrbufNew(msgData, msgId);
         GFL_WordSetSetStrbuf(wordSet, wordIndex, name, 0, 1, 2);
         GFL_StrBufFree(name);

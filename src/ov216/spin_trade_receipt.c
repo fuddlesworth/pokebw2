@@ -34,7 +34,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/btl_pokeparam.h"
+#include "text/system/spin_trade_receipt.h"
 
 // The Spin Trade's receipt screen, where the parent waits for the group to gather and closes it, and the others wait
 // for the parent. The ROM has no name for the file; it is named after pokeplatinum's spin_trade_receipt.c, the same
@@ -298,7 +298,7 @@ BOOL SpinTradeReceipt_Init(GameProc *proc, u32 *state, void *param, void *work) 
         wk->g2c = g2p->g2c;
         GFL_BGSysCreate(HEAPID_SPIN_TRADE);
         wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_SPIN_TRADE);
-        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM, HEAPID_SPIN_TRADE);
+        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPIN_TRADE_RECEIPT, HEAPID_SPIN_TRADE);
         wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_SPIN_TRADE);
         SpinTradeReceipt_SetVRAMBanks();
         SpinTradeReceipt_InitBG();
@@ -595,7 +595,7 @@ static void SpinTradeReceipt_InitWork(SpinTradeReceiptWork *wk, ArcTool *arc) {
     wk->msgBuf = GFL_StrBufCreate(180, HEAPID_SPIN_TRADE);
     wk->titleBuf = GFL_StrBufCreate(40, HEAPID_SPIN_TRADE);
     wk->seq = SPIN_TRADE_RECEIPT_SEQ_INIT;
-    GFL_MsgDataLoadStrbuf(wk->msgData, BtlPokeparam_Text_SeekingSpinTrade, wk->titleBuf);
+    GFL_MsgDataLoadStrbuf(wk->msgData, SpinTradeReceipt_Text_SeekingSpinTrade, wk->titleBuf);
     SpinTradeReceipt_LoadTrainerPalette(wk, arc);
     wk->palAnim.active = FALSE;
     wk->palAnim.counter = 0;
@@ -764,11 +764,11 @@ static int SpinTradeReceiptSeq_Init(SpinTradeReceiptWork *wk, int procSeq) {
     if (NetSystem_GetNetId() == 0) {
         GflNet_SetAutoExit(FALSE);
         if (UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk)) >= 2) {
-            SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_WhenGroupReadyButton, 0);
+            SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_WhenGroupReadyButton, 0);
         }
     } else {
         GflNet_SetAutoExit(TRUE);
-        SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_PleaseWaitBButton, 0);
+        SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_PleaseWaitBButton, 0);
     }
     SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_MAIN);
     return procSeq;
@@ -795,7 +795,7 @@ static void SpinTradeReceipt_CheckKeys(SpinTradeReceiptWork *wk) {
             if (g2c->joinCount == SpinTradeReceipt_CountMembers2(wk) && g2c->leavingBits == 0) {
                 if (UnionApp_CloseEntry(SpinTradeReceipt_GetUnionApp(wk))) {
                     GFL_SndSEPlay(SEQ_SE_DECIDE1);
-                    SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_GroupOk, 0);
+                    SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_GroupOk, 0);
                     SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_START_YESNO_INIT);
                 }
             } else {
@@ -805,7 +805,7 @@ static void SpinTradeReceipt_CheckKeys(SpinTradeReceiptWork *wk) {
     } else if (SpinTradeReceipt_GetPressedKeys() & PAD_BUTTON_B) {
         if (NetSystem_GetNetId() != 0) {
             if (wk->g2c->unk28 == 0) {
-                SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_CancelSpinTrade, 0);
+                SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_CancelSpinTrade, 0);
                 SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_CANCEL_YESNO_INIT);
             } else {
                 GFL_SndSEPlay(SEQ_SE_SELECT1);
@@ -814,7 +814,7 @@ static void SpinTradeReceipt_CheckKeys(SpinTradeReceiptWork *wk) {
             g2c = wk->g2c;
             if (g2c->joinCount == UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk)) && g2c->leavingBits == 0) {
                 if (UnionApp_CloseEntry(SpinTradeReceipt_GetUnionApp(wk))) {
-                    SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_CancelSpinTrade, 0);
+                    SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_CancelSpinTrade, 0);
                     SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_CANCEL_YESNO_INIT);
                     GFL_SndSEPlay(SEQ_SE_CANCEL1);
                 }
@@ -903,7 +903,7 @@ static int SpinTradeReceiptSeq_CancelYesNo(SpinTradeReceiptWork *wk, int procSeq
         } else {
             if (NetSystem_GetNetId() == 0) {
                 SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_PARENT_CANCEL_YESNO_INIT);
-                SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_IfLeaderDropsOut, 0);
+                SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_IfLeaderDropsOut, 0);
             } else {
                 SpinTradeCommSignal signal;
 
@@ -1015,7 +1015,7 @@ static int SpinTradeReceiptSeq_StartWait(SpinTradeReceiptWork *wk, int procSeq) 
 }
 
 static int SpinTradeReceiptSeq_EndMsg(SpinTradeReceiptWork *wk, int procSeq) {
-    SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_SpinTradeWillCanceled, 0);
+    SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_SpinTradeWillCanceled, 0);
     SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_END_WAIT);
     SpinTradeReceipt_SeqEnd(wk);
     return procSeq;
@@ -1067,10 +1067,10 @@ static int SpinTradeReceiptSeq_ParentCancelYesNo(SpinTradeReceiptWork *wk, int p
 
 static int SpinTradeReceiptSeq_ParentCancelMsg(SpinTradeReceiptWork *wk, int procSeq) {
     if (NetSystem_GetNetId() == 0) {
-        SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_SpinTradeWillCanceled, 0);
+        SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_SpinTradeWillCanceled, 0);
     } else {
         copyVarForText(wk->wordSet, 0, &UnionApp_GetMember(SpinTradeReceipt_GetUnionApp(wk), 0)->info);
-        SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_LeaderDroppedOutGroup, 0);
+        SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_LeaderDroppedOutGroup, 0);
     }
     SpinTradeReceipt_SetMsgWait(wk, SPIN_TRADE_RECEIPT_SEQ_PARENT_CANCEL_WAIT);
     wk->wait = 0;
@@ -1109,7 +1109,7 @@ static int SpinTradeReceiptSeq_ParentCancelSyncWait(SpinTradeReceiptWork *wk, in
 
 static int SpinTradeReceiptSeq_NoMembersMsgWait(SpinTradeReceiptWork *wk, int procSeq) {
     if (SpinTradeReceipt_IsMessageDone(wk)) {
-        SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_ThereNoMembersSpin, 0);
+        SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_ThereNoMembersSpin, 0);
         wk->seq = SPIN_TRADE_RECEIPT_SEQ_NO_MEMBERS_END;
     }
     SpinTradeReceipt_SeqEnd(wk);
@@ -1125,7 +1125,7 @@ static int SpinTradeReceiptSeq_NoMembersEnd(SpinTradeReceiptWork *wk, int procSe
 }
 
 static int SpinTradeReceiptSeq_MemberLeft(SpinTradeReceiptWork *wk, int procSeq) {
-    SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_HasLeft, 1);
+    SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_HasLeft, 1);
     wk->seq = SPIN_TRADE_RECEIPT_SEQ_MEMBER_LEFT_CHECK;
     NetSystem_GetNetId();
     wk->leftCount = UnionApp_CountJoined(SpinTradeReceipt_GetUnionApp(wk));
@@ -1180,7 +1180,7 @@ void SpinTradeReceipt_SetSeq(SpinTradeReceiptWork *wk, int seq, u8 netId) {
         }
         break;
     case SPIN_TRADE_RECEIPT_SEQ_START_WAIT:
-        SpinTradeReceipt_PrintMessage(wk, BtlPokeparam_Text_Empty_2, 0);
+        SpinTradeReceipt_PrintMessage(wk, SpinTradeReceipt_Text_Empty_2, 0);
         if (wk->yesNo != NULL) {
             ConfirmDialog_Free(wk->yesNo);
             wk->yesNo = NULL;
@@ -1281,7 +1281,7 @@ static BOOL SpinTradeReceipt_DrawNames(BmpWin *window, int unused, u16 color, Sp
 
             textCopy(wk->members[i].member->info.name, wk->names[i]);
             WordSetNumber(wk->wordSet, 0, id, 5, 2, TRUE);
-            format = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparam_Text_Id);
+            format = GFL_MsgDataLoadStrbufNew(wk->msgData, SpinTradeReceipt_Text_Id);
             GFL_WordSetFormatStrbuf(wk->wordSet, idBuf, format);
             if (self == i) {
                 nameColor = SPIN_TRADE_RECEIPT_COLOR_SELF;

@@ -1,6 +1,6 @@
 {
     "$schema": "regulation.schema.json",
-    "name": "LoadBattleTypeTextToStrbuf_Text_RotationBattle",
+    "name": "BattleTypeNames_Text_RotationBattle",
     "unk1": 1,
     "min_count": 3,
     "max_count": 6,

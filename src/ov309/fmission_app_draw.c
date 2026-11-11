@@ -29,7 +29,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/title_4.h"
+#include "text/system/funfest_mission_app.h"
 
 // The Funfest mission screen's BGs, windows, actors and messages. The ROM has no name for this file;
 // "fmission_app_draw.c" is a guess
@@ -138,15 +138,15 @@ static const FMissionAppDrawActorSetup sFMissionAppDrawReturnActorSetups[] = {
 
 // The result's messages
 static const s16 sFMissionAppDrawMessages[] = {
-    Title4_Text_MissionAccomplished,
-    Title4_Text_MissionFailed,
-    Title4_Text_Obtained,
-    Title4_Text_TooBadThereNo,
-    Title4_Text_DoubleScoreBonusActivated,
-    Title4_Text_SFeelingsResonatedEntree,
-    Title4_Text_EveryonesFeelingsResonatedEntree,
-    Title4_Text_White,
-    Title4_Text_Black,
+    FunfestMissionApp_Text_MissionAccomplished,
+    FunfestMissionApp_Text_MissionFailed,
+    FunfestMissionApp_Text_Obtained,
+    FunfestMissionApp_Text_TooBadThereNo,
+    FunfestMissionApp_Text_DoubleScoreBonusActivated,
+    FunfestMissionApp_Text_SFeelingsResonatedEntree,
+    FunfestMissionApp_Text_EveryonesFeelingsResonatedEntree,
+    FunfestMissionApp_Text_White,
+    FunfestMissionApp_Text_Black,
 };
 
 static const FMissionAppDrawBGFile sFMissionAppDrawChars[] = {
@@ -715,7 +715,7 @@ static void FMissionAppDraw_StartMessage(FMissionApp *work, int window, int mess
         }
         loadItemText(work->wordSet, 1, work->result.item2, FMissionAppDraw_SetCountWord(work, count), FALSE);
         work->message = GFL_StrBufCreate(256, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_Obtained);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_Obtained);
         GFL_WordSetFormatStrbuf(work->wordSet, work->message, format);
         GFL_StrBufFree(name);
         GFL_StrBufFree(format);
@@ -725,7 +725,7 @@ static void FMissionAppDraw_StartMessage(FMissionApp *work, int window, int mess
 
         loadItemsNameToStrbuf(work->wordSet, 0, work->result.item2);
         work->message = GFL_StrBufCreate(256, work->heapId);
-        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], Title4_Text_TooBadThereNo);
+        format = GFL_MsgDataLoadStrbufNew(work->msgData[0], FunfestMissionApp_Text_TooBadThereNo);
         GFL_WordSetFormatStrbuf(work->wordSet, work->message, format);
         GFL_StrBufFree(format);
     } else if (message == FMISSION_APP_MESSAGE_LEVEL_ALONE) {

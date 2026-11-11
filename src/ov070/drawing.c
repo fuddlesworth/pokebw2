@@ -41,7 +41,7 @@
 #include "system/text_speed.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/event_mapchange.h"
+#include "text/system/drawing_board.h"
 
 // drawing.c, which the ROM names: the drawing board of the Union Room. The parent collects what every member draws
 // in a frame and sends it back to all of them, so that each machine draws the same lines; a newcomer gets the
@@ -222,7 +222,7 @@ static BOOL Drawing_Init(GameProc *proc, u32 *state, void *param, void *work) {
         MI_CpuFill8(wk, 0, sizeof(DrawingWork));
         GFL_BGSysCreate(HEAPID_DRAWING);
         wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_DRAWING);
-        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVENT_MAPCHANGE, HEAPID_DRAWING);
+        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_DRAWING_BOARD, HEAPID_DRAWING);
         wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_DRAWING);
         Drawing_SetVRAMBanks();
         Drawing_InitBG();
@@ -528,7 +528,7 @@ static void Drawing_InitWork(DrawingWork *wk) {
     wk->menu = NULL;
     NetSystem_GetNetId();
     Drawing_SetNextSeq(wk, DRAWING_SEQ_MAIN);
-    GFL_MsgDataLoadStrbuf(wk->msgData, EventMapchange_Text_Empty, wk->endBuf);
+    GFL_MsgDataLoadStrbuf(wk->msgData, DrawingBoard_Text_Empty, wk->endBuf);
     wk->buffer = GFL_HeapAllocate(HEAPID_DRAWING, 0x3c00, FALSE, "oekaki.c", 0x31d);
     wk->memberCount = 0;
 }
@@ -757,7 +757,7 @@ static void Drawing_UpdateTouch(DrawingWork *wk) {
                         GFL_SndSEPlay(SEQ_SE_SELECT4);
                     } else {
                         wk->banFlag = DRAWING_BAN_ON;
-                        Drawing_PrintMessage(wk, EventMapchange_Text_WouldLikeStopDrawing, TRUE);
+                        Drawing_PrintMessage(wk, DrawingBoard_Text_WouldLikeStopDrawing, TRUE);
                         endPressed = TRUE;
                         Drawing_SetNextSeq(wk, DRAWING_SEQ_END_SELECT_MSG_WAIT);
                         Drawing_SetEndButton(wk->endButton, TRUE);
@@ -768,7 +768,7 @@ static void Drawing_UpdateTouch(DrawingWork *wk) {
                     if (wk->allTouch[0].banFlag == DRAWING_BAN_ON) {
                         GFL_SndSEPlay(SEQ_SE_SELECT4);
                     } else {
-                        Drawing_PrintMessage(wk, EventMapchange_Text_WouldLikeStopDrawing, TRUE);
+                        Drawing_PrintMessage(wk, DrawingBoard_Text_WouldLikeStopDrawing, TRUE);
                         endPressed = TRUE;
                         Drawing_SetNextSeq(wk, DRAWING_SEQ_END_SELECT_MSG_WAIT);
                         Drawing_SetEndButton(wk->endButton, TRUE);
@@ -879,9 +879,9 @@ static void Drawing_DrawOthers(DrawingWork *wk) {
 
 static int Drawing_SeqNewcomer(DrawingWork *wk, int seq) {
     if (wk->newcomerId == NetSystem_GetNetId()) {
-        Drawing_PrintMessage(wk, EventMapchange_Text_JoinedDrawingSession, FALSE);
+        Drawing_PrintMessage(wk, DrawingBoard_Text_JoinedDrawingSession, FALSE);
     } else {
-        Drawing_PrintMessage(wk, EventMapchange_Text_HasJoined, FALSE);
+        Drawing_PrintMessage(wk, DrawingBoard_Text_HasJoined, FALSE);
     }
     Drawing_SetNextSeq(wk, DRAWING_SEQ_NEWCOMER_WAIT);
     Drawing_CloseMenu(wk);
@@ -942,7 +942,7 @@ static int Drawing_SeqEndSelect(DrawingWork *wk, int seq) {
     case DRAWING_MENU_YES:
         if (NetSystem_GetNetId() == 0) {
             Drawing_SetNextSeq(wk, DRAWING_SEQ_PARENT_END_SELECT_MSG_WAIT);
-            Drawing_PrintMessage(wk, EventMapchange_Text_IfLeaderDropsOut, TRUE);
+            Drawing_PrintMessage(wk, DrawingBoard_Text_IfLeaderDropsOut, TRUE);
         } else {
             Drawing_SetNextSeq(wk, DRAWING_SEQ_END_REQUEST);
             BmpWin_ClearFrame(wk->msgWindow, 2);
@@ -1019,7 +1019,7 @@ static int Drawing_SeqEndRefused(DrawingWork *wk, int seq) {
 }
 
 static int Drawing_SeqEndMsg(DrawingWork *wk, int seq) {
-    Drawing_PrintMessage(wk, EventMapchange_Text_DrawingSessionEnded, TRUE);
+    Drawing_PrintMessage(wk, DrawingBoard_Text_DrawingSessionEnded, TRUE);
     Drawing_SetNextSeq(wk, DRAWING_SEQ_END_MSG_WAIT);
     Drawing_DrawOthers(wk);
     return seq;
@@ -1102,7 +1102,7 @@ static int Drawing_SeqParentEndSend(DrawingWork *wk, int seq) {
 
 static int Drawing_SeqParentEndMsg(DrawingWork *wk, int seq) {
     Drawing_SetPlayerName(wk, 0, 0);
-    Drawing_PrintMessage(wk, EventMapchange_Text_LeaderHasLeftGroup, TRUE);
+    Drawing_PrintMessage(wk, DrawingBoard_Text_LeaderHasLeftGroup, TRUE);
     Drawing_SetNextSeq(wk, DRAWING_SEQ_PARENT_END_MSG_WAIT);
     Drawing_DrawOthers(wk);
     return seq;
@@ -1141,7 +1141,7 @@ static int Drawing_Seq21(DrawingWork *wk, int seq) {
 }
 
 static int Drawing_SeqNoMembersMsg(DrawingWork *wk, int seq) {
-    Drawing_PrintMessage(wk, EventMapchange_Text_ThereNoMembersGroup, TRUE);
+    Drawing_PrintMessage(wk, DrawingBoard_Text_ThereNoMembersGroup, TRUE);
     Drawing_SetNextSeq(wk, DRAWING_SEQ_NO_MEMBERS_MSG_WAIT);
     Drawing_DrawOthers(wk);
     return seq;
@@ -1156,7 +1156,7 @@ static int Drawing_SeqNoMembersMsgWait(DrawingWork *wk, int seq) {
 }
 
 static int Drawing_SeqMemberLeft(DrawingWork *wk, int seq) {
-    Drawing_PrintMessage(wk, EventMapchange_Text_HasLeft, TRUE);
+    Drawing_PrintMessage(wk, DrawingBoard_Text_HasLeft, TRUE);
     Drawing_CloseMenu(wk);
     Drawing_SetNextSeq(wk, DRAWING_SEQ_MEMBER_LEFT_MSG_WAIT);
     GFL_SndSEPlay(SEQ_SE_DECIDE1);
@@ -1780,8 +1780,8 @@ static void Drawing_ShowScreens(void) {
 }
 
 static const DrawingMenuItem sDrawingMenuItems[] = {
-    { EventMapchange_Text_Yes, 0 },
-    { EventMapchange_Text_No, 0 },
+    { DrawingBoard_Text_Yes, 0 },
+    { DrawingBoard_Text_No, 0 },
 };
 
 // The Yes and No of the question whether to leave

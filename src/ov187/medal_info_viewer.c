@@ -511,7 +511,7 @@ static void MedalInfoViewer_Init(MedalInfoViewer *viewer, MedalInfoViewerParam *
     viewer->fontLabel = GFL_FontCreate(ARCID_FONT, 2, 0, 0, heapId);
     viewer->msgMain = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_INFO_VIEWER, heapId);
     viewer->msgMedalNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_NAMES, heapId);
-    viewer->msgDescriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_11, heapId);
+    viewer->msgDescriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MEDAL_DESCRIPTIONS, heapId);
     viewer->printing = TRUE;
     viewer->scroll = 0;
 }

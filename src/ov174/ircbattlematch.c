@@ -72,7 +72,7 @@ enum {
 };
 #define IRCMATCH_TIMING_GROUP 12
 
-// The messages of TEXT_BANK_STARTMENU_2 (the infrared menu's, bank 62 of the system messages) that the screen shows
+// The messages of TEXT_BANK_IR_BATTLE_MENU (the infrared menu's, bank 62 of the system messages) that the screen shows
 enum {
     IRCMATCH_MSG_BACK = 2,
     IRCMATCH_MSG_CONNECT_OPPONENTS = 8,
@@ -1169,7 +1169,7 @@ static void IrcBattleMatch_InitScreen(IrcBattleMatch *work) {
     work->strbufFormatted = GFL_StrBufCreate(200, work->heapId);
     work->strbuf = GFL_StrBufCreate(200, work->heapId);
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_STARTMENU_2, work->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_BATTLE_MENU, work->heapId);
     arc = GFL_ArcSysCreateFileHandle(ARCID_IRCBATTLE, work->heapId);
     GFL_G2DIOLoadArcNCLRDefault(arc, 1, 0, 0, 0, work->heapId);
     work->bgChars = GFL_BGSysLoadArcNCGRDynamic(arc, 6, 0, 0, FALSE, work->heapId);

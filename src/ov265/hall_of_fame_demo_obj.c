@@ -25,7 +25,7 @@
 #include "system/gf_font.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_2.h"
+#include "text/system/hall_of_fame_demo.h"
 
 // The Hall of Fame entry demo's actors, their resources and the texts drawn on sprites (overlay 265). The file's name
 // is a guess, after the Hall of Fame PC's hall_of_fame_pc_obj.c
@@ -365,7 +365,7 @@ static void HallOfFameDemoObj_InitFontOam1st(HallOfFameDemoWork *wk) {
     setup.y = 16;
     wk->fontOam[HALL_OF_FAME_DEMO_FOAM_TITLE].oam = BmpOam_ActorAdd(wk->bmpOam, &setup);
     GFL_BitmapFill(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_TITLE].bmp, 0);
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_HallFame);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_HallFame);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_TITLE, wk->font, str, 12, 0);
     GFL_StrBufFree(str);
 
@@ -386,18 +386,18 @@ void HallOfFameDemoObj_PrintPokeInfo(HallOfFameDemoWork *wk) {
 
     GFL_BitmapFill(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_NAME].bmp, 0);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_Empty);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_Empty);
     loadBoxPokemonNameToStrbuf(wk->wordSet, 0, pkm);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, str);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_NAME, wk->font, wk->strbuf, 8, 0);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_Lv);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_Lv);
     width = GFL_FontGetBlockWidth(str, wk->font, 0);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_NAME, wk->font, str, 112, 0);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_Empty_2);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_Empty_2);
     WordSetNumber(wk->wordSet, 0, PML_PkmGetParam(pkm, PKM_PARAM_LEVEL, NULL), 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, str);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_NAME, wk->font, wk->strbuf, 112 + width, 0);
@@ -429,7 +429,7 @@ static void HallOfFameDemoObj_InitFontOam2nd(HallOfFameDemoWork *wk) {
     BmpOam_ActorSetDrawEnable(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_TITLE_2ND].oam, FALSE);
     GFL_BitmapFill(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_TITLE_2ND].bmp, 0);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_LeagueChampionCongratulations);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_LeagueChampionCongratulations);
     width = GFL_FontGetBlockWidth(str, wk->font, 0);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_TITLE_2ND, wk->font, str, (256 - width) / 2, 0);
     GFL_StrBufFree(str);
@@ -443,19 +443,19 @@ static void HallOfFameDemoObj_InitFontOam2nd(HallOfFameDemoWork *wk) {
     BmpOam_ActorSetDrawEnable(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_PLAYER].oam, FALSE);
     GFL_BitmapFill(wk->fontOam[HALL_OF_FAME_DEMO_FOAM_PLAYER].bmp, 0);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_Empty_3);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_Empty_3);
     copyVarForText(wk->wordSet, 0, wk->param->playerInfo);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, str);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_PLAYER, wk->font, wk->strbuf, 8, 0);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_IdNo);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_IdNo);
     WordSetNumber(wk->wordSet, 0, getTrainerID(wk->param->playerInfo), 5, 2, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, str);
     HallOfFameDemoObj_PrintFontOam(wk, HALL_OF_FAME_DEMO_FOAM_PLAYER, wk->font, wk->strbuf, 92, 0);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlMain2_Text_Empty_4);
+    str = GFL_MsgDataLoadStrbufNew(wk->msgData, HallOfFameDemo_Text_Empty_4);
     WordSetNumber(wk->wordSet, 0, PlayTime_GetHours(wk->param->playTime), 3, 0, TRUE);
     WordSetNumber(wk->wordSet, 1, PlayTime_GetMinutes(wk->param->playTime), 2, 2, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, str);

@@ -43,7 +43,7 @@
 #include "system/text_speed.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/evolution_demo_btl_main.h"
+#include "text/system/move_learning.h"
 
 // The move reminder's screen, which the move tutors' scripts show too: the Pokémon and its moves on the top screen,
 // and on the touch screen the list of moves to pick from with the picked move's data. Replacing a move goes through
@@ -390,13 +390,13 @@ static const BGSysVRAMConfig sMoveTutorVRAMConfig = {
 // clang-format on
 
 static const MoveTutorMenuItem sMoveTutorButtonItems[2] = {
-    { EvolutionDemoBtlMain_Text_Teach, 0 },
-    { EvolutionDemoBtlMain_Text_Quit, APP_TASKMENU_ITEM_RETURN },
+    { MoveLearning_Text_Teach, 0 },
+    { MoveLearning_Text_Quit, APP_TASKMENU_ITEM_RETURN },
 };
 
 static const MoveTutorMenuItem sMoveTutorYesNoItems[2] = {
-    { EvolutionDemoBtlMain_Text_Yes, 0 },
-    { EvolutionDemoBtlMain_Text_No, 0 },
+    { MoveLearning_Text_Yes, 0 },
+    { MoveLearning_Text_No, 0 },
 };
 
 // clang-format off
@@ -414,30 +414,30 @@ static const MoveTutorWindowData sMoveTutorMainWindows[WINDOW_COUNT] = {
 // The messages, by the parameter's mode
 static const u32 sMoveTutorMessages[2][MESSAGE_COUNT] = {
     {
-        EvolutionDemoBtlMain_Text_Empty,
-        EvolutionDemoBtlMain_Text_Empty_2,
-        EvolutionDemoBtlMain_Text_Empty_3,
-        EvolutionDemoBtlMain_Text_Learned,
-        EvolutionDemoBtlMain_Text_WantsLearnMoveHowever,
-        EvolutionDemoBtlMain_Text_12TaDa,
-        EvolutionDemoBtlMain_Text_LearnedHowUse,
-        EvolutionDemoBtlMain_Text_GiveUpLearningMove,
-        EvolutionDemoBtlMain_Text_DidNotLearn,
-        EvolutionDemoBtlMain_Text_Empty_4,
-        EvolutionDemoBtlMain_Text_Empty_5,
+        MoveLearning_Text_Empty,
+        MoveLearning_Text_Empty_2,
+        MoveLearning_Text_Empty_3,
+        MoveLearning_Text_Learned,
+        MoveLearning_Text_WantsLearnMoveHowever,
+        MoveLearning_Text_12TaDa,
+        MoveLearning_Text_LearnedHowUse,
+        MoveLearning_Text_GiveUpLearningMove,
+        MoveLearning_Text_DidNotLearn,
+        MoveLearning_Text_Empty_4,
+        MoveLearning_Text_Empty_5,
     },
     {
-        EvolutionDemoBtlMain_Text_WhichMoveShouldRemember,
-        EvolutionDemoBtlMain_Text_ShouldMoveRemembered,
-        EvolutionDemoBtlMain_Text_GiveUpTryingMake,
-        EvolutionDemoBtlMain_Text_RememberedMove,
-        EvolutionDemoBtlMain_Text_WantsRememberMoveBut,
-        EvolutionDemoBtlMain_Text_12TaDa_2,
-        EvolutionDemoBtlMain_Text_RememberedMove_2,
-        EvolutionDemoBtlMain_Text_GiveUpMakingPokemon,
-        EvolutionDemoBtlMain_Text_DidNotRememberMove,
-        EvolutionDemoBtlMain_Text_HandedOverOneHeart,
-        EvolutionDemoBtlMain_Text_OkForgetMove,
+        MoveLearning_Text_WhichMoveShouldRemember,
+        MoveLearning_Text_ShouldMoveRemembered,
+        MoveLearning_Text_GiveUpTryingMake,
+        MoveLearning_Text_RememberedMove,
+        MoveLearning_Text_WantsRememberMoveBut,
+        MoveLearning_Text_12TaDa_2,
+        MoveLearning_Text_RememberedMove_2,
+        MoveLearning_Text_GiveUpMakingPokemon,
+        MoveLearning_Text_DidNotRememberMove,
+        MoveLearning_Text_HandedOverOneHeart,
+        MoveLearning_Text_OkForgetMove,
     },
 };
 
@@ -810,12 +810,11 @@ static void MoveTutor_FreeWindows(MoveTutorWork *work) {
 }
 
 static void MoveTutor_InitMsg(MoveTutorWork *work) {
-    work->msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_EVOLUTION_DEMO_BTL_MAIN, HEAPID_MOVE_TUTOR);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MOVE_LEARNING, HEAPID_MOVE_TUTOR);
     work->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_MOVE_TUTOR);
     work->strbuf = GFL_StrBufCreate(0x100, HEAPID_MOVE_TUTOR);
-    work->ppLabel = GFL_MsgDataLoadStrbufNew(work->msgData, EvolutionDemoBtlMain_Text_Pp);
-    work->ppFormat = GFL_MsgDataLoadStrbufNew(work->msgData, EvolutionDemoBtlMain_Text_Empty_12);
+    work->ppLabel = GFL_MsgDataLoadStrbufNew(work->msgData, MoveLearning_Text_Pp);
+    work->ppFormat = GFL_MsgDataLoadStrbufNew(work->msgData, MoveLearning_Text_Empty_12);
 }
 
 static void MoveTutor_FreeMsg(MoveTutorWork *work) {
@@ -1028,17 +1027,17 @@ static void MoveTutor_DrawText(MoveTutorWork *work) {
     u32 i;
     u16 move;
 
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Teach, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Teach, work->strbuf);
     MoveTutor_PrintText(work, WINDOW_TEACH, work->font, PRINT_COLOR(15, 2, 0), ALIGN_CENTER, 4);
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Power, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Power, work->strbuf);
     MoveTutor_PrintText(work, WINDOW_POWER_LABEL, work->font, PRINT_COLOR(1, 2, 0), ALIGN_LEFT, 0);
     BmpWin_Transfer(work->windows[WINDOW_POWER_LABEL]);
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Accuracy, work->strbuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Accuracy, work->strbuf);
     MoveTutor_PrintText(work, WINDOW_ACCURACY_LABEL, work->font, PRINT_COLOR(1, 2, 0), ALIGN_LEFT, 0);
     BmpWin_Transfer(work->windows[WINDOW_ACCURACY_LABEL]);
 
     str = GFL_StrBufCreate(0x100, HEAPID_MOVE_TUTOR);
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_LearnedMoves, str);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_LearnedMoves, str);
     loadPokemonNicknameToStrbuf(work->wordSet, 0, work->param->pkm);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strbuf, str);
     MoveTutor_PrintText(work, WINDOW_TITLE, work->font, PRINT_COLOR(15, 2, 0), ALIGN_LEFT, 4);
@@ -1068,13 +1067,13 @@ static void MoveTutor_DrawText(MoveTutorWork *work) {
     }
     BmpWin_Transfer(work->windows[WINDOW_KNOWN_MOVES]);
 
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Empty_16, str);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Empty_16, str);
     setPartyPokemonSpeciesNameToStrbuf(work->wordSet, 0, work->param->pkm);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strbuf, str);
     GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(work->windows[WINDOW_POKEMON]), 0, 0, work->strbuf, work->font,
                                    PRINT_COLOR(1, 2, 0));
     BmpWin_Transfer(work->windows[WINDOW_POKEMON]);
-    GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Lv, str);
+    GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Lv, str);
     WordSetNumber(work->wordSet, 0, PML_PkmGetParam(boxPkm, PKM_PARAM_LEVEL, NULL), 3, 1, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strbuf, str);
     MoveTutor_PrintText(work, WINDOW_POKEMON, work->font, PRINT_COLOR(1, 2, 0), ALIGN_RIGHT, 16);
@@ -1142,7 +1141,7 @@ static void MoveTutor_InitList(MoveTutorWork *work) {
             ListMenuCore_AppendMsgOption(work->moveList, moveNames, work->param->moves[i], work->param->moves[i],
                                          HEAPID_MOVE_TUTOR);
         } else {
-            ListMenuCore_AppendMsgOption(work->moveList, work->msgData, EvolutionDemoBtlMain_Text_Empty_13, -2,
+            ListMenuCore_AppendMsgOption(work->moveList, work->msgData, MoveLearning_Text_Empty_13, -2,
                                          HEAPID_MOVE_TUTOR);
             break;
         }
@@ -1170,19 +1169,19 @@ static void MoveTutor_DrawMoveInfo(MoveTutorWork *work, u32 move) {
     if (move != NO_MOVE) {
         power = PML_MoveGetParam(move, MOVE_PARAM_POWER);
         if (power <= 1) {
-            GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Empty_14, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Empty_14, work->strbuf);
         } else {
-            MoveTutor_FormatNumber(work, EvolutionDemoBtlMain_Text_Empty_10, power, 3, 0);
+            MoveTutor_FormatNumber(work, MoveLearning_Text_Empty_10, power, 3, 0);
         }
         MoveTutor_PrintText(work, WINDOW_POWER, work->font, PRINT_COLOR(1, 2, 0), ALIGN_RIGHT, 0);
         accuracy = PML_MoveGetParam(move, MOVE_PARAM_ACCURACY);
         if (accuracy == 0 || PML_MoveIsAlwaysHit(move)) {
-            GFL_MsgDataLoadStrbuf(work->msgData, EvolutionDemoBtlMain_Text_Empty_14, work->strbuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, MoveLearning_Text_Empty_14, work->strbuf);
         } else {
-            MoveTutor_FormatNumber(work, EvolutionDemoBtlMain_Text_Empty_11, accuracy, 3, 0);
+            MoveTutor_FormatNumber(work, MoveLearning_Text_Empty_11, accuracy, 3, 0);
         }
         MoveTutor_PrintText(work, WINDOW_ACCURACY, work->font, PRINT_COLOR(1, 2, 0), ALIGN_RIGHT, 0);
-        descriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_13, HEAPID_MOVE_TUTOR);
+        descriptions = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MOVE_DESCRIPTIONS, HEAPID_MOVE_TUTOR);
         GFL_MsgDataLoadStrbuf(descriptions, move, work->strbuf);
         MoveTutor_PrintText(work, WINDOW_DESCRIPTION, work->font, PRINT_COLOR(1, 2, 0), ALIGN_LEFT, 0);
         GFL_MsgDataFree(descriptions);

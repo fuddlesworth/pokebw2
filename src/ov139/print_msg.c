@@ -8,7 +8,7 @@
 #include "gfl/str.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_12.h"
+#include "text/system/fraction.h"
 
 static u16 GetStrWidthForAlign(const StrBuf *strbuf, Font *font, u32 align);
 
@@ -21,10 +21,10 @@ void PrintStrAligned(PrintWindow *window, PrintQueue *queue, u16 x, u16 y, const
 // Prints "number1/number2" with the slash centered at x
 void PrintFraction(PrintWindow *window, PrintQueue *queue, Font *font, u16 x, u16 y, u16 color, s32 number1,
                    s32 number2, HeapID heapId) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_12, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FRACTION, heapId);
     WordSet *wordSet = GFL_WordSetSystemCreateDefault(heapId);
     StrBuf *buf = GFL_StrBufCreate(10, heapId);
-    StrBuf *label = GFL_MsgDataLoadStrbufNew(msgData, BtlMain12_Text_Slash);
+    StrBuf *label = GFL_MsgDataLoadStrbufNew(msgData, Fraction_Text_Slash);
     u16 width = GFL_FontGetBlockWidth(label, font, 0);
     StrBuf *numberFormat;
 
@@ -32,13 +32,13 @@ void PrintFraction(PrintWindow *window, PrintQueue *queue, Font *font, u16 x, u1
     x -= GetStrWidthForAlign(label, font, PRINT_ALIGN_CENTER);
     GFL_StrBufFree(label);
 
-    numberFormat = GFL_MsgDataLoadStrbufNew(msgData, BtlMain12_Text_Numerator);
+    numberFormat = GFL_MsgDataLoadStrbufNew(msgData, Fraction_Text_Numerator);
     WordSetNumber(wordSet, 0, number1, 8, 0, TRUE);
     GFL_WordSetFormatStrbuf(wordSet, buf, numberFormat);
     PrintStrAligned(window, queue, x, y, buf, font, color, PRINT_ALIGN_RIGHT);
     GFL_StrBufFree(numberFormat);
 
-    numberFormat = GFL_MsgDataLoadStrbufNew(msgData, BtlMain12_Text_Denominator);
+    numberFormat = GFL_MsgDataLoadStrbufNew(msgData, Fraction_Text_Denominator);
     WordSetNumber(wordSet, 0, number2, 8, 0, TRUE);
     GFL_WordSetFormatStrbuf(wordSet, buf, numberFormat);
     PrintStrAligned(window, queue, x + width, y, buf, font, color, PRINT_ALIGN_LEFT);

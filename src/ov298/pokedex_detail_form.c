@@ -34,7 +34,7 @@
 #include "system/mcss.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_title.h"
+#include "text/system/pokedex_detail.h"
 
 // The detail screen's forms page, pokedex_detail_form.c, zukan_detail_form.c by the ROM's own string: the Pokémon's
 // sprite on the top screen in each sex, color and form that the Pokédex has seen, one at a time or two side by side to
@@ -1278,15 +1278,15 @@ static void PokedexDetailForm_CreateText(PokedexDetailFormParam *param, PokedexD
         GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[i]), 0);
         BmpWin_FlushChar(wk->windows[i]);
     }
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_TITLE, param->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_DETAIL, param->heapId);
     wk->formMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEDEX_DETAIL_FORM, param->heapId);
     wk->formNameTable = GFL_ArcSysReadHeapNewLZGetLen(ARCID_POKEDEX_DATA, 0, FALSE, param->heapId, &size);
 
     bitmap = BmpWin_GetBitmap(wk->windows[WINDOW_LABELS]);
-    strbuf1 = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlServerFlowTitle_Text_FormsSeen);
+    strbuf1 = GFL_MsgDataLoadStrbufNew(wk->msgData, PokedexDetail_Text_FormsSeen);
     PrintQueue_PrintColor(wk->printQueues[WINDOW_LABELS], bitmap, 0, 1, strbuf1, wk->font, PRINT_COLOR(15, 2, 0));
     GFL_StrBufFree(strbuf1);
-    strbuf2 = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlServerFlowTitle_Text_ShinySeen);
+    strbuf2 = GFL_MsgDataLoadStrbufNew(wk->msgData, PokedexDetail_Text_ShinySeen);
     PrintQueue_PrintColor(wk->printQueues[WINDOW_LABELS], bitmap, 0, 17, strbuf2, wk->font, PRINT_COLOR(15, 2, 0));
     GFL_StrBufFree(strbuf2);
     wk->flushPending[WINDOW_LABELS] = TRUE;

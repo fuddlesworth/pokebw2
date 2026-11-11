@@ -2,7 +2,7 @@
     "$schema": "regions.schema.json",
     "countries": [
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Argentina",
+            "country": "CountryNames_Text_Argentina",
             "regions": [
                 {
                     "name": "Bank0419_Text_None",
@@ -132,7 +132,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Australia",
+            "country": "CountryNames_Text_Australia",
             "regions": [
                 {
                     "name": "Bank0420_Text_None",
@@ -182,7 +182,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Brazil",
+            "country": "CountryNames_Text_Brazil",
             "regions": [
                 {
                     "name": "Bank0421_Text_None",
@@ -327,7 +327,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Canada",
+            "country": "CountryNames_Text_Canada",
             "regions": [
                 {
                     "name": "Bank0422_Text_None",
@@ -402,7 +402,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_China",
+            "country": "CountryNames_Text_China",
             "regions": [
                 {
                     "name": "Bank0423_Text_None",
@@ -577,7 +577,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Germany",
+            "country": "CountryNames_Text_Germany",
             "regions": [
                 {
                     "name": "Bank0424_Text_None",
@@ -667,7 +667,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Spain",
+            "country": "CountryNames_Text_Spain",
             "regions": [
                 {
                     "name": "Bank0425_Text_None",
@@ -762,7 +762,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Finland",
+            "country": "CountryNames_Text_Finland",
             "regions": [
                 {
                     "name": "Bank0426_Text_None",
@@ -802,7 +802,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_France",
+            "country": "CountryNames_Text_France",
             "regions": [
                 {
                     "name": "Bank0427_Text_None",
@@ -922,7 +922,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_UnitedKingdom",
+            "country": "CountryNames_Text_UnitedKingdom",
             "regions": [
                 {
                     "name": "Bank0428_Text_None",
@@ -992,7 +992,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_India",
+            "country": "CountryNames_Text_India",
             "regions": [
                 {
                     "name": "Bank0429_Text_None",
@@ -1177,7 +1177,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Italy",
+            "country": "CountryNames_Text_Italy",
             "regions": [
                 {
                     "name": "Bank0430_Text_None",
@@ -1287,7 +1287,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Japan",
+            "country": "CountryNames_Text_Japan",
             "regions": [
                 {
                     "name": "Bank0431_Text_None",
@@ -1547,7 +1547,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Norway",
+            "country": "CountryNames_Text_Norway",
             "regions": [
                 {
                     "name": "Bank0432_Text_None",
@@ -1667,7 +1667,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Poland",
+            "country": "CountryNames_Text_Poland",
             "regions": [
                 {
                     "name": "Bank0433_Text_None",
@@ -1757,7 +1757,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_RussianFederation",
+            "country": "CountryNames_Text_RussianFederation",
             "regions": [
                 {
                     "name": "Bank0434_Text_None",
@@ -1807,7 +1807,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_Sweden",
+            "country": "CountryNames_Text_Sweden",
             "regions": [
                 {
                     "name": "Bank0435_Text_None",
@@ -1927,7 +1927,7 @@
             ]
         },
         {
-            "country": "EventMapchangeLoadCountryToStrbuf_Text_UnitedStatesAmerica",
+            "country": "CountryNames_Text_UnitedStatesAmerica",
             "regions": [
                 {
                     "name": "Bank0437_Text_None",

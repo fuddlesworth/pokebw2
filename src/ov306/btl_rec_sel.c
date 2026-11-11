@@ -44,7 +44,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
-#include "text/system/title.h"
+#include "text/system/battle_recorder_select.h"
 
 // The screen that asks whether to save the last battle as the Battle Video, named after the ROM's "btl_rec_sel.c".
 // With a video saved already it shows that one's battle mode and parties before asking whether to overwrite it.
@@ -305,47 +305,47 @@ static const BtlRecSelBGSetup sBtlRecSelSubBGSetups[1] = {
 
 // By battle mode, as the video's header has it
 static const BtlRecSelMode sModes[] = {
-    { Title_Text_ColosseumSingleNoRestrictions, FALSE },
-    { Title_Text_ColosseumSingleFlat, FALSE },
-    { Title_Text_ColosseumSingleNoRestrictions_2, FALSE },
-    { Title_Text_ColosseumSingleFlatLauncher, FALSE },
-    { Title_Text_ColosseumDoubleNoRestrictions, FALSE },
-    { Title_Text_ColosseumDoubleFlat, FALSE },
-    { Title_Text_ColosseumDoubleNoRestrictions_2, FALSE },
-    { Title_Text_ColosseumDoubleFlatLauncher, FALSE },
-    { Title_Text_ColosseumTripleNoRestrictions, FALSE },
-    { Title_Text_ColosseumTripleFlat, FALSE },
-    { Title_Text_ColosseumTripleNoRestrictions_2, FALSE },
-    { Title_Text_ColosseumTripleFlatLauncher, FALSE },
-    { Title_Text_ColosseumRotationNoRestrictions, FALSE },
-    { Title_Text_ColosseumRotationFlat, FALSE },
-    { Title_Text_ColosseumRotationNoRestrictions_2, FALSE },
-    { Title_Text_ColosseumRotationFlatLauncher, FALSE },
-    { Title_Text_ColosseumMultiNoRestrictions, TRUE },
-    { Title_Text_ColosseumMultiFlat, TRUE },
-    { Title_Text_ColosseumMultiNoRestrictions_2, TRUE },
-    { Title_Text_ColosseumMultiFlatLauncher, TRUE },
-    { Title_Text_BattleSubwaySingle, FALSE },
-    { Title_Text_BattleSubwayDouble, FALSE },
-    { Title_Text_BattleSubwayMulti, TRUE },
-    { Title_Text_RandomMatchupFreeSingle, FALSE },
-    { Title_Text_RandomMatchupFreeDouble, FALSE },
-    { Title_Text_RandomMatchupFreeTriple, FALSE },
-    { Title_Text_RandomMatchupFreeRotation, FALSE },
-    { Title_Text_RandomMatchupFreeLauncher, FALSE },
-    { Title_Text_RandomMatchupRatingSingle, FALSE },
-    { Title_Text_RandomMatchupRatingDouble, FALSE },
-    { Title_Text_RandomMatchupRatingTriple, FALSE },
-    { Title_Text_RandomMatchupRatingRotation, FALSE },
-    { Title_Text_RandomMatchupRatingLauncher, FALSE },
-    { Title_Text_CompetitionSingleLauncherOff, FALSE },
-    { Title_Text_CompetitionSingleLauncher, FALSE },
-    { Title_Text_CompetitionDoubleLauncherOff, FALSE },
-    { Title_Text_CompetitionDoubleLauncher, FALSE },
-    { Title_Text_CompetitionTripleLauncherOff, FALSE },
-    { Title_Text_CompetitionTripleLauncher, FALSE },
-    { Title_Text_CompetitionRotationLauncherOff, FALSE },
-    { Title_Text_CompetitionRotationLauncher, FALSE },
+    { BattleRecorderSelect_Text_ColosseumSingleNoRestrictions, FALSE },
+    { BattleRecorderSelect_Text_ColosseumSingleFlat, FALSE },
+    { BattleRecorderSelect_Text_ColosseumSingleNoRestrictions_2, FALSE },
+    { BattleRecorderSelect_Text_ColosseumSingleFlatLauncher, FALSE },
+    { BattleRecorderSelect_Text_ColosseumDoubleNoRestrictions, FALSE },
+    { BattleRecorderSelect_Text_ColosseumDoubleFlat, FALSE },
+    { BattleRecorderSelect_Text_ColosseumDoubleNoRestrictions_2, FALSE },
+    { BattleRecorderSelect_Text_ColosseumDoubleFlatLauncher, FALSE },
+    { BattleRecorderSelect_Text_ColosseumTripleNoRestrictions, FALSE },
+    { BattleRecorderSelect_Text_ColosseumTripleFlat, FALSE },
+    { BattleRecorderSelect_Text_ColosseumTripleNoRestrictions_2, FALSE },
+    { BattleRecorderSelect_Text_ColosseumTripleFlatLauncher, FALSE },
+    { BattleRecorderSelect_Text_ColosseumRotationNoRestrictions, FALSE },
+    { BattleRecorderSelect_Text_ColosseumRotationFlat, FALSE },
+    { BattleRecorderSelect_Text_ColosseumRotationNoRestrictions_2, FALSE },
+    { BattleRecorderSelect_Text_ColosseumRotationFlatLauncher, FALSE },
+    { BattleRecorderSelect_Text_ColosseumMultiNoRestrictions, TRUE },
+    { BattleRecorderSelect_Text_ColosseumMultiFlat, TRUE },
+    { BattleRecorderSelect_Text_ColosseumMultiNoRestrictions_2, TRUE },
+    { BattleRecorderSelect_Text_ColosseumMultiFlatLauncher, TRUE },
+    { BattleRecorderSelect_Text_BattleSubwaySingle, FALSE },
+    { BattleRecorderSelect_Text_BattleSubwayDouble, FALSE },
+    { BattleRecorderSelect_Text_BattleSubwayMulti, TRUE },
+    { BattleRecorderSelect_Text_RandomMatchupFreeSingle, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupFreeDouble, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupFreeTriple, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupFreeRotation, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupFreeLauncher, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupRatingSingle, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupRatingDouble, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupRatingTriple, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupRatingRotation, FALSE },
+    { BattleRecorderSelect_Text_RandomMatchupRatingLauncher, FALSE },
+    { BattleRecorderSelect_Text_CompetitionSingleLauncherOff, FALSE },
+    { BattleRecorderSelect_Text_CompetitionSingleLauncher, FALSE },
+    { BattleRecorderSelect_Text_CompetitionDoubleLauncherOff, FALSE },
+    { BattleRecorderSelect_Text_CompetitionDoubleLauncher, FALSE },
+    { BattleRecorderSelect_Text_CompetitionTripleLauncherOff, FALSE },
+    { BattleRecorderSelect_Text_CompetitionTripleLauncher, FALSE },
+    { BattleRecorderSelect_Text_CompetitionRotationLauncherOff, FALSE },
+    { BattleRecorderSelect_Text_CompetitionRotationLauncher, FALSE },
 };
 
 static BOOL BtlRecSelProc_Init(GameProc *proc, u32 *state, void *param, void *work) {
@@ -370,7 +370,7 @@ static BOOL BtlRecSelProc_Init(GameProc *proc, u32 *state, void *param, void *wo
     wk->hasVsRecorder = BagSave_CheckAmount(GameData_GetBag(prm->gameData), ITEM_VS_RECORDER, 1, wk->heapId);
     wk->skip = FALSE;
     wk->vblankTask = GFL_VBlankTCBAdd(BtlRecSel_VBlank, wk, 1);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_RECORDER_SELECT, wk->heapId);
     BtlRecSel_LoadBG(prm, wk);
     BtlRecSel_ClearBG(prm, wk);
     BtlRecSel_InitSubBG(prm, wk);
@@ -391,7 +391,7 @@ static BOOL BtlRecSelProc_Init(GameProc *proc, u32 *state, void *param, void *wo
         if (prm->recorded) {
             if (prm->compatible) {
                 BtlRecSel_SetFade(state, prm, wk, SEQ_QUESTION, 3, 16, 0, 2, FALSE);
-                BtlRecSel_SetQuestion(prm, wk, SEQ_SAVE_YESNO, Title_Text_WouldLikeSaveLast, TRUE);
+                BtlRecSel_SetQuestion(prm, wk, SEQ_SAVE_YESNO, BattleRecorderSelect_Text_WouldLikeSaveLast, TRUE);
                 BtlRecSel_StartTimer(prm, wk, TIME_LIMIT);
                 if (prm->comm) {
                     BtlRecSel_ShowTimerBG(prm, wk);
@@ -515,7 +515,8 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
                     *state = SEQ_SAVE_MESSAGE;
                 }
             } else {
-                BtlRecSel_AskQuestion(state, prm, wk, SEQ_NO_SAVE_YESNO, Title_Text_LastBattleWillNot, TRUE);
+                BtlRecSel_AskQuestion(state, prm, wk, SEQ_NO_SAVE_YESNO, BattleRecorderSelect_Text_LastBattleWillNot,
+                                      TRUE);
             }
         } else if (wk->timeUp) {
             ConfirmDialog_Free(wk->yesNo);
@@ -532,7 +533,8 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
                 BtlRecSel_StopTimer(prm, wk);
                 *state = SEQ_END_MESSAGE;
             } else {
-                BtlRecSel_AskQuestion(state, prm, wk, SEQ_SAVE_YESNO, Title_Text_WouldLikeSaveLast, TRUE);
+                BtlRecSel_AskQuestion(state, prm, wk, SEQ_SAVE_YESNO, BattleRecorderSelect_Text_WouldLikeSaveLast,
+                                      TRUE);
             }
         } else if (wk->timeUp) {
             ConfirmDialog_Free(wk->yesNo);
@@ -621,7 +623,8 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
                 BtlRecSel_ShowMultiPartiesBG(prm, wk);
             }
             BtlRecSel_SetFade(state, prm, wk, SEQ_QUESTION, 1, 16, 0, -2, TRUE);
-            BtlRecSel_SetQuestion(prm, wk, SEQ_OVERWRITE_YESNO, Title_Text_OkOverwriteExistingBattle, FALSE);
+            BtlRecSel_SetQuestion(prm, wk, SEQ_OVERWRITE_YESNO, BattleRecorderSelect_Text_OkOverwriteExistingBattle,
+                                  FALSE);
         } else {
             BtlRecSel_SetFade(state, prm, wk, SEQ_SAVE_MESSAGE, 1, 16, 0, -2, TRUE);
         }
@@ -641,7 +644,7 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
         BtlRecSel_StopTimer(prm, wk);
         break;
     case SEQ_SAVE_MESSAGE:
-        BtlRecSel_PrintMessage(prm, wk, Title_Text_SavingBattleVideoDont);
+        BtlRecSel_PrintMessage(prm, wk, BattleRecorderSelect_Text_SavingBattleVideoDont);
         *state = SEQ_SAVE_MESSAGE_WAIT;
         break;
     case SEQ_SAVE_MESSAGE_WAIT:
@@ -664,10 +667,11 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
             WaitIcon_Free(wk->waitIcon);
             if (wk->saveResult == SAVE_RESULT_SUCCESS) {
                 GFL_SndSEPlay(SEQ_SE_SAVE);
-                BtlRecSel_ShowMessage(state, prm, wk, SEQ_SAVED_WAIT, Title_Text_BattleVideoHasBeen);
+                BtlRecSel_ShowMessage(state, prm, wk, SEQ_SAVED_WAIT, BattleRecorderSelect_Text_BattleVideoHasBeen);
                 wk->waitTimer = RESULT_WAIT;
             } else if (wk->saveResult == SAVE_RESULT_FAILED) {
-                BtlRecSel_ShowMessage(state, prm, wk, SEQ_SAVE_FAILED_WAIT, Title_Text_ThereErrorBattleVideo);
+                BtlRecSel_ShowMessage(state, prm, wk, SEQ_SAVE_FAILED_WAIT,
+                                      BattleRecorderSelect_Text_ThereErrorBattleVideo);
                 wk->waitTimer = RESULT_WAIT;
             }
         }
@@ -687,24 +691,24 @@ static BOOL BtlRecSelProc_Main(GameProc *proc, u32 *state, void *param, void *wo
             if (prm->recorded) {
                 if (prm->compatible) {
                     if (prm->comm) {
-                        message = Title_Text_AwaitingFriendsDecisionPlease;
+                        message = BattleRecorderSelect_Text_AwaitingFriendsDecisionPlease;
                     } else {
                         BtlRecSel_SetFade(state, prm, wk, SEQ_END, 3, 0, 16, 2, FALSE);
                         break;
                     }
                 } else {
                     if (prm->comm) {
-                        message = Title_Text_CannotRecordVideosTrainer;
+                        message = BattleRecorderSelect_Text_CannotRecordVideosTrainer;
                     } else {
-                        message = Title_Text_CannotRecordVideosTrainer_2;
+                        message = BattleRecorderSelect_Text_CannotRecordVideosTrainer_2;
                     }
                 }
             } else {
-                message = Title_Text_LastBattleCannotRecorded;
+                message = BattleRecorderSelect_Text_LastBattleCannotRecorded;
             }
         } else {
             if (prm->comm) {
-                message = Title_Text_AwaitingFriendsDecisionPlease;
+                message = BattleRecorderSelect_Text_AwaitingFriendsDecisionPlease;
             } else {
                 *state = SEQ_END;
                 break;
@@ -1077,7 +1081,7 @@ static void BtlRecSel_FlushTextWindows(BtlRecSelParam *param, BtlRecSelWork *wor
 
 // Prints "PREVIOUS RECORD" and the saved video's battle mode
 static void BtlRecSel_PrintPrevious(BtlRecSelParam *param, BtlRecSelWork *work) {
-    StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData, Title_Text_PreviousRecord);
+    StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleRecorderSelect_Text_PreviousRecord);
 
     PrintQueue_PrintColor(work->titleQueue, BmpWin_GetBitmap(work->textWindows[TEXT_WINDOW_TITLE]), 4, 1, str,
                           work->font, COLOR_TEXT);
@@ -1162,7 +1166,7 @@ static void BtlRecSel_PrintTimer(BtlRecSelParam *param, BtlRecSelWork *work, u16
         StrBuf *str;
 
         PrintQueue_Clear(work->timeLabelQueue);
-        str = GFL_MsgDataLoadStrbufNew(work->msgData, Title_Text_TimeLimit);
+        str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleRecorderSelect_Text_TimeLimit);
         PrintQueue_PrintColor(work->timeLabelQueue, BmpWin_GetBitmap(work->textWindows[TEXT_WINDOW_TIME_LABEL]), 4, 1,
                               str, work->font, color);
         work->textPrinted[TEXT_WINDOW_TIME_LABEL] = FALSE;
@@ -1170,7 +1174,7 @@ static void BtlRecSel_PrintTimer(BtlRecSelParam *param, BtlRecSelWork *work, u16
     }
     if (colorType != work->timeColor || seconds != work->timeSeconds) {
         WordSet *wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
-        StrBuf *format = GFL_MsgDataLoadStrbufNew(work->msgData, Title_Text_Empty_8);
+        StrBuf *format = GFL_MsgDataLoadStrbufNew(work->msgData, BattleRecorderSelect_Text_Empty_8);
         StrBuf *str = GFL_StrBufCreate(8, work->heapId);
 
         PrintQueue_Clear(work->timeQueue);

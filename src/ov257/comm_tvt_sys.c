@@ -46,7 +46,7 @@
 #include "system/printsys.h"
 #include "system/time_icon.h"
 #include "system/wipe.h"
-#include "text/system/btl_server_flow.h"
+#include "text/system/video_chat.h"
 
 // The Xtransceiver's system: the proc, the screens and resources the modes share, and the switch between the modes.
 // The names of the members are printed over their video on the top screen, and a cursor points at the talker
@@ -628,7 +628,7 @@ static void CommTvt_FreeResources(CommTvtWork *sys) {
 
 static void CommTvt_InitMessages(CommTvtWork *sys) {
     sys->font = GFL_FontCreate(23, 0, 0, FALSE, sys->heapId);
-    sys->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW, sys->heapId);
+    sys->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_VIDEO_CHAT, sys->heapId);
     sys->printQueue = PrintQueue_Create(0x800, sys->heapId);
     GFL_BGSysLoadNCLRDefault(23, 5, 0, 0x140, 0x20, sys->heapId);
     GFL_BGSysLoadNCLRDefault(23, 5, 4, 0x140, 0x20, sys->heapId);
@@ -972,8 +972,8 @@ AppTaskMenu *CommTvt_OpenConfirmMenu(CommTvtWork *sys) {
     AppTaskMenuItem items[2] = { 0 };
     AppTaskMenu *menu;
 
-    items[0].str = GFL_MsgDataLoadStrbufNew(sys->msgData, BtlServerFlow_Text_Yes);
-    items[1].str = GFL_MsgDataLoadStrbufNew(sys->msgData, BtlServerFlow_Text_No);
+    items[0].str = GFL_MsgDataLoadStrbufNew(sys->msgData, VideoChat_Text_Yes);
+    items[1].str = GFL_MsgDataLoadStrbufNew(sys->msgData, VideoChat_Text_No);
     items[0].color = 0x39e3;
     items[1].color = 0x39e3;
     items[0].type = 0;
@@ -997,8 +997,8 @@ AppTaskMenu *CommTvt_OpenConfirmMenuAt(CommTvtWork *sys, u8 right, u8 bottom) {
     AppTaskMenuItem items[2] = { 0 };
     AppTaskMenu *menu;
 
-    items[0].str = GFL_MsgDataLoadStrbufNew(sys->msgData, BtlServerFlow_Text_Yes);
-    items[1].str = GFL_MsgDataLoadStrbufNew(sys->msgData, BtlServerFlow_Text_No);
+    items[0].str = GFL_MsgDataLoadStrbufNew(sys->msgData, VideoChat_Text_Yes);
+    items[1].str = GFL_MsgDataLoadStrbufNew(sys->msgData, VideoChat_Text_No);
     items[0].color = 0x39e3;
     items[1].color = 0x39e3;
     items[0].type = 0;
@@ -1022,7 +1022,7 @@ AppTaskMenu *CommTvt_OpenCancelMenu(CommTvtWork *sys, u8 right, u8 bottom) {
     AppTaskMenuItem item = { 0 };
     AppTaskMenu *menu;
 
-    item.str = GFL_MsgDataLoadStrbufNew(sys->msgData, BtlServerFlow_Text_Cancel);
+    item.str = GFL_MsgDataLoadStrbufNew(sys->msgData, VideoChat_Text_Cancel);
     item.color = 0x39e3;
     item.type = 0;
     init.heapId = sys->heapId;

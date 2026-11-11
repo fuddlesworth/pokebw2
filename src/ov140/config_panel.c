@@ -46,7 +46,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "text/script/global_10520.h"
-#include "text/system/title_2.h"
+#include "text/system/config_panel.h"
 
 // The options screen of the menu: five options in rows that scroll, each with two or three values to pick with the
 // keys or the touch screen, an explanation of the row under the cursor, and the buttons that confirm the changes or
@@ -495,14 +495,14 @@ static const ConfigPanelBgSetup sConfigPanelBgSetups[BG_COUNT] = {
 
 // The values' texts in the order of sConfigPanelItems, then the options' names
 static ConfigPanelLabel sConfigPanelLabels[LABEL_COUNT] = {
-    { Title2_Text_Slow, 14, 5, 6, 2 },        { Title2_Text_Mid, 20, 5, 6, 2 },
-    { Title2_Text_Fast, 26, 5, 6, 2 },        { Title2_Text_On, 15, 8, 4, 2 },
-    { Title2_Text_Off, 24, 8, 6, 2 },         { Title2_Text_Shift, 15, 11, 8, 2 },
-    { Title2_Text_Set, 24, 11, 8, 2 },        { Title2_Text_Stereo, 15, 14, 6, 2 },
-    { Title2_Text_Mono, 24, 14, 6, 2 },       { Title2_Text_Save, 15, 17, 6, 2 },
-    { Title2_Text_NoSave, 24, 17, 7, 2 },     { Title2_Text_TextSpeed, 1, 5, 12, 2 },
-    { Title2_Text_BattleScene, 1, 8, 10, 2 }, { Title2_Text_BattleStyle, 1, 11, 12, 2 },
-    { Title2_Text_Sound, 1, 14, 6, 2 },       { Title2_Text_SaveBeforeIr, 1, 17, 10, 2 },
+    { ConfigPanel_Text_Slow, 14, 5, 6, 2 },        { ConfigPanel_Text_Mid, 20, 5, 6, 2 },
+    { ConfigPanel_Text_Fast, 26, 5, 6, 2 },        { ConfigPanel_Text_On, 15, 8, 4, 2 },
+    { ConfigPanel_Text_Off, 24, 8, 6, 2 },         { ConfigPanel_Text_Shift, 15, 11, 8, 2 },
+    { ConfigPanel_Text_Set, 24, 11, 8, 2 },        { ConfigPanel_Text_Stereo, 15, 14, 6, 2 },
+    { ConfigPanel_Text_Mono, 24, 14, 6, 2 },       { ConfigPanel_Text_Save, 15, 17, 6, 2 },
+    { ConfigPanel_Text_NoSave, 24, 17, 7, 2 },     { ConfigPanel_Text_TextSpeed, 1, 5, 12, 2 },
+    { ConfigPanel_Text_BattleScene, 1, 8, 10, 2 }, { ConfigPanel_Text_BattleStyle, 1, 11, 12, 2 },
+    { ConfigPanel_Text_Sound, 1, 14, 6, 2 },       { ConfigPanel_Text_SaveBeforeIr, 1, 17, 10, 2 },
 };
 
 static const ConfigPanelItem sConfigPanelItems[ITEM_COUNT] = {
@@ -519,9 +519,9 @@ static const ConfigPanelRect sConfigPanelConfirmRect = { 112, 168, 184, 192 };
 static const ConfigPanelRect sConfigPanelQuitRect = { 184, 168, 256, 192 };
 
 static const ConfigPanelOption sConfigPanelOptions[OPTION_COUNT] = {
-    { Title2_Text_CanChooseFromThree, 3, { 0, 1, 2 } },  { Title2_Text_CanChooseWhetherView, 2, { 3, 4 } },
-    { Title2_Text_CanChooseSwitchPokemon, 2, { 5, 6 } }, { Title2_Text_CanChooseWayGame, 2, { 7, 8 } },
-    { Title2_Text_CanChooseSaveGame, 2, { 9, 10 } },
+    { ConfigPanel_Text_CanChooseFromThree, 3, { 0, 1, 2 } },  { ConfigPanel_Text_CanChooseWhetherView, 2, { 3, 4 } },
+    { ConfigPanel_Text_CanChooseSwitchPokemon, 2, { 5, 6 } }, { ConfigPanel_Text_CanChooseWayGame, 2, { 7, 8 } },
+    { ConfigPanel_Text_CanChooseSaveGame, 2, { 9, 10 } },
 };
 
 // The palettes of the rows on the screen, from the top
@@ -542,7 +542,7 @@ static BOOL ConfigPanel_Init(GameProc *proc, u32 *state, void *param, void *work
     wk->queue = PrintQueue_CreateDefault(HEAPID_CONFIG_PANEL);
     wk->buttonRes = AppTaskMenuRes_Create(BG_BAR, 13, wk->font, wk->queue, HEAPID_CONFIG_PANEL);
     wk->confirmRes = AppTaskMenuRes_Create(BG_CONFIRM, 9, wk->font, wk->queue, HEAPID_CONFIG_PANEL);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_2, HEAPID_CONFIG_PANEL);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_CONFIG_PANEL, HEAPID_CONFIG_PANEL);
     wk->tcbManager = GFL_TCBExMgrCreate(HEAPID_CONFIG_PANEL, HEAPID_CONFIG_PANEL, 32, 32);
     ConfigPanelOptions_Init(
         &wk->saved, (Config *)getTrainerDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(wk->param->gsys))));
@@ -733,7 +733,7 @@ static BmpWin *ConfigPanelBg_GetWindow(ConfigPanelBg *bg, u32 index) {
 static void ConfigPanelBg_PrintLabels(ConfigPanelBg *bg) {
     int i;
     Font *font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_CONFIG_PANEL);
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_2, HEAPID_CONFIG_PANEL);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_CONFIG_PANEL, HEAPID_CONFIG_PANEL);
     StrBuf *str;
     int x;
     const void *chars;
@@ -768,7 +768,7 @@ static void ConfigPanelBg_PrintLabels(ConfigPanelBg *bg) {
     // The title's window starts as the bar's graphic of it
     chars = bg->titleChars->pRawData;
     MIi_CpuCopy32(chars, GFL_BitmapGetPixelData(BmpWin_GetBitmap(bg->windows[WINDOW_TITLE])), 16 * 3 * 0x20);
-    str = GFL_MsgDataLoadStrbufNew(msgData, Title2_Text_Options);
+    str = GFL_MsgDataLoadStrbufNew(msgData, ConfigPanel_Text_Options);
     x = BmpWin_GetSizeX(bg->windows[WINDOW_TITLE]) * 4;
     x -= GFL_FontGetBlockWidth(str, font, 0) / 2;
     GFL_TextRendererDrawToBitmapEx(BmpWin_GetBitmap(bg->windows[WINDOW_TITLE]), x, 4, str, font,
@@ -1272,7 +1272,7 @@ static void ConfigPanelAppBar_CreateButtons(ConfigPanelAppBar *appBar, u16 heapI
         if (appBar->items[i].str != NULL) {
             GFL_StrBufFree(appBar->items[i].str);
         }
-        appBar->items[i].str = GFL_MsgDataLoadStrbufNew(appBar->msgData, Title2_Text_Confirm + i);
+        appBar->items[i].str = GFL_MsgDataLoadStrbufNew(appBar->msgData, ConfigPanel_Text_Confirm + i);
         appBar->items[i].color = PRINT_COLOR(14, 15, 3);
         appBar->items[i].type = i;
         if (appBar->wins[i] != NULL) {
@@ -1615,7 +1615,7 @@ static void ConfigPanelConfirm_Init(ConfigPanelConfirm *confirm, BmpWin *window,
     confirm->res = res;
     ConfigPanelMsg_Init(&confirm->msg, window, font, msgData, tcbManager, queue, heapId);
     for (i = 0; i < 2; i++) {
-        confirm->items[i].str = GFL_MsgDataLoadStrbufNew(msgData, Title2_Text_Yes + i);
+        confirm->items[i].str = GFL_MsgDataLoadStrbufNew(msgData, ConfigPanel_Text_Yes + i);
         confirm->items[i].color = PRINT_COLOR(14, 15, 3);
         confirm->items[i].type = 0;
     }
@@ -1667,7 +1667,7 @@ static void ConfigPanelConfirm_Start(ConfigPanelConfirm *confirm, s32 wait) {
         REG_BLDCNT_ADDR,
         GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_OBJ, 8);
     GFL_BGSysSetBGEnabled(BG_CONFIRM, TRUE);
-    ConfigPanelMsg_Print(&confirm->msg, Title2_Text_WouldLikeMakeThese, wait, FALSE);
+    ConfigPanelMsg_Print(&confirm->msg, ConfigPanel_Text_WouldLikeMakeThese, wait, FALSE);
 }
 
 static u32 ConfigPanelConfirm_GetResult(ConfigPanelConfirm *confirm) {
@@ -1919,7 +1919,7 @@ static void ConfigPanelSeq_Input(ConfigPanelSeq *seq, u32 *state, void *data) {
         ConfigPanelOptions options;
 
         ConfigPanelScroll_GetOptions(&wk->scroll, &options);
-        ConfigPanelConfirm_PrintMsg(&wk->confirm, Title2_Text_HaveSavedDataAlready,
+        ConfigPanelConfirm_PrintMsg(&wk->confirm, ConfigPanel_Text_HaveSavedDataAlready,
                                     ConfigPanelOptions_GetTextWait(&options));
         ConfigPanelScroll_SetSaveBeforeIr(&wk->scroll, 1);
         *state = INPUT_STEP_WAIT_MSG;
@@ -1949,7 +1949,7 @@ static void ConfigPanelSeq_Input(ConfigPanelSeq *seq, u32 *state, void *data) {
         ConfigPanelOptions options;
 
         ConfigPanelScroll_GetOptions(&wk->scroll, &options);
-        ConfigPanelConfirm_PrintMsg(&wk->confirm, Title2_Text_Empty_8, ConfigPanelOptions_GetTextWait(&options));
+        ConfigPanelConfirm_PrintMsg(&wk->confirm, ConfigPanel_Text_Empty_8, ConfigPanelOptions_GetTextWait(&options));
         ConfigPanelScroll_Redraw(&wk->scroll, TRUE);
         *state = INPUT_STEP_WAIT_MSG;
         break;

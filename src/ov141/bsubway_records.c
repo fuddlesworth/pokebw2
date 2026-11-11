@@ -32,7 +32,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/title_6.h"
+#include "text/system/battle_subway_records.h"
 
 // bsubway_records.c, a descriptive name: the Battle Subway's records screen, overlay 141. It lists the records that the
 // Battle Subway's save holds, ten to a page on the main screen's frames, and shows the one under the cursor below
@@ -312,7 +312,8 @@ static void BSubwayRecords_InitData(BSubwayRecordsWork *wk, BSubwayRecordsParam 
     wk->param = param;
     wk->unk15C = 0;
     wk->arc = GFL_ArcSysCreateFileHandle(ARCID_BSUBWAY_RECORDS, HEAPID_BSUBWAY_RECORDS);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_6, HEAPID_BSUBWAY_RECORDS);
+    wk->msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_SUBWAY_RECORDS, HEAPID_BSUBWAY_RECORDS);
     for (i = 0; i < MESSAGE_COUNT; i++) {
         wk->messages[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i);
         GFL_StrBufGetStringPtr(wk->messages[i]);
@@ -518,11 +519,11 @@ static void BSubwayRecords_InitText(BSubwayRecordsWork *wk) {
         PrintWindow_Init(&wk->printWindows[i], wk->windows[i]);
     }
     PrintWindow_Print(&wk->printWindows[INFO_WINDOW_TITLE], wk->printQueue, 0, 0,
-                      wk->messages[Title6_Text_SuccessiveTrainers], wk->font, PRINT_COLOR(15, 14, 0));
+                      wk->messages[BattleSubwayRecords_Text_SuccessiveTrainers], wk->font, PRINT_COLOR(15, 14, 0));
     PrintWindow_Print(&wk->printWindows[INFO_WINDOW_LOCATION_LABEL], wk->printQueue, 0, 0,
-                      wk->messages[Title6_Text_Location], wk->font, PRINT_COLOR(15, 14, 0));
+                      wk->messages[BattleSubwayRecords_Text_Location], wk->font, PRINT_COLOR(15, 14, 0));
     PrintWindow_Print(&wk->printWindows[INFO_WINDOW_QUOTE_LABEL], wk->printQueue, 0, 0,
-                      wk->messages[Title6_Text_TrainersQuote], wk->font, PRINT_COLOR(15, 14, 0));
+                      wk->messages[BattleSubwayRecords_Text_TrainersQuote], wk->font, PRINT_COLOR(15, 14, 0));
 }
 
 static void BSubwayRecords_FreeText(BSubwayRecordsWork *wk) {
@@ -653,14 +654,14 @@ static void BSubwayRecords_ShowRecord(BSubwayRecordsWork *wk, BSubwayWifiLeader 
 
         GFL_StrBufLoadFixedString(name, records[index].name, 8);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_NAME], wk->printQueue, 0, 0, name, wk->font, color);
-        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[Title6_Text_Rank]);
+        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[BattleSubwayRecords_Text_Rank]);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_RANK], wk->printQueue, 0, 0, wk->strbuf, wk->font, color);
-        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[Title6_Text_TrainNumber]);
+        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[BattleSubwayRecords_Text_TrainNumber]);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_TRAIN_NUMBER], wk->printQueue, 0, 0, wk->strbuf, wk->font,
                           color);
-        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[Title6_Text_Empty]);
+        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[BattleSubwayRecords_Text_Empty]);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_LOCATION], wk->printQueue, 0, 0, wk->strbuf, wk->font, color);
-        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[Title6_Text_Empty_2]);
+        GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->messages[BattleSubwayRecords_Text_Empty_2]);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_LOCATION], wk->printQueue, 0, 16, wk->strbuf, wk->font, color);
         text = PMSData_ToString(message, HEAPID_BSUBWAY_RECORDS);
         PrintWindow_Print(&wk->printWindows[INFO_WINDOW_QUOTE], wk->printQueue, 0, 0, text, wk->font, color);

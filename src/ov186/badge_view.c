@@ -448,8 +448,7 @@ static void BadgeView_InitWork(BadgeViewWork *wk, TrainerCardParam *param) {
     wk->param = param;
     wk->result = 0;
     wk->arc = GFL_ArcSysCreateFileHandle(ARCID_TRAINER_CARD_GRA, HEAPID_TRAINER_CARD_SCREEN);
-    wk->msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_4, HEAPID_TRAINER_CARD_SCREEN);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TRAINER_CARD, HEAPID_TRAINER_CARD_SCREEN);
     for (i = 0; i < 7; i++) {
         wk->strs[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i);
         GFL_StrBufGetStringPtr(wk->strs[i]);

@@ -29,7 +29,7 @@
                     "species": { "type": [ "string", "integer" ], "x-constant": "SPECIES_", "description": "The Pokémon" },
                     "form": { "$ref": "#/$defs/u8", "description": "The Pokémon's form, which is also the top byte of its personality" },
                     "obj_code": { "type": [ "string", "integer" ], "x-constant": "OBJ_CODE_", "description": "The performer's look, the low byte of the Pokémon's personality: an object code, as the player's is OBJ_CODE_HERO or OBJ_CODE_HEROINE (musical_program.c's trainerClass, MusicalEvent_GetOwnerTrainerClass)" },
-                    "name": { "type": [ "string", "integer" ], "description": "The performer's name, the second byte of the Pokémon's personality: a message of res/text/system/btl_main_9.txt by its ID, or a number; the same line of musical_event.txt is the Pokémon's nickname" },
+                    "name": { "type": [ "string", "integer" ], "description": "The performer's name, the second byte of the Pokémon's personality: a message of res/text/system/musical_npc_names.txt by its ID, or a number; the same line of musical_event.txt is the Pokémon's nickname" },
                     "personality_byte_2": { "$ref": "#/$defs/u8", "description": "The third byte of the Pokémon's personality" },
                     "unk06": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "Given to MusicalStageParam_CreateNpcPoke, which keeps it in the MusicalPoke's unk78" },
                     "min_shots": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "The photos the player must have taken before the performer appears" },

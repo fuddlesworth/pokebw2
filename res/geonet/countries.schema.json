@@ -12,7 +12,7 @@
             "items": {
                 "type": "object", "additionalProperties": false, "required": [ "name", "state", "x", "y" ],
                 "properties": {
-                    "name": { "type": [ "string", "null" ], "description": "The country's name, its message of the countries' text bank (sSubdividedCountries[0]'s in country_region.c, res/text/system/event_mapchange_load_country_to_strbuf.txt) by ID, in the same order, or null past its last; the packer checks it and doesn't pack it" },
+                    "name": { "type": [ "string", "null" ], "description": "The country's name, its message of the countries' text bank (sSubdividedCountries[0]'s in country_region.c, res/text/system/country_names.txt) by ID, in the same order, or null past its last; the packer checks it and doesn't pack it" },
                     "state": { "type": "integer", "minimum": 0, "maximum": 65535, "description": "GeonetCountryPlace.state: Geonet_LoadPlaces leaves a country of 2 out, as its regions stand for it" },
                     "x": { "type": "integer", "minimum": -32768, "maximum": 32767, "description": "The globe's turn about its X axis that brings the country to the front (Geonet_AddPlace), in 65536ths of a turn" },
                     "y": { "type": "integer", "minimum": -32768, "maximum": 32767, "description": "The globe's turn about its Y axis, in 65536ths of a turn" }

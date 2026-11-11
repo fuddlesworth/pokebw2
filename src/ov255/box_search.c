@@ -34,7 +34,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/btl_pokeparam_box_main_save_init.h"
+#include "text/system/box.h"
 
 // The PC box's Pokémon search: lists to pick a species by its first letter, a nature, an ability by its first letter,
 // the sex, the held item and the markings that the box's Pokémon are filtered by. Names are ours
@@ -363,18 +363,13 @@ static int GetTouchedRow(BoxSearchWork *wk);
 static const ClActorPos sScrollBarPos = { 244, 12 };
 
 // The messages of the held item's criterion
-static const u16 sItemCriterionMsgs[] = { BtlPokeparamBoxMainSaveInit_Text_Empty_44,
-                                          BtlPokeparamBoxMainSaveInit_Text_NotHoldingItem,
-                                          BtlPokeparamBoxMainSaveInit_Text_HoldingItem };
+static const u16 sItemCriterionMsgs[] = { Box_Text_Empty_44, Box_Text_NotHoldingItem, Box_Text_HoldingItem };
 
 // The screens of the lower screen's frame
 static const u16 sBg3Screens[] = { 79, 81, 80 };
 
 // The messages of the sex's criterion
-static const u16 sSexCriterionMsgs[] = { BtlPokeparamBoxMainSaveInit_Text_Empty_44,
-                                         BtlPokeparamBoxMainSaveInit_Text_Empty_45,
-                                         BtlPokeparamBoxMainSaveInit_Text_Empty_46,
-                                         BtlPokeparamBoxMainSaveInit_Text_Unknown };
+static const u16 sSexCriterionMsgs[] = { Box_Text_Empty_44, Box_Text_Empty_45, Box_Text_Empty_46, Box_Text_Unknown };
 
 static const BoxSearchWindowData sWinMarks = { 0, 16, 15, 14, 3, 14, PRINT_COLOR(15, 2, 0) };
 
@@ -471,12 +466,10 @@ static const u32 sSwitchAnims[][2] = {
 };
 
 // The messages of BoxSearchWork's strings
-static const u16 sStringMsgs[BOX_SEARCH_STRING_COUNT - 1] = {
-    BtlPokeparamBoxMainSaveInit_Text_Name_2,    BtlPokeparamBoxMainSaveInit_Text_Nature_2,
-    BtlPokeparamBoxMainSaveInit_Text_Ability_2, BtlPokeparamBoxMainSaveInit_Text_Gender,
-    BtlPokeparamBoxMainSaveInit_Text_HeldItem,  BtlPokeparamBoxMainSaveInit_Text_Mark,
-    BtlPokeparamBoxMainSaveInit_Text_Empty_44,  BtlPokeparamBoxMainSaveInit_Text_FilterPokemon
-};
+static const u16 sStringMsgs[BOX_SEARCH_STRING_COUNT - 1] = { Box_Text_Name_2,    Box_Text_Nature_2,
+                                                              Box_Text_Ability_2, Box_Text_Gender,
+                                                              Box_Text_HeldItem,  Box_Text_Mark,
+                                                              Box_Text_Empty_44,  Box_Text_FilterPokemon };
 
 // The main menu's cursor
 static const CursorMoveCallbacks sMainMenuCursorCallbacks = {
@@ -561,15 +554,9 @@ static const u8 sAbilityGroups[][2] = {
 
 // The messages of the first letters
 static const u16 sLetterMsgs[] = {
-    BtlPokeparamBoxMainSaveInit_Text_Empty_44, BtlPokeparamBoxMainSaveInit_Text_A, BtlPokeparamBoxMainSaveInit_Text_B,
-    BtlPokeparamBoxMainSaveInit_Text_C,        BtlPokeparamBoxMainSaveInit_Text_D, BtlPokeparamBoxMainSaveInit_Text_E,
-    BtlPokeparamBoxMainSaveInit_Text_F,        BtlPokeparamBoxMainSaveInit_Text_G, BtlPokeparamBoxMainSaveInit_Text_H,
-    BtlPokeparamBoxMainSaveInit_Text_I,        BtlPokeparamBoxMainSaveInit_Text_J, BtlPokeparamBoxMainSaveInit_Text_K,
-    BtlPokeparamBoxMainSaveInit_Text_L,        BtlPokeparamBoxMainSaveInit_Text_M, BtlPokeparamBoxMainSaveInit_Text_N,
-    BtlPokeparamBoxMainSaveInit_Text_O,        BtlPokeparamBoxMainSaveInit_Text_P, BtlPokeparamBoxMainSaveInit_Text_Q,
-    BtlPokeparamBoxMainSaveInit_Text_R,        BtlPokeparamBoxMainSaveInit_Text_S, BtlPokeparamBoxMainSaveInit_Text_T,
-    BtlPokeparamBoxMainSaveInit_Text_U,        BtlPokeparamBoxMainSaveInit_Text_V, BtlPokeparamBoxMainSaveInit_Text_W,
-    BtlPokeparamBoxMainSaveInit_Text_X,        BtlPokeparamBoxMainSaveInit_Text_Y, BtlPokeparamBoxMainSaveInit_Text_Z,
+    Box_Text_Empty_44, Box_Text_A, Box_Text_B, Box_Text_C, Box_Text_D, Box_Text_E, Box_Text_F, Box_Text_G, Box_Text_H,
+    Box_Text_I,        Box_Text_J, Box_Text_K, Box_Text_L, Box_Text_M, Box_Text_N, Box_Text_O, Box_Text_P, Box_Text_Q,
+    Box_Text_R,        Box_Text_S, Box_Text_T, Box_Text_U, Box_Text_V, Box_Text_W, Box_Text_X, Box_Text_Y, Box_Text_Z,
 };
 
 const GameProcFunctions BOX_SEARCH_PROC_FUNCTIONS = {
@@ -669,8 +656,7 @@ static BOOL BoxSearchProc_Init(GameProc *proc, u32 *state, void *param, void *wo
     wk->pokedex = GameData_GetPokedex(searchParam->syswk->param->gameData);
     wk->graphic = BoxSearchGraphic_Create(0, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_POKEPARAM_BOX_MAIN_SAVE_INIT, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BOX, wk->heapId);
     wk->natureNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NATURES, wk->heapId);
     wk->abilityNames = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_NAMES, wk->heapId);
     wk->abilityInfo = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_DESCRIPTIONS, wk->heapId);
@@ -866,29 +852,28 @@ static void BoxSearch_PrintInfo(BoxSearchWork *wk, int mode) {
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[BOX_SEARCH_WIN_INFO]), 0);
     switch (mode) {
     case BOX_SEARCH_SEQ_MAIN_MENU_START:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_ChooseConditionsSelectTurn, 1, 0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_ChooseConditionsSelectTurn, 1, 0);
         break;
     case BOX_SEARCH_SEQ_SPECIES_LETTER_OPEN:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_ChooseFirstLetterPokemons, 1, 0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_ChooseFirstLetterPokemons, 1, 0);
         break;
     case BOX_SEARCH_SEQ_SPECIES_OPEN:
         PrintSpeciesInfo(wk, FrameList_GetValue(wk->list, 0));
         break;
     case BOX_SEARCH_SEQ_ABILITY_LETTER_OPEN:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_PleaseChooseFirstLetter, 1, 0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_PleaseChooseFirstLetter, 1, 0);
         break;
     case BOX_SEARCH_SEQ_ABILITY_OPEN:
         PrintAbilityInfo(wk, FrameList_GetValue(wk->list, 0));
         break;
     case BOX_SEARCH_SEQ_SEX_OPEN:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_PleaseChooseGender, 1, 0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_PleaseChooseGender, 1, 0);
         break;
     case BOX_SEARCH_SEQ_ITEM_OPEN:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_PleaseIndicateWhetherPokemon, 1,
-                           0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_PleaseIndicateWhetherPokemon, 1, 0);
         break;
     case BOX_SEARCH_SEQ_MARKING_OPEN:
-        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, BtlPokeparamBoxMainSaveInit_Text_PleaseChooseMark, 1, 0);
+        BoxSearch_PrintMsg(wk, BOX_SEARCH_WIN_INFO, Box_Text_PleaseChooseMark, 1, 0);
         break;
     }
     BoxSearch_PushWindowScreen(wk->windows[BOX_SEARCH_WIN_INFO]);
@@ -1076,7 +1061,7 @@ static int BoxSearch_SeqSpeciesLetterOpen(BoxSearchWork *wk, int seq) {
     LoadBg3Screen(wk, BOX_SEARCH_SCREEN_LONG_LIST);
     BoxSearch_PrintListTitle(wk, 8);
     if (wk->param->syswk->search.species == 0) {
-        BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+        BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
     } else {
         BoxSearch_PrintChoice(wk, wk->speciesNames, wk->param->syswk->search.species);
     }
@@ -1102,7 +1087,7 @@ static int BoxSearch_SeqSpeciesLetterList(BoxSearchWork *wk, int seq) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             SetCriterion(wk, CRITERION_SPECIES, 0);
             PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, 0);
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             return BOX_SEARCH_SEQ_SPECIES_LETTER_CLOSE;
         }
         ClActor_SetVisible(wk->actors[BOX_SEARCH_ACTOR_LIST_MARKER_FIRST], FALSE);
@@ -1139,7 +1124,7 @@ static int BoxSearch_SeqSpeciesLetterList(BoxSearchWork *wk, int seq) {
             if (FrameList_GetScroll(wk->list) == 0) {
                 PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, 0);
             }
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else if (IsReturnPressed(wk) == TRUE) {
             wk->group = 0;
@@ -1152,7 +1137,7 @@ static int BoxSearch_SeqSpeciesLetterList(BoxSearchWork *wk, int seq) {
                     GFL_SndSEPlay(SEQ_SE_DECIDE1);
                     SetCriterion(wk, CRITERION_SPECIES, 0);
                     PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, pos);
-                    BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+                    BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
                     FrameList_SetCursor(wk->list, pos);
                     return BOX_SEARCH_SEQ_SPECIES_LETTER_CLOSE;
                 }
@@ -1271,7 +1256,7 @@ static int BoxSearch_SeqSpeciesList(BoxSearchWork *wk, int seq) {
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_SELECT) {
             SetCriterion(wk, CRITERION_SPECIES, 0);
             ClActor_SetVisible(wk->actors[BOX_SEARCH_ACTOR_LIST_MARKER_FIRST], FALSE);
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else if (IsReturnPressed(wk) == TRUE) {
             wk->chosen = FALSE;
@@ -1313,7 +1298,7 @@ static int BoxSearch_SeqNatureOpen(BoxSearchWork *wk, int seq) {
     LoadBg3Screen(wk, BOX_SEARCH_SCREEN_LONG_LIST);
     BoxSearch_PrintListTitle(wk, 1);
     if (wk->param->syswk->search.nature == 0) {
-        BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+        BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
     } else {
         BoxSearch_PrintChoice(wk, wk->natureNames, wk->param->syswk->search.nature - 1);
     }
@@ -1339,7 +1324,7 @@ static int BoxSearch_SeqNatureList(BoxSearchWork *wk, int seq) {
         SetCriterion(wk, CRITERION_NATURE, FrameList_GetSelected(wk->list));
         PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, ret);
         if (wk->param->syswk->search.nature == 0) {
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
         } else {
             BoxSearch_PrintChoice(wk, wk->natureNames, wk->param->syswk->search.nature - 1);
         }
@@ -1371,7 +1356,7 @@ static int BoxSearch_SeqNatureList(BoxSearchWork *wk, int seq) {
             } else {
                 ClActor_SetVisible(wk->actors[BOX_SEARCH_ACTOR_LIST_MARKER_FIRST], FALSE);
             }
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else if (IsReturnPressed(wk) == TRUE) {
             seq = BoxSearch_StartTouchBarAnm(wk, BOX_SEARCH_ACTOR_RETURN, 0, BOX_SEARCH_SEQ_NATURE_CLOSE);
@@ -1381,7 +1366,7 @@ static int BoxSearch_SeqNatureList(BoxSearchWork *wk, int seq) {
                 SetCriterion(wk, CRITERION_NATURE, pos + FrameList_GetScroll(wk->list));
                 PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, pos);
                 if (wk->param->syswk->search.nature == 0) {
-                    BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+                    BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
                 } else {
                     BoxSearch_PrintChoice(wk, wk->natureNames, wk->param->syswk->search.nature - 1);
                 }
@@ -1410,7 +1395,7 @@ static int BoxSearch_SeqAbilityLetterOpen(BoxSearchWork *wk, int seq) {
     LoadBg3Screen(wk, BOX_SEARCH_SCREEN_LONG_LIST);
     BoxSearch_PrintListTitle(wk, 10);
     if (wk->param->syswk->search.ability == 0) {
-        BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+        BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
     } else {
         BoxSearch_PrintChoice(wk, wk->abilityNames, wk->param->syswk->search.ability);
     }
@@ -1436,7 +1421,7 @@ static int BoxSearch_SeqAbilityLetterList(BoxSearchWork *wk, int seq) {
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
             SetCriterion(wk, CRITERION_ABILITY, 0);
             PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, 0);
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             return BOX_SEARCH_SEQ_ABILITY_LETTER_CLOSE;
         }
         ClActor_SetVisible(wk->actors[BOX_SEARCH_ACTOR_LIST_MARKER_FIRST], FALSE);
@@ -1473,7 +1458,7 @@ static int BoxSearch_SeqAbilityLetterList(BoxSearchWork *wk, int seq) {
             if (FrameList_GetScroll(wk->list) == 0) {
                 PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, 0);
             }
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else if (IsReturnPressed(wk) == TRUE) {
             wk->group = 0;
@@ -1485,7 +1470,7 @@ static int BoxSearch_SeqAbilityLetterList(BoxSearchWork *wk, int seq) {
                 if (wk->group == 0) {
                     SetCriterion(wk, CRITERION_ABILITY, 0);
                     PutListMarkerAtRow(wk, BOX_SEARCH_ACTOR_LIST_MARKER_FIRST, pos);
-                    BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+                    BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
                     FrameList_SetCursor(wk->list, pos);
                     return BOX_SEARCH_SEQ_ABILITY_LETTER_CLOSE;
                 }
@@ -1604,7 +1589,7 @@ static int BoxSearch_SeqAbilityList(BoxSearchWork *wk, int seq) {
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_SELECT) {
             SetCriterion(wk, CRITERION_ABILITY, 0);
             ClActor_SetVisible(wk->actors[BOX_SEARCH_ACTOR_LIST_MARKER_FIRST], FALSE);
-            BoxSearch_PrintChoice(wk, wk->msgData, BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            BoxSearch_PrintChoice(wk, wk->msgData, Box_Text_Empty_44);
             GFL_SndSEPlay(SEQ_SE_DECIDE1);
         } else if (IsReturnPressed(wk) == TRUE) {
             wk->chosen = FALSE;
@@ -2017,11 +2002,9 @@ static void BoxSearch_LoadStrings(BoxSearchWork *wk) {
         wk->strings[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, sStringMsgs[i]);
     }
     if (wk->param->param->mode == BOX2_MODE_MOVE_POKEMON) {
-        wk->strings[BOX_SEARCH_STR_TITLE] =
-            GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_OrganizeBoxEs);
+        wk->strings[BOX_SEARCH_STR_TITLE] = GFL_MsgDataLoadStrbufNew(wk->msgData, Box_Text_OrganizeBoxEs);
     } else {
-        wk->strings[BOX_SEARCH_STR_TITLE] =
-            GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_BattleBox_2);
+        wk->strings[BOX_SEARCH_STR_TITLE] = GFL_MsgDataLoadStrbufNew(wk->msgData, Box_Text_BattleBox_2);
     }
     wk->strbuf = GFL_StrBufCreate(128, wk->heapId);
 }
@@ -2275,7 +2258,7 @@ static void PrintAbilityInfo(BoxSearchWork *wk, u32 ability) {
     StrBuf *str;
 
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[BOX_SEARCH_WIN_INFO]), 0);
-    fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChooseAbilityAbility);
+    fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, Box_Text_PleaseChooseAbilityAbility);
     loadAbilityNameToStrbuf(wk->wordSet, 0, ability);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, fmt);
     PrintWindow_Print(&wk->printWindows[BOX_SEARCH_WIN_INFO], wk->printQueue, 1, 0, wk->strbuf, wk->font,
@@ -2298,10 +2281,10 @@ static void PrintSpeciesInfo(BoxSearchWork *wk, u32 species) {
     PML_PersonalFree(personal);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[BOX_SEARCH_WIN_INFO]), 0);
     if (type1 != type2) {
-        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChoosePokemonName);
+        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, Box_Text_PleaseChoosePokemonName);
         loadTypeTextToStrbuf(wk->wordSet, 2, type2);
     } else {
-        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, BtlPokeparamBoxMainSaveInit_Text_PleaseChoosePokemonName_2);
+        fmt = GFL_MsgDataLoadStrbufNew(wk->msgData, Box_Text_PleaseChoosePokemonName_2);
     }
     WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)species);
     loadTypeTextToStrbuf(wk->wordSet, 1, type1);
@@ -2547,22 +2530,19 @@ static void PrintCriteria(BoxSearchWork *wk, BOOL show) {
             GFL_BitmapFill(BmpWin_GetBitmap(wk->windows[i]), 0);
         }
         if (search->species == 0) {
-            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_SPECIES], wk->printQueue, wk->msgData,
-                         BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_SPECIES], wk->printQueue, wk->msgData, Box_Text_Empty_44);
         } else {
             PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_SPECIES], wk->printQueue, wk->speciesNames,
                          search->species);
         }
         if (search->nature == 0) {
-            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_NATURE], wk->printQueue, wk->msgData,
-                         BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_NATURE], wk->printQueue, wk->msgData, Box_Text_Empty_44);
         } else {
             PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_NATURE], wk->printQueue, wk->natureNames,
                          search->nature - 1);
         }
         if (search->ability == 0) {
-            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_ABILITY], wk->printQueue, wk->msgData,
-                         BtlPokeparamBoxMainSaveInit_Text_Empty_44);
+            PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_ABILITY], wk->printQueue, wk->msgData, Box_Text_Empty_44);
         } else {
             PrintListMsg(wk, &wk->printWindows[BOX_SEARCH_WIN_ABILITY], wk->printQueue, wk->abilityNames,
                          search->ability);

@@ -37,7 +37,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wipe.h"
-#include "text/system/btl_server_flow_3.h"
+#include "text/system/mail_view.h"
 
 // Key-cursor button positions; the touch buttons use the opposite order.
 enum {
@@ -690,7 +690,7 @@ static BOOL MailSys_PhaseNotice(MailSysWork *work) {
         if (AppTaskMenuWin_IsFlashFinished(work->confirmButton)) {
             AppTaskMenuWin_ResetFlash(work->confirmButton);
             AppTaskMenuWin_SetActive(work->confirmButton, TRUE);
-            MailSys_ShowMessage(work, BtlServerFlow3_Text_PleaseEnterPhraseWord);
+            MailSys_ShowMessage(work, MailView_Text_PleaseEnterPhraseWord);
             work->subSeq = STEP_WAIT_NOTICE_KEY;
         }
         break;
@@ -716,10 +716,10 @@ static BOOL MailSys_PhaseNotice(MailSysWork *work) {
 static void MailSys_OpenConfirmMenu(MailSysWork *work) {
     AppTaskMenuInit init;
 
-    work->menuItems[MAIL_ANSWER_YES].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_Yes);
+    work->menuItems[MAIL_ANSWER_YES].str = GFL_MsgDataLoadStrbufNew(work->msgData, MailView_Text_Yes);
     work->menuItems[MAIL_ANSWER_YES].color = PRINT_COLOR(14, 15, 3);
     work->menuItems[MAIL_ANSWER_YES].type = 0;
-    work->menuItems[MAIL_ANSWER_NO].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_No);
+    work->menuItems[MAIL_ANSWER_NO].str = GFL_MsgDataLoadStrbufNew(work->msgData, MailView_Text_No);
     work->menuItems[MAIL_ANSWER_NO].color = PRINT_COLOR(14, 15, 3);
     work->menuItems[MAIL_ANSWER_NO].type = 0;
     init.heapId = work->heapId;
@@ -770,7 +770,7 @@ static BOOL MailSys_PhaseCancel(MailSysWork *work) {
             AppTaskMenuWin_ResetFlash(work->cancelButton);
             AppTaskMenuWin_SetActive(work->cancelButton, TRUE);
             work->confirming = TRUE;
-            MailSys_ShowMessage(work, BtlServerFlow3_Text_StopGivingPokemonMail);
+            MailSys_ShowMessage(work, MailView_Text_StopGivingPokemonMail);
             MailSys_ResetBlink(work);
             work->blinkCurrent = work->blinkTarget;
             break;

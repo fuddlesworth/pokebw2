@@ -430,7 +430,7 @@ static BOOL CommBtlDemoProc_Init(GameProc *proc, u32 *state, void *param, void *
     CommBtlDemo_ResetStates(prm);
     wk->graphic = CommBtlDemoGraphic_Create(GX_DISP_SELECT_SUB_MAIN, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INTRO_BTL_SERVER_FLOW, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MIC_TEST, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
     wk->scene = UIScene_Create(wk->heapId, sCommBtlDemoSteps, SCENE_COUNT, CommBtlDemo_GetFirstScene(prm), wk);
     CommBtlDemo_LoadBG(&wk->back, wk->heapId, wk->param->competition);

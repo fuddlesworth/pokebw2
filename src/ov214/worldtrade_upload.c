@@ -597,8 +597,7 @@ static int Upload_SubSeqNameCheckWait(WorldTradeWork *wk) {
         if (bad) {
             // A bad name is replaced with the version's default
             u16 *dest = wk->uploadPokemonData.name;
-            MsgData *msgData =
-                GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, HEAPID_WORLDTRADE);
+            MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, HEAPID_WORLDTRADE);
             StrBuf *str = GFL_MsgDataLoadStrbufNew(msgData, DEFAULT_NAME_MSG);
             const u16 *src;
             int i;
@@ -1627,8 +1626,7 @@ static BOOL Upload_DuplicateCheck(WorldTradeWork *wk) {
 // Replaces the original trainer's name, on the Pokémon and its mail, with the version's default, and resets the
 // nickname
 static void Upload_ReplaceBadName(PartyPkm *pkm, HeapID heapId) {
-    MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, HEAPID_TAIL(heapId));
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, HEAPID_TAIL(heapId));
     StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, DEFAULT_NAME_MSG);
 
     GFL_MsgDataFree(msgData);

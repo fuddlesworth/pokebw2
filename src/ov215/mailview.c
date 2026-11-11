@@ -25,7 +25,7 @@
 #include "system/pms_draw.h"
 #include "system/pms_word.h"
 #include "system/printsys.h"
-#include "text/system/btl_server_flow_3.h"
+#include "text/system/mail_view.h"
 
 // The mail screen's graphics (overlay 215's mailview.c): its BGs, palettes, windows, buttons and the mail's text,
 // loaded a step at a time by MailView_Load. The names are ours
@@ -62,7 +62,7 @@ static void MailView_DeleteClAct(MailSysWork *work);
 BOOL MailView_Load(MailSysWork *work) {
     switch (work->subSeq) {
     case MAIL_LOAD_MESSAGES:
-        work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_SERVER_FLOW_3, work->heapId);
+        work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MAIL_VIEW, work->heapId);
         work->msgBuf = GFL_StrBufCreate(128, work->heapId);
         MailView_InitBGs(work);
         break;
@@ -248,10 +248,10 @@ static void MailView_CreateWindows(MailSysWork *work) {
 
 static void MailView_CreateButtons(MailSysWork *work) {
     if (work->phase == MAIL_PHASE_WRITE) {
-        work->buttonItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_Confirm);
+        work->buttonItems[0].str = GFL_MsgDataLoadStrbufNew(work->msgData, MailView_Text_Confirm);
         work->buttonItems[0].color = PRINT_COLOR(14, 15, 3);
         work->buttonItems[0].type = 0;
-        work->buttonItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, BtlServerFlow3_Text_Cancel);
+        work->buttonItems[1].str = GFL_MsgDataLoadStrbufNew(work->msgData, MailView_Text_Cancel);
         work->buttonItems[1].color = PRINT_COLOR(14, 15, 3);
         work->buttonItems[1].type = APP_TASKMENU_ITEM_RETURN;
         work->confirmButton = AppTaskMenuWin_Create(work->menuRes, &work->buttonItems[0], 21, 18, 10, work->heapId);

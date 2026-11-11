@@ -607,7 +607,7 @@ static void DebugGameStart_CreateBG(const BGSetup *setup, u8 bg) {
 // file 363: the questions from 0, and their answers from 5, two to a question
 static void DebugGameStart_CreateWindows(DebugGameStartWork *wk) {
     MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GAME_START_2, HEAPID_DEBUG_GENDER_SELECT);
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GAME_START_DEBUG, HEAPID_DEBUG_GENDER_SELECT);
     StrBuf *strbuf;
     u8 i;
 

@@ -1274,8 +1274,8 @@ static void PoketradeNego_StepPollMonCheck(PokemonTradeWork *wk) {
                     PartyPkm *pkm = wk->negoPkm[1][i];
                     if (NHttpRap_GetCheckResult(response, count)) {
                         u32 item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
-                        MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE,
-                                                              TEXT_BANK_ABILITY_HANDLERS_BTL_MAIN, wk->heapId);
+                        MsgData *msgData =
+                            GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_NAME_INPUT, wk->heapId);
                         StrBuf *name = GFL_MsgDataLoadStrbufNew(msgData, MSG_INVALID_PKM_TRAINER);
                         GFL_MsgDataFree(msgData);
                         if (PML_ItemIsMail(item)) {

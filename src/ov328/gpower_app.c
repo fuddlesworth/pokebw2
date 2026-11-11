@@ -38,7 +38,7 @@
 #include "system/str_tool.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_title.h"
+#include "text/system/monolith_menu.h"
 
 // The Pass Power screen: the running Pass Powers on the top screen, and on the touch screen the Pass Powers the
 // player can use for Pass Orbs and the way to the Entralink. The ROM has no name for this file; "gpower_app.c" is a
@@ -314,9 +314,9 @@ enum {
 
 // clang-format off
 static const u16 sGPowerAppMessages[] = {
-    BtlMainTitle_Text_ActivePassPower, BtlMainTitle_Text_None,              BtlMainTitle_Text_Entralink,
-    BtlMainTitle_Text_Empty_19,        BtlMainTitle_Text_WillUseNeededHeld, BtlMainTitle_Text_NotHaveEnoughPass,
-    BtlMainTitle_Text_Yes,             BtlMainTitle_Text_No,
+    MonolithMenu_Text_ActivePassPower, MonolithMenu_Text_None,              MonolithMenu_Text_Entralink,
+    MonolithMenu_Text_Empty_19,        MonolithMenu_Text_WillUseNeededHeld, MonolithMenu_Text_NotHaveEnoughPass,
+    MonolithMenu_Text_Yes,             MonolithMenu_Text_No,
 };
 
 // clang-format on
@@ -398,7 +398,7 @@ static BOOL GPowerApp_Init(GameProc *proc, u32 *state, void *param, void *data) 
     work->param = param;
     work->graphic = GPowerAppGraphic_Create(0, work->heapId);
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
-    work->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_TITLE, work->heapId);
+    work->msgData[0] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MONOLITH_MENU, work->heapId);
     work->msgData[1] = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PASS_POWERS, work->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     work->printQueue = PrintQueue_CreateDefault(work->heapId);

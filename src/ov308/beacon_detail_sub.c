@@ -29,7 +29,7 @@
 #include "system/printsys.h"
 #include "system/union_view.h"
 #include "system/wordset.h"
-#include "text/system/startmenu.h"
+#include "text/system/beacon_detail.h"
 
 // The drawing, the input and the tasks of the screen of a beacon's details. The ROM has no name for this file;
 // "beacon_detail_sub.c" is a guess from its graphic file's, "beacon_detail_gra.c", which the linker placed between
@@ -188,12 +188,12 @@ static const u8 sBeaconDetailUnionPalettes[BEACON_DETAIL_UNION_VIEW_COUNT] = {
 };
 
 static const BeaconDetailRecent sBeaconDetailRecents[] = {
-    { 0, Startmenu_Text_BattlingWild, 1 },
-    { 1, Startmenu_Text_BattlingSpecialPokemon, 1 },
-    { 2, Startmenu_Text_Battling, 2 },
-    { 3, Startmenu_Text_BattlingGymLeader, 2 },
-    { 4, Startmenu_Text_BattlingSpecialTrainer, 2 },
-    { GAME_BEACON_RECENT_NONE, Startmenu_Text_MovingThrough, 0 },
+    { 0, BeaconDetail_Text_BattlingWild, 1 },
+    { 1, BeaconDetail_Text_BattlingSpecialPokemon, 1 },
+    { 2, BeaconDetail_Text_Battling, 2 },
+    { 3, BeaconDetail_Text_BattlingGymLeader, 2 },
+    { 4, BeaconDetail_Text_BattlingSpecialTrainer, 2 },
+    { GAME_BEACON_RECENT_NONE, BeaconDetail_Text_MovingThrough, 0 },
 };
 
 void BeaconDetailSub_Start(BeaconDetailWork *work) {
@@ -380,7 +380,7 @@ static void BeaconDetailSub_DrawLabels(BeaconDetailWork *work) {
     int j;
 
     for (i = 0; i < 4; i++) {
-        GFL_MsgDataLoadStrbuf(work->msgData, Startmenu_Text_Name + i, work->formatBuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BeaconDetail_Text_Name + i, work->formatBuf);
         for (j = 0; j < BEACON_DETAIL_PANEL_COUNT; j++) {
             BeaconDetailPanel *panel = &work->panels[j];
 
@@ -389,7 +389,7 @@ static void BeaconDetailSub_DrawLabels(BeaconDetailWork *work) {
             BmpWin_TransferNow(panel->windows[i].window);
         }
     }
-    GFL_MsgDataLoadStrbuf(work->msgData, Startmenu_Text_From, work->formatBuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BeaconDetail_Text_From, work->formatBuf);
     for (i = 0; i < BEACON_DETAIL_PANEL_COUNT; i++) {
         BeaconDetailPanel *panel = &work->panels[i];
 
@@ -398,7 +398,7 @@ static void BeaconDetailSub_DrawLabels(BeaconDetailWork *work) {
                               PRINT_COLOR(15, 14, 3));
         BmpWin_TransferNow(panel->windows[BEACON_DETAIL_WINDOW_FROM].window);
     }
-    GFL_MsgDataLoadStrbuf(work->msgData, Startmenu_Text_NumberTimesThankedNumber, work->formatBuf);
+    GFL_MsgDataLoadStrbuf(work->msgData, BeaconDetail_Text_NumberTimesThankedNumber, work->formatBuf);
     for (i = 0; i < BEACON_DETAIL_PANEL_COUNT; i++) {
         BeaconDetailPanel *panel = &work->panels[i];
 
@@ -464,7 +464,7 @@ static void BeaconDetailSub_DrawPanel(BeaconDetailWork *work, GameBeacon *beacon
         GFL_StrBufClear(work->textBuf);
     } else {
         loadJobAnswerToStrbuf(work->wordSet, 0, answer);
-        BeaconDetailSub_FormatMessage(work, Startmenu_Text_Empty_2);
+        BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_Empty_2);
     }
     BeaconDetailSub_DrawRow(work, &panel->windows[BEACON_DETAIL_WINDOW_JOB], work->textBuf, 6, 48, 13, 2, 1);
 
@@ -473,25 +473,25 @@ static void BeaconDetailSub_DrawPanel(BeaconDetailWork *work, GameBeacon *beacon
         GFL_StrBufClear(work->textBuf);
     } else {
         loadHobbyNameToStrbuf(work->wordSet, 0, answer);
-        BeaconDetailSub_FormatMessage(work, Startmenu_Text_Empty);
+        BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_Empty);
     }
     BeaconDetailSub_DrawRow(work, &panel->windows[BEACON_DETAIL_WINDOW_HOBBY], work->textBuf, 6, 48, 13, 2, 0);
 
     GameBeacon_GetPlayTime(beacon, &hours, &minutes);
     WordSetNumber(work->wordSet, 2, hours, 3, 0, TRUE);
     WordSetNumber(work->wordSet, 3, minutes, 2, 2, TRUE);
-    BeaconDetailSub_FormatMessage(work, Startmenu_Text_Empty_3);
+    BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_Empty_3);
     BeaconDetailSub_DrawRow(work, &panel->windows[BEACON_DETAIL_WINDOW_TIME], work->textBuf, 6, 0, 5, 2, 1);
 
     country = GameBeacon_GetCountry(beacon);
     loadCountryToStrbuf(work->wordSet, 0, country);
     loadCountryAreaToStrbuf(work->wordSet, 1, country, GameBeacon_GetRegion(beacon));
-    BeaconDetailSub_FormatMessage(work, Startmenu_Text_Empty_4);
+    BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_Empty_4);
     BeaconDetailSub_DrawRow(work, &panel->windows[BEACON_DETAIL_WINDOW_HOME], work->textBuf, 0, 0, 28, 4, 0);
 
     WordSetNumber(work->wordSet, 0, GameBeacon_GetThankedCount(beacon), 5, 1, TRUE);
     WordSetNumber(work->wordSet, 1, GameBeacon_GetPasserbyCount(beacon), 5, 1, TRUE);
-    BeaconDetailSub_FormatMessage(work, Startmenu_Text_Empty_5);
+    BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_Empty_5);
     BeaconDetailSub_DrawRow(work, &panel->windows[BEACON_DETAIL_WINDOW_COUNTS], work->textBuf, 21, 0, 6, 4, 0);
 
     if (PMSDraw_IsDrawn(work->pmsDraw, page)) {
@@ -570,7 +570,7 @@ static void BeaconDetailSub_DrawMap(BeaconDetailWork *work) {
     WordSetNumber(work->wordSet, 0, hour, 2, 0, TRUE);
     WordSetNumber(work->wordSet, 1, (u8)work->time, 2, 2, TRUE);
     // The message of the morning or of the afternoon
-    BeaconDetailSub_FormatMessage(work, Startmenu_Text_PasserbyTime + hour / 12);
+    BeaconDetailSub_FormatMessage(work, BeaconDetail_Text_PasserbyTime + hour / 12);
     BeaconDetailSub_Print(work, &work->infoWindow, 0, 0, work->textBuf, PRINT_COLOR(7, 8, 15));
     BeaconDetailSub_SetRecentWords(work->beacon, work->wordSet);
     BeaconDetailSub_FormatMessage(work, recent->message);

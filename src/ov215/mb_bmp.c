@@ -18,7 +18,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/btl_server_flow_2.h"
+#include "text/system/mailbox.h"
 
 // The mailbox screen's windows and what is printed into them. The ROM doesn't name this file; the name is a guess,
 // after box2_bmp.c
@@ -156,8 +156,8 @@ void MailBox_PrintTitle(MailBoxWork *work) {
     BmpWin *window;
 
     GFL_BitmapFill(BmpWin_GetBitmap(work->view->windows[MAILBOX_WIN_TITLE]), 0);
-    MailBox_PrintMessageId(work->view, work->view->msgData, MAILBOX_WIN_TITLE, BtlServerFlow2_Text_Mailbox, 52, 0,
-                           work->font, PRINT_COLOR(1, 2, 0), PRINT_ALIGN_CENTER);
+    MailBox_PrintMessageId(work->view, work->view->msgData, MAILBOX_WIN_TITLE, Mailbox_Text_Mailbox, 52, 0, work->font,
+                           PRINT_COLOR(1, 2, 0), PRINT_ALIGN_CENTER);
     window = work->view->windows[MAILBOX_WIN_TITLE];
     BmpWin_Transfer(window);
 }
@@ -191,7 +191,7 @@ void MailBox_PrintWhatWouldYouLike(MailBoxWork *work) {
     StrBuf *str;
 
     MailBox_RegisterAuthorName(work, 0);
-    str = GFL_MsgDataLoadStrbufNew(work->view->msgData, BtlServerFlow2_Text_WhatWouldLikeS);
+    str = GFL_MsgDataLoadStrbufNew(work->view->msgData, Mailbox_Text_WhatWouldLikeS);
     GFL_WordSetFormatStrbuf(work->view->wordSet, work->view->strbuf, str);
     GFL_StrBufFree(str);
     MailBox_PrintMessage(work);
@@ -213,19 +213,19 @@ void MailBox_HideMessageWindow(MailBoxWork *work) {
 void MailBox_SetMessage(MailBoxWork *work, u32 message) {
     switch (message) {
     case MAILBOX_MESSAGE_ERASE:
-        GFL_MsgDataLoadStrbuf(work->view->msgData, BtlServerFlow2_Text_MessageWillLostOk, work->view->strbuf);
+        GFL_MsgDataLoadStrbuf(work->view->msgData, Mailbox_Text_MessageWillLostOk, work->view->strbuf);
         break;
     case MAILBOX_MESSAGE_ERASED:
-        GFL_MsgDataLoadStrbuf(work->view->msgData, BtlServerFlow2_Text_MessageErased, work->view->strbuf);
+        GFL_MsgDataLoadStrbuf(work->view->msgData, Mailbox_Text_MessageErased, work->view->strbuf);
         break;
     case MAILBOX_MESSAGE_ASK_HOLD:
-        GFL_MsgDataLoadStrbuf(work->view->msgData, BtlServerFlow2_Text_LetPokemonHoldMail, work->view->strbuf);
+        GFL_MsgDataLoadStrbuf(work->view->msgData, Mailbox_Text_LetPokemonHoldMail, work->view->strbuf);
         break;
     case MAILBOX_MESSAGE_HOLD_DONE:
-        GFL_MsgDataLoadStrbuf(work->view->msgData, BtlServerFlow2_Text_MailsMessageErasedPut, work->view->strbuf);
+        GFL_MsgDataLoadStrbuf(work->view->msgData, Mailbox_Text_MailsMessageErasedPut, work->view->strbuf);
         break;
     case MAILBOX_MESSAGE_BAG_FULL:
-        GFL_MsgDataLoadStrbuf(work->view->msgData, BtlServerFlow2_Text_BagFullMailDiscarded, work->view->strbuf);
+        GFL_MsgDataLoadStrbuf(work->view->msgData, Mailbox_Text_BagFullMailDiscarded, work->view->strbuf);
         break;
     }
     MailBox_PrintMessage(work);

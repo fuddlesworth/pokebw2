@@ -47,7 +47,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/btl_main_11.h"
+#include "text/system/party_list.h"
 
 // The party list's screen: its graphics, the cursor, and what each mode does with the Pokémon picked. The ROM
 // doesn't name this file; it is named for the list's system, which pokelist.c's proc runs
@@ -336,7 +336,7 @@ BOOL PokeList_Main(PokeListWork *wk) {
                     wk->buttons[0] = NULL;
                     wk->buttons[1] = NULL;
                     PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                    PokeListMessage_Print(wk, wk->message, BtlMain11_Text_CommunicatingPleaseWait);
+                    PokeListMessage_Print(wk, wk->message, PartyList_Text_CommunicatingPleaseWait);
                     PokeListMessage_ShowWaitIcon(wk, wk->message);
                 }
             } else {
@@ -646,7 +646,7 @@ static void PokeList_FreeActors(PokeListWork *wk) {
 static void PokeList_InitText(PokeListWork *wk) {
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTL_MAIN_11, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_PARTY_LIST, wk->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 0, 0x1c0, 0x20, wk->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 4, 0x1c0, 0x20, wk->heapId);
     wk->printQueue = PrintQueue_Create(0x1800, wk->heapId);
@@ -753,14 +753,14 @@ static void PokeList_FreeResources(PokeListWork *wk) {
 static void PokeList_InitMode(PokeListWork *wk) {
     switch (wk->param->mode) {
     case POKELIST_MODE_BATTLE_TEAM:
-        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Confirm, 22, 21, 0);
+        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, PartyList_Text_Confirm, 22, 21, 0);
         PokeList_ShowModeMessage(wk);
         wk->nextState = POKELIST_STATE_SELECT;
         break;
     case POKELIST_MODE_BATTLE_TEAM_CANCEL:
     case POKELIST_MODE_BATTLE_INSTITUTE:
-        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Confirm, 12, 21, 0);
-        wk->buttons[1] = PokeListMenu_CreateButton(wk, wk->menu, BtlMain11_Text_Cancel, 22, 21, 1);
+        wk->buttons[0] = PokeListMenu_CreateButton(wk, wk->menu, PartyList_Text_Confirm, 12, 21, 0);
+        wk->buttons[1] = PokeListMenu_CreateButton(wk, wk->menu, PartyList_Text_Cancel, 22, 21, 1);
         PokeList_ShowModeMessage(wk);
         wk->nextState = POKELIST_STATE_SELECT;
         break;
@@ -808,7 +808,7 @@ static void PokeList_InitMode(PokeListWork *wk) {
             PokeListMessage_Close(wk, wk->message);
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetItemName(wk, wk->message, 0, wk->param->item);
-            PokeList_ShowMessage(wk, BtlMain11_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             wk->nextState = wk->state;
             wk->state = POKELIST_STATE_FADE_IN;
@@ -824,12 +824,12 @@ static void PokeList_InitMode(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_12TaDa, TRUE, PokeList_LearnInSlot);
+            PokeList_ShowMessage(wk, PartyList_Text_12TaDa, TRUE, PokeList_LearnInSlot);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
+            PokeList_ShowMessage(wk, PartyList_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         wk->nextState = POKELIST_STATE_MESSAGE;
@@ -857,10 +857,10 @@ static void PokeList_InitMode(PokeListWork *wk) {
                 PokeList_UpdateGenesectForm(wk, wk->pkm, wk->param->item);
                 if (PokeListDemo_CanBecomeOrigin(wk, wk->pkm) == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else {
-                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
                 }
                 PokeListMessage_FreeWordSet(wk, wk->message);
                 wk->param->mode = POKELIST_MODE_FIELD;
@@ -868,7 +868,7 @@ static void PokeList_InitMode(PokeListWork *wk) {
                 PokeListMessage_CreateWordSet(wk, wk->message);
                 PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
                 PokeListMessage_SetItemTextName(wk, wk->message, 1, heldItem);
-                PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
+                PokeList_ShowMessage(wk, PartyList_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
                 PokeListMessage_FreeWordSet(wk, wk->message);
             }
         }
@@ -887,11 +887,11 @@ static void PokeList_InitMode(PokeListWork *wk) {
         heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
         PokeListMessage_CreateWordSet(wk, wk->message);
         if (heldItem == 0) {
-            msg = BtlMain11_Text_GivenHold;
+            msg = PartyList_Text_GivenHold;
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemName(wk, wk->message, 1, wk->param->item);
         } else {
-            msg = BtlMain11_Text_TakenReplaced;
+            msg = PartyList_Text_TakenReplaced;
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemName(wk, wk->message, 1, heldItem);
             PokeListMessage_SetItemName(wk, wk->message, 2, wk->param->item);
@@ -928,7 +928,7 @@ static void PokeList_ShowModeMessage(PokeListWork *wk) {
     switch (wk->param->mode) {
     case POKELIST_MODE_FIELD:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_ChoosePokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_ChoosePokemon);
         wk->showCloseAndShortcut = TRUE;
         break;
     case POKELIST_MODE_BATTLE_TEAM:
@@ -943,38 +943,38 @@ static void PokeList_ShowModeMessage(PokeListWork *wk) {
     case POKELIST_MODE_USE_ITEM:
     case POKELIST_MODE_EVOLUTION_ITEM:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_UseWhichPokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_UseWhichPokemon);
         wk->showCloseAndShortcut = FALSE;
         wk->allowEggs = FALSE;
         break;
     case POKELIST_MODE_GIVE_ITEM:
     case POKELIST_MODE_GIVE_MAIL:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_GiveWhichPokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_GiveWhichPokemon);
         wk->showCloseAndShortcut = FALSE;
         wk->allowEggs = FALSE;
         break;
     case POKELIST_MODE_TEACH_TM:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_TeachWhichPokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_TeachWhichPokemon);
         wk->showCloseAndShortcut = FALSE;
         wk->allowEggs = FALSE;
         break;
     case POKELIST_MODE_DAY_CARE:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_DepositWhichPokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_DepositWhichPokemon);
         wk->showCloseAndShortcut = FALSE;
         break;
     case POKELIST_MODE_SELECT:
     case POKELIST_MODE_MUSICAL:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_ChoosePokemon);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_ChoosePokemon);
         wk->showCloseAndShortcut = FALSE;
         break;
     case POKELIST_MODE_SELECT_EGG:
     case POKELIST_MODE_SELECT_EGG_PROMPT:
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_PleaseSelectEgg);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_PleaseSelectEgg);
         ClActor_SetVisible(wk->backButton, FALSE);
         wk->showCloseAndShortcut = FALSE;
         break;
@@ -1048,7 +1048,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
                 wk->state = POKELIST_STATE_SELECT_FUSION;
                 wk->showCloseAndShortcut = FALSE;
                 PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                PokeListMessage_Print(wk, wk->message, BtlMain11_Text_FuseWhichPokemon);
+                PokeListMessage_Print(wk, wk->message, PartyList_Text_FuseWhichPokemon);
                 PokeList_RefreshCursor(wk);
             }
         } else if (wk->param->item == ITEM_DNA_SPLICERS_SEPARATE) {
@@ -1076,7 +1076,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             wk->param->index = wk->cursorPos;
             wk->param->result = POKELIST_RESULT_EVOLVE_ITEM;
         } else {
-            PokeList_ShowMessage(wk, BtlMain11_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneExit);
         }
         break;
     case POKELIST_MODE_GIVE_ITEM: {
@@ -1098,21 +1098,21 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
                 PokeList_UpdateGenesectForm(wk, wk->pkm, wk->param->item);
                 if (PokeListDemo_CanBecomeOrigin(wk, wk->pkm) == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_GivenHold, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else {
-                    PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneExit);
+                    PokeList_ShowMessage(wk, PartyList_Text_GivenHold, TRUE, PokeList_MessageDoneExit);
                 }
                 PokeListMessage_FreeWordSet(wk, wk->message);
             }
         } else if (PML_ItemIsMail(heldItem) == TRUE) {
             wk->param->result = POKELIST_RESULT_ITEM_DONE;
-            PokeList_ShowMessage(wk, BtlMain11_Text_MustRemoveMailBefore, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_MustRemoveMailBefore, TRUE, PokeList_MessageDoneExit);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetItemTextName(wk, wk->message, 1, heldItem);
-            PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
+            PokeList_ShowMessage(wk, PartyList_Text_AlreadyHoldingWouldLike, FALSE, PokeList_AskSwapItem);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;
@@ -1125,9 +1125,9 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             GFL_HeapFree(mail);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, wk->param->item);
             MailBox_ResetMail(wk->param->mailbox, 0, wk->param->mailboxSlot);
-            PokeList_ShowMessage(wk, BtlMain11_Text_MailTransferredFromMailbox, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_MailTransferredFromMailbox, TRUE, PokeList_MessageDoneExit);
         } else {
-            PokeList_ShowMessage(wk, BtlMain11_Text_PokemonHoldingItemCannot, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_PokemonHoldingItemCannot, TRUE, PokeList_MessageDoneExit);
         }
         break;
     case POKELIST_MODE_TEACH_TM:
@@ -1137,7 +1137,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_Learned, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             PokeList_LearnMove(wk, wk->pkm);
             PokeList_RaiseFriendship(wk, wk->pkm);
@@ -1146,7 +1146,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
+            PokeList_ShowMessage(wk, PartyList_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
         case POKELIST_LEARN_UNABLE:
@@ -1154,7 +1154,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_NotCompatibleCantLearned, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_NotCompatibleCantLearned, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
         case POKELIST_LEARN_KNOWN:
@@ -1162,7 +1162,7 @@ static void PokeList_SelectPokemon(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-            PokeList_ShowMessage(wk, BtlMain11_Text_AlreadyKnows, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_AlreadyKnows, TRUE, PokeList_MessageDoneExit);
             PokeListMessage_FreeWordSet(wk, wk->message);
             break;
         }
@@ -1206,7 +1206,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     case POKELIST_MODE_BATTLE_TEAM:
@@ -1225,7 +1225,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     case POKELIST_MODE_USE_ITEM:
@@ -1252,7 +1252,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     case POKELIST_MODE_SELECT_EGG:
@@ -1262,7 +1262,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
             items[2] = POKELIST_MENU_BACK;
             items[3] = POKELIST_MENU_END;
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatWillEgg);
+            PokeListMessage_Print(wk, wk->message, PartyList_Text_WhatWillEgg);
         } else {
             items[0] = POKELIST_MENU_SUMMARY;
             items[1] = POKELIST_MENU_BACK;
@@ -1270,7 +1270,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
+            PokeListMessage_Print(wk, wk->message, PartyList_Text_What);
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
         break;
@@ -1288,7 +1288,7 @@ static void PokeList_OpenMenu(PokeListWork *wk) {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_What);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_What);
         PokeListMessage_FreeWordSet(wk, wk->message);
         break;
     default:
@@ -1507,7 +1507,7 @@ static void PokeList_HandleFusionSelection(PokeListWork *wk) {
             wk->demo = POKELIST_DEMO_KYUREM_FUSE;
             wk->demoForm = form;
         } else {
-            PokeList_ShowMessage(wk, form + BtlMain11_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, form + PartyList_Text_WontHaveAnyEffect, TRUE, PokeList_MessageDoneSelect);
             PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos], FALSE);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
@@ -1528,7 +1528,7 @@ static void PokeList_HandleHpShareSelection(PokeListWork *wk) {
         hp = PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL);
         maxHp = PokeParty_GetParam(wk->pkm, PKM_PARAM_MAX_HP, NULL);
         if (wk->cursorPos == wk->selectPos2 || hp == 0 || maxHp == hp) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_CantUsedPokemon, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_CantUsedPokemon, TRUE, PokeList_MessageDoneSelect);
             PokeList_ShowCursor(wk, wk->cursorPos);
             PokeListPlate_SetSelected(wk, wk->plates[wk->selectPos2], FALSE);
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
@@ -1601,21 +1601,21 @@ static void PokeList_ConfirmBattleTeam(PokeListWork *wk) {
         }
         result = PokeRegulation_CheckPicked(regulation, wk->param->party, picked);
         if (regulation->minCount > wk->enteredCount) {
-            PokeList_ShowMessage(wk, regulation->minCount + BtlMain11_Text_EggCannotHoldItem, TRUE,
+            PokeList_ShowMessage(wk, regulation->minCount + PartyList_Text_EggCannotHoldItem, TRUE,
                                  PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else if (regulation->maxCount < wk->enteredCount) {
-            PokeList_ShowMessage(wk, regulation->maxCount + BtlMain11_Text_SixPokemonNeeded, TRUE,
+            PokeList_ShowMessage(wk, regulation->maxCount + PartyList_Text_SixPokemonNeeded, TRUE,
                                  PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else if (result == REGULATION_RESULT_LEVEL_TOTAL) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetNumber(wk, wk->message, 0, regulation->maxLevelTotal, 3);
-            PokeList_ShowMessage(wk, BtlMain11_Text_TotalAllPartyMembers, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_TotalAllPartyMembers, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else if (result == REGULATION_RESULT_REQUIRED) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_PokemonWhichMustParticipate, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_PokemonWhichMustParticipate, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else {
             PokeListMenu_SetButtonActive(wk->buttons[1], FALSE);
@@ -1726,11 +1726,11 @@ static void PokeList_HandleItemSwapSelection(PokeListWork *wk) {
         PokeListMessage_Close(wk, wk->message);
         if ((dstSpecies == SPECIES_GIRATINA && srcItem == ITEM_GRISEOUS_ORB) ||
             (srcSpecies == SPECIES_GIRATINA && dstItem == ITEM_GRISEOUS_ORB)) {
-            PokeList_ShowItemSwapError(wk, BtlMain11_Text_GriseousOrbCannotMoved);
+            PokeList_ShowItemSwapError(wk, PartyList_Text_GriseousOrbCannotMoved);
         } else if (dstSpecies == SPECIES_GIRATINA && dstItem == ITEM_GRISEOUS_ORB) {
-            PokeList_ShowItemSwapError(wk, BtlMain11_Text_GriseousOrbCannotMoved_2);
+            PokeList_ShowItemSwapError(wk, PartyList_Text_GriseousOrbCannotMoved_2);
         } else if (dstSpecies == SPECIES_EGG) {
-            PokeList_ShowItemSwapError(wk, BtlMain11_Text_EggCannotHoldItem);
+            PokeList_ShowItemSwapError(wk, PartyList_Text_EggCannotHoldItem);
         } else {
             if (dstItem == 0) {
                 PokeList_MoveHeldItem(wk, src, dst, srcItem);
@@ -1749,9 +1749,9 @@ static void PokeList_HandleItemSwapSelection(PokeListWork *wk) {
             PokeListPlate_SetSelected(wk, wk->plates[wk->cursorPos], FALSE);
             ClActor_SetVisible(wk->subCursor, FALSE);
             if (dstItem == 0) {
-                PokeList_ShowMessage(wk, BtlMain11_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, PartyList_Text_GivenHold, TRUE, PokeList_MessageDoneSelect);
             } else {
-                PokeList_ShowMessage(wk, BtlMain11_Text_SSWereSwapped, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, PartyList_Text_SSWereSwapped, TRUE, PokeList_MessageDoneSelect);
             }
         }
         PokeListMessage_FreeWordSet(wk, wk->message);
@@ -2163,7 +2163,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         wk->pkm = NULL;
         wk->showCloseAndShortcut = FALSE;
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_MoveWhere);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_MoveWhere);
         PokeList_RefreshCursor(wk);
         break;
     case POKELIST_MENU_ITEM: {
@@ -2177,7 +2177,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
 
         PokeList_BeginMenu(wk);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatItem);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_WhatItem);
         if (item == ITEM_GRISEOUS_ORB && species == SPECIES_GIRATINA) {
             PokeListMenu_Open(wk, wk->menu, itemMenus[1]);
         } else {
@@ -2192,7 +2192,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
 
         PokeList_BeginMenu(wk);
         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_MENU);
-        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_WhatItem);
+        PokeListMessage_Print(wk, wk->message, PartyList_Text_WhatItem);
         PokeListMenu_Open(wk, wk->menu, mailMenu);
         GFL_BGSysLoadScr(0);
         break;
@@ -2216,13 +2216,13 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
             }
             wk->state = POKELIST_STATE_SELECT;
         } else if (result == POKELIST_ENTRY_CHECK_SAME_SPECIES) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_IdenticalPokemonNotPermitted, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_IdenticalPokemonNotPermitted, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else if (result == POKELIST_ENTRY_CHECK_SAME_ITEM) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_SomePokemonHoldingIdentical, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_SomePokemonHoldingIdentical, TRUE, PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         } else if (result == POKELIST_ENTRY_CHECK_FULL) {
-            PokeList_ShowMessage(wk, regulation->maxCount + BtlMain11_Text_SixPokemonNeeded, TRUE,
+            PokeList_ShowMessage(wk, regulation->maxCount + PartyList_Text_SixPokemonNeeded, TRUE,
                                  PokeList_MessageDoneSelect);
             GFL_SndSEPlay(SEQ_SE_BEEP);
         }
@@ -2268,10 +2268,10 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         if (item == 0) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-            PokeList_ShowMessage(wk, BtlMain11_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else if (PokeList_GetBagCount(wk, item) == 999) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
         } else {
             PokeList_SetHeldItem(wk, wk->pkm, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
@@ -2280,10 +2280,10 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
             PokeListMessage_SetItemName(wk, wk->message, 1, item);
             if (PokeListDemo_CanBecomeAltered(wk, wk->pkm) == TRUE) {
                 PokeListDemo_SetAltered(wk, wk->pkm);
-                PokeList_ShowMessage(wk, BtlMain11_Text_ReceivedFrom, TRUE, PokeList_MessageDoneDemo);
+                PokeList_ShowMessage(wk, PartyList_Text_ReceivedFrom, TRUE, PokeList_MessageDoneDemo);
                 wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
             } else {
-                PokeList_ShowMessage(wk, BtlMain11_Text_ReceivedFrom, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, PartyList_Text_ReceivedFrom, TRUE, PokeList_MessageDoneSelect);
             }
             PokeListMessage_FreeWordSet(wk, wk->message);
         }
@@ -2299,7 +2299,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         if (item == 0) {
             PokeListMessage_CreateWordSet(wk, wk->message);
             PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
-            PokeList_ShowMessage(wk, BtlMain11_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_IsntHoldingAnything, TRUE, PokeList_MessageDoneSelect);
             PokeListMessage_FreeWordSet(wk, wk->message);
         } else {
             PokeListMessage_CreateWordSet(wk, wk->message);
@@ -2312,7 +2312,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
             wk->pkm = NULL;
             wk->showCloseAndShortcut = FALSE;
             PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-            PokeListMessage_Print(wk, wk->message, BtlMain11_Text_MoveWhere);
+            PokeListMessage_Print(wk, wk->message, PartyList_Text_MoveWhere);
             PokeList_RefreshCursor(wk);
         }
         break;
@@ -2333,7 +2333,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
         wk->param->result = POKELIST_RESULT_READ_MAIL;
         break;
     case POKELIST_MENU_TAKE_MAIL:
-        PokeList_ShowMessage(wk, BtlMain11_Text_SendRemovedMailPc, FALSE, PokeList_AskTakeMail);
+        PokeList_ShowMessage(wk, PartyList_Text_SendRemovedMailPc, FALSE, PokeList_AskTakeMail);
         break;
     case POKELIST_MENU_SELECT:
         wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
@@ -2364,7 +2364,7 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
 
             if (hm == POKELIST_RESULT_MILK_DRINK || hm == POKELIST_RESULT_SOFTBOILED) {
                 if (IsZoneNormal(wk->param->zoneId) == FALSE) {
-                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
                 } else {
                     u32 maxHp = PokeParty_GetParam(wk->pkm, PKM_PARAM_MAX_HP, NULL);
                     u32 hp = PokeParty_GetParam(wk->pkm, PKM_PARAM_HP, NULL);
@@ -2377,10 +2377,10 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
                         wk->state = POKELIST_STATE_SELECT_HP_SHARE;
                         wk->showCloseAndShortcut = FALSE;
                         PokeListMessage_Open(wk, wk->message, POKELIST_MESSAGE_WINDOW_SHORT);
-                        PokeListMessage_Print(wk, wk->message, BtlMain11_Text_UseWhichPokemon_2);
+                        PokeListMessage_Print(wk, wk->message, PartyList_Text_UseWhichPokemon_2);
                         PokeList_RefreshCursor(wk);
                     } else {
-                        PokeList_ShowMessage(wk, BtlMain11_Text_NotEnoughHp, TRUE, PokeList_MessageDoneSelect);
+                        PokeList_ShowMessage(wk, PartyList_Text_NotEnoughHp, TRUE, PokeList_MessageDoneSelect);
                     }
                 }
             } else {
@@ -2391,19 +2391,19 @@ static void PokeList_DoMenuItem(PokeListWork *wk) {
                     wk->param->result = hm;
                     break;
                 case POKELIST_HM_CHECK_UNAVAILABLE:
-                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_CantUseHere, TRUE, PokeList_MessageDoneSelect);
                     break;
                 case POKELIST_HM_CHECK_BADGE_REQUIRED:
-                    PokeList_ShowMessage(wk, BtlMain11_Text_CantUsedUntilNew, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_CantUsedUntilNew, TRUE, PokeList_MessageDoneSelect);
                     break;
                 case POKELIST_HM_CHECK_WITH_PARTNER:
                     PokeListMessage_CreateWordSet(wk, wk->message);
                     PokeListMessage_SetMoveName(wk, wk->message, 0, *(sHMMoves + hm - POKELIST_RESULT_CUT));
-                    PokeList_ShowMessage(wk, BtlMain11_Text_CannotUsedWhenSomeone, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_CannotUsedWhenSomeone, TRUE, PokeList_MessageDoneSelect);
                     PokeListMessage_FreeWordSet(wk, wk->message);
                     break;
                 case POKELIST_HM_CHECK_ALREADY_SURFING:
-                    PokeList_ShowMessage(wk, BtlMain11_Text_YoureAlreadySurfing, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_YoureAlreadySurfing, TRUE, PokeList_MessageDoneSelect);
                     break;
                 }
             }
@@ -2719,7 +2719,7 @@ void PokeList_MessageDoneItem(PokeListWork *wk) {
         PokeListMessage_Close(wk, wk->message);
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetItemName(wk, wk->message, 0, wk->param->item);
-        PokeList_ShowMessage(wk, BtlMain11_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, PartyList_Text_UsedLast, TRUE, PokeList_MessageDoneExit);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
@@ -2737,11 +2737,11 @@ static void PokeList_AnswerReplaceMove(PokeListWork *wk, u32 item) {
         } else {
             wk->param->result = POKELIST_RESULT_REPLACE_TM_MOVE;
         }
-        PokeList_ShowMessage(wk, BtlMain11_Text_WhichMoveShouldForgotten, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, PartyList_Text_WhichMoveShouldForgotten, TRUE, PokeList_MessageDoneExit);
     } else {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-        PokeList_ShowMessage(wk, BtlMain11_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
+        PokeList_ShowMessage(wk, PartyList_Text_GiveUpLearningMove, FALSE, PokeList_AskCancelLearning);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
@@ -2759,16 +2759,16 @@ static void PokeList_AnswerCancelLearning(PokeListWork *wk, u32 item) {
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
         if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_DidNotLearn, TRUE, PokeList_LearnMessageDone);
+            PokeList_ShowMessage(wk, PartyList_Text_DidNotLearn, TRUE, PokeList_LearnMessageDone);
         } else {
-            PokeList_ShowMessage(wk, BtlMain11_Text_DidNotLearn, TRUE, PokeList_MessageDoneExit);
+            PokeList_ShowMessage(wk, PartyList_Text_DidNotLearn, TRUE, PokeList_MessageDoneExit);
         }
         PokeListMessage_FreeWordSet(wk, wk->message);
     } else {
         PokeListMessage_CreateWordSet(wk, wk->message);
         PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
         PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
-        PokeList_ShowMessage(wk, BtlMain11_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
+        PokeList_ShowMessage(wk, PartyList_Text_WantsLearnMoveHowever, FALSE, PokeList_AskReplaceMove);
         PokeListMessage_FreeWordSet(wk, wk->message);
     }
 }
@@ -2780,9 +2780,9 @@ static void PokeList_LearnInSlot(PokeListWork *wk) {
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     PokeListMessage_SetMoveName(wk, wk->message, 1, wk->param->move);
     if (wk->param->mode == POKELIST_MODE_USE_ITEM || wk->param->mode == POKELIST_MODE_REPLACE_LEVEL_MOVE) {
-        PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_LearnMessageDone);
+        PokeList_ShowMessage(wk, PartyList_Text_Learned, TRUE, PokeList_LearnMessageDone);
     } else {
-        PokeList_ShowMessage(wk, BtlMain11_Text_Learned, TRUE, PokeList_MessageDoneExit);
+        PokeList_ShowMessage(wk, PartyList_Text_Learned, TRUE, PokeList_MessageDoneExit);
         PokeList_RaiseFriendship(wk, wk->pkm);
         wk->param->result = POKELIST_RESULT_ITEM_DONE;
     }
@@ -2803,11 +2803,11 @@ static void PokeList_AnswerSwapItem(PokeListWork *wk, u32 item) {
             if (wk->param->mode == POKELIST_MODE_GIVE_FROM_BAG) {
                 wk->param->mode = POKELIST_MODE_FIELD;
                 PokeListMessage_Close(wk, wk->message);
-                PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
+                PokeList_ShowMessage(wk, PartyList_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
             } else {
                 wk->state = POKELIST_STATE_EXIT_WAIT_BUTTON;
                 PokeListMessage_Close(wk, wk->message);
-                PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneExit);
+                PokeList_ShowMessage(wk, PartyList_Text_BagFull, TRUE, PokeList_MessageDoneExit);
             }
         } else if (PML_ItemIsMail(wk->param->item) == TRUE) {
             wk->param->index = wk->cursorPos;
@@ -2831,27 +2831,27 @@ static void PokeList_AnswerSwapItem(PokeListWork *wk, u32 item) {
                 wk->param->mode = POKELIST_MODE_FIELD;
                 if (griseousForm == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else if (plateForm == TRUE) {
                     PokeListDemo_SetAltered(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
                 } else {
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneSelect);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneSelect);
                 }
             } else {
                 wk->param->result = POKELIST_RESULT_ITEM_DONE;
                 if (griseousForm == TRUE) {
                     PokeListDemo_SetOrigin(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ORIGIN;
                 } else if (plateForm == TRUE) {
                     PokeListDemo_SetAltered(wk, wk->pkm);
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneDemo);
                     wk->demo = POKELIST_DEMO_GIRATINA_ALTERED;
                 } else {
-                    PokeList_ShowMessage(wk, BtlMain11_Text_TakenReplaced, TRUE, PokeList_MessageDoneExit);
+                    PokeList_ShowMessage(wk, PartyList_Text_TakenReplaced, TRUE, PokeList_MessageDoneExit);
                 }
             }
             PokeListMessage_FreeWordSet(wk, wk->message);
@@ -2895,7 +2895,7 @@ static void PokeList_ShareHpEnd(PokeListWork *wk) {
     PokeListMessage_SetPkmName(wk, wk->message, 0, wk->pkm);
     if (wk->prevHp != 0) {
         PokeListMessage_SetNumber(wk, wk->message, 1, hp - wk->prevHp, 3);
-        PokeList_ShowMessage(wk, BtlMain11_Text_SHpRestoredBy, TRUE, PokeList_MessageDoneSelect);
+        PokeList_ShowMessage(wk, PartyList_Text_SHpRestoredBy, TRUE, PokeList_MessageDoneSelect);
     }
     PokeListMessage_FreeWordSet(wk, wk->message);
 }
@@ -2918,12 +2918,12 @@ static void PokeList_AnswerTakeMail(PokeListWork *wk, u32 item) {
             GFL_HeapFree(mail);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
-            PokeList_ShowMessage(wk, BtlMain11_Text_MailSentPc, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_MailSentPc, TRUE, PokeList_MessageDoneSelect);
         } else {
-            PokeList_ShowMessage(wk, BtlMain11_Text_PcsMailboxFull, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_PcsMailboxFull, TRUE, PokeList_MessageDoneSelect);
         }
     } else {
-        PokeList_ShowMessage(wk, BtlMain11_Text_IfMailRemovedIts, FALSE, PokeList_AskDeleteMail);
+        PokeList_ShowMessage(wk, PartyList_Text_IfMailRemovedIts, FALSE, PokeList_AskDeleteMail);
     }
 }
 
@@ -2938,12 +2938,12 @@ static void PokeList_AnswerDeleteMail(PokeListWork *wk, u32 item) {
         u32 heldItem = PokeParty_GetParam(wk->pkm, PKM_PARAM_ITEM, NULL);
 
         if (PokeList_GetBagCount(wk, heldItem) == 999) {
-            PokeList_ShowMessage(wk, BtlMain11_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_BagFull, TRUE, PokeList_MessageDoneSelect);
         } else {
             PokeList_AddToBag(wk, heldItem);
             PokeParty_SetParam(wk->pkm, PKM_PARAM_ITEM, 0);
             PokeListPlate_Redraw(wk, wk->plates[wk->cursorPos]);
-            PokeList_ShowMessage(wk, BtlMain11_Text_MailTakenFromPokemon, TRUE, PokeList_MessageDoneSelect);
+            PokeList_ShowMessage(wk, PartyList_Text_MailTakenFromPokemon, TRUE, PokeList_MessageDoneSelect);
         }
     } else {
         PokeListMessage_Close(wk, wk->message);

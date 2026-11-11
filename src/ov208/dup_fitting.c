@@ -41,9 +41,9 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/title_13.h"
-#include "text/system/title_3.h"
-#include "text/system/title_s005d_word_set_musical_info.h"
+#include "text/system/musical_dressing_room.h"
+#include "text/system/musical_info_words.h"
+#include "text/system/musical_prop_names.h"
 
 // Overlay 208's dup_fitting.c, named after its string: the musical's dressing room. A ring of the props the player
 // owns turns on the touch screen, and the player pulls them off it to put them on the Pokémon on the top screen.
@@ -410,7 +410,7 @@ u32 DupFitting_Main(DupFittingWork *work) {
     case DUP_FITTING_STATE_CONFIRM_IN:
         work->transition += 6;
         if (work->transition >= 192) {
-            DupFitting_PrintMessage(work, Title3_Text_LookOk, NULL);
+            DupFitting_PrintMessage(work, MusicalDressingRoom_Text_LookOk, NULL);
             work->transition = 192;
             work->state = DUP_FITTING_STATE_CONFIRM;
             work->tilt = 0;
@@ -445,7 +445,7 @@ u32 DupFitting_Main(DupFittingWork *work) {
                 work->state = DUP_FITTING_STATE_FADE_OUT;
                 work->msgClosed = TRUE;
             } else {
-                DupFitting_PrintMessage(work, Title3_Text_WaitingOtherParticipantsDress, NULL);
+                DupFitting_PrintMessage(work, MusicalDressingRoom_Text_WaitingOtherParticipantsDress, NULL);
                 MusComm_SendTiming(work->param->comm, 0x45);
                 work->state = DUP_FITTING_STATE_WAIT_TIMING;
             }
@@ -492,7 +492,7 @@ u32 DupFitting_Main(DupFittingWork *work) {
             if (work->showDemo == FALSE) {
                 DupFitting_PrintPokeName(work);
             } else {
-                DupFitting_PrintMessage(work, Title3_Text_CanPullOutProps, NULL);
+                DupFitting_PrintMessage(work, MusicalDressingRoom_Text_CanPullOutProps, NULL);
             }
             BmpWin_DrawFrame(work->bmpWin, WINFRAME_TRANSFER_VBLANK, 0x80, 12);
         }
@@ -2108,7 +2108,7 @@ static u32 DupFitting_UpdateConfirm(DupFittingWork *work) {
         DupFitting_ResetRotations(work);
         wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
         loadPokemonNicknameToStrbuf(wordSet, 0, work->param->poke->pkm);
-        DupFitting_PrintMessage(work, Title3_Text_LetsDressUpProps, wordSet);
+        DupFitting_PrintMessage(work, MusicalDressingRoom_Text_LetsDressUpProps, wordSet);
         GFL_WordSetSystemFree(wordSet);
         DupFitting_ShowTouchEffect(work);
         break;
@@ -2390,10 +2390,9 @@ static void DupFitting_DemoMoveHand(DupFittingWork *work, const DupFittingPoint 
 
 static void DupFitting_InitMessages(DupFittingWork *work) {
     work->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, work->heapId);
-    work->dressMsg = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_3, work->heapId);
-    work->itemMsg = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_13, work->heapId);
-    work->categoryMsg =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_TITLE_S005D_WORD_SET_MUSICAL_INFO, work->heapId);
+    work->dressMsg = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_DRESSING_ROOM, work->heapId);
+    work->itemMsg = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_PROP_NAMES, work->heapId);
+    work->categoryMsg = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MUSICAL_INFO_WORDS, work->heapId);
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_SUB_BG, 0x1c0, 0x20, work->heapId);
     work->printQueue = PrintQueue_CreateDefault(work->heapId);
     LoadSysMsgBox(7, 0x80, 12, 0, work->heapId);
@@ -2429,7 +2428,7 @@ static void DupFitting_PrintPokeName(DupFittingWork *work) {
     WordSet *wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
 
     loadPokemonNicknameToStrbuf(wordSet, 0, work->param->poke->pkm);
-    DupFitting_PrintMessage(work, Title3_Text_LetsDressUpProps, wordSet);
+    DupFitting_PrintMessage(work, MusicalDressingRoom_Text_LetsDressUpProps, wordSet);
     GFL_WordSetSystemFree(wordSet);
 }
 
@@ -2438,14 +2437,14 @@ static void DupFitting_PrintItemName(DupFittingWork *work, DupFittingItemNode *n
     DupFittingItemEntry *entry = DupFittingItemNode_GetEntry(node);
     s32 category = MusItemData_GetCategory(items, entry->itemId);
     WordSet *wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
-    StrBuf *itemName = GFL_MsgDataLoadStrbufNew(work->itemMsg, entry->itemId + Title13_Text_PinkBarrette);
+    StrBuf *itemName = GFL_MsgDataLoadStrbufNew(work->itemMsg, entry->itemId + MusicalPropNames_Text_PinkBarrette);
     StrBuf *categoryName;
 
-    category += TitleS005dWordSetMusicalInfo_Text_Ear;
+    category += MusicalInfoWords_Text_Ear;
     categoryName = GFL_MsgDataLoadStrbufNew(work->categoryMsg, category);
     GFL_WordSetSetStrbuf(wordSet, 0, itemName, 0, 1, 2);
     GFL_WordSetSetStrbuf(wordSet, 1, categoryName, 0, 1, 2);
-    DupFitting_PrintMessage(work, Title3_Text_PropLooksNice, wordSet);
+    DupFitting_PrintMessage(work, MusicalDressingRoom_Text_PropLooksNice, wordSet);
     GFL_StrBufFree(categoryName);
     GFL_StrBufFree(itemName);
     GFL_WordSetSystemFree(wordSet);
@@ -2457,36 +2456,36 @@ static void DupFitting_PrintCategory(DupFittingWork *work, s32 category) {
     StrBuf *name;
 
     if (category == DUP_FITTING_CATEGORY_ORIGINAL) {
-        DupFitting_PrintMessage(work, Title3_Text_OrderPropsRestoredOriginal, NULL);
+        DupFitting_PrintMessage(work, MusicalDressingRoom_Text_OrderPropsRestoredOriginal, NULL);
         return;
     }
     messageId = 0;
     switch (category) {
     case DUP_FITTING_CATEGORY_EAR:
     case DUP_FITTING_CATEGORY_EAR_2:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Ear;
+        messageId = MusicalInfoWords_Text_Ear;
         break;
     case DUP_FITTING_CATEGORY_HEAD:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Head;
+        messageId = MusicalInfoWords_Text_Head;
         break;
     case DUP_FITTING_CATEGORY_FACE:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Face_3;
+        messageId = MusicalInfoWords_Text_Face_3;
         break;
     case DUP_FITTING_CATEGORY_BODY:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Body;
+        messageId = MusicalInfoWords_Text_Body;
         break;
     case DUP_FITTING_CATEGORY_WAIST:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Waist;
+        messageId = MusicalInfoWords_Text_Waist;
         break;
     case DUP_FITTING_CATEGORY_ARM:
     case DUP_FITTING_CATEGORY_ARM_2:
-        messageId = TitleS005dWordSetMusicalInfo_Text_Arm;
+        messageId = MusicalInfoWords_Text_Arm;
         break;
     }
     wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
     name = GFL_MsgDataLoadStrbufNew(work->categoryMsg, messageId);
     GFL_WordSetSetStrbuf(wordSet, 0, name, 0, 1, 2);
-    DupFitting_PrintMessage(work, Title3_Text_PropsLookNiceWere, wordSet);
+    DupFitting_PrintMessage(work, MusicalDressingRoom_Text_PropsLookNiceWere, wordSet);
     GFL_StrBufFree(name);
     GFL_WordSetSystemFree(wordSet);
 }

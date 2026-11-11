@@ -220,7 +220,7 @@ Egg and Bad Egg after the species' names:
 | `species_names_en.txt` to `pokedex_weights_ja.txt` | `\from{species.pokedex.<language>.name}` and the like | The other languages' `pokedex.languages`: names, categories, entries, heights and weights |
 | `move_names.txt` | `\from{moves.name}` | Each move's `name` |
 | `move_names_upper.txt` | `\from{moves.name_upper}` | The same in capitals |
-| `btl_main_13.txt` | `\from{moves.description}` | Each move's `description` |
+| `move_descriptions.txt` | `\from{moves.description}` | Each move's `description` |
 | `item_names.txt` | `\from{items.name}` | Each item's `name` |
 | `item_names_with_article.txt` | `\from{items.name_with_article}` | The same with its article (`name_article`, or the whole `name_with_article` where it isn't written as the others) |
 | `item_names_plural.txt` | `\from{items.name_plural}` | Each item's `name_plural` |
@@ -978,7 +978,7 @@ stage's edge color and its models and animations, two to a variant, the two side
 
 The battle regulations (`a/1/0/6`, `ARCID_REGULATION`) are `res/battle/regulations/<n>.json`, regulation n, which the
 Union Room, the Wi-Fi and wireless battles, the Battle Subway and Pokéstar Studios load by number
-(`PokeRegulation_Load`): its name, a message of `load_battle_type_text_to_strbuf.txt`; how many Pokémon a team enters;
+(`PokeRegulation_Load`): its name, a message of `battle_type_names.txt`; how many Pokémon a team enters;
 the level and how it applies; whether a team may have two of a species or of a held item; the banned species and items;
 the species a team must have; the Wonder Launcher; whether nicknames are kept and the partners' teams shown; the
 selection's time limit; the battle type; and how many battles may be played. `tools/data/regulation_data.py` packs
@@ -1353,7 +1353,7 @@ members. Program n is the directory `res/musicals/programs/<n>/`, a file for eac
   each of the four kinds of prop and the bonus it adds to them at random, its list of props to give away, and its six
   performers, of which the game picks the other three entrants among those whose `min_shots` the player has reached.
   A performer has its Pokémon's species and form, its look as an `OBJ_CODE_*` (the C's `trainerClass`, which the
-  player's is `OBJ_CODE_HERO` or `OBJ_CODE_HEROINE`), its name as a message of `res/text/system/btl_main_9.txt` (the
+  player's is `OBJ_CODE_HERO` or `OBJ_CODE_HEROINE`), its name as a message of `res/text/system/musical_npc_names.txt` (the
   same line of `musical_event.txt` is its Pokémon's nickname), and the props its Pokémon wears, each `[item, slot]`.
   `res/musicals/programs/program.schema.json` describes the fields.
 - `messages.txt`, the program's messages, in the format of `res/text/`'s (see [Text](#text)), with IDs of the
