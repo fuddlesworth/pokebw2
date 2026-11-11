@@ -37,7 +37,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/un_select.h"
+#include "text/system/unity_tower_floor_select.h"
 
 // The Unity Tower's floor select, named after the ROM's "un_select.c": a list of the tower's floors, one for each
 // country, that scrolls beside a picture of the tower. Only the floors of countries whose visitors the player has met
@@ -429,7 +429,7 @@ static AppTaskMenu *UnSelect_CreateYesNo(AppTaskMenuRes *res, MsgData *msgData, 
     u32 i;
 
     for (i = 0; i < 2; i++) {
-        items[i].str = GFL_MsgDataLoadStrbufNew(msgData, UnSelect_Text_Yes + i);
+        items[i].str = GFL_MsgDataLoadStrbufNew(msgData, UnityTowerFloorSelect_Text_Yes + i);
         items[i].color = PRINT_COLOR(14, 15, 3);
         items[i].type = 0;
     }
@@ -478,7 +478,7 @@ static UnSelectMsg *UnSelectMsg_Create(HeapID heapId) {
     GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 0, 14 * 0x20, 0x20, heapId);
     LoadSysMsgBox(0, 1, 15, 0, heapId);
     msg->wordSet = GFL_WordSetSystemCreateDefault(heapId);
-    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_UN_SELECT, heapId);
+    msg->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_UNITY_TOWER_FLOOR_SELECT, heapId);
     msg->printQueue = PrintQueue_CreateDefault(heapId);
     msg->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, heapId);
     msg->strbuf = GFL_StrBufCreate(1600, heapId);
@@ -488,7 +488,7 @@ static UnSelectMsg *UnSelectMsg_Create(HeapID heapId) {
     window = msg->titleWindow = BmpWin_CreateDynamic(4, 1, 1, 30, 2, 6, TRUE);
     GFL_BitmapFill(BmpWin_GetBitmap(window), backColor);
     GFL_TextRndUpdateColorIndexLUT(1, 2, backColor);
-    GFL_MsgDataLoadStrbuf(msg->msgData, UnSelect_Text_PleaseSelectFloor, msg->strbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, UnityTowerFloorSelect_Text_PleaseSelectFloor, msg->strbuf);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), 4, 0, msg->strbuf, msg->font);
     BmpWin_Transfer(window);
     return msg;
@@ -522,7 +522,8 @@ static void UnSelectMsg_PrintItem(UnSelectMsg *msg, PrintWindow *window, PrintQu
     u32 y = 12;
     u32 floor = UN_SELECT_FLOOR(pos);
 
-    GFL_MsgDataLoadStrbuf(msg->msgData, floor == 2 ? UnSelect_Text_F_2 : UnSelect_Text_F, msg->strbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, floor == 2 ? UnityTowerFloorSelect_Text_F_2 : UnityTowerFloorSelect_Text_F,
+                          msg->strbuf);
     WordSetNumber(msg->wordSet, 2, floor, 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->expanded, msg->strbuf);
     PrintStrAligned(window, queue, 0, 12, msg->expanded, font, PRINT_COLOR(14, 15, 0), PRINT_ALIGN_LEFT);
@@ -649,7 +650,7 @@ static void UnSelect_CreateList(UnSelectWork *wk) {
     FrameList_LoadScreen(wk->list, arc, 4, FALSE, 1);
     FrameList_LoadCursorPalette(wk->list, arc, 1, 2, 3);
     GFL_ArcToolFree(arc);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_UN_SELECT, wk->heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_UNITY_TOWER_FLOOR_SELECT, wk->heapId);
     for (i = 0; i < UN_SELECT_FLOOR_COUNT; i++) {
         u32 type = 1;
 
@@ -660,7 +661,7 @@ static void UnSelect_CreateList(UnSelectWork *wk) {
         if (type == 0) {
             wk->msg->names[i] = GFL_MsgDataLoadStrbufNew(msgData, sUnSelectCountries[i]);
         } else {
-            wk->msg->names[i] = GFL_MsgDataLoadStrbufNew(msgData, UnSelect_Text_Empty_2);
+            wk->msg->names[i] = GFL_MsgDataLoadStrbufNew(msgData, UnityTowerFloorSelect_Text_Empty_2);
         }
     }
     GFL_MsgDataFree(msgData);
@@ -811,7 +812,7 @@ static BOOL UnSelect_ConfirmBegin(UIScene *scene, void *param) {
     case CONFIRM_BEGIN_STEP_PRINT:
         if (GFL_FadeIsRunning() != TRUE && BrightnessController_IsTransitionComplete(1)) {
             loadCountryToStrbuf(wk->msg->wordSet, 0, sUnSelectCountries[wk->selected]);
-            UnSelectMsg_Print(wk->msg, UnSelect_Text_WillGoFloor);
+            UnSelectMsg_Print(wk->msg, UnityTowerFloorSelect_Text_WillGoFloor);
             UIScene_IncCounter(scene);
         }
         break;
@@ -881,7 +882,7 @@ static BOOL UnSelect_SameFloorBegin(UIScene *scene, void *param) {
         break;
     case SAME_FLOOR_STEP_PRINT:
         if (GFL_FadeIsRunning() != TRUE && BrightnessController_IsTransitionComplete(1)) {
-            UnSelectMsg_Print(wk->msg, UnSelect_Text_SelectedCurrentFloor);
+            UnSelectMsg_Print(wk->msg, UnityTowerFloorSelect_Text_SelectedCurrentFloor);
             UIScene_IncCounter(scene);
         }
         break;

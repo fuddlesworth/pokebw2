@@ -1,0 +1,22 @@
+PokewoodBriefingMovie08_Text_UnovaDefenseForceUdf = {bd02}The Unova Defense Force (UDF)...\n\n{bd02}This organization strives to keep\n{bd02}the Unova region at peace...
+PokewoodBriefingMovie08_Text_StoryTheirValiantStruggle = {bd02}This is the story of\n{bd02}their valiant struggle...
+PokewoodBriefingMovie08_Text_BattledUfoEnigmaticWoman = {bd02}As {0100:1} battled\n{bd02}the UFO, the enigmatic\n{bd02}woman E appeared before him.\n\n{bd02}E introduced herself\n{bd02}as a UFO researcher...
+PokewoodBriefingMovie08_Text_SeveralDaysAfterUfo = {bd02}Several days after the UFO attack...\n\n\n{bd02}At E's request, {0100:1}\n{bd02}departed for a lonely beach.
+PokewoodBriefingMovie08_Text_Empty = なし
+PokewoodBriefingMovie08_Text_Empty_2 = なし
+PokewoodBriefingMovie08_Text_Empty_3 = なし
+PokewoodBriefingMovie08_Text_Empty_4 = なし
+PokewoodBriefingMovie08_Text_Empty_5 = なし
+PokewoodBriefingMovie08_Text_Empty_6 = なし
+PokewoodBriefingMovie08_Text_UnovaDefenseForceUdf_2 = {bd02}The Unova Defense Force (UDF)...\n\n{bd02}This organization strives to keep\n{bd02}the Unova region at peace...
+PokewoodBriefingMovie08_Text_StoryTheirValiantStruggle_2 = {bd02}This is the story of\n{bd02}their valiant struggle...
+PokewoodBriefingMovie08_Text_BattledUfoEnigmaticWoman_2 = {bd02}As {0100:1} battled\n{bd02}the UFO, the enigmatic\n{bd02}woman E appeared before her.\n\n{bd02}E introduced herself\n{bd02}as a UFO researcher...
+PokewoodBriefingMovie08_Text_SeveralDaysAfterUfo_2 = {bd02}Several days after the UFO attack...\n\n\n{bd02}At E's request, {0100:1}\n{bd02}departed for a lonely beach.
+PokewoodBriefingMovie08_Text_Empty_7 = なし
+PokewoodBriefingMovie08_Text_Empty_8 = なし
+PokewoodBriefingMovie08_Text_Empty_9 = なし
+PokewoodBriefingMovie08_Text_Empty_10 = なし
+PokewoodBriefingMovie08_Text_Empty_11 = なし
+PokewoodBriefingMovie08_Text_Empty_12 = なし
+PokewoodBriefingMovie08_Text_Empty_13 = なし
+\pad{f8}

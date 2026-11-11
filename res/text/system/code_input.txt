@@ -1,0 +1,7 @@
+CodeInput_Text_PleaseEnterFriendCode = Please enter the Friend Code.
+CodeInput_Text_EnterTrainNumber01 = Enter\nTrain Number (01-{0201:0})
+CodeInput_Text_EnterRank01 = Enter\nRank (01-{0201:0})
+CodeInput_Text_Back = BACK
+CodeInput_Text_Ok = OK
+CodeInput_Text_ThereNoSuchTrain = There is no such Train Number.\nPlease enter a number up to {0201:0}.
+CodeInput_Text_ThereNoSuchRank = There is no such Rank.\nPlease enter a number up to {0201:0}.

@@ -15,7 +15,7 @@
 #include "system/str_tool.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
-#include "text/system/b_bag_main.h"
+#include "text/system/battle_bag.h"
 
 // The battle bag's windows and text (overlay 286). The ROM doesn't name this file: b_bag_bmp.c is a guess after the
 // ROM's b_bag_main.c and the b_bag_bmp.c of Diamond and Pearl. The names are ours.
@@ -66,9 +66,9 @@ static const u8 sBBagFirstListWindows[] = {
 
 // By slot, the messages of the item's name and of its count
 static const u32 sBBagSlotMessages[6][2] = {
-    { BBagMain_Text_Empty_3, BBagMain_Text_X },   { BBagMain_Text_Empty_4, BBagMain_Text_X_2 },
-    { BBagMain_Text_Empty_5, BBagMain_Text_X_3 }, { BBagMain_Text_Empty_6, BBagMain_Text_X_4 },
-    { BBagMain_Text_Empty_7, BBagMain_Text_X_5 }, { BBagMain_Text_Empty_8, BBagMain_Text_X_6 },
+    { BattleBag_Text_Empty_3, BattleBag_Text_X },   { BattleBag_Text_Empty_4, BattleBag_Text_X_2 },
+    { BattleBag_Text_Empty_5, BattleBag_Text_X_3 }, { BattleBag_Text_Empty_6, BattleBag_Text_X_4 },
+    { BattleBag_Text_Empty_7, BattleBag_Text_X_5 }, { BattleBag_Text_Empty_8, BattleBag_Text_X_6 },
 };
 
 static const BBagWinData sBBagWindowLayouts[BBAG_WINDOW_MAX] = {
@@ -148,15 +148,15 @@ static void BBagBmp_DrawPocketPage(BBagWork *work) {
     for (i = 0; i <= 4; i++) {
         GFL_BitmapFill(BmpWin_GetBitmap(work->windows[i].window), 0);
     }
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_HP_PP, BBagMain_Text_HpPp, 0, BBAG_COLOR);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_HP_PP, BBagMain_Text_Restore, 16, BBAG_COLOR);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_STATUS, BBagMain_Text_Status, 0, BBAG_COLOR);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_STATUS, BBagMain_Text_Restore_2, 16, BBAG_COLOR);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_BALLS, BBagMain_Text_PokeBalls, 0, BBAG_COLOR);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_BATTLE_ITEMS, BBagMain_Text_BattleItems, 0, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_HP_PP, BattleBag_Text_HpPp, 0, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_HP_PP, BattleBag_Text_Restore, 16, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_STATUS, BattleBag_Text_Status, 0, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_STATUS, BattleBag_Text_Restore_2, 16, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_BALLS, BattleBag_Text_PokeBalls, 0, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_BATTLE_ITEMS, BattleBag_Text_BattleItems, 0, BBAG_COLOR);
 
     if (work->lastItem != ITEM_NONE) {
-        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData, BBagMain_Text_LastUsedItem);
+        StrBuf *str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleBag_Text_LastUsedItem);
 
         PrintWindow_Print(&work->windows[BBAG_WINDOW_LAST_ITEM_LABEL], work->printQueue, 0, 0, str, work->param->font,
                           BBAG_COLOR);
@@ -241,19 +241,19 @@ void BBagBmp_PrintPageNumber(BBagWork *work) {
     u32 pageWidth;
 
     GFL_BitmapFill(bitmap, 0);
-    str = GFL_MsgDataLoadStrbufNew(work->msgData, BBagMain_Text_Empty_10);
+    str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleBag_Text_Empty_10);
     slashWidth = GFL_FontGetBlockWidth(str, work->param->font, 0);
     x = (BmpWin_GetSizeX(win) * 8 - slashWidth) / 2;
     PrintQueue_PrintColor(work->printQueue, bitmap, x, 4, str, work->param->font, BBAG_COLOR);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(work->msgData, BBagMain_Text_Empty_11);
+    str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleBag_Text_Empty_11);
     WordSetNumber(work->wordSet, 0, work->lastPage[work->pocket] + 1, 2, NUM_PAD_NONE, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strBuf, str);
     PrintQueue_PrintColor(work->printQueue, bitmap, x + slashWidth, 4, work->strBuf, work->param->font, BBAG_COLOR);
     GFL_StrBufFree(str);
 
-    str = GFL_MsgDataLoadStrbufNew(work->msgData, BBagMain_Text_Empty_12);
+    str = GFL_MsgDataLoadStrbufNew(work->msgData, BattleBag_Text_Empty_12);
     WordSetNumber(work->wordSet, 0, work->param->pages[work->pocket] + 1, 2, NUM_PAD_NONE, TRUE);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strBuf, str);
     pageWidth = GFL_FontGetBlockWidth(work->strBuf, work->param->font, 0);
@@ -267,18 +267,18 @@ static void BBagBmp_PrintPocketName(BBagWork *work) {
     if (work->param->mode != BBAG_MODE_SHOOTER) {
         switch (work->pocket) {
         case BBAG_POCKET_HP_PP:
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_HpPp_2, 4, BBAG_COLOR);
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_Restore_3, 20, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_HpPp_2, 4, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_Restore_3, 20, BBAG_COLOR);
             break;
         case BBAG_POCKET_STATUS:
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_Status_2, 4, BBAG_COLOR);
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_Restore_4, 20, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_Status_2, 4, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_Restore_4, 20, BBAG_COLOR);
             break;
         case BBAG_POCKET_BALLS:
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_PokeBalls_2, 12, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_PokeBalls_2, 12, BBAG_COLOR);
             break;
         case BBAG_POCKET_BATTLE_ITEMS:
-            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BBagMain_Text_BattleItems_2, 12, BBAG_COLOR);
+            BBagBmp_PrintCentered(work, BBAG_WINDOW_POCKET_NAME, BattleBag_Text_BattleItems_2, 12, BBAG_COLOR);
             break;
         }
     } else {
@@ -294,7 +294,7 @@ static void BBagBmp_DrawItemPage(BBagWork *work) {
 
 static void BBagBmp_PrintChosenName(BBagWork *work, u32 index) {
     BmpWin *win = work->windows[BBAG_WINDOW_ITEM_NAME].window;
-    StrBuf *tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, BBagMain_Text_Empty_3);
+    StrBuf *tmpl = GFL_MsgDataLoadStrbufNew(work->msgData, BattleBag_Text_Empty_3);
 
     loadItemNameToStrbuf(work->wordSet, 0, work->items[work->pocket][index].item);
     GFL_WordSetFormatStrbuf(work->wordSet, work->strBuf, tmpl);
@@ -326,7 +326,7 @@ static void BBagBmp_DrawChosenItemPage(BBagWork *work) {
     BBagBmp_PrintChosenName(work, row + page * BBAG_ITEMS_PER_PAGE);
     BBagBmp_PrintSlotCount(work, row + page * BBAG_ITEMS_PER_PAGE, 0, BBAG_WINDOW_ITEM_COUNT, 0, 0, 0);
     BBagBmp_PrintDescription(work, row + page * BBAG_ITEMS_PER_PAGE);
-    BBagBmp_PrintCentered(work, BBAG_WINDOW_USE, BBagMain_Text_Use, 0, BBAG_COLOR);
+    BBagBmp_PrintCentered(work, BBAG_WINDOW_USE, BattleBag_Text_Use, 0, BBAG_COLOR);
     work->flushList = sBBagUsePageWindows;
 }
 

@@ -95,7 +95,7 @@ static BOOL WorldTradeProc_Init(GameProc *proc, u32 *state, void *param, void *w
 
     wk->wordSet = GFL_WordSetSystemCreate(11, 64, HEAPID_WORLDTRADE);
     wk->msgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLDTRADE, HEAPID_WORLDTRADE);
-    wk->lobbyMsgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_P2PMATCH, HEAPID_WORLDTRADE);
+    wk->lobbyMsgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_CLUB, HEAPID_WORLDTRADE);
     wk->systemMsgManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_ERROR, HEAPID_WORLDTRADE);
     wk->monsNameManager = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SPECIES_NAMES, HEAPID_WORLDTRADE);
     wk->countryNameManager =

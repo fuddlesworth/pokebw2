@@ -17,7 +17,7 @@
 #include "system/pms_word.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/union_msg.h"
+#include "text/system/union_room_messages.h"
 
 // The Union Room's messages and menus: the lookups of message IDs, the message system the field talks through (the
 // message data, the word set, the stream window), the menus of the battle rules and the regulation's rules printed.
@@ -56,147 +56,170 @@ static const ListMenuRow sMenuTwo[6];
 
 // The tables are declared in the order that gives the ROM's .rodata: MWCC heapsorts the objects of equal size by where
 // they are declared. The pairs are the messages of a gender, or of a language, by the lookups above
-static const u16 sMsgPair_0214[2] = { UnionMsg_Text_ThanksWaitingLetsGet, UnionMsg_Text_SorryMadeWaitLets };
+static const u16 sMsgPair_0214[2] = { UnionRoomMessages_Text_ThanksWaitingLetsGet,
+                                      UnionRoomMessages_Text_SorryMadeWaitLets };
 
-static const u16 sMsgPair_0210[2] = { UnionMsg_Text_ThereEggCannotTraded_3, UnionMsg_Text_ThereEggCannotTraded_4 };
+static const u16 sMsgPair_0210[2] = { UnionRoomMessages_Text_ThereEggCannotTraded_3,
+                                      UnionRoomMessages_Text_ThereEggCannotTraded_4 };
 
-static const u16 sMsgPair_0208[2] = { UnionMsg_Text_CantTradeIfHave, UnionMsg_Text_CantTradeIfHave_2 };
+static const u16 sMsgPair_0208[2] = { UnionRoomMessages_Text_CantTradeIfHave,
+                                      UnionRoomMessages_Text_CantTradeIfHave_2 };
 
-static const u16 sMsgPair_01f0[2] = { UnionMsg_Text_OhAllRightCome_3, UnionMsg_Text_OhPleaseComeBy_3 };
+static const u16 sMsgPair_01f0[2] = { UnionRoomMessages_Text_OhAllRightCome_3,
+                                      UnionRoomMessages_Text_OhPleaseComeBy_3 };
 
-static const u16 sMsgPair_0218[2] = { UnionMsg_Text_IfWantSomethingJust, UnionMsg_Text_IfWantSomethingDont };
+static const u16 sMsgPair_0218[2] = { UnionRoomMessages_Text_IfWantSomethingJust,
+                                      UnionRoomMessages_Text_IfWantSomethingDont };
 
-static const u16 sMsgPair_0220[2] = { UnionMsg_Text_ThereEggCannotTraded, UnionMsg_Text_ThereEggCannotTraded_2 };
+static const u16 sMsgPair_0220[2] = { UnionRoomMessages_Text_ThereEggCannotTraded,
+                                      UnionRoomMessages_Text_ThereEggCannotTraded_2 };
 
-static const u16 sMsgPair_021c[2] = { UnionMsg_Text_OkJustGiveSecond_3, UnionMsg_Text_OkJustGiveSecond_4 };
+static const u16 sMsgPair_021c[2] = { UnionRoomMessages_Text_OkJustGiveSecond_3,
+                                      UnionRoomMessages_Text_OkJustGiveSecond_4 };
 
-static const u16 sMsgPair_0228[2] = { UnionMsg_Text_WereDrawingRightNow, UnionMsg_Text_WereDrawingRightNow_2 };
+static const u16 sMsgPair_0228[2] = { UnionRoomMessages_Text_WereDrawingRightNow,
+                                      UnionRoomMessages_Text_WereDrawingRightNow_2 };
 
-static const u16 sMsgPair_01f4[2] = { UnionMsg_Text_SorryMakeWaitOk, UnionMsg_Text_SorryKeepWaitingOk };
+static const u16 sMsgPair_01f4[2] = { UnionRoomMessages_Text_SorryMakeWaitOk,
+                                      UnionRoomMessages_Text_SorryKeepWaitingOk };
 
-static const u16 sMsgPair_01e0[2] = { UnionMsg_Text_OkJustGiveSecond, UnionMsg_Text_OkJustGiveSecond_2 };
+static const u16 sMsgPair_01e0[2] = { UnionRoomMessages_Text_OkJustGiveSecond,
+                                      UnionRoomMessages_Text_OkJustGiveSecond_2 };
 
-static const u16 sMsgPair_0224[2] = { UnionMsg_Text_TrainerAppearsBusy, UnionMsg_Text_TrainerAppearsBusy_2 };
+static const u16 sMsgPair_0224[2] = { UnionRoomMessages_Text_TrainerAppearsBusy,
+                                      UnionRoomMessages_Text_TrainerAppearsBusy_2 };
 
-static const u16 sMsgPair_0204[2] = { UnionMsg_Text_DidNotReply, UnionMsg_Text_DidNotReply_2 };
+static const u16 sMsgPair_0204[2] = { UnionRoomMessages_Text_DidNotReply, UnionRoomMessages_Text_DidNotReply_2 };
 
-static const u16 sMsgPair_01f8[2] = { UnionMsg_Text_WereGoingSpinTrade, UnionMsg_Text_WeWereDoingSpin };
+static const u16 sMsgPair_01f8[2] = { UnionRoomMessages_Text_WereGoingSpinTrade,
+                                      UnionRoomMessages_Text_WeWereDoingSpin };
 
-static const u16 sMsgPair_0230[2] = { UnionMsg_Text_WhoopsSorryButHave, UnionMsg_Text_WhoopsSorryButHave_2 };
+static const u16 sMsgPair_0230[2] = { UnionRoomMessages_Text_WhoopsSorryButHave,
+                                      UnionRoomMessages_Text_WhoopsSorryButHave_2 };
 
-static const u16 sMsgPair_020c[2] = { UnionMsg_Text_ThereEggCannotTraded, UnionMsg_Text_ThereEggCannotTraded_2 };
+static const u16 sMsgPair_020c[2] = { UnionRoomMessages_Text_ThereEggCannotTraded,
+                                      UnionRoomMessages_Text_ThereEggCannotTraded_2 };
 
-static const u16 sMsgPair_01ec[2] = { UnionMsg_Text_OhAllRightCome_2, UnionMsg_Text_OhPleaseComeBy_2 };
+static const u16 sMsgPair_01ec[2] = { UnionRoomMessages_Text_OhAllRightCome_2,
+                                      UnionRoomMessages_Text_OhPleaseComeBy_2 };
 
-static const u16 sMsgPair_0200[2] = { UnionMsg_Text_NeedEggIfWant, UnionMsg_Text_NeedEggIfWant_2 };
+static const u16 sMsgPair_0200[2] = { UnionRoomMessages_Text_NeedEggIfWant, UnionRoomMessages_Text_NeedEggIfWant_2 };
 
-static const u16 sMsgPair_01e8[2] = { UnionMsg_Text_WhatWouldLike, UnionMsg_Text_WhatWouldLike_2 };
+static const u16 sMsgPair_01e8[2] = { UnionRoomMessages_Text_WhatWouldLike, UnionRoomMessages_Text_WhatWouldLike_2 };
 
-static const u16 sMsgPair_022c[2] = { UnionMsg_Text_OhAllRightCome, UnionMsg_Text_OhPleaseComeBy };
+static const u16 sMsgPair_022c[2] = { UnionRoomMessages_Text_OhAllRightCome, UnionRoomMessages_Text_OhPleaseComeBy };
 
-static const u16 sMsgPair_01fc[2] = { UnionMsg_Text_WereAboutHaveMulti, UnionMsg_Text_WereAboutHaveMulti_2 };
+static const u16 sMsgPair_01fc[2] = { UnionRoomMessages_Text_WereAboutHaveMulti,
+                                      UnionRoomMessages_Text_WereAboutHaveMulti_2 };
 
-static const u16 sMsgPair_01e4[2] = { UnionMsg_Text_OhImSorryHave_3, UnionMsg_Text_OhSorryLetsAnother };
+static const u16 sMsgPair_01e4[2] = { UnionRoomMessages_Text_OhImSorryHave_3,
+                                      UnionRoomMessages_Text_OhSorryLetsAnother };
 
-static const u16 sMsgPair_01d8[2] = { UnionMsg_Text_OkLetsSomeDrawing, UnionMsg_Text_OkThanksWaitingLets };
+static const u16 sMsgPair_01d8[2] = { UnionRoomMessages_Text_OkLetsSomeDrawing,
+                                      UnionRoomMessages_Text_OkThanksWaitingLets };
 
-static const u16 sMsgPair_01dc[2] = { UnionMsg_Text_OhImSorryHave, UnionMsg_Text_OhImSorryHave_2 };
+static const u16 sMsgPair_01dc[2] = { UnionRoomMessages_Text_OhImSorryHave, UnionRoomMessages_Text_OhImSorryHave_2 };
 
-static const u16 sMsgPair_0244[2] = { UnionMsg_Text_OkJustGiveSecond_5, UnionMsg_Text_OkJustGiveSecond_6 };
+static const u16 sMsgPair_0244[2] = { UnionRoomMessages_Text_OkJustGiveSecond_5,
+                                      UnionRoomMessages_Text_OkJustGiveSecond_6 };
 
-static const u16 sMsgPair_0240[2] = { UnionMsg_Text_OkLetsSpinTrade, UnionMsg_Text_OkLetsSpinTrade_2 };
+static const u16 sMsgPair_0240[2] = { UnionRoomMessages_Text_OkLetsSpinTrade,
+                                      UnionRoomMessages_Text_OkLetsSpinTrade_2 };
 
-static const u16 sMsgPair_023c[2] = { UnionMsg_Text_OhImSorryHave_5, UnionMsg_Text_OhSorryLetsAnother_3 };
+static const u16 sMsgPair_023c[2] = { UnionRoomMessages_Text_OhImSorryHave_5,
+                                      UnionRoomMessages_Text_OhSorryLetsAnother_3 };
 
-static const u16 sMsgPair_0238[2] = { UnionMsg_Text_WhatsLooksLikeDont, UnionMsg_Text_WhatsLooksLikeDont_2 };
+static const u16 sMsgPair_0238[2] = { UnionRoomMessages_Text_WhatsLooksLikeDont,
+                                      UnionRoomMessages_Text_WhatsLooksLikeDont_2 };
 
-static const u16 sMsgPair_0234[2] = { UnionMsg_Text_ThereSomethingWanted, UnionMsg_Text_HelloItsWouldLike };
+static const u16 sMsgPair_0234[2] = { UnionRoomMessages_Text_ThereSomethingWanted,
+                                      UnionRoomMessages_Text_HelloItsWouldLike };
 
 static const u16 sMsgPairs_0248[2][2] = {
-    { UnionMsg_Text_OhYeahReallyWanted, UnionMsg_Text_ImTradingPokemonRight },
-    { UnionMsg_Text_FinallyGotPokemonIve, UnionMsg_Text_FinallyGotPokemonWanted },
+    { UnionRoomMessages_Text_OhYeahReallyWanted, UnionRoomMessages_Text_ImTradingPokemonRight },
+    { UnionRoomMessages_Text_FinallyGotPokemonIve, UnionRoomMessages_Text_FinallyGotPokemonWanted },
 };
 
 static const u16 sMsgPairs_0250[2][2] = {
-    { UnionMsg_Text_ImJustShowingTrainer, UnionMsg_Text_WereShowingEachOther },
-    { UnionMsg_Text_HopeGetKnowBetter, UnionMsg_Text_GladMeetPleaseDont },
+    { UnionRoomMessages_Text_ImJustShowingTrainer, UnionRoomMessages_Text_WereShowingEachOther },
+    { UnionRoomMessages_Text_HopeGetKnowBetter, UnionRoomMessages_Text_GladMeetPleaseDont },
 };
 
 static const u16 sMsgPairs_0258[4][2] = {
-    { UnionMsg_Text_LastLetterWhatDraw, UnionMsg_Text_WowYoureReallyGood },
-    { UnionMsg_Text_StopDrawingFunnyFaces, UnionMsg_Text_AhahaWhat },
-    { UnionMsg_Text_WowYoureGoodIll, UnionMsg_Text_LoveDrawingCanDraw },
-    { UnionMsg_Text_UhHuhWhatSupposed, UnionMsg_Text_OopsCantStayInside },
+    { UnionRoomMessages_Text_LastLetterWhatDraw, UnionRoomMessages_Text_WowYoureReallyGood },
+    { UnionRoomMessages_Text_StopDrawingFunnyFaces, UnionRoomMessages_Text_AhahaWhat },
+    { UnionRoomMessages_Text_WowYoureGoodIll, UnionRoomMessages_Text_LoveDrawingCanDraw },
+    { UnionRoomMessages_Text_UhHuhWhatSupposed, UnionRoomMessages_Text_OopsCantStayInside },
 };
 
 static const u16 sMsgPairs_0268[4][2] = {
-    { UnionMsg_Text_WhoaCanTellYoure, UnionMsg_Text_PokemonItsBeenRaised },
-    { UnionMsg_Text_UsedMoveThatsGood, UnionMsg_Text_ThatsRightMoveNow },
-    { UnionMsg_Text_WayGoEyeOpener, UnionMsg_Text_ThatsAwesomeIveNever },
-    { UnionMsg_Text_OhHowCouldUse, UnionMsg_Text_HaveExquisiteTimingSwitching },
+    { UnionRoomMessages_Text_WhoaCanTellYoure, UnionRoomMessages_Text_PokemonItsBeenRaised },
+    { UnionRoomMessages_Text_UsedMoveThatsGood, UnionRoomMessages_Text_ThatsRightMoveNow },
+    { UnionRoomMessages_Text_WayGoEyeOpener, UnionRoomMessages_Text_ThatsAwesomeIveNever },
+    { UnionRoomMessages_Text_OhHowCouldUse, UnionRoomMessages_Text_HaveExquisiteTimingSwitching },
 };
 
 static const u16 sMsgPairs_0278[4][2] = {
-    { UnionMsg_Text_SpinTradesMuchFun, UnionMsg_Text_WereDoingSpinTrades },
-    { UnionMsg_Text_ThereStopThere, UnionMsg_Text_WahMovedAgain },
-    { UnionMsg_Text_EggsAwesome, UnionMsg_Text_ThereGoesEggWanted },
-    { UnionMsg_Text_YesGotEggWanted, UnionMsg_Text_IfStoppedThereWouldve },
+    { UnionRoomMessages_Text_SpinTradesMuchFun, UnionRoomMessages_Text_WereDoingSpinTrades },
+    { UnionRoomMessages_Text_ThereStopThere, UnionRoomMessages_Text_WahMovedAgain },
+    { UnionRoomMessages_Text_EggsAwesome, UnionRoomMessages_Text_ThereGoesEggWanted },
+    { UnionRoomMessages_Text_YesGotEggWanted, UnionRoomMessages_Text_IfStoppedThereWouldve },
 };
 
 static const u16 sMsgPairs_04cc[25][2] = {
-    { UnionMsg_Text_SureThingLetShow, UnionMsg_Text_HiLetIntroduceMyself },
-    { UnionMsg_Text_OhDidWantDraw, UnionMsg_Text_WantDrawSureJust },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_BattleCourseButNeed, UnionMsg_Text_BattleCourseButNeed_2 },
-    { UnionMsg_Text_WantTradeHuhSure, UnionMsg_Text_TradeCourseButNeed },
-    { UnionMsg_Text_SpinTradeSureOk, UnionMsg_Text_SpinTradeCourseOk },
-    { UnionMsg_Text_SpinTradeSureOk, UnionMsg_Text_SpinTradeCourseOk },
+    { UnionRoomMessages_Text_SureThingLetShow, UnionRoomMessages_Text_HiLetIntroduceMyself },
+    { UnionRoomMessages_Text_OhDidWantDraw, UnionRoomMessages_Text_WantDrawSureJust },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_BattleCourseButNeed, UnionRoomMessages_Text_BattleCourseButNeed_2 },
+    { UnionRoomMessages_Text_WantTradeHuhSure, UnionRoomMessages_Text_TradeCourseButNeed },
+    { UnionRoomMessages_Text_SpinTradeSureOk, UnionRoomMessages_Text_SpinTradeCourseOk },
+    { UnionRoomMessages_Text_SpinTradeSureOk, UnionRoomMessages_Text_SpinTradeCourseOk },
 };
 
 static const u16 sMsgPairs_0530[25][2] = {
-    { UnionMsg_Text_HuhTrainerCardWhered, UnionMsg_Text_HuhTrainerCardWhered_2 },
-    { UnionMsg_Text_OhSorryCantNow, UnionMsg_Text_OhImSorryLets },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryPokemonDontSeem, UnionMsg_Text_ImTerriblySorryBut },
-    { UnionMsg_Text_SorryDontHavePokemon, UnionMsg_Text_ImSorryButDont },
-    { UnionMsg_Text_OhImSorryHave_4, UnionMsg_Text_OhSorryLetsAnother_2 },
-    { UnionMsg_Text_Empty_20, UnionMsg_Text_Empty_21 },
+    { UnionRoomMessages_Text_HuhTrainerCardWhered, UnionRoomMessages_Text_HuhTrainerCardWhered_2 },
+    { UnionRoomMessages_Text_OhSorryCantNow, UnionRoomMessages_Text_OhImSorryLets },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryPokemonDontSeem, UnionRoomMessages_Text_ImTerriblySorryBut },
+    { UnionRoomMessages_Text_SorryDontHavePokemon, UnionRoomMessages_Text_ImSorryButDont },
+    { UnionRoomMessages_Text_OhImSorryHave_4, UnionRoomMessages_Text_OhSorryLetsAnother_2 },
+    { UnionRoomMessages_Text_Empty_20, UnionRoomMessages_Text_Empty_21 },
 };
 
 static const u16 sTable_0424[26] = { 11, 18, 22, 22, 23, 23, 25, 25, 26, 26, 28, 28, 29,
@@ -206,58 +229,61 @@ static const u16 sTable_0458[26] = { 17, 20, 36, 36, 36, 36, 36, 36, 36, 36, 36,
                                      36, 36, 36, 36, 36, 36, 36, 36, 36, 39, 46, 46, 0 };
 
 static const ListMenuRow sMenuRules[3] = {
-    { UnionMsg_Text_NoRestrictions, { 0x0 } },
-    { UnionMsg_Text_FlatBattle, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenuTwo } },
+    { UnionRoomMessages_Text_NoRestrictions, { 0x0 } },
+    { UnionRoomMessages_Text_FlatBattle, { 0x1 } },
+    { UnionRoomMessages_Text_Cancel_6, { .sub = sMenuTwo } },
 };
 
 static const ListMenuRow sMenuLauncher[3] = {
-    { UnionMsg_Text_WonderLauncher, { 0x0 } },
-    { UnionMsg_Text_WonderLauncherOff, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenuTwo } },
+    { UnionRoomMessages_Text_WonderLauncher, { 0x0 } },
+    { UnionRoomMessages_Text_WonderLauncherOff, { 0x1 } },
+    { UnionRoomMessages_Text_Cancel_6, { .sub = sMenuTwo } },
 };
 
 static const ListMenuRow sMenuPlayers[3] = {
-    { UnionMsg_Text_BattlesTwo, { .sub = sMenuTwo } },
-    { UnionMsg_Text_BattlesFour, { .sub = sMenuFour } },
-    { UnionMsg_Text_Cancel_4, { BMPMENULIST_CANCEL } },
+    { UnionRoomMessages_Text_BattlesTwo, { .sub = sMenuTwo } },
+    { UnionRoomMessages_Text_BattlesFour, { .sub = sMenuFour } },
+    { UnionRoomMessages_Text_Cancel_4, { BMPMENULIST_CANCEL } },
 };
 
 static const ListMenuRow sMenuFourRules[3] = {
-    { UnionMsg_Text_NoRestrictions, { 0x0 } },
-    { UnionMsg_Text_FlatBattle, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenuFour } },
+    { UnionRoomMessages_Text_NoRestrictions, { 0x0 } },
+    { UnionRoomMessages_Text_FlatBattle, { 0x1 } },
+    { UnionRoomMessages_Text_Cancel_6, { .sub = sMenuFour } },
 };
 
 static const ListMenuRow sMenuFourLauncher[3] = {
-    { UnionMsg_Text_WonderLauncher, { 0x0 } },
-    { UnionMsg_Text_WonderLauncherOff, { 0x1 } },
-    { UnionMsg_Text_Cancel_6, { .sub = sMenuFour } },
+    { UnionRoomMessages_Text_WonderLauncher, { 0x0 } },
+    { UnionRoomMessages_Text_WonderLauncherOff, { 0x1 } },
+    { UnionRoomMessages_Text_Cancel_6, { .sub = sMenuFour } },
 };
 
 // clang-format off
 static const ListMenuRow sMenuFormat[5] = {
-    { UnionMsg_Text_SingleBattle, { 0x0 } },
-    { UnionMsg_Text_DoubleBattle, { 0x1 } },
-    { UnionMsg_Text_TripleBattle, { 0x2 } },
-    { UnionMsg_Text_RotationBattle, { 0x3 } },
-    { UnionMsg_Text_Cancel_5, { .sub = sMenuTwo } },
+    { UnionRoomMessages_Text_SingleBattle, { 0x0 } },
+    { UnionRoomMessages_Text_DoubleBattle, { 0x1 } },
+    { UnionRoomMessages_Text_TripleBattle, { 0x2 } },
+    { UnionRoomMessages_Text_RotationBattle, { 0x3 } },
+    { UnionRoomMessages_Text_Cancel_5, { .sub = sMenuTwo } },
 };
 
 // clang-format on
 
 static const ListMenuRow sMenuFour[5] = {
-    { UnionMsg_Text_DoubleBattle, { .sub = sMenuFourRules } },
-    { UnionMsg_Text_TripleBattle, { .sub = sMenuFourLauncher } },
-    { UnionMsg_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
-    { UnionMsg_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },
-    { UnionMsg_Text_Cancel_5, { .sub = sMenuPlayers } },
+    { UnionRoomMessages_Text_DoubleBattle, { .sub = sMenuFourRules } },
+    { UnionRoomMessages_Text_TripleBattle, { .sub = sMenuFourLauncher } },
+    { UnionRoomMessages_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
+    { UnionRoomMessages_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },
+    { UnionRoomMessages_Text_Cancel_5, { .sub = sMenuPlayers } },
 };
 
 static const ListMenuRow sMenuTwo[6] = {
-    { UnionMsg_Text_SingleBattle, { .sub = sMenuFormat } },   { UnionMsg_Text_DoubleBattle, { .sub = sMenuRules } },
-    { UnionMsg_Text_TripleBattle, { .sub = sMenuLauncher } }, { UnionMsg_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
-    { UnionMsg_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },  { UnionMsg_Text_Cancel_5, { .sub = sMenuPlayers } },
+    { UnionRoomMessages_Text_SingleBattle, { .sub = sMenuFormat } },
+    { UnionRoomMessages_Text_DoubleBattle, { .sub = sMenuRules } },
+    { UnionRoomMessages_Text_TripleBattle, { .sub = sMenuLauncher } },
+    { UnionRoomMessages_Text_Confirm, { UNION_RULE_MENU_CONFIRM } },
+    { UnionRoomMessages_Text_Rules, { UNION_RULE_MENU_SHOW_RULES } },
+    { UnionRoomMessages_Text_Cancel_5, { .sub = sMenuPlayers } },
 };
 
 static const UnionMenuInfo sMenuInfo[8] = {
@@ -280,9 +306,12 @@ static const u8 sRuleResult[5][2][2] = {
 };
 
 static const ListMenuRow sMenuMain[6] = {
-    { UnionMsg_Text_Greet, { UNION_ACTIVITY_CARD } },      { UnionMsg_Text_Battle, { UNION_ACTIVITY_NONE } },
-    { UnionMsg_Text_Trade, { UNION_ACTIVITY_TRADE } },     { UnionMsg_Text_Draw, { UNION_ACTIVITY_DRAW } },
-    { UnionMsg_Text_Spin, { UNION_ACTIVITY_SPIN_TRADE } }, { UnionMsg_Text_Cancel, { 0 } },
+    { UnionRoomMessages_Text_Greet, { UNION_ACTIVITY_CARD } },
+    { UnionRoomMessages_Text_Battle, { UNION_ACTIVITY_NONE } },
+    { UnionRoomMessages_Text_Trade, { UNION_ACTIVITY_TRADE } },
+    { UnionRoomMessages_Text_Draw, { UNION_ACTIVITY_DRAW } },
+    { UnionRoomMessages_Text_Spin, { UNION_ACTIVITY_SPIN_TRADE } },
+    { UnionRoomMessages_Text_Cancel, { 0 } },
 };
 
 static const u32 sLanguageFlags[8] = { 0, 1, 2, 3, 4, 7, 5, 6 };
@@ -455,18 +484,18 @@ u32 UnionMsg_GetOriginMessage(UnionSystem *unisys, u8 country, u8 province) {
     u8 myProvince = UnityTowerVisitor_GetProvince(playerInfo);
 
     if (country == 0) {
-        return UnionMsg_Text_STrainerCard;
+        return UnionRoomMessages_Text_STrainerCard;
     }
     if (myCountry != country) {
         if (province == 0) {
-            return UnionMsg_Text_TrainerCardWhoLives_2;
+            return UnionRoomMessages_Text_TrainerCardWhoLives_2;
         }
-        return UnionMsg_Text_TrainerCardWhoLives;
+        return UnionRoomMessages_Text_TrainerCardWhoLives;
     }
     if (province == 0 || myProvince == province) {
-        return UnionMsg_Text_STrainerCard;
+        return UnionRoomMessages_Text_STrainerCard;
     }
-    return UnionMsg_Text_TrainerCardWhoLives_3;
+    return UnionRoomMessages_Text_TrainerCardWhoLives_3;
 }
 
 // The words of the message system: the player or the one spoken to, their greeting by language and their origin
@@ -502,28 +531,28 @@ static void UnionMsg_SetupWordSet(UnionSystem *unisys) {
 
     switch (language) {
     case LANGUAGE_JAPANESE:
-        messageId = UnionMsg_Text_Empty_71;
+        messageId = UnionRoomMessages_Text_Empty_71;
         break;
     case LANGUAGE_ENGLISH:
-        messageId = UnionMsg_Text_Hello;
+        messageId = UnionRoomMessages_Text_Hello;
         break;
     case LANGUAGE_FRENCH:
-        messageId = UnionMsg_Text_Bonjour;
+        messageId = UnionRoomMessages_Text_Bonjour;
         break;
     case LANGUAGE_ITALIAN:
-        messageId = UnionMsg_Text_Ciao;
+        messageId = UnionRoomMessages_Text_Ciao;
         break;
     case LANGUAGE_GERMAN:
-        messageId = UnionMsg_Text_Hallo;
+        messageId = UnionRoomMessages_Text_Hallo;
         break;
     case LANGUAGE_SPANISH:
-        messageId = UnionMsg_Text_Hola;
+        messageId = UnionRoomMessages_Text_Hola;
         break;
     case LANGUAGE_KOREAN:
-        messageId = UnionMsg_Text_Empty_72;
+        messageId = UnionRoomMessages_Text_Empty_72;
         break;
     default:
-        messageId = UnionMsg_Text_HELL;
+        messageId = UnionRoomMessages_Text_HELL;
         break;
     }
     strbuf = GFL_MsgDataLoadStrbufNew(unisys->msgdata, messageId);
@@ -591,7 +620,7 @@ void UnionMsg_CreateMsgSystem(UnionSystem *unisys, Field *field) {
     if (unisys->fld_msgwin_stream == NULL) {
         GFL_ASSERT(unisys->msgdata == NULL);
         fldmsg_bg = Field_GetMsgBGSys(field);
-        unisys->msgdata = MsgBGPrinter_CreateMsgData(fldmsg_bg, TEXT_BANK_UNION_MSG);
+        unisys->msgdata = MsgBGPrinter_CreateMsgData(fldmsg_bg, TEXT_BANK_UNION_ROOM_MESSAGES);
         unisys->msgbuf = GFL_StrBufCreate(0x100, UNION_HEAPID);
         unisys->fmtbuf = GFL_StrBufCreate(0x100, UNION_HEAPID);
         UnionMsg_CreateWordSet(unisys);
@@ -727,16 +756,16 @@ void UnionMsg_CreateRuleMenu(UnionSystem *unisys, Field *field, int kind, u8 *ru
     if (kind == UNION_RULE_MENU_TWO) {
         rows = GFL_HeapAllocate(UNION_HEAPID, sizeof(ListMenuRow) * 6, TRUE, "union_msg.c", 0x647);
         MI_CpuCopy8(sMenuTwo, rows, sizeof(ListMenuRow) * 6);
-        rows[0].messageId = UnionMsg_Text_BattleFormatSingleBattle + ruleSel[0];
-        rows[1].messageId = UnionMsg_Text_BattleRulesNoRestrictions + ruleSel[1];
-        rows[2].messageId = UnionMsg_Text_WonderLauncher_2 + ruleSel[2];
+        rows[0].messageId = UnionRoomMessages_Text_BattleFormatSingleBattle + ruleSel[0];
+        rows[1].messageId = UnionRoomMessages_Text_BattleRulesNoRestrictions + ruleSel[1];
+        rows[2].messageId = UnionRoomMessages_Text_WonderLauncher_2 + ruleSel[2];
         UnionMsg_CreateMenu(unisys, field, rows, count, &request);
         GFL_HeapFree(rows);
     } else if (kind == UNION_RULE_MENU_FOUR) {
         rows = GFL_HeapAllocate(UNION_HEAPID, sizeof(ListMenuRow) * 5, TRUE, "union_msg.c", 0x657);
         MI_CpuCopy8(sMenuFour, rows, sizeof(ListMenuRow) * 5);
-        rows[0].messageId = UnionMsg_Text_BattleRulesNoRestrictions + ruleSel[1];
-        rows[1].messageId = UnionMsg_Text_WonderLauncher_2 + ruleSel[2];
+        rows[0].messageId = UnionRoomMessages_Text_BattleRulesNoRestrictions + ruleSel[1];
+        rows[1].messageId = UnionRoomMessages_Text_WonderLauncher_2 + ruleSel[2];
         UnionMsg_CreateMenu(unisys, field, rows, count, &request);
         GFL_HeapFree(rows);
     } else {
@@ -844,7 +873,7 @@ void UnionMsg_CreateInfoWindow(UnionSystem *unisys, Field *field) {
         FieldMsgBG *msgBGSys = Field_GetMsgBGSys(field);
 
         unisys->fldmsgwin = MsgBGPrinter_CreatePlainWin(msgBGSys, unisys->msgdata, 0, 1, 1, 0x1e, 2);
-        MsgBGPrinter_PlainWinPrintMsg(unisys->fldmsgwin, 0, 0, UnionMsg_Text_BattleFormatMultiBattle);
+        MsgBGPrinter_PlainWinPrintMsg(unisys->fldmsgwin, 0, 0, UnionRoomMessages_Text_BattleFormatMultiBattle);
     }
 }
 
@@ -881,7 +910,7 @@ void UnionMsg_CreateRulesWindow(UnionSystem *unisys, Field *field, u32 okMask, u
         GFL_StrBufFree(title);
     } else {
         MsgBGPrinter_PlainWinPrintMsg(unisys->fldmsgwin, 0, 0,
-                                      mode == 1 ? UnionMsg_Text_Party : UnionMsg_Text_BattleBox);
+                                      mode == 1 ? UnionRoomMessages_Text_Party : UnionRoomMessages_Text_BattleBox);
     }
 
     for (i = 0; i < 6; i++) {

@@ -12,7 +12,7 @@
 // No tray or position
 #define BOX2_GET_NONE 0xff
 
-// What the box is opened for, which picks its title: the messages from Box2Bmp_Text_DepositPokemon on are in this
+// What the box is opened for, which picks its title: the messages from BoxWindows_Text_DepositPokemon on are in this
 // order
 enum {
     BOX2_MODE_DEPOSIT,

@@ -202,7 +202,7 @@ void InfDungeonRetire_Free(InfDungeonRetire *work) {
 static void InfDungeonRetire_Init(InfDungeonRetire *work, HeapID heapId) {
     work->font = GFL_FontCreate(0x17, 0, 0, FALSE, heapId);
     GFL_TextRndResetColorIndexLUT();
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INF_DUNGEON_RETIRE, heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_INFINITY_DUNGEON_RETIRE, heapId);
     work->printQueue = PrintQueue_CreateDefault(heapId);
     InfDungeonRetire_InitBGs(work, heapId);
     InfDungeonRetire_InitMenuRes(work, heapId);

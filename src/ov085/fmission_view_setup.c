@@ -421,7 +421,7 @@ static void FMissionViewSetup_InitSystems(FMissionView *view) {
     view->font = MsgBGPrinter_GetFont(Field_GetMsgBGSys(view->field));
     GFL_TextRndResetColorIndexLUT();
     view->wordSet = GFL_WordSetSystemCreateDefault(view->heapId);
-    view->msgData = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FMISSION_VIEW_SETUP, view->heapId);
+    view->msgData = GFL_MsgSysLoadData(TRUE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FUNFEST_MISSION_VIEW, view->heapId);
     view->tmpStr = GFL_StrBufCreate(217, view->heapId);
     view->message = GFL_StrBufCreate(217, view->heapId);
     view->messageCopy = GFL_StrBufCreate(217, view->heapId);

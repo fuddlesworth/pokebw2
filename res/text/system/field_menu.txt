@@ -1,0 +1,21 @@
+FieldMenu_Text_Empty =     \x{ffff}
+FieldMenu_Text_Pokedex = POKÉDEX
+FieldMenu_Text_Pokemon = POKÉMON
+FieldMenu_Text_Bag = BAG
+FieldMenu_Text_Empty_2 =     \x{ffff}
+FieldMenu_Text_Save = SAVE
+FieldMenu_Text_Options = OPTIONS
+FieldMenu_Text_Empty_3 =
+FieldMenu_Text_Empty_4 =     \x{ffff}
+FieldMenu_Text_Empty_5 =
+FieldMenu_Text_Retire = RETIRE
+FieldMenu_Text_Empty_6 =              \x{ffff}
+FieldMenu_Text_Empty_7 =                    \x{ffff}
+FieldMenu_Text_Empty_8 =              \x{ffff}
+FieldMenu_Text_Empty_9 =                   \x{ffff}
+FieldMenu_Text_Empty_10 =               \x{ffff}
+FieldMenu_Text_Empty_11 =               \x{ffff}
+FieldMenu_Text_Empty_12 =                   \x{ffff}
+FieldMenu_Text_Empty_13 =                       \x{ffff}
+FieldMenu_Text_Empty_14 =                     \x{ffff}
+\pad{42}

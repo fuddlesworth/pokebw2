@@ -25,7 +25,7 @@ const u8 gFestMissionTargetWordKinds[8] = {
 FestivalText *getTextFileForFestMissions(HeapID heapId) {
     FestivalText *text = GFL_HeapAllocate(heapId, sizeof(FestivalText), TRUE, "fest_mission_data.c", 0x46);
     text->archive = GFL_ArcSysCreateFileHandle(ARCID_FMISSION_DATA, heapId);
-    text->message = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GET_TEXT_FILE_FOR_FEST_MISSIONS, heapId);
+    text->message = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FUNFEST_MISSIONS, heapId);
     return text;
 }
 

@@ -1,0 +1,22 @@
+PokewoodBriefingMovie25_Text_DuringArgumentMonicaCaught = {bd02}During an argument,\n{bd02}Monica was caught\n{bd02}in a strange Poké Ball\n{bd02}I had bought and brought home...
+PokewoodBriefingMovie25_Text_StoodThereStunnedMysterious = {bd02}As I stood there stunned,\n{bd02}a mysterious man appeared.
+PokewoodBriefingMovie25_Text_OhDearReallyWasnt = {bd02}Oh dear...\n{bd02}It really wasn't a good time for that...
+PokewoodBriefingMovie25_Text_Empty = なし
+PokewoodBriefingMovie25_Text_Empty_2 = なし
+PokewoodBriefingMovie25_Text_Empty_3 = なし
+PokewoodBriefingMovie25_Text_Empty_4 = なし
+PokewoodBriefingMovie25_Text_Empty_5 = なし
+PokewoodBriefingMovie25_Text_Empty_6 = なし
+PokewoodBriefingMovie25_Text_Empty_7 = なし
+PokewoodBriefingMovie25_Text_DuringArgumentMonicaCaught_2 = {bd02}During an argument,\n{bd02}Monica was caught\n{bd02}in a strange Poké Ball\n{bd02}I had bought and brought home...
+PokewoodBriefingMovie25_Text_StoodThereStunnedMysterious_2 = {bd02}As I stood there stunned,\n{bd02}a mysterious man appeared.
+PokewoodBriefingMovie25_Text_OhDearReallyWasnt_2 = {bd02}Oh dear...\n{bd02}It really wasn't a good time for that...
+PokewoodBriefingMovie25_Text_Empty_8 = なし
+PokewoodBriefingMovie25_Text_Empty_9 = なし
+PokewoodBriefingMovie25_Text_Empty_10 = なし
+PokewoodBriefingMovie25_Text_Empty_11 = なし
+PokewoodBriefingMovie25_Text_Empty_12 = なし
+PokewoodBriefingMovie25_Text_Empty_13 = なし
+PokewoodBriefingMovie25_Text_Empty_14 = なし
+PokewoodBriefingMovie25_Text_Empty_15 = なし
+\pad{7c}

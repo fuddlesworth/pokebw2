@@ -37,7 +37,7 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
-#include "text/system/b_bag_main.h"
+#include "text/system/battle_bag.h"
 
 // The battle bag's entry, task and states (b_bag_main.c, named by the ROM's embedded string): the bag runs one state
 // function a frame, each returning the next state, until state 20 frees everything and sets the parameter's done.
@@ -460,38 +460,38 @@ static int BBagMain_CheckUse(BBagWork *work) {
     BBagParam *param = work->param;
 
     if (param->mode == BBAG_MODE_SHOOTER && param->shooterEnergy < BBagItem_GetShooterCost(param->item)) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNotChargedEnough, work->strBuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ItsNotChargedEnough, work->strBuf);
         BBagBmp_OpenMessage(work);
         work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
         return BBAG_STATE_PRINT_MESSAGE;
     }
     if (work->pocket == BBAG_POCKET_BALLS) {
         if (param->ballError == BBAG_BALL_BOXES_FULL) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ThereNoRoomLeft, work->strBuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ThereNoRoomLeft, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
             return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_TWO_TARGETS) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts, work->strBuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ItsNoGoodIts, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
             return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_NOT_FOCUSED) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleAimWithout, work->strBuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ItsImpossibleAimWithout, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
             return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_HIDDEN) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsNoGoodIts_2, work->strBuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ItsNoGoodIts_2, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
             return BBAG_STATE_PRINT_MESSAGE;
         }
         if (param->ballError == BBAG_BALL_BLOCKED) {
-            GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_ItsImpossibleUsePoke, work->strBuf);
+            GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_ItsImpossibleUsePoke, work->strBuf);
             BBagBmp_OpenMessage(work);
             work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
             return BBAG_STATE_PRINT_MESSAGE;
@@ -499,7 +499,7 @@ static int BBagMain_CheckUse(BBagWork *work) {
     }
     if (param->isWild == FALSE &&
         GetItemParam(param->item, ITEM_PARAM_BATTLE_FUNC, param->heapId) == ITEM_BATTLE_FUNC_ESCAPE) {
-        GFL_MsgDataLoadStrbuf(work->msgData, BBagMain_Text_JunipersWordsEchoedTheres, work->strBuf);
+        GFL_MsgDataLoadStrbuf(work->msgData, BattleBag_Text_JunipersWordsEchoedTheres, work->strBuf);
         BBagBmp_OpenMessage(work);
         work->nextSeq = BBAG_STATE_CLOSE_MESSAGE;
         return BBAG_STATE_PRINT_MESSAGE;
@@ -809,7 +809,7 @@ static void BBagMain_LoadGraphics(BBagWork *work) {
 }
 
 static void BBagMain_InitText(BBagWork *work) {
-    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_B_BAG_MAIN, work->param->heapId);
+    work->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_BAG, work->param->heapId);
     work->wordSet = GFL_WordSetSystemCreateDefault(work->param->heapId);
     work->printQueue = PrintQueue_CreateDefault(work->param->heapId);
     work->strBuf = GFL_StrBufCreate(0x200, work->param->heapId);

@@ -14,7 +14,7 @@
                 "required": [ "kind", "message", "result_message", "target", "target_kind", "variant", "reward_item", "second_item", "required_flag", "extra_seconds_index", "levels", "ends_at_target", "unk03", "second_item_count", "unlock_flag", "stage_patterns", "version", "clear_flag", "params_unk01" ],
                 "properties": {
                     "kind": { "type": "integer", "minimum": 0, "maximum": 7, "description": "FestMissionHeader.kind: what the target is by data_ov027_021711c0 (1 a species, 4 and 5 an item), and the field's missions MISSION_FLAGS (2), MISSION_HOLLOW, MISSION_SPARKLE and MISSION_PEOPLE (5) of field/fest_mission_data.h" },
-                    "message": { "type": "string", "description": "The mission's goal, a message of res/text/system/get_text_file_for_fest_missions.txt by ID, with the target and the count as its words (FestMission_GetMessage)" },
+                    "message": { "type": "string", "description": "The mission's goal, a message of res/text/system/funfest_missions.txt by ID, with the target and the count as its words (FestMission_GetMessage)" },
                     "result_message": { "type": "string", "description": "The message of its result, of the same file (FestMission_GetResultMessage)" },
                     "target": { "type": [ "integer", "string" ], "description": "The species or item the mission is about (FestMissionInfo.target), a SPECIES_* constant for kind 1; for a people mission the set of people (sPeopleSets in fest_mission_people.c)" },
                     "target_kind": { "type": "integer", "minimum": 0, "maximum": 7, "description": "What the target counts, which picks the goal's message, its \"Target:\" line and its icon (FestMissionInfo.targetKind)" },

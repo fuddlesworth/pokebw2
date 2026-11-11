@@ -1,0 +1,4 @@
+InfinityDungeonRetire_Text_QuitAreaReturnLobby = Quit this area and return to the lobby?
+InfinityDungeonRetire_Text_Yes = YES
+InfinityDungeonRetire_Text_No = NO
+\pad{74}

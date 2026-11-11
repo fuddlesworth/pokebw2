@@ -47,7 +47,7 @@
 #include "system/game_system.h"
 #include "system/tpoke_data.h"
 #include "system/wipe.h"
-#include "text/system/gsync_menu.h"
+#include "text/system/game_sync_menu.h"
 
 #define HEAPID_GSYNC 0x62
 
@@ -413,17 +413,17 @@ static void GSync_StateError(GSyncWork *wk) {
         NHttpRap_EndRequest(wk->http);
     }
     if (wk->error == GSYNC_ERROR_DOWNLOAD) {
-        msgId = GsyncMenu_Text_ErrorOccurredServerPlease_5;
+        msgId = GameSyncMenu_Text_ErrorOccurredServerPlease_5;
     } else if (wk->error == GSYNC_ERROR_SERVICE_UNAVAILABLE) {
-        msgId = GsyncMenu_Text_ServerExperiencingHighTraffic;
+        msgId = GameSyncMenu_Text_ServerExperiencingHighTraffic;
     } else if (wk->error == GSYNC_ERROR_BAD_GATEWAY) {
-        msgId = GsyncMenu_Text_ServerUndergoingMaintenanceCan;
+        msgId = GameSyncMenu_Text_ServerUndergoingMaintenanceCan;
     } else if (wk->error == GSYNC_ERROR_HTTP) {
-        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
+        msgId = GameSyncMenu_Text_CommunicationErrorOccurredPlease_4;
     } else if (wk->error == 10) {
-        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
+        msgId = GameSyncMenu_Text_CommunicationErrorOccurredPlease_4;
     } else if (wk->error <= 0 || wk->error >= 11) {
-        msgId = GsyncMenu_Text_CommunicationErrorOccurredPlease_4;
+        msgId = GameSyncMenu_Text_CommunicationErrorOccurredPlease_4;
     }
     GSyncMessage_ClearMessage(wk->msg);
     GSyncDisp_DeleteActor(wk->disp, 13);
@@ -446,14 +446,14 @@ static void GSync_StateWaitDownloadsShown(GSyncWork *wk) {
 
 // Shows what was downloaded: the C-Gear skin, the musical and the Pokédex skin
 static void GSync_StateShowDownloads(GSyncWork *wk) {
-    u32 msgIds[] = { GsyncMenu_Text_GameSync,
-                     GsyncMenu_Text_CGearSkinHas_2,
-                     GsyncMenu_Text_MusicalShowHasChanged,
-                     GsyncMenu_Text_CGearSkinHas_3,
-                     GsyncMenu_Text_PokedexSkinHasChanged,
-                     GsyncMenu_Text_CGearSkinHas_4,
-                     GsyncMenu_Text_MusicalShowHasChanged_2,
-                     GsyncMenu_Text_CGearSkinHas };
+    u32 msgIds[] = { GameSyncMenu_Text_GameSync,
+                     GameSyncMenu_Text_CGearSkinHas_2,
+                     GameSyncMenu_Text_MusicalShowHasChanged,
+                     GameSyncMenu_Text_CGearSkinHas_3,
+                     GameSyncMenu_Text_PokedexSkinHasChanged,
+                     GameSyncMenu_Text_CGearSkinHas_4,
+                     GameSyncMenu_Text_MusicalShowHasChanged_2,
+                     GameSyncMenu_Text_CGearSkinHas };
 
     if (wk->downloadFlags) {
         GSyncMessage_ClearMessage(wk->msg);
@@ -489,7 +489,7 @@ static void GSync_StateWaitReceived(GSyncWork *wk) {
             return;
         }
         GSyncMessage_ClearInfo(wk->msg);
-        GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_HasGainedLevelS, wk->levels, wk->pkm);
+        GSyncMessage_FormatPokemonNumber(wk->msg, GameSyncMenu_Text_HasGainedLevelS, wk->levels, wk->pkm);
         GSyncMessage_PrintLoaded(wk->msg, FALSE);
         GFL_SndBGMSetPaused(TRUE);
         GFL_SndBGMPush();
@@ -552,7 +552,7 @@ static void GSync_StateWaitReceiveSave(GSyncWork *wk) {
         wk->busy = FALSE;
         JoinAvenue_RecordActivity(28);
         GSyncMessage_ClearMessage(wk->msg);
-        GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_HasWokenUp_2, 0, wk->pkm);
+        GSyncMessage_FormatPokemonNumber(wk->msg, GameSyncMenu_Text_HasWokenUp_2, 0, wk->pkm);
         GSyncMessage_PrintInfoAt(wk->msg, 1, 4);
         GSyncDisp_CreateActor(wk->disp, 0);
         GSyncDisp_SetActorSequence(wk->disp, 6, 7);
@@ -1092,10 +1092,10 @@ static void GSync_StateWaitResult(GSyncWork *wk) {
         wk->progress++;
     }
     if (wk->frames == 360) {
-        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_MustSetUpGame);
+        GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_MustSetUpGame);
         GSyncMessage_PrintInfo(wk->msg);
     } else if (wk->frames == 720) {
-        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_PleaseReadInstructionBooklet);
+        GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_PleaseReadInstructionBooklet);
         GSyncMessage_PrintInfo(wk->msg);
     } else if (wk->frames == 1080) {
         if (GSync_IsNewAccount(wk)) {
@@ -1121,7 +1121,7 @@ static void GSync_StateRequestResult(GSyncWork *wk) {
     }
     if (GSync_IsNewAccount(wk)) {
         wk->frames = 0;
-        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_CanLetPokemonPlay);
+        GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_CanLetPokemonPlay);
         GSyncMessage_PrintInfo(wk->msg);
     } else {
         wk->frames = 1070;
@@ -1136,7 +1136,7 @@ static void GSync_StateWaitWakeMessage(GSyncWork *wk) {
 }
 
 static void GSync_StateWake(GSyncWork *wk) {
-    GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonBeingWokenUp);
+    GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_PokemonBeingWokenUp);
     GSyncMessage_StartWaitIcon(wk->msg);
     GSyncDisp_DeleteActor(wk->disp, 8);
     GSyncDisp_StartWave(wk->disp);
@@ -1158,7 +1158,7 @@ static void GSync_StateWaitTooSoon(GSyncWork *wk) {
 
 static void GSync_StateTooSoon(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_GameSyncHasRun);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_GameSyncHasRun);
         GSync_ChangeState(wk, GSync_StateWaitTooSoon, 1550);
     }
 }
@@ -1172,7 +1172,7 @@ static void GSync_StateWaitNoRoomMessage(GSyncWork *wk) {
 
 static void GSync_StateNoRoom(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PcFullMustHave);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_PcFullMustHave);
         GSync_ChangeState(wk, GSync_StateWaitNoRoomMessage, 1574);
     }
 }
@@ -1218,9 +1218,9 @@ static void GSync_StateWakeShow(GSyncWork *wk) {
     GSyncDisp_CreateActor(wk->disp, 6);
     GSyncDisp_CreateActor(wk->disp, 8);
     if (DreamWorldSave_CountItems(getDreamWorldStuffAddress(wk->save)) != 0) {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_HaventYetReceivedItems);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_HaventYetReceivedItems);
     } else {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_OkWakeUpPokemon);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_OkWakeUpPokemon);
     }
     GSync_ChangeState(wk, GSync_StateWakeAsk, 1660);
 }
@@ -1242,7 +1242,7 @@ static void GSync_StateShowIdNext(GSyncWork *wk) {
 
 static void GSync_StateShowIdWait(GSyncWork *wk) {
     if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
-        GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_AccessPokemonGlobalLink);
+        GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_AccessPokemonGlobalLink);
         GSyncMessage_PrintInfoAt(wk->msg, 7, 14);
         GSync_ChangeState(wk, GSync_StateShowIdNext, 1755);
     }
@@ -1252,7 +1252,7 @@ static void GSync_StateShowIdWait(GSyncWork *wk) {
 static void GSync_StateShowId(GSyncWork *wk) {
     GSyncMessage_FormatGSyncId(wk->msg, PlayerInfo_GetProfileId(GetGameDataPlayerInfo(wk->param->gameData)));
     GSyncMessage_PrintLoaded(wk->msg, TRUE);
-    GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_GameSyncIdHas);
+    GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_GameSyncIdHas);
     GSyncMessage_PrintInfoAt(wk->msg, 7, 14);
     GSync_ChangeState(wk, GSync_StateShowIdWait, 1767);
 }
@@ -1307,7 +1307,7 @@ static void GSync_StateWaitNotDreamingMessage(GSyncWork *wk) {
 
 static void GSync_StateNotDreaming(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonNotDreamingYet);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_PokemonNotDreamingYet);
         GSync_ChangeState(wk, GSync_StateWaitNotDreamingMessage, 1908);
     }
 }
@@ -1321,7 +1321,7 @@ static void GSync_StateWaitDreamingNowMessage(GSyncWork *wk) {
 
 static void GSync_StateDreamingNow(GSyncWork *wk) {
     if (GSyncMessage_IsPrintFinished(wk->msg)) {
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonDreaming);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_PokemonDreaming);
         GSync_ChangeState(wk, GSync_StateWaitDreamingNowMessage, 1939);
     }
 }
@@ -1395,7 +1395,7 @@ static void GSync_StateWaitAccount(GSyncWork *wk) {
 }
 
 static void GSync_StateRequestAccount(GSyncWork *wk) {
-    GSyncMessage_Print(wk->msg, GsyncMenu_Text_PleaseWaitMoment);
+    GSyncMessage_Print(wk->msg, GameSyncMenu_Text_PleaseWaitMoment);
     GSyncMessage_StartWaitIcon(wk->msg);
     if (GFL_NetIsInitialized()) {
         if (NHttpRap_SendRequest(NHTTP_RAP_REQUEST_ACCOUNT_PLAYSTATUS, wk->http) &&
@@ -1417,7 +1417,7 @@ static void GSync_StateWaitNoPokemonMessage(GSyncWork *wk) {
 }
 
 static void GSync_StateNoPokemon(GSyncWork *wk) {
-    GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_ThereNoPokemonPc);
+    GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_ThereNoPokemonPc);
     GSync_ChangeState(wk, GSync_StateWaitNoPokemonMessage, 2130);
 }
 
@@ -1496,7 +1496,7 @@ static void GSync_StateSent(GSyncWork *wk) {
     }
     wk->progress = 100;
     GSyncDisp_SetProgress(wk->disp, 100);
-    GSyncMessage_FormatPokemonNumber(wk->msg, GsyncMenu_Text_FellAsleepItsSleeping, 0, wk->pkm);
+    GSyncMessage_FormatPokemonNumber(wk->msg, GameSyncMenu_Text_FellAsleepItsSleeping, 0, wk->pkm);
     GSyncMessage_PrintLoaded(wk->msg, FALSE);
     GSyncDisp_CreateActor(wk->disp, 8);
     GSyncDisp_StartFade(wk->disp, FALSE);
@@ -1556,13 +1556,13 @@ static void GSync_StateWaitUpload(GSyncWork *wk) {
     GSyncDisp_UpdateFloats(wk->disp);
     if (GSync_IsNewAccount(wk)) {
         if (wk->frames == 0) {
-            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_CanLetPokemonPlay);
+            GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_CanLetPokemonPlay);
             GSyncMessage_PrintInfo(wk->msg);
         } else if (wk->frames == 360) {
-            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_MustSetUpGame);
+            GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_MustSetUpGame);
             GSyncMessage_PrintInfo(wk->msg);
         } else if (wk->frames == 720) {
-            GSyncMessage_LoadString(wk->msg, GsyncMenu_Text_PleaseReadInstructionBooklet);
+            GSyncMessage_LoadString(wk->msg, GameSyncMenu_Text_PleaseReadInstructionBooklet);
             GSyncMessage_PrintInfo(wk->msg);
         }
         wk->frames++;
@@ -1623,7 +1623,7 @@ static void GSync_StateUpload(GSyncWork *wk) {
 static void GSync_StateSendAnimText(GSyncWork *wk) {
     if (--wk->timer == 0) {
         GSyncDisp_StartWave(wk->disp);
-        GSyncMessage_PrintStream(wk->msg, GsyncMenu_Text_PokemonHasBeenTucked);
+        GSyncMessage_PrintStream(wk->msg, GameSyncMenu_Text_PokemonHasBeenTucked);
         GSyncMessage_StartWaitIcon(wk->msg);
         GSyncDisp_StartFade(wk->disp, TRUE);
         GSyncDisp_SetActorSequence(wk->disp, 4, 5);
@@ -1817,7 +1817,7 @@ static BOOL GSync_ProcInit(GameProc *proc, u32 *state, void *param, void *work) 
         }
     }
     wk->disp = GSyncDisp_Create(wk->heapId);
-    wk->msg = GSyncMessage_Create(wk->heapId, TEXT_BANK_GSYNC_MENU);
+    wk->msg = GSyncMessage_Create(wk->heapId, TEXT_BANK_GAME_SYNC_MENU);
     GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, wk->heapId);
     GFL_NetSetIconScreen(FALSE, wk->heapId);
     return TRUE;

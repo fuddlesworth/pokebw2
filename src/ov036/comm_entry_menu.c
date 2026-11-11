@@ -22,7 +22,7 @@
 #include "save/player_info.h"
 #include "system/bmp_menulist.h"
 #include "system/wordset.h"
-#include "text/system/comm_entry_menu.h"
+#include "text/system/communication_entry_menu.h"
 
 #define COMM_ENTRY_MEMBER_MAX 4
 #define COMM_ENTRY_LEADER_MAX 16
@@ -394,29 +394,29 @@ static const ListMenuRequest sLeaderListRequest = {
 // the table's White 2 address allows nothing above 4.
 static const CommEntryMessages sCommEntryMessages[] ATTRIBUTE_ALIGN(4) = {
     [COMM_ENTRY_MENU_MULTI_BATTLE] = {
-        CommEntryMenu_Text_SeekingMultiBattleParticipants,
-        CommEntryMenu_Text_WillCancelMultiBattle,
-        CommEntryMenu_Text_MultiBattleWillCanceled,
-        CommEntryMenu_Text_ThereNoMembersMulti,
-        CommEntryMenu_Text_ThereAppearsProblemMulti,
+        CommunicationEntryMenu_Text_SeekingMultiBattleParticipants,
+        CommunicationEntryMenu_Text_WillCancelMultiBattle,
+        CommunicationEntryMenu_Text_MultiBattleWillCanceled,
+        CommunicationEntryMenu_Text_ThereNoMembersMulti,
+        CommunicationEntryMenu_Text_ThereAppearsProblemMulti,
         // The Musical's, which nothing shows: a multi battle's leader is never picked from the list
-        CommEntryMenu_Text_ChooseMusicalWouldLike,
+        CommunicationEntryMenu_Text_ChooseMusicalWouldLike,
     },
     [COMM_ENTRY_MENU_MUSICAL] = {
-        CommEntryMenu_Text_SeekingMusicalParticipants,
-        CommEntryMenu_Text_WillCancelMusical,
-        CommEntryMenu_Text_MusicalWillCanceled,
-        CommEntryMenu_Text_ThereNoMembersMulti,
-        CommEntryMenu_Text_ThereAppearsProblemMusical,
-        CommEntryMenu_Text_ChooseMusicalWouldLike,
+        CommunicationEntryMenu_Text_SeekingMusicalParticipants,
+        CommunicationEntryMenu_Text_WillCancelMusical,
+        CommunicationEntryMenu_Text_MusicalWillCanceled,
+        CommunicationEntryMenu_Text_ThereNoMembersMulti,
+        CommunicationEntryMenu_Text_ThereAppearsProblemMusical,
+        CommunicationEntryMenu_Text_ChooseMusicalWouldLike,
     },
     [COMM_ENTRY_MENU_BATTLE_SUBWAY] = {
-        CommEntryMenu_Text_SeekingBattleSubwayParticipants,
-        CommEntryMenu_Text_WillCancelBattleSubway,
-        CommEntryMenu_Text_BattleSubwayWillCanceled,
-        CommEntryMenu_Text_ThereNoMembersMulti,
-        CommEntryMenu_Text_ThereAppearsProblemBattle,
-        CommEntryMenu_Text_ChooseBattleSubwayWould,
+        CommunicationEntryMenu_Text_SeekingBattleSubwayParticipants,
+        CommunicationEntryMenu_Text_WillCancelBattleSubway,
+        CommunicationEntryMenu_Text_BattleSubwayWillCanceled,
+        CommunicationEntryMenu_Text_ThereNoMembersMulti,
+        CommunicationEntryMenu_Text_ThereAppearsProblemBattle,
+        CommunicationEntryMenu_Text_ChooseBattleSubwayWould,
     },
 };
 
@@ -519,15 +519,15 @@ CommEntryMenu *CommEntryMenu_Create(const PlayerInfo *info, Field *field, u32 mi
     CommEntryMenu *menu = GFL_HeapAllocate(heapId, sizeof(CommEntryMenu), TRUE, "comm_entry_menu.c", 377);
 
     menu->wordSet = GFL_WordSetSystemCreateDefault(heapId);
-    menu->msgData = MsgBGPrinter_CreateMsgData(msgBGSys, TEXT_BANK_COMM_ENTRY_MENU);
+    menu->msgData = MsgBGPrinter_CreateMsgData(msgBGSys, TEXT_BANK_COMMUNICATION_ENTRY_MENU);
     menu->msgWin = MsgBGPrinter_CreateBottomSysWin(msgBGSys, menu->msgData);
     menu->msgBuf = GFL_StrBufCreate(100, heapId);
-    menu->memberFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommEntryMenu_Text_Id);
+    menu->memberFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommunicationEntryMenu_Text_Id);
     menu->memberBuf = GFL_StrBufCreate(64, heapId);
     if (mode == COMM_ENTRY_MENU_MUSICAL) {
-        menu->countFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommEntryMenu_Text_UpMoreAllowed);
+        menu->countFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommunicationEntryMenu_Text_UpMoreAllowed);
     } else {
-        menu->countFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommEntryMenu_Text_MoreNeeded);
+        menu->countFmt = GFL_MsgDataLoadStrbufNew(menu->msgData, CommunicationEntryMenu_Text_MoreNeeded);
     }
     menu->countBuf = GFL_StrBufCreate(32, heapId);
     menu->minCount = minCount;
@@ -631,7 +631,7 @@ static BOOL CommEntryMenu_UpdateLeader(CommEntryMenu *menu) {
     switch (menu->seq) {
     case COMM_ENTRY_LEADER_SEQ_INIT:
         CommEntryMenu_CreateWindows(menu);
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_AwaitingParticipatingMembersB);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_AwaitingParticipatingMembersB);
         menu->seq++;
         break;
     case COMM_ENTRY_LEADER_SEQ_START_SERVER:
@@ -700,9 +700,9 @@ static BOOL CommEntryMenu_UpdateLeader(CommEntryMenu *menu) {
             } else {
                 menu->seq = COMM_ENTRY_LEADER_SEQ_GATHER;
                 if (CommEntryMenu_CountAccepted(menu) > 1 && menu->mode == COMM_ENTRY_MENU_MUSICAL) {
-                    menu->nextMsg = CommEntryMenu_Text_WhenGroupReadyButton;
+                    menu->nextMsg = CommunicationEntryMenu_Text_WhenGroupReadyButton;
                 } else {
-                    menu->nextMsg = CommEntryMenu_Text_AwaitingParticipatingMembersB;
+                    menu->nextMsg = CommunicationEntryMenu_Text_AwaitingParticipatingMembersB;
                 }
             }
         }
@@ -803,7 +803,7 @@ static BOOL CommEntryMenu_UpdateLeader(CommEntryMenu *menu) {
         }
         break;
     case COMM_ENTRY_LEADER_SEQ_PRINT_NO_MEMBERS:
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_ThereNoMembersMulti);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_ThereNoMembersMulti);
         menu->seq = COMM_ENTRY_LEADER_SEQ_WAIT_NO_MEMBERS;
         break;
     case COMM_ENTRY_LEADER_SEQ_WAIT_NO_MEMBERS:
@@ -853,7 +853,7 @@ static BOOL CommEntryMenu_UpdateSelectLeader(CommEntryMenu *menu) {
                 menu->seq = COMM_ENTRY_SELECT_SEQ_PRINT_ERROR;
             } else {
                 copyVarForText(menu->wordSet, 0, &menu->list.selected->info);
-                CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_RepliedOk);
+                CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_RepliedOk);
                 menu->seq = COMM_ENTRY_SELECT_SEQ_WAIT_REPLIED;
             }
             break;
@@ -869,7 +869,7 @@ static BOOL CommEntryMenu_UpdateSelectLeader(CommEntryMenu *menu) {
         break;
     case COMM_ENTRY_SELECT_SEQ_WAIT_REPLIED:
         if (MsgBGPrinter_SysWinMain(menu->msgWin) == TRUE) {
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_PleaseWaitBButton_2);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_PleaseWaitBButton_2);
             CommEntryMenu_CreateWindows(menu);
             menu->seq++;
         }
@@ -897,7 +897,7 @@ static BOOL CommEntryMenu_UpdateSelectLeader(CommEntryMenu *menu) {
         break;
     case COMM_ENTRY_SELECT_SEQ_SYNC:
         if (menu->mode == COMM_ENTRY_MENU_MULTI_BATTLE) {
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_MembersHaveGatheredPlease);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_MembersHaveGatheredPlease);
         }
         menu->seq = COMM_ENTRY_SELECT_SEQ_WAIT_SYNC;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), COMM_ENTRY_SYNC_START, COMM_ENTRY_SYNC_CLASS);
@@ -929,7 +929,7 @@ static BOOL CommEntryMenu_UpdateSelectLeader(CommEntryMenu *menu) {
         CommEntryMenu_RemoveCommands();
         GFL_NetExit(NULL);
         copyVarForText(menu->wordSet, 0, &menu->replyInfo);
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_Refused);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_Refused);
         menu->seq = COMM_ENTRY_SELECT_SEQ_WAIT_NET_EXIT;
         break;
     case COMM_ENTRY_SELECT_SEQ_WAIT_NET_EXIT:
@@ -969,7 +969,7 @@ static BOOL CommEntryMenu_UpdateSelectLeader(CommEntryMenu *menu) {
 static BOOL CommEntryMenu_UpdateJoin(CommEntryMenu *menu) {
     switch (menu->seq) {
     case COMM_ENTRY_JOIN_SEQ_PRINT_WAIT:
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_PleaseWaitBButton);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_PleaseWaitBButton);
         menu->seq++;
         break;
     case COMM_ENTRY_JOIN_SEQ_SEND_ENTRY:
@@ -1004,7 +1004,7 @@ static BOOL CommEntryMenu_UpdateJoin(CommEntryMenu *menu) {
         break;
     case COMM_ENTRY_JOIN_SEQ_SYNC:
         if (menu->mode == COMM_ENTRY_MENU_MULTI_BATTLE) {
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_MembersHaveGatheredPlease);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_MembersHaveGatheredPlease);
         }
         menu->seq = COMM_ENTRY_JOIN_SEQ_WAIT_SYNC;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), COMM_ENTRY_SYNC_START, COMM_ENTRY_SYNC_CLASS);
@@ -1035,7 +1035,7 @@ static BOOL CommEntryMenu_UpdateJoin(CommEntryMenu *menu) {
         // list's selected leader they print is NULL in this menu, which never creates the list
         GFL_NetExit(NULL);
         copyVarForText(menu->wordSet, 0, &menu->list.selected->info);
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_Refused);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_Refused);
         menu->seq = COMM_ENTRY_JOIN_SEQ_WAIT_REFUSED;
         break;
     case COMM_ENTRY_JOIN_SEQ_WAIT_REFUSED:
@@ -1064,7 +1064,7 @@ static BOOL CommEntryMenu_UpdateJoin(CommEntryMenu *menu) {
 static BOOL CommEntryMenu_UpdateAskToJoin(CommEntryMenu *menu) {
     switch (menu->seq) {
     case COMM_ENTRY_ASK_TO_JOIN_SEQ_PRINT_WAIT:
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_PleaseWaitBButton);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_PleaseWaitBButton);
         menu->seq++;
         break;
     case COMM_ENTRY_ASK_TO_JOIN_SEQ_SEND_ENTRY:
@@ -1083,7 +1083,7 @@ static BOOL CommEntryMenu_UpdateAskToJoin(CommEntryMenu *menu) {
         } else if (menu->reply == COMM_ENTRY_REPLY_ACCEPTED) {
             menu->seq = COMM_ENTRY_ASK_TO_JOIN_SEQ_CREATE_WINDOWS;
             CommEntryMenu_CloseYesNo(menu);
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_AwaitingParticipatingMembersB);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_AwaitingParticipatingMembersB);
         } else if (menu->reply == COMM_ENTRY_REPLY_REFUSED) {
             menu->seq = COMM_ENTRY_ASK_TO_JOIN_SEQ_REFUSED;
             CommEntryMenu_CloseYesNo(menu);
@@ -1122,7 +1122,7 @@ static BOOL CommEntryMenu_UpdateAskToJoin(CommEntryMenu *menu) {
         break;
     case COMM_ENTRY_ASK_TO_JOIN_SEQ_SYNC:
         if (menu->mode == COMM_ENTRY_MENU_MULTI_BATTLE) {
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_MembersHaveGatheredPlease);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_MembersHaveGatheredPlease);
         }
         menu->seq = COMM_ENTRY_ASK_TO_JOIN_SEQ_WAIT_SYNC;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), COMM_ENTRY_SYNC_START, COMM_ENTRY_SYNC_CLASS);
@@ -1151,7 +1151,7 @@ static BOOL CommEntryMenu_UpdateAskToJoin(CommEntryMenu *menu) {
     case COMM_ENTRY_ASK_TO_JOIN_SEQ_REFUSED:
         GFL_NetExit(NULL);
         copyVarForText(menu->wordSet, 0, &menu->replyInfo);
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_Refused);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_Refused);
         menu->seq = COMM_ENTRY_ASK_TO_JOIN_SEQ_WAIT_REFUSED;
         break;
     case COMM_ENTRY_ASK_TO_JOIN_SEQ_WAIT_REFUSED:
@@ -1259,7 +1259,7 @@ static void CommEntryMenu_DrawMembers(CommEntryMenu *menu) {
     }
     if (menu->showWaitMsg == TRUE && CommEntryMenu_IsIdle(menu) == TRUE && menu->yesNo.window == NULL) {
         if (count == 1) {
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_AwaitingParticipatingMembersB);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_AwaitingParticipatingMembersB);
         }
         menu->showWaitMsg = FALSE;
     }
@@ -1312,7 +1312,7 @@ static void CommEntryMenu_UpdateAsk(CommEntryMenu *menu) {
         switch (yesNo->seq) {
         case COMM_ENTRY_ASK_SEQ_PRINT:
             copyVarForText(menu->wordSet, 0, &asked->info);
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_HasContactedAddGroup);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_HasContactedAddGroup);
             yesNo->seq++;
             return;
         case COMM_ENTRY_ASK_SEQ_OPEN:
@@ -1352,10 +1352,10 @@ static void CommEntryMenu_UpdateAsk(CommEntryMenu *menu) {
             CommEntryMenu_UpdateEntries(menu);
             if (menu->asking == FALSE) {
                 if (CommEntryMenu_CountAccepted(menu) > 1 && menu->mode == COMM_ENTRY_MENU_MUSICAL) {
-                    menu->nextMsg = CommEntryMenu_Text_WhenGroupReadyButton;
+                    menu->nextMsg = CommunicationEntryMenu_Text_WhenGroupReadyButton;
                     return;
                 }
-                menu->nextMsg = CommEntryMenu_Text_AwaitingParticipatingMembersB;
+                menu->nextMsg = CommunicationEntryMenu_Text_AwaitingParticipatingMembersB;
             }
             break;
         }
@@ -1372,7 +1372,7 @@ static u32 CommEntryMenu_AskGroupOk(CommEntryMenu *menu) {
     }
     switch (yesNo->seq) {
     case COMM_ENTRY_ASK_SEQ_PRINT:
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_GroupOk);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_GroupOk);
         yesNo->seq++;
         break;
     case COMM_ENTRY_ASK_SEQ_OPEN:
@@ -1432,7 +1432,7 @@ static u32 CommEntryMenu_AskCancel(CommEntryMenu *menu) {
             yesNo->seq = COMM_ENTRY_CANCEL_SEQ_CANCEL;
         } else {
             // Members have joined: ask again, since they will be disbanded
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_IfLeaderDropsOut);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_IfLeaderDropsOut);
             yesNo->seq++;
         }
         break;
@@ -1461,9 +1461,9 @@ static u32 CommEntryMenu_AskCancel(CommEntryMenu *menu) {
         break;
     case COMM_ENTRY_CANCEL_SEQ_KEEP:
         if (CommEntryMenu_CountAccepted(menu) > 1 && menu->mode == COMM_ENTRY_MENU_MUSICAL) {
-            menu->nextMsg = CommEntryMenu_Text_WhenGroupReadyButton;
+            menu->nextMsg = CommunicationEntryMenu_Text_WhenGroupReadyButton;
         } else {
-            menu->nextMsg = CommEntryMenu_Text_AwaitingParticipatingMembersB;
+            menu->nextMsg = CommunicationEntryMenu_Text_AwaitingParticipatingMembersB;
         }
         yesNo->seq = COMM_ENTRY_CANCEL_SEQ_END;
         break;
@@ -1616,8 +1616,8 @@ static void CommEntryMenu_DrawMemberList(CommEntryMenu *menu) {
 }
 
 static void CommEntryMenu_PrintMessage(CommEntryMenu *menu, int msgId) {
-    if (msgId != CommEntryMenu_Text_AwaitingParticipatingMembersB ||
-        menu->lastMsg != CommEntryMenu_Text_AwaitingParticipatingMembersB) {
+    if (msgId != CommunicationEntryMenu_Text_AwaitingParticipatingMembersB ||
+        menu->lastMsg != CommunicationEntryMenu_Text_AwaitingParticipatingMembersB) {
         StrBuf *str;
 
         menu->lastMsg = msgId;
@@ -1728,7 +1728,7 @@ static u32 CommEntryMenu_UpdateLeaderList(CommEntryMenu *menu) {
                 break;
             }
             list->seq = COMM_ENTRY_LIST_SEQ_WAIT_PROBLEM;
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_ThereAppearsProblem);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_ThereAppearsProblem);
         }
         break;
     case COMM_ENTRY_LIST_SEQ_SEND_ENTRY:
@@ -1767,7 +1767,7 @@ static u32 CommEntryMenu_UpdateLeaderList(CommEntryMenu *menu) {
     case COMM_ENTRY_LIST_SEQ_END:
         return list->result;
     case COMM_ENTRY_LIST_SEQ_ASK_LEAVE:
-        CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_WantLeaveGroup);
+        CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_WantLeaveGroup);
         yesNo->window = MsgBGPrinter_CreateYesNoMenu(Field_GetMsgBGSys(menu->field), 0);
         list->seq = COMM_ENTRY_LIST_SEQ_ANSWER_LEAVE;
         break;
@@ -1792,7 +1792,7 @@ static u32 CommEntryMenu_UpdateLeaderList(CommEntryMenu *menu) {
         yesNo->window = NULL;
         if (answer == MSGBG_YES_NO_NO) {
             list->seq = list->prevSeq;
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_AwaitingSResponseB);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_AwaitingSResponseB);
             if (menu->list.menu != NULL) {
                 MsgBGPrinter_DrawMenuFuncFrame(menu->list.menu);
             }
@@ -1828,7 +1828,7 @@ static BOOL CommEntryMenu_UpdateLeaderListInput(CommEntryMenu *menu) {
             list->selected = &list->leaders[index];
             GFL_NetStartAsChild(list->selected->mac);
             copyVarForText(menu->wordSet, 0, &list->selected->info);
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_AwaitingSResponseB);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_AwaitingSResponseB);
             list->timer = 0;
         }
         break;
@@ -1905,8 +1905,8 @@ static void CommEntryMenu_BuildLeaderOptions(CommEntryMenu *menu) {
     leaderFmt = GFL_StrBufCreate(64, menu->heapId);
     line = GFL_StrBufCreate(64, menu->heapId);
     empty = GFL_StrBufCreate(4, menu->heapId);
-    GFL_MsgDataLoadStrbuf(menu->msgData, CommEntryMenu_Text_Empty_5, emptyFmt);
-    GFL_MsgDataLoadStrbuf(menu->msgData, CommEntryMenu_Text_Id_2, leaderFmt);
+    GFL_MsgDataLoadStrbuf(menu->msgData, CommunicationEntryMenu_Text_Empty_5, emptyFmt);
+    GFL_MsgDataLoadStrbuf(menu->msgData, CommunicationEntryMenu_Text_Id_2, leaderFmt);
     for (i = 0; i < COMM_ENTRY_LEADER_MAX; i++) {
         WordSetNumber(menu->wordSet, 0, i + 1, 2, 2, TRUE);
         if (menu->list.leaders[i].valid == TRUE) {
@@ -1936,7 +1936,7 @@ static u32 CommEntryMenu_AskLeave(CommEntryMenu *menu) {
     case COMM_ENTRY_LEAVE_SEQ_WAIT_B:
         if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B) {
             yesNo->window = MsgBGPrinter_CreateYesNoMenu(Field_GetMsgBGSys(menu->field), 0);
-            CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_WantLeaveGroup);
+            CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_WantLeaveGroup);
             yesNo->seq = COMM_ENTRY_LEAVE_SEQ_ANSWER;
         }
         break;
@@ -1951,7 +1951,7 @@ static u32 CommEntryMenu_AskLeave(CommEntryMenu *menu) {
             yesNo->window = NULL;
             if (answer == MSGBG_YES_NO_NO) {
                 yesNo->seq = COMM_ENTRY_LEAVE_SEQ_WAIT_B;
-                CommEntryMenu_PrintMessage(menu, CommEntryMenu_Text_PleaseWaitBButton_2);
+                CommEntryMenu_PrintMessage(menu, CommunicationEntryMenu_Text_PleaseWaitBButton_2);
             } else {
                 return COMM_ENTRY_LEAVE_YES;
             }

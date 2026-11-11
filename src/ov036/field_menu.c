@@ -40,7 +40,7 @@
 #include "system/game_system.h"
 #include "system/printsys.h"
 #include "system/wipe.h"
-#include "text/system/load_field_menu_texts.h"
+#include "text/system/field_menu.h"
 
 // The slots of the items, x + y * 2 for the cursor's column and row, and the return button at the bottom
 #define FIELD_MENU_SLOT_BOTTOM 6
@@ -185,11 +185,11 @@ static const u8 FIELD_MENU_SLOT_COORDINATES[FIELD_MENU_SLOT_COUNT][2] = {
 };
 
 // The message of each item's name
-static const u16 FIELD_MENU_NAME_MESSAGES[FIELD_MENU_ITEM_MAX] = {
-    LoadFieldMenuTexts_Text_Empty_3, LoadFieldMenuTexts_Text_Pokemon, LoadFieldMenuTexts_Text_Pokedex,
-    LoadFieldMenuTexts_Text_Bag,     LoadFieldMenuTexts_Text_Empty_2, LoadFieldMenuTexts_Text_Save,
-    LoadFieldMenuTexts_Text_Options, LoadFieldMenuTexts_Text_Empty_5, LoadFieldMenuTexts_Text_Retire
-};
+static const u16 FIELD_MENU_NAME_MESSAGES[FIELD_MENU_ITEM_MAX] = { FieldMenu_Text_Empty_3, FieldMenu_Text_Pokemon,
+                                                                   FieldMenu_Text_Pokedex, FieldMenu_Text_Bag,
+                                                                   FieldMenu_Text_Empty_2, FieldMenu_Text_Save,
+                                                                   FieldMenu_Text_Options, FieldMenu_Text_Empty_5,
+                                                                   FieldMenu_Text_Retire };
 
 // The screen of each kind of menu
 static const u32 FIELD_MENU_SCREEN_FILES[FIELD_MENU_TYPE_MAX] = { 0x12, 0x14, 0x14, 0x13, 0x14, 0x14, 0x12 };
@@ -597,8 +597,7 @@ static int FieldMenu_CountItems(u8 menuType) {
 
 static void LoadFieldMenuTexts(FieldMenu *menu, ArcTool *arc, u8 menuType) {
     FieldMenuItemSetup setup;
-    MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LOAD_FIELD_MENU_TEXTS, menu->tmpHeapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_FIELD_MENU, menu->tmpHeapId);
     const u32 *items;
     u8 i;
 

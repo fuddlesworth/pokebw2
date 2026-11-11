@@ -43,7 +43,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wipe.h"
-#include "text/system/gsync_menu.h"
+#include "text/system/game_sync_menu.h"
 #include "text/system/wifi_error.h"
 
 // The menu shares the IR battle menu's heap
@@ -402,7 +402,7 @@ static void GSyncMenu_OnButtonAnimEnd(u32 param, fx32 frame) {
             GSyncMenu_DimSubScreen(wk, TRUE);
             GSyncMenu_ChangeState(wk, GSyncMenu_StateWaitMessageTouch, 479);
         } else {
-            GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_WantChooseNintendoWi, wk->strBuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_WantChooseNintendoWi, wk->strBuf);
             GSyncMenu_PrintMessageStream(wk);
             GSyncMenu_DimSubScreen(wk, TRUE);
             GSyncMenu_ChangeState(wk, GSyncMenu_StateWifiSettingsYesNo, 486);
@@ -523,7 +523,7 @@ static void GSyncMenu_LoadGraphics(GSyncMenuWork *wk) {
 
     wk->strBuf = GFL_StrBufCreate(300, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GSYNC_MENU, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_GAME_SYNC_MENU, wk->heapId);
     wk->dsiMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WIFI_ERROR, wk->heapId);
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_GSYNC_MENU, wk->heapId);
@@ -724,10 +724,10 @@ static void GSyncMenu_CreateYesNo(GSyncMenuWork *wk) {
     init.width = 13;
     init.height = 3;
     wk->yesNoItems[0].str = GFL_StrBufCreate(100, wk->heapId);
-    GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_Yes, wk->yesNoItems[0].str);
+    GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_Yes, wk->yesNoItems[0].str);
     wk->yesNoItems[0].color = PRINT_COLOR(14, 15, 0);
     wk->yesNoItems[1].str = GFL_StrBufCreate(100, wk->heapId);
-    GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_No, wk->yesNoItems[1].str);
+    GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_No, wk->yesNoItems[1].str);
     wk->yesNoItems[1].color = PRINT_COLOR(14, 15, 0);
     wk->yesNoMenu = AppTaskMenu_Create(&init, wk->menuRes);
     AppTaskMenu_SetLocked(wk->yesNoMenu, TRUE);
@@ -807,7 +807,7 @@ static void GSyncMenu_PrintMessageStream(GSyncMenuWork *wk) {
 static void GSyncMenu_StateSaveAsk(GSyncMenuWork *wk) {
     GSyncMenu_DimSubScreen(wk, TRUE);
     GFL_BGSysFillScrAsync(5, 0);
-    GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_WouldLikeSaveGame, wk->strBuf);
+    GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_WouldLikeSaveGame, wk->strBuf);
     GSyncMenu_PrintMessageStream(wk);
     GSyncMenu_ChangeState(wk, GSyncMenu_StateSaveYesNo, 1232);
 }
@@ -831,11 +831,11 @@ static void GSyncMenu_StateSaveAnswer(GSyncMenuWork *wk) {
     if (AppTaskMenu_IsFlashFinished(wk->yesNoMenu)) {
         if (AppTaskMenu_GetCursorPos(wk->yesNoMenu) == 0) {
             if (SaveControl_IsNewGameOverSave(GameData_GetSaveControl(wk->gameData))) {
-                GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_ThereAlreadySavedGame, wk->strBuf);
+                GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_ThereAlreadySavedGame, wk->strBuf);
                 GSyncMenu_PrintMessageStream(wk);
                 GSyncMenu_ChangeState(wk, GSyncMenu_StateWaitMessageTouch, 1293);
             } else {
-                GFL_MsgDataLoadStrbuf(wk->msgData, GsyncMenu_Text_SavingDontTurnOff, wk->strBuf);
+                GFL_MsgDataLoadStrbuf(wk->msgData, GameSyncMenu_Text_SavingDontTurnOff, wk->strBuf);
                 GSyncMenu_PrintMessage(wk, 4, FALSE);
                 GSyncMenu_StartWaitIcon(wk);
                 GSyncMenu_ChangeState(wk, GSyncMenu_StateStartSave, 1305);

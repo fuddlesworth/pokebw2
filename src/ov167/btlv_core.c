@@ -36,7 +36,7 @@
 #include "nitro/hw.h"
 #include "pml/move.h"
 #include "system/gf_font.h"
-#include "text/system/btlv_core.h"
+#include "text/system/battle_view_core.h"
 
 // The procedure each display command starts
 typedef struct BtlvCmdEntry {
@@ -342,7 +342,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         *keys = 0;
         BtlvScu_Setup(core->scu);
         BtlvScd_CreateInput(core->scd);
-        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BTLV_CORE, core->heapId);
+        wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_BATTLE_VIEW_CORE, core->heapId);
         wk->wait = 0;
         (*seq)++;
         break;
@@ -433,7 +433,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 12:
         if (BtlvCore_WaitMsg(core)) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, BtlvCore_Text_JustHaveUsePoke, core->strbuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, BattleViewCore_Text_JustHaveUsePoke, core->strbuf);
             BtlvCore_StartMsgStr(core, core->strbuf, 0, NULL);
             wk->wait = 60;
             (*seq)++;
@@ -453,7 +453,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         break;
     case 15:
         if (BtlvCore_WaitItemSelect(core)) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, BtlvCore_Text_BiancaUsedPokeBall, core->strbuf);
+            GFL_MsgDataLoadStrbuf(wk->msgData, BattleViewCore_Text_BiancaUsedPokeBall, core->strbuf);
             BtlvCore_StartMsgStr(core, core->strbuf, 0, NULL);
             BtlvScd_ResetScreen(core->scd);
             (*seq)++;

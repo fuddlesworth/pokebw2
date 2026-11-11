@@ -1,0 +1,22 @@
+PokewoodBriefingMovie13_Text_UnovaDefenseForceUdf = {bd02}The Unova Defense Force (UDF)...\n\n{bd02}This organization strives to keep\n{bd02}the Unova region at peace...
+PokewoodBriefingMovie13_Text_StoryTheirValiantStruggle = {bd02}This is the story of\n{bd02}their valiant struggle...
+PokewoodBriefingMovie13_Text_SirenBlaresLoudlyUdf = {bd02}A siren blares loudly\n{bd02}at the UDF headquarters.\n{bd02}It's time to roll out.
+PokewoodBriefingMovie13_Text_ReportArrivesTitanicTyranitar = {bd02}A report arrives.\n{bd02}The Titanic Tyranitar has reappeared.\n\n{bd02}The young recruit {0100:1}\n{bd02}hurries to the scene.
+PokewoodBriefingMovie13_Text_Empty = なし
+PokewoodBriefingMovie13_Text_Empty_2 = なし
+PokewoodBriefingMovie13_Text_Empty_3 = なし
+PokewoodBriefingMovie13_Text_Empty_4 = なし
+PokewoodBriefingMovie13_Text_Empty_5 = なし
+PokewoodBriefingMovie13_Text_Empty_6 = なし
+PokewoodBriefingMovie13_Text_UnovaDefenseForceUdf_2 = {bd02}The Unova Defense Force (UDF)...\n\n{bd02}This organization strives to keep\n{bd02}the Unova region at peace...
+PokewoodBriefingMovie13_Text_StoryTheirValiantStruggle_2 = {bd02}This is the story of\n{bd02}their valiant struggle...
+PokewoodBriefingMovie13_Text_SirenBlaresLoudlyUdf_2 = {bd02}A siren blares loudly\n{bd02}at the UDF headquarters.\n{bd02}It's time to roll out.
+PokewoodBriefingMovie13_Text_ReportArrivesTitanicTyranitar_2 = {bd02}A report arrives.\n{bd02}The Titanic Tyranitar has reappeared.\n\n{bd02}The young recruit {0100:1}\n{bd02}hurries to the scene.
+PokewoodBriefingMovie13_Text_Empty_7 = なし
+PokewoodBriefingMovie13_Text_Empty_8 = なし
+PokewoodBriefingMovie13_Text_Empty_9 = なし
+PokewoodBriefingMovie13_Text_Empty_10 = なし
+PokewoodBriefingMovie13_Text_Empty_11 = なし
+PokewoodBriefingMovie13_Text_Empty_12 = なし
+PokewoodBriefingMovie13_Text_Empty_13 = なし
+\pad{74}

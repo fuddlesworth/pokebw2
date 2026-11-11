@@ -1,0 +1,8 @@
+UnionRoomSubScreen_Text_TouchBattleIconIf = Touch the Battle icon\nif you want to battle!
+UnionRoomSubScreen_Text_TouchTradeIconIf = Touch the Trade icon\nif you want to trade!
+UnionRoomSubScreen_Text_TouchDrawIconIf = Touch the Draw icon\nif you want to draw!
+UnionRoomSubScreen_Text_TouchSpinTradeIcon = Touch the Spin Trade icon\nif you want to Spin Trade!
+UnionRoomSubScreen_Text_Friend = FRIEND
+UnionRoomSubScreen_Text_Player = PLAYER
+UnionRoomSubScreen_Text_IveEnteredUnionRoom = I've entered the Union Room.
+\pad{c4}

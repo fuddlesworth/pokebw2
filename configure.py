@@ -401,7 +401,7 @@ DATA_PACKS = [
     ("tools/data/medal_data.py", "res/medals", ["a/2/3/5", "a/2/3/9"], False, ["res/text/system/medal_names.txt"]),
     # The Funfest Missions and the species their people missions pick from, whose messages are of their text file
     ("tools/data/funfest_mission_data.py", "res/funfest", ["a/2/8/9"], False,
-     ["res/text/system/get_text_file_for_fest_missions.txt"]),
+     ["res/text/system/funfest_missions.txt"]),
     # The name input's lists of profane words
     ("tools/data/profane_word_data.py", "res/name_input/profane_words.json", ["a/2/1/6"], False,
      ["res/name_input/profane_words.schema.json"]),

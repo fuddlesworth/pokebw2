@@ -30,8 +30,8 @@
 // The system message files of the trainers' messages and names, and of the Battle Institute trainers' messages
 #define TRMSG_FILE TEXT_BANK_TRAINER_MESSAGES
 #define TRNAME_FILE TEXT_BANK_TRAINER_NAMES
-#define TRMSG_BATTLE_INST_START_FILE TEXT_BANK_BATTLE_INST_START_MESSAGES
-#define TRMSG_BATTLE_INST_LOSE_FILE TEXT_BANK_BATTLE_INST_LOSE_MESSAGES
+#define TRMSG_BATTLE_INST_START_FILE TEXT_BANK_BATTLE_INSTITUTE_START_MESSAGES
+#define TRMSG_BATTLE_INST_LOSE_FILE TEXT_BANK_BATTLE_INSTITUTE_LOSE_MESSAGES
 
 // The Battle Institute's trainers' records: the trainers from 620 to 639 share one, and all the others another
 #define TRDATA_BATTLE_INST_GROUP_START 620

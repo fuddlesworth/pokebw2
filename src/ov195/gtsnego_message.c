@@ -27,7 +27,7 @@
 #include "system/pms_draw.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
-#include "text/system/gtsnego_proc.h"
+#include "text/system/gts_negotiation.h"
 
 #define GTSNEGO_LABEL_COUNT 12
 
@@ -77,15 +77,15 @@ static void GtsNegoMessage_FreeButtons(GtsNegoMessage *msg);
 
 // The messages of the level ranges and of the kinds of Pokémon
 static u16 sGtsNegoMessageLevels[] = {
-    GtsnegoProc_Text_AnyKind,
-    GtsnegoProc_Text_Lv1Through49,
-    GtsnegoProc_Text_Lv50,
-    GtsnegoProc_Text_Lv51Through100,
+    GtsNegotiation_Text_AnyKind,
+    GtsNegotiation_Text_Lv1Through49,
+    GtsNegotiation_Text_Lv50,
+    GtsNegotiation_Text_Lv51Through100,
 };
 
 static u16 sGtsNegoMessageKinds[] = {
-    GtsnegoProc_Text_AnyKind_2, GtsnegoProc_Text_Cool,    GtsnegoProc_Text_Cute,
-    GtsnegoProc_Text_Scary,     GtsnegoProc_Text_Strange,
+    GtsNegotiation_Text_AnyKind_2, GtsNegotiation_Text_Cool,    GtsNegotiation_Text_Cute,
+    GtsNegotiation_Text_Scary,     GtsNegotiation_Text_Strange,
 };
 
 // The main menu's buttons
@@ -294,10 +294,10 @@ AppTaskMenu *GtsNegoMessage_CreateYesNo(GtsNegoMessage *msg, u32 layout) {
     init.width = 13;
     init.height = 3;
     msg->items[0].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Yes, msg->items[0].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Yes, msg->items[0].str);
     msg->items[0].color = GTSNEGO_MENU_COLOR;
     msg->items[1].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_No, msg->items[1].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_No, msg->items[1].str);
     msg->items[1].color = GTSNEGO_MENU_COLOR;
     menu = AppTaskMenu_Create(&init, msg->menuRes);
     GFL_StrBufFree(msg->items[0].str);
@@ -375,8 +375,8 @@ void GtsNegoMessage_ClearLabels(GtsNegoMessage *msg) {
 
 void GtsNegoMessage_ShowMainMenu(GtsNegoMessage *msg, ButtonManCallback callback, void *work) {
     GtsNegoMessage_FreeLabels(msg);
-    GtsNegoMessage_AddLabel(msg, GtsnegoProc_Text_TradeAnyone, 8, 7, 16, 6);
-    GtsNegoMessage_AddLabel(msg, GtsnegoProc_Text_TradeRendezvous, 8, 13, 16, 6);
+    GtsNegoMessage_AddLabel(msg, GtsNegotiation_Text_TradeAnyone, 8, 7, 16, 6);
+    GtsNegoMessage_AddLabel(msg, GtsNegotiation_Text_TradeRendezvous, 8, 13, 16, 6);
     GtsNegoMessage_QueueLabelsLoad(msg);
     GtsNegoMessage_FreeButtons(msg);
     msg->buttons = GFL_BMN_Create(sGtsNegoMessageMainRects, callback, work, msg->heapId);
@@ -386,11 +386,11 @@ void GtsNegoMessage_ShowSearchMenu(GtsNegoMessage *msg, ButtonManCallback callba
                                    int wantKind) {
     GtsNegoMessage_FreeLabels(msg);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
-    GtsNegoMessage_AddMenuLabel(msg, GtsnegoProc_Text_TradeWanted, 0, 0);
+    GtsNegoMessage_AddMenuLabel(msg, GtsNegotiation_Text_TradeWanted, 0, 0);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
-    GtsNegoMessage_AddMenuLabel(msg, GtsnegoProc_Text_Level, 3, 6);
-    GtsNegoMessage_AddMenuLabel(msg, GtsnegoProc_Text_Want, 1, 11);
-    GtsNegoMessage_AddMenuLabel(msg, GtsnegoProc_Text_Have, 1, 16);
+    GtsNegoMessage_AddMenuLabel(msg, GtsNegotiation_Text_Level, 3, 6);
+    GtsNegoMessage_AddMenuLabel(msg, GtsNegotiation_Text_Want, 1, 11);
+    GtsNegoMessage_AddMenuLabel(msg, GtsNegotiation_Text_Have, 1, 16);
     GFL_TextRndUpdateColorIndexLUT(1, 2, 0);
     msg->levelLabel = GtsNegoMessage_AddMenuLabel(msg, sGtsNegoMessageLevels[level], 13, 6);
     msg->myKindLabel = GtsNegoMessage_AddMenuLabel(msg, sGtsNegoMessageKinds[myKind], 16, 11);
@@ -463,7 +463,7 @@ void GtsNegoMessage_PrintLocation(GtsNegoMessage *msg, PlayerInfo *partner) {
         loadCountryToStrbuf(msg->wordSet, 0, 0);
         loadCountryAreaToStrbuf(msg->wordSet, 1, 0, 0);
     }
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Empty_3, msg->formatStrbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Empty_3, msg->formatStrbuf);
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, msg->formatStrbuf);
     if (msg->locationWin == NULL) {
         msg->locationWin = BmpWin_CreateDynamic(1, 1, 15, 30, 5, 11, TRUE);
@@ -502,7 +502,7 @@ int GtsNegoMessage_PrintFriend(GtsNegoMessage *msg, PlayerInfo *friend, int row)
     copyVarForText(msg->wordSet, 0, friend);
     WordSetNumber(msg->wordSet, 1, getTrainerID(friend), 5, 2, TRUE);
     loadCountryToStrbuf(msg->wordSet, 2, UnityTowerVisitor_GetCountry(friend));
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Id, msg->formatStrbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Id, msg->formatStrbuf);
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, msg->formatStrbuf);
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), 0, 0, msg->strbuf, msg->font);
@@ -516,7 +516,7 @@ void GtsNegoMessage_ShowFriendList(GtsNegoMessage *msg, GameData *gameData) {
     int i = 0;
 
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
-    GtsNegoMessage_AddLabel(msg, GtsnegoProc_Text_SelectRendezvous, 0, 0, 20, 5);
+    GtsNegoMessage_AddLabel(msg, GtsNegotiation_Text_SelectRendezvous, 0, 0, 20, 5);
     for (; i < GTSNEGO_LIST_SHOWN; i++) {
         PlayerInfo *friend = GtsNego_GetFriend(gameData, i);
 
@@ -616,11 +616,11 @@ AppTaskMenu *GtsNegoMessage_CreateConfirm(GtsNegoMessage *msg, u32 layout) {
     init.width = 13;
     init.height = 3;
     msg->items[0].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Yes_2, msg->items[0].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Yes_2, msg->items[0].str);
     msg->items[0].color = GTSNEGO_MENU_COLOR;
     msg->items[0].type = 0;
     msg->items[1].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Cancel_2, msg->items[1].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Cancel_2, msg->items[1].str);
     msg->items[1].color = GTSNEGO_MENU_COLOR;
     msg->items[1].type = 0;
     menu = AppTaskMenu_Create(&init, msg->menuRes);
@@ -692,7 +692,7 @@ static const TouchRect sGtsNegoMessageCancelRect[] = {
 
 void GtsNegoMessage_CreateCancelButton(GtsNegoMessage *msg, ButtonManCallback callback, void *work) {
     msg->items[0].str = GFL_StrBufCreate(100, msg->heapId);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Cancel, msg->items[0].str);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Cancel, msg->items[0].str);
     msg->items[0].color = GTSNEGO_BUTTON_COLOR;
     msg->items[0].type = 0;
     msg->cancelButton = AppTaskMenuWin_CreateEx(msg->menuRes, &msg->items[0], 10, 21, 12, 3, FALSE, TRUE, msg->heapId);
@@ -726,7 +726,7 @@ BOOL GtsNegoMessage_IsCancelPressDone(GtsNegoMessage *msg) {
 void GtsNegoMessage_PrintTradeCount(GtsNegoMessage *msg, u32 msgNo, int count) {
     BmpWin *window;
 
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_NoTrades, msg->strbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_NoTrades, msg->strbuf);
     if (msg->tradesLabelWin == NULL) {
         msg->tradesLabelWin = BmpWin_CreateDynamic(1, 21, 4, 10, 2, 4, TRUE);
     }
@@ -737,7 +737,7 @@ void GtsNegoMessage_PrintTradeCount(GtsNegoMessage *msg, u32 msgNo, int count) {
     BmpWin_FlushChar(window);
     BmpWin_FlushMap(window);
     WordSetNumber(msg->wordSet, 0, count, 5, 1, TRUE);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Empty_4, msg->formatStrbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Empty_4, msg->formatStrbuf);
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, msg->formatStrbuf);
     if (msg->tradesWin == NULL) {
         msg->tradesWin = BmpWin_CreateDynamic(1, 21, 6, 10, 3, 11, TRUE);
@@ -754,7 +754,7 @@ void GtsNegoMessage_PrintPartnerName(GtsNegoMessage *msg, PlayerInfo *partner) {
     BmpWin *window;
 
     copyVarForText(msg->wordSet, 0, partner);
-    GFL_MsgDataLoadStrbuf(msg->msgData, GtsnegoProc_Text_Empty_5, msg->formatStrbuf);
+    GFL_MsgDataLoadStrbuf(msg->msgData, GtsNegotiation_Text_Empty_5, msg->formatStrbuf);
     GFL_WordSetFormatStrbuf(msg->wordSet, msg->strbuf, msg->formatStrbuf);
     if (msg->nameWin == NULL) {
         msg->nameWin = BmpWin_CreateDynamic(1, 11, 10, 10, 3, 11, TRUE);
@@ -769,10 +769,10 @@ void GtsNegoMessage_PrintPartnerName(GtsNegoMessage *msg, PlayerInfo *partner) {
 
 void GtsNegoMessage_ShowPartner(GtsNegoMessage *msg, PlayerInfo *partner, int count) {
     GtsNegoMessage_PrintPartnerName(msg, partner);
-    GtsNegoMessage_PrintTradeCount(msg, GtsnegoProc_Text_Empty_4, count);
-    GtsNegoMessage_PrintHeading(msg, GtsnegoProc_Text_Location);
+    GtsNegoMessage_PrintTradeCount(msg, GtsNegotiation_Text_Empty_4, count);
+    GtsNegoMessage_PrintHeading(msg, GtsNegotiation_Text_Location);
     GtsNegoMessage_PrintLocation(msg, partner);
-    GtsNegoMessage_PrintShort(msg, GtsnegoProc_Text_TradePartnerHasBeen);
+    GtsNegoMessage_PrintShort(msg, GtsNegotiation_Text_TradePartnerHasBeen);
 }
 
 // Clears the windows but the message's, back for the main menu

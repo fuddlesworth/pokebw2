@@ -7,7 +7,7 @@ builds the archive from it, which the build does.
 
 - missions.json is the FEST_MISSION_COUNT missions, each its FestMissionHeader of file 0 and its FestMissionParams of
   file 1 (field/fest_mission_data.h), which FestMission_Load copies into a FestMissionConfig: its messages, of
-  res/text/system/get_text_file_for_fest_missions.txt by ID, its target, items and flag by their constants, and what
+  res/text/system/funfest_missions.txt by ID, its target, items and flag by their constants, and what
   each of its four levels asks.
 - species_lists.json is files 2 to 21, the species that a people mission picks from (FesMissionPeople_LoadSpecies):
   file 2 plus its variant for target 8, file 20 for target 5.
@@ -26,7 +26,7 @@ from tools.text.text_ids import message_numbers  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 ARCHIVE = "a/2/8/9"
-MESSAGES = ROOT / "res" / "text" / "system" / "get_text_file_for_fest_missions.txt"
+MESSAGES = ROOT / "res" / "text" / "system" / "funfest_missions.txt"
 
 MISSION_COUNT = 55  # FEST_MISSION_COUNT
 HEADER = struct.Struct("<BBH")  # FestMissionHeader

@@ -120,7 +120,7 @@ static inline int GetMonVariant(u8 monId) {
 
 // The message file of a studio movie's script, one for each of the player's sexes
 static inline u16 GetMovieScriptMsgFile(u8 movie, u8 male) {
-    return TEXT_BANK_PKWD_BOOK_MOVIE_00_GIRL + movie * 2 + male;
+    return TEXT_BANK_POKEWOOD_BOOK_MOVIE_00_GIRL + movie * 2 + male;
 }
 
 // The message files of a Pokéstar Studios movie: its script's, filmed or played back, and its own while it is filmed

@@ -249,9 +249,10 @@ are named after their constants, which give their order in the archive: a system
 `generated/text_banks.txt` (`species_names.txt` for `TEXT_BANK_SPECIES_NAMES`), and a script message file after its
 `SCRIPT_TEXT_*` in `script_text_banks.txt`, which names a zone's after the zone (`black_city.txt`) and a global script
 file's after its first script ID (`global_10885.txt`). A system message file is named after what it holds, which the
-word set function that loads it or its contents show (`move_names.txt`, `natures.txt`), or else after the source file or
-function that loads it (`delete_save.txt`, `b_bag_main.txt`), with the index the code picks it by where it loads one of
-a run (`pkwd_briefing_movie_00.txt` for `TEXT_BANK_PKWD_BRIEFING_MOVIE_00`, `TEXT_BANK_PKWD_BRIEFING_MOVIE_00 + movie`);
+word set function that loads it or its contents show (`move_names.txt`, `natures.txt`), or else after the screen whose
+code loads it, in English with Game Freak's abbreviations spelled out (`delete_save.txt`, `battle_bag.txt` for
+`b_bag_main.c`), with the index the code picks it by where it loads one of a run (`pokewood_briefing_movie_00.txt` for
+`TEXT_BANK_POKEWOOD_BRIEFING_MOVIE_00`, `TEXT_BANK_POKEWOOD_BRIEFING_MOVIE_00 + movie`);
 the others keep their number until code that loads them is known (`0009.txt` for `TEXT_BANK_0009`). To rename one, rename its constant with `rename_constant.py`, which renames the file, its message IDs
 and its header with it (`TEXT_BANK_0377` to `TEXT_BANK_TOWN_MAP` made `Bank0377_Text_FlyWhere` `TownMap_Text_FlyWhere`).
 Both versions have the same text. The code names a message file by its constant too: `GFL_MsgSysLoadData(FALSE,
@@ -1266,7 +1267,7 @@ its field effect and its category, and its kind and rank decide when Mr. Medal h
 
 The Funfest Missions are `res/funfest/missions.json`, files 0 and 1 of `a/2/8/9` (`ARCID_FMISSION_DATA`), each
 mission's header and parameters (`field/fest_mission_data.h`), which `FestMission_Load` copies into the mission's
-config: its goal's and result's messages of `res/text/system/get_text_file_for_fest_missions.txt` by ID, its target,
+config: its goal's and result's messages of `res/text/system/funfest_missions.txt` by ID, its target,
 a species by its constant where its kind says so, its reward and second item and the event flag it needs by their
 constants, and the time and score of each of its four levels. `res/funfest/species_lists.json` is the archive's other
 files, the species that a people mission picks its people's Pokémon from (`FesMissionPeople_LoadSpecies`).
