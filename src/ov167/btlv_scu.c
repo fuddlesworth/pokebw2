@@ -1537,7 +1537,7 @@ static BOOL BtlvScu_StepPlayerSendOutDouble(BtlvScu *scu, s32 *seq) {
     u8 clientId = GetPlayerClientID(scu->mainModule);
     u8 partnerId = GetPlayerAllyClientID(scu->mainModule);
 
-    if (partnerId == 4) {
+    if (partnerId == BTL_CLIENT_NONE) {
         return BtlvScu_StepPlayerSendOutDoubleAlone(scu, seq, clientId);
     }
     return BtlvScu_StepPlayerSendOutDoubleWithPartner(scu, seq, clientId, partnerId);

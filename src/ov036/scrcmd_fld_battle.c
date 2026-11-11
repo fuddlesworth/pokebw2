@@ -20,15 +20,6 @@
 #define REGULATION_SPECIES_COUNT 686
 #define REGULATION_LIST_MAX 32
 
-// The team that enters, as PartySelectList_Delete returns its row: the party, the Battle Box, cancel, or neither when
-// neither can enter or the team picked fails the regulation
-enum {
-    TEAM_SELECT_PARTY,
-    TEAM_SELECT_BATTLE_BOX,
-    TEAM_SELECT_CANCEL,
-    TEAM_SELECT_NONE,
-};
-
 typedef struct {
     GameSystem *gsys;
     Field *field;

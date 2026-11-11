@@ -1960,6 +1960,7 @@ overlays/ov056 0x021e7b50 overlay_id 22
 overlays/ov056 0x021e7b54 reloc_module overlay(22)
 overlays/ov056 0x021e7b9c overlay_id 5
 overlays/ov056 0x021e7ba0 reloc_module overlay(5)
+overlays/ov056 0x021e7bb5 remove_symbol
 overlays/ov057 0x021e7614 reloc_module overlay(55)
 overlays/ov057 0x021e7642 reloc_module overlay(55)
 overlays/ov057 0x021e76ca reloc_module overlay(55)
@@ -2273,6 +2274,9 @@ overlays/ov103 0x021ef240 reloc_module overlay(36)
 overlays/ov104 0x021efab6 reloc_module overlay(36)
 overlays/ov104 0x021efaf4 reloc_module overlay(36)
 overlays/ov107 0x021ef212 reloc_module overlay(36)
+overlays/ov108 0x021eef99 remove_symbol
+overlays/ov108 0x021eefe1 remove_symbol
+overlays/ov108 0x021ef011 remove_symbol
 overlays/ov111 0x021ef0a6 reloc_module overlay(36)
 overlays/ov120 0x021eefca reloc_module overlay(36)
 overlays/ov120 0x021ef0d6 reloc_module overlay(36)
@@ -3171,6 +3175,17 @@ overlays/ov201 0x021b5c88 reloc_module overlay(189)
 overlays/ov201 0x021b5c8e reloc_module overlay(189)
 overlays/ov201 0x021b5f12 reloc_module overlay(189)
 overlays/ov201 0x021b5f18 reloc_module overlay(189)
+overlays/ov201 0x021b81bd remove_symbol
+overlays/ov201 0x021b8279 remove_symbol
+overlays/ov201 0x021b83b5 remove_symbol
+overlays/ov201 0x021b9175 remove_symbol
+overlays/ov201 0x021b9189 remove_symbol
+overlays/ov201 0x021b9195 remove_symbol
+overlays/ov201 0x021b919d remove_symbol
+overlays/ov201 0x021b93ec remove_symbol
+overlays/ov201 0x021b95ec remove_symbol
+overlays/ov201 0x021b97f4 remove_symbol
+overlays/ov201 0x021b9964 remove_symbol
 overlays/ov203 0x021a8468 reloc_addend 1
 overlays/ov203 0x021a9990 remove_reloc
 overlays/ov203 0x021a9994 remove_reloc

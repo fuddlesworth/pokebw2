@@ -17,7 +17,8 @@
 #include "system/game_system.h"
 #include "text/script/global_10655.h"
 
-// The commands of the Pokémon World Tournament's entrance (plugin 6) that overlay 55 doesn't have
+// The commands of the Pokémon World Tournament's entrance (plugin 6) that overlay 55 doesn't have. The name is
+// descriptive
 
 static BSubwayScoreData *WbtEntrance_GetBSubwayScoreData(FieldScriptEnv *env) {
     return SaveControl_GetBlockPtr(GameData_GetSaveControl(FieldScriptEnv_GetGameData(env)), SAVE_BLOCK_BSUBWAY_SCORE);
@@ -109,14 +110,9 @@ BOOL Scrcmd_WbtEntrance_CallEntryPartySelect(VM *vm, FieldScriptEnv *env) {
     return TRUE;
 }
 
-enum {
-    TOURNAMENT_TYPE_EXPERT = 2,
-    TOURNAMENT_DOWNLOADED = 3,
-};
-
 // Sets a variable to the message that says why the player can't enter: one for a downloaded tournament, else one by the
 // regulation, or the one four messages on for the Type Expert Tournament
-BOOL func_ov056_021e77b0(VM *vm, FieldScriptEnv *env) {
+BOOL Scrcmd_WbtEntrance_GetCantEnterMessage(VM *vm, FieldScriptEnv *env) {
     // Pairs of a regulation and its message
     static const u16 sRegulationMessages[] = {
         29, Global10655_Text_DontMeetConditionsCant,     30, Global10655_Text_DontMeetConditionsCant_2,
@@ -130,7 +126,7 @@ BOOL func_ov056_021e77b0(VM *vm, FieldScriptEnv *env) {
     u32 message = Global10655_Text_DontMeetConditionsCant;
     unsigned int i;
 
-    if (WbtSystem_GetTournament(sys) == TOURNAMENT_DOWNLOADED) {
+    if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_DOWNLOADED) {
         message = Global10655_Text_DontMeetConditionsCant_11;
     } else {
         u8 regulation = WbtSystem_GetRegulationId(sys);
@@ -141,7 +137,7 @@ BOOL func_ov056_021e77b0(VM *vm, FieldScriptEnv *env) {
                 break;
             }
         }
-        if (WbtSystem_GetTournament(sys) == TOURNAMENT_TYPE_EXPERT) {
+        if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_TYPE_EXPERT) {
             message += 4;
         }
     }
@@ -155,14 +151,14 @@ BOOL Scrcmd_WbtEntrance_SetUseBattleBox(VM *vm, FieldScriptEnv *env) {
 
     FieldScriptEnv_GetGameData(env);
     switch (ScriptReadAny(vm, env)) {
-    case 0:
-    case 2:
-    case 3:
+    case TEAM_SELECT_PARTY:
+    case TEAM_SELECT_CANCEL:
+    case TEAM_SELECT_NONE:
     default:
-        value = 0;
+        value = FALSE;
         break;
-    case 1:
-        value = 1;
+    case TEAM_SELECT_BATTLE_BOX:
+        value = TRUE;
         break;
     }
     WbtSystem_SetUseBattleBox(sys, value);
@@ -181,7 +177,7 @@ BOOL Scrcmd_WbtEntrance_MakeRentalParty(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-// Sets three variables to the Trainers that the save's three entries name, for those with unk8_0 of at least 3
+// Sets three variables to the Trainers that the save's three entries name, for those whose rank is at least 3
 BOOL Scrcmd_WbtEntrance_GetSlotTrainerObjCodes(VM *vm, FieldScriptEnv *env) {
     WbtSave *save = GameData_GetWbtSave(FieldScriptEnv_GetGameData(env));
     u16 *objCode1 = ScriptReadVar(vm, env);
@@ -231,7 +227,7 @@ BOOL Scrcmd_WbtEntrance_SetDownloadSlot(VM *vm, FieldScriptEnv *env) {
     WbtSystem *sys = WbtCmd_GetSystem(env);
 
     WbtSystem_SetDownloadSlot(sys, ScriptReadAny(vm, env));
-    if (WbtSystem_GetTournament(sys) == TOURNAMENT_DOWNLOADED) {
+    if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_DOWNLOADED) {
         WbtMakeMatch_LoadDownload(sys, gameData);
     }
     return FALSE;
@@ -259,9 +255,9 @@ BOOL Scrcmd_WbtEntrance_ShowDownloads(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     HeapID heapId = FieldScriptEnv_GetHeapID(env);
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
-    u16 *var1 = ScriptReadVar(vm, env);
-    u16 *var2 = ScriptReadVar(vm, env);
-    WbtOv326Param2 *param = WbtSetup_CreateDownloadParam(heapId, gsys, 2, var1, var2);
+    u16 *yesVar = ScriptReadVar(vm, env);
+    u16 *slotVar = ScriptReadVar(vm, env);
+    WbtOv326Param2 *param = WbtSetup_CreateDownloadParam(heapId, gsys, 2, yesVar, slotVar);
 
     ScriptWork_CallEvent(work, GameEvent_CreateOverlayDelegate(gsys, OVERLAY_ID(22), EventWbtDownload_Create, param));
     return TRUE;
