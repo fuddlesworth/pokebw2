@@ -59,9 +59,9 @@ typedef struct SSLCertificatePublicKey {
 // An SSL connection, DER-parsed certificate fields included. 0x830 bytes. Its user (SOCL_EnableSsl's caller) fills in
 // the server's name, the certificate callback and the root CAs, and the SSL layer the rest
 typedef struct CPSSslConnection {
-    u8 secret[0x30]; // The pre-master secret, overwritten with the master secret once derived
-    u8 resumed;      // TRUE once a cached session's secret was restored
-    u8 unk_031;
+    u8 secret[0x30];  // The pre-master secret, overwritten with the master secret once derived
+    u8 resumed;       // TRUE once a cached session's secret was restored
+    u8 reuse_session; // TRUE when the server echoed the offered session ID, abbreviating the handshake
     u16 cipher_suite;
     u8 client_random[0x20];
     u8 server_random[0x20];
@@ -129,6 +129,20 @@ typedef struct CPSSslConnection {
     u32 read_buf_len;
     u32 read_buf_pos;
 } CPSSslConnection;
+
+// What certificate validation reports: CPS_CERT_ERRMASK's byte is one of these codes, and CPS_CERT_BADSERVER and
+// CPS_CERT_OUTOFDATE are independent bits above it. The callback may replace the code before returning it
+#define CPS_CERT_OUTOFDATE 0x8000
+#define CPS_CERT_BADSERVER 0x4000
+#define CPS_CERT_ERRMASK 0x00ff
+
+enum {
+    CPS_CERT_NOERROR = 0,
+    CPS_CERT_NOROOTCA,
+    CPS_CERT_BADSIGNATURE,
+    CPS_CERT_UNKNOWN_SIGALGORITHM,
+    CPS_CERT_UNKNOWN_PUBKEYALGORITHM,
+};
 
 // What CPS_Startup takes
 typedef struct CPSConfig {

@@ -10,6 +10,73 @@
 // link keeps it
 extern const char SSLi_Signature[];
 
+// TLS's record content types (SSLv3, RFC 6101 5.2.1), the first byte of a record that parse_record_in_buf dispatches
+// on
+enum {
+    SSLI_RECORD_CHANGE_CIPHER_SPEC = 0x14,
+    SSLI_RECORD_ALERT = 0x15,
+    SSLI_RECORD_HANDSHAKE = 0x16,
+    SSLI_RECORD_APPLICATION_DATA = 0x17,
+};
+
+// Alert levels (SSLv3 7.2.1): an alert at the fatal level ends the connection
+enum {
+    SSLI_ALERT_WARNING = 1,
+    SSLI_ALERT_FATAL = 2,
+};
+
+// Handshake message types (SSLv3 7.4), the first byte of a handshake body
+enum {
+    SSLI_HANDSHAKE_CLIENT_HELLO = 1,
+    SSLI_HANDSHAKE_SERVER_HELLO = 2,
+    SSLI_HANDSHAKE_CERTIFICATE = 11,
+    SSLI_HANDSHAKE_CERTIFICATE_REQUEST = 13,
+    SSLI_HANDSHAKE_SERVER_HELLO_DONE = 14,
+    SSLI_HANDSHAKE_CLIENT_KEY_EXCHANGE = 16,
+    SSLI_HANDSHAKE_FINISHED = 20,
+};
+
+// The cipher suites CPSi_SslConnect offers, under the SDK's names: RSA key exchange with RC4's 128-bit key and the
+// suite's MAC
+enum {
+    TLS_RSA_WITH_RC4_128_MD5 = 4,
+    TLS_RSA_WITH_RC4_128_SHA = 5,
+};
+
+// Which certificate of the chain cert_item walks
+enum {
+    SSLI_CERT_MODE_LEAF,     // the peer's certificate: copy its public key into the connection
+    SSLI_CERT_MODE_CA,       // a CA's certificate: check the certificate of the step before
+    SSLI_CERT_MODE_NEXT_KEY, // only the next certificate's public key, to check the certificate before it
+};
+
+// The certificate OIDs sOids holds, in its order
+enum {
+    SSLI_OID_NONE,
+    SSLI_OID_RSA_ENCRYPTION,
+    SSLI_OID_ID_EA_RSA,
+    SSLI_OID_MD5_WITH_RSA,
+    SSLI_OID_SHA1_WITH_RSA,
+    SSLI_OID_COMMON_NAME,
+    SSLI_OID_COUNT,
+};
+
+// The universal ASN.1 tag numbers (X.690 8.1.2) that cert_item visits, the low five bits of an item's identifier
+// octet
+enum {
+    SSLI_TAG_INTEGER = 2,
+    SSLI_TAG_BIT_STRING = 3,
+    SSLI_TAG_OBJECT_IDENTIFIER = 6,
+    SSLI_TAG_UTF8_STRING = 12,
+    SSLI_TAG_SEQUENCE = 16,
+    SSLI_TAG_SET = 17,
+    SSLI_TAG_PRINTABLE_STRING = 19,
+    SSLI_TAG_TELETEX_STRING = 20,
+    SSLI_TAG_IA5_STRING = 22,
+    SSLI_TAG_UTC_TIME = 23,
+    SSLI_TAG_GENERALIZED_TIME = 24,
+};
+
 // The C library's string functions the main module links, under their own names (ssl.c's certificate and session
 // matching and biginteger.c need them; MI_CpuCopy8, with the source first, and MI_CpuFill8 cover the rest). ssl.c
 // includes <string.h> before this header, whose declarations make MWCC treat them as the library's own, as its code
