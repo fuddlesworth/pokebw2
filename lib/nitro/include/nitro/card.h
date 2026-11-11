@@ -20,14 +20,19 @@ typedef struct CARDRomRegion {
     u32 length;
 } CARDRomRegion;
 
-// The ROM header of the running program, which the card puts at the end of main memory. Only the fields that
-// NitroSDK's multiboot library and file system read are named
+// The ROM header of the running program, which the card puts at the end of main memory. Its fields are NitroSDK's
+// CARDRomHeader's, from the SDK's declaration (libntr's reconstruction of it, include/nitro/card/types.h). The two
+// command control words are named for what the card does with them
 typedef struct CARDRomHeader {
-    u8 unk_00[0x12];
+    char game_name[12];
+    u32 game_code;
+    u16 maker_code;
     u8 product_id;
     u8 device_type;
     u8 device_size; // the card's capacity: 128 KB shifted left by it
-    u8 unk_15[0xb];
+    u8 reserved_A[9];
+    u8 game_version;
+    u8 property;
     u32 main_rom_offset;
     u32 main_entry_address;
     ROMHeaderLoad arm9;
@@ -39,11 +44,23 @@ typedef struct CARDRomHeader {
     CARDRomRegion main_ovt;   // the table of the ARM9's overlay headers
     CARDRomRegion sub_ovt;    // and the ARM7's
     u32 normalCommandControl; // what the card's control register (MCCNT1) gets for the normal commands
-    u8 unk_64[0x1c];
+    u32 secureCommandControl; // and for the KEY1 commands
+    u32 banner_offset;        // the banner file's offset in the ROM
+    u16 secure_crc;           // the secure area's CRC-16
+    u8 rom_param_B[2];        // the secure area's delay, in units of 131 kHz
+    u32 main_autoload_done;   // the ARM9's autoload hook address
+    u32 sub_autoload_done;    // and the ARM7's
+    u8 rom_param_C[8];
     u32 rom_size;
-    u8 unk_84[0xe];
+    u32 header_size;
+    u32 main_module_param_offset; // the offset of the ARM9's module parameter table
+    u32 sub_module_param_offset;  // and of the ARM7's
+    u16 normal_area_rom_offset;   // where the part of the ROM that the DS mode reads ends, in units of 0x80000 bytes
     u16 twlRegionStart; // where the part of the ROM that only the DSi mode reads starts, in units of 0x80000 bytes
-    u8 unk_94[0xcc];
+    u8 reserved_B[0x2c];
+    u8 logo_data[0x9c];
+    u16 logo_crc;
+    u16 header_crc;
 } CARDRomHeader;
 
 // The ROM header in main memory (card_common.c), the TWL header that the DSi's system puts there, and the copy of 0x88
@@ -303,16 +320,17 @@ extern u32 cardi_rom_base;
 typedef u32 (*CARDiRomReader)(void *arg, void *dst, u32 src, u32 len);
 void CARDi_InitRom(void);
 
-// A ROM read by DMA, which the card-data interrupt moves on a page at a time. The callback is called with the argument
-// once it is done. TwlSDK's part of the library, in the LTD autoload, makes one of its own
+// A ROM read by DMA, which the card-data interrupt moves on a page at a time. It is NitroSDK's CARDTransferInfo: the
+// command word begins it and the work word ends it, and these reads leave both 0. The callback is called with the
+// argument once it is done. TwlSDK's part of the library, in the LTD autoload, makes one of its own
 typedef struct CARDiRomDmaRead {
-    u32 unk_00;
+    u32 command;
     void (*callback)(void *arg);
     void *arg;
     u32 src;
     u32 dst;
     u32 len;
-    u32 unk_18;
+    u32 work;
 } CARDiRomDmaRead;
 
 // Reads len bytes of the ROM at the offset src into dst, with a DMA channel of the number dma if it can, and calls the
