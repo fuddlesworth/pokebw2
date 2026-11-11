@@ -106,7 +106,8 @@ enum {
 };
 
 typedef struct {
-    u32 unk0;
+    // The BG system's state: never read or written
+    u32 state;
 } PkwdSelectScreenBG;
 
 // The resources of a group of cell actors
@@ -168,6 +169,7 @@ typedef struct {
     BOOL touched;
     BlinkPalAnm *blinks[PAGE_SIZE];
     u32 page;
+    // Never read or written
     u32 unkE4;
     PkwdSelectScreenMovie movies[SCREEN_COUNT];
     // The screens with a movie first

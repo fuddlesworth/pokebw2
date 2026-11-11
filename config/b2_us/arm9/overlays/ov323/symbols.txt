@@ -82,7 +82,6 @@ sPkwdSelectScreenTouchRects kind:data(any) addr:0x0219e922
 sPkwdSelectScreenFrameColors kind:data(any) addr:0x0219e936
 sPkwdSelectScreenPosterGraphics kind:data(any) addr:0x0219e95f
 sPkwdSelectScreenCastPos kind:data(any) addr:0x0219e988
-data_ov323_0219e990 kind:data(any) addr:0x0219e990 ambiguous
 data_ov323_0219e9b9 kind:data(any) addr:0x0219e9b9
 data_ov323_0219e9f1 kind:data(any) addr:0x0219e9f1
 data_ov323_0219ea29 kind:data(any) addr:0x0219ea29
@@ -97,12 +96,9 @@ sPkwdSelectScreenLCDConfig kind:data(any) addr:0x0219ec0c
 sPkwdSelectScreenClActSetup kind:data(any) addr:0x0219ec1c
 sPkwdSelectScreenVRAMConfig kind:data(any) addr:0x0219ec38
 sPkwdSelectScreenBGSetups kind:data(any) addr:0x0219ec68
-data_ov323_0219ed2c kind:data(any) addr:0x0219ed2c ambiguous
-data_ov323_0219ed40 kind:data(any) addr:0x0219ed40 ambiguous
 sPkwdSelectScreenYesNoMessages kind:data(any) addr:0x0219ede0
 sPkwdSelectScreenWatchMessages kind:data(any) addr:0x0219ede8
 sPkwdSelectScreenRemoveMessages kind:data(any) addr:0x0219edf4
 sPkwdSelectScreenStates kind:data(any) addr:0x0219ee00
-data_ov323_0219ee40 kind:data(any) addr:0x0219ee40 ambiguous
 data_ov323_0219ee44 kind:data(any) addr:0x0219ee44
 data_ov323_0219ee58 kind:data(any) addr:0x0219ee58

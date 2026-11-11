@@ -4690,6 +4690,10 @@ overlays/ov322 0x021a0720 remove_reloc
 overlays/ov322 0x021a0910 remove_symbol
 overlays/ov322 0x021a094d remove_symbol
 overlays/ov323 0x0219e2ec reloc_module overlay(139)
+overlays/ov323 0x0219e990 remove_symbol
+overlays/ov323 0x0219ed2c remove_symbol
+overlays/ov323 0x0219ed40 remove_symbol
+overlays/ov323 0x0219ee40 remove_symbol
 overlays/ov324 0x0219cedc overlay_id 168
 overlays/ov324 0x0219d430 overlay_id 168
 overlays/ov324 0x0219e0d4 reloc_addend 4
