@@ -131,7 +131,7 @@ static inline void ClearRecvBuffers(void) {
     for (i = 0; i < 4; i++) {
         sWork->recvBuffers[i] = NULL;
         sWork->recvSizes[i] = 0;
-        sWork->clientIds[i] = 4;
+        sWork->clientIds[i] = BTL_CLIENT_NONE;
     }
     for (i = 0; i < 4; i++) {
         sWork->parties[i] = NULL;
@@ -714,7 +714,7 @@ BtlNetPartyPacket *BtlNet_CreatePartyPacket(u32 size, HeapID heapId) {
     BtlNetPartyPacket *packet = GFL_HeapAllocate(heapId, size + sizeof(BtlNetPartyPacket), TRUE, "btl_net.c", 1143);
 
     packet->size = size;
-    packet->clientId = 4;
+    packet->clientId = BTL_CLIENT_NONE;
     return packet;
 }
 
