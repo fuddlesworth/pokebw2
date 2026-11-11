@@ -3,6 +3,7 @@
 // `.rodata`, which one file with union_eff.c's cannot give. Names are not swan's
 #include "field/colosseum_tool.h"
 #include "types.h"
+#include "constants/zones.h"
 #include "field/colosseum.h"
 #include "field/comm_player.h"
 #include "field/field.h"
@@ -55,7 +56,7 @@ void UnionEff_ClearColosseumPositionsReceived(UnionColosseum *colosseum) {
     colosseum->positionsReceived = 0;
 }
 
-BOOL UnionEff_GetEntrySpot(Field *field, u32 kind, u32 *index) {
+BOOL UnionEff_GetEntrySpot(Field *field, u32 playerCount, u32 *index) {
     static const s16 spotsTwo[2][2] = { { 3, 5 }, { 9, 5 } };
     static const s16 spotsFour[4][2] = { { 3, 4 }, { 9, 6 }, { 3, 6 }, { 9, 4 } };
     FieldPlayer *player = Field_GetPlayer(field);
@@ -68,7 +69,7 @@ BOOL UnionEff_GetEntrySpot(Field *field, u32 kind, u32 *index) {
     actor = FieldPlayer_GetActor(player);
     x = GetGPosX(actor);
     z = GetGPosZ(actor);
-    if (kind == 2) {
+    if (playerCount == 2) {
         for (i = 0; i < 2; i++) {
             if (x == spotsTwo[i][0] && z == spotsTwo[i][1]) {
                 *index = i;
@@ -135,7 +136,7 @@ BOOL UnionEff_IsOnSeatSpot(Field *field) {
     FieldPlayer_GetWPos(Field_GetPlayer(field), &pos);
     pos.x >>= 12;
     pos.z >>= 12;
-    if (Field_GetPlayerStateZoneID(field) == 0x96) {
+    if (Field_GetPlayerStateZoneID(field) == ZONE_UNION_ROOM_COLOSSEUM) {
         spots = spotsA;
         count = 5;
     } else {

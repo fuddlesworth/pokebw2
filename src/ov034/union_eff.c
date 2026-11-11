@@ -111,6 +111,7 @@ int UnionEff_GetKindStep(int activity) {
         return UNION_WANT_TRADE;
     case UNION_ACTIVITY_SPIN_TRADE:
         return UNION_WANT_SPIN_TRADE;
+    // 0x1a: the activity between the spin trade and NONE, which no menu or step of the Union Room names
     case 0x1a:
         return UNION_WANT_3;
     default:

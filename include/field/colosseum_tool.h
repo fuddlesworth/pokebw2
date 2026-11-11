@@ -13,7 +13,7 @@ BOOL UnionEff_AllColosseumMembersHere(UnionColosseum *colosseum);
 BOOL UnionEff_AllColosseumCardsIn(UnionColosseum *colosseum);
 BOOL UnionEff_AreColosseumPositionsReceived(UnionColosseum *colosseum);
 void UnionEff_ClearColosseumPositionsReceived(UnionColosseum *colosseum);
-BOOL UnionEff_GetEntrySpot(Field *field, u32 kind, u32 *index);
+BOOL UnionEff_GetEntrySpot(Field *field, u32 playerCount, u32 *index);
 BOOL UnionEff_AreAllColosseumMembersLeaving(UnionColosseum *colosseum);
 BOOL UnionEff_IsAnyColosseumMemberLeaving(UnionColosseum *colosseum);
 BOOL UnionEff_IsOnSeatSpot(Field *field);

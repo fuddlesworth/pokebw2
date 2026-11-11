@@ -69,6 +69,17 @@ BOOL UnionMsg_UpdateYesNo(UnionSystem *unisys, BOOL *yes);
 void UnionMsg_CreateMainMenu(UnionSystem *unisys, Field *field);
 void UnionMsg_FreeMainMenu(UnionSystem *unisys);
 s32 UnionMsg_UpdateMainMenu(UnionSystem *unisys, Field *field);
+// The battle formats, the index sRuleResult and ruleSel[0] hold: the format menu's four, and the multi battle of the
+// four-player menu, which has no row of its own
+enum {
+    UNION_BATTLE_FORMAT_SINGLE,
+    UNION_BATTLE_FORMAT_DOUBLE,
+    UNION_BATTLE_FORMAT_TRIPLE,
+    UNION_BATTLE_FORMAT_ROTATION,
+    UNION_BATTLE_FORMAT_MULTI,
+    UNION_BATTLE_FORMAT_MAX,
+};
+
 // The menus of the battle rules, the kinds of UnionMsg_CreateRuleMenu: the number of players, then for two players
 // the summary and its format, rules and Wonder Launcher submenus, and for four the summary and its rules and Wonder
 // Launcher submenus

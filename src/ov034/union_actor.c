@@ -4,8 +4,10 @@
 // assert file names ("" and "0") that its `.data` holds a second time. Names are not swan's
 #include "field/union_actor.h"
 #include "types.h"
+#include "constants/directions.h"
 #include "constants/zones.h"
 #include "field/field.h"
+#include "field/field_acmd.h"
 #include "field/field_actor.h"
 #include "field/field_internal.h"
 #include "field/union_comm.h"
@@ -21,6 +23,27 @@
 #include "system/union_view.h"
 
 #define UNION_ACTOR_ID_MEMBER_BASE 0x20
+
+// The sequences of the actor steps, UnionActorSlot.seq: what each step waits for
+
+// Show the actor at its spot with its action command, then wait for the command
+enum {
+    UNION_ACTOR_APPEAR_SEQ_SHOW,
+    UNION_ACTOR_APPEAR_SEQ_WAIT_SHOW,
+};
+
+// Start the action command that takes the actor away, then wait for it
+enum {
+    UNION_ACTOR_LEAVE_SEQ_START,
+    UNION_ACTOR_LEAVE_SEQ_WAIT_START,
+};
+
+// Turn to the player who talks, lock the face, then wait until they stop
+enum {
+    UNION_ACTOR_TALK_SEQ_TURN,
+    UNION_ACTOR_TALK_SEQ_WAIT_TURN,
+    UNION_ACTOR_TALK_SEQ_WAIT_END,
+};
 
 // A step of an actor
 typedef struct {
@@ -445,7 +468,7 @@ BOOL UnionActor_StepAppear(UnionSystem *unisys, UnionActorSlot *slot, Field *fie
     FieldActor *actor = UnionOneself_FindActor(unisys, slot->entry, slot);
 
     switch (*seq) {
-    case 0:
+    case UNION_ACTOR_APPEAR_SEQ_SHOW:
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             FldAct_GetGPos(FieldPlayer_GetActor(Field_GetPlayer(field)), &playerPos);
             FldAct_GetGPos(actor, &actorPos);
@@ -456,7 +479,7 @@ BOOL UnionActor_StepAppear(UnionSystem *unisys, UnionActorSlot *slot, Field *fie
             }
         }
         break;
-    case 1:
+    case UNION_ACTOR_APPEAR_SEQ_WAIT_SHOW:
         if (FldAct_CheckAcmdEnd(actor) == TRUE) {
             FldAct_EndAcmd(actor);
             return TRUE;
@@ -470,13 +493,13 @@ static BOOL UnionOneself_ActorLeave(UnionSystem *unisys, UnionActorSlot *slot, F
     FieldActor *actor = UnionOneself_FindActor(unisys, slot->entry, slot);
 
     switch (*seq) {
-    case 0:
+    case UNION_ACTOR_LEAVE_SEQ_START:
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             FldAct_SetAcmd(actor, 0x43);
             (*seq)++;
         }
         break;
-    case 1:
+    case UNION_ACTOR_LEAVE_SEQ_WAIT_START:
         if (FldAct_CheckAcmdEnd(actor) == TRUE) {
             FldAct_EndAcmd(actor);
             return TRUE;
@@ -491,36 +514,36 @@ static BOOL UnionOneself_ActorTalk(UnionSystem *unisys, UnionActorSlot *slot, Fi
     FieldActor *actor = UnionOneself_FindActor(unisys, slot->entry, slot);
 
     switch (*seq) {
-    case 0:
+    case UNION_ACTOR_TALK_SEQ_TURN:
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             u16 acmd;
 
             switch (GetActorFaceDir(FieldPlayer_GetActor(Field_GetPlayer(field)))) {
-            case 0:
-                acmd = 1;
+            case DIR_UP:
+                acmd = ACMD_FACE + DIR_DOWN;
                 break;
-            case 1:
-                acmd = 0;
+            case DIR_DOWN:
+                acmd = ACMD_FACE + DIR_UP;
                 break;
-            case 2:
-                acmd = 3;
+            case DIR_LEFT:
+                acmd = ACMD_FACE + DIR_RIGHT;
                 break;
-            case 3:
+            case DIR_RIGHT:
             default:
-                acmd = 2;
+                acmd = ACMD_FACE + DIR_LEFT;
                 break;
             }
             FldAct_SetAcmd(actor, acmd);
             (*seq)++;
         }
         break;
-    case 1:
+    case UNION_ACTOR_TALK_SEQ_WAIT_TURN:
         if (FldAct_EndAcmd(actor) == TRUE) {
             SetActorFlag(actor, ACTOR_FLAG_FACE_DIR_LOCK);
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ACTOR_TALK_SEQ_WAIT_END:
         if (situ->mycomm.targetActorId != UnionOneself_GetActorId(slot->entry, slot)) {
             ClearActorFlag(actor, ACTOR_FLAG_FACE_DIR_LOCK);
             return TRUE;
