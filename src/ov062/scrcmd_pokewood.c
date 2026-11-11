@@ -271,7 +271,7 @@ static u32 Pokewood_GetDownloadedMovieField(FieldScriptEnv *env, u32 slot, u32 f
 
     allocatePokewoodBlk(heapId);
     if (Pokewood_LoadDownloadedMovie(save, heapId, slot) == 1) {
-        value = Pokewood_GetLoadedMovieField(field, fieldArg);
+        value = Pokewood_GetLoadedMovieField(field, (PartyPkm *)fieldArg);
     } else {
         value = 0;
     }

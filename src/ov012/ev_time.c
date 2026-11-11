@@ -33,7 +33,7 @@ void EvTime_Update(GameData *gameData) {
     s32 days;
     s32 minutes;
 
-    if (adventureTime->unk0 == 0) {
+    if (adventureTime->valid == 0) {
         return;
     }
     RTC_GetCachedDateTime(&date, &time);

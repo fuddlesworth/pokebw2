@@ -23,7 +23,7 @@ enum {
     TOURNAMENT_FIELD_END_YEAR,
     TOURNAMENT_FIELD_END_MONTH,
     TOURNAMENT_FIELD_END_DAY,
-    TOURNAMENT_FIELD_UNK15B,
+    TOURNAMENT_FIELD_REGISTRATION_STATE,
     TOURNAMENT_FIELD_VARIANT,
     TOURNAMENT_FIELD_ALLOW_REMATCH
 };
@@ -51,8 +51,8 @@ struct TournamentEntry {
     s8 endYear;
     s8 endMonth;
     s8 endDay;
-    // A state from 1 to 5, which the competitions and the Wi-Fi login set as the entry goes on
-    s8 unk15B;
+    // The registration state: WBM_REGISTRATION_* for 0 to 4, and 5 for an entry that was reset
+    s8 registrationState;
     // What picks the card's colors, and whether an opponent already battled may be battled again
     u8 variant;
     u8 allowRematch;

@@ -48,5 +48,5 @@ void WorldTradeData_SetExchangeDate(WorldTradeData *data, u32 value) {
 }
 
 u16 WorldTradeData_GetReturnBox(WorldTradeData *data) {
-    return data->unkEE;
+    return data->returnBox;
 }

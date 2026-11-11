@@ -8,7 +8,8 @@
 
 typedef struct {
     u8 chars[0x2000];
-    u8 unk2000[0x600];
+    // The skin's screen map, which GFL_BGSysBufferScrDefault loads
+    u8 screen[0x600];
 } CGearPictureSave; // size: 0x2600
 
 void CGearPictureSave_Init(CGearPictureSave *picture);

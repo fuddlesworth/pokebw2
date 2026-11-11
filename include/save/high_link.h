@@ -12,7 +12,10 @@
 
 // What GameData_GetMyPassPowerLevels returns: the Entralink's two levels, White then Black
 typedef struct {
-    u8 unk00[0xc];
+    // The Entralink survey's chosen entry and its probability, which probabilityLoop fills through a
+    // SurveyProbabilityState (field/survey.h)
+    u8 selection[6];
+    u8 probability[6];
     u16 level1;
     u16 level2;
 } PassPowerLevel;

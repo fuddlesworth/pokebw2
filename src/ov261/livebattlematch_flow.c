@@ -389,7 +389,7 @@ static void LiveBattleMatchFlow_StepInit(WifiBattleMatchTask *task, u32 *seq, vo
         WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepEntry);
         break;
     case LIVE_FLOW_MODE_MENU:
-        if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B) == 3) {
+        if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE) == 3) {
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepQuit);
         } else {
             WifiBattleMatchTask_SetFunc(task, LiveBattleMatchFlow_StepMenu);
@@ -420,7 +420,7 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
 
     switch (*seq) {
     case LIVE_ENTRY_CHECK_ENTRY:
-        switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B)) {
+        switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE)) {
         case 0:
         case 3:
         case 4:
@@ -570,7 +570,7 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
                 LIVEBATTLEMATCH_VERSION_MASK) {
                 if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_CUP_ID) ==
                     TournamentEntry_GetField(&wk->delivered, TOURNAMENT_FIELD_CUP_ID)) {
-                    switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B)) {
+                    switch (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE)) {
                     case 4:
                         *seq = LIVE_ENTRY_SHOW_UNREGISTERED;
                         break;
@@ -599,7 +599,7 @@ static void LiveBattleMatchFlow_StepEntry(WifiBattleMatchTask *task, u32 *seq, v
         TournamentBlock *block = getTournamentBlockAddress(GameData_GetSaveControl(wk->param.gameData));
         TournamentTeam *records = TournamentBlock_GetTeam(block, 1);
 
-        TournamentEntry_SetField(&wk->delivered, TOURNAMENT_FIELD_UNK15B, 1);
+        TournamentEntry_SetField(&wk->delivered, TOURNAMENT_FIELD_REGISTRATION_STATE, 1);
         LiveMatchData_Init(wk->record);
         TournamentTeam_Clear(records);
         TournamentBlock_SetEntry(block, 1, &wk->delivered);
@@ -790,7 +790,7 @@ static void LiveBattleMatchFlow_StepTeam(WifiBattleMatchTask *task, u32 *seq, vo
         PokeParty *party = convertBoxedPokeSetToParty(battleBox, HEAPID_LIVEBATTLEMATCH_TEAM);
 
         BattleBoxSave_SetFlags(battleBox, 2);
-        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 2);
+        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 2);
         TournamentTeam_SetFromParty(records, party);
         GFL_HeapFree(party);
         *seq = LIVE_TEAM_SHOW_SAVING;
@@ -966,7 +966,7 @@ static void LiveBattleMatchFlow_StepMenu(WifiBattleMatchTask *task, u32 *seq, vo
         LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_MENU_WAIT_MESSAGE, LIVE_MENU_UNREGISTER);
         break;
     case LIVE_MENU_UNREGISTER:
-        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 4);
+        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 4);
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(wk->param.gameData)), 2);
         GameData_StartSave(wk->param.gameData);
         *seq = LIVE_MENU_WAIT_SAVE;
@@ -1360,7 +1360,7 @@ static void LiveBattleMatchFlow_StepQuit(WifiBattleMatchTask *task, u32 *seq, vo
 
     switch (*seq) {
     case LIVE_QUIT_SHOW_CARD:
-        if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_UNK15B) == 3) {
+        if (TournamentEntry_GetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE) == 3) {
             LiveBattleMatchFlow_PlayerCardCreate(wk);
             LiveBattleMatchFlow_PlayerCardShow(wk, WIFIBATTLEMATCH_CARD_PAGE_UNREGISTERED);
             while (!LiveBattleMatchFlow_PlayerCardIsReady(wk)) {
@@ -1386,7 +1386,7 @@ static void LiveBattleMatchFlow_StepQuit(WifiBattleMatchTask *task, u32 *seq, vo
         LiveBattleMatchFlow_PrintAndWait(wk, task, seq, 10, 2, LIVE_QUIT_WAIT_MESSAGE, LIVE_QUIT_FINISH_ENTRY);
         break;
     case LIVE_QUIT_FINISH_ENTRY:
-        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_UNK15B, 3);
+        TournamentEntry_SetField(wk->entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 3);
         BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(wk->param.gameData)), 2);
         GameData_StartSave(wk->param.gameData);
         *seq = LIVE_QUIT_WAIT_SAVE;

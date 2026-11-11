@@ -422,7 +422,7 @@ static void WifiLogin_StateWaitResetConfirm(WifiLoginWork *work) {
                 TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(work->gameData)), 0);
 
             BattleBoxSave_ClearFlags(getBattleBox(GameData_GetSaveControl(work->gameData)), 1);
-            TournamentEntry_SetField(entry, TOURNAMENT_FIELD_UNK15B, 5);
+            TournamentEntry_SetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE, 5);
             work->param->result = WIFILOGIN_RESULT_OK;
             initWifi(work->wifiList);
             WifiLogin_SetState(work, WifiLogin_StateStartNet);
@@ -459,7 +459,7 @@ static void WifiLogin_StateWaitProfileConfirm(WifiLoginWork *work) {
             TournamentEntry *entry =
                 TournamentBlock_GetEntry(getTournamentBlockAddress(GameData_GetSaveControl(work->gameData)), 0);
             u32 field2 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_CUP_ID);
-            u32 field10 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_UNK15B);
+            u32 field10 = TournamentEntry_GetField(entry, TOURNAMENT_FIELD_REGISTRATION_STATE);
 
             if (field2 != 0 && field10 >= 1 && field10 <= 4) {
                 WifiLoginMessage_ClearTitle(work->msg);

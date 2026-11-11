@@ -1058,7 +1058,7 @@ static void BattleChampionshipFlow_MenuOpenList(BattleChampionshipMenu *menu, u3
         entry = TournamentBlock_GetEntry(tournament, 0);
         param.msgIds[0] = 7;
         param.msgIds[1] = 5;
-        if (entry->unk15B == 1 || entry->unk15B == 2) {
+        if (entry->registrationState == 1 || entry->registrationState == 2) {
             param.msgIds[2] = 13;
         } else {
             param.msgIds[2] = 4;
@@ -1073,7 +1073,7 @@ static void BattleChampionshipFlow_MenuOpenList(BattleChampionshipMenu *menu, u3
         entry = TournamentBlock_GetEntry(tournament, 1);
         param.msgIds[0] = 7;
         param.msgIds[1] = 5;
-        if (entry->unk15B == 1 || entry->unk15B == 2) {
+        if (entry->registrationState == 1 || entry->registrationState == 2) {
             param.msgIds[2] = 13;
         } else {
             param.msgIds[2] = 4;

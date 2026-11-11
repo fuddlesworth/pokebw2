@@ -102,14 +102,14 @@ u32 countSeenDexPokes(PokeDexSave *pokedex, HeapID heapId);
 BOOL PokeDex_IsCompleteNational(PokeDexSave *pokedex);
 BOOL PokeDex_IsCompleteUnova(PokeDexSave *pokedex, HeapID heapId);
 BOOL PokeDex_IsSeenAllUnova(PokeDexSave *pokedex, HeapID heapId);
-// What the professor says of the Pokédex: the message, the count it tells and unk, which the tables give for the count
-// without the mythical species, for one of these modes
+// What the professor says of the Pokédex: the message, the count it tells and the jingle that plays, which the tables
+// give for the count without the mythical species, for one of these modes
 enum {
     POKEDEX_EVALUATION_NATIONAL_CAUGHT = 1,
     POKEDEX_EVALUATION_REGIONAL_SEEN,
     POKEDEX_EVALUATION_REGIONAL_CAUGHT,
 };
 
-void PokeDex_GetEvaluationParams(PokeDexSave *pokedex, u16 mode, HeapID heapId, u16 *message, u16 *count, u16 *unk);
+void PokeDex_GetEvaluationParams(PokeDexSave *pokedex, u16 mode, HeapID heapId, u16 *message, u16 *count, u16 *jingle);
 
 #endif // POKEBW2_SAVE_POKEDEX_SAVEDATA_H
