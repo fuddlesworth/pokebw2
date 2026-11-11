@@ -1073,7 +1073,7 @@ static void ConfigPanelAppBar_Init(ConfigPanelAppBar *appBar, ClActUnit *unit, F
         setup.unit = unit;
         setup.objPalette = 8;
         setup.vramType = CLACT_VRAM_BOTH;
-        setup.unk1C = TRUE;
+        setup.noBg = TRUE;
         appBar->touchBar = TouchBar_Create(&setup, heapId);
     }
     ConfigPanelAppBar_CreateButtons(appBar, heapId);

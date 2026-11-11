@@ -24,7 +24,7 @@ void PokemonTrade_CreateTouchBar(PokemonTradeWork *wk) {
     setup.items = items;
     setup.count = NELEMS(items);
     setup.unit = wk->clactUnit;
-    setup.unk1C = TRUE;
+    setup.noBg = TRUE;
     setup.bgPalette = 7;
     setup.objPalette = 0;
     setup.vramType = 2;

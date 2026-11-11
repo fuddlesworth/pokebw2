@@ -39,6 +39,7 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "text/system/pokemon_trade.h"
 
 // The trade's 2D: the backgrounds of both screens, the strip of boxes on the lower screen with the Pokémon icons in
 // it, and the sprites of the panels
@@ -50,8 +51,6 @@
 #define COLUMN_ROWS 5
 #define PARTY_TILES 12
 #define BOX_TILES 20
-// The most boxes there can be
-#define MAX_BOXES 24
 // The columns of icons that are set up at once, enough to cover the screen
 #define ICON_COLUMNS 12
 // An icon's column of the strip when it shows no Pokémon
@@ -138,7 +137,7 @@ static u8 Poketrade2D_GetMonMarkingIcon(BoxPkm *pkm, HeapID heapId) {
 static void Poketrade2D_BuildBoxMarkingTable(PokemonTradeWork *wk, int box, u8 *colors) {
     u8 i;
 
-    for (i = 0; i < 30; i++) {
+    for (i = 0; i < BOX_MAX_POS; i++) {
         colors[i] = Poketrade2D_GetMonMarkingIcon(BoxSaveAccessor_GetPkm(wk->boxes, box, i), wk->heapId);
     }
 }
@@ -147,7 +146,7 @@ static void Poketrade2D_BuildPartyMarkingTable(PokemonTradeWork *wk, PokeParty *
     int count = PokeParty_GetPkmCount(party);
     u8 i;
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < PARTY_SIZE; i++) {
         if (count > i) {
             colors[i] = Poketrade2D_GetMonMarkingIcon(PokeParty_GetBoxPkm(PokeParty_GetPkm(party, i)), wk->heapId);
         } else {
@@ -381,7 +380,7 @@ void Poketrade2D_CreateBoxWindows(PokemonTradeWork *wk) {
             wk->boxNameWindows[i] = BmpWin_CreateDynamic(5, 0, 0, 15, 2, 14, FALSE);
         }
         if (i == wk->boxCount) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 16, wk->drawStr);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Party, wk->drawStr);
         } else {
             loadBoxNameToStrbuf(wk->boxes, i, wk->drawStr);
         }
@@ -396,7 +395,7 @@ void Poketrade2D_CreateBoxWindows(PokemonTradeWork *wk) {
 void Poketrade2D_DeleteBoxWindows(PokemonTradeWork *wk) {
     int i;
 
-    for (i = 0; i < MAX_BOXES + 1; i++) {
+    for (i = 0; i < BOX_MAX_TRAY + 1; i++) {
         if (wk->boxNameWindows[i] != NULL) {
             BmpWin_Free(wk->boxNameWindows[i]);
             wk->boxNameWindows[i] = NULL;
@@ -728,7 +727,7 @@ static void Poketrade2D_CreateBoxIcon(PokemonTradeWork *wk, BoxSaveAccessor *box
             ClActor_GetImageProxy(wk->icons[index][i], &proxy);
             box = PokemonTrade_GetColumnBox(column, wk);
             slot = PokemonTrade_GetColumnSlot(column, i);
-            slot += box * 30;
+            slot += box * BOX_MAX_POS;
             ClActor_GetSurfacePos(wk->icons[index][i], &screenPos, CLACT_VRAM_SUB);
             if (async == TRUE && screenPos.x >= -16 && screenPos.x <= 272) {
                 if (!NNS_GfdRegisterNewVramTransferTask(NNS_GFD_DST_2D_OBJ_CHAR_SUB,
@@ -889,17 +888,18 @@ void Poketrade2D_LoadBoxIconGfx(PokemonTradeWork *wk, int box) {
     NNSG2dCharacterData *chars;
 
     if (box == 0) {
-        wk->iconCharData = GFL_HeapAllocate(wk->heapId, (MAX_BOXES * 30 + 6) * 0x200, FALSE, "pokemontrade_2d.c", 1291);
+        wk->iconCharData = GFL_HeapAllocate(wk->heapId, (BOX_MAX_TRAY * BOX_MAX_POS + PARTY_SIZE) * 0x200, FALSE,
+                                            "pokemontrade_2d.c", 1291);
     }
     arc = GFL_ArcSysCreateFileHandle(ARCID_POKEICON, wk->heapId);
     // One box a frame: the loop stops after its first pass, as the original's does
-    while (box < MAX_BOXES + 1) {
-        slot = box * 30;
-        for (i = 0; i < 30; i++) {
+    while (box < BOX_MAX_TRAY + 1) {
+        slot = box * BOX_MAX_POS;
+        for (i = 0; i < BOX_MAX_POS; i++) {
             BoxPkm *pkm;
             u32 icon;
 
-            if (box == MAX_BOXES && i == 6) {
+            if (box == BOX_MAX_TRAY && i == PARTY_SIZE) {
                 break;
             }
             pkm = PokemonTrade_GetBoxPkm(wk->boxes, box, i, wk);
@@ -1443,7 +1443,7 @@ void Poketrade2D_LoadSubScreenGfx(PokemonTradeWork *wk) {
     for (i = 0; i < NELEMS(sInitialWindowPos); i++) {
         wk->initialWindows[i] =
             BmpWin_CreateDynamic(6, sInitialWindowPos[i][0], sInitialWindowPos[i][1], 2, 2, 14, FALSE);
-        GFL_MsgDataLoadStrbuf(wk->msgData, 53 + i, wk->drawStr);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_A + i, wk->drawStr);
         GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(wk->initialWindows[i]), 0, 0, wk->drawStr, wk->font);
         BmpWin_FlushMap(wk->initialWindows[i]);
         BmpWin_FlushChar(wk->initialWindows[i]);
@@ -1609,6 +1609,12 @@ static void Poketrade2D_CreateCuredPokerusIcon(PokemonTradeWork *wk, int side, P
     }
 }
 
+// The summary's icons after the six markings
+enum {
+    SUMMARY_ICON_RARE = 6,
+    SUMMARY_ICON_POKERUS,
+};
+
 // Shows the icons of a Pokémon's markings in the summary, each lit if it is set, and the rare and Pokérus flags,
 // which show only when set. An egg shows no rare flag
 void Poketrade2D_CreateSummaryIcons(PokemonTradeWork *wk, PartyPkm *pkm, BOOL isEgg) {
@@ -1630,10 +1636,10 @@ void Poketrade2D_CreateSummaryIcons(PokemonTradeWork *wk, PartyPkm *pkm, BOOL is
     setup.paletteStart = 0;
     setup.paletteCount = 1;
     if (!isEgg && PokeParty_IsRare(pkm)) {
-        marks |= 1 << 6;
+        marks |= 1 << SUMMARY_ICON_RARE;
     }
     if (pokeHasPkrs(pkm)) {
-        marks |= 1 << 7;
+        marks |= 1 << SUMMARY_ICON_POKERUS;
     }
     if (!wk->markIcons.loaded) {
         UIObjRes_Load(&wk->markIcons.res, &setup, wk->clactUnit, wk->heapId);
@@ -1651,7 +1657,7 @@ void Poketrade2D_CreateSummaryIcons(PokemonTradeWork *wk, PartyPkm *pkm, BOOL is
         if (icon != NULL) {
             if (anim == -1) {
                 ClActor_SetVisible(icon, FALSE);
-            } else if (isEgg && i == 6) {
+            } else if (isEgg && i == SUMMARY_ICON_RARE) {
                 ClActor_SetVisible(icon, FALSE);
             } else {
                 ClActor_SetSequence(icon, anim);
@@ -1663,7 +1669,7 @@ void Poketrade2D_CreateSummaryIcons(PokemonTradeWork *wk, PartyPkm *pkm, BOOL is
             icon = wk->markIcons.icons[i];
             if (anim == -1) {
                 ClActor_SetVisible(icon, FALSE);
-            } else if (isEgg && i == 6) {
+            } else if (isEgg && i == SUMMARY_ICON_RARE) {
                 ClActor_SetVisible(icon, FALSE);
             }
         }

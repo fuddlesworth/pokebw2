@@ -41,6 +41,7 @@
 #include "system/net_save.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "text/system/pokemon_trade.h"
 
 // Writing the trade to the save: the copies of what it changes, kept to restore if the save fails, the trade itself,
 // the evolution it may start and the saving between the two machines
@@ -134,13 +135,13 @@ static void PoketradeSave_StepEventMessage1(PokemonTradeWork *wk) {
         GFL_SndBGMPlay(SEQ_ME_POKEGET, 0xffff);
         GFL_SndBGMFadeIn(6);
         if (wk->type == TRADE_TYPE_GTS_WITHDRAW) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 154, wk->strbufTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_TakenOut, wk->strbufTemplate);
         } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 157, wk->strbufTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_SentOver_2, wk->strbufTemplate);
         } else if (wk->recvPkmReturns != 0) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 132, wk->strbufTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_CameBackFrom, wk->strbufTemplate);
         } else {
-            GFL_MsgDataLoadStrbuf(wk->msgData, 48, wk->strbufTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_SentOver, wk->strbufTemplate);
         }
         if (PokemonTrade_IsNegoType(wk)) {
             pkm = PokemonTrade_GetPkm(wk, 0);
@@ -171,11 +172,11 @@ static void PoketradeSave_StepEventMessage2(PokemonTradeWork *wk) {
         copyVarForText(wk->wordSet, 0, wk->partnerInfo);
         if (wk->type != TRADE_TYPE_GTS_WITHDRAW && wk->type != TRADE_TYPE_GTS_TRADE) {
             if (wk->recvPkmReturns != 0) {
-                GFL_MsgDataLoadStrbuf(wk->msgData, 133, wk->strbufTemplate);
+                GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_WelcomeBack, wk->strbufTemplate);
                 GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->strbufTemplate);
                 PoketradeSave_OpenMessageWindowAtPos(wk, TRUE, 0);
             } else {
-                GFL_MsgDataLoadStrbuf(wk->msgData, 49, wk->strbufTemplate);
+                GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_TakeGoodCare, wk->strbufTemplate);
                 GFL_WordSetFormatStrbuf(wk->wordSet, wk->strbuf, wk->strbufTemplate);
                 PoketradeSave_OpenMessageWindowAtPos(wk, TRUE, 0);
             }
@@ -581,7 +582,7 @@ static void PoketradeSave_StepRegisterReceived(PokemonTradeWork *wk) {
     addPkmToDex(GameData_GetPokedex(wk->gameData), pkm);
     if (wk->param->box != BoxSaveAccessor_GetAvailableBoxCount(wk->boxes) &&
         PML_ItemIsMail(PokeParty_GetParam(PokeParty_GetPkm(wk->param->party, 0), PKM_PARAM_ITEM, NULL))) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, 107, wk->strbuf);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_MailHeldByPokemon, wk->strbuf);
         PoketradeSave_OpenMessageWindowTop(wk);
         PokemonTrade_SetState(wk, PoketradeSave_StepWaitEvolutionMessage);
         wk->timer = 0;
@@ -618,7 +619,7 @@ static void PoketradeSave_StepCheckEvolution(PokemonTradeWork *wk) {
                 return;
             }
         }
-        GFL_MsgDataLoadStrbuf(wk->msgData, 50, wk->strbuf);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_StoppingCommunicationsPleaseWait, wk->strbuf);
         PoketradeSave_OpenMessageWindowTop(wk);
         PoketradeSave_ShowTimeIcon(wk);
         PokemonTrade_SetState(wk, PoketradeSave_StepBeginSyncRange24);
@@ -628,7 +629,7 @@ static void PoketradeSave_StepCheckEvolution(PokemonTradeWork *wk) {
 
 void PoketradeSave_StepSaveCancelNotice(PokemonTradeWork *wk) {
     PoketradeSave_CreateMessageResources(wk);
-    GFL_MsgDataLoadStrbuf(wk->msgData, 50, wk->strbuf);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_StoppingCommunicationsPleaseWait, wk->strbuf);
     wk->cursorImage = LoadCursorImageEndOfHeap(6, 15, 0, wk->heapId);
     PoketradeSave_OpenMessageWindowTop(wk);
     PoketradeSave_ShowTimeIcon(wk);

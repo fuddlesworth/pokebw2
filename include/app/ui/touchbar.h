@@ -46,7 +46,8 @@ typedef struct {
     u32 bgPalette;
     u32 objPalette;
     u32 vramType;
-    BOOL unk1C;
+    // Whether the bar's BG is left alone: only its icons are loaded
+    BOOL noBg;
 } TouchBarSetup;
 
 // An icon of the bar: its sprite, its state and what to do when it is touched, which depends on its kind

@@ -1460,7 +1460,7 @@ static void WifiP2PMatch_CreateTouchBar(WIFIP2PMATCH_WORK *wk, HeapID heapId) {
         setup.items = items;
         setup.count = NELEMS(items);
         setup.unit = wk->clActUnit;
-        setup.unk1C = FALSE;
+        setup.noBg = FALSE;
         setup.bg = 4;
         setup.bgPalette = 12;
         setup.objPalette = 12;

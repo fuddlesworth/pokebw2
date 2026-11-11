@@ -104,7 +104,7 @@ TouchBar *TouchBar_Create(TouchBarSetup *setup, HeapID heapId) {
         bgScreenType = 0;
     }
     TouchBarGfx_Load(&bar->gfx, setup->bg, sub, bgScreenType, setup->vramType, setup->bgPalette, setup->objPalette,
-                     setup->unk1C, heapId);
+                     setup->noBg, heapId);
     for (i = 0; i < bar->count; i++) {
         TouchBarIcon_Init(&bar->icons[i], setup->unit, &bar->gfx, &setup->items[i], sub, heapId);
     }

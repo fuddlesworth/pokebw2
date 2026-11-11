@@ -42,13 +42,23 @@ typedef struct {
     void (*draw)(PokemonTradeWork *wk, SRTMatrix *mtx);
 } TradeSceneFuncs;
 
+// A TradeSpriteOffset's sex that matches every sex
+#define TRADE_SPRITE_SEX_ANY 3
+
+// The way a sprite faces, for a TradeSpriteOffset
+enum {
+    TRADE_SPRITE_DIR_FRONT,
+    TRADE_SPRITE_DIR_BACK,
+    TRADE_SPRITE_DIR_ANY,
+};
+
 // Where a species' sprite moves to, for the sexes and directions the entry takes
 typedef struct {
     u32 species;
     u32 form;
-    // A sex, or 3 for any
+    // A sex, or TRADE_SPRITE_SEX_ANY
     u32 sex;
-    // 0 for a sprite facing front, 1 for one facing back, or 2 for either
+    // A TRADE_SPRITE_DIR_*
     u32 dir;
     f32 x;
     f32 y;
@@ -161,11 +171,11 @@ static const G3DSceneSetup sSceneSetups[6] = {
 };
 
 static const TradeSpriteOffset sSpriteOffsets[4] = {
-    { SPECIES_FURRET, 0, 3, 1, -2.08f, 0.0f, 0.0f },
-    { SPECIES_DRIFLOON, 0, 3, 0, 6.66f, 0.0f, 0.0f },
-    { SPECIES_MILOTIC, 0, 3, 0, 4.36f, 0.1f, 0.0f },
+    { SPECIES_FURRET, 0, TRADE_SPRITE_SEX_ANY, TRADE_SPRITE_DIR_BACK, -2.08f, 0.0f, 0.0f },
+    { SPECIES_DRIFLOON, 0, TRADE_SPRITE_SEX_ANY, TRADE_SPRITE_DIR_FRONT, 6.66f, 0.0f, 0.0f },
+    { SPECIES_MILOTIC, 0, TRADE_SPRITE_SEX_ANY, TRADE_SPRITE_DIR_FRONT, 4.36f, 0.1f, 0.0f },
     // The ROM's x is 0x40533334, one step above the float nearest 3.3
-    { SPECIES_KADABRA, 0, 3, 0, 3.3000002f, -0.1f, 0.0f },
+    { SPECIES_KADABRA, 0, TRADE_SPRITE_SEX_ANY, TRADE_SPRITE_DIR_FRONT, 3.3000002f, -0.1f, 0.0f },
 };
 
 static VecFx32 sCameraPos = { 0, 0x100, 0x3000 };
@@ -572,20 +582,20 @@ static void Poketrade3D_Draw3DScene(PokemonTradeWork *wk) {
 static void Poketrade3D_SetMcssOffsetForSpecies(MCSS *mcss, const VecFx32 *scale, BOOL front, PartyPkm *pkm) {
     VecFx32 offset;
     BOOL found;
-    int dir = 0;
+    int dir = TRADE_SPRITE_DIR_FRONT;
     u32 species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
     u32 form = PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL);
     u32 sex = PokeParty_GetSex(pkm);
     u8 i;
 
     if (!front) {
-        dir = 1;
+        dir = TRADE_SPRITE_DIR_BACK;
     }
     found = FALSE;
     for (i = 0; i < NELEMS(sSpriteOffsets); i++) {
         if (species == sSpriteOffsets[i].species && form == sSpriteOffsets[i].form &&
-            (sSpriteOffsets[i].sex == 3 || sex == sSpriteOffsets[i].sex) &&
-            (sSpriteOffsets[i].dir == 2 || dir == sSpriteOffsets[i].dir)) {
+            (sSpriteOffsets[i].sex == TRADE_SPRITE_SEX_ANY || sex == sSpriteOffsets[i].sex) &&
+            (sSpriteOffsets[i].dir == TRADE_SPRITE_DIR_ANY || dir == sSpriteOffsets[i].dir)) {
             offset.x = FX32_CONST(sSpriteOffsets[i].x);
             if (scale->x >= 0) {
                 offset.x = -offset.x;

@@ -19,16 +19,16 @@ enum {
 
 #define GTSNEGO_MET_COUNT 100
 
-// What a player searched with: unk0 is the level range, unk4 the kind of their Pokémon
+// What a player searched with, which the two machines send each other: the level range and the kind of their Pokémon
 typedef struct {
-    u32 unk0;
-    u32 unk4;
-} GtsNegoUnk4;
+    u32 level;
+    u32 kind;
+} GtsNegoRequest;
 
 typedef struct {
     GameData *gameData;
-    // For each of the two players
-    GtsNegoUnk4 unk4[2];
+    // This player's request, then the partner's
+    GtsNegoRequest requests[2];
     // Copies of the player's info
     PlayerInfo *playerInfo;
     PlayerInfo *playerInfo2;

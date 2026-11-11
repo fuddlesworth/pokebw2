@@ -610,7 +610,7 @@ void GtsNegoDisp_CreateTouchBar(GtsNegoDisp *disp, u32 objPalette) {
     setup.bg = 7;
     setup.bgPalette = 15;
     setup.vramType = CLACT_VRAM_BOTH;
-    setup.unk1C = FALSE;
+    setup.noBg = FALSE;
     setup.objPalette = objPalette;
     disp->touchBar = TouchBar_Create(&setup, disp->heapId);
 }

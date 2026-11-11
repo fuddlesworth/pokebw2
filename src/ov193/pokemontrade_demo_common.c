@@ -20,7 +20,7 @@
 #include "pml/poke_party.h"
 #include "system/mcss.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_3.h"
+#include "text/system/pokemon_trade.h"
 
 // A guessed name: the part of the trade demo's scenes that the three overlay-193 files share
 
@@ -291,13 +291,13 @@ static void PokemonTradeDemoCommon_StateMoves(PokemonTradeWork *wk) {
 static void PokemonTradeDemoCommon_ShowMessage(PokemonTradeWork *wk) {
     GFL_NetSetIconScreen(FALSE, wk->heapId);
     if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillOffered, wk->strbufTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_WillOffered, wk->strbufTemplate);
     } else if (wk->type == TRADE_TYPE_GTS_TRADE) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_WillSent, wk->strbufTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_WillSent, wk->strbufTemplate);
     } else if (wk->sentPkmReturns != 0) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_ReturningGoodBye, wk->strbufTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_ReturningGoodBye, wk->strbufTemplate);
     } else {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_SendingGoodBye, wk->strbufTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_SendingGoodBye, wk->strbufTemplate);
     }
     loadPokemonNicknameToStrbuf(wk->wordSet, 0, PokemonTrade_GetPkm(wk, PokemonTrade_IsNegoType(wk)));
     copyVarForText(wk->wordSet, 1, wk->partnerInfo);

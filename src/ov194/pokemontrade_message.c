@@ -40,7 +40,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
-#include "text/system/ability_handlers_3.h"
+#include "text/system/pokemon_trade.h"
 
 // The trade's messages, menus and the panels that describe a Pokémon: its name, level, stats, moves and icons. The
 // ROM names no file between pokemontrade_save.c and pokemontrade_3d.c, so the name is descriptive
@@ -202,7 +202,7 @@ void PoketradeSave_CloseMessageWindowClear(PokemonTradeWork *wk) {
 
 void PoketradeSave_CreateMessageResources(PokemonTradeWork *wk) {
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_ABILITY_HANDLERS_3, wk->heapId);
+    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_POKEMON_TRADE, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->drawStr = GFL_StrBufCreate(128, wk->heapId);
     wk->drawTemplate = GFL_StrBufCreate(128, wk->heapId);
@@ -298,7 +298,7 @@ void PoketradeSave_OpenTaskMenuAt(PokemonTradeWork *wk, const u32 *items, int co
         wk->menuItems[i].str = GFL_StrBufCreate(100, wk->heapId);
         GFL_MsgDataLoadStrbuf(wk->msgData, items[i], wk->menuItems[i].str);
         wk->menuItems[i].color = PRINT_COLOR(14, 15, 3);
-        if (items[i] == AbilityHandlers3_Text_Cancel) {
+        if (items[i] == PokemonTrade_Text_Cancel) {
             wk->menuItems[i].type = APP_TASKMENU_ITEM_RETURN;
         } else {
             wk->menuItems[i].type = 0;
@@ -323,15 +323,15 @@ static void PoketradeSave_PrintNickname(PartyPkm *pkm, GFLBitmap *bitmap, int x,
                                         PokemonTradeWork *wk) {
     if (!isEgg) {
         if (speciesName) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_16, wk->drawTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_16, wk->drawTemplate);
             setPartyPokemonSpeciesNameToStrbuf(wk->wordSet, 0, pkm);
         } else {
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_17, wk->drawTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_17, wk->drawTemplate);
             loadPokemonNicknameToStrbuf(wk->wordSet, 0, pkm);
         }
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
     } else {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Egg, wk->drawStr);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Egg, wk->drawStr);
     }
     GFL_TextRendererDrawToBitmap(bitmap, x, y, wk->drawStr, wk->font);
 }
@@ -347,10 +347,10 @@ static void PoketradeSave_PrintDexNumber(PartyPkm *pkm, GFLBitmap *bitmap, int x
             GFL_HeapFree(table);
         }
         if (number == 999) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_52, wk->drawStr);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_52, wk->drawStr);
         } else {
             WordSetNumber(wk->wordSet, 1, number, 3, 1, TRUE);
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_No_2, wk->drawTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_No_2, wk->drawTemplate);
             GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
         }
         GFL_TextRendererDrawToBitmap(bitmap, x, y, wk->drawStr, wk->font);
@@ -361,7 +361,7 @@ static void PoketradeSave_PrintDexNumber(PartyPkm *pkm, GFLBitmap *bitmap, int x
 static void PoketradeSave_PrintSpeciesName(PartyPkm *pkm, GFLBitmap *bitmap, int x, int y, BOOL isEgg,
                                            PokemonTradeWork *wk) {
     if (!isEgg) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_16, wk->drawTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_16, wk->drawTemplate);
         setPartyPokemonSpeciesNameToStrbuf(wk->wordSet, 0, pkm);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
         GFL_TextRendererDrawToBitmap(bitmap, x, y, wk->drawStr, wk->font);
@@ -372,7 +372,7 @@ static void PoketradeSave_PrintSpeciesName(PartyPkm *pkm, GFLBitmap *bitmap, int
 static void PoketradeSave_PrintLevel(PartyPkm *pkm, GFLBitmap *bitmap, int x, int y, PokemonTradeWork *wk) {
     // The species is read and left unused
     PokeParty_GetParam(pkm, PKM_PARAM_LEGAL_SPECIES, NULL);
-    GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Lv, wk->drawTemplate);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Lv, wk->drawTemplate);
     WordSetNumber(wk->wordSet, 0, PokeParty_GetParam(pkm, PKM_PARAM_LEVEL, NULL), 3, 1, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
     GFL_TextRendererDrawToBitmap(bitmap, x, y, wk->drawStr, wk->font);
@@ -424,7 +424,7 @@ static void PoketradeSave_PrintStatLabels(PartyPkm *pkm, BmpWin *window, int x, 
 // The held item
 static void PoketradeSave_PrintHeldItem(PartyPkm *pkm, BmpWin *window, int x, int y, PokemonTradeWork *wk) {
     u32 item;
-    GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_23, wk->drawTemplate);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_23, wk->drawTemplate);
     item = PokeParty_GetParam(pkm, PKM_PARAM_ITEM, NULL);
     if (item != 0) {
         loadItemNameToStrbuf(wk->wordSet, 0, item);
@@ -436,7 +436,7 @@ static void PoketradeSave_PrintHeldItem(PartyPkm *pkm, BmpWin *window, int x, in
 // The HP and the maximum
 static void PoketradeSave_PrintHpValues(PartyPkm *pkm, BmpWin *window, int x, int y, PokemonTradeWork *wk) {
     u32 hp, maxHp;
-    GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_19, wk->drawTemplate);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_19, wk->drawTemplate);
     hp = PokeParty_GetParam(pkm, PKM_PARAM_HP, NULL);
     maxHp = PokeParty_GetParam(pkm, PKM_PARAM_MAX_HP, NULL);
     WordSetNumber(wk->wordSet, 0, hp, 3, 1, TRUE);
@@ -450,7 +450,7 @@ static void PoketradeSave_PrintStatValues(PartyPkm *pkm, BmpWin *window, int x, 
     int i = 0;
     u32 params[] = { PKM_PARAM_ATTACK, PKM_PARAM_DEFENSE, PKM_PARAM_SP_ATTACK, PKM_PARAM_SP_DEFENSE, PKM_PARAM_SPEED };
     for (; i < 5; i++) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_20, wk->drawTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_20, wk->drawTemplate);
         WordSetNumber(wk->wordSet, 0, PokeParty_GetParam(pkm, params[i], NULL), 3, 1, TRUE);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
         GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), x, y + i * 16, wk->drawStr, wk->font);
@@ -459,7 +459,7 @@ static void PoketradeSave_PrintStatValues(PartyPkm *pkm, BmpWin *window, int x, 
 
 // The label of the moves
 static void PoketradeSave_PrintAbilityLabel(PartyPkm *pkm, BmpWin *window, int x, int y, PokemonTradeWork *wk) {
-    GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_MovesLearned, wk->drawStr);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_MovesLearned, wk->drawStr);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), x, y, wk->drawStr, wk->font);
 }
 
@@ -469,7 +469,7 @@ static void PoketradeSave_PrintMoveNames(PartyPkm *pkm, BmpWin *window, int x, i
     for (i = 0; i < 4; i++) {
         u32 move = PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + i, NULL);
         if (move != 0) {
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_24, wk->drawTemplate);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_24, wk->drawTemplate);
             loadMoveNameToStrbuf(wk->wordSet, 0, move);
             GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
             GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), x, y + i * 16, wk->drawStr, wk->font);
@@ -487,7 +487,7 @@ static void PoketradeSave_PrintNatureName(PartyPkm *pkm, BmpWin *window, int x, 
 
 // The ability
 static void PoketradeSave_PrintExperience(PartyPkm *pkm, BmpWin *window, int x, int y, PokemonTradeWork *wk) {
-    GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_22, wk->drawTemplate);
+    GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_22, wk->drawTemplate);
     loadAbilityNameToStrbuf(wk->wordSet, 0, PokeParty_GetParam(pkm, PKM_PARAM_ABILITY, NULL));
     GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
     GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(window), x, y, wk->drawStr, wk->font);
@@ -621,10 +621,10 @@ void PoketradeSave_DrawSummaryPage(PokemonTradeWork *wk, int page, PartyPkm *pkm
         if (!isEgg) {
             PoketradeSave_PrintAbilityLabel(pkm, wk->summaryWindow, 8, 0, wk);
             PoketradeSave_PrintMoveNames(pkm, wk->summaryWindow, 16, 16, wk);
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Nature, wk->drawStr);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Nature, wk->drawStr);
             GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(wk->summaryWindow), 8, 80, wk->drawStr, wk->font);
             PoketradeSave_PrintNatureName(pkm, wk->summaryWindow, 16, 96, wk);
-            GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Ability, wk->drawStr);
+            GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Ability, wk->drawStr);
             GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(wk->summaryWindow), 8, 112, wk->drawStr, wk->font);
             PoketradeSave_PrintExperience(pkm, wk->summaryWindow, 16, 128, wk);
         }
@@ -766,7 +766,7 @@ void PoketradeSave_DrawOfferListWindows(PokemonTradeWork *wk, u32 unused) {
     infos[1] = wk->myInfo;
     GFL_TextRndUpdateColorIndexLUT(15, 2, 0);
     for (i = 0; i < 2; i++) {
-        GFL_MsgDataLoadStrbuf(wk->msgData, AbilityHandlers3_Text_Empty_51, wk->drawTemplate);
+        GFL_MsgDataLoadStrbuf(wk->msgData, PokemonTrade_Text_Empty_51, wk->drawTemplate);
         copyVarForText(wk->wordSet, 0, infos[i]);
         GFL_WordSetFormatStrbuf(wk->wordSet, wk->drawStr, wk->drawTemplate);
         GFL_TextRendererDrawToBitmap(wk->negoBitmaps[i * 4], 0, 0, wk->drawStr, wk->font);

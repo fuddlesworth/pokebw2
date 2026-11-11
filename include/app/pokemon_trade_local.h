@@ -125,6 +125,9 @@ enum {
     TRADE_CHECK_HTTP_ERROR = 0xff,
 };
 
+// The bits that every TRADE_CHECK_HTTP_* has
+#define TRADE_CHECK_HTTP_ERRORS 0xf0
+
 // The label over each side's Pokémon in a negotiation, from its message; TRADE_STATUS_DRAWN once it is drawn
 enum {
     TRADE_STATUS_SELECTING,

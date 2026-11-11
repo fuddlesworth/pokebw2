@@ -305,7 +305,7 @@ static void GtsNego_OnRecvRequest(int netId, int size, const void *data, void *w
     if (netId == GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
         return;
     }
-    MI_CpuCopy8(data, &param->unk4[1], sizeof(GtsNegoUnk4));
+    MI_CpuCopy8(data, &param->requests[1], sizeof(GtsNegoRequest));
 }
 
 static void GtsNego_OnRecvPlayerInfo(int netId, int size, const void *data, void *work, NetHandle *handle) {
@@ -651,7 +651,8 @@ static void GtsNego_StateSendRequest(GtsNegoWork *wk) {
         return;
     }
     if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 2, GTSNEGO_TIMING_NO)) {
-        if (GFL_NetSendCommand(NetHandle_GetOwn(), GTSNEGO_NET_CMD_REQUEST, sizeof(GtsNegoUnk4), &wk->param->unk4[0])) {
+        if (GFL_NetSendCommand(NetHandle_GetOwn(), GTSNEGO_NET_CMD_REQUEST, sizeof(GtsNegoRequest),
+                               &wk->param->requests[0])) {
             GtsNego_ChangeState(wk, GtsNego_StateSendPhrase, 853);
         }
     }
@@ -672,8 +673,8 @@ static void GtsNego_StateStartExchange(GtsNegoWork *wk) {
             GtsNegoParam *param = wk->param;
             CGearSave *cgear = CGearPhrases_GetBlock(wk->save);
 
-            param->unk4[0].unk0 = wk->level;
-            param->unk4[0].unk4 = wk->myKind;
+            param->requests[0].level = wk->level;
+            param->requests[0].kind = wk->myKind;
             CGearPhrases_Get(cgear, 0, &wk->send.phrase);
             wk->send.tradeCount = PalPadFriendList_GetTradeCount(GameData_GetPalPadFriendList(wk->gameData));
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 2, GTSNEGO_TIMING_NO);
