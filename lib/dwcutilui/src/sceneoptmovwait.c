@@ -83,7 +83,7 @@ static void procInit1(void) {
 }
 
 static void DWCUtilPageMulti5_WaitButtons(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_ChangeScene(procScene);
     }
 }
@@ -96,9 +96,9 @@ static void procScene(void) {
 
 static void DWCUtilPageMulti5_HandleInput(void) {
     if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IsFold()) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     }
 }
 
@@ -106,7 +106,7 @@ static void draw(void) {
 }
 
 static void DWCUtilPageMulti5_HandleChoice(void) {
-    if (DWCi_BTNlGet() == 0) {
+    if (DWCi_BTNlGet() == DWC_UTIL_BUTTON_CANCEL) {
         DWCi_SNDlStop();
         DWCi_SNDlPlay(7);
         DWCi_ChangeScene(DWCUtilPageMulti5_DisableButtons);

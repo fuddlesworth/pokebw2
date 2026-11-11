@@ -10,8 +10,11 @@
 struct MysteryGift {
     // The item, Pass Power or other thing the gift gives. A Pokémon gift keeps the Pokémon's data from here
     u32 value;
+    // A Pokémon gift's MysteryGiftPokemon view has the rest of its fields from here. Never accessed by name: the
+    // card is cleared, copied and encrypted whole
     u8 unk04[0x5c];
     u16 title[37];
+    // Never accessed: the card is cleared, copied and encrypted whole
     u8 unkAA[2];
     // The date the card was received, as year << 16 | month << 8 | day
     s32 date;
@@ -24,7 +27,9 @@ struct MysteryGift {
     u8 once : 1;
     // Picked up from the delivery man; only such cards can be thrown away
     u8 delivered : 1;
+    // Never accessed: the card is cleared, copied and encrypted whole
     u8 unkB4_2 : 6;
+    // Never accessed: the card is cleared, copied and encrypted whole
     u8 unkB5[0x17];
 };
 
@@ -52,6 +57,7 @@ typedef struct {
     u16 text[253];
     // Shown with the special effect, with particles
     u8 special;
+    // Never accessed: the packet is received and checked as one buffer
     u8 unk2CB;
     u16 unk2CC;
     // getCRC16 of everything before it
@@ -88,6 +94,7 @@ typedef struct {
     u8 otGender;
     u8 level;
     u8 isEgg;
+    // Never accessed: the tail of a Pokémon gift's view, which a card's title and unkAA overlap
     u8 unk5D[0x4f];
     // The date the gift was made, as year << 16 | month << 8 | day
     s32 date;

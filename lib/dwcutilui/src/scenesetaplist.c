@@ -222,7 +222,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -248,7 +248,7 @@ static void input(void) {
                     sApList->touched = i;
                     break;
                 }
-                DWCi_BTNlSet(1);
+                DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
                 sApListPos.cursor = i;
                 dispFocus();
                 return;
@@ -265,7 +265,7 @@ static void input(void) {
                     DWCi_SNDlPlay(9);
                     break;
                 }
-                DWCi_BTNlSet(1);
+                DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
                 sApListPos.cursor = i;
                 dispFocus();
                 return;
@@ -273,10 +273,10 @@ static void input(void) {
         }
     }
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(1);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
         DWCi_SBlDisable();
     } else if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IPTlCheckRepeat(0x200)) {
         scrollDown();
     } else if (DWCi_IPTlCheckRelease(0x200)) {
@@ -286,11 +286,11 @@ static void input(void) {
     } else if (DWCi_IPTlCheckRelease(0x100)) {
         sApList->atEnd = FALSE;
     } else if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     } else if (DWCi_IPTlCheckRelease(0x40)) {
         sApList->atEnd = FALSE;
     } else if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     } else if (DWCi_IPTlCheckRelease(0x80)) {
         sApList->atEnd = FALSE;
     }
@@ -307,11 +307,11 @@ static void draw(void) {
         sApList->dragDelay--;
     }
     switch (DWCi_SBlGetState()) {
-    case 1:
+    case DWC_UTIL_SCROLLBAR_GRAB:
         sApList->dragging = TRUE;
         DWCi_BTNlDisable();
         break;
-    case 2:
+    case DWC_UTIL_SCROLLBAR_DRAG:
         if (sApList->dragDelay == 0) {
             DWCi_FOCUSlDelete();
             sApListPos.scroll = FX_DivS32(DWCi_SBlGet() * sApList->scrollMax, sApList->barLength);
@@ -319,7 +319,7 @@ static void draw(void) {
             sApList->dragDelay = 4;
         }
         break;
-    case 3:
+    case DWC_UTIL_SCROLLBAR_RELEASE:
         sApList->dragging = FALSE;
         DWCi_BTNlEnable();
         sApListPos.scroll = FX_DivS32(DWCi_SBlGet() * sApList->scrollMax, sApList->barLength);
@@ -334,7 +334,7 @@ static void draw(void) {
             sApList->scrollTask = DWCi_TSKlForm(0, taskDown, NULL, 0x78);
         }
         break;
-    case 4:
+    case DWC_UTIL_SCROLLBAR_UP:
         if (sApListPos.scroll == 0) {
             if (!sApList->barAtEnd) {
                 DWCi_SNDlPlay(9);
@@ -345,7 +345,7 @@ static void draw(void) {
             sApList->scrollTask = DWCi_TSKlForm(0, taskUp, NULL, 0x78);
         }
         break;
-    case 6:
+    case DWC_UTIL_SCROLLBAR_DOWN:
         if (sApList->count <= AP_LIST_ROWS || sApListPos.scroll == sApList->scrollMax) {
             if (!sApList->barAtEnd) {
                 DWCi_SNDlPlay(9);
@@ -356,8 +356,8 @@ static void draw(void) {
             sApList->scrollTask = DWCi_TSKlForm(0, taskDown, NULL, 0x78);
         }
         break;
-    case 5:
-    case 7:
+    case DWC_UTIL_SCROLLBAR_UP_END:
+    case DWC_UTIL_SCROLLBAR_DOWN_END:
         sApList->barAtEnd = FALSE;
         break;
     }
@@ -370,17 +370,17 @@ static void button(void) {
         return;
     }
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         if (sApListPos.cursor == AP_LIST_BUTTON) {
             sApList->confirmed = TRUE;
             DWCi_SNDlPlay(6);
             dispPushButton();
         } else {
             index = sApListPos.cursor + FX_DivS32(sApListPos.scroll, AP_LIST_ROW_HEIGHT);
-            if (sApList->entries[index].security == 2) {
+            if (sApList->entries[index].security == DWC_UTIL_AP_WPA) {
                 DWCi_SNDlPlay(9);
                 DWCi_SBlDisable();
                 DWCi_BTNlDisable();
@@ -625,7 +625,7 @@ static void moveFocus(int direction) {
 
     switch (sApListPos.cursor) {
     case 0:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             if (sApListPos.scroll == 0) {
                 sApListPos.cursor = AP_LIST_BUTTON;
             } else {
@@ -641,7 +641,7 @@ static void moveFocus(int direction) {
         break;
     case 1:
     case 2:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sApListPos.cursor--;
         } else if (sApList->count > sApListPos.cursor + 1) {
             sApListPos.cursor++;
@@ -650,7 +650,7 @@ static void moveFocus(int direction) {
         }
         break;
     case 3:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sApListPos.cursor--;
         } else {
             scrollDown();
@@ -658,7 +658,7 @@ static void moveFocus(int direction) {
         }
         break;
     case AP_LIST_BUTTON:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             moved = FALSE;
         } else {
             sApListPos.scroll = 0;

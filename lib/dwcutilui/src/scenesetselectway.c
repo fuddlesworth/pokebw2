@@ -20,8 +20,15 @@
 #include "setting.h"
 #include "sound.h"
 
-// The buttons: the search for an access point, the AOSS setup, the third setup and the settings by hand
-#define SCREEN_WAY_BUTTONS 4
+// The buttons, as the cursor goes over them: the search for an access point, the AOSS setup, the third setup and the
+// settings by hand
+enum {
+    SCREEN_WAY_SEARCH,
+    SCREEN_WAY_AOSS,
+    SCREEN_WAY_TEST,
+    SCREEN_WAY_ADDRESS,
+    SCREEN_WAY_BUTTONS,
+};
 
 // What a move of the cursor does in sScreenWayMoves: nothing, go back to the button of the bottom row that the cursor
 // left, or go to the button given (0 stays the top button, which also keeps the button left)
@@ -74,15 +81,15 @@ void DWCi_SceneSetSelectWay(void) {
     DWCUtilSettingsEdit *edit = DWCi_SETTIGNlGet();
 
     sScreenWay.chosen = FALSE;
-    if (sScreenWay.left == 0) {
-        sScreenWay.left = 1;
+    if (sScreenWay.left == SCREEN_WAY_SEARCH) {
+        sScreenWay.left = SCREEN_WAY_AOSS;
     }
     if (DWCi_Language() != 0) {
-        if (sScreenWay.cursor == 2) {
-            sScreenWay.cursor = 0;
+        if (sScreenWay.cursor == SCREEN_WAY_TEST) {
+            sScreenWay.cursor = SCREEN_WAY_SEARCH;
         }
-        if (sScreenWay.left == 2) {
-            sScreenWay.left = 1;
+        if (sScreenWay.left == SCREEN_WAY_TEST) {
+            sScreenWay.left = SCREEN_WAY_AOSS;
         }
     }
     initGraphics();
@@ -125,7 +132,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -142,7 +149,7 @@ static void input(void) {
 
     for (i = 0; i < SCREEN_WAY_BUTTONS; i++) {
         if (DWCi_TPlCheckTrigger(sScreenWayTouchRects[DWCi_Flag(1)][i])) {
-            DWCi_BTNlSet(1);
+            DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
             sScreenWay.cursor = i;
             DWCi_FOCUSlDisp4(sScreenWayCursorRects[DWCi_Flag(1)][sScreenWay.cursor][0],
                              sScreenWayCursorRects[DWCi_Flag(1)][sScreenWay.cursor][2],
@@ -152,17 +159,17 @@ static void input(void) {
         }
     }
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(1);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
     } else if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     } else if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     } else if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
     } else if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
 }
 
@@ -171,10 +178,10 @@ static void draw(void) {
 
 static void button(void) {
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         DWCi_SNDlPlay(6);
         dispPush();
         sScreenWay.chosen = TRUE;
@@ -220,19 +227,19 @@ static void endScene2(void) {
         return;
     }
     switch (sScreenWay.cursor) {
-    case 0:
+    case SCREEN_WAY_SEARCH:
         DWCi_SetParam_(2, 1);
         DWCi_ChangeScene(DWCi_SceneSetSearch);
         break;
-    case 1:
+    case SCREEN_WAY_AOSS:
         DWCi_SetParam_(2, 1);
         DWCi_ChangeScene(DWCi_SceneSetAossButton);
         break;
-    case 2:
+    case SCREEN_WAY_TEST:
         DWCi_SetParam_(2, 1);
         DWCi_ChangeScene(DWCUtilTestStart_Init);
         break;
-    case 3:
+    case SCREEN_WAY_ADDRESS:
         DWCi_SetParam_(2, 0);
         DWCi_SetParam2_(0, 0);
         DWCi_SetListReturn(1);
@@ -249,7 +256,7 @@ static void moveFocus(int direction) {
     if (next == SCREEN_WAY_STAY) {
         return;
     }
-    if (next == 0) {
+    if (next == SCREEN_WAY_SEARCH) {
         sScreenWay.left = cursor;
     }
     if (next == SCREEN_WAY_BACK) {

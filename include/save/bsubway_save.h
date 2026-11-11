@@ -107,37 +107,51 @@ struct BSubwayScoreData {
     u16 maxStreaks[BSUBWAY_SCORE_MODE_MAX];
     u16 stages[BSUBWAY_SCORE_MODE_MAX];
     u16 wifiScore;
+    // Never accessed: the block is cleared and copied whole
     u8 unk40[4];
     // Two teams of three BSubwayPokemon
     u8 team1[0xb4];
     u8 team0[0xb4];
 };
 
-// A player of the Wi-Fi train, of whom BSubwayWifiData_GetTrainer makes a trainer
+// A player of the Wi-Fi train, of whom BSubwayWifiData_GetTrainer makes a trainer. The record is the server's, which
+// BSubwayWifiData_SetPlayers copies whole: the DS Wi-Fi library's Dpw_Bt_Player as overlay 191's wifi_bsubway.c
+// declares it
 typedef struct {
     u8 pokemon[0xb4];
     u16 name[8];
-    u8 unkC4[0x11];
+    u8 versionCode;
+    u8 langCode;
+    u8 countryCode;
+    u8 localCode;
+    u8 playerId[4];
+    u8 leaderMessage[sizeof(PMSData)];
+    u8 ngName : 1;
+    u8 gender : 1;
+    u8 : 6;
     u8 trainerClass;
     u16 message[4];
     u16 winWords[4];
     u16 loseWords[4];
-    u8 paddingEE[2];
+    // The server's result, which an upload sets to the Wi-Fi score
+    u16 result;
 } BSubwayWifiPlayer;
 
 // A leader of a Wi-Fi room: a player's name and place, and the message that they left
 typedef struct {
     u16 name[8];
-    u8 unk10[2];
+    u8 versionCode;
+    u8 langCode;
     u8 country;
     u8 area;
     // A 32-bit ID, lowest byte first
     u8 id[4];
     PMSData message;
+    // The server's flags byte, whose bit 1 is the gender; the rest stays unnamed
     u8 unk20_0 : 1;
     u8 female : 1;
     u8 unk20_2 : 6;
-    u8 unk21;
+    u8 padding;
 } BSubwayWifiLeader;
 
 // Block 0x3a: the Wi-Fi train's downloaded data

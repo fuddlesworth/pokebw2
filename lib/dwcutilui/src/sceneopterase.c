@@ -66,7 +66,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -87,11 +87,11 @@ static void draw(void) {
 
 static void button(void) {
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         DWCi_SNDlPlay(7);
         DWCi_ChangeScene(endScene);
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         DWCi_SNDlPlay(6);
         DWCi_WINlInitEx(0x18, 0, 1, -1, 0);
         DWCi_BTNlDisable();
