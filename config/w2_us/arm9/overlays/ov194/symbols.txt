@@ -684,13 +684,6 @@ data_ov194_021c9d59_w2_us kind:bss addr:0x021c9d59 ambiguous
 data_ov194_021c9eb8 kind:bss addr:0x021c9eec ambiguous
 data_ov194_021cab34 kind:bss addr:0x021cab68 ambiguous
 data_ov194_021cc990 kind:bss addr:0x021cc9c4 ambiguous
-data_ov194_021ce181 kind:bss addr:0x021ce1c1 ambiguous
-data_ov194_021ce201 kind:bss addr:0x021ce241 ambiguous
-data_ov194_021ce299 kind:bss addr:0x021ce2d9 ambiguous
-data_ov194_021ce2b9 kind:bss addr:0x021ce2f9 ambiguous
-data_ov194_021ce33d kind:bss addr:0x021ce37d ambiguous
-data_ov194_021ce3c1 kind:bss addr:0x021ce401 ambiguous
-data_ov194_021ce465 kind:bss addr:0x021ce4a5 ambiguous
 data_ov194_021ce568 kind:bss addr:0x021ce59c ambiguous
 data_ov194_021cf1c8 kind:bss addr:0x021cf1fc ambiguous
 data_ov194_021d0001_w2_us kind:bss addr:0x021d0001 ambiguous

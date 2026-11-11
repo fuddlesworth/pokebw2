@@ -3214,7 +3214,7 @@ from:0x02016a78 kind:thumb_call to:0x02016960 module:main
 from:0x02016a8c kind:thumb_call to:0x02016db8 module:main
 from:0x02016a9c kind:thumb_call to:0x0203a988 module:main
 from:0x02016aac kind:thumb_call to:0x02016a98 module:main
-from:0x02016ab8 kind:load to:0x021c9eb8 module:overlays(36,194)
+from:0x02016ab8 kind:load to:0x021c9eb8 module:overlay(36)
 from:0x02016ac0 kind:thumb_call to:0x02016db8 module:main
 from:0x02016ae4 kind:load to:0x020171f5 module:main
 from:0x02016b3c kind:load to:0x02017615 module:main

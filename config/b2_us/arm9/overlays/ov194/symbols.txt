@@ -634,67 +634,6 @@ sCubeVertices kind:data(any) addr:0x021c6f90
 data_ov194_021c6fc0 kind:data(any) addr:0x021c6fc0
 sInitialWindowPos kind:data(any) addr:0x021c6fd4
 sSpeciesInitials kind:data(any) addr:0x021c70a4
-data_ov194_021c7215 kind:data(any) addr:0x021c7215 ambiguous
-data_ov194_021c7275 kind:data(any) addr:0x021c7275 ambiguous
-data_ov194_021c72c1 kind:data(any) addr:0x021c72c1 ambiguous
-data_ov194_021c730d kind:data(any) addr:0x021c730d ambiguous
 data_ov194_021c7330 kind:data(any) addr:0x021c7330
 sHeapMemory kind:bss addr:0x021c7360
-data_ov194_021c73dd kind:bss addr:0x021c73dd ambiguous
-data_ov194_021c7499 kind:bss addr:0x021c7499 ambiguous
-data_ov194_021c7699 kind:bss addr:0x021c7699 ambiguous
-data_ov194_021c76d9 kind:bss addr:0x021c76d9 ambiguous
-data_ov194_021c77c5 kind:bss addr:0x021c77c5 ambiguous
-data_ov194_021c7801 kind:bss addr:0x021c7801 ambiguous
-data_ov194_021c783d kind:bss addr:0x021c783d ambiguous
-data_ov194_021c784d kind:bss addr:0x021c784d ambiguous
-data_ov194_021c79c5 kind:bss addr:0x021c79c5 ambiguous
-data_ov194_021c7a05 kind:bss addr:0x021c7a05 ambiguous
-data_ov194_021c7ad1 kind:bss addr:0x021c7ad1 ambiguous
-data_ov194_021c7b39 kind:bss addr:0x021c7b39 ambiguous
-data_ov194_021c7bc9 kind:bss addr:0x021c7bc9 ambiguous
-data_ov194_021c7c51 kind:bss addr:0x021c7c51 ambiguous
-data_ov194_021c7c9d kind:bss addr:0x021c7c9d ambiguous
-data_ov194_021c7cd5 kind:bss addr:0x021c7cd5 ambiguous
-data_ov194_021c7d0d kind:bss addr:0x021c7d0d ambiguous
-data_ov194_021c7ddd kind:bss addr:0x021c7ddd ambiguous
-data_ov194_021c7e1d kind:bss addr:0x021c7e1d ambiguous
-data_ov194_021c7fb1 kind:bss addr:0x021c7fb1 ambiguous
-data_ov194_021c8b64 kind:bss addr:0x021c8b64 ambiguous
-data_ov194_021c8cd1 kind:bss addr:0x021c8cd1 ambiguous
-data_ov194_021c8e85 kind:bss addr:0x021c8e85 ambiguous
-data_ov194_021c8eed kind:bss addr:0x021c8eed ambiguous
-data_ov194_021c91d1 kind:bss addr:0x021c91d1 ambiguous
-data_ov194_021c930d kind:bss addr:0x021c930d ambiguous
-data_ov194_021c93e9 kind:bss addr:0x021c93e9 ambiguous
-data_ov194_021c9625 kind:bss addr:0x021c9625 ambiguous
-data_ov194_021c98f9 kind:bss addr:0x021c98f9 ambiguous
-data_ov194_021c9a41 kind:bss addr:0x021c9a41 ambiguous
-data_ov194_021c9a7d kind:bss addr:0x021c9a7d ambiguous
-data_ov194_021c9ab1 kind:bss addr:0x021c9ab1 ambiguous
-data_ov194_021c9b01 kind:bss addr:0x021c9b01 ambiguous
-data_ov194_021c9b39 kind:bss addr:0x021c9b39 ambiguous
-data_ov194_021c9b89 kind:bss addr:0x021c9b89 ambiguous
-data_ov194_021c9bed kind:bss addr:0x021c9bed ambiguous
-data_ov194_021c9c25 kind:bss addr:0x021c9c25 ambiguous
-data_ov194_021c9c5d kind:bss addr:0x021c9c5d ambiguous
-data_ov194_021c9c95 kind:bss addr:0x021c9c95 ambiguous
-data_ov194_021c9cc9 kind:bss addr:0x021c9cc9 ambiguous
-data_ov194_021c9d25 kind:bss addr:0x021c9d25 ambiguous
-data_ov194_021c9eb8 kind:bss addr:0x021c9eb8 ambiguous
-data_ov194_021cab34 kind:bss addr:0x021cab34 ambiguous
-data_ov194_021cc990 kind:bss addr:0x021cc990 ambiguous
-data_ov194_021ce181 kind:bss addr:0x021ce181 ambiguous
-data_ov194_021ce201 kind:bss addr:0x021ce201 ambiguous
-data_ov194_021ce299 kind:bss addr:0x021ce299 ambiguous
-data_ov194_021ce2b9 kind:bss addr:0x021ce2b9 ambiguous
-data_ov194_021ce33d kind:bss addr:0x021ce33d ambiguous
-data_ov194_021ce3c1 kind:bss addr:0x021ce3c1 ambiguous
-data_ov194_021ce465 kind:bss addr:0x021ce465 ambiguous
-data_ov194_021ce568 kind:bss addr:0x021ce568 ambiguous
-data_ov194_021cf1c8 kind:bss addr:0x021cf1c8 ambiguous
-data_ov194_021d0001 kind:bss addr:0x021d0001 ambiguous
-data_ov194_021d0217 kind:bss addr:0x021d0217 ambiguous
-data_ov194_021d021a kind:bss addr:0x021d021a ambiguous
-data_ov194_021d021c kind:bss addr:0x021d021c ambiguous
 sG3DLight kind:bss addr:0x021d3360
