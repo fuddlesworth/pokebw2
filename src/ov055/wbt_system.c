@@ -308,7 +308,7 @@ u8 WbtSystem_GetRegulationId(WbtSystem *sys) {
 
 Regulation *WbtSystem_GetRegulation(WbtSystem *sys) {
     if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED) {
-        WbtDownloadedTournament *downloaded = &sys->download.tournament;
+        WbtDownloadRules *downloaded = &sys->download.rules;
         int i;
 
         MI_CpuFill8(&sys->regulation, 0, sizeof(sys->regulation));
@@ -335,7 +335,7 @@ Regulation *WbtSystem_GetRegulation(WbtSystem *sys) {
     return &sys->regulation;
 }
 
-WbtUnk18A *WbtSystem_GetExtraRule(WbtSystem *sys) {
+RegulationExtraRule *WbtSystem_GetExtraRule(WbtSystem *sys) {
     u8 type = TYPE_NULL;
     u16 move = MOVE_NONE;
 
@@ -352,13 +352,13 @@ WbtUnk18A *WbtSystem_GetExtraRule(WbtSystem *sys) {
     case 3:
         break;
     case WBT_TOURNAMENT_KIND_DOWNLOADED:
-        type = sys->download.tournament.requiredType;
-        move = sys->download.tournament.bannedMove;
+        type = sys->download.rules.requiredType;
+        move = sys->download.rules.bannedMove;
         break;
     }
     sys->extraRule.type = type;
-    sys->extraRule.rank = 0;
-    sys->extraRule.index = move;
+    sys->extraRule.banMoves = FALSE;
+    sys->extraRule.move = move;
     return &sys->extraRule;
 }
 

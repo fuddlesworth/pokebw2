@@ -8,6 +8,7 @@
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
+#include "save/extra_block_savedata.h"
 #include "struct_decls.h"
 #include "system/app_printsys_common.h"
 #include "system/app_taskmenu.h"
@@ -191,39 +192,6 @@ enum {
 #define T_DOWNLOAD_SAVE_FLAG_SAVING 0x1
 #define T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT 4
 
-// A tournament, as the save and the download keep it. Only what the screens read is named
-#define T_DOWNLOAD_NAME_LENGTH 37
-#define T_DOWNLOAD_AUTHOR_LENGTH 75
-#define T_DOWNLOAD_TEXT_LENGTH 111
-#define T_DOWNLOAD_SPECIES_BYTES 82
-#define T_DOWNLOAD_ITEM_BYTES 76
-
-typedef struct {
-    u32 kind;
-    u8 unk4[3];
-    // 2 for a tournament that can be used
-    u8 state;
-    u16 id;
-    u16 name[T_DOWNLOAD_NAME_LENGTH];
-    u16 author[T_DOWNLOAD_AUTHOR_LENGTH];
-    u16 text[T_DOWNLOAD_TEXT_LENGTH];
-    // The eight-byte regulation prefix of WbtDownloadedTournament, kept in its original byte-array type
-    u8 regulation[8];
-    // Bitsets of banned species and items; the banned move is one ID below
-    u8 bannedSpecies[T_DOWNLOAD_SPECIES_BYTES];
-    u8 bannedItems[T_DOWNLOAD_ITEM_BYTES];
-    u8 unk26E;
-    // The battle style in bits 0 and 1, matching WbtDownloadedTournament.battleType
-    u8 battleType;
-    u8 unk270[2];
-    u16 bannedMove;
-    u8 unk274[0x1210 - 0x274];
-    // getCRC16 of everything before it
-    u32 crc;
-} TDownloadTournament;
-
-#define T_DOWNLOAD_TOURNAMENT_SIZE 0x1214
-
 struct TDownloadWork {
     HeapID heapId;
     // The cell resources: the touch bar's characters, palette and cells, then the screen's own
@@ -288,9 +256,9 @@ struct TDownloadWork {
     int page[T_DOWNLOAD_TABS];
     s16 *objPos;
     void *unk284;
-    TDownloadTournament *record;
-    TDownloadTournament *savedData[T_DOWNLOAD_SAVE_SLOTS];
-    TDownloadTournament *receivedData[T_DOWNLOAD_RECEIVED_MAX];
+    WbtDownloadData *record;
+    WbtDownloadData *savedData[T_DOWNLOAD_SAVE_SLOTS];
+    WbtDownloadData *receivedData[T_DOWNLOAD_RECEIVED_MAX];
 };
 
 #endif // POKEBW2_APP_T_DOWNLOAD_T_DOWNLOAD_LOCAL_H

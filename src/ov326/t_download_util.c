@@ -789,7 +789,7 @@ void TDownloadUtil_PrintMessage(TDownloadWork *wk, int window, u32 message, BOOL
     StrBuf *strbuf;
     StrBuf *format;
     StrBuf *name;
-    TDownloadTournament *record;
+    WbtDownloadData *record;
 
     LoadSysMsgBox(0, 1, 8, 0, wk->heapId);
     BmpWin_DrawFrame(wk->windows[window].window, 0, 1, 8);
@@ -857,7 +857,7 @@ void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index) {
     StrBuf *buf;
     StrBuf *format;
     StrBuf *strbuf;
-    TDownloadTournament *data;
+    WbtDownloadData *data;
 
     if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[index];
@@ -882,7 +882,7 @@ void TDownloadUtil_PrintSlotInfo(TDownloadWork *wk, int type, int index) {
     TDownloadUtil_Print(wk, 1, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
-    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadRulesMsgs[data->battleType & 3]);
+    strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[0], sTDownloadRulesMsgs[data->rules.battleType & 3]);
     TDownloadUtil_Print(wk, 2, 0, 0, strbuf, 0, 0x39e0);
     GFL_StrBufFree(strbuf);
 
@@ -1029,7 +1029,7 @@ static void TDownloadUtil_PrintItemAt(TDownloadWork *wk, PrintWindow *window, Pr
     StrBuf *name;
     StrBuf *buf;
     StrBuf *format;
-    TDownloadTournament *data = wk->receivedData[index];
+    WbtDownloadData *data = wk->receivedData[index];
 
     name = GFL_StrBufCreate(128, wk->heapId);
     buf = GFL_StrBufCreate(128, wk->heapId);
@@ -1175,7 +1175,7 @@ void TDownloadUtil_PrintDetails(TDownloadWork *wk, int type, int index, int tab)
     StrBuf *format;
     int perPage;
     int page;
-    TDownloadTournament *data;
+    WbtDownloadData *data;
     u32 id;
 
     if (type == T_DOWNLOAD_SOURCE_SAVED) {
@@ -1251,7 +1251,7 @@ void TDownloadUtil_PrintDetails(TDownloadWork *wk, int type, int index, int tab)
 
 void TDownloadUtil_CountDetails(TDownloadWork *wk, int type, int index) {
     int i;
-    TDownloadTournament *data;
+    WbtDownloadData *data;
 
     if (type == T_DOWNLOAD_SOURCE_SAVED) {
         data = wk->savedData[index];
@@ -1385,7 +1385,7 @@ void TDownloadUtil_PauseActors(TDownloadWork *wk, BOOL show) {
 }
 
 void TDownloadUtil_PrintSlotName(TDownloadWork *wk, int type, int slot) {
-    TDownloadTournament *data;
+    WbtDownloadData *data;
     StrBuf *name;
     StrBuf *buf;
     StrBuf *format;

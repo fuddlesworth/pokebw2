@@ -31,7 +31,7 @@ typedef struct {
     WbtTrainer *trainers;
     u64 seed;
     // The seven Trainers of a downloaded tournament
-    const WbtUnk18A *downloadSlots;
+    const WbtDownloadEntrantSlot *downloadSlots;
 } WbtMatchParam;
 
 typedef struct {
@@ -94,7 +94,7 @@ static u32 WbtMakeMatch_FindCandidate(WbtMakeMatch *m, u32 rank, u32 encountered
 static int WbtMakeMatch_PickRank(WbtMakeMatch *m, u32 rank, u8 count);
 static BOOL WbtMakeMatch_IsEligible(const WbtMatchParam *param, WbtTrainer *trainer);
 static void WbtMakeMatch_InitStatus(WbtMakeMatch *m, WbtSave *record);
-static void WbtMakeMatch_PickDownloaded(const WbtUnk18A *slots, WbtMakeMatch *m, WbtBracketEntry *result);
+static void WbtMakeMatch_PickDownloaded(const WbtDownloadEntrantSlot *slots, WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickChampions(WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickWorldLeaders(WbtMakeMatch *m, WbtBracketEntry *result);
 static void WbtMakeMatch_PickRegionalLeaders(WbtMakeMatch *m, WbtBracketEntry *result);
@@ -270,7 +270,7 @@ static void WbtMakeMatch_InitStatus(WbtMakeMatch *m, WbtSave *record) {
 
 // A downloaded tournament picks from the table ten Trainers at random and has seven slots, each a Trainer of the
 // table, of the first or the second ten, or of the downloaded tournament, or by its number
-static void WbtMakeMatch_PickDownloaded(const WbtUnk18A *slots, WbtMakeMatch *m, WbtBracketEntry *result) {
+static void WbtMakeMatch_PickDownloaded(const WbtDownloadEntrantSlot *slots, WbtMakeMatch *m, WbtBracketEntry *result) {
     u8 order[10];
     int i = 0;
     int next = 0;
@@ -642,7 +642,7 @@ static void WbtMakeMatch_SetEntrants(WbtSystem *sys, GameData *gameData, WbtBrac
             break;
         }
         if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED && entrant->kind != WBT_ENTRANT_KIND_PLAYER) {
-            entrant->rank = sys->downloadSlots[rankIndex].rank;
+            entrant->rank = sys->download.entrantSlots[rankIndex].rank;
             rankIndex++;
         }
         switch (sys->tournament) {
@@ -669,7 +669,7 @@ void WbtMakeMatch_Make(WbtSystem *sys, GameData *gameData) {
     param.seed = sys->seed;
     param.downloadSlots = NULL;
     if (sys->downloadValid != 0) {
-        param.downloadSlots = sys->downloadSlots;
+        param.downloadSlots = sys->download.entrantSlots;
     }
     WbtMakeMatch_PickBracket(gameData, &param, result);
     WbtMakeMatch_SetEntrants(sys, gameData, result);
@@ -720,7 +720,7 @@ u32 WbtMakeMatch_CountDownloads(WbtSystem *sys, GameData *gameData) {
 }
 
 static void WbtMakeMatch_ClearDownload(WbtSystem *sys) {
-    MIi_CpuClear32(0, &sys->download, 0x1214);
+    MIi_CpuClear32(0, &sys->download, sizeof(sys->download));
     sys->downloadValid = FALSE;
 }
 
@@ -745,10 +745,10 @@ void WbtMakeMatch_LoadDownload(WbtSystem *sys, GameData *gameData) {
         valid = WbtDownloadData_IsCRCValid(data);
     }
     if (valid) {
-        MIi_CpuCopy32(data, &sys->download, 0x1214);
-        sys->style = WbtStyle_Clamp(sys->download.tournament.battleType);
+        MIi_CpuCopy32(data, &sys->download, sizeof(sys->download));
+        sys->style = WbtStyle_Clamp(sys->download.rules.battleType);
     } else {
-        MIi_CpuClear32(0, &sys->download, 0x1214);
+        MIi_CpuClear32(0, &sys->download, sizeof(sys->download));
     }
     freeIntermediateSaveExtraBlksAfterLoad(save, block);
     sys->downloadValid = valid;

@@ -10,16 +10,10 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/time_icon.h"
+#include <stddef.h>
 
 // The Pokémon World Tournament's downloaded tournaments, as the save's extra blocks keep them and as the download
 // leaves them, named after the ROM's "t_download_save.c". The names are ours
-
-// Which version a tournament is for: only the one the game is, or both
-enum {
-    T_DOWNLOAD_KIND_WHITE2,
-    T_DOWNLOAD_KIND_BLACK2,
-    T_DOWNLOAD_KIND_BOTH,
-};
 
 // The bit of the work's saveFlags that says save slot i holds a tournament
 #define T_DOWNLOAD_SAVE_FLAG_SLOT(i) (1 << ((i) + T_DOWNLOAD_SAVE_FLAG_SLOT_SHIFT))
@@ -62,13 +56,13 @@ static BOOL TDownloadSave_LoadSlot(TDownloadWork *wk, int slot) {
     void *src;
 
     wk->savedData[slot] =
-        GFL_HeapAllocate(HEAPID_TAIL(wk->heapId), T_DOWNLOAD_TOURNAMENT_SIZE, FALSE, "t_download_save.c", 138);
-    MIi_CpuClear32(0, wk->savedData[slot], T_DOWNLOAD_TOURNAMENT_SIZE);
+        GFL_HeapAllocate(HEAPID_TAIL(wk->heapId), sizeof(WbtDownloadData), FALSE, "t_download_save.c", 138);
+    MIi_CpuClear32(0, wk->savedData[slot], sizeof(WbtDownloadData));
     save = GameData_GetSaveControl(GSYS_GetGameData(wk->param->gsys));
     block = sTDownloadSaveBlocks[slot].block;
     if (SaveControl_OpenExtraBlock(save, block, wk->heapId) == TRUE) {
         src = getAddressOfExtraSaveBlk(save, block, sTDownloadSaveBlocks[slot].offset);
-        MIi_CpuCopy32(src, wk->savedData[slot], T_DOWNLOAD_TOURNAMENT_SIZE);
+        MIi_CpuCopy32(src, wk->savedData[slot], sizeof(WbtDownloadData));
         loaded = TRUE;
     }
     freeIntermediateSaveExtraBlksAfterLoad(save, block);
@@ -90,24 +84,24 @@ int TDownloadSave_LoadDownloaded(TDownloadWork *wk) {
     return TDownloadSave_LoadReceived(wk);
 }
 
-void TDownloadSave_LoadString(TDownloadWork *wk, const TDownloadTournament *data, int kind, StrBuf *strbuf) {
+void TDownloadSave_LoadString(TDownloadWork *wk, const WbtDownloadData *data, int kind, StrBuf *strbuf) {
     if (kind == T_DOWNLOAD_STRING_NAME) {
-        GFL_StrBufLoadFixedString(strbuf, data->name, T_DOWNLOAD_NAME_LENGTH);
+        GFL_StrBufLoadFixedString(strbuf, data->name, WBT_DOWNLOAD_NAME_LENGTH);
     } else if (kind == T_DOWNLOAD_STRING_AUTHOR) {
-        GFL_StrBufLoadFixedString(strbuf, data->author, T_DOWNLOAD_AUTHOR_LENGTH);
+        GFL_StrBufLoadFixedString(strbuf, data->author, WBT_DOWNLOAD_AUTHOR_LENGTH);
     } else if (kind == T_DOWNLOAD_STRING_TEXT) {
-        GFL_StrBufLoadFixedString(strbuf, data->text, T_DOWNLOAD_TEXT_LENGTH);
+        GFL_StrBufLoadFixedString(strbuf, data->text, WBT_DOWNLOAD_TEXT_LENGTH);
     }
 }
 
-int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *data, int kind) {
+int TDownloadSave_CountEntries(TDownloadWork *wk, const WbtDownloadData *data, int kind) {
     int i, j;
     int count = 0;
     const u8 *bits;
 
     if (kind == T_DOWNLOAD_ENTRY_SPECIES) {
-        bits = data->bannedSpecies;
-        for (i = 0; i < T_DOWNLOAD_SPECIES_BYTES; i++) {
+        bits = data->rules.bannedSpecies;
+        for (i = 0; i < WBT_DOWNLOAD_SPECIES_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (bits[i] & (1 << j)) {
                     if (TDownloadSave_IsCaught(wk, i * 8 + j) == TRUE) {
@@ -117,8 +111,8 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
             }
         }
     } else if (kind == T_DOWNLOAD_ENTRY_ITEMS) {
-        bits = data->bannedItems;
-        for (i = 0; i < T_DOWNLOAD_ITEM_BYTES; i++) {
+        bits = data->rules.bannedItems;
+        for (i = 0; i < WBT_DOWNLOAD_ITEM_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (bits[i] & (1 << j)) {
                     count++;
@@ -127,7 +121,7 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
         }
     } else if (kind == T_DOWNLOAD_ENTRY_MOVE) {
         for (i = 1; i < 560; i++) {
-            if ((u16)i == data->bannedMove) {
+            if ((u16)i == data->rules.bannedMove) {
                 count++;
             }
         }
@@ -138,16 +132,16 @@ int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *dat
     return count;
 }
 
-u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, int kind, int number) {
+u32 TDownloadSave_GetEntry(TDownloadWork *wk, const WbtDownloadData *data, int kind, int number) {
     int i, j;
     int count;
     const u8 *bits;
     const u8 *items;
 
     if (kind == T_DOWNLOAD_ENTRY_SPECIES) {
-        bits = data->bannedSpecies;
+        bits = data->rules.bannedSpecies;
         count = 0;
-        for (i = 0; i < T_DOWNLOAD_SPECIES_BYTES; i++) {
+        for (i = 0; i < WBT_DOWNLOAD_SPECIES_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (bits[i] & (1 << j)) {
                     if (TDownloadSave_IsCaught(wk, i * 8 + j) == TRUE) {
@@ -160,9 +154,9 @@ u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, i
             }
         }
     } else if (kind == T_DOWNLOAD_ENTRY_ITEMS) {
-        items = data->bannedItems;
+        items = data->rules.bannedItems;
         count = 0;
-        for (i = 0; i < T_DOWNLOAD_ITEM_BYTES; i++) {
+        for (i = 0; i < WBT_DOWNLOAD_ITEM_BYTES; i++) {
             for (j = 0; j < 8; j++) {
                 if (items[i] & (1 << j)) {
                     count++;
@@ -174,7 +168,7 @@ u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, i
         }
     } else if (kind == T_DOWNLOAD_ENTRY_MOVE) {
         for (i = 1; i < 560; i++) {
-            if ((u16)i == data->bannedMove) {
+            if ((u16)i == data->rules.bannedMove) {
                 return i;
             }
         }
@@ -187,7 +181,7 @@ void TDownloadSave_StartSave(TDownloadWork *wk, int src, int dest) {
     GameData *gameData;
     SaveControl *save;
     u32 block;
-    TDownloadTournament *data;
+    WbtDownloadData *data;
 
     if (!(wk->saveFlags & T_DOWNLOAD_SAVE_FLAG_SAVING)) {
         data = wk->receivedData[src];
@@ -198,7 +192,7 @@ void TDownloadSave_StartSave(TDownloadWork *wk, int src, int dest) {
         block = sTDownloadSaveBlocks[dest].block;
         SaveControl_OpenExtraBlock(save, block, wk->heapId);
         MIi_CpuCopy32(data, getAddressOfExtraSaveBlk(save, block, sTDownloadSaveBlocks[dest].offset),
-                      T_DOWNLOAD_TOURNAMENT_SIZE);
+                      sizeof(WbtDownloadData));
         GameData_StartSaveBlock(gameData, block);
         wk->saveFlags |= T_DOWNLOAD_SAVE_FLAG_SAVING;
     }
@@ -270,7 +264,7 @@ static void TDownloadSave_CopyToSlot(TDownloadWork *wk) {
     int i;
     int count;
 
-    MIi_CpuCopy32(wk->receivedData[wk->copySrc], wk->savedData[wk->copyDest], T_DOWNLOAD_TOURNAMENT_SIZE);
+    MIi_CpuCopy32(wk->receivedData[wk->copySrc], wk->savedData[wk->copyDest], sizeof(WbtDownloadData));
     wk->saveFlags |= T_DOWNLOAD_SAVE_FLAG_SLOT(wk->copyDest);
     count = 0;
     for (i = 0; i < T_DOWNLOAD_SAVE_SLOTS; i++) {
@@ -291,33 +285,34 @@ static BOOL TDownloadSave_IsCaught(TDownloadWork *wk, int species) {
 
 static inline BOOL TDownloadSave_IsKindUsable(u32 kind) {
     switch (kind) {
-    case T_DOWNLOAD_KIND_WHITE2:
+    case WBT_DOWNLOAD_KIND_WHITE2:
 #ifdef WHITE2
         return TRUE;
 #else
         return FALSE;
 #endif
-    case T_DOWNLOAD_KIND_BLACK2:
+    case WBT_DOWNLOAD_KIND_BLACK2:
 #ifdef BLACK2
         return TRUE;
 #else
         return FALSE;
 #endif
-    case T_DOWNLOAD_KIND_BOTH:
+    case WBT_DOWNLOAD_KIND_BOTH:
         return TRUE;
     }
     return FALSE;
 }
 
-static inline BOOL TDownloadSave_IsCRCValid(TDownloadTournament *data) {
-    if (getCRC16(data, T_DOWNLOAD_TOURNAMENT_SIZE - 4) == data->crc) {
+static inline BOOL TDownloadSave_IsCRCValid(WbtDownloadData *data) {
+    if (getCRC16(data, offsetof(WbtDownloadData, crc)) == data->crc) {
         return TRUE;
     }
     return FALSE;
 }
 
-static inline BOOL TDownloadSave_IsValid(TDownloadTournament *data) {
-    if (data->id != 0 && TDownloadSave_IsKindUsable(data->kind) && data->state == 2 && TDownloadSave_IsCRCValid(data)) {
+static inline BOOL TDownloadSave_IsValid(WbtDownloadData *data) {
+    if (data->id != 0 && TDownloadSave_IsKindUsable(data->kind) && data->state == WBT_DOWNLOAD_STATE_VALID &&
+        TDownloadSave_IsCRCValid(data)) {
         return TRUE;
     }
     return FALSE;
@@ -326,14 +321,14 @@ static inline BOOL TDownloadSave_IsValid(TDownloadTournament *data) {
 static int TDownloadSave_LoadReceived(TDownloadWork *wk) {
     int i;
     int count = 0;
-    TDownloadTournament *data;
+    WbtDownloadData *data;
 
     for (i = 0; i < T_DOWNLOAD_RECEIVED_MAX; i++) {
-        data = (TDownloadTournament *)wk->param->downloadBuffer + i;
+        data = (WbtDownloadData *)wk->param->downloadBuffer + i;
         if (TDownloadSave_IsValid(data) == TRUE) {
             wk->receivedData[count] =
-                GFL_HeapAllocate(HEAPID_TAIL(wk->heapId), T_DOWNLOAD_TOURNAMENT_SIZE, TRUE, "t_download_save.c", 695);
-            MIi_CpuCopy32(data, wk->receivedData[count], T_DOWNLOAD_TOURNAMENT_SIZE);
+                GFL_HeapAllocate(HEAPID_TAIL(wk->heapId), sizeof(WbtDownloadData), TRUE, "t_download_save.c", 695);
+            MIi_CpuCopy32(data, wk->receivedData[count], sizeof(WbtDownloadData));
             count++;
         }
     }

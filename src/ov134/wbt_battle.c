@@ -74,7 +74,8 @@ static const u16 sTrainerLines[78][2] = {
 
 static BOOL WbtBattle_IsDownloadedPokemonUsed(const WbtDownloadedPokemon *pkm);
 static void WbtBattle_MakePartyPkm(PartyPkm *pkm, const WbtDownloadedPokemon *src, HeapID heapId);
-static void WbtBattle_MakeDownloadedParty(PokeParty *party, WbtDownload *download, u32 round, u32 count, HeapID heapId);
+static void WbtBattle_MakeDownloadedParty(PokeParty *party, WbtDownloadData *download, u32 round, u32 count,
+                                          HeapID heapId);
 static int WbtBattle_GetRivalTrainerId(GameSystem *gsys);
 static void WbtBattle_MakeTournamentPokemon(BSubwayPokemon *dest, u32 tournament, WbtEntrant *entrant, u8 count,
                                             HeapID heapId);
@@ -271,17 +272,17 @@ static void WbtBattle_MakePartyPkm(PartyPkm *pkm, const WbtDownloadedPokemon *sr
     PokeParty_RecalcStats(pkm);
 }
 
-static inline WbtDownloadedPokemon *WbtDownload_GetPokemon(WbtDownload *download, u8 round, u8 index) {
+static inline WbtDownloadedPokemon *WbtDownload_GetPokemon(WbtDownloadData *download, u8 round, u8 index) {
     return &download->trainers[round].pokemon[index];
 }
 
 // Makes a party of the Pokémon of a downloaded tournament's Trainer, in a random order
-static void WbtBattle_MakeDownloadedParty(PokeParty *party, WbtDownload *download, u32 round, u32 count,
+static void WbtBattle_MakeDownloadedParty(PokeParty *party, WbtDownloadData *download, u32 round, u32 count,
                                           HeapID heapId) {
     WbtDownloadedPokemon *used[6];
     int i;
     int usedCount = 0;
-    int limit = download->tournament.maxCount;
+    int limit = download->rules.maxCount;
     PartyPkm *pkm;
 
     MI_CpuClear32(used, sizeof(used));
@@ -445,7 +446,7 @@ BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
     WbtBattle_LoadOpponentLine(sys, WBT_TRAINER_LINE_VICTORY, sys->trainerWinMsg);
     BtlSetup_SetLines(setup, sys->trainerLoseMsg, sys->trainerWinMsg);
     WbtBattle_GetBattleMusic(sys, &setup->fieldSituation.bgm, &setup->fieldSituation.winBgm);
-    if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_DOWNLOADED && sys->download.tournament.isWcs == TRUE) {
+    if (WbtSystem_GetTournament(sys) == WBT_TOURNAMENT_DOWNLOADED && sys->download.rules.isWcs == TRUE) {
         setup->fieldSituation.env.bgType = 0x12;
         setup->fieldSituation.env.terrain = 0xe;
     } else {
@@ -571,7 +572,7 @@ static void WbtBattle_GetBattleMusic(WbtSystem *sys, u16 *bgm, u16 *winBgm) {
     u32 kind = WbtEntrant_GetKind(opponent);
     WbtTrainer trainer;
 
-    if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED && sys->download.tournament.isWcs != 0) {
+    if (sys->tournament == WBT_TOURNAMENT_DOWNLOADED && sys->download.rules.isWcs != 0) {
         *bgm = SEQ_BGM_VS_WCS;
         *winBgm = SEQ_BGM_WIN5;
         return;

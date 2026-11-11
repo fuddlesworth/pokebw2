@@ -13,11 +13,11 @@ int TDownloadSave_LoadSaved(TDownloadWork *wk);
 void TDownloadSave_FreeSaved(TDownloadWork *wk);
 int TDownloadSave_LoadDownloaded(TDownloadWork *wk);
 // Loads the string of a tournament: its name (0), its author (1) or its text (2)
-void TDownloadSave_LoadString(TDownloadWork *wk, const TDownloadTournament *data, int kind, StrBuf *strbuf);
+void TDownloadSave_LoadString(TDownloadWork *wk, const WbtDownloadData *data, int kind, StrBuf *strbuf);
 // How many species (0), items (1) or moves (2) the tournament has that can be listed
-int TDownloadSave_CountEntries(TDownloadWork *wk, const TDownloadTournament *data, int kind);
+int TDownloadSave_CountEntries(TDownloadWork *wk, const WbtDownloadData *data, int kind);
 // The number of one of those, counting from 1
-u32 TDownloadSave_GetEntry(TDownloadWork *wk, const TDownloadTournament *data, int kind, int number);
+u32 TDownloadSave_GetEntry(TDownloadWork *wk, const WbtDownloadData *data, int kind, int number);
 void TDownloadSave_StartSave(TDownloadWork *wk, int src, int dest);
 BOOL TDownloadSave_UpdateSave(TDownloadWork *wk);
 void TDownloadSave_CreateWaitIcon(TDownloadWork *wk);

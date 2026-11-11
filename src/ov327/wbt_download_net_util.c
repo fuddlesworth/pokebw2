@@ -24,6 +24,7 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "nnsys/g2d.h"
+#include "save/extra_block_savedata.h"
 #include "system/app_keycursor.h"
 #include "system/app_printsys_common.h"
 #include "system/bmp_winframe.h"
@@ -33,6 +34,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include <stddef.h>
 
 // The process that downloads the tournaments: it shows messages over the animated background of the Dream World
 // account screens while overlay 196's NetCommonDownload receives the file, then checks the file. The name is the ROM's
@@ -42,9 +44,6 @@
 #define WBT_DOWNLOAD_TOURNAMENT_COUNT 12
 #define WBT_DOWNLOAD_FILE_SIZE 0xd8f4
 #define WBT_DOWNLOAD_BUFFER_SIZE 0xe000
-
-// The version value accepted in a received tournament.
-#define WBT_DOWNLOAD_TOURNAMENT_VERSION 2
 
 // Selects the frame characters loaded for main BG 1 or BG 2.
 enum {
@@ -176,18 +175,8 @@ typedef struct {
     WbtDownloadMessage *message;
 } WbtDownloadNetWork;
 
-// A tournament of the file: it is valid if it has a name, a kind for this version and its checksum
 typedef struct {
-    u32 kind;
-    u8 unk4[3];
-    u8 version;
-    u16 name;
-    u8 data[0x1206];
-    u32 checksum;
-} WbtDownloadTournament;
-
-typedef struct {
-    WbtDownloadTournament tournaments[WBT_DOWNLOAD_TOURNAMENT_COUNT];
+    WbtDownloadData tournaments[WBT_DOWNLOAD_TOURNAMENT_COUNT];
     u32 checksum;
 } WbtDownloadFile;
 
@@ -638,13 +627,6 @@ static void WbtDownloadNet_FirstStep(WbtDownloadStack *stack, u32 *state, void *
     }
 }
 
-// The versions a tournament is for
-enum {
-    WBT_DOWNLOAD_KIND_WHITE2,
-    WBT_DOWNLOAD_KIND_BLACK2,
-    WBT_DOWNLOAD_KIND_BOTH,
-};
-
 #ifdef BLACK2
 #define WBT_DOWNLOAD_IS_BLACK2 TRUE
 #define WBT_DOWNLOAD_IS_WHITE2 FALSE
@@ -654,7 +636,7 @@ enum {
 #endif
 
 // Whether a tournament of this kind is for this version
-static inline BOOL WbtDownloadTournament_IsForThisVersion(u32 kind) {
+static inline BOOL WbtDownloadData_IsForThisVersion(u32 kind) {
     switch (kind) {
     case WBT_DOWNLOAD_KIND_WHITE2:
         return WBT_DOWNLOAD_IS_WHITE2;
@@ -667,16 +649,16 @@ static inline BOOL WbtDownloadTournament_IsForThisVersion(u32 kind) {
     }
 }
 
-static inline BOOL WbtDownloadTournament_IsChecksumValid(const WbtDownloadTournament *tournament) {
-    if (tournament->checksum == getCRC16(tournament, sizeof(WbtDownloadTournament) - sizeof(u32))) {
+static inline BOOL WbtDownloadData_IsChecksumValid(const WbtDownloadData *tournament) {
+    if (tournament->crc == getCRC16(tournament, offsetof(WbtDownloadData, crc))) {
         return TRUE;
     }
     return FALSE;
 }
 
-static inline BOOL WbtDownloadTournament_IsValid(const WbtDownloadTournament *tournament) {
-    if (tournament->name != 0 && WbtDownloadTournament_IsForThisVersion(tournament->kind) &&
-        tournament->version == WBT_DOWNLOAD_TOURNAMENT_VERSION && WbtDownloadTournament_IsChecksumValid(tournament)) {
+static inline BOOL WbtDownloadData_IsValid(const WbtDownloadData *tournament) {
+    if (tournament->id != 0 && WbtDownloadData_IsForThisVersion(tournament->kind) &&
+        tournament->state == WBT_DOWNLOAD_STATE_VALID && WbtDownloadData_IsChecksumValid(tournament)) {
         return TRUE;
     }
     return FALSE;
@@ -725,7 +707,7 @@ static void WbtDownloadNet_DownloadStep(WbtDownloadStack *stack, u32 *state, voi
             if (fileValid) {
                 validCount = 0;
                 for (i = 0; i < WBT_DOWNLOAD_TOURNAMENT_COUNT; i++) {
-                    if (WbtDownloadTournament_IsValid(&file->tournaments[i])) {
+                    if (WbtDownloadData_IsValid(&file->tournaments[i])) {
                         validCount++;
                     }
                 }
