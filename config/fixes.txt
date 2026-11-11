@@ -1,5 +1,5 @@
 # Fixes to dsd's analysis, applied by tools/decomp/config_fixes.py
-# module address(b2_us) action [argument]
+# module address(b2_us) action [argument]; an action@version is that version's alone, at its own address
 . 0x02004f7c add_data LtdModuleParams
 . 0x02004f7c link_time_const SDK_LTDAUTOLOAD_LIST
 . 0x02004f80 link_time_const SDK_LTDAUTOLOAD_LIST_END
@@ -3138,54 +3138,102 @@ overlays/ov194 0x021c71e4 remove_reloc
 overlays/ov194 0x021c7200 remove_reloc
 overlays/ov194 0x021c7215 remove_symbol
 overlays/ov194 0x021c7240 remove_reloc
+overlays/ov194 0x021c724d remove_symbol@w2_us
 overlays/ov194 0x021c7268 remove_reloc
 overlays/ov194 0x021c7275 remove_symbol
+overlays/ov194 0x021c72ad remove_symbol@w2_us
 overlays/ov194 0x021c72c1 remove_symbol
+overlays/ov194 0x021c72f9 remove_symbol@w2_us
 overlays/ov194 0x021c730d remove_symbol
+overlays/ov194 0x021c7345 remove_symbol@w2_us
 overlays/ov194 0x021c73dd remove_symbol
+overlays/ov194 0x021c7415 remove_symbol@w2_us
 overlays/ov194 0x021c7499 remove_symbol
+overlays/ov194 0x021c74d1 remove_symbol@w2_us
 overlays/ov194 0x021c7699 remove_symbol
+overlays/ov194 0x021c76d1 remove_symbol@w2_us
 overlays/ov194 0x021c76d9 remove_symbol
+overlays/ov194 0x021c7711 remove_symbol@w2_us
 overlays/ov194 0x021c77c5 remove_symbol
+overlays/ov194 0x021c77fd remove_symbol@w2_us
 overlays/ov194 0x021c7801 remove_symbol
+overlays/ov194 0x021c7839 remove_symbol@w2_us
 overlays/ov194 0x021c783d remove_symbol
 overlays/ov194 0x021c784d remove_symbol
+overlays/ov194 0x021c7875 remove_symbol@w2_us
+overlays/ov194 0x021c7885 remove_symbol@w2_us
 overlays/ov194 0x021c79c5 remove_symbol
+overlays/ov194 0x021c79fd remove_symbol@w2_us
 overlays/ov194 0x021c7a05 remove_symbol
+overlays/ov194 0x021c7a3d remove_symbol@w2_us
 overlays/ov194 0x021c7ad1 remove_symbol
+overlays/ov194 0x021c7b09 remove_symbol@w2_us
 overlays/ov194 0x021c7b39 remove_symbol
+overlays/ov194 0x021c7b71 remove_symbol@w2_us
 overlays/ov194 0x021c7bc9 remove_symbol
+overlays/ov194 0x021c7c01 remove_symbol@w2_us
 overlays/ov194 0x021c7c51 remove_symbol
+overlays/ov194 0x021c7c89 remove_symbol@w2_us
 overlays/ov194 0x021c7c9d remove_symbol
 overlays/ov194 0x021c7cd5 remove_symbol
+overlays/ov194 0x021c7cd5 remove_symbol@w2_us
 overlays/ov194 0x021c7d0d remove_symbol
+overlays/ov194 0x021c7d0d remove_symbol@w2_us
+overlays/ov194 0x021c7d45 remove_symbol@w2_us
 overlays/ov194 0x021c7ddd remove_symbol
+overlays/ov194 0x021c7e15 remove_symbol@w2_us
 overlays/ov194 0x021c7e1d remove_symbol
+overlays/ov194 0x021c7e55 remove_symbol@w2_us
 overlays/ov194 0x021c7fb1 remove_symbol
+overlays/ov194 0x021c7fe9 remove_symbol@w2_us
 overlays/ov194 0x021c8b64 remove_symbol
+overlays/ov194 0x021c8ba8 remove_symbol@w2_us
 overlays/ov194 0x021c8cd1 remove_symbol
+overlays/ov194 0x021c8d09 remove_symbol@w2_us
 overlays/ov194 0x021c8e85 remove_symbol
+overlays/ov194 0x021c8ebd remove_symbol@w2_us
 overlays/ov194 0x021c8eed remove_symbol
+overlays/ov194 0x021c8f25 remove_symbol@w2_us
 overlays/ov194 0x021c91d1 remove_symbol
+overlays/ov194 0x021c9209 remove_symbol@w2_us
 overlays/ov194 0x021c930d remove_symbol
+overlays/ov194 0x021c9341 remove_symbol@w2_us
 overlays/ov194 0x021c93e9 remove_symbol
+overlays/ov194 0x021c941d remove_symbol@w2_us
 overlays/ov194 0x021c9625 remove_symbol
+overlays/ov194 0x021c9659 remove_symbol@w2_us
 overlays/ov194 0x021c98f9 remove_symbol
+overlays/ov194 0x021c992d remove_symbol@w2_us
 overlays/ov194 0x021c9a41 remove_symbol
+overlays/ov194 0x021c9a75 remove_symbol@w2_us
 overlays/ov194 0x021c9a7d remove_symbol
 overlays/ov194 0x021c9ab1 remove_symbol
+overlays/ov194 0x021c9ab1 remove_symbol@w2_us
+overlays/ov194 0x021c9ae5 remove_symbol@w2_us
 overlays/ov194 0x021c9b01 remove_symbol
+overlays/ov194 0x021c9b35 remove_symbol@w2_us
 overlays/ov194 0x021c9b39 remove_symbol
+overlays/ov194 0x021c9b6d remove_symbol@w2_us
 overlays/ov194 0x021c9b89 remove_symbol
+overlays/ov194 0x021c9bbd remove_symbol@w2_us
 overlays/ov194 0x021c9bed remove_symbol
+overlays/ov194 0x021c9c21 remove_symbol@w2_us
 overlays/ov194 0x021c9c25 remove_symbol
+overlays/ov194 0x021c9c59 remove_symbol@w2_us
 overlays/ov194 0x021c9c5d remove_symbol
+overlays/ov194 0x021c9c91 remove_symbol@w2_us
 overlays/ov194 0x021c9c95 remove_symbol
 overlays/ov194 0x021c9cc9 remove_symbol
+overlays/ov194 0x021c9cc9 remove_symbol@w2_us
+overlays/ov194 0x021c9cfd remove_symbol@w2_us
 overlays/ov194 0x021c9d25 remove_symbol
+overlays/ov194 0x021c9d59 remove_symbol@w2_us
 overlays/ov194 0x021c9eb8 remove_symbol
+overlays/ov194 0x021c9eec remove_symbol@w2_us
 overlays/ov194 0x021cab34 remove_symbol
+overlays/ov194 0x021cab68 remove_symbol@w2_us
 overlays/ov194 0x021cc990 remove_symbol
+overlays/ov194 0x021cc9c4 remove_symbol@w2_us
 overlays/ov194 0x021ce181 remove_symbol
 overlays/ov194 0x021ce201 remove_symbol
 overlays/ov194 0x021ce299 remove_symbol
@@ -3194,11 +3242,17 @@ overlays/ov194 0x021ce33d remove_symbol
 overlays/ov194 0x021ce3c1 remove_symbol
 overlays/ov194 0x021ce465 remove_symbol
 overlays/ov194 0x021ce568 remove_symbol
+overlays/ov194 0x021ce59c remove_symbol@w2_us
 overlays/ov194 0x021cf1c8 remove_symbol
+overlays/ov194 0x021cf1fc remove_symbol@w2_us
 overlays/ov194 0x021d0001 remove_symbol
+overlays/ov194 0x021d0001 remove_symbol@w2_us
 overlays/ov194 0x021d0217 remove_symbol
+overlays/ov194 0x021d0217 remove_symbol@w2_us
 overlays/ov194 0x021d021a remove_symbol
+overlays/ov194 0x021d021a remove_symbol@w2_us
 overlays/ov194 0x021d021c remove_symbol
+overlays/ov194 0x021d021c remove_symbol@w2_us
 overlays/ov195 0x021b3bde reloc_module overlay(139)
 overlays/ov195 0x021b3cec reloc_module overlay(139)
 overlays/ov195 0x021b3cf6 reloc_module overlay(139)

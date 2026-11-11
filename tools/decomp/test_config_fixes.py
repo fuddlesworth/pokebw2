@@ -361,6 +361,48 @@ class OrphanRelocationTests(ConfigFixFixture):
             "outside source module")
 
 
+class OneVersionTests(ConfigFixFixture):
+    """--only fixes one version at its own address, records action@version and replays only there."""
+
+    def symbols(self, version):
+        return fixes.config_dir(version, MODULE) / "symbols.txt"
+
+    def setUp(self):
+        super().setUp()
+        self.symbols("b2_us").write_text("data_b kind:data(any) addr:0x00005021 ambiguous\n")
+        self.symbols("w2_us").write_text("data_w kind:data(any) addr:0x00006025 ambiguous\n"
+                                         "kept kind:data(any) addr:0x00006030\n")
+
+    def test_only_removes_in_that_version_without_mapping_and_replays(self):
+        self.cli("--only", "w2_us", "remove-symbol", MODULE, "0x6025")
+        self.assertEqual(self.mapper.calls, [])
+        self.assertEqual(self.symbols("w2_us").read_text(), "kept kind:data(any) addr:0x00006030\n")
+        self.assertEqual(self.symbols("b2_us").read_text(), "data_b kind:data(any) addr:0x00005021 ambiguous\n")
+        self.assertEqual(fixes.load_fixes(), [(MODULE, 0x6025, "remove_symbol@w2_us", "")])
+        self.assertIn(f"{MODULE} 0x00006025 remove_symbol@w2_us", self.fix_path.read_text())
+        self.symbols("w2_us").write_text("data_w kind:data(any) addr:0x00006025 ambiguous\n"
+                                         "kept kind:data(any) addr:0x00006030\n")
+        self.assertIn("applied 1 fixes", self.cli("apply"))
+        self.assertEqual(self.symbols("w2_us").read_text(), "kept kind:data(any) addr:0x00006030\n")
+        self.assertEqual(self.mapper.calls, [])
+
+    def test_only_and_everywhere_records_of_one_address_are_kept_apart(self):
+        self.cli("--only", "w2_us", "remove-symbol", MODULE, "0x6025")
+        self.mapper.addresses[(MODULE, 0x5021, "w2_us")] = 0x6021
+        self.cli("remove-symbol", MODULE, "0x5021")
+        self.assertEqual(sorted(fixes.load_fixes()), [(MODULE, 0x5021, "remove_symbol", ""),
+                                                      (MODULE, 0x6025, "remove_symbol@w2_us", "")])
+
+    def test_only_rejects_remove_orphan_reloc(self):
+        self.assert_rejected_without_changes(
+            lambda: self.cli("--only", "w2_us", "remove-orphan-reloc", MODULE, "--source-module", ".", hex(MAPPED)),
+            "--only")
+
+    def test_only_rejects_an_unknown_version(self):
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            self.cli("--only", "w2_jp", "remove-symbol", MODULE, "0x6025")
+
+
 class RelocChainReplayTests(ConfigFixFixture):
     """A later fix at one address can replace the relocation an earlier fix changed, so a replay must skip it."""
 

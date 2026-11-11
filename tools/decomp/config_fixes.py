@@ -27,6 +27,12 @@ after importing names from swan.
     config_fixes.py remove-file ltd_autoload_0 lib/twl/src/spi/pm_twl.c 0x027693dc  # an entry another file holds
     config_fixes.py split-section-prefix . .rodata .exceptix 0x30 0x0208ee28  # recover a compiler section
     config_fixes.py apply
+
+`--only VERSION`, before the command, fixes one version alone at that version's own address: a symbol or relocation
+that dsd made in that version only, with no counterpart in the primary version to map from. It is recorded as
+ACTION@VERSION with that version's address, and replayed in that version only:
+
+    config_fixes.py --only w2_us remove-symbol overlays/ov194 0x021c724d     # White 2's own invented symbol
 """
 import argparse
 import re
@@ -43,7 +49,7 @@ FIXES = ROOT / "config" / "fixes.txt"
 MAP = ROOT / "build" / "version_map.tsv"
 HEADER = (
     "# Fixes to dsd's analysis, applied by tools/decomp/config_fixes.py\n"
-    "# module address(b2_us) action [argument]\n"
+    "# module address(b2_us) action [argument]; an action@version is that version's alone, at its own address\n"
 )
 RELOC_RE = re.compile(r"^from:(0x[0-9a-f]+) ")
 SECTION_ACTIONS = ("section_start", "section_end", "remove_section", "add_section")
@@ -457,6 +463,14 @@ def orphan_reloc_plan(mapper: AddressMapper, module: str, addr: int, source_modu
 
 
 def apply_everywhere(mapper: AddressMapper, module: str, addr: int, action: str, argument: str):
+    if "@" in action:
+        # A fix of one version alone, recorded at that version's address: nothing to map
+        action, version = action.split("@")
+        change = plan_fix(version, module, addr, action, argument)
+        if change is not None:
+            path, text = change
+            path.write_text(text)
+        return
     if action == "remove_orphan_reloc":
         plan = orphan_reloc_plan(mapper, module, addr, argument)
         changes = [plan_fix(version, module, mapped, "remove_reloc", "")
@@ -493,6 +507,8 @@ def apply_everywhere(mapper: AddressMapper, module: str, addr: int, action: str,
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--only", choices=[PRIMARY, *OTHERS],
+                        help="fix this version alone, at its own address (a symbol or relocation only it has)")
     commands = parser.add_subparsers(dest="command", required=True)
     command = commands.add_parser("reloc-module", help="set the destination module of relocations")
     command.add_argument("module", help="module path in the config, e.g. overlays/ov035")
@@ -605,12 +621,18 @@ def main():
                 "add_section": f"{getattr(args, 'source', '')}:{getattr(args, 'section', '')}:{getattr(args, 'size', '')}"}
     argument["split_section_prefix"] = f"{getattr(args, 'section', '')}:{getattr(args, 'target_section', '')}:{getattr(args, 'size', '')}"
     argument = argument.get(action, "")
+    if args.only and action == "remove_orphan_reloc":
+        sys.exit("--only: remove-orphan-reloc maps its source through every version; use remove-reloc for one version")
     if action == "remove_orphan_reloc":
         # A command may name several sources. Validate all of them before changing any relocation file or fix record.
         for address in args.addresses:
             orphan_reloc_plan(mapper, args.module, int(address, 16), argument)
-    if action == "remove_file" and f"{argument}:" not in (config_dir(PRIMARY, args.module) / "delinks.txt").read_text().splitlines():
-        sys.exit(f"{PRIMARY} {args.module}: {argument} is not registered")
+    checked = args.only or PRIMARY
+    if action == "remove_file" and f"{argument}:" not in (config_dir(checked, args.module) / "delinks.txt").read_text().splitlines():
+        sys.exit(f"{checked} {args.module}: {argument} is not registered")
+    # A fix of one version alone is recorded as action@version; the records below pair it with that version's others
+    suffix = f"@{args.only}" if args.only else ""
+    base, action = action, action + suffix
     for address in args.addresses:
         addr = int(address, 16)
         apply_everywhere(mapper, args.module, addr, action, argument)
@@ -618,14 +640,15 @@ def main():
         # file's section boundary again replaces its earlier record: fixes replay in address order, so an older
         # record of the same boundary at a higher address would undo a move down.
         fixes = [f for f in fixes if (f[0], f[1], f[2]) != (args.module, addr, action)
-                 and not (action in ("section_start", "section_end") and (f[0], f[2], f[3]) == (args.module, action, argument))
+                 and not (base in ("section_start", "section_end") and (f[0], f[2], f[3]) == (args.module, action, argument))
                  ] + [(args.module, addr, action, argument)]
         # Removing a label that a recorded fix added drops both records: dsd never makes such a label itself
-        if action == "remove_label" and (args.module, addr, "add_label", argument) in fixes:
-            fixes = [f for f in fixes if f not in ((args.module, addr, "add_label", argument), (args.module, addr, action, argument))]
+        added = (args.module, addr, "add_label" + suffix, argument)
+        if base == "remove_label" and added in fixes:
+            fixes = [f for f in fixes if f not in (added, (args.module, addr, action, argument))]
         # Removing a file's entry drops the recorded fixes of its sections, which would name an entry that is gone
-        if action == "remove_file":
-            fixes = [f for f in fixes if not (f[0] == args.module and f[2] in SECTION_ACTIONS
+        if base == "remove_file":
+            fixes = [f for f in fixes if not (f[0] == args.module and f[2] in [a + suffix for a in SECTION_ACTIONS]
                                               and f[3].startswith(f"{argument}:"))]
         print(f"{action} {args.module} {addr:#010x} {argument}".rstrip())
     save_fixes(fixes)

@@ -148,6 +148,19 @@ routine of a library written in assembly, whose `.s` file defines both (`docs/ma
 adds an object that nothing references, such as a global constant that the compiler folds into the code but still emits,
 so that the object before it does not seem to run on over it.
 
+A fix is given at its Black 2 address and placed in White 2 through the version map. dsd's guesses differ between the
+versions, though: an `ambiguous` symbol that White 2 alone has, at an offset where Black 2 has none, cannot be mapped
+from Black 2. `--only VERSION`, before the command, fixes that version alone at its own address and records the fix as
+`ACTION@VERSION`, which `apply` replays in that version only:
+
+```sh
+.venv/bin/python tools/decomp/config_fixes.py --only w2_us remove-symbol overlays/ov194 0x021c724d
+```
+
+Removing an ambiguous symbol can break a link elsewhere: another module's ambiguous relocation may have resolved to it
+only because the addresses coincide (overlay 12's script command table pointed at symbols inside overlay 194's heap
+instead of overlay 36's handlers). The build then names the relocation, and `reloc-module` gives it its real overlay.
+
 Use `remove-orphan-reloc` when a relocation is filed in a module whose sections do not contain its source address.
 Give the actual source module explicitly; `.` means ARM9 main. The address is the relocation's **source** in Black 2,
 not its destination:
