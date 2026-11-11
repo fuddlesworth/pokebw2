@@ -34,25 +34,25 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/vm.h"
-#include "text/system/scrcmd_bsubway_wbt_party.h"
+#include "text/system/world_tournament_party.h"
 
 // clang-format off
 const WbtTournamentInfo PWT_TOURNAMENT_INFO[15] = {
-    { ScrcmdBsubwayWbtParty_Text_ChampionsTournament, 17, 2, 1, 2, { 0, 0, 0, 0 } },
-    { ScrcmdBsubwayWbtParty_Text_TypeExpertTournament, 0, 2, 2, 2, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_DownloadTournament, 29, 1, 4, 0, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_DriftveilTournament, 18, 1, 0, 0, { 1, 1, 2, 2 } },
-    { ScrcmdBsubwayWbtParty_Text_UnovaLeadersTournament, 19, 2, 0, 1, { 1, 1, 2, 2 } },
-    { ScrcmdBsubwayWbtParty_Text_KantoLeadersTournament, 20, 2, 1, 1, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_JohtoLeadersTournament, 21, 2, 1, 1, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_HoennLeadersTournament, 22, 2, 1, 1, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_SinnohLeadersTournament, 23, 2, 1, 1, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_WorldLeadersTournament, 24, 2, 1, 2, { 0, 0, 0, 0 } },
-    { ScrcmdBsubwayWbtParty_Text_DriftveilTournament, 18, 1, 0, 0, { 1, 0, 0, 0 } },
-    { ScrcmdBsubwayWbtParty_Text_RentalTournament, 25, 1, 1, 0, { 1, 1, 2, 2 } },
-    { ScrcmdBsubwayWbtParty_Text_RentalMasterTournament, 26, 2, 1, 2, { 2, 2, 3, 3 } },
-    { ScrcmdBsubwayWbtParty_Text_MixTournament, 27, 1, 0, 0, { 1, 1, 2, 2 } },
-    { ScrcmdBsubwayWbtParty_Text_MixMasterTournament, 28, 2, 1, 2, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_ChampionsTournament, 17, 2, 1, 2, { 0, 0, 0, 0 } },
+    { WorldTournamentParty_Text_TypeExpertTournament, 0, 2, 2, 2, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_DownloadTournament, 29, 1, 4, 0, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_DriftveilTournament, 18, 1, 0, 0, { 1, 1, 2, 2 } },
+    { WorldTournamentParty_Text_UnovaLeadersTournament, 19, 2, 0, 1, { 1, 1, 2, 2 } },
+    { WorldTournamentParty_Text_KantoLeadersTournament, 20, 2, 1, 1, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_JohtoLeadersTournament, 21, 2, 1, 1, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_HoennLeadersTournament, 22, 2, 1, 1, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_SinnohLeadersTournament, 23, 2, 1, 1, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_WorldLeadersTournament, 24, 2, 1, 2, { 0, 0, 0, 0 } },
+    { WorldTournamentParty_Text_DriftveilTournament, 18, 1, 0, 0, { 1, 0, 0, 0 } },
+    { WorldTournamentParty_Text_RentalTournament, 25, 1, 1, 0, { 1, 1, 2, 2 } },
+    { WorldTournamentParty_Text_RentalMasterTournament, 26, 2, 1, 2, { 2, 2, 3, 3 } },
+    { WorldTournamentParty_Text_MixTournament, 27, 1, 0, 0, { 1, 1, 2, 2 } },
+    { WorldTournamentParty_Text_MixMasterTournament, 28, 2, 1, 2, { 2, 2, 3, 3 } },
 };
 
 // clang-format on
@@ -126,7 +126,7 @@ const WbtTournamentInfo *GetPWTTournamentInfo(s32 tournament) {
 
 void LoadPWTTournamentTypeText(HeapID heapId, u32 tournament, StrBuf *strbuf) {
     u16 name = GetPWTTournamentInfo(tournament)->name;
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, heapId);
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_PARTY, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, name, strbuf);

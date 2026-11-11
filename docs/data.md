@@ -1304,7 +1304,7 @@ and `join_avenue.schema.json` describes every table and column, some from the co
 
 The Xtransceiver's calls are in `res/local_tvt/`: `calls.json` (`a/2/4/0`, `ARCID_LOCAL_TVT_CALL_DATA`) is the calls
 the player can make, each a person's after a count of calls with them (`local_tvt_calldata.c`), with the background
-and zone of their face and what they say, messages of `res/text/system/local_tvt_talk.txt` by ID; `scripts.json`
+and zone of their face and what they say, messages of `res/text/system/xtransceiver_call_talk.txt` by ID; `scripts.json`
 (`a/2/3/4`, `ARCID_LOCAL_TVT_SCRIPT`) is the calls the story makes (`local_tvt_scriptmode.c`), each its faces' persons
 and zones and its commands, which make a face talk, with a message of the script's own text file, wait or play a
 sound. `tools/data/local_tvt_data.py` packs both, the same in both versions, and `local_tvt.schema.json` describes

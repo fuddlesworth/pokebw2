@@ -16,7 +16,7 @@
 #include "nitro/os.h"
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
-#include "text/system/scrcmd_bsubway_wbt_party.h"
+#include "text/system/world_tournament_party.h"
 
 // The exclusion lists and their unused file marker.
 #define WBT_PARTY_FILTER_CAPACITY 12
@@ -335,9 +335,9 @@ void WbtParty_MakeRentalParty(WbtSystem *sys, u32 rentalMode, PlayerInfo *player
     WbtParty_MakeParty(sys, sys->initialParty, 41122, 20, 6, NULL);
     heapId = HEAPID_TAIL(sys->heapId);
     name = GFL_StrBufCreate(14, heapId);
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_PARTY, heapId);
     if (msgData != NULL) {
-        GFL_MsgDataLoadStrbuf(msgData, ScrcmdBsubwayWbtParty_Text_Empty, name);
+        GFL_MsgDataLoadStrbuf(msgData, WorldTournamentParty_Text_Empty, name);
         GFL_MsgDataFree(msgData);
     }
     for (i = 0; i < 6; i++) {

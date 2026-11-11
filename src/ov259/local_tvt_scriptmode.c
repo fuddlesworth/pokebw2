@@ -123,7 +123,8 @@ LocalTvtScriptMode *LocalTvtScriptMode_Create(HeapID heapId, GameSystem *gsys, G
     mode->arc = GFL_ArcSysCreateFileHandle(ARCID_LOCAL_TVT_SCRIPT, mode->heapId);
     LocalTvtScriptMode_LoadScript(mode);
     // Each script has a bank of its own
-    mode->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LOCAL_TVT_TALK + scriptId, mode->heapId);
+    mode->msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_XTRANSCEIVER_CALL_TALK + scriptId, mode->heapId);
     gender = getTrainerGender(GetGameDataPlayerInfo(gameData));
     callData = LocalTvtCallData_Create(gsys, gameData, heapId);
     MI_CpuFill8(setups, 0, sizeof(setups));

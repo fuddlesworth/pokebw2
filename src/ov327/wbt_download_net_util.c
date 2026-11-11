@@ -552,7 +552,8 @@ static BOOL WbtDownloadNet_Init(GameProc *proc, u32 *state, void *param, void *w
     wk->param = param;
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, HEAPID_WBT_DOWNLOAD_NET);
     wk->queue = PrintQueue_CreateDefault(HEAPID_WBT_DOWNLOAD_NET);
-    wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_DOWNLOAD, HEAPID_WBT_DOWNLOAD_NET);
+    wk->msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_DOWNLOAD, HEAPID_WBT_DOWNLOAD_NET);
     wk->wordSet = GFL_WordSetSystemCreateDefault(HEAPID_WBT_DOWNLOAD_NET);
     wk->graphic = WbtDownloadGraphic_Create(1, HEAPID_WBT_DOWNLOAD_NET);
     WbtDownloadNetBG_Create(&wk->bg, HEAPID_WBT_DOWNLOAD_NET);

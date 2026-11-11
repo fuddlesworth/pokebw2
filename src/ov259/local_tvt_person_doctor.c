@@ -154,7 +154,7 @@ static LocalTvtDoctor *LocalTvtDoctor_Create(GameData *gameData, HeapID heapId) 
     doctor->heapId = heapId;
     doctor->gameData = gameData;
     doctor->evolutionMsgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LOCAL_TVT_PERSON_DOCTOR, heapId);
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_XTRANSCEIVER_CALL_DOCTOR, heapId);
     doctor->pokedexMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10380, heapId);
     doctor->evolutionFile = loadEvolutionFile(heapId);
     return doctor;

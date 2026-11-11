@@ -71,7 +71,7 @@ static const u16 sMsgFiles[] = {
     TEXT_BANK_MOVE_LEARNING,
     TEXT_BANK_YES_NO,
     TEXT_BANK_BATTLE_SUBWAY_TRAINER_MESSAGES,
-    TEXT_BANK_WBT_TRAINER_MESSAGES,
+    TEXT_BANK_WORLD_TOURNAMENT_TRAINER_MESSAGES,
 };
 
 // The message files of the studio's movies

@@ -7,9 +7,9 @@ builds the two archives from them, which the build does.
 
 - calls.json (ARCID_LOCAL_TVT_CALL_DATA, a/2/4/0, one file of CALL_DATA_COUNT LocalTvtCallEntry): the calls the player
   can make, each a person's call after a count of calls with them (local_tvt_calldata.c), with where the person is
-  and the messages of TEXT_BANK_LOCAL_TVT_TALK it says, by ID.
+  and the messages of TEXT_BANK_XTRANSCEIVER_CALL_TALK it says, by ID.
 - scripts.json (ARCID_LOCAL_TVT_SCRIPT, a/2/3/4): the calls the story makes, script n being file n - 1 with its
-  messages in TEXT_BANK_LOCAL_TVT_TALK + n (local_tvt_scriptmode.c): the persons of its four faces and their zones,
+  messages in TEXT_BANK_XTRANSCEIVER_CALL_TALK + n (local_tvt_scriptmode.c): the persons of its four faces and their zones,
   and its commands, which the packer ends with SCRIPT_COMMAND_END.
 
 Zones are their ZONE_* constants and messages their IDs in their text files. Both versions have the same files.
@@ -55,7 +55,7 @@ def bank_messages(bank: int) -> list[str]:
 
 
 def talk_bank() -> int:
-    return constants()["TEXT_BANK_LOCAL_TVT_TALK"]
+    return constants()["TEXT_BANK_XTRANSCEIVER_CALL_TALK"]
 
 
 def message_number(messages: list[str], message: str, where: str) -> int:

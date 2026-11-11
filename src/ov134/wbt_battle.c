@@ -609,7 +609,7 @@ static void WbtBattle_LoadTrainerLine(StrBuf *strbuf, HeapID heapId, u32 tournam
     if (trainer >= 78) {
         trainer = 0;
     }
-    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_MESSAGES, heapId);
+    msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_TRAINER_MESSAGES, heapId);
     message = sTrainerLines[trainer][version] + index;
     GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
     GFL_MsgDataFree(msgData);
@@ -690,7 +690,7 @@ void WbtBattle_LoadOpponentLine(WbtSystem *sys, int index, StrBuf *strbuf) {
             GFL_StrBufLoadFixedString(strbuf, line, 0x4a);
         } else {
             MsgData *msgData =
-                GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_MESSAGES_2, heapId);
+                GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_TRAINER_MESSAGES_2, heapId);
 
             GFL_MsgDataLoadStrbuf(msgData, (u16)((set - 1) * WBT_TRAINER_LINE_COUNT + index), strbuf);
             GFL_MsgDataFree(msgData);

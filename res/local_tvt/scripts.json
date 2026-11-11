@@ -8,7 +8,7 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript01_Text_HiItsMomWhere"
+                    "message": "XtransceiverCallScript01_Text_HiItsMomWhere"
                 }
             ]
         },
@@ -19,12 +19,12 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript02_Text_UmHelloYesThats"
+                    "message": "XtransceiverCallScript02_Text_UmHelloYesThats"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript02_Text_AlsoImSureYoull"
+                    "message": "XtransceiverCallScript02_Text_AlsoImSureYoull"
                 }
             ]
         },
@@ -35,12 +35,12 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript03_Text_HelloOhYesThats"
+                    "message": "XtransceiverCallScript03_Text_HelloOhYesThats"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript03_Text_AlsoImSureYoull"
+                    "message": "XtransceiverCallScript03_Text_AlsoImSureYoull"
                 }
             ]
         },
@@ -51,7 +51,7 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript04_Text_HiItsMomWhere"
+                    "message": "XtransceiverCallScript04_Text_HiItsMomWhere"
                 }
             ]
         },
@@ -62,27 +62,27 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript05_Text_StrangeShipFlyingToward"
+                    "message": "XtransceiverCallScript05_Text_StrangeShipFlyingToward"
                 },
                 {
                     "command": "talk",
                     "face": 1,
-                    "message": "LocalTvtScript05_Text_SawTooImEn"
+                    "message": "XtransceiverCallScript05_Text_SawTooImEn"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript05_Text_CherenThatsTeamPlasmas"
+                    "message": "XtransceiverCallScript05_Text_CherenThatsTeamPlasmas"
                 },
                 {
                     "command": "talk",
                     "face": 1,
-                    "message": "LocalTvtScript05_Text_YesNoDoubtAbout"
+                    "message": "XtransceiverCallScript05_Text_YesNoDoubtAbout"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript05_Text_OkIllLeaveThings"
+                    "message": "XtransceiverCallScript05_Text_OkIllLeaveThings"
                 }
             ]
         },
@@ -93,37 +93,37 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript06_Text_HiThereImProfessor"
+                    "message": "XtransceiverCallScript06_Text_HiThereImProfessor"
                 },
                 {
                     "command": "talk",
                     "face": 3,
-                    "message": "LocalTvtScript06_Text_HiProfessorJuniperIts"
+                    "message": "XtransceiverCallScript06_Text_HiProfessorJuniperIts"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript06_Text_ThankGoingFarErrand"
+                    "message": "XtransceiverCallScript06_Text_ThankGoingFarErrand"
                 },
                 {
                     "command": "talk",
                     "face": 2,
-                    "message": "LocalTvtScript06_Text_ProfessorJuniperItsBeen"
+                    "message": "XtransceiverCallScript06_Text_ProfessorJuniperItsBeen"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript06_Text_OhCherenHavingBattles"
+                    "message": "XtransceiverCallScript06_Text_OhCherenHavingBattles"
                 },
                 {
                     "command": "talk",
                     "face": 3,
-                    "message": "LocalTvtScript06_Text_ItllFineCherensNew"
+                    "message": "XtransceiverCallScript06_Text_ItllFineCherensNew"
                 },
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript06_Text_ThatsRightBiancaOur"
+                    "message": "XtransceiverCallScript06_Text_ThatsRightBiancaOur"
                 }
             ]
         },
@@ -134,7 +134,7 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript07_Text_WhereUndellaTownGot"
+                    "message": "XtransceiverCallScript07_Text_WhereUndellaTownGot"
                 }
             ]
         },
@@ -145,7 +145,7 @@
                 {
                     "command": "talk",
                     "face": 0,
-                    "message": "LocalTvtScript08_Text_WhereCloseSeasideCave"
+                    "message": "XtransceiverCallScript08_Text_WhereCloseSeasideCave"
                 }
             ]
         }

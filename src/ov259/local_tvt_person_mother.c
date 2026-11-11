@@ -63,7 +63,7 @@ static LocalTvtMother *LocalTvtMother_Create(GameData *gameData, HeapID heapId) 
 
     mother->heapId = heapId;
     mother->gameData = gameData;
-    mother->placeMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_LOCAL_TVT_PERSON_MOTHER, heapId);
+    mother->placeMsgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_XTRANSCEIVER_CALL_MOTHER, heapId);
     return mother;
 }
 

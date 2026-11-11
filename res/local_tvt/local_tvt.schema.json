@@ -18,7 +18,7 @@
                     "background": { "enum": [ "zone", "background_0", "background_1" ], "description": "Behind their face: their zone's, by its battle background (LocalTvtCallData_GetZoneBackground), or a fixed one (CALL_BACKGROUND_*)" },
                     "zone": { "type": "string", "x-constant": "ZONE_", "description": "Where they are, whose weather picks the object of their face (LocalTvtCallData_GetZoneObject)" },
                     "listed": { "type": "boolean", "description": "LocalTvtCallData_IsListed" },
-                    "greeting_message": { "type": "string", "description": "What they say first, a message of res/text/system/local_tvt_talk.txt by ID" },
+                    "greeting_message": { "type": "string", "description": "What they say first, a message of res/text/system/xtransceiver_call_talk.txt by ID" },
                     "chat_message": { "type": "string", "description": "Then, of the same file" },
                     "bye_message": { "type": "string", "description": "At the end, of the same file" },
                     "extra_message": { "type": [ "string", "null" ], "description": "Another message, which some persons say, or null" },
@@ -28,7 +28,7 @@
         },
         "scripts": {
             "type": "array",
-            "description": "The story's calls: script n, from 1, is file n - 1, whose messages are those of TEXT_BANK_LOCAL_TVT_TALK + n, res/text/system/local_tvt_script_<n>.txt",
+            "description": "The story's calls: script n, from 1, is file n - 1, whose messages are those of TEXT_BANK_XTRANSCEIVER_CALL_TALK + n, res/text/system/local_tvt_script_<n>.txt",
             "items": {
                 "type": "object", "additionalProperties": false, "required": [ "persons", "zones", "commands" ],
                 "properties": {

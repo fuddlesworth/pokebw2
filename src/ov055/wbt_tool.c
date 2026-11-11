@@ -36,7 +36,8 @@ static void WbtTournament_LoadWinCounts(GameData *gameData, u16 *counts);
 static BOOL WbtTournament_IsOpenByCounts(GameData *gameData, u32 tournament, u16 *counts);
 
 void WbtTool_LoadTrainerName(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_NAMES, heapId);
+    MsgData *msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_TRAINER_NAMES, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
@@ -45,7 +46,8 @@ void WbtTool_LoadTrainerName(HeapID heapId, u32 message, StrBuf *strbuf) {
 }
 
 void WbtTool_LoadTrainerClassName(HeapID heapId, u32 message, StrBuf *strbuf) {
-    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WBT_TRAINER_CLASS_NAMES, heapId);
+    MsgData *msgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_TRAINER_CLASS_NAMES, heapId);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
@@ -98,7 +100,7 @@ static int WbtStyle_GetIndex(int style) {
 void WbtStyle_LoadName(int style, StrBuf *strbuf) {
     u16 message = sBattleStyles[WbtStyle_GetIndex(style)].name;
     MsgData *msgData =
-        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_SCRCMD_BSUBWAY_WBT_PARTY, HEAPID_FIELDMAP);
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_WORLD_TOURNAMENT_PARTY, HEAPID_FIELDMAP);
 
     if (msgData != NULL) {
         GFL_MsgDataLoadStrbuf(msgData, message, strbuf);
