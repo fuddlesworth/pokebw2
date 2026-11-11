@@ -401,7 +401,7 @@ static void Update(u16 count) {
         }
     }
     if (WH_GetLastError() == WH_ERRCODE_FATAL) {
-        GflNet_CallErrorStateFunc(0);
+        GFL_NetNotifyFatalError(0);
     }
     switch (state) {
     case WH_SYSSTATE_STOP:

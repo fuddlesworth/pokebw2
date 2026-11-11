@@ -221,7 +221,7 @@ BOOL CompatibleIrcSys_StartNet(CompatibleIrcSys *sys) {
             sys->state = START_SYNC_INIT;
         } else {
             init = sCompatibleIrcSysNetInit;
-            init.unk68.word = sys->unk40;
+            init.irTimeout.frames = sys->unk40;
             GFL_NetInit(&init, CompatibleIrcSys_NetInitDone, sys);
         }
         sys->state = START_WAIT;

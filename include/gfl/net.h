@@ -29,8 +29,9 @@ typedef struct {
     // games give with fewer parameters
     void *beaconFilter;
     // Called with the wireless library's error when it fails
-    void (*errorCallback)(NetHandle *handle, int a1, void *work);
-    void (*unk28)(NetHandle *handle, int a1, void *work);
+    void (*errorCallback)(NetHandle *handle, int error, void *work);
+    // Called when the wireless library's error is fatal (WH_ERRCODE_FATAL)
+    void (*fatalErrorCallback)(NetHandle *handle, int error, void *work);
     // Called once the network has ended, and when a child connects to the changeover's parent
     void (*endCallback)(void *work);
     void (*childConnectCallback)(void *work);
@@ -77,11 +78,12 @@ typedef struct {
     u8 changeTgid;
     // The high byte of the game's commands
     u8 gameCommandBase;
-    // Four bytes that the games give, which overlay 175 sets as one word
+    // The infrared link's timeout in frames (NetIrc_Init), which the games give as bytes and overlay 175 sets as one
+    // word
     union {
         u8 bytes[4];
-        u32 word;
-    } unk68;
+        u32 frames;
+    } irTimeout;
     // The parent's packet size in MP mode, 0 for the default
     u16 parentPacketSize;
     // A command base that machines of different gameCommandBase negotiate with, 0 for none
@@ -119,7 +121,7 @@ typedef BOOL (*GFLNetSendDoneFunc)(BOOL ok);
 
 typedef struct {
     // Prepares the device before its heap is made (the Wi-Fi library's start)
-    void (*prepare)(int a0, int a1);
+    void (*prepare)(int heapId, int unused);
     // Starts the device; the callback, which the wireless device calls when its helper ends, is NULL from the net
     BOOL (*init)(HeapID heapId, GFLNetSys *sys, BOOL (*callback)(BOOL success), void *work);
     BOOL (*start)(void (*callback)(BOOL ok));
@@ -142,7 +144,7 @@ typedef struct {
     // Start the wireless parent, the scan for parents and the child of a parent
     int (*startParent)(int a0, BOOL (*callback)(void));
     BOOL (*startScan)(int a0, int a1);
-    int (*startChild)(BOOL a0, const u8 *mac, int a2, int a3, void (*callback)(void));
+    int (*startChild)(BOOL allocBuffers, const u8 *mac, int index, int unused, void (*callback)(void));
     // Start a Wi-Fi match, and connect to a Wi-Fi friend by index (anybody when negative)
     BOOL (*startMatch)(int a0, int a1, int a2, int a3);
     BOOL (*connectFriend)(int a0, int a1, int a2);
@@ -354,8 +356,8 @@ int GFL_NetGetMaxConnectNum(void);
 int GFL_NetGetMaxSendSize(void);
 u16 GFL_NetGetParentPacketSize(void);
 void GFL_NetNotifyChildConnect(void);
-void GflNet_CallErrorStateFunc(int a0);
-void GFL_NetNotifyError(int a0);
+void GFL_NetNotifyFatalError(int error);
+void GFL_NetNotifyError(int error);
 GFLNetSys *GFL_NetGetSys(void);
 GFLNetInitData *GFL_NetGetInitData(void);
 void GflNet_SetAutoExit(u8 a0);

@@ -55,7 +55,7 @@ typedef struct {
     u16 originalMove;
     PokeTypePair userType;
     u8 type;
-    u8 unk07;
+    u8 padding07;
     u32 category;
     // How the move picks its targets, the move data's target type
     u32 targetType;
@@ -85,7 +85,7 @@ typedef struct {
     u8 count;
     u8 substituteCount;
     u8 total;
-    u8 unk03;
+    u8 padding03;
     BtlFlowDamageEntry entries[6];
 } BtlFlowDamageList;
 
@@ -259,7 +259,7 @@ struct BtlServerFlow {
     BtlActionState actionState;
     u8 unk1F70[8];
     u16 lastUsedMove;
-    u8 unk1F7A[2];
+    u8 padding1F7A[2];
     // What ServerControl_CheckObedience returned for the fight being run
     u32 obedience;
     // How often the player's mons and their opponents hit each other for no effect, super or not very effectively

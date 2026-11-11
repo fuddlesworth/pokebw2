@@ -334,18 +334,18 @@ void NetSystem_HoldScan(int a0) {
     }
 }
 
-int NetSystem_StartChild(BOOL a0, const u8 *mac, int size, void (*callback)(void)) {
+int NetSystem_StartChild(BOOL allocBuffers, const u8 *mac, int size, void (*callback)(void)) {
     GFLNetSys *sys = GFL_NetGetSys();
     GFLNetInitData *ini = GFL_NetGetInitData();
 
     sys->pDevTable->setRecvCallback(NetSystem_RecvServerPacket);
-    if (a0) {
+    if (allocBuffers) {
         BOOL useSysSize = sys->aNetInit.bMPMode && sys->aNetInit.parentPacketSize;
 
         NetSystem_Alloc(size, GFL_NetGetInitData()->heapId, useSysSize);
         sState.recvState = 4;
     }
-    return sys->pDevTable->startChild(a0, mac, 0, 0, callback);
+    return sys->pDevTable->startChild(allocBuffers, mac, 0, 0, callback);
 }
 
 void NetSystem_Free(void) {

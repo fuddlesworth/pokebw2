@@ -520,9 +520,9 @@ static void NetState_ChangeoverChildToParent(NetState *state) {
     }
 }
 
-void NetState_SetChangeoverMode(int mode, int a1, const u8 *mac) {
+void NetState_SetChangeoverMode(int mode, int useParentMac, const u8 *mac) {
     GFL_NetGetSys();
-    _pNetState->useParentMac = a1;
+    _pNetState->useParentMac = useParentMac;
     _pNetState->mode = mode;
     if (mac != NULL) {
         MI_CpuCopy8(mac, _pNetState->parentMac, sizeof(_pNetState->parentMac));
@@ -693,11 +693,11 @@ static void NetState_WifiConnect(NetState *state) {
     }
 }
 
-BOOL NetState_ConnectWifiFriend(int a0) {
-    if (a0 != -1 && !NetSystem_CanConnectFriend(a0)) {
+BOOL NetState_ConnectWifiFriend(int friendIndex) {
+    if (friendIndex != -1 && !NetSystem_CanConnectFriend(friendIndex)) {
         return FALSE;
     }
-    _pNetState->friendIndex = a0;
+    _pNetState->friendIndex = friendIndex;
     NetState_SetFuncLine(_pNetState, NetState_WifiConnect, 0, 1466);
     return TRUE;
 }

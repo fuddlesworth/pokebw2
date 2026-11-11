@@ -157,7 +157,8 @@ typedef struct {
     u8 unk0;
     // Column 2 of the shop
     u8 level;
-    u16 unk2;
+    // The points toward its next level, which the shop's sales add
+    u16 experience;
     // A bit for each of the shop's goods
     u32 flags;
     // 0xffff when none
@@ -269,8 +270,9 @@ struct JoinAvenueEntry {
     JoinAvenueMessage message1;
     JoinAvenueMessage message2;
     u8 unk4C[2];
-    // 0 or 1 by the type it was made with, or 2 to 4
-    u8 unk4E;
+    // The kind of shop the person will run (JOIN_AVE_PARAM_SHOP_KIND): 0 or 1 by the type it was made with, or a later
+    // kind
+    u8 shopKind;
     u8 raffled;
     u16 species;
     u16 visitType;

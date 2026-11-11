@@ -555,19 +555,19 @@ void GFL_NetNotifyChildConnect(void) {
     }
 }
 
-void GflNet_CallErrorStateFunc(int a0) {
+void GFL_NetNotifyFatalError(int error) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
-    if (pNet->aNetInit.unk28 != NULL) {
-        pNet->aNetInit.unk28(NetHandle_GetOwn(), a0, pNet->devWork);
+    if (pNet->aNetInit.fatalErrorCallback != NULL) {
+        pNet->aNetInit.fatalErrorCallback(NetHandle_GetOwn(), error, pNet->devWork);
     }
 }
 
-void GFL_NetNotifyError(int a0) {
+void GFL_NetNotifyError(int error) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (pNet->aNetInit.errorCallback != NULL) {
-        pNet->aNetInit.errorCallback(NetHandle_GetOwn(), a0, pNet->devWork);
+        pNet->aNetInit.errorCallback(NetHandle_GetOwn(), error, pNet->devWork);
     }
 }
 

@@ -219,7 +219,7 @@ u32 JoinAvenueShop_GetField(JoinAvenueShop *shop, u32 which) {
     case 1:
         return shop->level;
     case 2:
-        return shop->unk2;
+        return shop->experience;
     case 3:
         return shop->flags;
     }
@@ -235,7 +235,7 @@ void JoinAvenueShop_SetField(JoinAvenueShop *shop, u32 which, u32 value) {
         shop->level = value;
         break;
     case 2:
-        shop->unk2 = value;
+        shop->experience = value;
         break;
     case 3:
         shop->flags = value;
@@ -1359,7 +1359,7 @@ BOOL JoinAvenueEntry_IsEmpty(JoinAvenueEntry *entry) {
 }
 
 BOOL JoinAvenueEntry_IsValid(JoinAvenueEntry *entry) {
-    if (entry->unk4E <= 1 && !JoinAvenueProfile_IsValid(&entry->profile)) {
+    if (entry->shopKind <= 1 && !JoinAvenueProfile_IsValid(&entry->profile)) {
         return FALSE;
     }
     return TRUE;
@@ -1375,10 +1375,10 @@ void JoinAvenueEntry_Init(JoinAvenueEntry *entry, PlayerInfo *playerInfo, u16 sp
     default:
         type = JOIN_AVE_ARRIVAL_GTS;
     case JOIN_AVE_ARRIVAL_GTS:
-        entry->unk4E = 0;
+        entry->shopKind = 0;
         break;
     case JOIN_AVE_ARRIVAL_DREAM_WORLD:
-        entry->unk4E = 1;
+        entry->shopKind = 1;
         break;
     }
     entry->arrivalMethod = type;
@@ -1413,7 +1413,7 @@ u32 JoinAvenueEntry_GetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam param
     case JOIN_AVE_PARAM_SEED:
         return entry->seed;
     case JOIN_AVE_PARAM_SHOP_KIND:
-        return entry->unk4E;
+        return entry->shopKind;
     case JOIN_AVE_PARAM_ARRIVAL_METHOD:
         return entry->arrivalMethod;
     case JOIN_AVE_PARAM_SHOP_ID:
@@ -1504,7 +1504,7 @@ void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam para
         entry->profile.trainerId = value;
         break;
     case JOIN_AVE_PARAM_SHOP_KIND:
-        entry->unk4E = value;
+        entry->shopKind = value;
         break;
     case JOIN_AVE_PARAM_VISIT_TYPE:
         entry->visitType = value;
@@ -1532,7 +1532,7 @@ void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam para
 }
 
 static BOOL JoinAvenueEntry_Merge(JoinAvenueEntry *entry, const JoinAvenueEntry *src) {
-    if (entry->unk4E == 4) {
+    if (entry->shopKind == 4) {
         u16 greeting[8];
 
         MI_CpuCopy8(entry->profile.greeting, greeting, sizeof(greeting));

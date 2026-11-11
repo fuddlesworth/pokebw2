@@ -43,7 +43,7 @@ u8 *NetWhpipe_GetBeaconMac(int index);
 BOOL NetWhpipe_HasBeacons(void);
 BOOL NetWhpipe_StartParent(BOOL anyChannel);
 BOOL NetWhpipe_StartScan(BOOL clearBeacons);
-BOOL NetWhpipe_StartChild(BOOL a0, const u8 *mac, int index, void (*callback)(void));
+BOOL NetWhpipe_StartChild(BOOL unused, const u8 *mac, int index, void (*callback)(void));
 BOOL NetWhpipe_SendData(u8 *data, int size, BOOL (*callback)(BOOL ok));
 void NetWhpipe_SetRecvCallback(BOOL (*callback)(u16 netId, u8 *data, u16 size));
 BOOL NetWhpipe_IsConnected(void);

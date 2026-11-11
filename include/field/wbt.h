@@ -104,7 +104,7 @@ typedef struct {
     u8 expertType;
     u8 rank : 3;
     u8 iv : 5;
-    u8 unk9;
+    u8 padding9;
     // The music of the battle against the Trainer and of winning it
     u16 bgm;
     u16 winBgm;
@@ -217,7 +217,7 @@ typedef struct {
     u16 lines[4][0x4a];
     u8 classIndex;
     u8 messageSets[6];
-    u8 unk3DB;
+    u8 padding3DB;
     // WbtEntrant's aiBits
     u16 aiBits;
     u8 unk3DE[2];
@@ -234,7 +234,7 @@ typedef struct {
 
 struct WbtSystem {
     HeapID heapId;
-    u8 unk2[2];
+    u8 padding2[2];
     // Clear the saved opponent slots even when the player wins.
     BOOL clearOpponentSlots;
     WbtTrainers *trainers;
@@ -248,7 +248,7 @@ struct WbtSystem {
     u8 downloadSlot;
     // The map's season, rolled when the tournament starts
     u8 season;
-    u8 unk1F;
+    u8 padding1F;
     u64 seed;
     MATHRandContext32 rand;
     WbtEntrant entrants[8];
@@ -256,7 +256,7 @@ struct WbtSystem {
     Regulation regulation;
     // Passed to the party screen as a RegulationExtraRule without changing this recovered layout.
     WbtUnk18A extraRule;
-    u8 unk18E[2];
+    u8 padding18E[2];
     // Whether the downloaded tournament of the slot downloadSlot is in the save and its checksum holds
     BOOL downloadValid;
     WbtDownload download;
@@ -264,14 +264,14 @@ struct WbtSystem {
     WbtUnk18A downloadSlots[7];
     u8 unk13A4[4];
     u8 useBattleBox;
-    u8 unk13A9[3];
+    u8 padding13A9[3];
     // The Battle Box's party
     PokeParty *battleBoxParty;
     u8 castSlots[6];
     // The Pokémon the party screen showed the summary of, and how it ended
     u16 listIndex;
     u16 listResult;
-    u8 unk13BA[2];
+    u8 padding13BA[2];
     PokeParty *playerParty;
     PokeParty *opponentParty;
     // All rental candidates before entry, then the original selected team restored when picks reset.
@@ -284,7 +284,7 @@ struct WbtSystem {
     StrBuf *trainerWinMsg;
     // One for each round. Tournaments 1 and 10 award their total as Battle Points
     u8 roundRemaining[3];
-    u8 unk13DF;
+    u8 padding13DF;
     // The script variable that plugin 6 passes with EventWbtPokeSelect_Create's event
     u16 *resultVar;
     u32 rentalMode;

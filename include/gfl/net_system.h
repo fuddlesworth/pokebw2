@@ -14,7 +14,7 @@ int NetSystem_StartParent(int changeTgid, int size, int anyChannel, BOOL (*callb
 BOOL NetSystem_StartScan(int a0, int size);
 BOOL NetSystem_StartSearch(int size);
 void NetSystem_HoldScan(int a0);
-int NetSystem_StartChild(BOOL a0, const u8 *mac, int size, void (*callback)(void));
+int NetSystem_StartChild(BOOL allocBuffers, const u8 *mac, int size, void (*callback)(void));
 void NetSystem_Free(void);
 // Forgets what has arrived from a machine, as when it disconnects
 void NetSystem_ForgetMachine(u32 netId);

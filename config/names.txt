@@ -2749,7 +2749,7 @@
 . 0x02042de8 GFL_NetGetMaxSendSize
 . 0x02042df4 GFL_NetGetParentPacketSize
 . 0x02042e18 GFL_NetNotifyChildConnect
-. 0x02042e30 GflNet_CallErrorStateFunc
+. 0x02042e30 GFL_NetNotifyFatalError
 . 0x02042e54 GFL_NetNotifyError
 . 0x02042e78 GFL_NetGetSys
 . 0x02042e84 GFL_NetGetInitData
