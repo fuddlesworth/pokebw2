@@ -67,6 +67,14 @@ typedef struct DSProtCipherState {
     u8 table[256];
 } DSProtCipherState;
 
+// What DSProt_GetBranchType makes of a word of code: the kind of ARM branch its top byte says it is
+enum {
+    DSPROT_BRANCH_NONE, // not a branch
+    DSPROT_BRANCH_BLX,  // branch with link and exchange
+    DSPROT_BRANCH_BL,   // branch with link
+    DSPROT_BRANCH_B,    // branch
+};
+
 // The type of DSProt_EncryptCodeWithKey and DSProt_DecryptCodeWithKey, which DSProt_EncryptFunction and
 // DSProt_DecryptFunction (and their Multi copies) call through the entries
 typedef s32 (*DSProtCodeWithKeyFunc)(const u8 *key, u8 *src, u8 *dest, u32 size);

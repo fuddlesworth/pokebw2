@@ -41136,6 +41136,8 @@ overlays/ov337 0x0218240c sEncryptedKeyMulti
 overlays/ov337 0x02182424 sDecryptFunctionMulti
 overlays/ov337 0x02182428 sEncryptFunctionMulti
 overlays/ov337 0x0218242c sEmulatorMacMulti
+overlays/ov337 0x02182440 DSProt_NopIndex
+overlays/ov337 0x02182444 DSProt_Callbacks
 overlays/ov337 0x0218244c DSProt_WorkMulti
 overlays/ov338 0x0217c940 IrCheck_ReadId
 overlays/ov338 0x0217ca24 IrCheck_WaitBusy

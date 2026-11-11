@@ -113,9 +113,9 @@ static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work)
     {
         u32 index = OS_GetVBlankCount() & 1;
 
-        data_ov337_02182440 = index;
-        data_ov337_02182444[index] = GameSystem_DSProtNop1;
-        data_ov337_02182444[index ^ 1] = GameSystem_DSProtTamper1;
+        DSProt_NopIndex = index;
+        DSProt_Callbacks[index] = GameSystem_DSProtNop1;
+        DSProt_Callbacks[index ^ 1] = GameSystem_DSProtTamper1;
     }
     GFL_HeapCreateChild(HEAPID_USER, HEAPID_GAMEEVENT, 0x10000);
     {
@@ -130,15 +130,15 @@ static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work)
         if (checksum == DSPROT_CHECKSUM) {
             DSProt_CallRunChecks2(&seed, &flag);
         } else {
-            data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, &flag);
+            DSProt_Callbacks[DSProt_NopIndex ^ 1](&seed, &flag);
         }
     }
     {
         u32 index = OS_GetVBlankCount() & 1;
 
-        data_ov337_02182440 = index;
-        data_ov337_02182444[index] = GameSystem_DSProtNop2;
-        data_ov337_02182444[index ^ 1] = GameSystem_DSProtTamper2;
+        DSProt_NopIndex = index;
+        DSProt_Callbacks[index] = GameSystem_DSProtNop2;
+        DSProt_Callbacks[index ^ 1] = GameSystem_DSProtTamper2;
     }
     GFL_HeapCreateChild(HEAPID_DEVICE_ALLOC, HEAPID_TRIAL_HOUSE, 0x1400);
     {
@@ -153,7 +153,7 @@ static BOOL GameSystem_Init(GameProc *proc, u32 *state, void *param, void *work)
         if (checksum == DSPROT_CHECKSUM) {
             DSProt_CallRunChecks1(&seed, &size);
         } else {
-            data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, &size);
+            DSProt_Callbacks[DSProt_NopIndex ^ 1](&seed, &size);
         }
     }
     GFL_OvlUnload(OVERLAY_DSPROT);
