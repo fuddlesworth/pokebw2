@@ -66,6 +66,54 @@ enum {
     AC_STATE_FAILED,
 };
 
+// The steps of the setup, the sAcStep of AutoConfigThreadEx
+enum {
+    AC_STEP_SCAN = 1,
+    AC_STEP_CONNECT,
+    AC_STEP_OPEN_SOCKET,
+    AC_STEP_WAIT_HELLO,
+    AC_STEP_SEND_HELLO,
+    AC_STEP_WAIT_SESSION_KEY,
+    AC_STEP_SEND_SETTINGS_REQUEST,
+    AC_STEP_WAIT_SETTINGS,
+    AC_STEP_SEND_END,
+    AC_STEP_WAIT_END,
+};
+
+// The elements of the setup messages (IsSearchCommand and SetSearchRes)
+enum {
+    AC_ELEMENT_VERSION = 1,
+    AC_ELEMENT_MODE,
+    AC_ELEMENT_ID,
+    AC_ELEMENT_MAC,
+    AC_ELEMENT_SECURE,
+};
+
+// The items of the message that carries the settings (GetWLanSetElement)
+enum {
+    AC_SETTING_SSID = 0x201,
+    AC_SETTING_ENCRYPT_MODE,
+    AC_SETTING_KEY_TYPE,
+    AC_SETTING_KEY_LENGTH,
+    AC_SETTING_KEY_COUNT,
+    AC_SETTING_KEY0,
+    AC_SETTING_KEY1,
+    AC_SETTING_KEY2,
+    AC_SETTING_KEY3,
+    AC_SETTING_PASSPHRASE,
+};
+
+// The lengths of a WEP key in characters and of the same key in hex digits
+#define WEP40_KEY_LEN 5
+#define WEP40_KEY_HEX_LEN 10
+#define WEP104_KEY_LEN 13
+#define WEP104_KEY_HEX_LEN 26
+#define WEP128_KEY_LEN 16
+#define WEP128_KEY_HEX_LEN 32
+
+// The deadline that no longer expires
+#define AC_DEADLINE_NONE 0xffffffff
+
 typedef struct MacAddress {
     u8 bytes[6];
 } MacAddress;
@@ -183,9 +231,9 @@ static u8 sAcApMac[6];
 // The setup's configuration
 static BOOL sAcDebug = TRUE; // Formats the MAC addresses (for a print that is left out)
 static u32 sAcStackSize = 0x800;
-static u32 sAcDeadline = 0xffffffff;  // In milliseconds, 0xffffffff for none
-static u8 *sAcItems = sAcMessage + 8; // Where a message's items go, after its header
-static int sAcConfigApCount = 0x40;   // ATERMi_ApConfigStart's, which nothing reads
+static u32 sAcDeadline = AC_DEADLINE_NONE; // In milliseconds, 0xffffffff for none
+static u8 *sAcItems = sAcMessage + 8;      // Where a message's items go, after its header
+static int sAcConfigApCount = 0x40;        // ATERMi_ApConfigStart's, which nothing reads
 // The SSID of an access point in its setup mode
 static char sAcStealthSsid[] = "******";
 // Fixed addresses on the access point's network, in network order: 192.168.0.176/24, with 192.168.0.200 as the
@@ -1556,13 +1604,13 @@ static int IsSearchCommand(const u8 *packet, int *secure) {
     cursor = message + 8;
     while ((data = GetElementData(&cursor, end, &itemType, &itemLength)) != NULL) {
         switch (itemType) {
-        case 1:
+        case AC_ELEMENT_VERSION:
             version = SWAP16(*(u16 *)data);
             break;
-        case 2:
+        case AC_ELEMENT_MODE:
             mode = SWAP16(*(u16 *)data);
             break;
-        case 5:
+        case AC_ELEMENT_SECURE:
             count = SWAP16(*(u16 *)data);
             break;
         }
@@ -1605,14 +1653,14 @@ static int SetSearchRes(u8 *out) {
     u16 version = 0x100;
     u8 id[7] = { 6, 0, 1, 2, 3, 4, 5 };
 
-    end = SetElementData(sAcItems, 1, &version, sizeof(version));
-    end = SetElementData(end, 2, &version, sizeof(version));
+    end = SetElementData(sAcItems, AC_ELEMENT_VERSION, &version, sizeof(version));
+    end = SetElementData(end, AC_ELEMENT_MODE, &version, sizeof(version));
     if (sAcSecure) {
-        end = SetElementData(end, 5, &version, sizeof(version));
+        end = SetElementData(end, AC_ELEMENT_SECURE, &version, sizeof(version));
     }
-    end = SetElementData(end, 3, id, sizeof(id));
+    end = SetElementData(end, AC_ELEMENT_ID, id, sizeof(id));
     if (sAcSecure) {
-        end = SetElementData(end, 4, sAcOwnMac, 6);
+        end = SetElementData(end, AC_ELEMENT_MAC, sAcOwnMac, 6);
     }
     return SetFrameData(out, 2, sAcMessage, end - sAcItems + 8, NULL);
 }
@@ -1662,45 +1710,45 @@ static int GetWLanSetElement(const u8 *message) {
     end = cursor + SWAP16(*(u16 *)message);
     while ((data = GetElementData(&cursor, end, &type, &length)) != NULL) {
         switch (type) {
-        case 0x201:
+        case AC_SETTING_SSID:
             memset(sAcSettings.ssid, 0, 0x20);
             memcpy(sAcSettings.ssid, data, length);
             found = 1;
             break;
-        case 0x202:
+        case AC_SETTING_ENCRYPT_MODE:
             sAcSettings.EncryptMode = SWAP16(*(u16 *)data);
             break;
-        case 0x203:
+        case AC_SETTING_KEY_TYPE:
             value = SWAP16(*(u16 *)data);
             for (i = 0; i < 4; i++) {
                 sAcSettings.SharedKey[i].KeyType = value;
             }
             break;
-        case 0x204:
+        case AC_SETTING_KEY_LENGTH:
             value = SWAP16(*(u16 *)data);
             for (i = 0; i < 4; i++) {
                 sAcSettings.SharedKey[i].KeyLength = value;
             }
             break;
-        case 0x205:
+        case AC_SETTING_KEY_COUNT:
             sAcSettings.keyCount = SWAP16(*(u16 *)data);
             break;
-        case 0x206:
-        case 0x207:
-        case 0x208:
-        case 0x209:
-            memset(sAcSettings.SharedKey[type - 0x206].KeyData, 0, 0x20);
+        case AC_SETTING_KEY0:
+        case AC_SETTING_KEY1:
+        case AC_SETTING_KEY2:
+        case AC_SETTING_KEY3:
+            memset(sAcSettings.SharedKey[type - AC_SETTING_KEY0].KeyData, 0, 0x20);
             if (sAcSettings.SharedKey[0].KeyType == 1) {
-                char *p = sAcSettings.SharedKey[type - 0x206].KeyData;
+                char *p = sAcSettings.SharedKey[type - AC_SETTING_KEY0].KeyData;
 
                 for (i = 0; i < (int)length; i++) {
                     p += PutHex(p, *data++);
                 }
             } else {
-                memcpy(sAcSettings.SharedKey[type - 0x206].KeyData, data, length);
+                memcpy(sAcSettings.SharedKey[type - AC_SETTING_KEY0].KeyData, data, length);
             }
             break;
-        case 0x20a:
+        case AC_SETTING_PASSPHRASE:
             memset(sAcSettings.Passphrase, 0, 0x48);
             memcpy(sAcSettings.Passphrase, data, length);
             break;
@@ -1784,27 +1832,27 @@ static int StoreNetParam(void) {
                 switch (strlen(key)) {
                 case 0:
                     break;
-                case 5:
+                case WEP40_KEY_LEN:
                     sAcResult.auth_mode = 1;
                     memcpy(sAcResult.wepkey[i], key, 5);
                     break;
-                case 10:
+                case WEP40_KEY_HEX_LEN:
                     sAcResult.auth_mode = 1;
                     AsciiToHex(sAcResult.wepkey[i], key, 10);
                     break;
-                case 13:
+                case WEP104_KEY_LEN:
                     sAcResult.auth_mode = 2;
                     memcpy(sAcResult.wepkey[i], key, 13);
                     break;
-                case 26:
+                case WEP104_KEY_HEX_LEN:
                     sAcResult.auth_mode = 2;
                     AsciiToHex(sAcResult.wepkey[i], key, 26);
                     break;
-                case 16:
+                case WEP128_KEY_LEN:
                     sAcResult.auth_mode = 3;
-                    memcpy(sAcResult.wepkey[i], key, 16);
+                    memcpy(sAcResult.wepkey[i], key, WEP128_KEY_LEN);
                     break;
-                case 32:
+                case WEP128_KEY_HEX_LEN:
                     sAcResult.auth_mode = 3;
                     AsciiToHex(sAcResult.wepkey[i], key, 32);
                     break;
@@ -1843,9 +1891,9 @@ static inline int UtilAc_TakeSessionKey(const u8 *message, int retries) {
         memcpy(sAcSessionKey, data, 8);
         MD5Encode(sAcSessionKey + 8, (u8 *)&now, sizeof(now));
         retries = 0;
-        sAcStep = 7;
+        sAcStep = AC_STEP_SEND_SETTINGS_REQUEST;
         sAcState = AC_STATE_KEY;
-        sAcDeadline = 0xffffffff;
+        sAcDeadline = AC_DEADLINE_NONE;
         SendNotify();
     }
     return retries;
@@ -1862,29 +1910,29 @@ static int AutoConfigThreadEx(void) {
     SOCSockAddrIn address;
     SOCSockAddrIn from;
 
-    sAcStep = 1;
+    sAcStep = AC_STEP_SCAN;
     while (!done && !sAcCancel) {
         OS_Sleep(500);
         switch (sAcStep) {
-        case 1:
+        case AC_STEP_SCAN:
             result = ScanAP();
             if (result != RESULT_OK) {
                 done = TRUE;
             } else {
                 sAcState = AC_STATE_FOUND;
                 SendNotify();
-                sAcStep = 2;
+                sAcStep = AC_STEP_CONNECT;
             }
             break;
-        case 2:
+        case AC_STEP_CONNECT:
             result = ConnectAP();
             if (result != RESULT_OK) {
                 done = TRUE;
             } else {
-                sAcStep = 3;
+                sAcStep = AC_STEP_OPEN_SOCKET;
             }
             break;
-        case 3:
+        case AC_STEP_OPEN_SOCKET:
             sock = SOC_Socket(SOC_AF_INET, 2, 0);
             if (sock < 0) {
                 result = RESULT_WIRELESS;
@@ -1900,11 +1948,11 @@ static int AutoConfigThreadEx(void) {
                     result = RESULT_WIRELESS;
                     done = TRUE;
                 } else {
-                    sAcStep = 4;
+                    sAcStep = AC_STEP_WAIT_HELLO;
                 }
             }
             break;
-        case 4:
+        case AC_STEP_WAIT_HELLO:
             if (GetTickCount() >= sAcDeadline) {
                 SOC_Close(sock);
                 result = RESULT_SCAN_TIMEOUT;
@@ -1915,19 +1963,19 @@ static int AutoConfigThreadEx(void) {
                 if (SOC_RecvFrom(sock, sAcPacket, sizeof(sAcPacket), 4, &from) > 0 &&
                     IsSearchCommand(sAcPacket, &sAcSecure)) {
                     sAcDeadline = GetTickCount() + 30000;
-                    sAcStep = 5;
+                    sAcStep = AC_STEP_SEND_HELLO;
                     sAcState = AC_STATE_HELLO;
                     SendNotify();
                 }
             }
             break;
-        case 5:
+        case AC_STEP_SEND_HELLO:
             sAcPacketSize = SetSearchRes(sAcPacket);
             SendFrame(sock, &from, sAcPacket, sAcPacketSize);
             sentAt = GetTickCount();
-            sAcStep = 6;
+            sAcStep = AC_STEP_WAIT_SESSION_KEY;
             break;
-        case 6:
+        case AC_STEP_WAIT_SESSION_KEY:
             if (GetTickCount() >= sAcDeadline) {
                 SOC_Close(sock);
                 result = RESULT_HELLO_TIMEOUT;
@@ -1936,18 +1984,18 @@ static int AutoConfigThreadEx(void) {
                        GetCommandElement(sAcPacket, 3, sAcMessage, sAcKey)) {
                 retries = UtilAc_TakeSessionKey(sAcMessage, retries);
             } else if (GetTickCount() >= sentAt + 1000) {
-                sAcStep = 5;
+                sAcStep = AC_STEP_SEND_HELLO;
             }
             break;
-        case 7:
+        case AC_STEP_SEND_SETTINGS_REQUEST:
             sAcMessageSize = SetSingleElement(sAcMessage, 0x102, sAcSessionKey + 8, 8);
             sAcPacketSize = SetFrameData(sAcPacket, 4, sAcMessage, sAcMessageSize, sAcKey);
             SendFrame(sock, &from, sAcPacket, sAcPacketSize);
             sentAt = GetTickCount();
             memset(&sAcSettings, 0, sizeof(sAcSettings));
-            sAcStep = 8;
+            sAcStep = AC_STEP_WAIT_SETTINGS;
             break;
-        case 8:
+        case AC_STEP_WAIT_SETTINGS:
             if (SOC_RecvFrom(sock, sAcPacket, sizeof(sAcPacket), 4, &from) > 0 &&
                 (sAcMessageSize = GetCommandElement(sAcPacket, 5, sAcMessage, sAcSessionKey)) != 0 &&
                 GetWLanSetElement(sAcMessage)) {
@@ -1957,38 +2005,38 @@ static int AutoConfigThreadEx(void) {
                     sAcHasSsid = FALSE;
                 }
                 retries = 0;
-                sAcStep = 9;
+                sAcStep = AC_STEP_SEND_END;
             } else if (GetTickCount() >= sentAt + 1000) {
                 if (++retries >= 10) {
                     SOC_Close(sock);
                     result = RESULT_WIRELESS;
                     done = TRUE;
                 } else {
-                    sAcStep = 7;
+                    sAcStep = AC_STEP_SEND_SETTINGS_REQUEST;
                 }
             }
             break;
-        case 9:
+        case AC_STEP_SEND_END:
             sAcMessageSize = SetSingleElement(sAcMessage, 0x301, &sAcHasSsid, 1);
             sAcPacketSize = SetFrameData(sAcPacket, 6, sAcMessage, sAcMessageSize, sAcSessionKey);
             if (APC_GetState() != STATE_CONNECTED) {
                 // The connection is gone: wait a second and give up on the answer
                 sentAt = GetTickCount() + 1000;
                 retries = 10;
-                sAcStep = 10;
+                sAcStep = AC_STEP_WAIT_END;
             } else {
                 SendFrame(sock, &from, sAcPacket, sAcPacketSize);
                 sentAt = GetTickCount();
-                sAcStep = 10;
+                sAcStep = AC_STEP_WAIT_END;
             }
             break;
-        case 10:
+        case AC_STEP_WAIT_END:
             if (GetTickCount() >= sentAt + 1000) {
                 if (++retries >= 10) {
                     done = TRUE;
                     result = StoreNetParam();
                 } else {
-                    sAcStep = 9;
+                    sAcStep = AC_STEP_SEND_END;
                 }
             }
             break;
@@ -2014,7 +2062,7 @@ static void AutoConfigThread(void *arg) {
     } else {
         sAcState = AC_STATE_FAILED;
     }
-    sAcDeadline = 0xffffffff;
+    sAcDeadline = AC_DEADLINE_NONE;
     SendNotify();
 }
 
@@ -2671,8 +2719,8 @@ int ATERMi_ApConfigEnd(void) {
 
 static int ATERMi_ApConfigGetState(ATERMApConfigState *status) {
     status->state = sAcState;
-    if (sAcDeadline == 0xffffffff) {
-        status->timeout = 0xffffffff;
+    if (sAcDeadline == AC_DEADLINE_NONE) {
+        status->timeout = AC_DEADLINE_NONE;
     } else {
         status->timeout = sAcDeadline - GetTickCount();
     }

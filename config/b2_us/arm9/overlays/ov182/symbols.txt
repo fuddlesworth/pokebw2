@@ -1113,7 +1113,7 @@ deleteTcb kind:function(thumb,size=0x30) addr:0x021bd288
 DWCi_TSKlOperate kind:function(thumb,size=0x14) addr:0x021bd2b8
 DWC_UTILITY_RESET_PROC_FUNCTIONS kind:data(any) addr:0x021bd2cc
 DWC_UTILITY_PROC_FUNCTIONS kind:data(any) addr:0x021bd2d8
-data_ov182_021bd2e4 kind:data(any) addr:0x021bd2e4
+sDefaultRetry kind:data(any) addr:0x021bd2e4
 sAcHelloId kind:data(any) addr:0x021bd2e8
 rcon kind:data(any) addr:0x021bd2f0
 Td2 kind:data(any) addr:0x021bd318
@@ -1321,13 +1321,12 @@ data_ov182_021c05c0 kind:data(any) addr:0x021c05c0
 sRecordType kind:data(any) addr:0x021c05d0
 sNet kind:data(any) addr:0x021c05d4
 sSocConfig kind:data(any) addr:0x021c05dc
-data_ov182_021c0602 kind:data(any) addr:0x021c0602 ambiguous
 data_ov182_021c0634 kind:data(any) addr:0x021c0634
 data_ov182_021c0640 kind:data(any) addr:0x021c0640
 sRates kind:data(any) addr:0x021c0648
 sAcConfig kind:data(any) addr:0x021c0678
 sAcSocConfig kind:data(any) addr:0x021c068c
-data_ov182_021c06e4 kind:data(any) addr:0x021c06e4
+sAcStealthSsid kind:data(any) addr:0x021c06e4
 data_ov182_021c06ec kind:data(any) addr:0x021c06ec
 PADDING kind:data(any) addr:0x021c06f8
 data_ov182_021c0738 kind:data(any) addr:0x021c0738
@@ -1666,7 +1665,7 @@ sSubScreenData kind:bss addr:0x021c416c
 sSubScreenRow kind:bss addr:0x021c4170
 sUsbScan kind:bss addr:0x021c4174
 sDialog kind:bss addr:0x021c4178
-data_ov182_021c417c kind:bss addr:0x021c417c
+sWork kind:bss addr:0x021c417c
 sLogPrint kind:bss addr:0x021c4180
 sDownloadPlaySysWork kind:bss addr:0x021c4188
 sResource kind:bss addr:0x021c418c

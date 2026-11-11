@@ -124,22 +124,22 @@ int AOSSi_InitLocal(DWCAossAllocFunc alloc, DWCAossFreeFunc free) {
             case DWC_WCM_EVENT_STARTED:
                 return 0;
             case 0:
-            case 1:
-            case 2:
-            case 3:
+            case DWC_WCM_EVENT_UNKNOWN:
+            case DWC_WCM_EVENT_FAILED:
+            case DWC_WCM_EVENT_TERMINATED:
             case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
+            case DWC_WCM_EVENT_SEARCHING:
+            case DWC_WCM_EVENT_SEARCH_FAILED:
+            case DWC_WCM_EVENT_SEARCH_ENDED:
+            case DWC_WCM_EVENT_END_SEARCH_FAILED:
+            case DWC_WCM_EVENT_CONNECTED:
+            case DWC_WCM_EVENT_CONNECT_FAILED:
+            case DWC_WCM_EVENT_DISCONNECTED:
+            case DWC_WCM_EVENT_DISCONNECT_FAILED:
             default:
                 ok = FALSE;
-            case 4:
-            case 5:
+            case DWC_WCM_EVENT_SEARCH_AROUND:
+            case DWC_WCM_EVENT_FOUND_AP:
                 break;
             }
         } while (ok);
@@ -169,27 +169,27 @@ int AOSSi_EndLocal(void) {
             gAossApFree(gAossApBlock);
             break;
         case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 6:
+        case DWC_WCM_EVENT_UNKNOWN:
+        case DWC_WCM_EVENT_FAILED:
+        case DWC_WCM_EVENT_TERMINATED:
+        case DWC_WCM_EVENT_STARTED:
         case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
+        case DWC_WCM_EVENT_SEARCHING:
+        case DWC_WCM_EVENT_SEARCH_FAILED:
+        case DWC_WCM_EVENT_SEARCH_ENDED:
+        case DWC_WCM_EVENT_END_SEARCH_FAILED:
+        case DWC_WCM_EVENT_CONNECTED:
+        case DWC_WCM_EVENT_CONNECT_FAILED:
+        case DWC_WCM_EVENT_DISCONNECTED:
+        case DWC_WCM_EVENT_DISCONNECT_FAILED:
         case 16:
         case 17:
         case 18:
         case 19:
         default:
             ok = FALSE;
-        case 4:
-        case 5:
+        case DWC_WCM_EVENT_SEARCH_AROUND:
+        case DWC_WCM_EVENT_FOUND_AP:
             break;
         }
     } while (ok);
@@ -276,22 +276,22 @@ int AOSSi_WLANGetBSSList(WLLA_BSS_LIST **list) {
                 running = FALSE;
                 result = 0;
                 break;
-            case 4:
+            case DWC_WCM_EVENT_SEARCH_AROUND:
             case DWC_WCM_EVENT_SEARCHING:
             case WIFI_ALARM_CONNECT:
                 break;
             case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 6:
+            case DWC_WCM_EVENT_UNKNOWN:
+            case DWC_WCM_EVENT_FAILED:
+            case DWC_WCM_EVENT_TERMINATED:
+            case DWC_WCM_EVENT_STARTED:
             case 7:
-            case 9:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
+            case DWC_WCM_EVENT_SEARCH_FAILED:
+            case DWC_WCM_EVENT_END_SEARCH_FAILED:
+            case DWC_WCM_EVENT_CONNECTED:
+            case DWC_WCM_EVENT_CONNECT_FAILED:
+            case DWC_WCM_EVENT_DISCONNECTED:
+            case DWC_WCM_EVENT_DISCONNECT_FAILED:
             case 16:
             case 17:
             default:
@@ -376,7 +376,7 @@ int AOSSi_WLANConnect(const WLLA_CONNECT_PARAM *param, WLLA_LINK_STAT *result) {
                 // connection's alarm among the events it ignores
                 (void)0;
                 break;
-            case 4:
+            case DWC_WCM_EVENT_SEARCH_AROUND:
             case DWC_WCM_EVENT_SEARCHING:
                 break;
             case DWC_WCM_EVENT_FOUND_AP:
@@ -417,15 +417,15 @@ int AOSSi_WLANConnect(const WLLA_CONNECT_PARAM *param, WLLA_LINK_STAT *result) {
                 }
                 break;
             case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 6:
+            case DWC_WCM_EVENT_UNKNOWN:
+            case DWC_WCM_EVENT_FAILED:
+            case DWC_WCM_EVENT_TERMINATED:
+            case DWC_WCM_EVENT_STARTED:
             case 7:
-            case 9:
-            case 11:
-            case 14:
-            case 15:
+            case DWC_WCM_EVENT_SEARCH_FAILED:
+            case DWC_WCM_EVENT_END_SEARCH_FAILED:
+            case DWC_WCM_EVENT_DISCONNECTED:
+            case DWC_WCM_EVENT_DISCONNECT_FAILED:
             case 16:
             case 17:
             default:

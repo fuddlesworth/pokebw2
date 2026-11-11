@@ -24988,6 +24988,7 @@ overlays/ov182 0x021bd288 deleteTcb
 overlays/ov182 0x021bd2b8 DWCi_TSKlOperate
 overlays/ov182 0x021bd2cc DWC_UTILITY_RESET_PROC_FUNCTIONS
 overlays/ov182 0x021bd2d8 DWC_UTILITY_PROC_FUNCTIONS
+overlays/ov182 0x021bd2e4 sDefaultRetry
 overlays/ov182 0x021bd2e8 sAcHelloId
 overlays/ov182 0x021bd2f0 rcon
 overlays/ov182 0x021bd318 Td2
@@ -25111,6 +25112,7 @@ overlays/ov182 0x021c05dc sSocConfig
 overlays/ov182 0x021c0648 sRates
 overlays/ov182 0x021c0678 sAcConfig
 overlays/ov182 0x021c068c sAcSocConfig
+overlays/ov182 0x021c06e4 sAcStealthSsid
 overlays/ov182 0x021c06f8 PADDING
 overlays/ov182 0x021c0740 sBlankScreenPath
 overlays/ov182 0x021c0924 sScreenPaths
@@ -25210,6 +25212,7 @@ overlays/ov182 0x021c416c sSubScreenData
 overlays/ov182 0x021c4170 sSubScreenRow
 overlays/ov182 0x021c4174 sUsbScan
 overlays/ov182 0x021c4178 sDialog
+overlays/ov182 0x021c417c sWork
 overlays/ov182 0x021c4180 sLogPrint
 overlays/ov182 0x021c4188 sDownloadPlaySysWork
 overlays/ov182 0x021c418c sResource
