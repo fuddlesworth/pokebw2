@@ -242,7 +242,7 @@ static void MBi_ParentCallback(void *arg) {
                 sWmWork->callback(MB_CALLBACK_MP_SEND_ENABLE, NULL);
                 return;
             }
-        } else if (cb->errcode == 0xa) {
+        } else if (cb->errcode == WM_ERRCODE_SEND_QUEUE_FULL) {
             sWmWork->callback(MB_CALLBACK_SEND_QUEUE_FULL_ERR, arg);
         } else {
             sWmWork->callback(MB_CALLBACK_MP_PARENT_SENT_ERR, arg);
@@ -292,24 +292,24 @@ static void MBi_ParentCallback(void *arg) {
         WMIndCallback *ind = arg;
 
         switch (ind->state) {
-        case 0x10:
+        case WM_STATECODE_BEACON_RECV:
             sWmWork->callback(MB_CALLBACK_BEACON_RECV, arg);
             return;
-        case 0x11:
+        case WM_STATECODE_DISASSOCIATE:
             sWmWork->callback(MB_CALLBACK_DISASSOCIATE, arg);
             return;
-        case 0x12:
+        case WM_STATECODE_REASSOCIATE:
             sWmWork->callback(MB_CALLBACK_REASSOCIATE, arg);
             return;
-        case 0x13:
+        case WM_STATECODE_AUTHENTICATE:
             sWmWork->callback(MB_CALLBACK_AUTHENTICATE, arg);
             return;
-        case 0x16:
+        case WM_STATECODE_FIFO_ERROR:
             OS_Terminate();
             return;
-        case 0x14:
-        case 0x15:
-        case 0x17:
+        case WM_STATECODE_PORT_SEND:
+        case WM_STATECODE_PORT_RECV:
+        case WM_STATECODE_INFORMATION:
             break;
         }
         break;
@@ -333,7 +333,7 @@ static void MBi_ChildPortCallback(void *arg) {
         case WM_STATECODE_PORT_RECV:
             sWmWork->callback(MB_CALLBACK_MP_CHILD_RECV, arg);
             break;
-        case 0x19:
+        case WM_STATECODE_PORT_INIT:
         case WM_STATECODE_DISCONNECTED_FROM_MYSELF:
             break;
         }
@@ -386,7 +386,7 @@ static void MBi_ChildCallback(void *arg) {
             return;
         }
         switch (scan->state) {
-        case 3:
+        case WM_STATECODE_SCAN_START:
             return;
         case WM_STATECODE_PARENT_FOUND: {
             u8 i;
@@ -479,7 +479,7 @@ static void MBi_ChildCallback(void *arg) {
             return;
         }
         switch (connect->state) {
-        case 6:
+        case WM_STATECODE_CONNECT_START:
             work->child_bitmap = 0;
             work->mpStarted = 1;
             return;
@@ -529,7 +529,7 @@ static void MBi_ChildCallback(void *arg) {
         work->mpBusy = 0;
         if (cb->errcode == 0) {
             work->callback(MB_CALLBACK_MP_CHILD_SENT, arg);
-        } else if (cb->errcode == 9) {
+        } else if (cb->errcode == WM_ERRCODE_TIMEOUT) {
             work->callback(MB_CALLBACK_MP_CHILD_SENT_TIMEOUT, arg);
         } else {
             work->callback(MB_CALLBACK_MP_CHILD_SENT_ERR, arg);
@@ -563,10 +563,10 @@ static void MBi_ChildCallback(void *arg) {
         return;
     case WM_APIID_INDICATION:
         switch (((WMIndCallback *)arg)->state) {
-        case 0x16:
+        case WM_STATECODE_FIFO_ERROR:
             OS_Terminate();
             return;
-        case 0x17:
+        case WM_STATECODE_INFORMATION:
             return;
         }
         return;
@@ -741,7 +741,7 @@ static int MBi_StartParentCore(int channel) {
     pPwork->file_num = 0;
     MI_CpuClear16(pPwork->fileinfo, sizeof(pPwork->fileinfo));
     MI_CpuFill8(pPwork->req2child, 0, sizeof(pPwork->req2child));
-    sWmWork->mode = 1;
+    sWmWork->mode = MB_MODE_PARENT;
     sWmWork->callback = MBi_CommParentCallback;
     sWmWork->callback_ptr = MBi_ParentCallback;
     sWmWork->parentParam.parentMaxSize = sWmWork->p_sendlen;
@@ -844,7 +844,7 @@ int MBi_SendMP(const void *data, u32 size, u32 aidBitmap) {
         return 1;
     }
     switch (work->mode) {
-    case 1:
+    case MB_MODE_PARENT:
         result = MBi_SetMPData(work->callback_ptr, data, length, work->contSend == 0 ? 1000 : 0, bitmap);
         if (result == WM_ERRCODE_OPERATING) {
             sWmWork->mpBusy = 1;
@@ -853,7 +853,7 @@ int MBi_SendMP(const void *data, u32 size, u32 aidBitmap) {
             return 0;
         }
         return result;
-    case 2:
+    case MB_MODE_CHILD:
         result = MBi_SetMPData(MBi_ChildCallback, data, length, 0, bitmap);
         if (result == WM_ERRCODE_OPERATING) {
             sWmWork->mpBusy = 1;

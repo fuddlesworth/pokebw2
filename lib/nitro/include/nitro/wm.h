@@ -47,7 +47,9 @@ typedef enum {
     WM_ERRCODE_INVALID_PARAM = 6,
     WM_ERRCODE_NO_CHILD = 7,         // The child of the AID is not connected, or the parent has none
     WM_ERRCODE_FIFO_ERROR = 8,       // No command buffer is free, or the FIFO to the ARM7 is full
+    WM_ERRCODE_TIMEOUT = 9,          // No check response of the multi-point mode came in time
     WM_ERRCODE_SEND_QUEUE_FULL = 10, // The queue of the port has no room for the data
+    WM_ERRCODE_SEND_FAILED = 15,     // The parent and child's send and receive sequence did not agree
     WM_ERRCODE_FLASH_ERROR = 0x13,   // What the ARM7 reports in an indication when it can't go on: the game ends
 } WMErrCode;
 
@@ -68,7 +70,7 @@ typedef enum {
 } WMState;
 
 // The number of an operation, which a callback starts with and a command to the ARM7 starts with. Only the ones that
-// the code of the manager's files uses are named
+// the library's files use are named
 typedef enum {
     WM_APIID_INITIALIZE = 0,
     WM_APIID_RESET = 1,
@@ -107,15 +109,25 @@ typedef enum {
 typedef enum {
     WM_STATECODE_PARENT_START = 0,
     WM_STATECODE_BEACON_SENT = 2,
+    WM_STATECODE_SCAN_START = 3, // What a scan reports when it begins: no longer generated
     WM_STATECODE_PARENT_NOT_FOUND = 4,
     WM_STATECODE_PARENT_FOUND = 5,
+    WM_STATECODE_CONNECT_START = 6,
     WM_STATECODE_CONNECTED = 7,
     WM_STATECODE_DISCONNECTED = 9,
     WM_STATECODE_MP_START = 10,
     WM_STATECODE_MPEND_IND = 11,
     WM_STATECODE_MP_IND = 12,
     WM_STATECODE_MPACK_IND = 13,
+    // The indications, which WM_SetIndCallback takes
+    WM_STATECODE_BEACON_RECV = 0x10,
+    WM_STATECODE_DISASSOCIATE = 0x11,
+    WM_STATECODE_REASSOCIATE = 0x12,
+    WM_STATECODE_AUTHENTICATE = 0x13,
+    WM_STATECODE_PORT_SEND = 0x14,
     WM_STATECODE_PORT_RECV = 0x15,
+    WM_STATECODE_FIFO_ERROR = 0x16,
+    WM_STATECODE_INFORMATION = 0x17,
     WM_STATECODE_PORT_INIT = 0x19,
     WM_STATECODE_DISCONNECTED_FROM_MYSELF = 0x1a,
 } WMStateCode;
