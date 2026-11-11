@@ -922,7 +922,7 @@ void NNS_G2dSetCellTransferStateRequested(u32 handle, u32 srcOffset, u32 szByte)
 
 // Fonts: an NFTR file's font information (FINF), its glyph images (CGLP), their widths (CWDH) and the maps from
 // character codes to glyph indices (CMAP). The layouts are the SDK's; flags, which the glyph block's version 1.0 lacks,
-// says how the glyphs are rotated (the cases of NNS_G2dCharCanvasDrawChar)
+// says how the glyphs are rotated and whether the text runs top to bottom right to left
 #define NNS_G2D_BINFILE_SIG_FONTDATA 0x4E465452 // 'NFTR'
 #define NNS_G2D_BINBLK_SIG_FINFDATA 0x46494E46  // 'FINF'
 #define NNS_G2D_BINBLK_SIG_CGLPDATA 0x43474C50  // 'CGLP'
@@ -930,6 +930,16 @@ void NNS_G2dSetCellTransferStateRequested(u32 handle, u32 srcOffset, u32 szByte)
 #define NNS_G2D_BINBLK_SIG_CMAPDATA 0x434D4150  // 'CMAP'
 
 #define NNS_G2D_GLYPH_INDEX_NOT_FOUND 0xffff
+
+// A glyph's flags: whether the text runs top to bottom right to left in bit 0, and its rotation in bits 1 and 2
+typedef enum {
+    NNS_G2D_FONT_FLAG_TBRL = 1 << 0,
+    NNS_G2D_FONT_FLAG_ROT_0 = 0 << 1,
+    NNS_G2D_FONT_FLAG_ROT_90 = 1 << 1,
+    NNS_G2D_FONT_FLAG_ROT_180 = 2 << 1,
+    NNS_G2D_FONT_FLAG_ROT_270 = 3 << 1,
+    NNS_G2D_FONT_FLAG_ROT_MASK = 3 << 1, // the rotation bits
+} NNSG2dFontGlyphFlag;
 
 typedef struct {
     s8 left;

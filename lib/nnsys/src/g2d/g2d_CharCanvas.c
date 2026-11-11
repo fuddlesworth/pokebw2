@@ -553,22 +553,22 @@ int NNS_G2dCharCanvasDrawChar(const NNSG2dCharCanvas *pCC, const NNSG2dFont *pFo
     glyph.image = pFont->pRes->pGlyph->glyphTable + idx * pFont->pRes->pGlyph->cellSize;
 
     switch (pFont->pRes->pGlyph->flags) {
-    case 0:
-    case 7:
+    case NNS_G2D_FONT_FLAG_ROT_0:
+    case NNS_G2D_FONT_FLAG_ROT_270 | NNS_G2D_FONT_FLAG_TBRL:
         x += glyph.pWidths->left;
         break;
-    case 1:
-    case 2:
+    case NNS_G2D_FONT_FLAG_ROT_90:
+    case NNS_G2D_FONT_FLAG_ROT_0 | NNS_G2D_FONT_FLAG_TBRL:
         x -= pFont->pRes->pGlyph->cellWidth;
         y += glyph.pWidths->left;
         break;
-    case 3:
-    case 4:
+    case NNS_G2D_FONT_FLAG_ROT_180:
+    case NNS_G2D_FONT_FLAG_ROT_90 | NNS_G2D_FONT_FLAG_TBRL:
         x -= glyph.pWidths->left + glyph.pWidths->glyphWidth;
         y -= pFont->pRes->pGlyph->cellHeight;
         break;
-    case 5:
-    case 6:
+    case NNS_G2D_FONT_FLAG_ROT_270:
+    case NNS_G2D_FONT_FLAG_ROT_180 | NNS_G2D_FONT_FLAG_TBRL:
         y -= glyph.pWidths->left + pFont->pRes->pGlyph->cellHeight;
         break;
     }
