@@ -489,19 +489,30 @@ static BOOL UnionOneself_StepIdleRun(UnionSystem *unisys, UnionSelf *situ, Field
     return FALSE;
 }
 
+// The net error step's restart of the link, UnionSelf.seq: stop the field, let the message finish, then take the
+// link down and up again
+enum {
+    UNION_ONESELF_NET_ERROR_SEQ_STOP_FIELD,
+    UNION_ONESELF_NET_ERROR_SEQ_WAIT_MESSAGE,
+    UNION_ONESELF_NET_ERROR_SEQ_RESET_LINK1,
+    UNION_ONESELF_NET_ERROR_SEQ_WAIT_LINK1,
+    UNION_ONESELF_NET_ERROR_SEQ_RESET_LINK2,
+    UNION_ONESELF_NET_ERROR_SEQ_WAIT_LINK2,
+};
+
 static BOOL UnionOneself_StepNetErrorRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_NET_ERROR_SEQ_STOP_FIELD:
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_NET_ERROR_SEQ_WAIT_MESSAGE:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             UnionMsg_FreeAll(unisys);
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_NET_ERROR_SEQ_RESET_LINK1:
         if (GFL_NetErrCheck()) {
             GSYS_SetNetErrorPending(unisys->param->gsys, 1);
             return FALSE;
@@ -509,18 +520,18 @@ static BOOL UnionOneself_StepNetErrorRun(UnionSystem *unisys, UnionSelf *situ, F
         UnionComm_RequestLink1(unisys);
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_NET_ERROR_SEQ_WAIT_LINK1:
         if (!UnionComm_IsLinkRequested(unisys)) {
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_NET_ERROR_SEQ_RESET_LINK2:
         UnionComm_FreeResources(unisys);
         UnionGroup_Init(unisys, &situ->mycomm);
         UnionComm_RequestLink2(unisys);
         (*seq)++;
         break;
-    case 5:
+    case UNION_ONESELF_NET_ERROR_SEQ_WAIT_LINK2:
         if (!UnionComm_IsLinkRequested(unisys)) {
             (*seq)++;
         }
@@ -544,12 +555,19 @@ static BOOL UnionOneself_StepWaitCounter(UnionSystem *unisys, UnionSelf *situ, F
     return FALSE;
 }
 
+// The greeting step's look select, UnionSelf.seq: open the player select, wait for it to close and put the look on
+enum {
+    UNION_ONESELF_GREETING_SEQ_START_SELECT,
+    UNION_ONESELF_GREETING_SEQ_WAIT_SELECT,
+    UNION_ONESELF_GREETING_SEQ_SET_LOOK,
+};
+
 static BOOL UnionOneself_StepGreeting(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     PMSSelectParam *param;
     PMSData *result;
 
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_GREETING_SEQ_START_SELECT:
         if (unisys->greetingRequested == 0) {
             return TRUE;
         }
@@ -561,12 +579,12 @@ static BOOL UnionOneself_StepGreeting(UnionSystem *unisys, UnionSelf *situ, Fiel
         UnionCommand_Set(unisys, 29, param);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_GREETING_SEQ_WAIT_SELECT:
         if (!UnionCommand_IsActive(unisys)) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_GREETING_SEQ_SET_LOOK:
         param = unisys->cmdArg;
         result = param->result;
         if (param->cancel == 0) {
@@ -585,6 +603,21 @@ static BOOL UnionOneself_StepAskBegin(UnionSystem *unisys, UnionSelf *situ, Fiel
     return TRUE;
 }
 
+// Asking another machine to connect, UnionSelf.seq: change the link over, wait for the answer, accept or refuse
+// the connection and sync the Join Avenue
+enum {
+    UNION_ONESELF_ASK_SEQ_CHANGEOVER,
+    UNION_ONESELF_ASK_SEQ_WAIT_ANSWER,
+    UNION_ONESELF_ASK_SEQ_CHECK_CONNECTION,
+    UNION_ONESELF_ASK_SEQ_CHECK_VERSION,
+    UNION_ONESELF_ASK_SEQ_WAIT_END,
+    UNION_ONESELF_ASK_SEQ_WAIT_LINK,
+    UNION_ONESELF_ASK_SEQ_WAIT_DISCONNECT,
+    UNION_ONESELF_ASK_SEQ_WAIT_RESET,
+    UNION_ONESELF_ASK_SEQ_SEND_JOIN_AVENUE,
+    UNION_ONESELF_ASK_SEQ_WAIT_JOIN_AVENUE,
+};
+
 static BOOL UnionOneself_StepAskRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     int i;
 
@@ -592,12 +625,12 @@ static BOOL UnionOneself_StepAskRun(UnionSystem *unisys, UnionSelf *situ, Field 
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_ASK_SEQ_CHANGEOVER:
         GFL_NetSetChangeoverMode(1, 1, NULL);
         situ->wait = 0;
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_ASK_SEQ_WAIT_ANSWER:
         if (UnionMsg_IsPrintDone(unisys)) {
             if (GFL_NetGetNegotiatedCount() > 1) {
                 for (i = 2; i < 5; i++) {
@@ -609,11 +642,11 @@ static BOOL UnionOneself_StepAskRun(UnionSystem *unisys, UnionSelf *situ, Field 
                     UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetNoReplyMessage(unisys));
                     UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
                     UnionComm_RequestLink0(unisys);
-                    *seq = 4;
+                    *seq = UNION_ONESELF_ASK_SEQ_WAIT_END;
                 } else {
                     GFL_NetSetDisconnectError(TRUE);
                     GFL_NetSetAcceptConnect(NetHandle_GetOwn(), 0);
-                    *seq = 2;
+                    *seq = UNION_ONESELF_ASK_SEQ_CHECK_CONNECTION;
                 }
             } else {
                 situ->wait++;
@@ -626,65 +659,65 @@ static BOOL UnionOneself_StepAskRun(UnionSystem *unisys, UnionSelf *situ, Field 
                     } else {
                         UnionMsg_CreateAndPrint(unisys, field, 0xa);
                     }
-                    *seq = 5;
+                    *seq = UNION_ONESELF_ASK_SEQ_WAIT_LINK;
                 }
             }
         }
         break;
-    case 2:
+    case UNION_ONESELF_ASK_SEQ_CHECK_CONNECTION:
         if (situ->mycomm.connectedMac[6] == 1) {
             if (GFL_STD_MemCmp(situ->mycomm.connectedMac, situ->mycomm.asked->mac, 6) != 0) {
                 if (UnionMain_SendConnectReply(2) == TRUE) {
                     GFL_NetSetDisconnectError(FALSE);
-                    *seq = 6;
+                    *seq = UNION_ONESELF_ASK_SEQ_WAIT_DISCONNECT;
                 }
             } else if (UnionMain_SendConnectReply(1) == TRUE) {
                 GFL_SndSEPlay(SEQ_SE_SYS_101);
                 UnionOneself_SetNextStep(unisys, UNION_STEP_PARENT);
                 UnionComm_SetSelf(unisys, UNION_SELF_PARENT, (u32)situ->mycomm.asked);
                 UnionComm_SetSelf(unisys, UNION_SELF_ASKED, 0);
-                *seq = 3;
+                *seq = UNION_ONESELF_ASK_SEQ_CHECK_VERSION;
             }
         }
         break;
-    case 3:
+    case UNION_ONESELF_ASK_SEQ_CHECK_VERSION:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             if (situ->mycomm.parent->beacon.version == VERSION_WHITE2 ||
                 situ->mycomm.parent->beacon.version == VERSION_BLACK2) {
-                *seq = 8;
+                *seq = UNION_ONESELF_ASK_SEQ_SEND_JOIN_AVENUE;
             } else {
                 return TRUE;
             }
         }
         break;
-    case 4:
+    case UNION_ONESELF_ASK_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             return TRUE;
         }
         break;
-    case 5:
+    case UNION_ONESELF_ASK_SEQ_WAIT_LINK:
         if (!UnionComm_IsLinkRequested(unisys)) {
-            *seq = 4;
+            *seq = UNION_ONESELF_ASK_SEQ_WAIT_END;
         }
         break;
-    case 6:
+    case UNION_ONESELF_ASK_SEQ_WAIT_DISCONNECT:
         if (NetSystem_CountConnected() <= 1) {
             UnionComm_RequestLink0(unisys);
             (*seq)++;
         }
         break;
-    case 7:
+    case UNION_ONESELF_ASK_SEQ_WAIT_RESET:
         if (!UnionComm_IsLinkRequested(unisys)) {
             situ->mycomm.connectedMac[6] = 0;
-            *seq = 0;
+            *seq = UNION_ONESELF_ASK_SEQ_CHANGEOVER;
         }
         break;
-    case 8:
+    case UNION_ONESELF_ASK_SEQ_SEND_JOIN_AVENUE:
         if (UnionMain_SendJoinAvenue(unisys)) {
-            *seq = 9;
+            *seq = UNION_ONESELF_ASK_SEQ_WAIT_JOIN_AVENUE;
         }
         break;
-    case 9:
+    case UNION_ONESELF_ASK_SEQ_WAIT_JOIN_AVENUE:
         if (situ->mycomm.joinAvenueReceived != 0) {
             return TRUE;
         }
@@ -705,21 +738,34 @@ static BOOL UnionOneself_StepAskedBegin(UnionSystem *unisys, UnionSelf *situ, Fi
     return TRUE;
 }
 
+// Answering the machine that asks to connect, UnionSelf.seq: change over, send our MAC, then accept or refuse the
+// connection and sync the Join Avenue
+enum {
+    UNION_ONESELF_ASKED_SEQ_CHANGEOVER,
+    UNION_ONESELF_ASKED_SEQ_WAIT_CONNECT,
+    UNION_ONESELF_ASKED_SEQ_WAIT_END,
+    UNION_ONESELF_ASKED_SEQ_SEND_MAC,
+    UNION_ONESELF_ASKED_SEQ_CHECK_REPLY,
+    UNION_ONESELF_ASKED_SEQ_WAIT_REFUSED,
+    UNION_ONESELF_ASKED_SEQ_SEND_JOIN_AVENUE,
+    UNION_ONESELF_ASKED_SEQ_WAIT_JOIN_AVENUE,
+};
+
 static BOOL UnionOneself_StepAskedRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_ASKED_SEQ_CHANGEOVER:
         GFL_ASSERT(situ->mycomm.answer_pc != NULL);
         GFL_NetSetChangeoverMode(2, 1, situ->mycomm.answer_pc->mac);
         situ->wait = 0;
-        *seq = 1;
+        *seq = UNION_ONESELF_ASKED_SEQ_WAIT_CONNECT;
         break;
-    case 1:
+    case UNION_ONESELF_ASKED_SEQ_WAIT_CONNECT:
         if (GFL_NetGetNegotiatedCount() > 1) {
             GFL_NetSetDisconnectError(TRUE);
-            *seq = 3;
+            *seq = UNION_ONESELF_ASKED_SEQ_SEND_MAC;
         } else {
             situ->wait++;
             if (situ->wait > 600 || (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
@@ -731,27 +777,27 @@ static BOOL UnionOneself_StepAskedRun(UnionSystem *unisys, UnionSelf *situ, Fiel
                 } else {
                     UnionMsg_CreateAndPrint(unisys, field, 0xa);
                 }
-                *seq = 2;
+                *seq = UNION_ONESELF_ASKED_SEQ_WAIT_END;
             }
         }
         break;
-    case 2:
+    case UNION_ONESELF_ASKED_SEQ_WAIT_END:
         if (!UnionComm_IsLinkRequested(unisys) && UnionMsg_IsPrintDone(unisys) == TRUE &&
             (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             return TRUE;
         }
         break;
-    case 3:
+    case UNION_ONESELF_ASKED_SEQ_SEND_MAC:
         if (UnionMain_SendMac() == TRUE) {
             if (situ->mycomm.answer_pc->beacon.version == VERSION_WHITE2 ||
                 situ->mycomm.answer_pc->beacon.version == VERSION_BLACK2) {
-                *seq = 6;
+                *seq = UNION_ONESELF_ASKED_SEQ_SEND_JOIN_AVENUE;
             } else {
-                *seq = 4;
+                *seq = UNION_ONESELF_ASKED_SEQ_CHECK_REPLY;
             }
         }
         break;
-    case 4:
+    case UNION_ONESELF_ASKED_SEQ_CHECK_REPLY:
         switch (situ->mycomm.connectReply) {
         case 1:
             UnionComm_SetSelf(unisys, UNION_SELF_PARENT, (u32)situ->mycomm.answer_pc);
@@ -762,25 +808,25 @@ static BOOL UnionOneself_StepAskedRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             UnionComm_SetSelf(unisys, UNION_SELF_ANSWER, 0);
             UnionMsg_CreateAndPrint(unisys, field, 8);
             UnionComm_RequestLink0(unisys);
-            *seq = 5;
+            *seq = UNION_ONESELF_ASKED_SEQ_WAIT_REFUSED;
             break;
         }
         break;
-    case 5:
+    case UNION_ONESELF_ASKED_SEQ_WAIT_REFUSED:
         if (!UnionComm_IsLinkRequested(unisys) && UnionMsg_IsPrintDone(unisys) == TRUE &&
             (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
             return TRUE;
         }
         break;
-    case 6:
+    case UNION_ONESELF_ASKED_SEQ_SEND_JOIN_AVENUE:
         if (UnionMain_SendJoinAvenue(unisys)) {
-            *seq = 7;
+            *seq = UNION_ONESELF_ASKED_SEQ_WAIT_JOIN_AVENUE;
         }
         break;
-    case 7:
+    case UNION_ONESELF_ASKED_SEQ_WAIT_JOIN_AVENUE:
         if (situ->mycomm.joinAvenueReceived != 0) {
-            *seq = 4;
+            *seq = UNION_ONESELF_ASKED_SEQ_CHECK_REPLY;
         }
         break;
     }
@@ -792,6 +838,15 @@ static BOOL UnionOneself_StepAskedEnd(UnionSystem *unisys, UnionSelf *situ, Fiel
     return TRUE;
 }
 
+// The handshake UnionOneself_StepParentBegin and UnionOneself_StepOfferBegin share, UnionSelf.seq: the beacon's
+// timing pair, the player info, and the others' answers
+enum {
+    UNION_ONESELF_GROUP_SYNC_SEQ_START,
+    UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PAIR,
+    UNION_ONESELF_GROUP_SYNC_SEQ_SEND_PLAYER_INFO,
+    UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PLAYER_INFO,
+};
+
 static BOOL UnionOneself_StepParentBegin(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
@@ -802,24 +857,24 @@ static BOOL UnionOneself_StepParentBegin(UnionSystem *unisys, UnionSelf *situ, F
     }
     situ->result = 0;
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_START:
         UnionGroup_ResetTargets(&situ->mycomm);
         UnionComm_SetSelf(unisys, UNION_SELF_ACTIVITY, 1);
         UnionGroup_AddBeaconMember(&situ->mycomm, situ->mycomm.parent);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 2, 0x14);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 2, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_SEND_PLAYER_INFO:
         if (UnionMain_SendPlayerInfo(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PLAYER_INFO:
         if (MATH_CountPopulation(situ->mycomm.infoReceivedMask) > 1) {
             return TRUE;
         }
@@ -827,6 +882,15 @@ static BOOL UnionOneself_StepParentBegin(UnionSystem *unisys, UnionSelf *situ, F
     }
     return FALSE;
 }
+
+// The parent's main menu, UnionSelf.seq: greet the player spoken to, then ask what to do until they pick
+enum {
+    UNION_ONESELF_PARENT_SEQ_GREET,
+    UNION_ONESELF_PARENT_SEQ_WAIT_GREET,
+    UNION_ONESELF_PARENT_SEQ_OPEN_MENU,
+    UNION_ONESELF_PARENT_SEQ_UPDATE_MENU,
+    UNION_ONESELF_PARENT_SEQ_WAIT_REFUSAL,
+};
 
 static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     PokeParty *party;
@@ -836,7 +900,7 @@ static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Fie
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_PARENT_SEQ_GREET:
         if (situ->result == 1) {
             situ->result = 0;
         } else if (situ->mycomm.talkCount == 0) {
@@ -848,16 +912,16 @@ static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Fie
         }
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_PARENT_SEQ_WAIT_GREET:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_PARENT_SEQ_OPEN_MENU:
         UnionMsg_CreateMainMenu(unisys, field);
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_PARENT_SEQ_UPDATE_MENU:
         party = GameData_GetParty(unisys->param->gameData);
         choice = UnionMsg_UpdateMainMenu(unisys, field);
         if (choice == -1) {
@@ -875,17 +939,17 @@ static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Fie
             if (howManyPartyPokesAreNotEggs(party) < 2) {
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetOnePokemonCannotTradeMessage(situ->mycomm.target->beacon.gender));
-                *seq = 4;
+                *seq = UNION_ONESELF_PARENT_SEQ_WAIT_REFUSAL;
                 break;
             }
         } else if (choice == UNION_ACTIVITY_SPIN_TRADE) {
             if (countSanityEggsInParty(party) > 0) {
                 UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetEggCannotTradeMessage(unisys));
-                *seq = 4;
+                *seq = UNION_ONESELF_PARENT_SEQ_WAIT_REFUSAL;
                 break;
             } else if (countAllEggsInParty(party) == 0) {
                 UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetNeedEggMessage(situ->mycomm.target->beacon.gender));
-                *seq = 4;
+                *seq = UNION_ONESELF_PARENT_SEQ_WAIT_REFUSAL;
                 break;
             }
         }
@@ -896,9 +960,9 @@ static BOOL UnionOneself_StepParentRun(UnionSystem *unisys, UnionSelf *situ, Fie
         situ->mycomm.chosenActivity = choice;
         UnionOneself_SetNextStep(unisys, UNION_STEP_OFFER);
         return TRUE;
-    case 4:
+    case UNION_ONESELF_PARENT_SEQ_WAIT_REFUSAL:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
-            *seq = 0;
+            *seq = UNION_ONESELF_PARENT_SEQ_GREET;
         }
         break;
     }
@@ -910,12 +974,19 @@ static BOOL UnionOneself_StepParentEnd(UnionSystem *unisys, UnionSelf *situ, Fie
     return TRUE;
 }
 
+// Offering the chosen activity, UnionSelf.seq: send it and wait for the other machine's answer
+enum {
+    UNION_ONESELF_OFFER_SEQ_SEND_ACTIVITY,
+    UNION_ONESELF_OFFER_SEQ_WAIT_REPLY,
+    UNION_ONESELF_OFFER_SEQ_WAIT_END,
+};
+
 static BOOL UnionOneself_StepOfferRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_OFFER_SEQ_SEND_ACTIVITY:
         if (UnionMain_SendActivity(situ->mycomm.chosenActivity) == TRUE) {
             if (situ->mycomm.chosenActivity == 0) {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_LEAVE);
@@ -927,7 +998,7 @@ static BOOL UnionOneself_StepOfferRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             (*seq)++;
         }
         break;
-    case 1:
+    case UNION_ONESELF_OFFER_SEQ_WAIT_REPLY:
         if (UnionMsg_IsPrintDone(unisys)) {
             if (situ->mycomm.activityReply == 1) {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_FOR_ACTIVITY(situ->mycomm.chosenActivity));
@@ -941,7 +1012,7 @@ static BOOL UnionOneself_StepOfferRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             }
         }
         break;
-    case 2:
+    case UNION_ONESELF_OFFER_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             return TRUE;
         }
@@ -955,24 +1026,24 @@ static BOOL UnionOneself_StepOfferBegin(UnionSystem *unisys, UnionSelf *situ, Fi
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_START:
         UnionGroup_ResetTargets(&situ->mycomm);
         UnionComm_SetSelf(unisys, UNION_SELF_ACTIVITY, 1);
         UnionGroup_AddBeaconMember(&situ->mycomm, situ->mycomm.parent);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 2, 0x14);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 2, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_SEND_PLAYER_INFO:
         if (UnionMain_SendPlayerInfo(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_GROUP_SYNC_SEQ_WAIT_PLAYER_INFO:
         if (MATH_CountPopulation(situ->mycomm.infoReceivedMask) > 1) {
             return TRUE;
         }
@@ -980,6 +1051,23 @@ static BOOL UnionOneself_StepOfferBegin(UnionSystem *unisys, UnionSelf *situ, Fi
     }
     return FALSE;
 }
+
+// The party's answer to the activity offered, UnionSelf.seq: show the offer, its rules and the two rules windows,
+// ask yes/no and send the answer
+enum {
+    UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_INTRO,
+    UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_OFFER,
+    UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_RULES,
+    UNION_ONESELF_OFFER_PARTY_SEQ_ASK_ACCEPT,
+    UNION_ONESELF_OFFER_PARTY_SEQ_CHECK_ACCEPT,
+    UNION_ONESELF_OFFER_PARTY_SEQ_SEND_REPLY,
+    UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_PARTY_RULES,
+    UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_PARTY_RULES,
+    UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_BOX_RULES,
+    UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_BOX_RULES,
+    UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_RESULT,
+    UNION_ONESELF_OFFER_PARTY_SEQ_DONE,
+};
 
 static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     BOOL yes;
@@ -992,11 +1080,11 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
         return FALSE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_INTRO:
         UnionMsg_CreateAndPrint(unisys, field, 9);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_OFFER:
         if (situ->mycomm.chosenActivity == 0xff) {
             break;
         }
@@ -1011,9 +1099,9 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
                 UnionOneself_SetRegulation(unisys, situ->mycomm.chosenActivity);
                 UnionMsg_CreateRulesWindow(unisys, field, 0,
                                            UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 0);
-                *seq = 2;
+                *seq = UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_RULES;
             } else {
-                *seq = 3;
+                *seq = UNION_ONESELF_OFFER_PARTY_SEQ_ASK_ACCEPT;
             }
         } else if (UnionMain_SendActivityReply(0) == TRUE) {
             UnionMsg_CreateAndPrint(unisys, field, 0x13d);
@@ -1021,17 +1109,17 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
             return TRUE;
         }
         break;
-    case 2:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE) {
-            *seq = 3;
+            *seq = UNION_ONESELF_OFFER_PARTY_SEQ_ASK_ACCEPT;
         }
         break;
-    case 3:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_ASK_ACCEPT:
         UnionMsg_FreeRulesWindow(unisys);
         UnionMsg_CreateYesNo(unisys, field);
         (*seq)++;
         break;
-    case 4:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_CHECK_ACCEPT:
         situ->result = 0;
         if (UnionMsg_UpdateYesNo(unisys, &yes) == TRUE) {
             party = GameData_GetParty(unisys->param->gameData);
@@ -1064,44 +1152,44 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_SEND_REPLY:
         if (UnionMain_SendActivityReply(situ->mycomm.activityReply) == TRUE) {
             if (situ->partyCheck != 0 && situ->boxCheck != 0) {
-                *seq = 6;
+                *seq = UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_PARTY_RULES;
             } else {
-                *seq = 10;
+                *seq = UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_RESULT;
             }
         }
         break;
-    case 6:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_PARTY_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, situ->partyCheck,
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
-    case 7:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_PARTY_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
             if (situ->boxCheck == -1) {
-                *seq = 10;
+                *seq = UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_RESULT;
             } else {
                 (*seq)++;
             }
         }
         break;
-    case 8:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_SHOW_BOX_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
-    case 9:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_WAIT_BOX_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
-            *seq = 10;
+            *seq = UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_RESULT;
         }
         break;
-    case 10:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_PRINT_RESULT:
         if (situ->mycomm.activityReply == 0) {
             if (situ->result == 1) {
                 UnionMsg_CreateAndPrint(unisys, field, 0x28);
@@ -1116,9 +1204,9 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
             return TRUE;
         }
         UnionOneself_SetNextStep(unisys, UNION_STEP_FOR_ACTIVITY(situ->mycomm.chosenActivity));
-        *seq = 11;
+        *seq = UNION_ONESELF_OFFER_PARTY_SEQ_DONE;
         break;
-    case 11:
+    case UNION_ONESELF_OFFER_PARTY_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
@@ -1127,6 +1215,20 @@ static BOOL UnionOneself_StepOfferParty(UnionSystem *unisys, UnionSelf *situ, Fi
 static BOOL UnionOneself_StepOfferPartyEnd(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     return TRUE;
 }
+
+// The rules menu, UnionSelf.seq: open the kind and format menus, show the rules, and pick the activity
+enum {
+    UNION_ONESELF_RULE_SELECT_SEQ_INIT,
+    UNION_ONESELF_RULE_SELECT_SEQ_OPEN_MENU,
+    UNION_ONESELF_RULE_SELECT_SEQ_UPDATE_MENU,
+    UNION_ONESELF_RULE_SELECT_SEQ_SHOW_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_WAIT_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_SHOW_PARTY_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_WAIT_PARTY_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_SHOW_BOX_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_WAIT_BOX_RULES,
+    UNION_ONESELF_RULE_SELECT_SEQ_RETRY,
+};
 
 static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     BOOL enter;
@@ -1140,11 +1242,11 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         return FALSE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_RULE_SELECT_SEQ_INIT:
         situ->result = 0;
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_RULE_SELECT_SEQ_OPEN_MENU:
         if (situ->result == UNION_RULE_MENU_FOUR) {
             UnionMsg_CreateInfoWindow(unisys, field);
         } else if (situ->result == UNION_RULE_MENU_PLAYERS) {
@@ -1153,7 +1255,7 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
         UnionMsg_CreateRuleMenu(unisys, field, situ->result, situ->ruleSel);
         (*seq)++;
         break;
-    case 2:
+    case UNION_ONESELF_RULE_SELECT_SEQ_UPDATE_MENU:
         choice = UnionMsg_UpdateRuleMenu(unisys, &enter, situ->ruleSel, &fixed, field);
         if (enter == 1) {
             situ->result = choice;
@@ -1174,13 +1276,13 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
             UnionMsg_FreeRuleMenu(unisys);
             UnionOneself_SetRegulation(unisys, choice);
             situ->mycomm.chosenActivity = choice;
-            *seq = 3;
+            *seq = UNION_ONESELF_RULE_SELECT_SEQ_SHOW_RULES;
         } else if (choice != -1) {
             UnionMsg_FreeInfoWindow(unisys);
             UnionMsg_FreeRuleMenu(unisys);
             if (!UnionOneself_CheckRegulation(unisys, choice, &situ->partyCheck, &situ->boxCheck)) {
                 UnionMsg_CreateAndPrint(unisys, field, 0x13e);
-                *seq = 5;
+                *seq = UNION_ONESELF_RULE_SELECT_SEQ_SHOW_PARTY_RULES;
             } else {
                 situ->mycomm.chosenActivity = choice;
                 UnionOneself_SetNextStep(unisys, UNION_STEP_OFFER);
@@ -1188,106 +1290,123 @@ static BOOL UnionOneself_StepRuleSelectRun(UnionSystem *unisys, UnionSelf *situ,
             }
         }
         break;
-    case 3:
+    case UNION_ONESELF_RULE_SELECT_SEQ_SHOW_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 0);
         (*seq)++;
         break;
-    case 4:
+    case UNION_ONESELF_RULE_SELECT_SEQ_WAIT_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
-            *seq = 1;
+            *seq = UNION_ONESELF_RULE_SELECT_SEQ_OPEN_MENU;
         }
         break;
-    case 5:
+    case UNION_ONESELF_RULE_SELECT_SEQ_SHOW_PARTY_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, situ->partyCheck,
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
-    case 6:
+    case UNION_ONESELF_RULE_SELECT_SEQ_WAIT_PARTY_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
             if (situ->boxCheck == -1) {
-                *seq = 9;
+                *seq = UNION_ONESELF_RULE_SELECT_SEQ_RETRY;
             } else {
                 (*seq)++;
             }
         }
         break;
-    case 7:
+    case UNION_ONESELF_RULE_SELECT_SEQ_SHOW_BOX_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
-    case 8:
+    case UNION_ONESELF_RULE_SELECT_SEQ_WAIT_BOX_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
-            *seq = 9;
+            *seq = UNION_ONESELF_RULE_SELECT_SEQ_RETRY;
         }
         break;
-    case 9:
+    case UNION_ONESELF_RULE_SELECT_SEQ_RETRY:
         UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetWhatToDoMessage(situ->mycomm.target->beacon.gender));
-        *seq = 0;
+        *seq = UNION_ONESELF_RULE_SELECT_SEQ_INIT;
         break;
     }
     return FALSE;
 }
+
+// Answering the player who spoke, UnionSelf.seq: show the activity's message, the rules of a battle, ask to join
+// and start the activity
+enum {
+    UNION_ONESELF_ANSWER_SEQ_SHOW_ACTIVITY,
+    UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE,
+    UNION_ONESELF_ANSWER_SEQ_WAIT_END,
+    UNION_ONESELF_ANSWER_SEQ_WAIT_RULES,
+    UNION_ONESELF_ANSWER_SEQ_ASK_ACCEPT,
+    UNION_ONESELF_ANSWER_SEQ_CHECK_ACCEPT,
+    UNION_ONESELF_ANSWER_SEQ_SHOW_PARTY_RULES,
+    UNION_ONESELF_ANSWER_SEQ_WAIT_PARTY_RULES,
+    UNION_ONESELF_ANSWER_SEQ_SHOW_BOX_RULES,
+    UNION_ONESELF_ANSWER_SEQ_WAIT_BOX_RULES,
+    UNION_ONESELF_ANSWER_SEQ_ASK_JOIN,
+    UNION_ONESELF_ANSWER_SEQ_CHECK_JOIN,
+};
 
 static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     u16 index = UnionOneself_GetEntryIndex(situ->mycomm.targetActorId);
     u32 activity = unisys->found[index].beacon.activity;
 
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_ANSWER_SEQ_SHOW_ACTIVITY:
         situ->mycomm.chosenActivity = activity;
         switch (activity) {
-        case 1:
+        case UNION_ACTIVITY_TALKING:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBusyTrainerMessage(situ->mycomm.target->beacon.gender));
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-            *seq = 2;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             break;
-        case 2:
+        case UNION_ACTIVITY_CARD:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetCardChatMessage(situ->mycomm.target->beacon.gender));
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-            *seq = 2;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
+        case UNION_ACTIVITY_SINGLE:
+        case UNION_ACTIVITY_SINGLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_SINGLE_FLAT:
+        case UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_DOUBLE:
+        case UNION_ACTIVITY_DOUBLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_DOUBLE_FLAT:
+        case UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_TRIPLE:
+        case UNION_ACTIVITY_TRIPLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_TRIPLE_FLAT:
+        case UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_ROTATION:
+        case UNION_ACTIVITY_ROTATION_NO_LAUNCHER:
+        case UNION_ACTIVITY_ROTATION_FLAT:
+        case UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleChatMessage(situ->mycomm.target->beacon.gender));
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-            *seq = 2;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             break;
-        case 20:
-        case 21:
-        case 22:
-        case 23:
+        case UNION_ACTIVITY_MULTI:
+        case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
+        case UNION_ACTIVITY_MULTI_FLAT:
+        case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
             if (unisys->found[index].beacon.memberCount < UnionMsg_GetActivityPlayerCount(activity)) {
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetJoinMultiBattleMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetRegulation(unisys, activity);
                 UnionMsg_CreateRulesWindow(unisys, field, 0, UnionOneself_HasWonderLauncher(activity), 0);
-                *seq = 3;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_RULES;
             } else {
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetBattleChatMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 2;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             }
             break;
         case UNION_ACTIVITY_SPIN_TRADE:
@@ -1295,59 +1414,59 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 !unisys->found[index].beacon.entryClosed) {
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetJoinSpinTradeMessage(situ->mycomm.target->beacon.gender));
-                *seq = 10;
+                *seq = UNION_ONESELF_ANSWER_SEQ_ASK_JOIN;
             } else {
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetSpinTradeChatMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 2;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             }
             break;
-        case 3:
+        case UNION_ACTIVITY_DRAW:
             if (unisys->found[index].beacon.memberCount < UnionMsg_GetActivityPlayerCount(activity)) {
                 UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetJoinDrawMessage(situ->mycomm.target->beacon.gender));
-                *seq = 10;
+                *seq = UNION_ONESELF_ANSWER_SEQ_ASK_JOIN;
             } else {
                 UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetDrawChatMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 2;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             }
             break;
         case UNION_ACTIVITY_TRADE:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetTradeChatMessage(situ->mycomm.target->beacon.gender));
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-            *seq = 2;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             break;
         default:
             UnionMsg_CreateAndPrint(unisys, field, 0x151);
             UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-            *seq = 2;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             break;
         }
         break;
-    case 2:
+    case UNION_ONESELF_ANSWER_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             return TRUE;
         }
         break;
-    case 1:
+    case UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             return TRUE;
         }
         break;
-    case 3:
+    case UNION_ONESELF_ANSWER_SEQ_WAIT_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE) {
-            *seq = 4;
+            *seq = UNION_ONESELF_ANSWER_SEQ_ASK_ACCEPT;
         }
         break;
-    case 4:
+    case UNION_ONESELF_ANSWER_SEQ_ASK_ACCEPT:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             UnionMsg_FreeRulesWindow(unisys);
             UnionMsg_CreateYesNo(unisys, field);
             (*seq)++;
         }
         break;
-    case 5: {
+    case UNION_ONESELF_ANSWER_SEQ_CHECK_ACCEPT: {
         BOOL yes;
 
         if (UnionMsg_UpdateYesNo(unisys, &yes) == TRUE) {
@@ -1356,23 +1475,23 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetBattleDeclineMessage(situ->mycomm.target->beacon.gender));
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 2;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             } else if (!UnionOneself_CheckRegulation(unisys, situ->mycomm.chosenActivity, &situ->partyCheck,
                                                      &situ->boxCheck)) {
                 UnionMsg_CreateAndPrint(unisys, field, 0x13e);
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 6;
+                *seq = UNION_ONESELF_ANSWER_SEQ_SHOW_PARTY_RULES;
             } else {
                 situ->mycomm.activityReply = yes;
                 UnionOneself_SetNextStep(unisys, UNION_STEP_RECRUIT);
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetBattleAcceptMessage(situ->mycomm.target->beacon.gender));
-                *seq = 1;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE;
             }
         }
         break;
     }
-    case 6:
+    case UNION_ONESELF_ANSWER_SEQ_SHOW_PARTY_RULES:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             return TRUE;
         }
@@ -1380,36 +1499,36 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 1);
         (*seq)++;
         break;
-    case 7:
+    case UNION_ONESELF_ANSWER_SEQ_WAIT_PARTY_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
             if (situ->boxCheck == -1) {
-                *seq = 1;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE;
             } else {
                 (*seq)++;
             }
         }
         break;
-    case 8:
+    case UNION_ONESELF_ANSWER_SEQ_SHOW_BOX_RULES:
         UnionMsg_CreateRulesWindow(unisys, field, situ->boxCheck,
                                    UnionOneself_HasWonderLauncher(situ->mycomm.chosenActivity), 2);
         (*seq)++;
         break;
-    case 9:
+    case UNION_ONESELF_ANSWER_SEQ_WAIT_BOX_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE &&
             (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeRulesWindow(unisys);
-            *seq = 1;
+            *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE;
         }
         break;
-    case 10:
+    case UNION_ONESELF_ANSWER_SEQ_ASK_JOIN:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             UnionMsg_CreateYesNo(unisys, field);
             (*seq)++;
         }
         break;
-    case 11: {
+    case UNION_ONESELF_ANSWER_SEQ_CHECK_JOIN: {
         BOOL yes;
 
         if (UnionMsg_UpdateYesNo(unisys, &yes) == TRUE) {
@@ -1426,11 +1545,11 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                     break;
                 }
                 UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                *seq = 2;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
             } else {
                 situ->mycomm.activityReply = yes;
                 UnionOneself_SetNextStep(unisys, UNION_STEP_RECRUIT);
-                *seq = 1;
+                *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_MESSAGE;
                 switch (situ->mycomm.chosenActivity) {
                 case UNION_ACTIVITY_DRAW:
                     UnionMsg_CreateAndPrint(unisys, field,
@@ -1443,12 +1562,12 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
                         UnionMsg_CreateAndPrint(
                             unisys, field, UnionMsg_GetTargetEggCannotTradeMessage(situ->mycomm.target->beacon.gender));
                         UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                        *seq = 2;
+                        *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
                     } else if (countAllEggsInParty(party) == 0) {
                         UnionMsg_CreateAndPrint(unisys, field,
                                                 UnionMsg_GetNoEggMessage(situ->mycomm.target->beacon.gender));
                         UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                        *seq = 2;
+                        *seq = UNION_ONESELF_ANSWER_SEQ_WAIT_END;
                     } else {
                         UnionMsg_CreateAndPrint(unisys, field,
                                                 UnionMsg_GetEggTradeAcceptMessage(situ->mycomm.target->beacon.gender));
@@ -1464,47 +1583,53 @@ static BOOL UnionOneself_StepAnswerRun(UnionSystem *unisys, UnionSelf *situ, Fie
     return FALSE;
 }
 
+// Answering a member's actor, UnionSelf.seq: show the activity's message and wait for a key
+enum {
+    UNION_ONESELF_ANSWER_MEMBER_SEQ_SHOW_ACTIVITY,
+    UNION_ONESELF_ANSWER_MEMBER_SEQ_WAIT_END,
+};
+
 static BOOL UnionOneself_StepAnswerMember(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     u8 gender;
     u8 activity;
 
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_ANSWER_MEMBER_SEQ_SHOW_ACTIVITY:
         gender = UnionOneself_GetActorGender(unisys, situ->mycomm.targetActorId);
         activity = unisys->found[UnionOneself_GetEntryIndex(situ->mycomm.targetActorId)].beacon.activity;
         switch (activity) {
-        case 1:
+        case UNION_ACTIVITY_TALKING:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBusyTrainerMessage(gender));
             break;
-        case 2:
+        case UNION_ACTIVITY_CARD:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetCardChatMessage(gender));
             break;
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
-        case 14:
-        case 15:
-        case 16:
-        case 17:
-        case 18:
-        case 19:
-        case 20:
-        case 21:
-        case 22:
-        case 23:
+        case UNION_ACTIVITY_SINGLE:
+        case UNION_ACTIVITY_SINGLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_SINGLE_FLAT:
+        case UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_DOUBLE:
+        case UNION_ACTIVITY_DOUBLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_DOUBLE_FLAT:
+        case UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_TRIPLE:
+        case UNION_ACTIVITY_TRIPLE_NO_LAUNCHER:
+        case UNION_ACTIVITY_TRIPLE_FLAT:
+        case UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_ROTATION:
+        case UNION_ACTIVITY_ROTATION_NO_LAUNCHER:
+        case UNION_ACTIVITY_ROTATION_FLAT:
+        case UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER:
+        case UNION_ACTIVITY_MULTI:
+        case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
+        case UNION_ACTIVITY_MULTI_FLAT:
+        case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleChatMessage(gender));
             break;
         case UNION_ACTIVITY_SPIN_TRADE:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetSpinTradeChatMessage(gender));
             break;
-        case 3:
+        case UNION_ACTIVITY_DRAW:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetDrawChatMessage(gender));
             break;
         case UNION_ACTIVITY_TRADE:
@@ -1517,7 +1642,7 @@ static BOOL UnionOneself_StepAnswerMember(UnionSystem *unisys, UnionSelf *situ, 
         UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_ANSWER_MEMBER_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             return TRUE;
         }
@@ -1525,6 +1650,13 @@ static BOOL UnionOneself_StepAnswerMember(UnionSystem *unisys, UnionSelf *situ, 
     }
     return FALSE;
 }
+
+// The game version the trainer card shows, UnionOneself_GetCardVersion's result: 21 for the first pair, 22
+// otherwise
+enum {
+    UNION_ONESELF_CARD_VERSION_BW = 0x15,
+    UNION_ONESELF_CARD_VERSION_B2W2 = 0x16,
+};
 
 // The version of the game of the players in the communication, for the card to show: 21 when a player has the first
 // pair's
@@ -1543,11 +1675,26 @@ static u32 UnionOneself_GetCardVersion(UnionSystem *unisys, BOOL remote) {
         u32 version = PlayerInfo_GetVersion(info);
 
         if (version == VERSION_WHITE || version == VERSION_BLACK) {
-            return 0x15;
+            return UNION_ONESELF_CARD_VERSION_BW;
         }
     }
-    return 0x16;
+    return UNION_ONESELF_CARD_VERSION_B2W2;
 }
+
+// The trainer cards, UnionSelf.seq: make and send the cards, show the other player's, then wait for the end message
+enum {
+    UNION_ONESELF_CARD_SEQ_CREATE_CARDS,
+    UNION_ONESELF_CARD_SEQ_WAIT_PAIR,
+    UNION_ONESELF_CARD_SEQ_SEND_CARD,
+    UNION_ONESELF_CARD_SEQ_SEND_CARD_HEAD,
+    UNION_ONESELF_CARD_SEQ_WAIT_CARD,
+    UNION_ONESELF_CARD_SEQ_SYNC_VIEW,
+    UNION_ONESELF_CARD_SEQ_WAIT_SYNC_VIEW,
+    UNION_ONESELF_CARD_SEQ_SHOW_CARD,
+    UNION_ONESELF_CARD_SEQ_WAIT_CARD_VIEW,
+    UNION_ONESELF_CARD_SEQ_PRINT_END,
+    UNION_ONESELF_CARD_SEQ_WAIT_END,
+};
 
 static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (UnionOneself_CheckNetError(unisys) == TRUE) {
@@ -1558,7 +1705,7 @@ static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_CARD_SEQ_CREATE_CARDS:
         GFL_ASSERT(unisys->alloc.my_card == NULL && unisys->alloc.target_card == NULL);
         unisys->alloc.my_card = GFL_HeapAllocate(HEAPID_UNION, sizeof(TrainerCardData), TRUE, "union_oneself.c", 2594);
         unisys->alloc.target_card =
@@ -1572,26 +1719,26 @@ static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field
                                                           situ->mycomm.target->beacon.province));
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_CARD_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 3, 0x14) == TRUE) {
-            if (UnionOneself_GetCardVersion(unisys, FALSE) == 0x16) {
-                *seq = 2;
+            if (UnionOneself_GetCardVersion(unisys, FALSE) == UNION_ONESELF_CARD_VERSION_B2W2) {
+                *seq = UNION_ONESELF_CARD_SEQ_SEND_CARD;
             } else {
-                *seq = 3;
+                *seq = UNION_ONESELF_CARD_SEQ_SEND_CARD_HEAD;
             }
         }
         break;
-    case 2:
+    case UNION_ONESELF_CARD_SEQ_SEND_CARD:
         if (UnionMain_SendCard(unisys) == TRUE) {
-            *seq = 4;
+            *seq = UNION_ONESELF_CARD_SEQ_WAIT_CARD;
         }
         break;
-    case 3:
+    case UNION_ONESELF_CARD_SEQ_SEND_CARD_HEAD:
         if (UnionMain_SendCardHead(unisys) == TRUE) {
-            *seq = 4;
+            *seq = UNION_ONESELF_CARD_SEQ_WAIT_CARD;
         }
         break;
-    case 4:
+    case UNION_ONESELF_CARD_SEQ_WAIT_CARD:
         if (situ->mycomm.recvFlag == 1 && UnionMsg_IsPrintDone(unisys) == TRUE) {
             unisys->alloc.target_card->isLocked = 1;
             unisys->alloc.cardParam =
@@ -1599,30 +1746,30 @@ static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_CARD_SEQ_SYNC_VIEW:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 4, 0x14);
         (*seq)++;
         break;
-    case 6:
+    case UNION_ONESELF_CARD_SEQ_WAIT_SYNC_VIEW:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 4, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 7:
+    case UNION_ONESELF_CARD_SEQ_SHOW_CARD:
         UnionCommand_Set(unisys, 1, unisys->alloc.cardParam);
         (*seq)++;
         break;
-    case 8:
+    case UNION_ONESELF_CARD_SEQ_WAIT_CARD_VIEW:
         if (!UnionCommand_IsActive(unisys)) {
             (*seq)++;
         }
         break;
-    case 9:
+    case UNION_ONESELF_CARD_SEQ_PRINT_END:
         UnionMsg_CreateAndPrint(unisys, field, 0x10);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 5, 0x14);
         (*seq)++;
         break;
-    case 10:
+    case UNION_ONESELF_CARD_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) && NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 5, 0x14) == TRUE) {
             GFL_HeapFree(unisys->alloc.my_card);
             GFL_HeapFree(unisys->alloc.target_card);
@@ -1641,22 +1788,33 @@ static BOOL UnionOneself_StepCardRun(UnionSystem *unisys, UnionSelf *situ, Field
     return FALSE;
 }
 
+// The trade, UnionSelf.seq: print the intro, wait for the other machine, run the trade command and print the end
+enum {
+    UNION_ONESELF_TRADE_SEQ_PRINT_INTRO,
+    UNION_ONESELF_TRADE_SEQ_WAIT_INTRO,
+    UNION_ONESELF_TRADE_SEQ_WAIT_PAIR,
+    UNION_ONESELF_TRADE_SEQ_START_TRADE,
+    UNION_ONESELF_TRADE_SEQ_WAIT_TRADE,
+    UNION_ONESELF_TRADE_SEQ_PRINT_END,
+    UNION_ONESELF_TRADE_SEQ_WAIT_END,
+};
+
 static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
-    if (*seq != 4 && UnionOneself_CheckNetError(unisys) == TRUE) {
+    if (*seq != UNION_ONESELF_TRADE_SEQ_WAIT_TRADE && UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_TRADE_SEQ_PRINT_INTRO:
         UnionMsg_CreateAndPrint(unisys, field, 0x26);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_TRADE_SEQ_WAIT_INTRO:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 6, 0x14);
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_TRADE_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 6, 0x14) == TRUE) {
             GameData *gameData = GSYS_GetGameData(unisys->param->gsys);
             RivalDataSave *rival = getHollow_RivalData(GameData_GetSaveControl(gameData));
@@ -1666,7 +1824,7 @@ static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             (*seq)++;
         }
         break;
-    case 3: {
+    case UNION_ONESELF_TRADE_SEQ_START_TRADE: {
         PokemonTradeParam *param =
             GFL_HeapAllocate(HEAPID_UNION, sizeof(PokemonTradeParam), TRUE, "union_oneself.c", 2766);
         EvolutionDemoParam *evolution;
@@ -1688,7 +1846,7 @@ static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Fiel
         (*seq)++;
         break;
     }
-    case 4:
+    case UNION_ONESELF_TRADE_SEQ_WAIT_TRADE:
         if (!UnionCommand_IsActive(unisys)) {
             PokemonTradeParam *param = unisys->cmdArg;
 
@@ -1699,12 +1857,12 @@ static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_TRADE_SEQ_PRINT_END:
         UnionMsg_CreateAndPrint(unisys, field, 0x10);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 7, 0x14);
         (*seq)++;
         break;
-    case 6:
+    case UNION_ONESELF_TRADE_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) && NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 7, 0x14) == TRUE) {
             if (GFL_NetIsParent() == TRUE) {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_PARENT);
@@ -1718,6 +1876,17 @@ static BOOL UnionOneself_StepTradeRun(UnionSystem *unisys, UnionSelf *situ, Fiel
     return FALSE;
 }
 
+// Joining a recruit, UnionSelf.seq: change over, wait for the other machine, choose the join step, then wait for
+// the busy message
+enum {
+    UNION_ONESELF_RECRUIT_SEQ_CHANGEOVER,
+    UNION_ONESELF_RECRUIT_SEQ_WAIT_CONNECT,
+    UNION_ONESELF_RECRUIT_SEQ_SHOW_BUSY,
+    UNION_ONESELF_RECRUIT_SEQ_WAIT_END,
+    UNION_ONESELF_RECRUIT_SEQ_REQUEST_LINK,
+    UNION_ONESELF_RECRUIT_SEQ_WAIT_LINK,
+};
+
 static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     u16 entryIndex = UnionOneself_GetEntryIndex(situ->mycomm.targetActorId);
     int needed;
@@ -1726,37 +1895,37 @@ static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Fi
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_RECRUIT_SEQ_CHANGEOVER:
         situ->mycomm.sameActivityOnly = 1;
         UnionComm_SetCommandBase(situ->mycomm.chosenActivity);
         GFL_NetSetChangeoverMode(2, 1, unisys->found[entryIndex].mac);
         situ->wait = 0;
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_RECRUIT_SEQ_WAIT_CONNECT:
         if (UnionMsg_IsPrintDone(unisys)) {
             if (GFL_NetGetNegotiatedCount() > 1) {
                 GFL_NetSetDisconnectError(TRUE);
                 needed = UnionMsg_GetActivityPlayerCount(situ->mycomm.chosenActivity);
                 if (needed <= GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-                    *seq = 4;
+                    *seq = UNION_ONESELF_RECRUIT_SEQ_REQUEST_LINK;
                 } else {
                     UnionComm_SetSelf(unisys, UNION_SELF_PARENT, (u32)&unisys->found[entryIndex]);
                     situ->mycomm.joinedRecruit = 1;
                     switch (situ->mycomm.chosenActivity) {
-                    case 20:
+                    case UNION_ACTIVITY_MULTI:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_MULTI_0);
                         break;
-                    case 21:
+                    case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_MULTI_1);
                         break;
-                    case 22:
+                    case UNION_ACTIVITY_MULTI_FLAT:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_MULTI_2);
                         break;
-                    case 23:
+                    case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_MULTI_3);
                         break;
-                    case 3:
+                    case UNION_ACTIVITY_DRAW:
                         UnionOneself_SetNextStep(unisys, UNION_STEP_JOIN_DRAW);
                         break;
                     case UNION_ACTIVITY_SPIN_TRADE:
@@ -1766,63 +1935,71 @@ static BOOL UnionOneself_StepRecruitRun(UnionSystem *unisys, UnionSelf *situ, Fi
                         GFL_ASSERT(0);
                         break;
                     }
-                    *seq = 3;
+                    *seq = UNION_ONESELF_RECRUIT_SEQ_WAIT_END;
                 }
             } else {
                 situ->wait++;
                 if (situ->wait > 600 || (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
                     situ->mycomm.sameActivityOnly = 0;
                     UnionOneself_SetNextStep(unisys, UNION_STEP_IDLE);
-                    *seq = 4;
+                    *seq = UNION_ONESELF_RECRUIT_SEQ_REQUEST_LINK;
                 }
             }
         }
         break;
-    case 2:
+    case UNION_ONESELF_RECRUIT_SEQ_SHOW_BUSY:
         switch (situ->mycomm.chosenActivity) {
-        case 20:
-        case 21:
-        case 22:
-        case 23:
+        case UNION_ACTIVITY_MULTI:
+        case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
+        case UNION_ACTIVITY_MULTI_FLAT:
+        case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleBusyMessage(situ->mycomm.target->beacon.gender));
             break;
-        case 3:
+        case UNION_ACTIVITY_DRAW:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetDrawBusyMessage(situ->mycomm.target->beacon.gender));
             break;
         case UNION_ACTIVITY_SPIN_TRADE:
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetEggTradeBusyMessage(situ->mycomm.target->beacon.gender));
             break;
         }
-        *seq = 3;
+        *seq = UNION_ONESELF_RECRUIT_SEQ_WAIT_END;
         break;
-    case 3:
+    case UNION_ONESELF_RECRUIT_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             return TRUE;
         }
         break;
-    case 4:
+    case UNION_ONESELF_RECRUIT_SEQ_REQUEST_LINK:
         UnionComm_RequestLink0(unisys);
         (*seq)++;
         break;
-    case 5:
+    case UNION_ONESELF_RECRUIT_SEQ_WAIT_LINK:
         if (!UnionComm_IsLinkRequested(unisys)) {
-            *seq = 2;
+            *seq = UNION_ONESELF_RECRUIT_SEQ_SHOW_BUSY;
         }
         break;
     }
     return FALSE;
 }
 
+// Leaving the group, UnionSelf.seq: stop the group, take the parent out, and wait for the end message
+enum {
+    UNION_ONESELF_LEAVE_SEQ_ACTIVATE_GROUP,
+    UNION_ONESELF_LEAVE_SEQ_LEAVE_GROUP,
+    UNION_ONESELF_LEAVE_SEQ_WAIT_LINK,
+    UNION_ONESELF_LEAVE_SEQ_WAIT_END,
+};
+
 static BOOL UnionOneself_StepLeaveRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (*seq < 3 && UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_LEAVE_SEQ_ACTIVATE_GROUP:
         UnionComm_ActivateGroup(unisys);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_LEAVE_SEQ_LEAVE_GROUP:
         if (!UnionComm_IsLinkRequested(unisys) && GFL_NetIsEnded() == TRUE) {
             if (situ->mycomm.parent != NULL) {
                 UnionGroup_RemoveBeaconMember(&situ->mycomm, situ->mycomm.parent);
@@ -1832,12 +2009,12 @@ static BOOL UnionOneself_StepLeaveRun(UnionSystem *unisys, UnionSelf *situ, Fiel
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_LEAVE_SEQ_WAIT_LINK:
         if (!UnionComm_IsLinkRequested(unisys)) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_LEAVE_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & UNION_PAD_ANY)) {
             return TRUE;
         }
@@ -1846,28 +2023,43 @@ static BOOL UnionOneself_StepLeaveRun(UnionSystem *unisys, UnionSelf *situ, Fiel
     return FALSE;
 }
 
+// Joining an activity's step, UnionSelf.seq: send the entry request, wait for its answer, start the activity and
+// wait for it to end
+enum {
+    UNION_ONESELF_JOIN_SEQ_CHECK_RECRUIT,
+    UNION_ONESELF_JOIN_SEQ_SEND_PAIR,
+    UNION_ONESELF_JOIN_SEQ_WAIT_PAIR,
+    UNION_ONESELF_JOIN_SEQ_START_ACTIVITY,
+    UNION_ONESELF_JOIN_SEQ_WAIT_ACTIVITY,
+    UNION_ONESELF_JOIN_SEQ_WAIT_LINK,
+    UNION_ONESELF_JOIN_SEQ_SEND_ENTRY_REQUEST,
+    UNION_ONESELF_JOIN_SEQ_CHECK_REPLY,
+    UNION_ONESELF_JOIN_SEQ_WAIT_END,
+};
+
 static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
-    if (*seq != 4 && *seq != 5 && *seq != 8 && UnionOneself_CheckNetError(unisys) == TRUE) {
+    if (*seq != UNION_ONESELF_JOIN_SEQ_WAIT_ACTIVITY && *seq != UNION_ONESELF_JOIN_SEQ_WAIT_LINK &&
+        *seq != UNION_ONESELF_JOIN_SEQ_WAIT_END && UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_JOIN_SEQ_CHECK_RECRUIT:
         if (situ->mycomm.joinedRecruit == 1) {
-            *seq = 6;
+            *seq = UNION_ONESELF_JOIN_SEQ_SEND_ENTRY_REQUEST;
             break;
         }
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_JOIN_SEQ_SEND_PAIR:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 8, 0x14);
         (*seq)++;
         break;
-    case 2:
+    case UNION_ONESELF_JOIN_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 8, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_JOIN_SEQ_START_ACTIVITY:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             if (situ->step == UNION_STEP_JOIN_DRAW) {
                 UnionDrawParam *param =
@@ -1890,7 +2082,7 @@ static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_JOIN_SEQ_WAIT_ACTIVITY:
         if (!UnionCommand_IsActive(unisys)) {
             GFL_HeapFree(unisys->cmdArg);
             unisys->cmdArg = NULL;
@@ -1902,17 +2094,17 @@ static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_JOIN_SEQ_WAIT_LINK:
         if (!UnionComm_IsLinkRequested(unisys)) {
             return TRUE;
         }
         break;
-    case 6:
+    case UNION_ONESELF_JOIN_SEQ_SEND_ENTRY_REQUEST:
         if (UnionMain_SendEntryRequest(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 7:
+    case UNION_ONESELF_JOIN_SEQ_CHECK_REPLY:
         switch (unisys->entryReply) {
         case 1:
             if (situ->step == UNION_STEP_JOIN_DRAW) {
@@ -1922,7 +2114,7 @@ static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field
                 UnionMsg_CreateAndPrint(unisys, field,
                                         UnionMsg_GetSpinTradeStartMessage(situ->mycomm.target->beacon.gender));
             }
-            *seq = 3;
+            *seq = UNION_ONESELF_JOIN_SEQ_START_ACTIVITY;
             break;
         case 2:
             if (situ->step == UNION_STEP_JOIN_DRAW) {
@@ -1932,11 +2124,11 @@ static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field
                                         UnionMsg_GetEggTradeBusyMessage(situ->mycomm.target->beacon.gender));
             }
             UnionComm_RequestLink0(unisys);
-            *seq = 8;
+            *seq = UNION_ONESELF_JOIN_SEQ_WAIT_END;
             break;
         }
         break;
-    case 8:
+    case UNION_ONESELF_JOIN_SEQ_WAIT_END:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && !UnionComm_IsLinkRequested(unisys)) {
             UnionComm_SetSelf(unisys, UNION_SELF_PARENT, 0);
             return TRUE;
@@ -1946,37 +2138,48 @@ static BOOL UnionOneself_StepJoinRun(UnionSystem *unisys, UnionSelf *situ, Field
     return FALSE;
 }
 
+// The child's start of a colosseum battle, UnionSelf.seq: make the colosseum, print its start, sync the players and
+// start the battle command
+enum {
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_CREATE,
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_PRINT,
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_SEND_PAIR,
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_PAIR,
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_START_BATTLE,
+    UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_BATTLE,
+};
+
 static BOOL UnionOneself_StepColosseumChildRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (*seq < 4 && UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_CREATE:
         GFL_ASSERT(unisys->colosseum_sys == NULL);
         unisys->colosseum_sys = Colosseum_Create(unisys->param->gameData, unisys->param->gsys,
                                                  unisys->param->playerInfo, situ->mycomm.joinedRecruit);
         UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleStartMessage(situ->mycomm.target->beacon.gender));
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_PRINT:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_SEND_PAIR:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xb, 0x14);
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xb, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_START_BATTLE:
         UnionCommand_Set(unisys, situ->mycomm.chosenActivity + 1, NULL);
         (*seq)++;
         break;
-    case 5:
+    case UNION_ONESELF_COLOSSEUM_CHILD_SEQ_WAIT_BATTLE:
         if (!UnionCommand_IsActive(unisys)) {
             UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
             UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM);
@@ -1987,12 +2190,23 @@ static BOOL UnionOneself_StepColosseumChildRun(UnionSystem *unisys, UnionSelf *s
     return FALSE;
 }
 
+// The parent's start of a colosseum battle, UnionSelf.seq: print its start, sync the players, start the battle
+// command, then make the colosseum
+enum {
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_PRINT_START,
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_PRINT,
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_SEND_PAIR,
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_PAIR,
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_START_BATTLE,
+    UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_BATTLE,
+};
+
 static BOOL UnionOneself_StepColosseumParentRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     if (*seq < 4 && UnionOneself_CheckNetError(unisys) == TRUE) {
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_PRINT_START:
         if (situ->mycomm.joinedRecruit == 0) {
             UnionMsg_CreateAndPrint(unisys, field, UnionMsg_GetBattleStartMessage(situ->mycomm.target->beacon.gender));
         } else {
@@ -2001,18 +2215,18 @@ static BOOL UnionOneself_StepColosseumParentRun(UnionSystem *unisys, UnionSelf *
         }
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_PRINT:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_SEND_PAIR:
         if (situ->mycomm.joinedRecruit == 0) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xb, 0x14);
         }
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_PAIR:
         if (situ->mycomm.joinedRecruit == 0) {
             if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xb, 0x14) == TRUE) {
                 (*seq)++;
@@ -2021,11 +2235,11 @@ static BOOL UnionOneself_StepColosseumParentRun(UnionSystem *unisys, UnionSelf *
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_START_BATTLE:
         UnionCommand_Set(unisys, situ->mycomm.chosenActivity + 1, NULL);
         (*seq)++;
         break;
-    case 5:
+    case UNION_ONESELF_COLOSSEUM_PARENT_SEQ_WAIT_BATTLE:
         if (!UnionCommand_IsActive(unisys)) {
             GFL_ASSERT(unisys->colosseum_sys == NULL);
             unisys->colosseum_sys = Colosseum_Create(unisys->param->gameData, unisys->param->gsys,
@@ -2038,6 +2252,20 @@ static BOOL UnionOneself_StepColosseumParentRun(UnionSystem *unisys, UnionSelf *
     }
     return FALSE;
 }
+
+// The colosseum's entry menu, UnionSelf.seq: make the menu, wait for the players, then go on once it is done or
+// cancelled
+enum {
+    UNION_ONESELF_COLOSSEUM_SEQ_OPEN_ENTRY,
+    UNION_ONESELF_COLOSSEUM_SEQ_WAIT_PAIR,
+    UNION_ONESELF_COLOSSEUM_SEQ_PROCEED,
+    UNION_ONESELF_COLOSSEUM_SEQ_UPDATE_ENTRY,
+    UNION_ONESELF_COLOSSEUM_SEQ_UNUSED, // 4: empty, and nothing moves the sequence to it
+    UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE = 0x64,
+    UNION_ONESELF_COLOSSEUM_SEQ_PRINT_CANCELLED = 0xc8,
+    UNION_ONESELF_COLOSSEUM_SEQ_WAIT_CANCELLED = 0xc9,
+    UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_CANCELLED_SILENT = 0x12c, // 300: cancels without a message
+};
 
 static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
@@ -2053,15 +2281,15 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_SEQ_OPEN_ENTRY:
         if (UnionMsg_GetActivityPlayerCount(situ->mycomm.chosenActivity) == 2) {
             clsys->entryResult = COLOSSEUM_ENTRY_DONE;
             if (GFL_NetIsParent() == TRUE) {
                 if (UnionMain_SendColosseumUnkCA() == TRUE) {
-                    *seq = 0x64;
+                    *seq = UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE;
                 }
             } else {
-                *seq = 0x64;
+                *seq = UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE;
             }
             break;
         }
@@ -2093,7 +2321,7 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
         }
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_SEQ_WAIT_PAIR:
         if (situ->mycomm.joinedRecruit == 0) {
             if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xc, 0x14) == TRUE) {
                 GFL_NetSetAcceptConnect(NetHandle_GetOwn(), 1);
@@ -2103,12 +2331,12 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_SEQ_PROCEED:
         (*seq)++;
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_SEQ_UNUSED:
         break;
-    case 3: {
+    case UNION_ONESELF_COLOSSEUM_SEQ_UPDATE_ENTRY: {
         u32 result = CommEntryMenu_Update(clsys->entryMenu);
 
         if (result != COMM_ENTRY_MENU_RUNNING) {
@@ -2116,17 +2344,17 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
             clsys->entryMenu = NULL;
             switch (result) {
             case COMM_ENTRY_MENU_DONE:
-                *seq = 0x64;
+                *seq = UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE;
                 GFL_NetSetDisconnectError(TRUE);
                 break;
             case COMM_ENTRY_MENU_CANCELLED:
-                *seq = 0xc8;
+                *seq = UNION_ONESELF_COLOSSEUM_SEQ_PRINT_CANCELLED;
                 break;
             case COMM_ENTRY_MENU_REFUSED:
-                *seq = 0xc8;
+                *seq = UNION_ONESELF_COLOSSEUM_SEQ_PRINT_CANCELLED;
                 break;
             case COMM_ENTRY_MENU_ERROR:
-                *seq = 0xc8;
+                *seq = UNION_ONESELF_COLOSSEUM_SEQ_PRINT_CANCELLED;
                 break;
             default:
                 GFL_ASSERT(0);
@@ -2135,23 +2363,23 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
         }
         break;
     }
-    case 0x64:
+    case UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE:
         clsys->entryResult = COLOSSEUM_ENTRY_DONE;
         UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_SEND);
         return TRUE;
-    case 0xc8:
+    case UNION_ONESELF_COLOSSEUM_SEQ_PRINT_CANCELLED:
         UnionMsg_CreateAndPrint(unisys, field, 0x14c);
         clsys->entryResult = COLOSSEUM_ENTRY_CANCELLED;
         (*seq)++;
         break;
-    case 0xc9:
+    case UNION_ONESELF_COLOSSEUM_SEQ_WAIT_CANCELLED:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_END);
             UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
             return TRUE;
         }
         break;
-    case 0x12c:
+    case UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_CANCELLED_SILENT:
         clsys->entryResult = COLOSSEUM_ENTRY_CANCELLED;
         UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_END);
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
@@ -2172,6 +2400,23 @@ static void UnionOneself_RemoveColosseumMember(void *work, const PlayerInfo *inf
     UnionGroup_RemoveMember(&unisys->situ.mycomm, mac);
 }
 
+// Sending the colosseum's members, cards and start, UnionSelf.seq: the timing pairs, the member and card packets,
+// then the start
+enum {
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_START,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_START,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_REGISTER_COMMANDS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_COMMANDS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_MEMBER,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_MEMBERS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_SYNC_CARDS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_SYNC_CARDS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_CARDS,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_START,
+    UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD_HEAD = 0x12, // 18, when the other machine has the first pair
+};
+
 static BOOL UnionOneself_StepColosseumSendRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
     u8 netId = GFL_NetGetHandleNetId(NetHandle_GetOwn());
@@ -2182,31 +2427,31 @@ static BOOL UnionOneself_StepColosseumSendRun(UnionSystem *unisys, UnionSelf *si
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_START:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xd, 0x14);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_START:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xd, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_REGISTER_COMMANDS:
         Colosseum_RegisterCommands(unisys);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xe, 0x14);
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_COMMANDS:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xe, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_MEMBER:
         if (Colosseum_SendMember(&clsys->members[netId], FALSE) == TRUE) {
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_MEMBERS:
         if (UnionEff_AllColosseumMembersHere(clsys) == TRUE) {
             int count = GFL_NetGetNegotiatedCount();
             int i;
@@ -2221,35 +2466,35 @@ static BOOL UnionOneself_StepColosseumSendRun(UnionSystem *unisys, UnionSelf *si
             (*seq)++;
         }
         break;
-    case 6:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_SYNC_CARDS:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0xf, 0x14);
         (*seq)++;
         break;
-    case 7:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_SYNC_CARDS:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xf, 0x14) == TRUE) {
-            if (UnionOneself_GetCardVersion(unisys, TRUE) == 0x16) {
-                *seq = 8;
+            if (UnionOneself_GetCardVersion(unisys, TRUE) == UNION_ONESELF_CARD_VERSION_B2W2) {
+                *seq = UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD;
             } else {
-                *seq = 0x12;
+                *seq = UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD_HEAD;
             }
         }
         break;
-    case 8:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD:
         if (Colosseum_SendCard(clsys->card[netId]) == TRUE) {
-            *seq = 9;
+            *seq = UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_CARDS;
         }
         break;
-    case 0x12:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_SEND_CARD_HEAD:
         if (Colosseum_SendCardHead(clsys->cardCheck[netId]) == TRUE) {
-            *seq = 9;
+            *seq = UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_CARDS;
         }
         break;
-    case 9:
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_WAIT_CARDS:
         if (UnionEff_AllColosseumCardsIn(clsys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 10: {
+    case UNION_ONESELF_COLOSSEUM_SEND_SEQ_START: {
         RivalDataSave *rival = getHollow_RivalData(GameData_GetSaveControl(GSYS_GetGameData(unisys->param->gsys)));
         int count = GFL_NetGetNegotiatedCount();
         int i;
@@ -2318,6 +2563,15 @@ static BOOL UnionOneself_StepIdleColosseumRun(UnionSystem *unisys, UnionSelf *si
     return FALSE;
 }
 
+// Sending the vote and sitting down, UnionSelf.seq: send the vote, wait for its reply and face the seat
+enum {
+    UNION_ONESELF_COLOSSEUM_SIT_SEQ_START,
+    UNION_ONESELF_COLOSSEUM_SIT_SEQ_SEND_VOTE,
+    UNION_ONESELF_COLOSSEUM_SIT_SEQ_WAIT_REPLY,
+    UNION_ONESELF_COLOSSEUM_SIT_SEQ_SIT,
+    UNION_ONESELF_COLOSSEUM_SIT_SEQ_WAIT_SIT,
+};
+
 static BOOL UnionOneself_StepColosseumSeatRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
     FieldActor *actor;
@@ -2328,15 +2582,15 @@ static BOOL UnionOneself_StepColosseumSeatRun(UnionSystem *unisys, UnionSelf *si
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_SIT_SEQ_START:
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_SIT_SEQ_SEND_VOTE:
         if (Colosseum_SendVote(clsys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_SIT_SEQ_WAIT_REPLY:
         if (UnionMsg_IsPrintDone(unisys)) {
             u8 result = Colosseum_GetMyVoteReply(clsys);
 
@@ -2348,7 +2602,7 @@ static BOOL UnionOneself_StepColosseumSeatRun(UnionSystem *unisys, UnionSelf *si
             }
         }
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_SIT_SEQ_SIT:
         actor = FieldPlayer_GetActor(Field_GetPlayer(field));
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             UnionEff_GetEntrySpot(field, UnionMsg_GetActivityPlayerCount(situ->mycomm.chosenActivity), &pos);
@@ -2356,7 +2610,7 @@ static BOOL UnionOneself_StepColosseumSeatRun(UnionSystem *unisys, UnionSelf *si
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_SIT_SEQ_WAIT_SIT:
         actor = FieldPlayer_GetActor(Field_GetPlayer(field));
         if (FldAct_CheckAcmdEnd(actor) == TRUE) {
             FldAct_EndAcmd(actor);
@@ -2368,6 +2622,16 @@ static BOOL UnionOneself_StepColosseumSeatRun(UnionSystem *unisys, UnionSelf *si
     return FALSE;
 }
 
+// Standing up, UnionSelf.seq: clear the vote, send it, wait for the reply, then play the stand command
+enum {
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_CLEAR_VOTE,
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_SEND_VOTE,
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_WAIT_REPLY,
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_CLEAR_MESSAGES,
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_STAND,
+    UNION_ONESELF_COLOSSEUM_STAND_SEQ_WAIT_STAND,
+};
+
 static BOOL UnionOneself_StepColosseumLeaveRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
     FieldActor *actor = FieldPlayer_GetActor(Field_GetPlayer(field));
@@ -2378,32 +2642,32 @@ static BOOL UnionOneself_StepColosseumLeaveRun(UnionSystem *unisys, UnionSelf *s
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_CLEAR_VOTE:
         Colosseum_SetMyVote(clsys, COLOSSEUM_VOTE_NONE);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_SEND_VOTE:
         if (Colosseum_SendVote(clsys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_WAIT_REPLY:
         if (Colosseum_GetMyVoteReply(clsys) != COLOSSEUM_VOTE_REPLY_NONE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_CLEAR_MESSAGES:
         UnionMsg_FreeAll(unisys);
         (*seq)++;
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_STAND:
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             UnionEff_GetEntrySpot(field, UnionMsg_GetActivityPlayerCount(situ->mycomm.chosenActivity), &pos);
             FldAct_SetAcmd(actor, (pos & 1) ? 0xb : 0xa);
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_COLOSSEUM_STAND_SEQ_WAIT_STAND:
         if (FldAct_CheckAcmdEnd(actor) == TRUE) {
             FldAct_EndAcmd(actor);
             UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_IDLE);
@@ -2413,6 +2677,18 @@ static BOOL UnionOneself_StepColosseumLeaveRun(UnionSystem *unisys, UnionSelf *s
     }
     return FALSE;
 }
+
+// The party select, UnionSelf.seq: pick the party or the Battle Box, check it against the rules and show the rules
+// window
+enum {
+    UNION_ONESELF_PARTY_SELECT_SEQ_INIT,
+    UNION_ONESELF_PARTY_SELECT_SEQ_CHECK_BOX,
+    UNION_ONESELF_PARTY_SELECT_SEQ_CREATE_LIST,
+    UNION_ONESELF_PARTY_SELECT_SEQ_UPDATE_LIST,
+    UNION_ONESELF_PARTY_SELECT_SEQ_CHECK_REGULATION,
+    UNION_ONESELF_PARTY_SELECT_SEQ_WAIT_RULES,
+    UNION_ONESELF_PARTY_SELECT_SEQ_WAIT_KEY,
+};
 
 static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
@@ -2428,20 +2704,20 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
         return FALSE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_INIT:
         situ->result = 0;
         (*seq)++;
         // fallthrough
-    case 1:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_CHECK_BOX:
         if (BattleBoxSave_HasPkm(getBattleBox(GameData_GetSaveControl(unisys->param->gameData))) == TRUE) {
             (*seq)++;
         } else {
             clsys->partySource = 0;
             situ->result++;
-            *seq = 4;
+            *seq = UNION_ONESELF_PARTY_SELECT_SEQ_CHECK_REGULATION;
         }
         break;
-    case 2:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_CREATE_LIST:
         UnionMsg_FreeAll(unisys);
         UnionOneself_CheckPartyRegulation(unisys, &partyResult);
         UnionOneself_CheckBoxRegulation(unisys, &boxResult);
@@ -2459,7 +2735,7 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
                                    partyIneligible, boxIneligible, 0x15);
         (*seq)++;
         break;
-    case 3:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_UPDATE_LIST:
         if (PartySelectList_Main(unisys->alloc.partySelect) == TRUE) {
             result = PartySelectList_Delete(unisys->alloc.partySelect, &ineligible);
             unisys->alloc.partySelect = NULL;
@@ -2482,7 +2758,7 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
             (*seq)++;
         }
         break;
-    case 4: {
+    case UNION_ONESELF_PARTY_SELECT_SEQ_CHECK_REGULATION: {
         u32 count = 0;
 
         if (clsys->partySource == 0) {
@@ -2495,24 +2771,24 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
         if (count != 0) {
             UnionMsg_CreateMsgSystem(unisys, field);
             UnionMsg_CreateRulesWindow(unisys, field, count, UnionOneself_HasWonderLauncher(situ->activity), kind);
-            *seq = 5;
+            *seq = UNION_ONESELF_PARTY_SELECT_SEQ_WAIT_RULES;
         } else {
             UnionOneself_SetNextStep(unisys, UNION_STEP_PARTY_WAIT);
             return TRUE;
         }
         break;
     }
-    case 5:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_WAIT_RULES:
         if (UnionMsg_IsRulesPrinted(unisys, field) == TRUE) {
             UnionMsg_CreateAndPrint(unisys, field, 0x115);
             (*seq)++;
         }
         break;
-    case 6:
+    case UNION_ONESELF_PARTY_SELECT_SEQ_WAIT_KEY:
         if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
             UnionMsg_FreeRulesWindow(unisys);
             if (situ->result == 0) {
-                *seq = 0;
+                *seq = UNION_ONESELF_PARTY_SELECT_SEQ_INIT;
             } else {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_STAND);
                 return TRUE;
@@ -2522,6 +2798,15 @@ static BOOL UnionOneself_StepPartySelectRun(UnionSystem *unisys, UnionSelf *situ
     }
     return FALSE;
 }
+
+// Waiting for the other players' parties, UnionSelf.seq: send ready and wait, or cancel it
+enum {
+    UNION_ONESELF_PARTY_WAIT_SEQ_PRINT_WAITING,
+    UNION_ONESELF_PARTY_WAIT_SEQ_SEND_READY,
+    UNION_ONESELF_PARTY_WAIT_SEQ_WAIT_CANCEL,
+    UNION_ONESELF_PARTY_WAIT_SEQ_SEND_CANCEL = 0x64,
+    UNION_ONESELF_PARTY_WAIT_SEQ_WAIT_CANCEL_DONE = 0x65,
+};
 
 static BOOL UnionOneself_StepPartyWaitRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
@@ -2537,27 +2822,27 @@ static BOOL UnionOneself_StepPartyWaitRun(UnionSystem *unisys, UnionSelf *situ, 
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_PARTY_WAIT_SEQ_PRINT_WAITING:
         UnionMsg_CreateAndPrint(unisys, field, 0x116);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_PARTY_WAIT_SEQ_SEND_READY:
         if (Colosseum_SendReady() == TRUE) {
             clsys->readySent = 1;
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_PARTY_WAIT_SEQ_WAIT_CANCEL:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & PAD_BUTTON_B)) {
-            *seq = 0x64;
+            *seq = UNION_ONESELF_PARTY_WAIT_SEQ_SEND_CANCEL;
         }
         break;
-    case 0x64:
+    case UNION_ONESELF_PARTY_WAIT_SEQ_SEND_CANCEL:
         if (Colosseum_SendReadyCancel() == TRUE) {
             (*seq)++;
         }
         break;
-    case 0x65:
+    case UNION_ONESELF_PARTY_WAIT_SEQ_WAIT_CANCEL_DONE:
         if (clsys->readySent == 0) {
             UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_STAND);
             return TRUE;
@@ -2566,6 +2851,20 @@ static BOOL UnionOneself_StepPartyWaitRun(UnionSystem *unisys, UnionSelf *situ, 
     }
     return FALSE;
 }
+
+// Sending the party and the players' positions, UnionSelf.seq: copy the party, sync the players, send it and wait
+// for the others, then send the positions
+enum {
+    UNION_ONESELF_PARTY_SEND_SEQ_COPY_PARTY,
+    UNION_ONESELF_PARTY_SEND_SEQ_RESET,
+    UNION_ONESELF_PARTY_SEND_SEQ_WAIT_RESET,
+    UNION_ONESELF_PARTY_SEND_SEQ_SEND_PARTY,
+    UNION_ONESELF_PARTY_SEND_SEQ_WAIT_PARTIES,
+    UNION_ONESELF_PARTY_SEND_SEQ_SYNC_POSITIONS,
+    UNION_ONESELF_PARTY_SEND_SEQ_WAIT_SYNC_POSITIONS,
+    UNION_ONESELF_PARTY_SEND_SEQ_SEND_POSITIONS,
+    UNION_ONESELF_PARTY_SEND_SEQ_WAIT_POSITIONS,
+};
 
 static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
@@ -2576,7 +2875,7 @@ static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, 
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_PARTY_SEND_SEQ_COPY_PARTY:
         switch (clsys->partySource) {
         case 0:
         default:
@@ -2593,38 +2892,38 @@ static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, 
         PokeRegulation_ApplyLevelToParty(unisys->alloc.regulation, clsys->party[netId]);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_PARTY_SEND_SEQ_RESET:
         Colosseum_ClearParties(clsys, TRUE);
         UnionEff_ClearColosseumPositionsReceived(clsys);
         Colosseum_ResetUnk171(clsys);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x14, 0x14);
         (*seq)++;
         break;
-    case 2:
+    case UNION_ONESELF_PARTY_SEND_SEQ_WAIT_RESET:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x14, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_PARTY_SEND_SEQ_SEND_PARTY:
         if (Colosseum_SendParty(clsys->party[netId]) == TRUE) {
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_PARTY_SEND_SEQ_WAIT_PARTIES:
         if (Colosseum_AreAllPartiesReceived(clsys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 5:
+    case UNION_ONESELF_PARTY_SEND_SEQ_SYNC_POSITIONS:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x10, 0x14);
         (*seq)++;
         break;
-    case 6:
+    case UNION_ONESELF_PARTY_SEND_SEQ_WAIT_SYNC_POSITIONS:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x10, 0x14) == TRUE) {
             (*seq)++;
         }
         break;
-    case 7:
+    case UNION_ONESELF_PARTY_SEND_SEQ_SEND_POSITIONS:
         if (GFL_NetIsParent() == TRUE) {
             if (Colosseum_SendPositions(clsys->vote) == TRUE) {
                 (*seq)++;
@@ -2633,7 +2932,7 @@ static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, 
             (*seq)++;
         }
         break;
-    case 8:
+    case UNION_ONESELF_PARTY_SEND_SEQ_WAIT_POSITIONS:
         if (UnionEff_AreColosseumPositionsReceived(clsys) == TRUE) {
             UnionOneself_SetNextStep(unisys, UNION_STEP_BATTLE_LIST);
             return TRUE;
@@ -2642,6 +2941,15 @@ static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, 
     }
     return FALSE;
 }
+
+// The battle list, UnionSelf.seq: print the battle's message, sync, then show the list and wait for it to close
+enum {
+    UNION_ONESELF_BATTLE_LIST_SEQ_PRINT_MESSAGE,
+    UNION_ONESELF_BATTLE_LIST_SEQ_SEND_PAIR,
+    UNION_ONESELF_BATTLE_LIST_SEQ_WAIT_PAIR,
+    UNION_ONESELF_BATTLE_LIST_SEQ_CREATE_LIST,
+    UNION_ONESELF_BATTLE_LIST_SEQ_WAIT_LIST,
+};
 
 static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
@@ -2653,7 +2961,7 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_BATTLE_LIST_SEQ_PRINT_MESSAGE:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             u32 msg;
 
@@ -2661,24 +2969,24 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
             default:
                 msg = 0x117;
                 break;
-            case 6:
-            case 7:
-            case 22:
-            case 23:
+            case UNION_ACTIVITY_SINGLE_FLAT:
+            case UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER:
+            case UNION_ACTIVITY_MULTI_FLAT:
+            case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
                 msg = 0x118;
                 break;
-            case 20:
-            case 21:
+            case UNION_ACTIVITY_MULTI:
+            case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
                 msg = 0x11b;
                 break;
-            case 10:
-            case 11:
-            case 18:
-            case 19:
+            case UNION_ACTIVITY_DOUBLE_FLAT:
+            case UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER:
+            case UNION_ACTIVITY_ROTATION_FLAT:
+            case UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER:
                 msg = 0x119;
                 break;
-            case 14:
-            case 15:
+            case UNION_ACTIVITY_TRIPLE_FLAT:
+            case UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER:
                 msg = 0x11a;
                 break;
             }
@@ -2686,19 +2994,19 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
             (*seq)++;
         }
         break;
-    case 1:
+    case UNION_ONESELF_BATTLE_LIST_SEQ_SEND_PAIR:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x11, 0x14);
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_BATTLE_LIST_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x11, 0x14) == TRUE) {
             UnionMsg_FreeAll(unisys);
             (*seq)++;
         }
         break;
-    case 3: {
+    case UNION_ONESELF_BATTLE_LIST_SEQ_CREATE_LIST: {
         int i;
         int count;
 
@@ -2723,10 +3031,10 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
             }
         }
         switch (situ->mycomm.chosenActivity) {
-        case 20:
-        case 21:
-        case 22:
-        case 23:
+        case UNION_ACTIVITY_MULTI:
+        case UNION_ACTIVITY_MULTI_NO_LAUNCHER:
+        case UNION_ACTIVITY_MULTI_FLAT:
+        case UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER:
             param->list.partnerLayout = POKELIST_PARTNER_LAYOUT_THREE_TEAMS;
             break;
         default:
@@ -2741,7 +3049,7 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
         (*seq)++;
         break;
     }
-    case 4:
+    case UNION_ONESELF_BATTLE_LIST_SEQ_WAIT_LIST:
         if (UnionCommand_IsActive(unisys) != TRUE) {
             param = unisys->cmdArg;
             GFL_HeapFree(param->battle);
@@ -2755,6 +3063,15 @@ static BOOL UnionOneself_StepBattleListRun(UnionSystem *unisys, UnionSelf *situ,
     return FALSE;
 }
 
+// Quitting the colosseum seat, UnionSelf.seq: ask, wait for the answer and play the leave command
+enum {
+    UNION_ONESELF_QUIT_SEQ_ASK,
+    UNION_ONESELF_QUIT_SEQ_WAIT_ASK,
+    UNION_ONESELF_QUIT_SEQ_CHECK_ANSWER,
+    UNION_ONESELF_QUIT_SEQ_LEAVE_SEAT,
+    UNION_ONESELF_QUIT_SEQ_WAIT_LEAVE,
+};
+
 static BOOL UnionOneself_StepQuitRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     FieldActor *actor = FieldPlayer_GetActor(Field_GetPlayer(field));
     BOOL yes;
@@ -2764,34 +3081,34 @@ static BOOL UnionOneself_StepQuitRun(UnionSystem *unisys, UnionSelf *situ, Field
         return TRUE;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_QUIT_SEQ_ASK:
         UnionMsg_CreateAndPrint(unisys, field, 0x14e);
         (*seq)++;
         break;
-    case 1:
+    case UNION_ONESELF_QUIT_SEQ_WAIT_ASK:
         if (UnionMsg_IsPrintDone(unisys)) {
             UnionMsg_CreateYesNo(unisys, field);
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_QUIT_SEQ_CHECK_ANSWER:
         if (UnionMsg_UpdateYesNo(unisys, &yes) == TRUE) {
             UnionMsg_FreeYesNo(unisys);
             if (yes == 0) {
-                *seq = 3;
+                *seq = UNION_ONESELF_QUIT_SEQ_LEAVE_SEAT;
             } else {
                 UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_END);
                 return TRUE;
             }
         }
         break;
-    case 3:
+    case UNION_ONESELF_QUIT_SEQ_LEAVE_SEAT:
         if (IsAllActorAcmdFinished(actor) == TRUE) {
             FldAct_SetAcmd(actor, 8);
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_QUIT_SEQ_WAIT_LEAVE:
         if (FldAct_CheckAcmdEnd(actor) == TRUE) {
             FldAct_EndAcmd(actor);
             UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_IDLE);
@@ -2802,52 +3119,68 @@ static BOOL UnionOneself_StepQuitRun(UnionSystem *unisys, UnionSelf *situ, Field
     return FALSE;
 }
 
+// The end of the colosseum, UnionSelf.seq: say goodbye, wait for the others to leave and disconnect, then relink
+enum {
+    UNION_ONESELF_COLOSSEUM_END_SEQ_PRINT_MESSAGE,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_SEND_LEAVE,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LEAVE,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_MESSAGE,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_SEND_PAIR,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_PAIR,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_DISCONNECT,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_REQUEST_LINK1,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LINK1,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_CLEANUP,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_FREE_COLOSSEUM,
+    UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LINK2,
+};
+
 static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
     int i;
 
     if (*seq < 7 && GFL_NetErrCheck() && UnionMsg_IsPrintDone(unisys) == TRUE) {
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
-        *seq = 7;
+        *seq = UNION_ONESELF_COLOSSEUM_END_SEQ_REQUEST_LINK1;
     }
     switch (*seq) {
-    case 0:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_PRINT_MESSAGE:
         UnionOneself_SetUpdateDisabled(unisys, field, TRUE);
         if (clsys->entryResult == COLOSSEUM_ENTRY_CANCELLED) {
             if (UnionMsg_IsPrintDone(unisys) == TRUE) {
-                *seq = 6;
+                *seq = UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_DISCONNECT;
             }
         } else {
             UnionMsg_CreateAndPrint(unisys, field, 0x14c);
             (*seq)++;
         }
         break;
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_SEND_LEAVE:
         if (Colosseum_SendLeave() == TRUE) {
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LEAVE:
         if (UnionEff_AreAllColosseumMembersLeaving(clsys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_MESSAGE:
         if (UnionMsg_IsPrintDone(unisys) == TRUE) {
             (*seq)++;
         }
         break;
-    case 4:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_SEND_PAIR:
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x13, 0x14);
         (*seq)++;
         break;
-    case 5:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_PAIR:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0x13, 0x14) == TRUE) {
             GFL_NetSetDisconnectError(FALSE);
             (*seq)++;
         }
         break;
-    case 6:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_DISCONNECT:
         if (GFL_NetIsParent() == TRUE) {
             u8 mask = clsys->entryMask;
 
@@ -2867,7 +3200,7 @@ static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *sit
             (*seq)++;
         }
         break;
-    case 7:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_REQUEST_LINK1:
         if (clsys->relinkRequested == 1 && UnionComm_IsLinkRequested(unisys) == TRUE) {
             return FALSE;
         }
@@ -2879,12 +3212,12 @@ static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *sit
         UnionComm_RequestLink1(unisys);
         (*seq)++;
         break;
-    case 8:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LINK1:
         if (!UnionComm_IsLinkRequested(unisys)) {
             (*seq)++;
         }
         break;
-    case 9:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_CLEANUP:
         clsys->exiting = 1;
         UnionComm_ClearBeacons(unisys);
         UnionOneself_ClearActors(unisys);
@@ -2892,7 +3225,7 @@ static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *sit
         UnionCommand_Set(unisys, 0x19, NULL);
         (*seq)++;
         break;
-    case 10:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_FREE_COLOSSEUM:
         if (!UnionCommand_IsActive(unisys)) {
             if (unisys->colosseum_sys != NULL) {
                 Colosseum_Free(unisys->colosseum_sys, unisys->param->gsys);
@@ -2902,7 +3235,7 @@ static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *sit
             (*seq)++;
         }
         break;
-    case 11:
+    case UNION_ONESELF_COLOSSEUM_END_SEQ_WAIT_LINK2:
         if (!UnionComm_IsLinkRequested(unisys)) {
             return TRUE;
         }
@@ -2911,11 +3244,19 @@ static BOOL UnionOneself_StepColosseumEndRun(UnionSystem *unisys, UnionSelf *sit
     return FALSE;
 }
 
+// The colosseum's trainer card, UnionSelf.seq: print the card's message, show the card and wait for it
+enum {
+    UNION_ONESELF_COLOSSEUM_CARD_SEQ_PRINT_CARD,
+    UNION_ONESELF_COLOSSEUM_CARD_SEQ_SHOW_CARD,
+    UNION_ONESELF_COLOSSEUM_CARD_SEQ_WAIT_CARD,
+    UNION_ONESELF_COLOSSEUM_CARD_SEQ_DONE,
+};
+
 static BOOL UnionOneself_StepColosseumCardRun(UnionSystem *unisys, UnionSelf *situ, Field *field, u8 *seq) {
     UnionColosseum *clsys = unisys->colosseum_sys;
 
     switch (*seq) {
-    case 0: {
+    case UNION_ONESELF_COLOSSEUM_CARD_SEQ_PRINT_CARD: {
         u32 msg;
         u32 version;
 
@@ -2952,7 +3293,7 @@ static BOOL UnionOneself_StepColosseumCardRun(UnionSystem *unisys, UnionSelf *si
         (*seq)++;
         break;
     }
-    case 1:
+    case UNION_ONESELF_COLOSSEUM_CARD_SEQ_SHOW_CARD:
         if (UnionMsg_IsPrintDone(unisys) == TRUE && (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
             UnionMsg_FreeAll(unisys);
             clsys->cardCheck[clsys->talkTarget]->isLocked = 1;
@@ -2962,13 +3303,13 @@ static BOOL UnionOneself_StepColosseumCardRun(UnionSystem *unisys, UnionSelf *si
             (*seq)++;
         }
         break;
-    case 2:
+    case UNION_ONESELF_COLOSSEUM_CARD_SEQ_WAIT_CARD:
         if (!UnionCommand_IsActive(unisys)) {
             unisys->cmdArg = NULL;
             (*seq)++;
         }
         break;
-    case 3:
+    case UNION_ONESELF_COLOSSEUM_CARD_SEQ_DONE:
         UnionOneself_SetNextStep(unisys, UNION_STEP_COLOSSEUM_IDLE);
         return TRUE;
     }
