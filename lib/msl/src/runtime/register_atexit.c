@@ -9,7 +9,7 @@ static DestructorChain atexit_funcs[64];
 static int atexit_curr_func;
 
 int __register_atexit(void (*func)(void)) {
-    if (atexit_curr_func == 64) {
+    if (atexit_curr_func == NELEMS(atexit_funcs)) {
         return -1;
     }
     // exit calls a link's destructor with its object, which is NULL here and which func ignores

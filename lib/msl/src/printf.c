@@ -19,6 +19,11 @@
 // The longest text that a number may take in __pformatter's buffer
 #define MAX_FIELD_WIDTH 509
 
+// What conversion_char holds for a conversion that the format string cannot have: an unknown conversion, a length
+// modifier that the conversion does not take, or a field width over MAX_FIELD_WIDTH. __pformatter writes the rest of
+// the format string from the % on
+#define INVALID_CONVERSION 0xFF
+
 enum justification_options {
     left_justification,
     right_justification,
@@ -45,8 +50,8 @@ enum argument_options {
     long_double_argument,
 };
 
-// One conversion of a format string, as parse_format reads it. A conversion_char of 0xFF stands for one that is not
-// valid
+// One conversion of a format string, as parse_format reads it. A conversion_char of INVALID_CONVERSION stands for one
+// that is not valid
 typedef struct print_format {
     unsigned char justification_options;
     unsigned char sign_options;
@@ -136,7 +141,7 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
     }
 
     if (f.field_width > MAX_FIELD_WIDTH) {
-        f.conversion_char = 0xFF;
+        f.conversion_char = INVALID_CONVERSION;
         *format = f;
         return s + 1;
     }
@@ -207,7 +212,7 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
     case 'x':
     case 'X':
         if (f.argument_options == long_double_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         } else if (!f.precision_specified) {
             f.precision = 1;
         } else if (f.justification_options == zero_fill) {
@@ -219,7 +224,7 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
         if (f.argument_options == short_argument || f.argument_options == intmax_argument ||
             f.argument_options == size_t_argument || f.argument_options == ptrdiff_argument ||
             f.argument_options == long_long_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         } else if (!f.precision_specified) {
             f.precision = 6;
         }
@@ -232,7 +237,7 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
         if (f.argument_options == short_argument || f.argument_options == intmax_argument ||
             f.argument_options == size_t_argument || f.argument_options == ptrdiff_argument ||
             f.argument_options == long_long_argument || f.argument_options == char_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         }
         break;
     case 'g':
@@ -246,7 +251,7 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
         if (f.argument_options == short_argument || f.argument_options == char_argument ||
             f.argument_options == intmax_argument || f.argument_options == size_t_argument ||
             f.argument_options == ptrdiff_argument || f.argument_options == long_long_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         } else if (!f.precision_specified) {
             f.precision = 6;
         }
@@ -261,23 +266,23 @@ static const char *parse_format(const char *format_string, va_list *arg, print_f
         if (f.argument_options == long_argument) {
             f.argument_options = wchar_argument;
         } else if (f.precision_specified || f.argument_options != normal_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         }
         break;
     case 's':
         if (f.argument_options == long_argument) {
             f.argument_options = wchar_argument;
         } else if (f.argument_options != normal_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         }
         break;
     case 'n':
         if (f.argument_options == long_double_argument) {
-            f.conversion_char = 0xFF;
+            f.conversion_char = INVALID_CONVERSION;
         }
         break;
     default:
-        f.conversion_char = 0xFF;
+        f.conversion_char = INVALID_CONVERSION;
         break;
     }
 
@@ -1156,9 +1161,9 @@ static int __pformatter(void *(*WriteProc)(void *, const char *, size_t), void *
             *buff_ptr = '%';
             num_chars = 1;
             break;
-        // An invalid conversion (0xFF is what parse_format marks it with), or one that gave no text, ends the output
-        // with the rest of the format string from its % on
-        case 0xFF:
+        // An invalid conversion (INVALID_CONVERSION is what parse_format marks it with), or one that gave no text, ends
+        // the output with the rest of the format string from its % on
+        case INVALID_CONVERSION:
         default:
         conversion_error:
             num_chars = strlen(curr_format);
