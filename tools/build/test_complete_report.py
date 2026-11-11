@@ -3,6 +3,8 @@
     python3 -m unittest tools.build.test_complete_report
 """
 import struct
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -22,6 +24,16 @@ def unit(name, complete, categories, code, matched, functions, matched_functions
         "sections": [{"name": ".text", "size": str(code), "fuzzy_match_percent": fuzzy}],
         "metadata": {"complete": complete, "progress_categories": categories},
     }
+
+
+class StandardLibraryTests(unittest.TestCase):
+    """The build runs this script with a Python that has only the standard library."""
+
+    def test_it_imports_without_pyyaml(self):
+        blocked = "import sys; sys.modules['yaml'] = None; import tools.build.complete_report"
+        result = subprocess.run([sys.executable, "-c", blocked], cwd=Path(__file__).resolve().parents[2],
+                                capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
 
 class CompleteReportTests(unittest.TestCase):
