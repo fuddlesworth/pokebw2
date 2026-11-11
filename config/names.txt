@@ -5465,11 +5465,15 @@
 . 0x020941d8 transFunc
 . 0x02094298 NNSi_objSizeHTbl
 . 0x020942b0 NNSi_objSizeWTbl
+. 0x020942c8 dstTypes
+. 0x020942d4 sUnitValue1
 . 0x020942dc texFmtTbl_
 . 0x020942e4 numCharsInRowTbl_
 . 0x02094304 gxTexSizeSTbl
 . 0x02094334 gxTexSizeTTbl
+. 0x02094364 posZ
 . 0x0209436c mtxIdentity_
+. 0x02094384 fullbits
 . 0x02094390 VTABLE_OBJ2DRECT
 . 0x0209439c VTABLE_BG
 . 0x020943a8 VTABLE_OBJ1D
