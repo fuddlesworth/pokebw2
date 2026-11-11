@@ -67,19 +67,12 @@ Scrcmd_PokemonCenter_AddBattlePoints kind:function(thumb,size=0x50) addr:0x021e6
 POKEMON_CENTER_SCRIPT_COMMANDS kind:data(any) addr:0x021e6684
 data_ov065_021e66bc kind:data(any) addr:0x021e66bc
 data_ov065_021e66c8 kind:data(any) addr:0x021e66c8
-data_ov065_021e66d9 kind:data(any) addr:0x021e66d9 ambiguous
 data_ov065_021e66e8 kind:data(any) addr:0x021e66e8
 sMedalsByFlag kind:data(any) addr:0x021e6710
 data_ov065_021e6754 kind:data(any) addr:0x021e6754
-data_ov065_021e6779 kind:data(any) addr:0x021e6779 ambiguous
 data_ov065_021e679c kind:data(any) addr:0x021e679c
 data_ov065_021e67ec kind:data(any) addr:0x021e67ec
-data_ov065_021e67f9 kind:data(any) addr:0x021e67f9 ambiguous
 data_ov065_021e684c kind:data(any) addr:0x021e684c
-data_ov065_021e6869 kind:data(any) addr:0x021e6869 ambiguous
-data_ov065_021e689d kind:data(any) addr:0x021e689d ambiguous
 sMedalChecks kind:data(any) addr:0x021e68c0
-data_ov065_021e6935 kind:data(any) addr:0x021e6935 ambiguous
-data_ov065_021e6944 kind:data(any) addr:0x021e6944 ambiguous
 data_ov065_021e6aa0 kind:data(any) addr:0x021e6aa0
 data_ov065_021e6aa4 kind:data(any) addr:0x021e6aa4

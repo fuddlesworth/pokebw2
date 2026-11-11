@@ -2131,6 +2131,13 @@ overlays/ov064 0x021e595a reloc_module overlay(119)
 overlays/ov064 0x021e597a reloc_module overlay(119)
 overlays/ov064 0x021e5a48 overlay_id 280
 overlays/ov064 0x021e5a4c reloc_module overlay(280)
+overlays/ov065 0x021e66d9 remove_symbol
+overlays/ov065 0x021e6779 remove_symbol
+overlays/ov065 0x021e67f9 remove_symbol
+overlays/ov065 0x021e6869 remove_symbol
+overlays/ov065 0x021e689d remove_symbol
+overlays/ov065 0x021e6935 remove_symbol
+overlays/ov065 0x021e6944 remove_symbol
 overlays/ov066 0x021e5816 reloc_module overlay(116)
 overlays/ov066 0x021e5836 reloc_module overlay(116)
 overlays/ov066 0x021e5856 reloc_module overlay(116)
