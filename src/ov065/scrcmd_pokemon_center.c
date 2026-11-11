@@ -74,6 +74,7 @@ enum {
 typedef struct {
     u32 threshold;
     int check;
+    // Unread: 1 for almost every medal with a special check, 0 for the record ones
     u8 unk8;
     u8 category;
     // MEDAL_KIND_*, or 0 for a medal the ranks ignore
@@ -86,7 +87,7 @@ typedef struct {
     u8 type1;
     u8 type2;
     u8 counted;
-    u8 unk5[3];
+    u8 padding[3];
 } MedalTypeSpecies;
 
 // What the checks of one Medal Rally check have worked out, each once
