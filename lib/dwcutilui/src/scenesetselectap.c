@@ -26,12 +26,20 @@
 #include "step.h"
 #include "window.h"
 
-// The buttons of the screen, as the cursor goes over them: the three connections, the wide button, and the three
-// buttons that erase a connection
+// The buttons of the screen, as the cursor goes over them: the three connections, the wide button under them, and the
+// three buttons that erase a connection
+enum {
+    SCREEN_AP_CONNECTION0,
+    SCREEN_AP_CONNECTION1,
+    SCREEN_AP_CONNECTION2,
+    SCREEN_AP_WIDE_BUTTON,
+    SCREEN_AP_ERASE0,
+    SCREEN_AP_ERASE1,
+    SCREEN_AP_ERASE2,
+};
 #define SCREEN_AP_CONNECTIONS 3
-#define SCREEN_AP_WIDE_BUTTON 3
-#define SCREEN_AP_FIRST_ERASE 4
-#define SCREEN_AP_BUTTONS 7
+#define SCREEN_AP_FIRST_ERASE SCREEN_AP_ERASE0
+#define SCREEN_AP_BUTTONS (SCREEN_AP_ERASE2 + 1)
 
 // How the screen ends: not yet, with a button, or with B
 enum {
@@ -161,7 +169,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2 && DWCi_STEPlGet() != TRUE) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN && DWCi_STEPlGet() != TRUE) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -178,24 +186,24 @@ static void input(void) {
 
     for (i = 0; i < SCREEN_AP_BUTTONS; i++) {
         if (DWCi_TPlCheckTrigger(sScreenApTouchRects[i])) {
-            DWCi_BTNlSet(1);
+            DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
             sScreenAp.cursor = i;
             dispFocus();
             return;
         }
     }
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(1);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CONFIRM);
     } else if (DWCi_IPTlCheckTrigger(2)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     } else if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     } else if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     } else if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
     } else if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
 }
 
@@ -206,7 +214,7 @@ static void button(void) {
     int index;
 
     switch (DWCi_BTNlGet()) {
-    case 0:
+    case DWC_UTIL_BUTTON_CANCEL:
         switch (DWCi_Entry()) {
         case 0:
             DWCi_SNDlPlay(7);
@@ -218,13 +226,13 @@ static void button(void) {
             return;
         }
         break;
-    case 1:
+    case DWC_UTIL_BUTTON_CONFIRM:
         sScreenAp.work->end = SCREEN_AP_CHOSEN;
         if (sScreenAp.cursor >= SCREEN_AP_FIRST_ERASE) {
             index = sScreenAp.cursor - SCREEN_AP_FIRST_ERASE;
             if (DWCi_SETTINGlGetSetType(index) == DWC_SETTYPE_NONE) {
                 DWCi_SNDlPlay(9);
-                DWCi_BTNlSetForce(-1);
+                DWCi_BTNlSetForce(DWC_UTIL_BUTTON_NONE);
                 return;
             }
             DWCi_SNDlPlay(6);
@@ -234,7 +242,7 @@ static void button(void) {
             DWCi_ChangeScene(procErase);
             return;
         }
-        if (sScreenAp.cursor <= 2) {
+        if (sScreenAp.cursor <= SCREEN_AP_CONNECTION2) {
             DWCi_SETTINGlSetSetting(sScreenAp.cursor);
         }
         DWCi_SNDlPlay(6);
@@ -297,9 +305,9 @@ static void endScene2(void) {
         DWCi_ChangeScene(DWCi_SceneMenu);
     } else {
         switch (sScreenAp.cursor) {
-        case 0:
-        case 1:
-        case 2:
+        case SCREEN_AP_CONNECTION0:
+        case SCREEN_AP_CONNECTION1:
+        case SCREEN_AP_CONNECTION2:
             DWCi_SetParam_(2, 0);
             if (DWCi_SETTIGNlGet()->connection.setType == DWC_SETTYPE_NONE) {
                 DWCi_ChangeScene(DWCi_SceneSetSelectWay);
@@ -335,89 +343,89 @@ static void moveFocus(int direction) {
     BOOL moved = TRUE;
 
     switch (sScreenAp.cursor) {
-    case 0:
+    case SCREEN_AP_CONNECTION0:
         sScreenAp.work->column = 0;
-        if (direction == 0) {
-            sScreenAp.cursor = 2;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 1;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 3;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION2;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION1;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         } else {
-            sScreenAp.cursor = 4;
+            sScreenAp.cursor = SCREEN_AP_ERASE0;
         }
         break;
-    case 1:
+    case SCREEN_AP_CONNECTION1:
         sScreenAp.work->column = 1;
-        if (direction == 0) {
-            sScreenAp.cursor = 0;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 2;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 3;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION0;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION2;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         } else {
-            sScreenAp.cursor = 5;
+            sScreenAp.cursor = SCREEN_AP_ERASE1;
         }
         break;
-    case 2:
+    case SCREEN_AP_CONNECTION2:
         sScreenAp.work->column = 2;
-        if (direction == 0) {
-            sScreenAp.cursor = 1;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 0;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 3;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION1;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION0;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         } else {
-            sScreenAp.cursor = 6;
+            sScreenAp.cursor = SCREEN_AP_ERASE2;
         }
         break;
-    case 3: {
+    case SCREEN_AP_WIDE_BUTTON: {
         u8 column = sScreenAp.work->column;
         int erase = column + SCREEN_AP_FIRST_ERASE;
 
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sScreenAp.cursor = erase;
-        } else if (direction == 3) {
+        } else if (direction == DWC_UTIL_DIRECTION_DOWN) {
             sScreenAp.cursor = column;
         } else {
             moved = FALSE;
         }
         break;
     }
-    case 4:
+    case SCREEN_AP_ERASE0:
         sScreenAp.work->column = 0;
-        if (direction == 0) {
-            sScreenAp.cursor = 6;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 5;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 0;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE2;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE1;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION0;
         } else {
-            sScreenAp.cursor = 3;
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         }
         break;
-    case 5:
+    case SCREEN_AP_ERASE1:
         sScreenAp.work->column = 1;
-        if (direction == 0) {
-            sScreenAp.cursor = 4;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 6;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 1;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE0;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE2;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION1;
         } else {
-            sScreenAp.cursor = 3;
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         }
         break;
-    case 6:
+    case SCREEN_AP_ERASE2:
         sScreenAp.work->column = 2;
-        if (direction == 0) {
-            sScreenAp.cursor = 5;
-        } else if (direction == 2) {
-            sScreenAp.cursor = 4;
-        } else if (direction == 1) {
-            sScreenAp.cursor = 2;
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE1;
+        } else if (direction == DWC_UTIL_DIRECTION_RIGHT) {
+            sScreenAp.cursor = SCREEN_AP_ERASE0;
+        } else if (direction == DWC_UTIL_DIRECTION_UP) {
+            sScreenAp.cursor = SCREEN_AP_CONNECTION2;
         } else {
-            sScreenAp.cursor = 3;
+            sScreenAp.cursor = SCREEN_AP_WIDE_BUTTON;
         }
         break;
     }

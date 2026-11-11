@@ -332,7 +332,7 @@ static void DWCUtilAddressSettings_HandleInput(void) {
         return;
     }
     if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
         return;
     }
     if (DWCi_IPTlCheckRelease(0x40)) {
@@ -340,7 +340,7 @@ static void DWCUtilAddressSettings_HandleInput(void) {
         return;
     }
     if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
         return;
     }
     if (DWCi_IPTlCheckRelease(0x80)) {
@@ -348,11 +348,11 @@ static void DWCUtilAddressSettings_HandleInput(void) {
         return;
     }
     if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
         return;
     }
     if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
 }
 
@@ -468,10 +468,10 @@ static void DWCUtilAddressSettings_HandleScrollbar(void) {
         sAddressSettings.work->dragDelay--;
     }
     switch (DWCi_SBlGetState()) {
-    case 1:
+    case DWC_UTIL_SCROLLBAR_GRAB:
         sAddressSettings.work->dragging = TRUE;
         break;
-    case 2:
+    case DWC_UTIL_SCROLLBAR_DRAG:
         if (sAddressSettings.work->dragDelay == 0) {
             DWCi_FOCUSlDelete();
             sAddressSettings.scroll = DWCi_SBlGet() * ADDRESS_SCROLL_MAX / ADDRESS_BAR_LENGTH;
@@ -479,7 +479,7 @@ static void DWCUtilAddressSettings_HandleScrollbar(void) {
             sAddressSettings.work->dragDelay = 4;
         }
         break;
-    case 3:
+    case DWC_UTIL_SCROLLBAR_RELEASE:
         sAddressSettings.work->dragging = FALSE;
         sAddressSettings.scroll = DWCi_SBlGet() * ADDRESS_SCROLL_MAX / ADDRESS_BAR_LENGTH;
         DWCi_SNDlPlay(0x13);
@@ -493,7 +493,7 @@ static void DWCUtilAddressSettings_HandleScrollbar(void) {
             sAddressSettings.work->scrollTask = DWCi_TSKlForm(0, taskDown, NULL, 0x78);
         }
         break;
-    case 4:
+    case DWC_UTIL_SCROLLBAR_UP:
         if (sAddressSettings.scroll == 0) {
             if (!sAddressSettings.work->barAtEnd) {
                 DWCi_SNDlPlay(9);
@@ -504,7 +504,7 @@ static void DWCUtilAddressSettings_HandleScrollbar(void) {
             sAddressSettings.work->scrollTask = DWCi_TSKlForm(0, taskUp, NULL, 0x78);
         }
         break;
-    case 6:
+    case DWC_UTIL_SCROLLBAR_DOWN:
         if (sAddressSettings.scroll == ADDRESS_SCROLL_MAX) {
             if (!sAddressSettings.work->barAtEnd) {
                 DWCi_SNDlPlay(9);
@@ -515,8 +515,8 @@ static void DWCUtilAddressSettings_HandleScrollbar(void) {
             sAddressSettings.work->scrollTask = DWCi_TSKlForm(0, taskDown, NULL, 0x78);
         }
         break;
-    case 5:
-    case 7:
+    case DWC_UTIL_SCROLLBAR_UP_END:
+    case DWC_UTIL_SCROLLBAR_DOWN_END:
         sAddressSettings.work->barAtEnd = FALSE;
         break;
     }
@@ -1148,34 +1148,34 @@ static void moveFocus(int direction) {
     int moved = 0;
 
     if (sAddressSettings.cursor == ADDRESS_ITEM_AUTO_DNS_NO && !edit->autoAddress) {
-        if (direction == 0) {
+        if (direction == DWC_UTIL_DIRECTION_LEFT) {
             return;
         }
-        if (direction == 2) {
+        if (direction == DWC_UTIL_DIRECTION_RIGHT) {
             return;
         }
     }
     switch (sAddressSettings.cursor) {
     case ADDRESS_ITEM_SSID:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sAddressSettings.cursor = ADDRESS_ITEM_TEST;
-        } else if (direction == 3) {
+        } else if (direction == DWC_UTIL_DIRECTION_DOWN) {
             sAddressSettings.row++;
         } else {
             moved = 2;
         }
         break;
     case ADDRESS_ITEM_DNS2:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sAddressSettings.row--;
-        } else if (direction == 3) {
+        } else if (direction == DWC_UTIL_DIRECTION_DOWN) {
             sAddressSettings.cursor = sAddressSettings.work->lastButton;
         } else {
             moved = 2;
         }
         break;
     case ADDRESS_ITEM_TEST:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             if (sAddressSettings.work->atEnd) {
                 return;
             }
@@ -1183,7 +1183,7 @@ static void moveFocus(int direction) {
             sAddressSettings.work->atEnd = TRUE;
             return;
         }
-        if (direction == 3) {
+        if (direction == DWC_UTIL_DIRECTION_DOWN) {
             sAddressSettings.cursor = ADDRESS_ITEM_SSID;
             sAddressSettings.row = 0;
             sAddressSettings.scroll = 0;
@@ -1196,13 +1196,13 @@ static void moveFocus(int direction) {
     case ADDRESS_ITEM_SAVE:
     case ADDRESS_ITEM_BACK:
         sAddressSettings.work->lastButton = sAddressSettings.cursor;
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             sAddressSettings.cursor = ADDRESS_ITEM_DNS2;
             sAddressSettings.row = 3;
             sAddressSettings.scroll = ADDRESS_SCROLL_MAX;
             DWCUtilAddressSettings_DrawRows();
             DWCi_SBlSet(ADDRESS_BAR_LENGTH);
-        } else if (direction == 3) {
+        } else if (direction == DWC_UTIL_DIRECTION_DOWN) {
             if (sAddressSettings.work->atEnd) {
                 return;
             }
@@ -1216,7 +1216,7 @@ static void moveFocus(int direction) {
         }
         break;
     default:
-        if (direction == 1) {
+        if (direction == DWC_UTIL_DIRECTION_UP) {
             if (sAddressSettings.row != 0) {
                 sAddressSettings.row--;
             } else {
@@ -1224,7 +1224,7 @@ static void moveFocus(int direction) {
                 sAddressSettings.work->scrollTask = DWCi_TSKlForm(0, taskUp, NULL, 0x78);
                 return;
             }
-        } else if (direction == 3) {
+        } else if (direction == DWC_UTIL_DIRECTION_DOWN) {
             if (sAddressSettings.row < 3) {
                 sAddressSettings.row++;
             } else {

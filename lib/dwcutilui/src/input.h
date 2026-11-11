@@ -8,6 +8,15 @@
 // left, top, right and bottom, as in foundation.c.
 // The file is the DWC utility library's input.o (libdwcutil.TWL.HYB.a), as aletheia's map of Black 1's SDK code to that
 // library's objects (layout/symbols_sdk.txt) shows it.
+
+// The directions that a screen's cursor moves in, in the order of the pad's cross keys
+enum {
+    DWC_UTIL_DIRECTION_LEFT,
+    DWC_UTIL_DIRECTION_UP,
+    DWC_UTIL_DIRECTION_RIGHT,
+    DWC_UTIL_DIRECTION_DOWN,
+};
+
 void DWCi_IPTlInit(void);
 void DWCi_IPTlEnd(void);
 void DWCi_IPTlRead(void);

@@ -46,7 +46,7 @@ void DWCi_BTNlInit(int variant) {
     int i;
 
     sUiObject = DWCi_HEAPlAllocEx(sizeof(DWCUtilUiObject), 4);
-    sUiObject->state = -2;
+    sUiObject->state = DWC_UTIL_BUTTON_HIDDEN;
     sUiObject->variant = variant;
     for (i = 0; i < count; i++) {
         sUiObject->objects[i] = DWCi_CEINlSetExCell(0, sUiResources[variant][i], 1);
@@ -68,7 +68,7 @@ int DWCi_BTNlGet(void) {
 }
 
 void DWCi_BTNlSet(int state) {
-    if (sUiObject->state == -1) {
+    if (sUiObject->state == DWC_UTIL_BUTTON_NONE) {
         sUiObject->state = state;
     }
 }
@@ -119,7 +119,7 @@ static void taskStart(DWCUtilTask *task, void *arg) {
 }
 
 static void taskStart1(DWCUtilTask *task, void *arg) {
-    sUiObject->state = -1;
+    sUiObject->state = DWC_UTIL_BUTTON_NONE;
     sUiObject->counter++;
     if (sUiObject->counter >= 4) {
         sUiObject->counter = 0;
@@ -134,7 +134,7 @@ static void taskMain(DWCUtilTask *task, void *arg) {
     int resource;
 
     if (!sUiObject->locked) {
-        if (sUiObject->state != -1) {
+        if (sUiObject->state != DWC_UTIL_BUTTON_NONE) {
             return;
         }
         for (i = 0; i < count; i++) {
@@ -155,7 +155,7 @@ static void taskMain(DWCUtilTask *task, void *arg) {
             return;
         }
     }
-    sUiObject->state = -1;
+    sUiObject->state = DWC_UTIL_BUTTON_NONE;
 }
 
 static void taskEnd(DWCUtilTask *task, void *arg) {
@@ -203,7 +203,7 @@ static void taskRelease(DWCUtilTask *task, void *arg) {
     }
     disp(0xa8);
     sUiObject->counter = 0;
-    sUiObject->state = -1;
+    sUiObject->state = DWC_UTIL_BUTTON_NONE;
     if (sUiObject->selectTask != NULL) {
         sUiObject->selectTask = NULL;
         DWCi_TSKlDelete(0, task);

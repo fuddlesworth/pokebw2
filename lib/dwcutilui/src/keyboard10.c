@@ -409,16 +409,16 @@ static void key(void) {
     int key;
 
     if (DWCi_IPTlCheckRepeat(0x20)) {
-        moveFocus(0);
+        moveFocus(DWC_UTIL_DIRECTION_LEFT);
     }
     if (DWCi_IPTlCheckRepeat(0x40)) {
-        moveFocus(1);
+        moveFocus(DWC_UTIL_DIRECTION_UP);
     }
     if (DWCi_IPTlCheckRepeat(0x10)) {
-        moveFocus(2);
+        moveFocus(DWC_UTIL_DIRECTION_RIGHT);
     }
     if (DWCi_IPTlCheckRepeat(0x80)) {
-        moveFocus(3);
+        moveFocus(DWC_UTIL_DIRECTION_DOWN);
     }
     if (DWCi_IPTlCheckTrigger(1)) {
         key = sMenu->cursorPos;
@@ -521,7 +521,7 @@ static void moveFocus(int direction) {
     int previous = sMenu->cursorPos;
 
     sMenu->cursorPos = sNavigation[previous][direction];
-    if (sMenu->cursorPos == 13 && (direction == 1 || direction == 3)) {
+    if (sMenu->cursorPos == 13 && (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
         sMenu->lastPos = previous;
     } else if (sMenu->cursorPos == -1) {
         if (sMenu->lastPos == 1 || sMenu->lastPos == 10) {

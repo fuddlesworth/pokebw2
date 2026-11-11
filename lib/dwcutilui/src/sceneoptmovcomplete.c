@@ -52,7 +52,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_BTNlGet() != -2) {
+    if (DWCi_BTNlGet() != DWC_UTIL_BUTTON_HIDDEN) {
         DWCi_BTNlEnable();
         DWCi_ChangeScene(procScene);
     }
@@ -66,7 +66,7 @@ static void procScene(void) {
 
 static void input(void) {
     if (DWCi_IPTlCheckTrigger(1)) {
-        DWCi_BTNlSet(0);
+        DWCi_BTNlSet(DWC_UTIL_BUTTON_CANCEL);
     }
 }
 
@@ -74,7 +74,7 @@ static void func_ov182_021af998(void) {
 }
 
 static void button(void) {
-    if (DWCi_BTNlGet() == 0) {
+    if (DWCi_BTNlGet() == DWC_UTIL_BUTTON_CANCEL) {
         DWCi_SNDlPlay(6);
         DWCi_ChangeScene(endScene);
     }
