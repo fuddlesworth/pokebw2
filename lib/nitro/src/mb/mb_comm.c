@@ -5,7 +5,7 @@
 #include "mb_private.h"
 
 // The file whose block was sent last, so that the next frame goes to the next file
-static u8 sLastFile = 0xff;
+static u8 sLastFile = MB_FILEID_NONE;
 // The files that a child asked a block of in this round of frames
 static u32 any_recv_bitmap;
 
@@ -164,16 +164,16 @@ void MBi_CommParentCallback(u16 event, void *arg) {
         WMCallback *cb = arg;
 
         switch (cb->errcode) {
-        case 1:
-        case 4:
-        case 5:
-        case 6:
-        case 8:
-        case 9:
+        case WM_ERRCODE_FAILED:
+        case WM_ERRCODE_WM_DISABLE:
+        case WM_ERRCODE_NO_DATASET:
+        case WM_ERRCODE_INVALID_PARAM:
+        case WM_ERRCODE_FIFO_ERROR:
+        case WM_ERRCODE_TIMEOUT:
             MBi_CommCallParentError(0, MB_ERRCODE_FATAL);
             break;
         // The table of the switch runs to 15, so a case of that value goes with the default
-        case 15:
+        case WM_ERRCODE_SEND_FAILED:
         default:
             MBi_CommCallParentError(0, MB_ERRCODE_WM_FAILURE);
             break;
@@ -184,17 +184,17 @@ void MBi_CommParentCallback(u16 event, void *arg) {
         WMCallback *cb = arg;
 
         switch (cb->apiid) {
-        case 0:
-        case 7:
-        case 8:
-        case 13:
-        case 14:
-        case 15:
-        case 17:
-        case 18:
-        case 21:
-        case 25:
-        case 29:
+        case WM_APIID_INITIALIZE:
+        case WM_APIID_SET_P_PARAM:
+        case WM_APIID_START_PARENT:
+        case WM_APIID_DISCONNECT:
+        case WM_APIID_START_MP:
+        case WM_APIID_SET_MP_DATA:
+        case WM_APIID_START_DCF:
+        case WM_APIID_SET_DCF_DATA:
+        case WM_APIID_START_KS:
+        case WM_APIID_SET_BEACON_IND:
+        case WM_APIID_SET_LIFETIME:
             MBi_CommCallParentError(0, MB_ERRCODE_FATAL);
             break;
         // The original's switch is one table from 0 to 29, which takes at least two more cases that go with the
@@ -309,7 +309,7 @@ static void MBi_CommParentRecvDataPerChild(const WMMpRecvData *recv, u16 aid) {
         if (state == MB_COMM_PSTATE_SEND_PROCEED) {
             u8 file = pPwork->fileid_of_child[aid - 1];
 
-            if (file != 0xff) {
+            if (file != MB_FILEID_NONE) {
                 pPwork->fileinfo[file].requestedBlock =
                     MBi_calc_nextsendblock(pPwork->fileinfo[file].requestedBlock, frame.value);
                 any_recv_bitmap |= 1 << file;
@@ -320,7 +320,7 @@ static void MBi_CommParentRecvDataPerChild(const WMMpRecvData *recv, u16 aid) {
         if (state == MB_COMM_PSTATE_SEND_PROCEED) {
             u8 file = pPwork->fileid_of_child[aid - 1];
 
-            if (file != 0xff) {
+            if (file != MB_FILEID_NONE) {
                 pPwork->fileinfo[file].downloadMask &= (u16) ~(1 << aid);
                 MBi_CommChangeParentState(aid, MB_COMM_PSTATE_SEND_COMPLETE, NULL);
             }
@@ -331,7 +331,8 @@ static void MBi_CommParentRecvDataPerChild(const WMMpRecvData *recv, u16 aid) {
             }
         }
         break;
-    // A frame type that the parent's side takes and ignores: the switch's table runs to it
+    // A frame type that the parent's side takes and ignores: the switch's table runs to it. The library's frame types
+    // stop at MB_COMM_TYPE_CHILD_STOPREQ (10), so what the eleventh is called is not known
     case 11:
         break;
     }
@@ -468,7 +469,7 @@ static int MBi_CommParentSendBlock(void) {
             break;
         }
     }
-    if (i == 16) {
+    if (i == MB_MAX_FILE) {
         return MB_SENDFUNC_STATE_ERR;
     }
     MBi_calc_sendblock(pPwork->cur_fileid);

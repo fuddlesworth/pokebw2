@@ -17,6 +17,8 @@
 #define MB_MAX_CHILD 15
 #define MB_MAX_FILE 16
 #define MB_DL_SEGMENT_NUM 3
+// The file id that stands for no file; the ids run from 0
+#define MB_FILEID_NONE 0xff
 
 // The ROM header that the card leaves in main memory, and where the child puts its copy
 #define MB_ROM_HEADER_ADDRESS 0x27ffe00
@@ -225,11 +227,11 @@ struct MBGameInfo {
     u8 iconChar[0x200];
     MBUserInfo parentUser;
     u8 maxPlayers;
-    u8 unk_237;
+    u8 pad_237; // The hole before the halfword-aligned name
     u16 gameName[48];
     u16 gameIntro[96];
     u8 playerCount;
-    u8 unk_359;
+    u8 pad_359; // The hole before the halfword-aligned masks
     u16 memberMask;
     u16 changedMask;
     MBUserInfo members[MB_MAX_CHILD];
@@ -410,7 +412,7 @@ struct MBCommFile {
     u16 memberMask;
     u16 changedMask;
     u8 valid;
-    u8 unk_5cb;
+    u8 pad_5cb; // The hole before the cache pointer
     MBiCacheList *cache;
     const u32 *segmentRomOffsets;
 };
@@ -467,6 +469,13 @@ typedef struct {
     WMGameInfo gameInfo;
     u8 reserved1[8];
 } ParentInfo;
+
+// The side of the library that a send goes out on: a parent's frames, which its children take, or a child's, which
+// the parent takes (MBi_SendMP)
+enum {
+    MB_MODE_PARENT = 1,
+    MB_MODE_CHILD,
+};
 
 // The memory the library gets with MB_Init, from its first part on: what the wireless manager is told
 typedef struct {
