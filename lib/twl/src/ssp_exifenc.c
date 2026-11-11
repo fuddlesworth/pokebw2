@@ -4,24 +4,13 @@
 #include "nitro/os.h"
 #include "nitro/rtc.h"
 #include "nitro/std.h"
+#include "ssp_private.h"
 
 // The EXIF writer of TwlSDK's JPEG encoder: the SOI and APP1 segment that start a photo, with its 0th IFD, Exif IFD,
 // MakerNote IFD (which holds what the DSi signs), Interoperability IFD and the 1st IFD of its thumbnail;
 // libssp.TWL.HYB.a's exifenc.o. The functions have the SDK's names that Black 1's decompilation (aletheia) gives the
 // same functions in the same order; the names of the data are ours. The date, software and maker note setters were
 // dead-stripped from the game
-
-// EXIF types
-enum {
-    EXIF_TYPE_BYTE = 1,
-    EXIF_TYPE_ASCII,
-    EXIF_TYPE_SHORT,
-    EXIF_TYPE_LONG,
-    EXIF_TYPE_RATIONAL,
-    EXIF_TYPE_UNDEFINED = 7,
-    EXIF_TYPE_SLONG = 9,
-    EXIF_TYPE_SRATIONAL,
-};
 
 // EXIF tags
 #define EXIF_TAG_INTEROP_INDEX 0x1
@@ -38,22 +27,15 @@ enum {
 #define EXIF_TAG_JPEG_INTERCHANGE_FORMAT_LENGTH 0x202
 #define EXIF_TAG_YCBCR_POSITIONING 0x213
 #define EXIF_TAG_RELATED_IMAGE_FILE_FORMAT 0x1000
-#define EXIF_TAG_EXIF_IFD 0x8769
 #define EXIF_TAG_EXIF_VERSION 0x9000
 #define EXIF_TAG_DATE_TIME_ORIGINAL 0x9003
 #define EXIF_TAG_DATE_TIME_DIGITIZED 0x9004
 #define EXIF_TAG_COMPONENTS_CONFIGURATION 0x9101
-#define EXIF_TAG_MAKER_NOTE 0x927c
 #define EXIF_TAG_FLASHPIX_VERSION 0xa000
 #define EXIF_TAG_COLOR_SPACE 0xa001
 #define EXIF_TAG_PIXEL_X_DIMENSION 0xa002
 #define EXIF_TAG_PIXEL_Y_DIMENSION 0xa003
 #define EXIF_TAG_INTEROP_IFD 0xa005
-
-// The tags of the MakerNote IFD: the data the DSi signs, and two blocks of the application's
-#define MAKER_NOTE_TAG_SIGNATURE 0x1000
-#define MAKER_NOTE_TAG_DATA_1 0x1001
-#define MAKER_NOTE_TAG_DATA_2 0x1002
 
 // The size of the signature, and of the longest value an entry holds
 #define SIGNATURE_SIZE 28

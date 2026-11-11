@@ -229,6 +229,43 @@ static void CAMERA_GoReboot(void) {
     OS_SendMessage(&sCameraWork.queue, 0, OS_MESSAGE_NOBLOCK);
 }
 
+// The steps of the camera's reboot, in the order they are sent: the argument of CAMERA_Reboot is the step to run, and
+// a step whose setting is the camera's default falls through to the next
+enum {
+    CAMERA_REBOOT_STEP_I2C_INIT,
+    CAMERA_REBOOT_STEP_IN_PHOTO_MODE,
+    CAMERA_REBOOT_STEP_OUT_PHOTO_MODE,
+    CAMERA_REBOOT_STEP_IN_SIZE_A,
+    CAMERA_REBOOT_STEP_IN_SIZE_B,
+    CAMERA_REBOOT_STEP_OUT_SIZE_A,
+    CAMERA_REBOOT_STEP_OUT_SIZE_B,
+    CAMERA_REBOOT_STEP_IN_FRAME_RATE,
+    CAMERA_REBOOT_STEP_OUT_FRAME_RATE,
+    CAMERA_REBOOT_STEP_IN_EFFECT_A,
+    CAMERA_REBOOT_STEP_IN_EFFECT_B,
+    CAMERA_REBOOT_STEP_OUT_EFFECT_A,
+    CAMERA_REBOOT_STEP_OUT_EFFECT_B,
+    CAMERA_REBOOT_STEP_IN_FLIP_A,
+    CAMERA_REBOOT_STEP_IN_FLIP_B,
+    CAMERA_REBOOT_STEP_OUT_FLIP_A,
+    CAMERA_REBOOT_STEP_OUT_FLIP_B,
+    CAMERA_REBOOT_STEP_IN_WHITE_BALANCE,
+    CAMERA_REBOOT_STEP_OUT_WHITE_BALANCE,
+    CAMERA_REBOOT_STEP_IN_EXPOSURE,
+    CAMERA_REBOOT_STEP_OUT_EXPOSURE,
+    CAMERA_REBOOT_STEP_IN_SHARPNESS,
+    CAMERA_REBOOT_STEP_OUT_SHARPNESS,
+    CAMERA_REBOOT_STEP_IN_AUTO_EXPOSURE,
+    CAMERA_REBOOT_STEP_OUT_AUTO_EXPOSURE,
+    CAMERA_REBOOT_STEP_IN_AUTO_WHITE_BALANCE,
+    CAMERA_REBOOT_STEP_OUT_AUTO_WHITE_BALANCE,
+    CAMERA_REBOOT_STEP_IN_CONTEXT,
+    CAMERA_REBOOT_STEP_OUT_CONTEXT,
+    CAMERA_REBOOT_STEP_ACTIVATE,
+    CAMERA_REBOOT_STEP_LED,
+    CAMERA_REBOOT_STEP_DONE,
+};
+
 // The callback of the commands that start the camera again: sends the next setting that is not the camera's default,
 // one command per step, until all are sent. A step is the argument that the command before gave; a case whose
 // setting is the default falls through to the next step
@@ -237,196 +274,204 @@ static void CAMERA_Reboot(CAMERAResult result, void *arg) {
         return;
     }
     switch ((int)arg) {
-    case 0:
-        CAMERA_I2CInitAsyncCore(CAMERA_SELECT_BOTH, CAMERA_Reboot, (void *)1);
+    case CAMERA_REBOOT_STEP_I2C_INIT:
+        CAMERA_I2CInitAsyncCore(CAMERA_SELECT_BOTH, CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_PHOTO_MODE);
         return;
-    case 1:
+    case CAMERA_REBOOT_STEP_IN_PHOTO_MODE:
         if (sCameraWork.settings[0].photoMode != CAMERA_PHOTO_MODE_PORTRAIT) {
-            CAMERA_I2CPhotoModeAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].photoMode, CAMERA_Reboot, (void *)2);
+            CAMERA_I2CPhotoModeAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].photoMode, CAMERA_Reboot,
+                                         (void *)CAMERA_REBOOT_STEP_OUT_PHOTO_MODE);
             return;
         }
-    case 2:
+    case CAMERA_REBOOT_STEP_OUT_PHOTO_MODE:
         if (sCameraWork.settings[1].photoMode != CAMERA_PHOTO_MODE_NORMAL) {
             CAMERA_I2CPhotoModeAsyncCore(CAMERA_SELECT_OUT, sCameraWork.settings[1].photoMode, CAMERA_Reboot,
-                                         (void *)3);
+                                         (void *)CAMERA_REBOOT_STEP_IN_SIZE_A);
             return;
         }
-    case 3:
+    case CAMERA_REBOOT_STEP_IN_SIZE_A:
         if (sCameraWork.settings[0].size[0] != CAMERA_SIZE_DS_LCD) {
             CAMERA_I2CSizeExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_A, sCameraWork.settings[0].size[0],
-                                      CAMERA_Reboot, (void *)4);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_SIZE_B);
             return;
         }
-    case 4:
+    case CAMERA_REBOOT_STEP_IN_SIZE_B:
         if (sCameraWork.settings[0].size[1] != CAMERA_SIZE_VGA) {
             CAMERA_I2CSizeExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_B, sCameraWork.settings[0].size[1],
-                                      CAMERA_Reboot, (void *)5);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_SIZE_A);
             return;
         }
-    case 5:
+    case CAMERA_REBOOT_STEP_OUT_SIZE_A:
         if (sCameraWork.settings[1].size[0] != CAMERA_SIZE_DS_LCD) {
             CAMERA_I2CSizeExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_A, sCameraWork.settings[1].size[0],
-                                      CAMERA_Reboot, (void *)6);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_SIZE_B);
             return;
         }
-    case 6:
+    case CAMERA_REBOOT_STEP_OUT_SIZE_B:
         if (sCameraWork.settings[1].size[1] != CAMERA_SIZE_VGA) {
             CAMERA_I2CSizeExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_B, sCameraWork.settings[1].size[1],
-                                      CAMERA_Reboot, (void *)7);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_FRAME_RATE);
             return;
         }
-    case 7:
+    case CAMERA_REBOOT_STEP_IN_FRAME_RATE:
         if (sCameraWork.settings[0].frameRate != CAMERA_FRAME_RATE_15) {
-            CAMERA_I2CFrameRateAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].frameRate, CAMERA_Reboot, (void *)8);
+            CAMERA_I2CFrameRateAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].frameRate, CAMERA_Reboot,
+                                         (void *)CAMERA_REBOOT_STEP_OUT_FRAME_RATE);
             return;
         }
-    case 8:
+    case CAMERA_REBOOT_STEP_OUT_FRAME_RATE:
         if (sCameraWork.settings[1].frameRate != CAMERA_FRAME_RATE_15) {
             CAMERA_I2CFrameRateAsyncCore(CAMERA_SELECT_OUT, sCameraWork.settings[1].frameRate, CAMERA_Reboot,
-                                         (void *)9);
+                                         (void *)CAMERA_REBOOT_STEP_IN_EFFECT_A);
             return;
         }
-    case 9:
+    case CAMERA_REBOOT_STEP_IN_EFFECT_A:
         if (sCameraWork.settings[0].effect[0] != CAMERA_EFFECT_NONE) {
             CAMERA_I2CEffectExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_A, sCameraWork.settings[0].effect[0],
-                                        CAMERA_Reboot, (void *)10);
+                                        CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_EFFECT_B);
             return;
         }
-    case 10:
+    case CAMERA_REBOOT_STEP_IN_EFFECT_B:
         if (sCameraWork.settings[0].effect[1] != CAMERA_EFFECT_NONE) {
             CAMERA_I2CEffectExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_B, sCameraWork.settings[0].effect[1],
-                                        CAMERA_Reboot, (void *)11);
+                                        CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_EFFECT_A);
             return;
         }
-    case 11:
+    case CAMERA_REBOOT_STEP_OUT_EFFECT_A:
         if (sCameraWork.settings[1].effect[0] != CAMERA_EFFECT_NONE) {
             CAMERA_I2CEffectExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_A, sCameraWork.settings[1].effect[0],
-                                        CAMERA_Reboot, (void *)12);
+                                        CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_EFFECT_B);
             return;
         }
-    case 12:
+    case CAMERA_REBOOT_STEP_OUT_EFFECT_B:
         if (sCameraWork.settings[1].effect[1] != CAMERA_EFFECT_NONE) {
             CAMERA_I2CEffectExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_B, sCameraWork.settings[1].effect[1],
-                                        CAMERA_Reboot, (void *)13);
+                                        CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_FLIP_A);
             return;
         }
-    case 13:
+    case CAMERA_REBOOT_STEP_IN_FLIP_A:
         if (sCameraWork.settings[0].flip[0] != CAMERA_FLIP_HORIZONTAL) {
             CAMERA_I2CFlipExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_A, sCameraWork.settings[0].flip[0],
-                                      CAMERA_Reboot, (void *)14);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_FLIP_B);
             return;
         }
-    case 14:
+    case CAMERA_REBOOT_STEP_IN_FLIP_B:
         if (sCameraWork.settings[0].flip[1] != CAMERA_FLIP_HORIZONTAL) {
             CAMERA_I2CFlipExAsyncCore(CAMERA_SELECT_IN, CAMERA_CONTEXT_B, sCameraWork.settings[0].flip[1],
-                                      CAMERA_Reboot, (void *)15);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_FLIP_A);
             return;
         }
-    case 15:
+    case CAMERA_REBOOT_STEP_OUT_FLIP_A:
         if (sCameraWork.settings[1].flip[0] != CAMERA_FLIP_NONE) {
             CAMERA_I2CFlipExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_A, sCameraWork.settings[1].flip[0],
-                                      CAMERA_Reboot, (void *)16);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_FLIP_B);
             return;
         }
-    case 16:
+    case CAMERA_REBOOT_STEP_OUT_FLIP_B:
         if (sCameraWork.settings[1].flip[1] != CAMERA_FLIP_NONE) {
             CAMERA_I2CFlipExAsyncCore(CAMERA_SELECT_OUT, CAMERA_CONTEXT_B, sCameraWork.settings[1].flip[1],
-                                      CAMERA_Reboot, (void *)17);
+                                      CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_WHITE_BALANCE);
             return;
         }
-    case 17:
+    case CAMERA_REBOOT_STEP_IN_WHITE_BALANCE:
         if (sCameraWork.settings[0].whiteBalance !=
             CAMERA_GetWhiteBalanceFromPhotoMode(sCameraWork.settings[0].photoMode)) {
             CAMERA_I2CWhiteBalanceAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].whiteBalance, CAMERA_Reboot,
-                                            (void *)18);
+                                            (void *)CAMERA_REBOOT_STEP_OUT_WHITE_BALANCE);
             return;
         }
-    case 18:
+    case CAMERA_REBOOT_STEP_OUT_WHITE_BALANCE:
         if (sCameraWork.settings[1].whiteBalance !=
             CAMERA_GetWhiteBalanceFromPhotoMode(sCameraWork.settings[1].photoMode)) {
             CAMERA_I2CWhiteBalanceAsyncCore(CAMERA_SELECT_OUT, sCameraWork.settings[1].whiteBalance, CAMERA_Reboot,
-                                            (void *)19);
+                                            (void *)CAMERA_REBOOT_STEP_IN_EXPOSURE);
             return;
         }
-    case 19: {
+    case CAMERA_REBOOT_STEP_IN_EXPOSURE: {
         int exposure = sCameraWork.settings[0].exposure;
         if (exposure != CAMERA_GetExposureFromPhotoMode(sCameraWork.settings[0].photoMode)) {
-            CAMERA_I2CExposureAsyncCore(CAMERA_SELECT_IN, exposure, CAMERA_Reboot, (void *)20);
+            CAMERA_I2CExposureAsyncCore(CAMERA_SELECT_IN, exposure, CAMERA_Reboot,
+                                        (void *)CAMERA_REBOOT_STEP_OUT_EXPOSURE);
             return;
         }
     }
-    case 20: {
+    case CAMERA_REBOOT_STEP_OUT_EXPOSURE: {
         int exposure = sCameraWork.settings[1].exposure;
         if (exposure != CAMERA_GetExposureFromPhotoMode(sCameraWork.settings[1].photoMode)) {
-            CAMERA_I2CExposureAsyncCore(CAMERA_SELECT_OUT, exposure, CAMERA_Reboot, (void *)21);
+            CAMERA_I2CExposureAsyncCore(CAMERA_SELECT_OUT, exposure, CAMERA_Reboot,
+                                        (void *)CAMERA_REBOOT_STEP_IN_SHARPNESS);
             return;
         }
     }
-    case 21: {
+    case CAMERA_REBOOT_STEP_IN_SHARPNESS: {
         int sharpness = sCameraWork.settings[0].sharpness;
         if (sharpness != CAMERA_GetSharpnessFromPhotoMode(sCameraWork.settings[0].photoMode)) {
-            CAMERA_I2CSharpnessAsyncCore(CAMERA_SELECT_IN, sharpness, CAMERA_Reboot, (void *)22);
+            CAMERA_I2CSharpnessAsyncCore(CAMERA_SELECT_IN, sharpness, CAMERA_Reboot,
+                                         (void *)CAMERA_REBOOT_STEP_OUT_SHARPNESS);
             return;
         }
     }
-    case 22: {
+    case CAMERA_REBOOT_STEP_OUT_SHARPNESS: {
         int sharpness = sCameraWork.settings[1].sharpness;
         if (sharpness != CAMERA_GetSharpnessFromPhotoMode(sCameraWork.settings[1].photoMode)) {
-            CAMERA_I2CSharpnessAsyncCore(CAMERA_SELECT_OUT, sharpness, CAMERA_Reboot, (void *)23);
+            CAMERA_I2CSharpnessAsyncCore(CAMERA_SELECT_OUT, sharpness, CAMERA_Reboot,
+                                         (void *)CAMERA_REBOOT_STEP_IN_AUTO_EXPOSURE);
             return;
         }
     }
-    case 23:
+    case CAMERA_REBOOT_STEP_IN_AUTO_EXPOSURE:
         if (sCameraWork.settings[0].autoExposure != TRUE) {
             CAMERA_I2CAutoExposureAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].autoExposure, CAMERA_Reboot,
-                                            (void *)24);
+                                            (void *)CAMERA_REBOOT_STEP_OUT_AUTO_EXPOSURE);
             return;
         }
-    case 24:
+    case CAMERA_REBOOT_STEP_OUT_AUTO_EXPOSURE:
         if (sCameraWork.settings[1].autoExposure != TRUE) {
             CAMERA_I2CAutoExposureAsyncCore(CAMERA_SELECT_OUT, sCameraWork.settings[1].autoExposure, CAMERA_Reboot,
-                                            (void *)25);
+                                            (void *)CAMERA_REBOOT_STEP_IN_AUTO_WHITE_BALANCE);
             return;
         }
-    case 25:
+    case CAMERA_REBOOT_STEP_IN_AUTO_WHITE_BALANCE:
         if (sCameraWork.settings[0].autoWhiteBalance != TRUE) {
             CAMERA_I2CAutoWhiteBalanceAsyncCore(CAMERA_SELECT_IN, sCameraWork.settings[0].autoWhiteBalance,
-                                                CAMERA_Reboot, (void *)26);
+                                                CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_OUT_AUTO_WHITE_BALANCE);
             return;
         }
-    case 26:
+    case CAMERA_REBOOT_STEP_OUT_AUTO_WHITE_BALANCE:
         if (sCameraWork.settings[1].autoWhiteBalance != TRUE) {
             CAMERA_I2CAutoWhiteBalanceAsyncCore(CAMERA_SELECT_OUT, sCameraWork.settings[1].autoWhiteBalance,
-                                                CAMERA_Reboot, (void *)27);
+                                                CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_IN_CONTEXT);
             return;
         }
-    case 27: {
+    case CAMERA_REBOOT_STEP_IN_CONTEXT: {
         CAMERAContext context = sCameraWork.settings[0].context;
         if (context != CAMERA_CONTEXT_A) {
             if (OS_IsRunOnTwl() == TRUE) {
-                CAMERA_I2CContextSwitchAsyncCore(CAMERA_SELECT_IN, context, CAMERA_Reboot, (void *)28);
+                CAMERA_I2CContextSwitchAsyncCore(CAMERA_SELECT_IN, context, CAMERA_Reboot,
+                                                 (void *)CAMERA_REBOOT_STEP_OUT_CONTEXT);
             }
             return;
         }
     }
-    case 28: {
+    case CAMERA_REBOOT_STEP_OUT_CONTEXT: {
         CAMERAContext context = sCameraWork.settings[1].context;
         if (context != CAMERA_CONTEXT_A) {
             if (OS_IsRunOnTwl() == TRUE) {
-                CAMERA_I2CContextSwitchAsyncCore(CAMERA_SELECT_OUT, context, CAMERA_Reboot, (void *)29);
+                CAMERA_I2CContextSwitchAsyncCore(CAMERA_SELECT_OUT, context, CAMERA_Reboot,
+                                                 (void *)CAMERA_REBOOT_STEP_ACTIVATE);
             }
             return;
         }
     }
-    case 29:
+    case CAMERA_REBOOT_STEP_ACTIVATE:
         if (sCameraWork.activeCamera != CAMERA_SELECT_NONE) {
-            CAMERA_I2CActivateAsyncCore(sCameraWork.activeCamera, CAMERA_Reboot, (void *)30);
+            CAMERA_I2CActivateAsyncCore(sCameraWork.activeCamera, CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_LED);
             return;
         }
-    case 30:
+    case CAMERA_REBOOT_STEP_LED:
         if (sCameraWork.activeCamera == CAMERA_SELECT_OUT && sCameraWork.settings[1].ledBlink == TRUE) {
             if (OS_IsRunOnTwl() == TRUE) {
-                CAMERA_SetLEDAsyncCore(TRUE, CAMERA_Reboot, (void *)31);
+                CAMERA_SetLEDAsyncCore(TRUE, CAMERA_Reboot, (void *)CAMERA_REBOOT_STEP_DONE);
             }
             return;
         }
@@ -842,12 +887,12 @@ static CAMERAResult CAMERA_I2CEffectExAsyncCore(CAMERASelect camera, CAMERAConte
         return CAMERA_RESULT_ILLEGAL_PARAMETER;
     }
     switch (effect) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
+    case CAMERA_EFFECT_NONE:
+    case CAMERA_EFFECT_MONO:
+    case CAMERA_EFFECT_SEPIA:
+    case CAMERA_EFFECT_NEGATIVE:
+    case CAMERA_EFFECT_NEGAFILM:
+    case CAMERA_EFFECT_SEPIA01:
         break;
     default:
         return CAMERA_RESULT_ILLEGAL_PARAMETER;

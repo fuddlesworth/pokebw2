@@ -261,24 +261,24 @@ static s32 Mel_JPEGDecodeExif(u8 *data, u32 size, u32 option) {
     if (size <= 2) {
         return 0;
     }
-    if (data[0] != 0xff || data[1] != 0xd8) {
+    if (data[0] != JPEG_MARKER_PREFIX || data[1] != JPEG_MARKER_SOI) {
         return 0;
     }
 
     pos = 2;
     while (pos + 1 < size) {
-        if (data[pos++] == 0xff) {
+        if (data[pos++] == JPEG_MARKER_PREFIX) {
             u8 marker = data[pos++];
             int len;
 
-            if (marker == 0xd9) {
+            if (marker == JPEG_MARKER_EOI) {
                 break;
             }
             if (pos + 1 >= size) {
                 return 0;
             }
             len = (data[pos] << 8) | data[pos + 1];
-            if (marker == 0xe1) {
+            if (marker == JPEG_MARKER_APP1) {
                 int result = SSP_ExifDecode(data, size, &pos, option);
                 if (result == 0 || result == 1) {
                     break;
@@ -325,29 +325,29 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
     if (size <= 2) {
         return 0;
     }
-    if (data[0] != 0xff || data[1] != 0xd8) {
+    if (data[0] != JPEG_MARKER_PREFIX || data[1] != JPEG_MARKER_SOI) {
         return 0;
     }
 
     pos = 2;
     while (pos + 1 < sDataSize) {
-        if (data[pos++] != 0xff) {
+        if (data[pos++] != JPEG_MARKER_PREFIX) {
             continue;
         }
         b = data[pos++];
-        if (b == 0xd9) {
+        if (b == JPEG_MARKER_EOI) {
             break;
         }
         if (pos + 1 >= sDataSize) {
             return 0;
         }
         s = (data[pos] << 8) | data[pos + 1];
-        if (b == 0xe1) {
+        if (b == JPEG_MARKER_APP1) {
             s32 result = SSP_ExifDecode(data, sDataSize, &pos, option);
             if (result != 0 && result != 1) {
                 return 0;
             }
-        } else if (b == 0xc0 || b == 0xc1) {
+        } else if (b == JPEG_MARKER_SOF0 || b == JPEG_MARKER_SOF1) {
             if (pos + 9 >= sDataSize) {
                 return 0;
             }
@@ -355,7 +355,8 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
             width = (data[pos + 5] << 8) | data[pos + 6];
             m = data[pos + 9];
             pos += s;
-            if (m != 0x11 && m != 0x21 && m != 0x12 && m != 0x22) {
+            if (m != JPEG_SAMPLING_FACTORS(1, 1) && m != JPEG_SAMPLING_FACTORS(2, 1) &&
+                m != JPEG_SAMPLING_FACTORS(1, 2) && m != JPEG_SAMPLING_FACTORS(2, 2)) {
                 return 0;
             }
             sHSamp = m >> 4;
@@ -365,7 +366,7 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
             if (width > maxWidth || height > maxHeight) {
                 return 0;
             }
-        } else if (b == 0xc4) {
+        } else if (b == JPEG_MARKER_DHT) {
             q = pos + 2;
             if (q >= sDataSize) {
                 return 0;
@@ -466,8 +467,8 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
                     }
                 }
             }
-        } else if (b == 0xd8) {
-        } else if (b == 0xda) {
+        } else if (b == JPEG_MARKER_SOI) {
+        } else if (b == JPEG_MARKER_SOS) {
             if (pos + 12 >= sDataSize) {
                 return 0;
             }
@@ -495,7 +496,7 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
                 }
             }
             break;
-        } else if (b == 0xdb) {
+        } else if (b == JPEG_MARKER_DQT) {
             q = pos + 2;
             pos += s;
             while (q < pos) {
@@ -523,7 +524,7 @@ static int Mel_JPEGDecode(u8 *dest, u8 *data, u32 size, s32 maxWidth, s32 maxHei
                     }
                 }
             }
-        } else if (b == 0xdd) {
+        } else if (b == JPEG_MARKER_DRI) {
             if (pos + 3 >= sDataSize) {
                 return 0;
             }
@@ -753,9 +754,9 @@ static int loadbit(u8 *data, int *pos) {
     if (sBitsLeft == 0) {
         sBitBuffer = data[(*pos)++];
         sStuffed = 0;
-        if (sBitBuffer == 0xff) {
+        if (sBitBuffer == JPEG_MARKER_PREFIX) {
             (*pos)++;
-            sBitBuffer = 0xff;
+            sBitBuffer = JPEG_MARKER_PREFIX;
             sStuffed = 1;
         }
         sBitsLeft = 8;
@@ -783,9 +784,9 @@ static int hloadbit(u8 *data, int *pos, int tbl) {
         }
         c = data[(*pos)++];
         sStuffed = 0;
-        if (c == 0xff) {
+        if (c == JPEG_MARKER_PREFIX) {
             (*pos)++;
-            c = 0xff;
+            c = JPEG_MARKER_PREFIX;
             sStuffed = 1;
         }
         sBitsLeft += 8;
@@ -816,9 +817,9 @@ static int hloadbit(u8 *data, int *pos, int tbl) {
         }
         c = data[(*pos)++];
         sStuffed = 0;
-        if (c == 0xff) {
+        if (c == JPEG_MARKER_PREFIX) {
             (*pos)++;
-            c = 0xff;
+            c = JPEG_MARKER_PREFIX;
             sStuffed = 1;
         }
         sBitsLeft += 8;
@@ -838,9 +839,9 @@ static int hloadbit(u8 *data, int *pos, int tbl) {
             }
             sBitBuffer = data[(*pos)++];
             sStuffed = 0;
-            if (sBitBuffer == 0xff) {
+            if (sBitBuffer == JPEG_MARKER_PREFIX) {
                 (*pos)++;
-                sBitBuffer = 0xff;
+                sBitBuffer = JPEG_MARKER_PREFIX;
                 sStuffed = 1;
             }
             sBitsLeft = 8;
@@ -898,6 +899,14 @@ static int hloadbit(u8 *data, int *pos, int tbl) {
 // IJG's sample_range_limit: the samples 0 to 255 clamped, reached with offsets from -256 to 639
 #define SAMPLE_RANGE_LIMIT (&sRangeLimit[0x100])
 
+// The sampling modes that writeblock writes, keyed by twice the vertical sampling plus the horizontal
+enum {
+    JPEG_SAMPLING_1X1 = 3,
+    JPEG_SAMPLING_2X1,
+    JPEG_SAMPLING_1X2,
+    JPEG_SAMPLING_2X2,
+};
+
 // Converts the decoded MCU at (x, y) into RGB555 pixels of dest, a bitmap width pixels wide, clipped to height. Each
 // pixel's color is IJG's ycc_rgb_convert, opaque, written out in every case; c holds the index of the pixel's Cb and
 // Cr, then its red, then its color, as BW1's decompilation (aletheia's jpegdec.c) has it and as the ROM's registers
@@ -908,7 +917,7 @@ static void writeblock(u8 *dest, int x, int y, int width, int height) {
     const u8 *rangeLimit = SAMPLE_RANGE_LIMIT;
 
     switch (sVSamp * 2 + sHSamp) {
-    case 3:
+    case JPEG_SAMPLING_1X1:
         for (j = k = 0; j < 8; j++) {
             if (y + j >= height) {
                 break;
@@ -929,7 +938,7 @@ static void writeblock(u8 *dest, int x, int y, int width, int height) {
             }
         }
         break;
-    case 4:
+    case JPEG_SAMPLING_2X1:
         for (h = k = 0; h < sHSamp; h++) {
             for (j = 0; j < 8; j++) {
                 if (y + j >= height) {
@@ -953,7 +962,7 @@ static void writeblock(u8 *dest, int x, int y, int width, int height) {
             }
         }
         break;
-    case 5:
+    case JPEG_SAMPLING_1X2:
         for (v = k = 0; v < sVSamp; v++) {
             for (j = 0; j < 8; j++) {
                 if (j + (y + v * 8) >= height) {
@@ -977,7 +986,7 @@ static void writeblock(u8 *dest, int x, int y, int width, int height) {
             }
         }
         break;
-    case 6:
+    case JPEG_SAMPLING_2X2:
         for (v = k = 0; v < sVSamp; v++) {
             for (h = 0; h < sHSamp; h++) {
                 for (j = 0; j < 8; j++) {
@@ -1014,7 +1023,7 @@ BOOL SSP_StartJpegDecoder(u8 *data, u32 size, void *dst, s16 *width, s16 *height
     u32 decodeOption;
     u32 result;
 
-    if (data_ov257_021b6240 == TRUE && OS_IsRunOnTwl() == TRUE) {
+    if (SSP_JpegDecoderSignMode == TRUE && OS_IsRunOnTwl() == TRUE) {
         u8 sig[SSP_SIGNATURE_SIZE];
         u32 pos, count, i;
         u16 tag;
@@ -1038,13 +1047,13 @@ BOOL SSP_StartJpegDecoder(u8 *data, u32 size, void *dst, s16 *width, s16 *height
         for (i = 0; i < count; i++) {
             entry = &data[pos];
             tag = READ_BE16(entry);
-            if (tag == 0x8769) {
+            if (tag == EXIF_TAG_EXIF_IFD) {
                 pos = READ_BE32(entry + 8) + 12;
                 break;
             }
             pos += 12;
         }
-        if (tag != 0x8769) {
+        if (tag != EXIF_TAG_EXIF_IFD) {
             return FALSE;
         }
         if (pos + 2 > size) {
@@ -1059,20 +1068,20 @@ BOOL SSP_StartJpegDecoder(u8 *data, u32 size, void *dst, s16 *width, s16 *height
         for (i = 0; i < count; i++) {
             entry = &data[pos];
             tag = READ_BE16(entry);
-            if (tag == 0x927c) {
+            if (tag == EXIF_TAG_MAKER_NOTE) {
                 pos = READ_BE32(entry + 8) + 12;
                 break;
             }
             pos += 12;
         }
-        if (tag != 0x927c) {
+        if (tag != EXIF_TAG_MAKER_NOTE) {
             return FALSE;
         }
         if (pos + 4 > size) {
             return FALSE;
         }
         entry = &data[pos];
-        if (entry[2] != 0x10 || entry[3] != 0) {
+        if (entry[2] != (MAKER_NOTE_TAG_SIGNATURE >> 8) || entry[3] != (MAKER_NOTE_TAG_SIGNATURE & 0xff)) {
             return FALSE;
         }
         if (pos + 14 > size) {

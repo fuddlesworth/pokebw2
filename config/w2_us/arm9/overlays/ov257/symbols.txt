@@ -795,21 +795,18 @@ data_ov257_021b2694 kind:data(any) addr:0x021b26d4
 data_ov257_021b26a4 kind:data(any) addr:0x021b26e4
 COMM_TVT_PROC_FUNCTIONS kind:data(any) addr:0x021b26fc ambiguous
 data_ov257_021b26c8 kind:data(any) addr:0x021b2708
-data_ov257_021b26d8 kind:data(any) addr:0x021b2718
-data_ov257_021b26e8 kind:data(any) addr:0x021b2728
-data_ov257_021b2728 kind:data(any) addr:0x021b2768
-data_ov257_021b27a8 kind:data(any) addr:0x021b27e8
-data_ov257_021b29a8 kind:data(any) addr:0x021b29e8
-data_ov257_021b2ba8 kind:data(any) addr:0x021b2be8
-data_ov257_021b2fa8 kind:data(any) addr:0x021b2fe8
+sDerivedTblOffsets kind:data(any) addr:0x021b2718
+sZigzag kind:data(any) addr:0x021b2728
+sAanScales kind:data(any) addr:0x021b2768
+sCbBTab kind:data(any) addr:0x021b27e8
+sCrRTab kind:data(any) addr:0x021b29e8
+sCbGTab kind:data(any) addr:0x021b2be8
+sCrGTab kind:data(any) addr:0x021b2fe8
 data_ov257_021b34a8 kind:data(any) addr:0x021b34e8
 data_ov257_021b3528 kind:data(any) addr:0x021b3568
-data_ov257_021b37f9 kind:data(any) addr:0x021b3839 ambiguous
-data_ov257_021b38cd kind:data(any) addr:0x021b390d ambiguous
 data_ov257_021b3928 kind:data(any) addr:0x021b3968
 sJpegEncSosHeader kind:data(any) addr:0x021b3980
 sJpegEncSofHeader kind:data(any) addr:0x021b398e
-data_ov257_021b3960 kind:data(any) addr:0x021b39a0 ambiguous
 sJpegEncThumbnailHeader kind:data(any) addr:0x021b39a5
 sJpegEncDcLumSpec kind:data(any) addr:0x021b39c0
 sJpegEncDcLumValues kind:data(any) addr:0x021b39d0
@@ -836,24 +833,19 @@ data_ov257_021b3d68 kind:bss addr:0x021b3da8
 sCtvtMic kind:bss addr:0x021b3dac
 sCtvtGameRand kind:bss addr:0x021b3db0
 sCtvtGameCamDspBusy kind:bss addr:0x021b3dc8
-data_ov257_021b3d8c kind:bss addr:0x021b3dcc
-data_ov257_021b3db8 kind:bss addr:0x021b3df8
-data_ov257_021b3e38 kind:bss addr:0x021b3e78
-data_ov257_021b3eb8 kind:bss addr:0x021b3ef8
-data_ov257_021b3fb8 kind:bss addr:0x021b3ff8
+sBitBuffer kind:bss addr:0x021b3dcc
+sCr kind:bss addr:0x021b3df8
+sCb kind:bss addr:0x021b3e78
+sQuant kind:bss addr:0x021b3ef8
+sBlocks kind:bss addr:0x021b3ff8
 data_ov257_021b4038 kind:bss addr:0x021b4078
 data_ov257_021b4138 kind:bss addr:0x021b4178
 data_ov257_021b41b8 kind:bss addr:0x021b41f8
-data_ov257_021b4238 kind:bss addr:0x021b4278
+sY kind:bss addr:0x021b4278
 data_ov257_021b4409 kind:bss addr:0x021b4441 ambiguous
-data_ov257_021b44a4 kind:bss addr:0x021b44e4 ambiguous
-data_ov257_021b46f9 kind:bss addr:0x021b4739 ambiguous
-data_ov257_021b4a38 kind:bss addr:0x021b4a78
-data_ov257_021b50a8 kind:bss addr:0x021b50e8 ambiguous
-data_ov257_021b52bc kind:bss addr:0x021b52fc ambiguous
-data_ov257_021b5c79 kind:bss addr:0x021b5cb9 ambiguous
+sHuffWork kind:bss addr:0x021b4a78
 sMakerNoteData1Size kind:bss addr:0x021b6278
-data_ov257_021b6240 kind:bss addr:0x021b6280
+SSP_JpegDecoderSignMode kind:bss addr:0x021b6280
 sDateTime kind:bss addr:0x021b628c
 sSoftware kind:bss addr:0x021b62a0
 sJpegEncBitsLeft kind:bss addr:0x021b62c0
@@ -869,7 +861,4 @@ sExifEncMakerNoteIfdEntries kind:bss addr:0x021b63c4
 sExifEncInteropIfdEntries kind:bss addr:0x021b67e4
 sExifEncIfd0Entries kind:bss addr:0x021b6c04
 sExifEncIfd1Entries kind:bss addr:0x021b707c
-data_ov257_021b70d4 kind:bss addr:0x021b7114 ambiguous
-data_ov257_021b7168 kind:bss addr:0x021b71a8 ambiguous
 sExifEncExifIfdEntries kind:bss addr:0x021b754c
-data_ov257_021b78bc kind:bss addr:0x021b78fc ambiguous

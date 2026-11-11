@@ -19,13 +19,17 @@
 // The work memory it needs: the thumbnail's RGB555 pixels, and its JPEG data in a buffer as large
 #define THUMBNAIL_BUFFER_SIZE (THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT * 2)
 
-// EXIF tags that SSPi_JpegEncoderDoSign looks for
-#define EXIF_TAG_EXIF_IFD 0x8769
-#define EXIF_TAG_MAKER_NOTE 0x927c
-
 // Option bits
 #define SSP_JPEG_THUMBNAIL 0x1
 #define SSP_JPEG_YUV422 0x100
+
+// The four standard Huffman tables of the JPEG specification, by their DHT type number
+enum {
+    JPEG_HUFF_TABLE_DC_LUMINANCE,
+    JPEG_HUFF_TABLE_DC_CHROMINANCE,
+    JPEG_HUFF_TABLE_AC_LUMINANCE,
+    JPEG_HUFF_TABLE_AC_CHROMINANCE,
+};
 
 // A Huffman table in the encoder's work memory: the counts of codes of each length and the values, as the DHT segment
 // holds them, and the code and code length of each value
@@ -214,7 +218,7 @@ static BOOL Yos_BitWrite(u8 *dst, u32 *pos, u32 value, u32 count) {
         }
         if (--sJpegEncBitsLeft == 0) {
             dst[*pos] = sJpegEncBits;
-            if (sJpegEncBits == 0xff) {
+            if (sJpegEncBits == JPEG_MARKER_PREFIX) {
                 if (*pos + 2 >= sJpegEncLimit) {
                     return FALSE;
                 }
@@ -328,30 +332,30 @@ static void Yos_JpegEncoderHuffmanEncoderBuildTable(JpegEncHuffWork *work, JpegE
 
     MIi_CpuClearFast(0, &table->spec, sizeof(table->spec));
     switch (type) {
-    case 0:
+    case JPEG_HUFF_TABLE_DC_LUMINANCE:
         MIi_CpuCopyFast(sJpegEncDcLumSpec.bits, table->spec.bits, 16);
         break;
-    case 1:
+    case JPEG_HUFF_TABLE_DC_CHROMINANCE:
         MIi_CpuCopyFast(sJpegEncDcChromSpec.bits, table->spec.bits, 16);
         break;
-    case 2:
+    case JPEG_HUFF_TABLE_AC_LUMINANCE:
         MIi_CpuCopyFast(sJpegEncAcLumSpec.bits, table->spec.bits, 16);
         break;
-    case 3:
+    case JPEG_HUFF_TABLE_AC_CHROMINANCE:
         MIi_CpuCopyFast(sJpegEncAcChromSpec.bits, table->spec.bits, 16);
         break;
     }
     switch (type) {
-    case 0:
+    case JPEG_HUFF_TABLE_DC_LUMINANCE:
         MIi_CpuCopyFast(sJpegEncDcLumSpec.values, table->spec.values, sizeof(sJpegEncDcLumSpec.values));
         break;
-    case 1:
+    case JPEG_HUFF_TABLE_DC_CHROMINANCE:
         MIi_CpuCopyFast(sJpegEncDcChromSpec.values, table->spec.values, sizeof(sJpegEncDcChromSpec.values));
         break;
-    case 2:
+    case JPEG_HUFF_TABLE_AC_LUMINANCE:
         MI_CpuCopy(sJpegEncAcLumSpec.values, table->spec.values, sizeof(sJpegEncAcLumSpec.values));
         break;
-    case 3:
+    case JPEG_HUFF_TABLE_AC_CHROMINANCE:
         MI_CpuCopy(sJpegEncAcChromSpec.values, table->spec.values, sizeof(sJpegEncAcChromSpec.values));
         break;
     }
@@ -741,7 +745,7 @@ static BOOL SSPi_JpegEncoderDoSign(u8 *data, u32 size) {
         return FALSE;
     }
     entry = &data[pos];
-    if (entry[2] != 0x10 || entry[3] != 0x00) {
+    if (entry[2] != (MAKER_NOTE_TAG_SIGNATURE >> 8) || entry[3] != (MAKER_NOTE_TAG_SIGNATURE & 0xff)) {
         return FALSE;
     }
     if (pos + 14 > limit) {
@@ -1021,10 +1025,10 @@ static u32 Yos_JPEGEncode(const void *src, u8 *dst, u32 limit, JpegEncWork *work
     }
 
     // DHT
-    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, dcLum, 0);
-    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, acLum, 2);
-    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, dcChrom, 1);
-    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, acChrom, 3);
+    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, dcLum, JPEG_HUFF_TABLE_DC_LUMINANCE);
+    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, acLum, JPEG_HUFF_TABLE_AC_LUMINANCE);
+    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, dcChrom, JPEG_HUFF_TABLE_DC_CHROMINANCE);
+    Yos_JpegEncoderHuffmanEncoderBuildTable(huffWork, acChrom, JPEG_HUFF_TABLE_AC_CHROMINANCE);
     dhtLength = 2 + Yos_JpegEncoderHuffmanEncoderOutputSize(dcLum) + Yos_JpegEncoderHuffmanEncoderOutputSize(dcChrom) +
                 Yos_JpegEncoderHuffmanEncoderOutputSize(acLum) + Yos_JpegEncoderHuffmanEncoderOutputSize(acChrom);
     if (pos + 4 >= sJpegEncLimit) {
