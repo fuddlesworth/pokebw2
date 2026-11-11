@@ -28,8 +28,11 @@ typedef void (*OBJLoadFunction)(const void *src, u32 offset, u32 size);
 static void CpuLoadOAMSub_(const void *src, u32 offset, u32 size);
 static void CpuLoadOAMMain_(const void *src, u32 offset, u32 size);
 
+// The types that have OAM: the two engines and the software emulation
+#define OAM_CACHE_TYPES (NNS_G2D_OAMTYPE_SOFTWAREEMULATION + 1)
+
 static u16 numRegisterdInstance_;
-static OamCache oamCache_[NNS_G2D_OAMTYPE_MAX];
+static OamCache oamCache_[OAM_CACHE_TYPES];
 
 // The width and height in pixels of each OAM shape and size, by [shape][size]. Objects of one size come out in the
 // reverse of their definition order, so the widths are defined first and the ROM has the heights first
@@ -59,7 +62,8 @@ static inline OamCache *GetOamCachePtr_(NNSG2dOamType type) {
 
 // The function that copies to the type's OAM, which the software-emulated type doesn't have
 static inline OBJLoadFunction GetOBJLoadFunction_(NNSG2dOamType type) {
-    static OBJLoadFunction funcTbl[NNS_G2D_OAMTYPE_SOFTWAREEMULATION + 1] = { CpuLoadOAMMain_, CpuLoadOAMSub_ };
+    // An entry for every type, the count included; only the two engines' load
+    static OBJLoadFunction funcTbl[NNS_G2D_OAMTYPE_MAX + 1] = { CpuLoadOAMMain_, CpuLoadOAMSub_ };
 
     return funcTbl[type];
 }
