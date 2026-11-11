@@ -6,8 +6,6 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import yaml
-
 ROOT = Path(__file__).resolve().parents[2]
 # Sections of one main-module source object that the linker places in another module, with that module's native
 # section name. TwlSDK's LTDMAIN parts go to the DSi autoload; initialized IRQ handlers and their waiting-thread
@@ -131,6 +129,10 @@ def parse_sections(path: Path) -> dict[str, tuple[int, int]]:
 
 def load_modules(version: str, with_symbols: bool = True) -> dict[str, Module]:
     """Returns every module of a version, keyed by its path relative to the arm9 config directory."""
+    # Imported here because the build's report script takes this module's tables, and the build needs only the
+    # standard library
+    import yaml
+
     extract = ROOT / "extract" / version
     config = ROOT / "config" / version / "arm9"
     arm9 = yaml.safe_load((extract / "arm9" / "arm9.yaml").read_text())

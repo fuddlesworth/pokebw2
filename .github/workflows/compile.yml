@@ -32,8 +32,8 @@ jobs:
             tools/mwccarm
           key: tools-${{ hashFiles('configure.py', 'lib/*/library.toml') }}
 
-      - name: Dead-strip tests
-        run: python -m unittest tools.build.test_deadstrip
+      - name: Build script tests
+        run: python -m unittest tools.build.test_deadstrip tools.build.test_complete_report
 
       - name: Compile
         run: python tools/decomp/compile_all.py
