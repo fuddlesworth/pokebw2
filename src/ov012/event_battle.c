@@ -464,9 +464,9 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         FieldStatus_SetBusyFlag(GameData_GetFieldStatus(gameData), FLD_STATUS_BUSY_NONE);
         CommPlayerSupport_EndBattle(GameData_GetCommPlayerSupport(gameData));
         index = OS_GetVBlankCount() & 1;
-        data_ov337_02182440 = index;
-        data_ov337_02182444[index] = EventBattleCall_DSProtNop1;
-        data_ov337_02182444[index ^ 1] = EventBattleCall_DSProtTamper1;
+        DSProt_NopIndex = index;
+        DSProt_Callbacks[index] = EventBattleCall_DSProtNop1;
+        DSProt_Callbacks[index ^ 1] = EventBattleCall_DSProtTamper1;
         (*state)++;
         break;
     }
@@ -483,7 +483,7 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         if (checksum == DSPROT_CHECKSUM) {
             DSProt_CallRunChecks1(&seed, wk);
         } else {
-            data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, wk);
+            DSProt_Callbacks[DSProt_NopIndex ^ 1](&seed, wk);
         }
         EventBattleCall_SyncGameDataOnReturn(wk, gameData);
         if (wk->isTrialHouse) {
@@ -491,9 +491,9 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         }
         (*state)++;
         index = OS_GetVBlankCount() & 1;
-        data_ov337_02182440 = index;
-        data_ov337_02182444[index] = EventBattleCall_DSProtNop3;
-        data_ov337_02182444[index ^ 1] = EventBattleCall_DSProtTamper3;
+        DSProt_NopIndex = index;
+        DSProt_Callbacks[index] = EventBattleCall_DSProtNop3;
+        DSProt_Callbacks[index ^ 1] = EventBattleCall_DSProtTamper3;
         break;
     }
     case BATTLE_CALL_STEP_FADE_BGM: {
@@ -508,7 +508,7 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
         if (checksum == DSPROT_CHECKSUM) {
             DSProt_CallRunChecks3(&seed, wk);
         } else {
-            data_ov337_02182444[data_ov337_02182440 ^ 1](&seed, wk);
+            DSProt_Callbacks[DSProt_NopIndex ^ 1](&seed, wk);
         }
         if (wk->noBlackout == FALSE && EventBattleCall_IsResultDefeat(wk) == TRUE) {
             GameEvent_ChainNext(event, EventBGMFadeStop_Create(gsys, 30));

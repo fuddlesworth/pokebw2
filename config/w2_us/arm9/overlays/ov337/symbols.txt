@@ -62,6 +62,6 @@ sEncryptedKeyMulti kind:data(any) addr:0x0218244c
 sDecryptFunctionMulti kind:data(any) addr:0x02182464
 sEncryptFunctionMulti kind:data(any) addr:0x02182468
 sEmulatorMacMulti kind:data(any) addr:0x0218246c
-data_ov337_02182440 kind:bss addr:0x02182480
-data_ov337_02182444 kind:bss addr:0x02182484
+DSProt_NopIndex kind:bss addr:0x02182480
+DSProt_Callbacks kind:bss addr:0x02182484
 DSProt_WorkMulti kind:bss addr:0x0218248c

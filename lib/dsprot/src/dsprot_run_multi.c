@@ -5,8 +5,8 @@
 // functions the game picked and the arguments, and calls the first of the pair if the codes add up, the second if not.
 // The ROM doesn't name this file; it is named for what it does.
 
-DSProtCallback data_ov337_02182444[2];
-u32 data_ov337_02182440;
+DSProtCallback DSProt_Callbacks[2];
+u32 DSProt_NopIndex;
 
 static const u32 sEncryptedKeyMulti[6] = { 0x08a27510, 0xe47ab3c3, 0x5a289302, 0xeaa6cac8, 0xe00d75d5, 0xe2d2fe01 };
 
@@ -47,8 +47,8 @@ static inline void *DSProt_RunQueueMulti(u32 *check, void *arg0, void *arg1, u32
     u32 value;
     // DS Protect keeps the addresses of the pair and of its index biased by 0x2200 in the literals and removes the
     // bias at run time, as a signed value
-    DSProtCallback *callbacks = (DSProtCallback *)((s32)(data_ov337_02182444 + 0x880) - 0x2200);
-    u32 index = *(u32 *)((s32)(&data_ov337_02182440 + 0x880) - 0x2200);
+    DSProtCallback *callbacks = (DSProtCallback *)((s32)(DSProt_Callbacks + 0x880) - 0x2200);
+    u32 index = *(u32 *)((s32)(&DSProt_NopIndex + 0x880) - 0x2200);
 
     args.nop = callbacks[index];
     args.tamper = callbacks[index ^ 1];

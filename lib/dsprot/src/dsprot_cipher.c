@@ -13,21 +13,21 @@ static const u32 sCipherFunctions[5] = {
     (u32)(DSProt_Rc4Next + 0x2200),       (u32)(DSProt_Rc4Init + 0x2200),
 };
 
-// What a word of code is, by the top byte of the instruction: 1 for a branch with link and exchange, 2 for a branch
-// with link, 3 for a branch, 0 for the rest
+// What a word of code is, by the top byte of the instruction: a branch with link and exchange, a branch with link, a
+// branch, or not a branch
 u32 DSProt_GetBranchType(u32 instruction) {
     u32 byte = (u8)(instruction >> 24);
 
     if ((byte & 0xe) == 0xa) {
         if ((byte & 0xf0) == 0xf0) {
-            return 1;
+            return DSPROT_BRANCH_BLX;
         }
         if (byte & 1) {
-            return 2;
+            return DSPROT_BRANCH_BL;
         }
-        return 3;
+        return DSPROT_BRANCH_B;
     }
-    return 0;
+    return DSPROT_BRANCH_NONE;
 }
 
 void DSProt_Rc4Init(DSProtCipherState *state, const u8 *key, u32 keyLength) {
@@ -89,13 +89,13 @@ s32 DSProt_EncryptCode(DSProtCipherState *state, u8 *src, u8 *dest, u32 size) {
     }
     for (i = 0; i < size; i += 4) {
         switch (((DSProtBranchTypeFunc)(sCipherFunctions[0] - 0x2200))(*(u32 *)(src + i))) {
-        case 1:
+        case DSPROT_BRANCH_BLX:
             src[i + 3] ^= 1;
-        case 2:
+        case DSPROT_BRANCH_BL:
             *(u32 *)(dest + i) =
                 ((*(u32 *)(src + i) & 0xff000000) ^ 0x1000000) | (((*(u32 *)(src + i) & 0xffffff) + 0x882) & 0xffffff);
             break;
-        case 3:
+        case DSPROT_BRANCH_B:
             *(u32 *)(src + i) ^= 0x1000000;
         default: {
             u32 byte;
@@ -144,12 +144,12 @@ s32 DSProt_DecryptCode(DSProtCipherState *state, u8 *src, u8 *dest, u32 size) {
         sum = last;
         word = *(u32 *)(src + i);
         switch (((DSProtBranchTypeFunc)(sCipherFunctions[0] - 0x2200))(word)) {
-        case 1:
+        case DSPROT_BRANCH_BLX:
             src[i + 3] ^= 1;
-        case 3:
+        case DSPROT_BRANCH_B:
             *(u32 *)(dest + i) = ((word & 0xff000000) ^ 0x1000000) | (((word & 0xffffff) + 0xfffff77e) & 0xffffff);
             break;
-        case 2:
+        case DSPROT_BRANCH_BL:
             dest[i] = DSProt_DecryptByte(state, src[i]);
             dest[i + 1] = DSProt_DecryptByte(state, src[i + 1]);
             dest[i + 2] = DSProt_DecryptByte(state, src[i + 2]);
