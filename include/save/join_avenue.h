@@ -45,7 +45,8 @@ enum {
 #define JOIN_AVE_VISITOR_ID_COUNT 32
 
 // A field of a person, which joinAveTextHandler reads and JoinAvenuePerson_SetParam writes, as overlay 137's people
-// do through their data. Entries and records have some of them
+// do through their data. Entries and records have some of them. The UNK selectors are those no caller passes: the
+// fields they reach, if any, have no other reader or writer
 typedef enum {
     JOIN_AVE_PARAM_SLOT = 0,
     JOIN_AVE_PARAM_ROW = 1,
@@ -154,6 +155,7 @@ typedef struct {
 
 // The state of the shop a person runs
 typedef struct {
+    // Never accessed: the accessors reach id, level, experience and flags only
     u8 unk0;
     // Column 2 of the shop
     u8 level;
@@ -212,6 +214,7 @@ struct JoinAvenuePerson {
     JoinAvenueShopChoice choice;
     JoinAvenueData data[JOIN_AVE_DATA_COUNT];
     u16 raffled;
+    // Never accessed: a person is otherwise cleared, copied whole and saved as it is
     u8 unkA2;
     u8 year;
     u8 month;
@@ -222,12 +225,16 @@ struct JoinAvenuePerson {
     u8 shopChangeBlocked : 1;
     // Never leaves
     u8 noExpiry : 1;
+    // Only JOIN_AVE_PARAM_UNK_39 reaches this
     u8 unkA9_2 : 1;
     u8 : 4;
+    // Only JOIN_AVE_PARAM_UNK_30 reaches this, and the daily reset clears it
     u8 unkA9_7 : 1;
+    // Only JOIN_AVE_PARAM_UNK_29 reaches this
     u8 unkAA_0 : 1;
     u8 visitType;
     JoinAvenueShop shop;
+    // Only JOIN_AVE_PARAM_UNK_36 reaches this
     u32 unkB8;
     u32 dataMask : 9;
     u32 talking : 1;
@@ -254,6 +261,7 @@ struct JoinAvenueRecord {
     u8 row;
     u8 slot;
     u8 shopKind;
+    // Never accessed: a record is cleared and copied whole
     u8 unk2F;
     u8 year;
     u8 month;
@@ -269,6 +277,7 @@ struct JoinAvenueEntry {
     JoinAvenueProfile profile;
     JoinAvenueMessage message1;
     JoinAvenueMessage message2;
+    // Never accessed: an entry is cleared and copied whole
     u8 unk4C[2];
     // The kind of shop the person will run (JOIN_AVE_PARAM_SHOP_KIND): 0 or 1 by the type it was made with, or a later
     // kind
@@ -374,6 +383,7 @@ struct JoinAvenueSave {
     u8 entryList[sizeof(JoinAvenueEntryList) + JOIN_AVE_ENTRY_COUNT * sizeof(JoinAvenueEntry)];
     JoinAvenueOccupants occupants;
     JoinAvenueInfo info;
+    // The rest of the block, which JoinAvenueSave_Init leaves as it is: nothing reads or writes it
     u8 unk13E0[0x2c8];
 };
 
