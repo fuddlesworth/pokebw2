@@ -209,7 +209,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
         break;
     case BATTLE_START_RESULT_DEMO:
         queue = TRUE;
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             battle->players->base.demoType = COMM_BTL_DEMO_TYPE_SINGLE_END;
         } else {
             battle->players->base.demoType = COMM_BTL_DEMO_TYPE_MULTI_END;
@@ -235,7 +235,7 @@ static BOOL WifiBattleMatchSys_BattleProcMain(GameProc *proc, u32 *state, void *
             battle->players->base.result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         }
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             last = 1;
             first = 0;
             second = 1;

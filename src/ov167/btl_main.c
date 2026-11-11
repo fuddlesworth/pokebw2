@@ -65,6 +65,77 @@
 // The first mon ID of each client
 static const u8 sClientFirstMonIds[4] = { 0, 12, 6, 18 };
 
+// The steps of BtlMain_ProcInit: make the battle's heaps and module, wait for the link, then run the setup
+enum {
+    BTL_MAIN_INIT_SEQ_INIT,
+    BTL_MAIN_INIT_SEQ_WAIT_NET,
+    BTL_MAIN_INIT_SEQ_SETUP,
+};
+
+// The steps of BtlMain_ProcExit: start the fade, fade the brightness, wait for the music, free the battle, run its
+// cleanup and release the module
+enum {
+    BTL_MAIN_EXIT_SEQ_START_FADE,
+    BTL_MAIN_EXIT_SEQ_FADE_BRIGHTNESS,
+    BTL_MAIN_EXIT_SEQ_WAIT_BGM,
+    BTL_MAIN_EXIT_SEQ_FREE,
+    BTL_MAIN_EXIT_SEQ_RUN_CLEANUP,
+    BTL_MAIN_EXIT_SEQ_RELEASE,
+};
+
+// The steps of BtlMain_CommExchangeSyncData: send this machine's version, wait for the server, then send and receive
+// the battle's sync data
+enum {
+    BTL_COMM_SYNC_SEQ_SEND_VERSION,
+    BTL_COMM_SYNC_SEQ_WAIT_SERVER,
+    BTL_COMM_SYNC_SEQ_SEND_DATA,
+    BTL_COMM_SYNC_SEQ_RECV_DATA,
+};
+
+// The steps of BtlMain_CommExchangeParties: exchange the players' parties, then the NPC partners', and make them the
+// parties the battle uses
+enum {
+    BTL_COMM_PARTY_SEQ_START_TIMING,
+    BTL_COMM_PARTY_SEQ_WAIT_TIMING,
+    BTL_COMM_PARTY_SEQ_SEND,
+    BTL_COMM_PARTY_SEQ_RECV,
+    BTL_COMM_PARTY_SEQ_NPC_START,
+    BTL_COMM_PARTY_SEQ_NPC_WAIT_TIMING,
+    BTL_COMM_PARTY_SEQ_NPC_SEND,
+    BTL_COMM_PARTY_SEQ_NPC_RECV,
+    BTL_COMM_PARTY_SEQ_INIT_CLIENT_CONS = 10,
+    BTL_COMM_PARTY_SEQ_INIT_SERVER_CONS,
+    BTL_COMM_PARTY_SEQ_END,
+};
+
+// The steps of BtlMain_CommExchangeTrainers: exchange the players' info, then the NPC partners' trainers, and end
+enum {
+    BTL_COMM_TRAINER_SEQ_START_TIMING,
+    BTL_COMM_TRAINER_SEQ_WAIT_TIMING,
+    BTL_COMM_TRAINER_SEQ_SEND_PLAYER_INFO,
+    BTL_COMM_TRAINER_SEQ_RECV_PLAYER_INFO,
+    BTL_COMM_TRAINER_SEQ_NPC_START,
+    BTL_COMM_TRAINER_SEQ_NPC_START_TIMING,
+    BTL_COMM_TRAINER_SEQ_NPC_WAIT_TIMING,
+    BTL_COMM_TRAINER_SEQ_NPC_SEND,
+    BTL_COMM_TRAINER_SEQ_NPC_RECV,
+    BTL_COMM_TRAINER_SEQ_END = 10,
+};
+
+// The steps of BtlMain_CommExchangeChatter: time the exchange, send this machine's Chatter, then take the others' and
+// end it
+enum {
+    BTL_COMM_CHATTER_SEQ_BEGIN,
+    BTL_COMM_CHATTER_SEQ_WAIT_TIMING,
+    BTL_COMM_CHATTER_SEQ_SEND,
+    BTL_COMM_CHATTER_SEQ_RECV_END,
+};
+
+// The step of BtlMain_CommCreateViewCore, which creates the battle's view and starts its main loop
+enum {
+    BTL_COMM_VIEW_SEQ_CREATE,
+};
+
 // The battle system's proc
 const GameProcFunctions BATTLE_PROC_FUNCTIONS = { BtlMain_ProcInit, BtlMain_ProcMain, BtlMain_ProcExit };
 
@@ -103,7 +174,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
     BOOL flag;
 
     switch (*state) {
-    case 0:
+    case BTL_MAIN_INIT_SEQ_INIT:
         GFL_HeapCreateChild(HEAPID_USER, HEAPID_BATTLE, 0x20000);
         GFL_HeapCreateChild(HEAPID_USER, 0x14, 0x8000);
         GFL_HeapCreateChild(HEAPID_USER, 0x13, 0xac500);
@@ -117,7 +188,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         }
         mainModule->heapId = HEAPID_BATTLE;
         mainModule->setup = setup;
-        setup->capturedSlot = 6;
+        setup->capturedSlot = BTL_SLOT_NONE;
         mainModule->playerInfo = mainModule->setup->playerInfo[0];
         mainModule->gameTimeLimit = mainModule->setup->gameTimeLimit;
         mainModule->commandTimeLimit = mainModule->setup->commandTimeLimit;
@@ -174,7 +245,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         }
         (*state)++;
         break;
-    case 1:
+    case BTL_MAIN_INIT_SEQ_WAIT_NET:
         mainModule = work;
         if (mainModule->setup->fieldSituation.netHandle != NULL && BtlNet_CheckError()) {
             mainModule->commError = 1;
@@ -190,7 +261,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 2:
+    case BTL_MAIN_INIT_SEQ_SETUP:
         mainModule = work;
         if (BtlMainSeq_Run(&mainModule->seq)) {
             if (mainModule->commError) {
@@ -253,7 +324,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
     s32 brightness;
 
     switch (*state) {
-    case 0:
+    case BTL_MAIN_EXIT_SEQ_START_FADE:
         if (!mainModule->skipExitBgmFadeOut) {
             GFL_SndBGMFadeOut(30);
         }
@@ -270,7 +341,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         }
         (*state)++;
         break;
-    case 1:
+    case BTL_MAIN_EXIT_SEQ_FADE_BRIGHTNESS:
         if (mainModule->subSeq > -16) {
             mainModule->subSeq--;
             brightness = GX_GetMasterBrightness();
@@ -285,7 +356,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         }
         (*state)++;
         break;
-    case 2:
+    case BTL_MAIN_EXIT_SEQ_WAIT_BGM:
         if (!mainModule->skipExitBgmFadeOut) {
             if (GFL_SndBGMIsFading()) {
                 break;
@@ -296,7 +367,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 3:
+    case BTL_MAIN_EXIT_SEQ_FREE:
         if (mainModule->field != NULL) {
             BtlField_Delete(mainModule->field);
             mainModule->field = NULL;
@@ -315,7 +386,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         BtlMain_SetCleanupSeq(&mainModule->seq, mainModule, mainModule->setup);
         (*state)++;
         break;
-    case 4:
+    case BTL_MAIN_EXIT_SEQ_RUN_CLEANUP:
         if (BtlMainSeq_Run(&mainModule->seq)) {
             BtlAdapter_QuitSystem();
             BtlNet_Exit();
@@ -323,7 +394,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
             (*state)++;
         }
         break;
-    case 5:
+    case BTL_MAIN_EXIT_SEQ_RELEASE:
         BtlvCore_ExitSystem();
         GFL_SndPlayerSetMuteStateEx(1, 0x3e);
         PokeVoice_ResetMasterVolume();
@@ -353,7 +424,7 @@ void BtlMain_SetSetupSeq(BtlMainSeq *seq, BtlMainModule *mainModule, BtlSetup *s
             BtlMainSeq_Set(seq, BtlMain_SetupAloneSingle, mainModule);
             return;
         case BTL_STYLE_DOUBLE:
-            if (setup->fieldSituation.multiMode == 0) {
+            if (setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
                 BtlMainSeq_Set(seq, BtlMain_SetupAloneDouble, mainModule);
                 return;
             }
@@ -475,7 +546,7 @@ u8 CalcClientBattlerCount(BtlMainModule *mainModule, u8 clientId) {
     case BTL_STYLE_TRIPLE:
         return 3;
     case BTL_STYLE_DOUBLE:
-        if (setup->fieldSituation.multiMode == 0) {
+        if (setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             return 2;
         }
         if (setup->battleType == BTL_TYPE_COMM) {
@@ -625,18 +696,18 @@ BOOL BtlMain_SetupAloneMulti(u32 *state, BtlMainModule *mainModule) {
     mainModule->posClientIds[1] = 1;
     mainModule->posClientIds[3] = 1;
     switch (setup->fieldSituation.multiMode) {
-    case 1:
-    case 2:
-    case 3:
+    case BTL_MULTI_MODE_NET_VS_NET:
+    case BTL_MULTI_MODE_NET_VS_AI:
+    case BTL_MULTI_MODE_TRAINER_2V2:
         mainModule->posClientIds[2] = 2;
         mainModule->posClientIds[3] = 3;
         mainModule->clientCount = 4;
         break;
-    case 4:
+    case BTL_MULTI_MODE_TRAINER_1V2:
         mainModule->posClientIds[3] = 3;
         mainModule->clientCount = 3;
         break;
-    case 5:
+    case BTL_MULTI_MODE_WILD_MULTI:
         mainModule->posClientIds[2] = 2;
         mainModule->clientCount = 3;
         break;
@@ -824,7 +895,7 @@ BOOL BtlMain_SetupCommDouble(u32 *state, BtlMainModule *mainModule) {
 
     if (*state == 0) {
         switch (mainModule->setup->fieldSituation.multiMode) {
-        case 0:
+        case BTL_MULTI_MODE_NONE:
         default:
             mainModule->clientCount = 2;
             mainModule->posClientIds[0] = 0;
@@ -832,9 +903,9 @@ BOOL BtlMain_SetupCommDouble(u32 *state, BtlMainModule *mainModule) {
             mainModule->posClientIds[2] = 0;
             mainModule->posClientIds[3] = 1;
             break;
-        case 2:
+        case BTL_MULTI_MODE_NET_VS_AI:
             mainModule->npcCount = 2;
-        case 1:
+        case BTL_MULTI_MODE_NET_VS_NET:
             mainModule->clientCount = 4;
             mainModule->posClientIds[0] = 0;
             mainModule->posClientIds[1] = 1;
@@ -933,24 +1004,24 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
         return TRUE;
     }
     switch (*state) {
-    case 0:
+    case BTL_COMM_SYNC_SEQ_SEND_VERSION:
         if (BtlNet_SendVersion(mainModule->playerClientId)) {
             (*state)++;
         }
         break;
-    case 1:
+    case BTL_COMM_SYNC_SEQ_WAIT_SERVER:
         if (BtlNet_IsServerDecided()) {
             mainModule->unk46A = 0;
             mainModule->isServer = BtlNet_IsServer();
             mainModule->setup->commonVersion = BtlNet_GetCommonVersion();
             if (BtlNet_IsServer()) {
-                *state = 2;
+                *state = BTL_COMM_SYNC_SEQ_SEND_DATA;
             } else {
-                *state = 3;
+                *state = BTL_COMM_SYNC_SEQ_RECV_DATA;
             }
         }
         break;
-    case 2:
+    case BTL_COMM_SYNC_SEQ_SEND_DATA:
         mainModule->syncData.rand = mainModule->rand;
         mainModule->syncData.unk18 = mainModule->setup->unkA2;
         mainModule->syncData.gameTimeLimit = mainModule->setup->gameTimeLimit;
@@ -966,7 +1037,7 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
             (*state)++;
         }
         break;
-    case 3:
+    case BTL_COMM_SYNC_SEQ_RECV_DATA:
         if (BtlNet_GetSyncData(&mainModule->syncData)) {
             BtlSetup *setup = mainModule->setup;
             setup->unkA2 = mainModule->syncData.unk18;
@@ -993,24 +1064,24 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
         return TRUE;
     }
     switch (*state) {
-    case 0:
+    case BTL_COMM_PARTY_SEQ_START_TIMING:
         BtlNet_StartTiming(2);
         (*state)++;
         break;
-    case 1:
+    case BTL_COMM_PARTY_SEQ_WAIT_TIMING:
         if (BtlNet_CheckTiming(2)) {
             (*state)++;
         }
         break;
-    case 2:
+    case BTL_COMM_PARTY_SEQ_SEND:
         if (BtlNet_SendParty(setup->party[0])) {
             (*state)++;
         }
         break;
-    case 3:
+    case BTL_COMM_PARTY_SEQ_RECV:
         if (BtlNet_ArePartiesReceived()) {
             if (mainModule->npcCount == 0) {
-                *state = 10;
+                *state = BTL_COMM_PARTY_SEQ_INIT_CLIENT_CONS;
                 break;
             }
             if (mainModule->isServer) {
@@ -1021,7 +1092,7 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
             (*state)++;
         }
         break;
-    case 4:
+    case BTL_COMM_PARTY_SEQ_NPC_START:
         index = 1;
         if (mainModule->npcIndex != 0) {
             index = 3;
@@ -1034,17 +1105,17 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
         BtlNet_StartTiming(mainModule->npcIndex + 6);
         (*state)++;
         break;
-    case 5:
+    case BTL_COMM_PARTY_SEQ_NPC_WAIT_TIMING:
         if (BtlNet_CheckTiming(mainModule->npcIndex + 6)) {
             (*state)++;
         }
         break;
-    case 6:
+    case BTL_COMM_PARTY_SEQ_NPC_SEND:
         if (!mainModule->isServer || BtlNet_SendPartyPacket(mainModule->partyPacket)) {
             (*state)++;
         }
         break;
-    case 7:
+    case BTL_COMM_PARTY_SEQ_NPC_RECV:
         if (BtlNet_IsClientPartyReceived(mainModule->npcClientId)) {
             mainModule->npcIndex++;
             if (mainModule->npcIndex >= mainModule->npcCount) {
@@ -1052,13 +1123,13 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
                     BtlNet_FreePartyPacket(mainModule->partyPacket);
                     mainModule->partyPacket = NULL;
                 }
-                *state = 10;
+                *state = BTL_COMM_PARTY_SEQ_INIT_CLIENT_CONS;
             } else {
-                *state = 4;
+                *state = BTL_COMM_PARTY_SEQ_NPC_START;
             }
         }
         break;
-    case 10:
+    case BTL_COMM_PARTY_SEQ_INIT_CLIENT_CONS:
         PokeCon_Init(&mainModule->pokeCons[0], mainModule, FALSE);
         for (i = 0; i < 4; i++) {
             if (DoesClientExist(mainModule, i)) {
@@ -1069,7 +1140,7 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
         }
         (*state)++;
         break;
-    case 11:
+    case BTL_COMM_PARTY_SEQ_INIT_SERVER_CONS:
         PokeCon_Init(&mainModule->pokeCons[1], mainModule, TRUE);
         for (i = 0; i < 4; i++) {
             if (DoesClientExist(mainModule, i)) {
@@ -1078,7 +1149,7 @@ BOOL BtlMain_CommExchangeParties(BtlMainModule *mainModule, s32 *state) {
         }
         (*state)++;
         break;
-    case 12:
+    case BTL_COMM_PARTY_SEQ_END:
         BtlNet_EndPartyExchange();
         (*state)++;
         break;
@@ -1104,21 +1175,21 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
         return TRUE;
     }
     switch (*state) {
-    case 0:
+    case BTL_COMM_TRAINER_SEQ_START_TIMING:
         BtlNet_StartTiming(4);
         (*state)++;
         break;
-    case 1:
+    case BTL_COMM_TRAINER_SEQ_WAIT_TIMING:
         if (BtlNet_CheckTiming(4)) {
             (*state)++;
         }
         break;
-    case 2:
+    case BTL_COMM_TRAINER_SEQ_SEND_PLAYER_INFO:
         if (BtlNet_SendPlayerInfo(mainModule->playerInfo)) {
             (*state)++;
         }
         break;
-    case 3:
+    case BTL_COMM_TRAINER_SEQ_RECV_PLAYER_INFO:
         if (BtlNet_ArePlayerInfosReceived()) {
             for (i = 0; i < mainModule->clientCount; i++) {
                 info = BtlNet_GetPlayerInfo(i);
@@ -1148,24 +1219,24 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
             (*state)++;
         }
         break;
-    case 4:
+    case BTL_COMM_TRAINER_SEQ_NPC_START:
         if (mainModule->npcCount == 0) {
-            *state = 10;
+            *state = BTL_COMM_TRAINER_SEQ_END;
             break;
         }
         mainModule->npcIndex = 0;
         (*state)++;
         break;
-    case 5:
+    case BTL_COMM_TRAINER_SEQ_NPC_START_TIMING:
         BtlNet_StartTiming(mainModule->npcIndex + 8);
         (*state)++;
         break;
-    case 6:
+    case BTL_COMM_TRAINER_SEQ_NPC_WAIT_TIMING:
         if (BtlNet_CheckTiming(mainModule->npcIndex + 8)) {
             (*state)++;
         }
         break;
-    case 7:
+    case BTL_COMM_TRAINER_SEQ_NPC_SEND:
         index = 1;
         if (mainModule->npcIndex != 0) {
             index = 3;
@@ -1175,19 +1246,19 @@ BOOL BtlMain_CommExchangeTrainers(BtlMainModule *mainModule, s32 *state) {
             break;
         }
         (*state)++;
-    case 8:
+    case BTL_COMM_TRAINER_SEQ_NPC_RECV:
         if (BtlNet_IsTrainerReceived()) {
             TrainerData_SetFromComm(&mainModule->trainers[mainModule->npcClientId], BtlNet_GetTrainer());
             BtlNet_FreeTrainer();
             mainModule->npcIndex++;
             if (mainModule->npcIndex >= mainModule->npcCount) {
-                *state = 10;
+                *state = BTL_COMM_TRAINER_SEQ_END;
             } else {
-                *state = 5;
+                *state = BTL_COMM_TRAINER_SEQ_NPC_START_TIMING;
             }
         }
         break;
-    case 10:
+    case BTL_COMM_TRAINER_SEQ_END:
         BtlNet_EndTrainerExchange();
         (*state)++;
         break;
@@ -1207,22 +1278,22 @@ BOOL BtlMain_CommExchangeChatter(BtlMainModule *mainModule, s32 *state) {
         return TRUE;
     }
     switch (*state) {
-    case 0:
+    case BTL_COMM_CHATTER_SEQ_BEGIN:
         BtlNet_BeginChatterExchange();
         BtlNet_StartTiming(3);
         (*state)++;
         break;
-    case 1:
+    case BTL_COMM_CHATTER_SEQ_WAIT_TIMING:
         if (BtlNet_CheckTiming(3)) {
             (*state)++;
         }
         break;
-    case 2:
+    case BTL_COMM_CHATTER_SEQ_SEND:
         if (BtlNet_SendChatter(getChatterBlockAddress(GameData_GetSaveControl(setup->gameData)))) {
             (*state)++;
         }
         break;
-    case 3:
+    case BTL_COMM_CHATTER_SEQ_RECV_END:
         if (BtlNet_AreChattersReceived()) {
             for (i = 0; i < 4; i++) {
                 if (DoesClientExist(mainModule, i) && !IsClientNPCTrainer(mainModule, i)) {
@@ -1289,7 +1360,7 @@ BOOL BtlMain_CommCreateDouble(BtlMainModule *mainModule, s32 *state) {
     BtlSetup *setup = mainModule->setup;
     u8 clientId = mainModule->playerClientId;
     u8 commCompetitor = BtlMain_IsCommCompetitor(setup);
-    u8 posCount = setup->fieldSituation.multiMode == 0 ? 2 : 1;
+    u8 posCount = setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE ? 2 : 1;
     u8 ally;
     u32 i;
 
@@ -1305,7 +1376,7 @@ BOOL BtlMain_CommCreateDouble(BtlMainModule *mainModule, s32 *state) {
             clientId, posCount, 0, commCompetitor, 0, &mainModule->rand, mainModule->heapId);
         BattleServer_AttachClient(mainModule->server, BattleClient_GetAdapter(mainModule->clients[clientId]), clientId,
                                   posCount);
-        if (setup->fieldSituation.multiMode == 2) {
+        if (setup->fieldSituation.multiMode == BTL_MULTI_MODE_NET_VS_AI) {
             ally = GetAllyClientID(mainModule, clientId);
             mainModule->clients[1] = BattleClient_Create(
                 mainModule, &mainModule->pokeCons[0], setup->fieldSituation.commMode, setup->fieldSituation.netHandle,
@@ -1430,7 +1501,7 @@ BOOL BtlMain_CommCreateViewCore(BtlMainModule *mainModule, s32 *state) {
         return TRUE;
     }
     switch (*state) {
-    case 0:
+    case BTL_COMM_VIEW_SEQ_CREATE:
         mainModule->viewCore =
             BtlvCore_Create(mainModule, mainModule->clients[mainModule->playerClientId], &mainModule->pokeCons[0],
                             BtlMain_IsCommCompetitor(mainModule->setup), 0x13);
@@ -1638,7 +1709,7 @@ u8 GetCommMode(BtlMainModule *mainModule) {
 }
 
 BOOL IsMultiMode(BtlMainModule *mainModule) {
-    return mainModule->setup->fieldSituation.multiMode != 0;
+    return mainModule->setup->fieldSituation.multiMode != BTL_MULTI_MODE_NONE;
 }
 
 u16 GetWinBGM(BtlMainModule *mainModule) {
@@ -2288,9 +2359,9 @@ u32 GetStudioMode(BtlMainModule *mainModule) {
     return 0;
 }
 
-u32 func_ov167_0219c99c(BtlMainModule *mainModule) {
+u32 BtlSetup_GetAlternateFieldVariant(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return mainModule->setup->unkDD_6;
+        return mainModule->setup->alternateFieldVariant;
     }
     return 0;
 }
@@ -2325,7 +2396,7 @@ u32 ReturnZero(BtlMainModule *mainModule, u32 flag) {
 }
 
 void BtlMain_StoreSlotNthResult(BtlMainModule *mainModule, u8 pos) {
-    if (mainModule->setup->capturedSlot == 6) {
+    if (mainModule->setup->capturedSlot == BTL_SLOT_NONE) {
         mainModule->setup->capturedSlot = CountClientPosBefore(mainModule, pos);
     }
 }
@@ -2600,7 +2671,7 @@ void PokeCon_StoreClientSrcParty(BtlPokeCon *pokeCon, BtlMainModule *mainModule,
     count = PokeParty_GetPkmCount(srcParty);
     PokeParty_Init(mainModule->tempParty);
     for (i = 0; i < 6; i++) {
-        disguiseSlots[i] = 6;
+        disguiseSlots[i] = BTL_SLOT_NONE;
     }
     for (i = 0; i < count; i++) {
         mon = BattleParty_GetMon(party, i);
@@ -2621,7 +2692,7 @@ void PokeCon_StoreClientSrcParty(BtlPokeCon *pokeCon, BtlMainModule *mainModule,
         pkm = PokeParty_GetPkm(srcParty, i);
         mon = BattleParty_GetMon(party, i);
         BattleMon_SetSrcData(mon, pkm);
-        if (disguiseSlots[i] != 6) {
+        if (disguiseSlots[i] != BTL_SLOT_NONE) {
             SetIllusionDisguise(mon, PokeParty_GetPkm(srcParty, disguiseSlots[i]));
         }
     }
@@ -3298,7 +3369,7 @@ BOOL IsShooterEnabled(BtlMainModule *mainModule) {
     BOOL result = FALSE;
 
     switch (BtlMain_IsCommCompetitor(mainModule->setup)) {
-    case 1:
+    case TRUE:
         if (mainModule->setup->shooterSettings.launcher != 0) {
             result = TRUE;
         }
@@ -3452,7 +3523,7 @@ u32 BtlMain_DetermineResult(BtlMainModule *mainModule) {
         result = BTL_RESULT_VICTORY;
     } else if (mainModule->commError) {
         result = BTL_RESULT_6;
-    } else if (mainModule->setup->capturedSlot != 6) {
+    } else if (mainModule->setup->capturedSlot != BTL_SLOT_NONE) {
         result = BTL_RESULT_CAPTURE;
     } else if (BtlClientIDList_GetCount(&mainModule->clientIdList)) {
         result = BtlClientIDList_GetEscapeResult(&mainModule->clientIdList, mainModule->playerClientId,

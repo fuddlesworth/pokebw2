@@ -3720,7 +3720,7 @@ static u32 BtlvInput_ChooseButtonMap(BtlvInput *work) {
 // Whether sounds play
 static BOOL BtlvInput_SoundsEnabled(BtlvInput *work) {
     if (work->screen != BTLV_INPUT_SCREEN_RECORDER && work->battleType == BTL_TYPE_COMM) {
-        if (work->multiMode == 2) {
+        if (work->multiMode == BTL_MULTI_MODE_NET_VS_AI) {
             return TRUE;
         }
         return FALSE;

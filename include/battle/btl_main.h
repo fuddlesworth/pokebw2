@@ -383,7 +383,7 @@ u8 GetPlayerMultiTrainerIndex(BtlMainModule *mainModule);
 BagSave *GetBagSave(BtlMainModule *mainModule);
 BagCursor *GetBagCursor(BtlMainModule *mainModule);
 BOOL IsRecordingEnabled(BtlMainModule *mainModule);
-u32 func_ov167_0219c99c(BtlMainModule *mainModule);
+u32 BtlSetup_GetAlternateFieldVariant(BtlMainModule *mainModule);
 u8 GetStudioMovieId(BtlMainModule *mainModule);
 u32 IsStudioSkipDisabled(BtlMainModule *mainModule);
 void SetRecPlayQuit(BtlMainModule *mainModule);

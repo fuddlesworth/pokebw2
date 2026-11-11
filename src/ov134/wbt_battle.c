@@ -453,7 +453,7 @@ BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys) {
         setup->fieldSituation.env.bgType = 0x13;
         setup->fieldSituation.env.terrain = 0xe;
         if (WbtSystem_GetRound(sys) == WBT_ROUND_FINAL) {
-            setup->unkDD_6 = TRUE;
+            setup->alternateFieldVariant = TRUE;
         }
     }
     return setup;

@@ -21,6 +21,26 @@ typedef struct {
     u8 minute;
 } BtlFieldEnv;
 
+// The party slot of none, past a party's six slots
+#define BTL_SLOT_NONE 6
+
+// The kind of multi battle a battle is set up as, which GetMultiMode returns and the setup's BtlSetup_Set* call
+// picks
+enum {
+    // One player a side, or not a multi battle
+    BTL_MULTI_MODE_NONE,
+    // Two linked players against two linked players (BtlSetup_SetNetMultiVsNet)
+    BTL_MULTI_MODE_NET_VS_NET,
+    // Two linked players against two trainers (BtlSetup_SetNetMultiVsAI)
+    BTL_MULTI_MODE_NET_VS_AI,
+    // The player and a partner trainer against two trainers (BtlSetup_SetTrainer2v2)
+    BTL_MULTI_MODE_TRAINER_2V2,
+    // The player against two trainers (BtlSetup_SetTrainer1v2)
+    BTL_MULTI_MODE_TRAINER_1V2,
+    // The player and a partner trainer against two wild Pokémon (BtlSetup_SetWildMulti)
+    BTL_MULTI_MODE_WILD_MULTI,
+};
+
 // The battle's surroundings, which GetFieldEffectData returns
 struct BtlFieldSituation {
     BtlFieldEnv env;
@@ -32,7 +52,7 @@ struct BtlFieldSituation {
     u8 commMode;
     // The player's client
     u8 playerClientId;
-    // The kind of multi battle, which GetMultiMode returns: 0 for a battle of one player a side
+    // The kind of multi battle, a BTL_MULTI_MODE_*, which GetMultiMode returns
     u8 multiMode;
     // Whether the battle plays a recording back (BtlSetup_InitForRecord, IsRecPlayMode)
     u8 recPlay;
@@ -195,7 +215,9 @@ struct BtlSetup {
     u8 studioMode : 2;
     // The bag can't be used, as in the Infinity Dungeon (IsBagEnabled)
     u8 bagDisabled : 1;
-    u8 unkDD_6 : 1;
+    // Uses the alternate variant of a battle field (BtlvField_Create's alternateFieldVariant), which the Pokémon
+    // World Tournament's final round sets
+    u8 alternateFieldVariant : 1;
     // A Pokéstar Studios movie not yet watched, which can't be skipped (IsStudioSkipDisabled)
     u8 studioSkipDisabled : 1;
     // Whether the battle doesn't register the foes in the Pokédex (RegisterDexMon)

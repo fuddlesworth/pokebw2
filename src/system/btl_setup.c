@@ -211,7 +211,7 @@ static void BtlSetup_LoadGameData(BtlSetup *setup, GameData *gameData, BtlFieldS
     setup->netClientMask = 0xffff;
     setup->fieldSituation.commMode = 0;
     setup->fieldSituation.playerClientId = 0;
-    setup->fieldSituation.multiMode = 0;
+    setup->fieldSituation.multiMode = BTL_MULTI_MODE_NONE;
     setup->recBuffer = NULL;
     setup->fieldSituation.recPlay = 0;
     setup->cmdCheckError = FALSE;
@@ -281,7 +281,7 @@ void BtlSetup_SetWildMulti(BtlSetup *setup, GameData *gameData, PokeParty *party
         PokeParty_Copy(party, setup->party[1]);
     }
     setup->battleStyle = 1;
-    setup->fieldSituation.multiMode = 5;
+    setup->fieldSituation.multiMode = BTL_MULTI_MODE_WILD_MULTI;
     setup->battleType = 0;
     if (PokeParty_GetPkmCount(setup->party[0]) == PokeParty_GetCapacity(setup->party[0])) {
         BoxSaveAccessor *boxes = GameData_GetBoxSaveAccessor(gameData);
@@ -381,7 +381,7 @@ void BtlSetup_SetTrainer1v2(BtlSetup *setup, GameData *gameData, BtlFieldStatus 
     BtlSetup_LoadTrainerBase(setup, gameData, 1, status, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 1, &setup->party[1], trainerId, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 3, &setup->party[3], trainerId2, heapId);
-    setup->fieldSituation.multiMode = 4;
+    setup->fieldSituation.multiMode = BTL_MULTI_MODE_TRAINER_1V2;
 }
 
 // The partner's trainer and the two opponents'
@@ -391,36 +391,40 @@ void BtlSetup_SetTrainer2v2(BtlSetup *setup, GameData *gameData, BtlFieldStatus 
     BtlSetup_LoadTrainer(setup, gameData, 2, &setup->party[2], partnerId, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 1, &setup->party[1], trainerId, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 3, &setup->party[3], trainerId2, heapId);
-    setup->fieldSituation.multiMode = 3;
+    setup->fieldSituation.multiMode = BTL_MULTI_MODE_TRAINER_2V2;
 }
 
 void BtlSetup_SetNet1v1Single(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 0, 0, handle, commMode, GFL_NetGetHandleNetId(handle), heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 0, BTL_MULTI_MODE_NONE, handle, commMode, GFL_NetGetHandleNetId(handle),
+                        heapId);
 }
 
 void BtlSetup_SetNet1v1Double(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 1, 0, handle, commMode, GFL_NetGetHandleNetId(handle), heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 1, BTL_MULTI_MODE_NONE, handle, commMode, GFL_NetGetHandleNetId(handle),
+                        heapId);
 }
 
 void BtlSetup_SetNetMultiVsNet(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, u8 clientId,
                                HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 1, 1, handle, commMode, clientId, heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 1, BTL_MULTI_MODE_NET_VS_NET, handle, commMode, clientId, heapId);
 }
 
 void BtlSetup_SetNetMultiVsAI(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, u8 clientId,
                               u32 trainerId, u32 trainerId2, HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 1, 2, handle, commMode, clientId, heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 1, BTL_MULTI_MODE_NET_VS_AI, handle, commMode, clientId, heapId);
     setup->battleType = 1;
     BtlSetup_LoadTrainer(setup, gameData, 1, &setup->party[1], trainerId, heapId);
     BtlSetup_LoadTrainer(setup, gameData, 3, &setup->party[3], trainerId2, heapId);
 }
 
 void BtlSetup_SetNetTriple(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 2, 0, handle, commMode, GFL_NetGetHandleNetId(handle), heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 2, BTL_MULTI_MODE_NONE, handle, commMode, GFL_NetGetHandleNetId(handle),
+                        heapId);
 }
 
 void BtlSetup_SetNetRotation(BtlSetup *setup, GameData *gameData, NetHandle *handle, u8 commMode, HeapID heapId) {
-    BtlSetup_SetNetImpl(setup, gameData, 3, 0, handle, commMode, GFL_NetGetHandleNetId(handle), heapId);
+    BtlSetup_SetNetImpl(setup, gameData, 3, BTL_MULTI_MODE_NONE, handle, commMode, GFL_NetGetHandleNetId(handle),
+                        heapId);
 }
 
 // A setup with a party, a player's info and a trainer for every client, and its own copy of the options

@@ -150,10 +150,10 @@ BtlSetup *SetupTrialHouseBattle(GameSystem *gsys, PokeParty *party, u32 mode, BS
     setup->playerInfo[client] = info;
     RestrictPlayerParty(party, setup->party[client], count, 50, 4);
     BtlSetup_SetTrialHouseParty(setup, trainers, CLIENT_ENEMY, type, count, 4);
-    if (setup->fieldSituation.multiMode != 0) {
+    if (setup->fieldSituation.multiMode != BTL_MULTI_MODE_NONE) {
         BtlSetup_SetTrialHouseParty(setup, &trainers[1], CLIENT_ENEMY_2, type, count, 4);
     }
-    if (setup->fieldSituation.multiMode == 3) {
+    if (setup->fieldSituation.multiMode == BTL_MULTI_MODE_TRAINER_2V2) {
         BtlSetup_SetTrialHouseParty(setup, partner, CLIENT_PARTNER, type, count, 4);
     }
     BtlSetup_PostProcessTrialHouse(setup);
