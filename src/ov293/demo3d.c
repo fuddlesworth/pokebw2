@@ -40,7 +40,8 @@ enum {
 typedef struct {
     HeapID heapId;
     Demo3DParam *param;
-    u32 unk8;
+    // Never read or written; the process's state is the state argument of Demo3D_Main
+    u32 state;
     Demo3DGraphic *graphic;
     PrintQueue *printQueue;
     MsgData *msgData;

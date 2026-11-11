@@ -33,8 +33,6 @@ enum {
     DEMO3D_RESULT_ENDED,
 };
 
-// The same table: its symbol and its name in demo3d.c, until the symbol is renamed
-extern const GameProcFunctions gDemo3DProcFunctions;
 extern const GameProcFunctions gDemo3DProcFunctions;
 
 #endif // POKEBW2_APP_DEMO3D_H
