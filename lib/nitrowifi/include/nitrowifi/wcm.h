@@ -37,26 +37,26 @@ enum {
     WCM_NOTIFY_TERMINATE,     // The WCM ended without being asked
 };
 
+// WCM's internal state, which WCM_GetPhase returns
+enum {
+    WCM_PHASE_NULL,
+    WCM_PHASE_WAIT,         // Initialized, or stopped by Cleanup or Terminate
+    WCM_PHASE_WAIT_TO_IDLE, // Starting up
+    WCM_PHASE_IDLE,
+    WCM_PHASE_IDLE_TO_WAIT, // Stopping
+    WCM_PHASE_IDLE_TO_SEARCH,
+    WCM_PHASE_SEARCH,
+    WCM_PHASE_SEARCH_TO_IDLE,
+    WCM_PHASE_IDLE_TO_DCF, // Connecting
+    WCM_PHASE_DCF,         // Connected, DCF communication possible
+    WCM_PHASE_DCF_TO_IDLE, // Disconnecting
+    WCM_PHASE_FATAL_ERROR,
+    WCM_PHASE_IRREGULAR, // An asynchronous step failed and stopped the operation
+    WCM_PHASE_TERMINATING,
+};
+
 // What the calls answer; the call was taken, and the notification follows
 #define WCM_RESULT_ACCEPT 3
-
-// What WCM_GetPhase answers: the state machine that startup, search, connection and cleanup step through, as
-// NitroWiFi's wcm.h names it. IDLE is the state that a search or a connection starts from and DCF the connected one;
-// FATAL_ERROR and IRREGULAR are the two errors, and TERMINATING follows either
-#define WCM_PHASE_NULL 0
-#define WCM_PHASE_WAIT 1
-#define WCM_PHASE_WAIT_TO_IDLE 2
-#define WCM_PHASE_IDLE 3
-#define WCM_PHASE_IDLE_TO_WAIT 4
-#define WCM_PHASE_IDLE_TO_SEARCH 5
-#define WCM_PHASE_SEARCH 6
-#define WCM_PHASE_SEARCH_TO_IDLE 7
-#define WCM_PHASE_IDLE_TO_DCF 8
-#define WCM_PHASE_DCF 9
-#define WCM_PHASE_DCF_TO_IDLE 10
-#define WCM_PHASE_FATAL_ERROR 11
-#define WCM_PHASE_IRREGULAR 12
-#define WCM_PHASE_TERMINATING 13
 
 // A WCM_Init's work, and the configuration that WCM_StartupAsync starts with
 #define WCM_WORK_SIZE 0x2300
