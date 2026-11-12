@@ -8,6 +8,31 @@
 #include "struct_decls.h"
 #include "system/vm.h"
 
+// What Scrcmd_Proc_CallPokedexDiploma opens: the regional and the national Pokédex awards, the Battle Subway's map and
+// the Marine Tube's board
+enum {
+    POKEDEX_DIPLOMA_REGIONAL = 0,
+    POKEDEX_DIPLOMA_NATIONAL = 1,
+    POKEDEX_DIPLOMA_SUBWAY_MAP = 2,
+    POKEDEX_DIPLOMA_MARINE_TUBE_BOARD = 3,
+};
+
+// The battle types Scrcmd_Proc_NetConnectWiFiBattle's script argument takes, 15 to 19, which the match numbers 0 to
+// 4: single, double, triple, rotation and another triple
+enum {
+    WIFI_BATTLE_TYPE_SINGLE = 15,
+    WIFI_BATTLE_TYPE_DOUBLE = 16,
+    WIFI_BATTLE_TYPE_TRIPLE = 17,
+    WIFI_BATTLE_TYPE_ROTATION = 18,
+    WIFI_BATTLE_TYPE_TRIPLE_2 = 19,
+};
+
+// What Scrcmd_Proc_NetConnectBattleVideo opens: the Global Link's Battle Videos or its musical photos
+enum {
+    BATTLE_VIDEO_MODE_GLOBAL_BV = 0,
+    BATTLE_VIDEO_MODE_GLOBAL_MUSICAL = 1,
+};
+
 BOOL Scrcmd_Proc_FieldOpen(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_Proc_FieldClose(VM *vm, FieldScriptEnv *env);
 void CreateScrCmdOverlayProcess(VM *vm, FieldScriptEnv *env, s32 overlayId, const GameProcFunctions *functions,

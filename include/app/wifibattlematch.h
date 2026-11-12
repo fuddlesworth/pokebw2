@@ -99,11 +99,21 @@ enum {
     WIFIBATTLEMATCH_TEAM_BATTLE_BOX = 1,
 };
 
+// The battle types WifiBattleMatchParam.battleType takes: single, double, triple, rotation, and another triple, which
+// picks the regulation
+enum {
+    WIFIBATTLEMATCH_TYPE_SINGLE,
+    WIFIBATTLEMATCH_TYPE_DOUBLE,
+    WIFIBATTLEMATCH_TYPE_TRIPLE,
+    WIFIBATTLEMATCH_TYPE_ROTATION,
+    WIFIBATTLEMATCH_TYPE_TRIPLE_2,
+};
+
 typedef struct {
     // The game data to play with; the title screen's menu has none, so the proc makes one and resets the game at the
     // end
     GameData *gameData;
-    // The battle type, from 0 to 4 (single, double, triple, rotation, and another triple); picks the regulation
+    // The battle type, a WIFIBATTLEMATCH_TYPE_*: picks the regulation
     u32 battleType;
     // 0 when started from the title screen's menu, 1 when started from the field
     u32 startFrom;

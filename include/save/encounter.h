@@ -6,6 +6,8 @@
 
 // Block 0x37, the wild encounters' save (encounter_savedata.c, a guessed name): the roaming Pokémon, the swarm, the
 // repel and the special Pokémon that were caught
+// The roaming entries are aletheia's MovePokemonSave, Black 1's block 0x38, whose 0x14-byte entry and entryState
+// B2W2 keeps
 
 #define ENCOUNT_SAVE_ROAMING_COUNT 2
 // The special Pokémon that caughtFlags has a bit for
@@ -23,7 +25,8 @@ enum {
     ROAMING_PKM_PARAM_LEVEL,
     ROAMING_PKM_PARAM_STATUS,
     ROAMING_PKM_PARAM_ACTIVE,
-    ROAMING_PKM_PARAM_UNK13,
+    // The spawned flag, aletheia's MovePokemonEntry.spawned
+    ROAMING_PKM_PARAM_SPAWNED,
     ROAMING_PKM_PARAM_NATURE,
 };
 
@@ -38,14 +41,18 @@ typedef struct {
     u8 status;
     // Whether the Pokémon roams
     u8 active;
-    u8 unk13;
+    // Whether the Pokémon has spawned; aletheia's MovePokemonEntry keeps the same 0x14-byte record, byte
+    // for byte, with spawned at 0x13
+    u8 spawned;
 } RoamingPkm;
 
 struct EncountSave {
     RoamingPkm roamingPkm[ENCOUNT_SAVE_ROAMING_COUNT];
     // Each roaming Pokémon's place in ROAMING_POKEMON_ZONES
     u8 roamingZoneClocks[ENCOUNT_SAVE_ROAMING_COUNT];
-    u8 unk2A[ENCOUNT_SAVE_ROAMING_COUNT];
+    // Aletheia's MovePokemonSave.entryState: the two bytes after its entryLocation, which B2W2 calls
+    // roamingZoneClocks
+    u8 entryState[ENCOUNT_SAVE_ROAMING_COUNT];
     // An index of overlay 36's swarm table
     u8 swarmLocation;
     u8 repelSteps;
