@@ -165,7 +165,7 @@ A symbol with no relocation against its own module can still be load-bearing: ds
 the first module of its `module:` list and never reads the others. Five `ambiguous` `.bss` symbols in overlay 189's
 `d_nhttp_common.c` `.bss`, inside `sRootStorage`, at `0x021b0000`, `0x021b001b`, `0x021b0215`, `0x021b021a` and
 `0x021b0fdc`, have no relocation from inside overlay 189 to any of them in either version. Six relocations from ARM9
-main (`battle_rec.c` `0x0208f7d0`, `pml_item.c` `0x0209125c`, `fx_sincos.c` `0x02095564`) and overlay 12
+main (`battle_rec.c` `0x0208f7d0`, `pml_item.c` `0x0209125c`, `lib/nitro`'s `fx_sincos.c` `0x02095564`) and overlay 12
 (`hidden_item.c` `0x0216d1fc` and `0x0216d210`, `fest_mission_field.c` `0x0216dc74`) target them with
 `module:overlays(189,257)`. Removing `data_ov189_021b001b` fails the delink with `No symbol found for relocation from
 0x0208f7d0 in ARM9 main to 0x021b001b in overlay 189`; White 2's overlay 257 has a symbol at that address and the

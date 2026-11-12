@@ -3465,8 +3465,8 @@ Narrowing shifts, reloads, recomputed addresses and folded constants.
 - A `case` label for a value the switch already reaches through `default:` changes the compiled switch even when it
   shares the default's body. `Scrcmd_Pokemon_PokePartyGetMemberByType` (`src/ov012/scrcmd_pokemon.c`) matches with
   `PARTY_MEMBER_FIRST` (0) left to its `default:`; adding `case PARTY_MEMBER_FIRST:` above that `default:` grows the
-  function from 0x40 to 0x44 bytes. That shifted overlay 12, the ARM9 overlay table and every module after it: the
-  build failed 70 module checks and both ROM SHA1s. The label was reverted and `PARTY_MEMBER_FIRST` stays in
+  function from 0x40 to 0x44 bytes. That shifted overlay 12 and the ARM9 overlay table: the build failed 70 module
+  checks and both ROM SHA1s. The label was reverted and `PARTY_MEMBER_FIRST` stays in
   `include/field/scrcmd_pokemon.h`, unused by the switch. A naming pass must leave a value the switch handles with
   `default` out of the switch, with its constant only in the header.
 - A `switch` of two cases tests them in value order but lays their bodies out in source order, which no order of
