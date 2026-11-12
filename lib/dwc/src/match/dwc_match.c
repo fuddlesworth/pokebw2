@@ -2164,10 +2164,10 @@ static int DWCi_ProcessRecvMatchCommand(int type, s32 profileId, u32 ip, u16 por
             return 0;
         }
         index = DWCi_GetAIDFromProfileID(DWCi_GetMatchCnt()->profileID, 1);
-        if (index == 0xff) {
+        if (index == DWC_INVALID_AID) {
             return 0;
         }
-        if (DWCi_GetAIDFromProfileID(profileId, 1) == 0xff) {
+        if (DWCi_GetAIDFromProfileID(profileId, 1) == DWC_INVALID_AID) {
             return 0;
         }
         if (profileId != DWCi_GetNodeInfoByIndex(0)->profileId) {
@@ -2195,7 +2195,7 @@ static int DWCi_ProcessRecvMatchCommand(int type, s32 profileId, u32 ip, u16 por
             break;
         }
         index = DWCi_GetAIDFromProfileID(profileId, 1);
-        if (index == 0xff) {
+        if (index == DWC_INVALID_AID) {
             return 0;
         }
         DWCi_GetMatchCnt()->newHostAckBit |= 1 << index;
@@ -2525,7 +2525,7 @@ static int DWCi_SendResvCommandToFriend(int a0, int a1, int a2) {
             int err2 = gpGetBuddyStatus(DWCi_GetMatchCnt()->pGpObj, index, &status);
 
             err1 |= err2;
-            if (DWCi_GetBuddyStatusLCK(&status) == 0 && err1 == 0 && status.status == 4) {
+            if (DWCi_GetBuddyStatusLCK(&status) == 0 && err1 == 0 && status.status == GP_CHATTING) {
                 found = 1;
                 break;
             }
@@ -3091,7 +3091,7 @@ static int DWCi_CloseShutdownClientSC(u32 mask) {
     for (i = 0; i < outCount; i++) {
         u8 aid = DWCi_GetAIDFromProfileID(outIds[i], 0);
 
-        if (aid != 0xff) {
+        if (aid != DWC_INVALID_AID) {
             DWCi_CloseConnectionHard(aid);
         }
     }
@@ -3344,7 +3344,7 @@ static int DWCi_ProcessCancelMatchSynCommand(int profileId, int message, int val
                 }
             }
             aid = DWCi_GetAIDFromProfileID(profileId, 0);
-            if (aid != 0xff) {
+            if (aid != DWC_INVALID_AID) {
                 DWCi_GetMatchCnt()->cancelSynAckBit |= 1 << aid;
             }
             if (DWCi_GetAIDBitmask(1) == DWCi_GetMatchCnt()->cancelSynAckBit) {
