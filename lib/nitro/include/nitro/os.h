@@ -132,23 +132,40 @@ extern u8 SDK_LTDAUTOLOAD_START[];
 // Where each processor's thread info (NitroSDK's OSi_ThreadInfo) is announced in the shared main memory
 #define HW_THREADINFO_MAIN 0x02ffffa0
 
-// NitroSDK's OSSystemWork, the system area at the end of main memory that the two processors share. Only the words
-// that the code reads are laid out
+// NitroSDK's OSSystemWork, the system area at the end of main memory that the two processors share. The fields are
+// NitroSDK's; a run that the SDK does not name and no code here reads keeps an unk name
+struct OSThreadInfo;
 typedef struct OSSystemWork {
-    u32 bootCardId; // the ID of the card that the system read at boot
-    u8 unk_004[0x38];
+    // The boot check information that the card's boot code leaves; its first word is the card's ID
+    union {
+        u8 bootCheckInfo[0x20];
+        u32 bootCardId;
+    };
+    u32 resetParameter; // the word that OS_ResetSystem leaves for the next program
+    u8 padding5[0x8];   // NitroSDK's padding5, an alignment hole
+    u32 romBaseOffset;
+    u8 cartridgeModuleInfo[12];
     u32 vblankCount;
     u8 wmBootBuf[0x40];
     u8 nvramUserInfo[0x80];
+    // The tail of the NVRAM block, the DSi's secure info, the debugger's exception area and the arena info
     u8 unk_100[0xe8];
     u32 real_time_clock[2];
-    u8 unk_1f0[0x198];
+    u32 dmaClearBuf[4];
+    u8 rom_header[0x160];
+    u8 isd_reserved2[0x20];
+    u32 pxiSignalParam[2];
     u32 pxiHandleChecker[2]; // one for each processor, with a bit for each PXI tag that it has a callback for
     u32 mic_last_address;
     u16 mic_sampling_data;
     u16 wm_callback_control;
     u16 wm_rssi_pool;
-    u8 unk_39a[0x10];
+    u8 ctrdg_SetModuleInfoFlag;
+    u8 ctrdg_IsExisting;
+    u32 component_param;
+    struct OSThreadInfo *threadinfo_mainp;
+    struct OSThreadInfo *threadinfo_subp;
+    u16 button_XY;
     u16 touchPanelX;
     u16 touchPanelY;
 } OSSystemWork;
@@ -376,7 +393,8 @@ BOOL OS_IsRunOnTwl(void);                          // swan's hw_isDSi
 // header's codec flag set)
 BOOL OSi_IsCodecTwlMode(void);
 // The DSi's parental controls, of its settings (TwlSDK's OSTWLParentalControl, of which only the first word is laid
-// out here). The fields' meanings are not known
+// out here). libntr's TwlSDK header makes the word seven one-bit flags and 25 reserved bits, which does not match
+// these boundaries, and no code here reads them
 typedef struct OSTWLParentalControl {
     u32 unk0_0 : 1;
     u32 unk0_1 : 4;
@@ -448,10 +466,10 @@ typedef struct NVRAMConfigOwnerInfo {
     u8 pad;
     u16 nickName[OS_OWNERINFO_NICKNAME_MAX];
     u8 nickNameLength;
-    u8 unk_19;
+    u8 nicknameRsv; // NitroSDK's NVRAMConfigNickname.rsv
     u16 comment[OS_OWNERINFO_COMMENT_MAX];
     u8 commentLength;
-    u8 unk_4f;
+    u8 commentRsv; // NitroSDK's NVRAMConfigComment.rsv
 } NVRAMConfigOwnerInfo;
 
 // The touch screen's calibration: the raw values of two points, and where they are on the screen
@@ -467,13 +485,24 @@ typedef struct NVRAMConfigTpCalibData {
 } NVRAMConfigTpCalibData;
 
 typedef struct NVRAMConfig {
-    u16 unk_00;
+    u16 unk_00; // the version and the pad byte that follow it, which the code does not read
     NVRAMConfigOwnerInfo owner;
     u8 alarm[6]; // the alarm
     NVRAMConfigTpCalibData tp;
+    // NitroSDK's NVRAMConfigOption: the language and the flags of the settings
     u16 language : 3;
-    u16 unk_64_3 : 13;
-    u16 unk_66;
+    u16 agbLcd : 1;
+    u16 detectPullOutCardFlag : 1;
+    u16 detectPullOutCtrdgFlag : 1;
+    u16 autoBootFlag : 1;
+    u16 : 4;
+    u16 input_favoriteColor : 1;
+    u16 input_tp : 1;
+    u16 input_language : 1;
+    u16 input_rtc : 1;
+    u16 input_nickname : 1;
+    u8 timezone;
+    u8 rtcClockAdjust;
     s64 rtcOffset;
     u32 unk_70;
     u8 macAddress[6];
@@ -742,13 +771,13 @@ void OS_SignalEvent(OSEvent *event, u32 setPattern);
 // an empty one
 typedef struct OSDeliverArgInfo {
     u64 titleId;
-    u8 unk_08;
+    u8 reserved1;
     u8 flags;
     u16 makerCode;
     u16 argSpace;
     u16 argCount;
     u16 crc16;
-    u8 unk_12[2];
+    u16 sysParam;
     u8 args[0x2ec];
 } OSDeliverArgInfo;
 

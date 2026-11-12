@@ -15,6 +15,12 @@ typedef enum {
     WM_LINK_LEVEL_3,
 } WMLinkLevel;
 
+// The scan types that WM_StartScanEx takes (NitroSDK's WM_SCANTYPE_*): 2 and 3 match the SSID with ssidMatchLength
+#define WM_SCANTYPE_ACTIVE 0
+#define WM_SCANTYPE_PASSIVE 1
+#define WM_SCANTYPE_ACTIVE_CUSTOM 2
+#define WM_SCANTYPE_PASSIVE_CUSTOM 3
+
 WMLinkLevel WM_GetLinkLevel(void);
 // The next TGID for a parent, counting up from the time (swan names its state tgid_bak)
 u16 WM_GetNextTgid(void);
@@ -152,7 +158,8 @@ typedef void (*WMCallbackFunc)(void *arg);
 // The most bytes that a parent or a child sends in one round of the multi-point mode
 #define WM_SIZE_MP_DATA_MAX 0x200
 
-// What a parent gives out in its beacon: the game's ID and the user's data. Its size is 0x38
+// What a parent gives out in its beacon: the game's ID and the user's data. Its size is 0x38; NitroSDK's ends with
+// rsv[4], which the structs that embed it keep (MBiParam.unk_38 and WMStatus.rsv)
 typedef struct {
     u16 *userGameInfo;
     u16 userGameInfoLength;
@@ -369,8 +376,13 @@ typedef struct {
     u16 wlCmdID;
     u16 wlResult;
     u16 state;
-    u16 port; // The port that the data was sent to
-    u8 unk_0c[0xe];
+    u16 port;       // The port that the data was sent to
+    u16 destBitmap; // The AIDs that the data was for
+    u16 restBitmap; // The AIDs that have to try again
+    u16 sentBitmap; // The AIDs that the data reached
+    u16 rsv;
+    const u16 *data; // The buffer that was sent
+    u16 length;
     u16 seqNo;               // The sequence number that the data went out with
     WMCallbackFunc callback; // The one that the send was given
     void *arg;
@@ -448,39 +460,121 @@ typedef struct {
 
 typedef struct {
     u16 apiid;
-    u16 unk_02;
+    u16 unk_02; // no code reads it and the SDK's command buffer gives it no name
     u32 param[63];
 } WMCommandBuf;
 
 // What the ARM7 keeps up to date in main memory for the ARM9 to read, after it has invalidated the cache for the part
-// that it reads. Its size is 0x7d0. Only the fields that the code of the manager's first files reads are named
+// that it reads. Its size is 0x7d0. The fields are NitroSDK's WMStatus fields; the status embeds a WMParentParam at
+// 0x0e8, whose fields are laid out flat here as the rest of the struct is
 typedef struct {
     u16 state; // WM_STATE_*
-    u8 unk_002[0xa];
+    u16 BusyApiid;
+    BOOL apiBusy;
+    BOOL scan_continue;
     BOOL mp_flag;  // TRUE from the start of the multi-point mode to its end
     BOOL dcf_flag; // TRUE from the start of the DCF mode to its end
-    u8 unk_014[0x28];
+    BOOL ks_flag;
+    BOOL dcf_sendFlag;
+    BOOL VSyncFlag;
+    u8 wlVersion[8];
+    u16 macVersion;
+    u16 rfVersion;
+    u16 bbpVersion[2];
+    u16 mp_parentSize;
+    u16 mp_childSize;
+    u16 mp_parentMaxSize;
+    u16 mp_childMaxSize;
+    u16 mp_sendSize;
+    u16 mp_recvSize;
     u16 mp_maxSendSize; // The most that this side sends in a round of the multi-point mode
     u16 mp_maxRecvSize; // The most that the other side sends
-    u8 unk_040[0x32];
+    u16 mp_parentVCount;
+    u16 mp_childVCount;
+    u16 mp_parentInterval;
+    u16 mp_childInterval;
+    u64 mp_parentIntervalTick; // OSTick
+    u64 mp_childIntervalTick;  // OSTick
+    u16 mp_minFreq;
+    u16 mp_freq;
+    u16 mp_maxFreq;
+    u16 mp_vsyncOrderedFlag;
+    u16 mp_vsyncFlag;
+    s16 mp_count;
+    s16 mp_limitCount;
+    u16 mp_resumeFlag;
+    u16 mp_prevPollBitmap;
+    u16 mp_prevWmHeader;
+    u16 mp_prevTxop;
+    u16 mp_prevDataLength;
+    u16 mp_recvBufSel;
     u16 mp_recvBufSize; // The size of the part of the ARM7's buffer that holds a round that came in
-    u8 unk_074[8];
+    void *mp_recvBuf[2];
     void *mp_sendBuf; // The buffer that the multi-point mode sends from
-    u8 unk_080[6];
+    u16 mp_sendBufSize;
+    u16 mp_ackTime;
+    u16 mp_waitAckFlag;
     u16 mp_readyBitmap;
-    u8 unk_088[0x14];
+    u16 mp_newFrameFlag;
+    u16 mp_setDataFlag;
+    u16 mp_sentDataFlag;
+    u16 mp_bufferEmptyFlag;
+    u16 mp_isPolledFlag;
+    u16 mp_minPollBmpMode;
+    u16 mp_singlePacketMode;
+    u8 reserved_c[2];
+    u16 mp_defaultRetryCount;
+    u16 mp_ignoreFatalErrorMode;
     u16 mp_ignoreSizePrecheckMode; // 0 for the multi-point mode to check that its buffers have the sizes that it needs
-    u8 unk_09e[0x1e];
+    u16 mp_pingFlag;
+    u16 mp_pingCounter;
+    u8 dcf_destAdr[6];
+    u16 *dcf_sendData;
+    u16 dcf_sendSize;
+    u16 dcf_recvBufSel;
+    void *dcf_recvBuf[2];
+    u16 dcf_recvBufSize;
+    u16 curr_tgid;
     u16 linkLevel; // 0 to 3, as WMLinkLevel
-    u8 unk_0be[8];
+    u16 minRssi;
+    u16 rssiCounter;
+    u16 beaconIndicateFlag;
+    u16 wepKeyId;
     u16 pwrMgtMode; // A child may start the multi-point mode only when this is 1
-    u8 unk_0c8[0x30];
+    u32 miscFlags;
+    u16 VSyncBitmap;
+    u16 valarm_queuedFlag;
+    u32 v_tsf;
+    u32 v_tsf_bak;
+    u32 v_remain;
+    u16 valarm_counter;
+    u8 reserved_e[2];
+    u8 MacAddress[6];
+    u16 mode;
+    // The WMParentParam that the status embeds, flat. Its rsv[4] is the tail that WMParentParam leaves to the structs
+    // that embed it
+    u16 *userGameInfo;
+    u16 userGameInfoLength;
+    u16 padding;
+    u32 ggid;
+    u16 tgid;
+    u16 entryFlag;
     u16 maxEntry; // How many children the parent takes
-    u8 unk_0fa[0x88];
-    u16 child_bitmap; // The AIDs of the children that are connected, one bit each
+    u16 multiBootFlag;
+    u16 KS_Flag;
+    u16 CS_Flag;
+    u16 beaconPeriod;
+    u16 rsv1[4];
+    u16 rsv2[8];
+    u16 channel;
+    u16 parentMaxSize;
+    u16 childMaxSize;
+    u16 rsv[4];
+    u8 childMacAddress[15][6]; // the SDK's WM_NUM_MAX_CHILD addresses of WM_SIZE_MACADDR bytes
+    u16 child_bitmap;          // The AIDs of the children that are connected, one bit each
     u8 pInfoBuf[4];
-    u16 aid; // This console's AID, 0 for the parent
-    u8 unk_18a[0x646];
+    u16 aid;           // This console's AID, 0 for the parent
+    u8 unk_18a[0x646]; // the rest of the status, from parentMacAddress on: the send queues and locks no file here reads
 } WMStatus;
 
 // The ARM9's part of the manager's buffer. Its size is 0x200
