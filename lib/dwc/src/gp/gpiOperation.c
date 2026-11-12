@@ -32,7 +32,7 @@ GPResult gpiFailedOpCallback(GPConnection *connection, const GPIOperation *opera
             memset(arg, 0, sizeof(GPConnectResponseArg));
             arg->result = operation->result;
             // The error of a nick that is in use gives the profile that has it
-            if (iconnection->errorCode == 0x201) {
+            if (iconnection->errorCode == GP_NEWUSER_BAD_NICK) {
                 arg->profile = iconnection->profileid;
                 iconnection->profileid = 0;
             }

@@ -336,11 +336,11 @@ GPResult gpiProcessConnect(GPConnection *connection, GPIOperation *operation, co
 
     if (gpiCheckForError(connection, input, gsi_false)) {
         errorCode = iconnection->errorCode;
-        if (errorCode == 0x106 && iconnection->profileid != 0) {
+        if (errorCode == GP_LOGIN_PROFILE_DELETED && iconnection->profileid != 0) {
             gpiRemoveProfileByID(connection, iconnection->profileid);
             iconnection->userid = 0;
             iconnection->profileid = 0;
-        } else if (errorCode == 0x201) {
+        } else if (errorCode == GP_NEWUSER_BAD_NICK) {
             if (gpiValueForKey(input, "\\pid\\", buffer, 0x200)) {
                 iconnection->profileid = atol(buffer);
             }
@@ -475,12 +475,12 @@ GPResult gpiCheckConnect(GPConnection *connection) {
     if (result != 0) {
         return result;
     }
-    if (state == 4) {
+    if (state == GPI_DISCONNECTED) {
         gpiSetError(connection, 0x107, "The server has refused the connection.");
         gpiCallErrorCallback(connection, 4, 1);
         return 4;
     }
-    if (state == 0) {
+    if (state == GPI_NOT_CONNECTED) {
         return 0;
     }
     iconnection->connectState = GPI_NEGOTIATING;

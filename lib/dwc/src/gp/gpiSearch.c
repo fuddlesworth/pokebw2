@@ -245,12 +245,12 @@ static GPResult gpiProcessSearch(GPConnection *connection, GPIOperation *operati
             if (result != 0) {
                 return result;
             }
-            if (state == 4) {
+            if (state == GPI_DISCONNECTED) {
                 gpiSetError(connection, 0xd01, "Could not connect to the search manager.");
                 gpiCallErrorCallback(connection, 4, 0);
                 return 4;
             }
-            if (state == 3) {
+            if (state == GPI_CONNECTED) {
                 if (search->type == GPI_SEARCH_PROFILE) {
                     gpiAppendStringToBuffer(connection, &search->outputBuffer, "\\search\\");
                     gpiAppendStringToBuffer(connection, &search->outputBuffer, "\\sesskey\\");
@@ -420,7 +420,7 @@ static GPResult gpiProcessSearch(GPConnection *connection, GPIOperation *operati
         } else if (operation->state == GPI_WAITING) {
             result = gpiRecvToBuffer(connection, search->sock, &search->inputBuffer, &bytesRead, &connClosed, "SM");
             if (result != 0) {
-                if (result == 3) {
+                if (result == GP_NETWORK_ERROR) {
                     gpiSetError(connection, 0xd01, "There was an error reading from the server.");
                     gpiCallErrorCallback(connection, 3, 0);
                     return 3;

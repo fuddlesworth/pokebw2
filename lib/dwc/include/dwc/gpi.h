@@ -72,6 +72,13 @@
 #define GPI_BM_KEYS_REPLY 105
 #define GPI_BM_FILE_SEND_REQUEST 200
 #define GPI_BM_FILE_SEND_REPLY 201
+#define GPI_BM_FILE_BEGIN 202
+#define GPI_BM_FILE_END 203
+#define GPI_BM_FILE_DATA 204
+#define GPI_BM_FILE_SKIP 205
+#define GPI_BM_FILE_TRANSFER_THROTTLE 206
+#define GPI_BM_FILE_TRANSFER_CANCEL 207
+#define GPI_BM_FILE_TRANSFER_KEEPALIVE 208
 
 // The states of a peer (gpiPeer.c): not connected, waiting for the server to give the profile's signature, given it,
 // connecting, waiting for the other side's authorization, connected, and disconnected (to be removed)
@@ -234,9 +241,17 @@ typedef struct GPIProfileList {
     int numBlocked;
 } GPIProfileList;
 
-// An operation that a peer waits on (gpiPeer.c), with the app's callback and when it times out, and the queue of them
+// The states of an operation that a peer waits on (gpiPeer.c): none, requested, and finished
+typedef enum {
+    GPI_PEER_OP_STATE_NONE,
+    GPI_PEER_OP_STATE_REQUESTED,
+    GPI_PEER_OP_STATE_FINISHED,
+} GPIPeerOpState;
+
+// An operation that a peer waits on (gpiPeer.c), with its state, the app's callback and when it times out, and the
+// queue of them
 typedef struct _GPIPeerOp {
-    int state;
+    GPIPeerOpState state;
     void *userData;
     GPCallback callback;
     struct _GPIPeerOp *next;

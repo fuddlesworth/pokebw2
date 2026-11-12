@@ -15,7 +15,8 @@ GPIBool gpiCheckForError(GPConnection *connection, const char *input, GPIBool ca
 // index past the value
 GPIBool gpiValueForKeyWithIndex(const char *command, const char *key, int *index, char *value, int len);
 GPIBool gpiValueForKey(const char *command, const char *key, char *value, int len);
-// Whether a socket connected: state is 0 (not yet), 3 (connected) or 4 (refused)
+// Whether a socket connected: state is GPI_NOT_CONNECTED (not yet), GPI_CONNECTED (connected) or
+// GPI_DISCONNECTED (refused)
 GPResult gpiCheckSocketConnect(GPConnection *connection, SOCKET sock, int *state);
 GPResult gpiReadKeyAndValue(GPConnection *connection, const char *buffer, int *index, char key[512], char value[512]);
 void gpiSetError(GPConnection *connection, GPErrorCode errorCode, const char *errorString);

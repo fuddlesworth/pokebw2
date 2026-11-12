@@ -58,7 +58,7 @@ static GPResult gpiProcessPeerInitiatingConnection(GPConnection *connection, GPI
         break;
     case GPI_PEER_CONNECTING:
         gsUdpEngineGetPeerState(peer->ip, peer->port, &state);
-        if (state == 1) {
+        if (state == GS_UDP_PEER_CONNECTED) {
             freeSig = gsi_true;
             if (!gpiGetProfile(connection, peer->profile, &profile)) {
                 gpiSetErrorString(connection, "Error connecting to a peer.");
@@ -140,7 +140,7 @@ static GPResult gpiProcessPeerAcceptingConnection(GPConnection *connection, GPIP
         return 3;
     }
     gsUdpEngineGetPeerState(peer->ip, peer->port, &state);
-    if (state == 3) {
+    if (state == GS_UDP_PEER_CLOSED) {
         peer->state = GPI_PEER_DISCONNECTED;
         return 0;
     }
@@ -304,13 +304,13 @@ static GPResult gpiProcessPeerConnected(GPConnection *connection, GPIPeer *peer)
                 break;
             case GPI_BM_FILE_SEND_REQUEST:
             case GPI_BM_FILE_SEND_REPLY:
-            case 202:
-            case 203:
-            case 204:
-            case 205:
-            case 206:
-            case 207:
-            case 208:
+            case GPI_BM_FILE_BEGIN:
+            case GPI_BM_FILE_END:
+            case GPI_BM_FILE_DATA:
+            case GPI_BM_FILE_SKIP:
+            case GPI_BM_FILE_TRANSFER_THROTTLE:
+            case GPI_BM_FILE_TRANSFER_CANCEL:
+            case GPI_BM_FILE_TRANSFER_KEEPALIVE:
                 gpiHandleTransferMessage(connection, peer, type, peer->inputBuffer.buffer, message, len);
                 break;
             }
@@ -318,7 +318,7 @@ static GPResult gpiProcessPeerConnected(GPConnection *connection, GPIPeer *peer)
         }
         if (message == NULL) {
             gsUdpEngineGetPeerState(peer->ip, peer->port, &state);
-            if (state == 3) {
+            if (state == GS_UDP_PEER_CLOSED) {
                 peer->state = GPI_PEER_DISCONNECTED;
             }
             return 0;
@@ -333,7 +333,7 @@ static void gpiCheckTimedOutPeerOperations(GPConnection *connection, GPIPeer *pe
 
     if (peer != NULL) {
         for (; op != NULL && op != peer->peerOpQueue.last; op = op->next) {
-            if (op->state != 2 && current_time() > op->timeout && op->callback != NULL) {
+            if (op->state != GPI_PEER_OP_STATE_FINISHED && current_time() > op->timeout && op->callback != NULL) {
                 // A request for the keys of the buddy's status gets an answer with none
                 if (op->type == GPI_BM_KEYS_REQUEST) {
                     arg = gsimalloc(sizeof(GPGetBuddyStatusInfoKeysArg));
@@ -525,14 +525,14 @@ GPResult gpiPeerStartConnect(GPConnection *connection, GPIPeer *peer) {
         gsUdpEngineGetPeerState(profile->buddyStatusInfo->buddyIp, profile->buddyStatusInfo->buddyPort, &state);
         // BUG: The test is always true, so a connection that is already being made, or made, is opened again
 #ifdef BUGFIX
-        if (state != 1 && state != 0)
+        if (state != GS_UDP_PEER_CONNECTED && state != GS_UDP_PEER_CONNECTING)
 #else
-        if (state != 1 || state != 0)
+        if (state != GS_UDP_PEER_CONNECTED || state != GS_UDP_PEER_CONNECTING)
 #endif
         {
             result = gsUdpEngineStartTalkingToPeer(profile->buddyStatusInfo->buddyIp,
                                                    profile->buddyStatusInfo->buddyPort, iconnection->mHeader, 10000);
-            if (result != 5) {
+            if (result != GS_UDP_ADDRESS_ALREADY_IN_USE) {
                 gpiSetError(connection, 5, "There was an error starting communication with a peer.");
                 gpiCallErrorCallback(connection, 3, 0);
                 return 3;

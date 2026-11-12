@@ -560,7 +560,7 @@ GPResult gpiSendBuddyMessage(GPConnection *connection, int profileid, int type, 
     if (peer == NULL) {
         if (!gpiGetProfile(connection, profileid, &profile) || profile->buddyStatusInfo == NULL ||
             profile->buddyStatusInfo->buddyPort == 0) {
-            if (sendOption == 0xb00) {
+            if (sendOption == GP_DONT_ROUTE) {
                 return 3;
             }
             return gpiSendServerBuddyMessage(connection, profileid, type, message);
@@ -584,7 +584,7 @@ GPResult gpiSendBuddyMessage(GPConnection *connection, int profileid, int type, 
         if (profile->buddyStatusInfo != NULL) {
             profile->buddyStatusInfo->buddyPort = 0;
         }
-        if (sendOption == 0xb00) {
+        if (sendOption == GP_DONT_ROUTE) {
             return 3;
         }
         if (type < GPI_BM_STATUS) {
@@ -612,7 +612,7 @@ GPResult gpiBuddyHandleKeyRequest(GPConnection *connection, GPIPeer *peer) {
     if (message == NULL) {
         message = "";
     }
-    result = gpiSendBuddyMessage(connection, peer->profile, GPI_BM_KEYS_REPLY, message, 0xb00, NULL);
+    result = gpiSendBuddyMessage(connection, peer->profile, GPI_BM_KEYS_REPLY, message, GP_DONT_ROUTE, NULL);
     if (result != 0) {
         return result;
     }

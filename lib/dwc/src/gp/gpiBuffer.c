@@ -285,7 +285,7 @@ GPResult gpiSendBufferToPeer(GPConnection *connection, unsigned int ip, unsigned
                 break;
             }
             if (gsUdpEngineSendMessage(ip, port, iconnection->mHeader, buffer + (pos + total), freeSpace, gsi_true) ==
-                8) {
+                GS_UDP_SEND_FAILED) {
                 break;
             }
             total += freeSpace;
@@ -303,7 +303,7 @@ GPResult gpiSendBufferToPeer(GPConnection *connection, unsigned int ip, unsigned
     outputBuffer->len = len;
     outputBuffer->pos = pos;
     gsUdpEngineGetPeerState(ip, port, &state);
-    if (state == 3) {
+    if (state == GS_UDP_PEER_CLOSED) {
         *connClosed = gsi_true;
     } else {
         *connClosed = gsi_false;
