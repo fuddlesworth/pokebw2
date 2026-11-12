@@ -19,8 +19,78 @@
 #define KEYBOARD_FIRST_SPECIAL KEYBOARD_CHAR_KEYS
 #define KEYBOARD_FIRST_BUTTON (KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_KEYS)
 
-// The key code of the backspace
-#define KEYBOARD_BACKSPACE 0x80
+// The modes of the character keys: the three rows of sKeyCodes and sKeyLabels
+enum {
+    KEYBOARD_MODE_LOWER,
+    KEYBOARD_MODE_SHIFTED,
+    KEYBOARD_MODE_CAPITALS,
+};
+
+// The special keys' places in their own tables
+enum {
+    KEYBOARD_SPECIAL_CAPS,
+    KEYBOARD_SPECIAL_SHIFT,
+    KEYBOARD_SPECIAL_SPACE,
+    KEYBOARD_SPECIAL_BACKSPACE,
+};
+
+// The two buttons' places in their own tables
+enum {
+    KEYBOARD_BUTTON_CANCEL,
+    KEYBOARD_BUTTON_CONFIRM,
+};
+
+// The character keys' places in sNavigation and the tables, in sKeyCodes' order: the twelve of each of the first three
+// rows and the eleven of the last
+enum {
+    KEYBOARD_KEY_1,
+    KEYBOARD_KEY_2,
+    KEYBOARD_KEY_3,
+    KEYBOARD_KEY_4,
+    KEYBOARD_KEY_5,
+    KEYBOARD_KEY_6,
+    KEYBOARD_KEY_7,
+    KEYBOARD_KEY_8,
+    KEYBOARD_KEY_9,
+    KEYBOARD_KEY_0,
+    KEYBOARD_KEY_MINUS,
+    KEYBOARD_KEY_EQUALS,
+    KEYBOARD_KEY_Q,
+    KEYBOARD_KEY_W,
+    KEYBOARD_KEY_E,
+    KEYBOARD_KEY_R,
+    KEYBOARD_KEY_T,
+    KEYBOARD_KEY_Y,
+    KEYBOARD_KEY_U,
+    KEYBOARD_KEY_I,
+    KEYBOARD_KEY_O,
+    KEYBOARD_KEY_P,
+    KEYBOARD_KEY_LEFT_BRACKET,
+    KEYBOARD_KEY_RIGHT_BRACKET,
+    KEYBOARD_KEY_A,
+    KEYBOARD_KEY_S,
+    KEYBOARD_KEY_D,
+    KEYBOARD_KEY_F,
+    KEYBOARD_KEY_G,
+    KEYBOARD_KEY_H,
+    KEYBOARD_KEY_J,
+    KEYBOARD_KEY_K,
+    KEYBOARD_KEY_L,
+    KEYBOARD_KEY_SEMICOLON,
+    KEYBOARD_KEY_APOSTROPHE,
+    KEYBOARD_KEY_GRAVE,
+    KEYBOARD_KEY_Z,
+    KEYBOARD_KEY_X,
+    KEYBOARD_KEY_C,
+    KEYBOARD_KEY_V,
+    KEYBOARD_KEY_B,
+    KEYBOARD_KEY_N,
+    KEYBOARD_KEY_M,
+    KEYBOARD_KEY_COMMA,
+    KEYBOARD_KEY_PERIOD,
+    KEYBOARD_KEY_SLASH,
+    KEYBOARD_KEY_BACKSLASH,
+};
 
 typedef struct DWCUtilKeyboardPoint {
     u16 x;
@@ -58,13 +128,15 @@ typedef struct DWCUtilKeyboard {
 static const u8 sButtonPalettes[2] = { 4, 5 };
 static const u8 sButtonCells[2] = { 0x3c, 0x3d };
 static const u8 sKeyPalettes[2] = { 2, 3 };
-static const u8 sButtonKeys[3] = { 0x82, 0x83, 0 };
+static const u8 sButtonKeys[3] = { DWC_UTIL_KEY_CANCEL, DWC_UTIL_KEY_CONFIRM, DWC_UTIL_KEY_NONE };
 static const u16 sCharKeySize[2] = { 0x11, 0x12 };
 static const u16 sLabelSize[2] = { 0x1c, 2 };
 static const u16 sButtonSize[2] = { 0x78, 0x12 };
 static const u8 sSpecialCells[KEYBOARD_SPECIAL_KEYS] = { 0x3a, 0x3b, 0x35, 0x39 };
-// The codes of the special keys (0xff for the capitals and shift keys), and a 0 after them
-static const u8 sSpecialKeys[KEYBOARD_SPECIAL_KEYS + 1] = { 0xff, 0xff, ' ', KEYBOARD_BACKSPACE, 0 };
+// The codes of the special keys (0xff for the capitals and shift keys, which only switch the mode), and a
+// DWC_UTIL_KEY_NONE after them
+static const u8 sSpecialKeys[KEYBOARD_SPECIAL_KEYS + 1] = { 0xff, 0xff, ' ', DWC_UTIL_KEY_BACKSPACE,
+                                                            DWC_UTIL_KEY_NONE };
 static const DWCUtilKeyboardPoint sButtonPositions[2] = { { 0x04, 0xaa }, { 0x84, 0xaa } };
 static const DWCUtilKeyboardPoint sCharKeyPositions[KEYBOARD_CHAR_KEYS] = {
     { 0x04, 0x51 }, { 0x16, 0x51 }, { 0x28, 0x51 }, { 0x3a, 0x51 }, { 0x4c, 0x51 }, { 0x5e, 0x51 }, { 0x70, 0x51 },
@@ -140,7 +212,7 @@ void DWCi_KBlInit(void) {
     rect[2] = 0x11;
     rect[3] = 0x12;
     sKeyboard = DWCi_HEAPlAllocEx(sizeof(DWCUtilKeyboard), 4);
-    sKeyboard->key = 0xff;
+    sKeyboard->key = DWC_UTIL_KEY_IDLE;
     sKeyboard->cursorPos = 0;
     sKeyboard->backspaceEnabled = TRUE;
     sKeyboard->charsEnabled = TRUE;
@@ -324,7 +396,8 @@ static void touchTriger(void) {
         for (i = 0; i < KEYBOARD_SPECIAL_KEYS; i++) {
             DWCi_Coord2Rect(&sSpecialPositions[i], &sSpecialSizes[i], rect);
             if (DWCi_TPlCheckTrigger(rect)) {
-                if ((i == 3 && !sKeyboard->backspaceEnabled) || (i == 2 && !sKeyboard->charsEnabled)) {
+                if ((i == KEYBOARD_SPECIAL_BACKSPACE && !sKeyboard->backspaceEnabled) ||
+                    (i == KEYBOARD_SPECIAL_SPACE && !sKeyboard->charsEnabled)) {
                     DWCi_SNDlPlay(9);
                     return;
                 }
@@ -350,7 +423,7 @@ static void touchRelease(void) {
     int j;
 
     i = 0;
-    sKeyboard->key = 0;
+    sKeyboard->key = DWC_UTIL_KEY_NONE;
     if (!DWCi_TPlCheckRelease(DWCi_R_SCR)) {
         return;
     }
@@ -361,8 +434,8 @@ static void touchRelease(void) {
                 return;
             }
             sKeyboard->key = sKeyCodes[sKeyboard->mode][i];
-            if (sKeyboard->mode == 1) {
-                changePage(0);
+            if (sKeyboard->mode == KEYBOARD_MODE_SHIFTED) {
+                changePage(KEYBOARD_MODE_LOWER);
             }
             sKeyboard->cursorPos = i;
             dispFocus();
@@ -370,7 +443,7 @@ static void touchRelease(void) {
         }
         i++;
     } while (i < KEYBOARD_CHAR_KEYS);
-    j = 2;
+    j = KEYBOARD_SPECIAL_SPACE;
     do {
         DWCi_Coord2Rect(&sSpecialPositions[j], &sSpecialSizes[j], rect);
         if (DWCi_TPlCheckRelease(rect)) {
@@ -378,8 +451,8 @@ static void touchRelease(void) {
                 return;
             }
             sKeyboard->key = sSpecialKeys[j];
-            if (sKeyboard->mode == 1) {
-                changePage(0);
+            if (sKeyboard->mode == KEYBOARD_MODE_SHIFTED) {
+                changePage(KEYBOARD_MODE_LOWER);
             }
             sKeyboard->cursorPos = j + KEYBOARD_FIRST_SPECIAL;
             dispFocus();
@@ -420,12 +493,14 @@ static void touchRelease(void) {
 }
 
 static void pushCaps(void) {
-    changePage(sKeyboard->mode == 2 ? 0 : 2);
+    changePage(sKeyboard->mode == KEYBOARD_MODE_CAPITALS ? KEYBOARD_MODE_LOWER : KEYBOARD_MODE_CAPITALS);
     DWCi_SNDlPlay(1);
 }
 
 static void pushShift(void) {
-    changePage(sKeyboard->mode == 1 ? 0 : 1);
+    // The condition inverted: with the == form MWCC lays the ternary's branches out the other way round, and the
+    // function comes out three bytes different
+    changePage(sKeyboard->mode != KEYBOARD_MODE_SHIFTED ? KEYBOARD_MODE_SHIFTED : KEYBOARD_MODE_LOWER);
     DWCi_SNDlPlay(1);
 }
 
@@ -443,12 +518,12 @@ static void touch(void) {
                 goto held;
             }
         }
-        for (i = 2; i < KEYBOARD_SPECIAL_KEYS; i++) {
+        for (i = KEYBOARD_SPECIAL_SPACE; i < KEYBOARD_SPECIAL_KEYS; i++) {
             DWCi_Coord2Rect(&sSpecialPositions[i], &sSpecialSizes[i], rect);
             if (DWCi_TPlCheck(rect)) {
                 if (sKeyboard->touched == i + KEYBOARD_FIRST_SPECIAL) {
                     exchangeBack(i + KEYBOARD_FIRST_SPECIAL);
-                    if (i != 3) {
+                    if (i != KEYBOARD_SPECIAL_BACKSPACE) {
                         return;
                     }
                     sKeyboard->repeat++;
@@ -460,7 +535,7 @@ static void touch(void) {
                         sKeyboard->touched = -1;
                         return;
                     }
-                    sKeyboard->key = KEYBOARD_BACKSPACE;
+                    sKeyboard->key = DWC_UTIL_KEY_BACKSPACE;
                     sKeyboard->repeat -= 7;
                     return;
                 }
@@ -519,35 +594,35 @@ static void key(void) {
                 return;
             }
             sKeyboard->key = sKeyCodes[sKeyboard->mode][key];
-            if (sKeyboard->mode != 1) {
+            if (sKeyboard->mode != KEYBOARD_MODE_SHIFTED) {
                 return;
             }
-            changePage(0);
+            changePage(KEYBOARD_MODE_LOWER);
             return;
         }
         if (key - KEYBOARD_FIRST_SPECIAL < KEYBOARD_SPECIAL_KEYS) {
             switch (key - KEYBOARD_FIRST_SPECIAL) {
-            case 0:
+            case KEYBOARD_SPECIAL_CAPS:
                 pushCaps();
                 return;
-            case 1:
+            case KEYBOARD_SPECIAL_SHIFT:
                 pushShift();
                 return;
-            case 2:
+            case KEYBOARD_SPECIAL_SPACE:
                 if (!sKeyboard->charsEnabled) {
                     DWCi_SNDlPlay(9);
                     return;
                 }
                 break;
-            case 3:
+            case KEYBOARD_SPECIAL_BACKSPACE:
                 if (!sKeyboard->backspaceEnabled) {
                     DWCi_SNDlPlay(9);
                     return;
                 }
                 break;
             }
-            if (sKeyboard->mode == 1) {
-                changePage(0);
+            if (sKeyboard->mode == KEYBOARD_MODE_SHIFTED) {
+                changePage(KEYBOARD_MODE_LOWER);
             }
             sKeyboard->key = sSpecialKeys[key - KEYBOARD_FIRST_SPECIAL];
             return;
@@ -563,7 +638,7 @@ static void key(void) {
             sKeyboard->errorPlayed = TRUE;
             return;
         }
-        sKeyboard->key = KEYBOARD_BACKSPACE;
+        sKeyboard->key = DWC_UTIL_KEY_BACKSPACE;
     } else if (DWCi_IPTlCheckRelease(2)) {
         sKeyboard->errorPlayed = FALSE;
     }
@@ -612,9 +687,9 @@ static void changePage(int mode) {
     for (i = 0; i < 4; i++) {
         disp(mode, i, sCharKeyPositions[i * 12].y);
     }
-    if (mode == 2) {
+    if (mode == KEYBOARD_MODE_CAPITALS) {
         capitals = TRUE;
-    } else if (mode == 1) {
+    } else if (mode == KEYBOARD_MODE_SHIFTED) {
         shift = TRUE;
     }
     changeColor(KEYBOARD_FIRST_SPECIAL, capitals);
@@ -689,128 +764,131 @@ static void moveFocus(int direction) {
 
     sKeyboard->cursorPos = sNavigation[previous][direction];
     next = sKeyboard->cursorPos;
-    if (next == 0x2e && direction == DWC_UTIL_DIRECTION_DOWN) {
+    if (next == KEYBOARD_KEY_BACKSLASH && direction == DWC_UTIL_DIRECTION_DOWN) {
         sKeyboard->lastPos = previous;
-    } else if (next == 0x33 && (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
+    } else if (next == KEYBOARD_FIRST_BUTTON &&
+               (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
         sKeyboard->lastPos = previous;
-    } else if (next == 0x34 && (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
-        if (previous != 0x2e) {
+    } else if (next == KEYBOARD_FIRST_BUTTON + KEYBOARD_BUTTON_CONFIRM &&
+               (direction == DWC_UTIL_DIRECTION_UP || direction == DWC_UTIL_DIRECTION_DOWN)) {
+        if (previous != KEYBOARD_KEY_BACKSLASH) {
             sKeyboard->lastPos = previous;
         }
     } else if (next == -1) {
-        if (sKeyboard->lastPos == 0x23 || sKeyboard->lastPos == 0x32) {
-            sKeyboard->cursorPos = 0x23;
+        if (sKeyboard->lastPos == KEYBOARD_KEY_GRAVE ||
+            sKeyboard->lastPos == KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_BACKSPACE) {
+            sKeyboard->cursorPos = KEYBOARD_KEY_GRAVE;
         } else {
-            sKeyboard->cursorPos = 0x22;
+            sKeyboard->cursorPos = KEYBOARD_KEY_APOSTROPHE;
         }
     } else if (next == -2) {
         switch (sKeyboard->lastPos) {
-        case 0:
-        case 0x31:
-            sKeyboard->cursorPos = 0x31;
+        case KEYBOARD_KEY_1:
+        case KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_SPACE:
+            sKeyboard->cursorPos = KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_SPACE;
             break;
-        case 1:
-        case 0x24:
-            sKeyboard->cursorPos = 0x24;
+        case KEYBOARD_KEY_2:
+        case KEYBOARD_KEY_Z:
+            sKeyboard->cursorPos = KEYBOARD_KEY_Z;
             break;
-        case 3:
-        case 0x26:
-            sKeyboard->cursorPos = 0x26;
+        case KEYBOARD_KEY_4:
+        case KEYBOARD_KEY_C:
+            sKeyboard->cursorPos = KEYBOARD_KEY_C;
             break;
-        case 4:
-        case 0x27:
-            sKeyboard->cursorPos = 0x27;
+        case KEYBOARD_KEY_5:
+        case KEYBOARD_KEY_V:
+            sKeyboard->cursorPos = KEYBOARD_KEY_V;
             break;
-        case 5:
-        case 0x28:
-            sKeyboard->cursorPos = 0x28;
+        case KEYBOARD_KEY_6:
+        case KEYBOARD_KEY_B:
+            sKeyboard->cursorPos = KEYBOARD_KEY_B;
             break;
         default:
-            sKeyboard->cursorPos = 0x25;
+            sKeyboard->cursorPos = KEYBOARD_KEY_X;
             break;
         }
     } else if (next == -3) {
         switch (sKeyboard->lastPos) {
-        case 6:
-        case 0x29:
-            sKeyboard->cursorPos = 0x29;
+        case KEYBOARD_KEY_7:
+        case KEYBOARD_KEY_N:
+            sKeyboard->cursorPos = KEYBOARD_KEY_N;
             break;
-        case 7:
-        case 0x2a:
-            sKeyboard->cursorPos = 0x2a;
+        case KEYBOARD_KEY_8:
+        case KEYBOARD_KEY_M:
+            sKeyboard->cursorPos = KEYBOARD_KEY_M;
             break;
-        case 9:
-        case 0x2c:
-            sKeyboard->cursorPos = 0x2c;
+        case KEYBOARD_KEY_0:
+        case KEYBOARD_KEY_PERIOD:
+            sKeyboard->cursorPos = KEYBOARD_KEY_PERIOD;
             break;
-        case 10:
-        case 0x2d:
-            sKeyboard->cursorPos = 0x2d;
+        case KEYBOARD_KEY_MINUS:
+        case KEYBOARD_KEY_SLASH:
+            sKeyboard->cursorPos = KEYBOARD_KEY_SLASH;
             break;
-        case 11:
-        case 0x22:
-        case 0x23:
-        case 0x32:
-            sKeyboard->cursorPos = 0x2e;
+        case KEYBOARD_KEY_EQUALS:
+        case KEYBOARD_KEY_APOSTROPHE:
+        case KEYBOARD_KEY_GRAVE:
+        case KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_BACKSPACE:
+            sKeyboard->cursorPos = KEYBOARD_KEY_BACKSLASH;
             break;
         default:
-            sKeyboard->cursorPos = 0x2b;
+            sKeyboard->cursorPos = KEYBOARD_KEY_COMMA;
             break;
         }
     } else if (next == -4) {
         switch (sKeyboard->lastPos) {
-        case 0:
-        case 0x31:
-            sKeyboard->cursorPos = 0;
+        case KEYBOARD_KEY_1:
+        case KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_SPACE:
+            sKeyboard->cursorPos = KEYBOARD_KEY_1;
             break;
-        case 1:
-        case 0x24:
-            sKeyboard->cursorPos = 1;
+        case KEYBOARD_KEY_2:
+        case KEYBOARD_KEY_Z:
+            sKeyboard->cursorPos = KEYBOARD_KEY_2;
             break;
-        case 3:
-        case 0x26:
-            sKeyboard->cursorPos = 3;
+        case KEYBOARD_KEY_4:
+        case KEYBOARD_KEY_C:
+            sKeyboard->cursorPos = KEYBOARD_KEY_4;
             break;
-        case 4:
-        case 0x27:
-            sKeyboard->cursorPos = 4;
+        case KEYBOARD_KEY_5:
+        case KEYBOARD_KEY_V:
+            sKeyboard->cursorPos = KEYBOARD_KEY_5;
             break;
-        case 5:
-        case 0x28:
-            sKeyboard->cursorPos = 5;
+        case KEYBOARD_KEY_6:
+        case KEYBOARD_KEY_B:
+            sKeyboard->cursorPos = KEYBOARD_KEY_6;
             break;
         default:
-            sKeyboard->cursorPos = 2;
+            sKeyboard->cursorPos = KEYBOARD_KEY_3;
             break;
         }
     } else if (next == -5) {
         switch (sKeyboard->lastPos) {
-        case 6:
-        case 0x29:
-            sKeyboard->cursorPos = 6;
+        case KEYBOARD_KEY_7:
+        case KEYBOARD_KEY_N:
+            sKeyboard->cursorPos = KEYBOARD_KEY_7;
             break;
-        case 7:
-        case 0x2a:
-            sKeyboard->cursorPos = 7;
+        case KEYBOARD_KEY_8:
+        case KEYBOARD_KEY_M:
+            sKeyboard->cursorPos = KEYBOARD_KEY_8;
             break;
-        case 9:
-        case 0x2c:
-            sKeyboard->cursorPos = 9;
+        case KEYBOARD_KEY_0:
+        case KEYBOARD_KEY_PERIOD:
+            sKeyboard->cursorPos = KEYBOARD_KEY_0;
             break;
-        case 10:
-        case 0x2d:
-            sKeyboard->cursorPos = 10;
+        case KEYBOARD_KEY_MINUS:
+        case KEYBOARD_KEY_SLASH:
+            sKeyboard->cursorPos = KEYBOARD_KEY_MINUS;
             break;
-        case 11:
-        case 0x22:
-            sKeyboard->cursorPos = 11;
+        case KEYBOARD_KEY_EQUALS:
+        case KEYBOARD_KEY_APOSTROPHE:
+            sKeyboard->cursorPos = KEYBOARD_KEY_EQUALS;
             break;
-        case 0x23:
-        case 0x32:
-            sKeyboard->cursorPos = 0x32;
+        case KEYBOARD_KEY_GRAVE:
+        case KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_BACKSPACE:
+            sKeyboard->cursorPos = KEYBOARD_FIRST_SPECIAL + KEYBOARD_SPECIAL_BACKSPACE;
             break;
         default:
-            sKeyboard->cursorPos = 8;
+            sKeyboard->cursorPos = KEYBOARD_KEY_9;
             break;
         }
     }

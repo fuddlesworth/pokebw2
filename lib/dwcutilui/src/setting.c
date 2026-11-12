@@ -60,9 +60,9 @@ void DWCi_SETTINGlSetWep(const u8 *key) {
     length = DWCi_STRlNLen(key, 32);
     switch (length) {
     case 0:
-    case 10:
-    case 26:
-    case 32:
+    case DWC_WEP_KEY_HEX_LENGTH_40:
+    case DWC_WEP_KEY_HEX_LENGTH_104:
+    case DWC_WEP_KEY_HEX_LENGTH_128:
         sWifiSettings->edit.connection.wepNotation = 0;
         dest = sWifiSettings->edit.connection.wepKey[0];
         for (i = 0; i < length; i += 2) {
@@ -77,18 +77,18 @@ void DWCi_SETTINGlSetWep(const u8 *key) {
     }
     switch (length) {
     case 0:
-        sWifiSettings->edit.connection.wepMode = 0;
+        sWifiSettings->edit.connection.wepMode = DWC_WEPMODE_NONE;
         break;
-    case 5:
-    case 10:
-        sWifiSettings->edit.connection.wepMode = 1;
+    case DWC_WEP_KEY_LENGTH_40:
+    case DWC_WEP_KEY_HEX_LENGTH_40:
+        sWifiSettings->edit.connection.wepMode = DWC_WEPMODE_40;
         break;
-    case 13:
-    case 26:
-        sWifiSettings->edit.connection.wepMode = 2;
+    case DWC_WEP_KEY_LENGTH_104:
+    case DWC_WEP_KEY_HEX_LENGTH_104:
+        sWifiSettings->edit.connection.wepMode = DWC_WEPMODE_104;
         break;
     default:
-        sWifiSettings->edit.connection.wepMode = 3;
+        sWifiSettings->edit.connection.wepMode = DWC_WEPMODE_128;
         break;
     }
 }
@@ -203,26 +203,26 @@ void DWCi_SETTINGlSetRaku(const ATERMApConfigParam *result) {
     MI_CpuCopy8(result->ssid, edit->connection.ssid, sizeof(edit->connection.ssid));
     switch (result->auth_mode) {
     case 1:
-        edit->connection.wepMode = 1;
-        length = 5;
+        edit->connection.wepMode = DWC_WEPMODE_40;
+        length = DWC_WEP_KEY_LENGTH_40;
         break;
     case 2:
-        edit->connection.wepMode = 2;
-        length = 13;
+        edit->connection.wepMode = DWC_WEPMODE_104;
+        length = DWC_WEP_KEY_LENGTH_104;
         break;
     case 3:
-        edit->connection.wepMode = 3;
-        length = 16;
+        edit->connection.wepMode = DWC_WEPMODE_128;
+        length = DWC_WEP_KEY_LENGTH_128;
         break;
     default:
-        edit->connection.wepMode = 0;
+        edit->connection.wepMode = DWC_WEPMODE_NONE;
         break;
     }
     edit->connection.wepNotation = 0;
     for (i = 0; i < 4; i++) {
         MI_CpuCopy8(result->wepkey[i], edit->connection.wepKey[i], length);
     }
-    edit->connection.setType = 2;
+    edit->connection.setType = DWC_SETTYPE_RAKU;
     MI_CpuFill8(edit->netmask, 0, 4);
     edit->autoAddress = TRUE;
     edit->autoDns = TRUE;
@@ -234,19 +234,19 @@ void DWCi_SETTINGlSetAoss(const AOSS_SECURE_INFO *result) {
     DWCUtilSettingsEdit *edit = &settings->edit;
 
     MI_CpuFill8(&edit->connection, 0, offsetof(DWCBMApInfo, state));
-    MI_CpuCopy8(result->wep40Key[0], edit->connection.wep2[0], 5);
-    MI_CpuCopy8(result->wep40Key[1], edit->connection.wep2[1], 5);
-    MI_CpuCopy8(result->wep40Key[2], edit->connection.wep2[2], 5);
-    MI_CpuCopy8(result->wep40Key[3], edit->connection.wep2[3], 5);
+    MI_CpuCopy8(result->wep40Key[0], edit->connection.wep2[0], DWC_WEP_KEY_LENGTH_40);
+    MI_CpuCopy8(result->wep40Key[1], edit->connection.wep2[1], DWC_WEP_KEY_LENGTH_40);
+    MI_CpuCopy8(result->wep40Key[2], edit->connection.wep2[2], DWC_WEP_KEY_LENGTH_40);
+    MI_CpuCopy8(result->wep40Key[3], edit->connection.wep2[3], DWC_WEP_KEY_LENGTH_40);
     MI_CpuCopy8(result->WEP40_SSID, edit->connection.aossSsid, 32);
-    MI_CpuCopy8(result->wep104Key[0], edit->connection.wepKey[0], 13);
-    MI_CpuCopy8(result->wep104Key[1], edit->connection.wepKey[1], 13);
-    MI_CpuCopy8(result->wep104Key[2], edit->connection.wepKey[2], 13);
-    MI_CpuCopy8(result->wep104Key[3], edit->connection.wepKey[3], 13);
+    MI_CpuCopy8(result->wep104Key[0], edit->connection.wepKey[0], DWC_WEP_KEY_LENGTH_104);
+    MI_CpuCopy8(result->wep104Key[1], edit->connection.wepKey[1], DWC_WEP_KEY_LENGTH_104);
+    MI_CpuCopy8(result->wep104Key[2], edit->connection.wepKey[2], DWC_WEP_KEY_LENGTH_104);
+    MI_CpuCopy8(result->wep104Key[3], edit->connection.wepKey[3], DWC_WEP_KEY_LENGTH_104);
     MI_CpuCopy8(result->WEP104_SSID, edit->connection.ssid, 32);
-    edit->connection.wepMode = 2;
+    edit->connection.wepMode = DWC_WEPMODE_104;
     edit->connection.wepNotation = 0;
-    edit->connection.setType = 1;
+    edit->connection.setType = DWC_SETTYPE_AOSS;
     MI_CpuFill8(edit->netmask, 0, 4);
     edit->autoAddress = TRUE;
     edit->autoDns = TRUE;

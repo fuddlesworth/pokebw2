@@ -69,7 +69,7 @@ static void procInit1(void) {
 static void DWCUtilAutoConnectIntro_WaitDialog(void) {
     draw();
     func_ov182_021b66d4();
-    if (DWCi_WINlGet() == 0) {
+    if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
         DWCi_SNDlPlay(6);

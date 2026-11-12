@@ -139,11 +139,11 @@ static void endScene2(void) {
 // The confirmation: 1 erases the settings
 static void procConfirm(void) {
     switch (DWCi_WINlGet()) {
-    case 1:
+    case DWC_UTIL_DIALOG_BUTTON_SECOND:
         DWCi_SNDlPlay(0xe);
         sErase = TRUE;
         break;
-    case 0:
+    case DWC_UTIL_DIALOG_BUTTON_FIRST:
         DWCi_SNDlPlay(7);
         break;
     default:

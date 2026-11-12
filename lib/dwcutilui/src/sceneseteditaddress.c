@@ -141,7 +141,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_KB10lGet() != 0x1f) {
+    if (DWCi_KB10lGet() != DWC_UTIL_KB10_KEY_IDLE) {
         DWCi_ChangeScene(procScene);
     }
 }
@@ -157,9 +157,9 @@ static void input(void) {
     int first;
 
     switch (key) {
-    case 0:
+    case DWC_UTIL_KB10_KEY_NONE:
         return;
-    case 0x10:
+    case DWC_UTIL_KB10_KEY_LEFT:
         if (sAddressEdit->group == 0 && sAddressEdit->digits[2] == 0) {
             break;
         }
@@ -174,19 +174,19 @@ static void input(void) {
         DWCi_KB10lSetInput(TRUE);
         DWCi_KB10lSetShift(FALSE);
         break;
-    case 0x11:
+    case DWC_UTIL_KB10_KEY_RIGHT:
         if (sAddressEdit->group < ADDRESS_EDIT_LAST_GROUP && sAddressEdit->digits[sAddressEdit->group * 3 + 2] != 0) {
             DWCi_SNDlPlay(1);
             sAddressEdit->group++;
             DWCi_KB10lSetShift(FALSE);
         }
         break;
-    case 0x12:
+    case DWC_UTIL_KB10_KEY_CANCEL:
         sAddressEdit->result = ADDRESS_EDIT_CANCELLED;
         DWCi_SNDlPlay(7);
         DWCi_ChangeScene(DWCUtilAddressEdit_EndEntry);
         return;
-    case 0x13:
+    case DWC_UTIL_KB10_KEY_CONFIRM:
         if (isCorrect()) {
             DWCi_SNDlPlay(6);
             sAddressEdit->result = ADDRESS_EDIT_ENTERED;
@@ -346,10 +346,10 @@ static void dispCaret(void) {
 static void procWin(void) {
     sAddressEdit->result = DWCi_WINlGet();
     switch (sAddressEdit->result) {
-    case 0:
+    case DWC_UTIL_DIALOG_BUTTON_FIRST:
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_DIALOG_BUTTON_SECOND:
         DWCi_SNDlPlay(0xe);
         break;
     default:
@@ -368,7 +368,7 @@ static void procWin1(void) {
     int field;
 
     if (!DWCi_WINlIsInit()) {
-        if (sAddressEdit->result == 0) {
+        if (sAddressEdit->result == DWC_UTIL_DIALOG_BUTTON_FIRST) {
             G2_SetOBJEffect(sAddressEdit->cursor, GX_OAM_EFFECT_NONE, 0);
             DWCi_ChangeScene(procInit1);
             return;
@@ -444,7 +444,7 @@ static BOOL isCorrect(void) {
 }
 
 static void procError(void) {
-    if (DWCi_WINlGet() == 0) {
+    if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
         DWCi_ChangeScene(procError1);
