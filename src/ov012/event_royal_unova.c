@@ -51,15 +51,21 @@ void PleasureBoat_Free(PleasureBoat **boat) {
     }
 }
 
+// EventRoyalUnova_Callback's steps: the demo, and its result
+enum {
+    ROYAL_UNOVA_STEP_DEMO,
+    ROYAL_UNOVA_STEP_RESULT,
+};
+
 static GameEventReturnCode EventRoyalUnova_Callback(GameEvent *event, u32 *state, void *data) {
     EventRoyalUnovaWork *work = GameEvent_GetData(event);
 
     switch (*state) {
-    case 0:
+    case ROYAL_UNOVA_STEP_DEMO:
         GSYS_QueueProcAsEvent(event, OVERLAY_DEMO3D, &gDemo3DProcFunctions, work);
         (*state)++;
         break;
-    case 1:
+    case ROYAL_UNOVA_STEP_RESULT:
         if (work->param.result == DEMO3D_RESULT_ENDED) {
             *work->result = TRUE;
         } else {
@@ -99,19 +105,19 @@ BOOL Scrcmd_RoyalUnova_PleasureBoatGetRoomInfo(VM *vm, FieldScriptEnv *env) {
     index = ScriptReadAny(vm, env);
     result = ScriptReadVar(vm, env);
     switch (kind) {
-    case 4:
+    case PLEASURE_BOAT_ROOM_INFO_OBJ_CODE:
         *result = PleasureBoat_GetRoomObjCode(*boat, room);
         break;
-    case 5:
+    case PLEASURE_BOAT_ROOM_INFO_PASSENGER_PARAM:
         *result = PleasureBoat_GetPassengerParam(*boat, room);
         break;
-    case 6:
+    case PLEASURE_BOAT_ROOM_INFO_PASSENGER_TYPE:
         *result = PleasureBoat_GetPassengerType(*boat, room);
         break;
-    case 7:
+    case PLEASURE_BOAT_ROOM_INFO_PASSENGER_EXTRA:
         *result = PleasureBoat_GetPassengerExtra(*boat, room, index);
         break;
-    case 8:
+    case PLEASURE_BOAT_ROOM_INFO_PASSENGER_OCCUPIED:
         if (PleasureBoat_GetPassengerOccupied(*boat, room)) {
             *result = TRUE;
         } else {

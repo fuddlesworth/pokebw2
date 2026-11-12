@@ -43,6 +43,19 @@ static const FieldCameraCoords sLeagueLiftCameraCoords = {
 
 static GameEvent *EventLeagueLiftArrival_Create(GameSystem *gsys, Field *field);
 
+// EventLeagueLiftWarp_Callback's steps: the camera's turn, the lift's curve and its descent, the fade and the map
+// change, and the arrival
+enum {
+    LEAGUE_LIFT_WARP_STEP_PREPARE_CAMERA,
+    LEAGUE_LIFT_WARP_STEP_WAIT_CAMERA,
+    LEAGUE_LIFT_WARP_STEP_LOAD_CURVE,
+    LEAGUE_LIFT_WARP_STEP_LOWER,
+    LEAGUE_LIFT_WARP_STEP_FADE_OUT,
+    LEAGUE_LIFT_WARP_STEP_MAP_CHANGE,
+    LEAGUE_LIFT_WARP_STEP_ARRIVAL,
+    LEAGUE_LIFT_WARP_STEP_END,
+};
+
 static GameEventReturnCode EventLeagueLiftWarp_Callback(GameEvent *event, u32 *state, void *work) {
     LeagueLiftWarpData *data = work;
     GameSystem *gsys = data->gsys;
@@ -54,24 +67,24 @@ static GameEventReturnCode EventLeagueLiftWarp_Callback(GameEvent *event, u32 *s
     VecFx32 spawnPos;
 
     switch (*state) {
-    case 0:
+    case LEAGUE_LIFT_WARP_STEP_PREPARE_CAMERA:
         FieldCameraAnimationController_PrepareCamera(data->cameraController);
         FieldCamera_GetAnimationCoords(data->camera, &data->animation.src);
         FieldCameraAnimationController_StartAnimation(data->cameraController);
         (*state)++;
         break;
-    case 1:
+    case LEAGUE_LIFT_WARP_STEP_WAIT_CAMERA:
         if (FieldTaskManager_IsIdle(taskManager)) {
             FieldCameraAnimationController_FreeAnimation(data->cameraController);
             (*state)++;
         }
         break;
-    case 2:
+    case LEAGUE_LIFT_WARP_STEP_LOAD_CURVE:
         data->curve = GFL_G3DCurveLoadFileAll(Field_GetHeapID(field), 0x9b, 0x18);
         GFL_SEPlayKeepVol(SEQ_SE_FLD_148, GFL_SndSeqGetPlayerIndex(SEQ_SE_FLD_148));
         (*state)++;
         break;
-    case 3:
+    case LEAGUE_LIFT_WARP_STEP_LOWER:
         GFL_G3DCurveGetNowTranslation(data->curve, &translation);
         FieldExpObj_GetActorMatrixPtr(Field_GetExpObjSystem(field), 0, 0)->translation.y = translation.y;
         player = Field_GetPlayer(field);
@@ -83,12 +96,12 @@ static GameEventReturnCode EventLeagueLiftWarp_Callback(GameEvent *event, u32 *s
             (*state)++;
         }
         break;
-    case 4:
+    case LEAGUE_LIFT_WARP_STEP_FADE_OUT:
         GameEvent_ChainNext(event,
                             CallFieldMapEntranceOutTransitionDefault(gsys, field, FIELD_TRANSITION_FADE_BLACK, 0));
         (*state)++;
         break;
-    case 5:
+    case LEAGUE_LIFT_WARP_STEP_MAP_CHANGE:
         spawnPos.x = 0;
         spawnPos.y = 0;
         spawnPos.z = 0;
@@ -96,11 +109,11 @@ static GameEventReturnCode EventLeagueLiftWarp_Callback(GameEvent *event, u32 *s
                             EventMapChange_CreateGridDefault(gsys, field, ZONE_POKEMON_LEAGUE_3, &spawnPos, DIR_DOWN));
         (*state)++;
         break;
-    case 6:
+    case LEAGUE_LIFT_WARP_STEP_ARRIVAL:
         GameEvent_Replace(event, EventLeagueLiftArrival_Create(gsys, field));
         (*state)++;
         break;
-    case 7:
+    case LEAGUE_LIFT_WARP_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -148,6 +161,18 @@ static void LeagueLiftArrival_PlacePlayer(LeagueLiftArrivalData *data) {
     FieldPlayer_SetWPos(player, &pos);
 }
 
+// EventLeagueLiftArrival_Callback's steps: the curve and the camera's delay, the lift's animation and the fade in,
+// the ride, the landing, and the player's height
+enum {
+    LEAGUE_LIFT_ARRIVAL_STEP_LOAD_CURVE,
+    LEAGUE_LIFT_ARRIVAL_STEP_WAIT_CAMERA,
+    LEAGUE_LIFT_ARRIVAL_STEP_PLAY_ANIM,
+    LEAGUE_LIFT_ARRIVAL_STEP_RIDE_CURVE,
+    LEAGUE_LIFT_ARRIVAL_STEP_WAIT_ANIM,
+    LEAGUE_LIFT_ARRIVAL_STEP_PLACE_ON_GROUND,
+    LEAGUE_LIFT_ARRIVAL_STEP_END,
+};
+
 static GameEventReturnCode EventLeagueLiftArrival_Callback(GameEvent *event, u32 *state, void *work) {
     LeagueLiftArrivalData *data = work;
     BOOL done;
@@ -159,26 +184,26 @@ static GameEventReturnCode EventLeagueLiftArrival_Callback(GameEvent *event, u32
 
     Field_GetExpObjSystem(data->field);
     switch (*state) {
-    case 0:
+    case LEAGUE_LIFT_ARRIVAL_STEP_LOAD_CURVE:
         data->curve = GFL_G3DCurveLoadFileAll(data->heapId, 0x9b, 0x19);
         LeagueLiftArrival_MoveLift(data);
         LeagueLiftArrival_PlacePlayer(data);
         FieldCamera_FinishDelay(data->camera);
         (*state)++;
         break;
-    case 1:
+    case LEAGUE_LIFT_ARRIVAL_STEP_WAIT_CAMERA:
         if (!FieldCamera_IsDelayActive(data->camera)) {
             (*state)++;
         }
         break;
-    case 2:
+    case LEAGUE_LIFT_ARRIVAL_STEP_PLAY_ANIM:
         GimmickLeagueLift_PlayLiftAnim(data->field);
         GimmickLeagueLift_PlayArrivalModel(data->field);
         GameEvent_ChainNext(
             event, CallFieldMapEntranceInTransition(data->gsys, data->field, FIELD_TRANSITION_FADE_BLACK, 0, 1, 0, 0));
         (*state)++;
         break;
-    case 3:
+    case LEAGUE_LIFT_ARRIVAL_STEP_RIDE_CURVE:
         done = LeagueLiftArrival_StepCurve(data);
         if (!done) {
             LeagueLiftArrival_MoveLift(data);
@@ -203,14 +228,14 @@ static GameEventReturnCode EventLeagueLiftArrival_Callback(GameEvent *event, u32
             (*state)++;
         }
         break;
-    case 4:
+    case LEAGUE_LIFT_ARRIVAL_STEP_WAIT_ANIM:
         if (GimmickLeagueLift_IsLiftAnimDone(data->field) && GimmickLeagueLift_IsArrivalModelDone(data->field)) {
             GimmickLeagueLift_StopLiftAnim(data->field);
             GimmickLeagueLift_HideArrivalModel(data->field);
             (*state)++;
         }
         break;
-    case 5:
+    case LEAGUE_LIFT_ARRIVAL_STEP_PLACE_ON_GROUND:
         player = Field_GetPlayer(data->field);
         actor = FieldPlayer_GetActor(player);
         FieldPlayer_GetWPos(player, &pos);
@@ -219,7 +244,7 @@ static GameEventReturnCode EventLeagueLiftArrival_Callback(GameEvent *event, u32
         FieldPlayer_SetWPos(player, &pos);
         (*state)++;
         break;
-    case 6:
+    case LEAGUE_LIFT_ARRIVAL_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
