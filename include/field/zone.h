@@ -65,7 +65,17 @@ struct ZoneWarpRailPosition {
     s16 posSide;
     u16 frontSpan;
     u16 sideSpan;
+    // Which of the warp's spans a position's index is counted from the far end of, and so which ones the code flips
+    // the index of: CalcWarpTransferAddend and ZoneWarp_CalcPosWeightBitsRail_ both read it
     u16 param;
+};
+
+// What ZoneWarpRailPosition.param is: the span whose index is flipped
+enum {
+    ZONE_WARP_RAIL_FLIP_FRONT,
+    ZONE_WARP_RAIL_FLIP_SIDE,
+    ZONE_WARP_RAIL_FLIP_BOTH,
+    ZONE_WARP_RAIL_FLIP_NONE,
 };
 
 // What ZoneBGEntity.condition is known to hold. The event check skips an entity from 3 up, so the festival's places
@@ -76,6 +86,22 @@ enum {
     BG_ENTITY_CONDITION_FEST_PLACE = 4,
     // A place for a mission's person only
     BG_ENTITY_CONDITION_FEST_PEOPLE_PLACE = 5,
+};
+
+// What ZoneBGEntity.direction holds: the sides of the event that can be interacted with, which CheckProxyEntityEvent
+// checks against the player's facing and GetBGEntityPosRail_ turns into the side the event faces. The first four are
+// one side, the rest both sides of an axis or every side.
+enum {
+    BG_ENTITY_DIR_DOWN,
+    BG_ENTITY_DIR_LEFT,
+    BG_ENTITY_DIR_RIGHT,
+    BG_ENTITY_DIR_UP,
+    // From any side
+    BG_ENTITY_DIR_ANY,
+    // From the left or the right
+    BG_ENTITY_DIR_LEFT_RIGHT,
+    // From above or below
+    BG_ENTITY_DIR_UP_DOWN,
 };
 
 // Field names from swan's ZoneFurniture. The struct is halfword-aligned (the festival missions copy it as a loop
@@ -171,6 +197,12 @@ extern const u16 GEAR_STATION_PLATFORM_ZONES[9];
 // What GetRailIDForZone and GetCameraIDForZone return for a zone without one
 #define ZONE_RAIL_NONE 0xffffffff
 #define ZONE_CAMERA_NONE 0xffff
+// What a warp's destZoneId or destId holds for no destination
+#define WARP_DEST_NONE 0xffff
+// What a warp's destId holds for the spawn the game has queued as its next zone, which the FieldSetNextZone script
+// commands set: EventMapChangeWarp_CreateFromEntity takes the destination from GameData_GetNextZone instead of the
+// warp, and SetupZoneWarpArrival marks the arrival ZONE_SPAWN_CHANGE_TYPE_3
+#define WARP_DEST_ID_NEXT_ZONE 0x100
 // What GetZoneMatrixCamBoundIdx returns for a zone without a camera boundary
 #define ZONE_CAMERA_BOUNDARY_NONE 0xffff
 
@@ -188,6 +220,22 @@ enum {
     WARP_DIR_DOWN,
     WARP_DIR_LEFT,
     WARP_DIR_RIGHT,
+};
+
+// What the festival missions pass to FindTriggerAtPosGrid and GetTriggerSCRIDAtPosGrid to find a trigger whichever way
+// the player faces
+#define TRIGGER_DIR_ANY 8
+
+// What ZoneTrigger.type is: no direction, so it fires whichever way the player faces, the direction the player must
+// face (a WARP_DIR_*), or a collision area, which FindCollidingZoneTriggerAtLocation looks for. No zone's data holds 5;
+// 7 is held only by route 5's triggers, whose script is 0, and no code reads it.
+enum {
+    ZONE_TRIGGER_TYPE_NONE,
+    ZONE_TRIGGER_TYPE_UP = WARP_DIR_UP,
+    ZONE_TRIGGER_TYPE_DOWN,
+    ZONE_TRIGGER_TYPE_LEFT,
+    ZONE_TRIGGER_TYPE_RIGHT,
+    ZONE_TRIGGER_TYPE_COLLISION = 6,
 };
 
 // With a map replace event set, each version allows its own area
