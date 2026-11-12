@@ -73,19 +73,19 @@ static gsi_i16 gti2SNDiff(int a, int b) {
 static GT2Bool gti2ConnectionError(GT2Connection connection, GT2Result result, GT2CloseReason reason) {
     int state = connection->state;
 
-    if (state < 5) {
+    if (state < GTI2Connected) {
         if (connection->initiated) {
             gti2ConnectionClosed(connection);
             if (!gti2ConnectedCallback(connection, result, NULL, 0)) {
                 return gsi_false;
             }
         } else {
-            if (state == 4) {
+            if (state == GTI2AwaitingAcceptReject) {
                 connection->freeAtAcceptReject = gsi_true;
             }
             gti2ConnectionClosed(connection);
         }
-    } else if (state != 7) {
+    } else if (state != GTI2Closed) {
         gti2ConnectionClosed(connection);
         if (!gti2ClosedCallback(connection, reason)) {
             return gsi_false;
@@ -96,13 +96,13 @@ static GT2Bool gti2ConnectionError(GT2Connection connection, GT2Result result, G
 
 // Closes a connection after a message that breaks the protocol
 static GT2Bool gti2ConnectionCommunicationError(GT2Connection connection) {
-    return gti2ConnectionError(connection, 7, 2);
+    return gti2ConnectionError(connection, GT2NegotiationError, GT2CommunicationError);
 }
 
 // Closes a connection that ran out of memory, telling the peer
 static GT2Bool gti2ConnectionMemoryError(GT2Connection connection) {
     if (gti2SendClosed(connection)) {
-        return gti2ConnectionError(connection, 1, 4);
+        return gti2ConnectionError(connection, GT2OutOfMemory, GT2NotEnoughMemory);
     }
     return gsi_false;
 }
@@ -146,7 +146,7 @@ static GT2Bool gti2HandleESN(GT2Connection connection, int ack) {
 
 // Delivers the app's unreliable message, through the receive filters if there are any
 static GT2Bool gti2HandleAppUnreliable(GT2Connection connection, GT2Byte *data, int length) {
-    if (connection->state != 5 && connection->state != 6) {
+    if (connection->state != GTI2Connected && connection->state != GTI2Closing) {
         return gsi_true;
     }
     if (ArrayLength(connection->receiveFilters) != 0) {
@@ -157,7 +157,7 @@ static GT2Bool gti2HandleAppUnreliable(GT2Connection connection, GT2Byte *data, 
 
 // Delivers the app's reliable message
 static GT2Bool gti2HandleAppReliable(GT2Connection connection, GT2Byte *data, int length) {
-    if (connection->state != 5 && connection->state != 6) {
+    if (connection->state != GTI2Connected && connection->state != GTI2Closing) {
         if (!gti2ConnectionCommunicationError(connection)) {
             return gsi_false;
         }
@@ -177,7 +177,7 @@ static GT2Bool gti2HandleClientChallenge(GT2Connection connection, GT2Byte *data
     gsi_u8 response[32];
     gsi_u8 challenge[32];
 
-    if (connection->state != 2) {
+    if (connection->state != GTI2AwaitingClientChallenge) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
         }
@@ -195,7 +195,7 @@ static GT2Bool gti2HandleClientChallenge(GT2Connection connection, GT2Byte *data
     if (!gti2SendServerChallenge(connection, response, challenge)) {
         return gsi_false;
     }
-    connection->state = 3;
+    connection->state = GTI2AwaitingClientResponse;
     return gsi_true;
 }
 
@@ -203,7 +203,7 @@ static GT2Bool gti2HandleClientChallenge(GT2Connection connection, GT2Byte *data
 static GT2Bool gti2HandleServerChallenge(GT2Connection connection, GT2Byte *data, int length) {
     gsi_u8 response[32];
 
-    if (connection->state != 0) {
+    if (connection->state != GTI2AwaitingServerChallenge) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
         }
@@ -229,13 +229,13 @@ static GT2Bool gti2HandleServerChallenge(GT2Connection connection, GT2Byte *data
         gsifree(connection->initialMessage);
         connection->initialMessage = NULL;
     }
-    connection->state = 1;
+    connection->state = GTI2AwaitingAcceptance;
     return gsi_true;
 }
 
 // Checks the response and gives the app the attempt
 static GT2Bool gti2HandleClientResponse(GT2Connection connection, GT2Byte *data, int length) {
-    if (connection->state != 3) {
+    if (connection->state != GTI2AwaitingClientResponse) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
         }
@@ -260,7 +260,7 @@ static GT2Bool gti2HandleClientResponse(GT2Connection connection, GT2Byte *data,
         gti2ConnectionClosed(connection);
         return gsi_true;
     }
-    connection->state = 4;
+    connection->state = GTI2AwaitingAcceptReject;
     if (gti2ConnectAttemptCallback(connection->socket, connection, connection->ip, connection->port,
                                    current_time() - connection->challengeTime, data + 32, length - 32)) {
         return gsi_true;
@@ -270,19 +270,19 @@ static GT2Bool gti2HandleClientResponse(GT2Connection connection, GT2Byte *data,
 
 // The server accepted the connection
 static GT2Bool gti2HandleAccept(GT2Connection connection) {
-    if (connection->state != 1) {
+    if (connection->state != GTI2AwaitingAcceptance) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
         }
         return gsi_false;
     }
-    connection->state = 5;
-    return gti2ConnectedCallback(connection, 0, NULL, 0) != 0;
+    connection->state = GTI2Connected;
+    return gti2ConnectedCallback(connection, GT2Success, NULL, 0) != 0;
 }
 
 // The server rejected the connection, with its message
 static GT2Bool gti2HandleReject(GT2Connection connection, GT2Byte *data, int length) {
-    if (connection->state != 1) {
+    if (connection->state != GTI2AwaitingAcceptance) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
         }
@@ -292,7 +292,7 @@ static GT2Bool gti2HandleReject(GT2Connection connection, GT2Byte *data, int len
     if (!gti2SendClosed(connection)) {
         return gsi_false;
     }
-    if (gti2ConnectedCallback(connection, 2, data, length)) {
+    if (gti2ConnectedCallback(connection, GT2Rejected, data, length)) {
         return gsi_true;
     }
     return gsi_false;
@@ -305,11 +305,11 @@ static GT2Bool gti2HandleClose(GT2Connection connection) {
     if (!gti2SendClosed(connection)) {
         return gsi_false;
     }
-    reason = 0;
-    if (connection->state != 6) {
-        reason = 1;
+    reason = GT2LocalClose;
+    if (connection->state != GTI2Closing) {
+        reason = GT2RemoteClose;
     }
-    if (!gti2ConnectionError(connection, 2, reason)) {
+    if (!gti2ConnectionError(connection, GT2Rejected, reason)) {
         return gsi_false;
     }
     return gsi_true;
@@ -318,31 +318,31 @@ static GT2Bool gti2HandleClose(GT2Connection connection) {
 // Delivers a reliable message, by its type
 static GT2Bool gti2DeliverReliableMessage(GT2Connection connection, GTI2MessageType type, GT2Byte *data, int length) {
     connection->expectedSerialNumber++;
-    if (type == 0) {
+    if (type == GTI2MsgAppReliable) {
         if (!gti2HandleAppReliable(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 1) {
+    } else if (type == GTI2MsgClientChallenge) {
         if (!gti2HandleClientChallenge(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 2) {
+    } else if (type == GTI2MsgServerChallenge) {
         if (!gti2HandleServerChallenge(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 3) {
+    } else if (type == GTI2MsgClientResponse) {
         if (!gti2HandleClientResponse(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 4) {
+    } else if (type == GTI2MsgAccept) {
         if (!gti2HandleAccept(connection)) {
             return gsi_false;
         }
-    } else if (type == 5) {
+    } else if (type == GTI2MsgReject) {
         if (!gti2HandleReject(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 6) {
+    } else if (type == GTI2MsgClose) {
         if (!gti2HandleClose(connection)) {
             return gsi_false;
         }
@@ -478,7 +478,7 @@ static GT2Bool gti2HandleReliableMessage(GT2Connection connection, GTI2MessageTy
     }
     sequence = gti2UShortFromBuffer(data + connection->socket->protocolOffset, 3);
     ack = gti2UShortFromBuffer(data + connection->socket->protocolOffset, 5);
-    if (connection->socket->protocolType == GTI2VdpProtocol && type == 0) {
+    if (connection->socket->protocolType == GTI2VdpProtocol && type == GTI2MsgAppReliable) {
         data[connection->socket->protocolOffset + 5] = data[0];
         data[connection->socket->protocolOffset + 6] = data[1];
         data += headerSize - connection->socket->protocolOffset;
@@ -517,6 +517,7 @@ static GT2Bool gti2HandleReliableMessage(GT2Connection connection, GTI2MessageTy
 
 // An ack
 static GT2Bool gti2HandleAck(GT2Connection connection, const GT2Byte *data, int length) {
+    // An ack is one serial number
     if (length != 2) {
         if (gti2ConnectionCommunicationError(connection)) {
             return gsi_true;
@@ -536,6 +537,7 @@ static GT2Bool gti2HandleNack(GT2Connection connection, const GT2Byte *data, int
     int count;
     int i;
 
+    // A nack is one serial number, or the first and the last
     if (length == 2) {
         last = first;
     } else if (length == 4) {
@@ -570,7 +572,7 @@ static GT2Bool gti2HandlePong(GT2Connection connection, const GT2Byte *data, int
     if (connection->callbacks.ping == NULL) {
         return gsi_true;
     }
-    if (length != 8) {
+    if (length != 4 + sizeof(gsi_time)) {
         return gsi_true;
     }
     if (memcmp(data, "time", 4) != 0) {
@@ -592,14 +594,14 @@ static GT2Bool gti2HandlePong(GT2Connection connection, const GT2Byte *data, int
 static GT2Bool gti2HandleClosed(GT2Connection connection) {
     int reason;
 
-    if (connection->state == 7) {
+    if (connection->state == GTI2Closed) {
         return gsi_true;
     }
-    reason = 0;
-    if (connection->state != 6) {
-        reason = 1;
+    reason = GT2LocalClose;
+    if (connection->state != GTI2Closing) {
+        reason = GT2RemoteClose;
     }
-    if (!gti2ConnectionError(connection, 2, reason)) {
+    if (!gti2ConnectionError(connection, GT2Rejected, reason)) {
         return gsi_false;
     }
     return gsi_true;
@@ -610,23 +612,23 @@ static GT2Bool gti2HandleUnreliableMessage(GT2Connection connection, GTI2Message
     int offset = connection->socket->protocolOffset + 3;
     int rest = length - offset;
 
-    if (type == 100) {
+    if (type == GTI2MsgAck) {
         if (!gti2HandleAck(connection, data + offset, rest)) {
             return gsi_false;
         }
-    } else if (type == 101) {
+    } else if (type == GTI2MsgNack) {
         if (!gti2HandleNack(connection, data + offset, rest)) {
             return gsi_false;
         }
-    } else if (type == 102) {
+    } else if (type == GTI2MsgPing) {
         if (!gti2HandlePing(connection, data, length)) {
             return gsi_false;
         }
-    } else if (type == 103) {
+    } else if (type == GTI2MsgPong) {
         if (!gti2HandlePong(connection, data + offset, rest)) {
             return gsi_false;
         }
-    } else if (type == 104) {
+    } else if (type == GTI2MsgClosed) {
         if (!gti2HandleClosed(connection)) {
             return gsi_false;
         }
@@ -663,8 +665,8 @@ static GT2Bool gti2HandleMessage(GT2Socket socket, GT2Byte *data, int length, un
         }
         // Only the client's challenge opens a connection; anything else but the note of a closed one is answered
         // with that note
-        if (!hasMagic || payload[2] != 1) {
-            if (!hasMagic || payload[2] != 0x68) {
+        if (!hasMagic || payload[2] != GTI2MsgClientChallenge) {
+            if (!hasMagic || payload[2] != GTI2MsgClosed) {
                 if (!gti2SendClosedOnSocket(socket, ip, port)) {
                     return gsi_false;
                 }
@@ -675,8 +677,8 @@ static GT2Bool gti2HandleMessage(GT2Socket socket, GT2Byte *data, int length, un
             return gsi_true;
         }
         result = gti2NewIncomingConnection(socket, &connection, ip, port);
-        if (result != 0) {
-            if (result != 5) {
+        if (result != GT2Success) {
+            if (result != GT2DuplicateAddress) {
                 if (!gti2SendClosedOnSocket(socket, ip, port)) {
                     return gsi_false;
                 }
@@ -684,8 +686,8 @@ static GT2Bool gti2HandleMessage(GT2Socket socket, GT2Byte *data, int length, un
             return gsi_true;
         }
     }
-    if (connection->state == 7) {
-        if (!hasMagic || payload[2] != 0x68) {
+    if (connection->state == GTI2Closed) {
+        if (!hasMagic || payload[2] != GTI2MsgClosed) {
             if (!gti2SendClosed(connection)) {
                 return gsi_false;
             }
@@ -701,7 +703,7 @@ static GT2Bool gti2HandleMessage(GT2Socket socket, GT2Byte *data, int length, un
         data += 2;
     }
     if (!hasMagic) {
-        if (connection->state < 5) {
+        if (connection->state < GTI2Connected) {
             if (!gti2UnrecognizedMessageCallback(socket, ip, port, data, length, &handled)) {
                 return gsi_false;
             }
@@ -713,7 +715,7 @@ static GT2Bool gti2HandleMessage(GT2Socket socket, GT2Byte *data, int length, un
         return gsi_true;
     }
     type = payload[2];
-    if (type < 8) {
+    if (type < GTI2NumReliableMessages) {
         if (gti2HandleReliableMessage(connection, type, data, length)) {
             return gsi_true;
         }
@@ -736,15 +738,15 @@ GT2Bool gti2HandleConnectionReset(GT2Socket socket, unsigned int ip, unsigned sh
     if (connection == NULL) {
         return gsi_true;
     }
-    if (connection->state == 0) {
+    if (connection->state == GTI2AwaitingServerChallenge) {
         if (connection->timeout == 0 || current_time() - connection->startTime < connection->timeout) {
             return gsi_true;
         }
-        if (!gti2ConnectionError(connection, 6, 1)) {
+        if (!gti2ConnectionError(connection, GT2TimedOut, GT2RemoteClose)) {
             return gsi_false;
         }
     } else {
-        if (!gti2ConnectionError(connection, 2, 1)) {
+        if (!gti2ConnectionError(connection, GT2Rejected, GT2RemoteClose)) {
             return gsi_false;
         }
     }
@@ -762,7 +764,7 @@ GT2Bool gti2HandleHostUnreachable(GT2Socket socket, unsigned int ip, unsigned sh
     if (connection == NULL) {
         return gsi_true;
     }
-    return gti2ConnectionError(connection, 6, 1) != 0;
+    return gti2ConnectionError(connection, GT2TimedOut, GT2RemoteClose) != 0;
 }
 
 GT2Bool gti2ReceiveMessages(GT2Socket socket) {
@@ -860,7 +862,7 @@ static GT2Bool gti2EndReliableMessage(GT2Connection connection) {
 static GT2Bool gti2SendAppReliable(GT2Connection connection, const GT2Byte *data, int length) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 0, length + 7, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgAppReliable, length + 7, &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -873,7 +875,8 @@ static GT2Bool gti2SendAppReliable(GT2Connection connection, const GT2Byte *data
 GT2Bool gti2SendClientChallenge(GT2Connection connection, const char challenge[]) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 1, connection->socket->protocolOffset + 0x27, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgClientChallenge, connection->socket->protocolOffset + 0x27,
+                                  &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -887,7 +890,8 @@ GT2Bool gti2SendClientChallenge(GT2Connection connection, const char challenge[]
 static GT2Bool gti2SendServerChallenge(GT2Connection connection, const char response[], const char challenge[]) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 2, connection->socket->protocolOffset + 0x47, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgServerChallenge, connection->socket->protocolOffset + 0x47,
+                                  &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -907,7 +911,8 @@ static GT2Bool gti2SendClientResponse(GT2Connection connection, const char respo
                                       int length) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 3, length + 0x27 + connection->socket->protocolOffset, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgClientResponse, length + 0x27 + connection->socket->protocolOffset,
+                                  &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -924,7 +929,7 @@ static GT2Bool gti2SendClientResponse(GT2Connection connection, const char respo
 GT2Bool gti2SendAccept(GT2Connection connection) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 4, connection->socket->protocolOffset + 7, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgAccept, connection->socket->protocolOffset + 7, &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -939,7 +944,8 @@ GT2Bool gti2SendAccept(GT2Connection connection) {
 GT2Bool gti2SendReject(GT2Connection connection, const GT2Byte *message, int length) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 5, length + 7 + connection->socket->protocolOffset, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgReject, length + 7 + connection->socket->protocolOffset,
+                                  &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -955,7 +961,7 @@ GT2Bool gti2SendReject(GT2Connection connection, const GT2Byte *message, int len
 GT2Bool gti2SendClose(GT2Connection connection) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 6, connection->socket->protocolOffset + 7, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgClose, connection->socket->protocolOffset + 7, &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -970,7 +976,7 @@ GT2Bool gti2SendClose(GT2Connection connection) {
 GT2Bool gti2SendKeepAlive(GT2Connection connection) {
     gsi_bool dropped;
 
-    if (!gti2BeginReliableMessage(connection, 7, connection->socket->protocolOffset + 7, &dropped)) {
+    if (!gti2BeginReliableMessage(connection, GTI2MsgKeepAlive, connection->socket->protocolOffset + 7, &dropped)) {
         return gsi_false;
     }
     if (dropped) {
@@ -1024,7 +1030,7 @@ GT2Bool gti2SendAck(GT2Connection connection) {
         length += 2;
     }
     memcpy(packet + length, "\xfe\xfe", 2);
-    packet[length + 2] = 0x64;
+    packet[length + 2] = GTI2MsgAck;
     gti2UShortToBuffer(packet, length + 3, connection->expectedSerialNumber);
     if (!gti2ConnectionSendData(connection, packet, length + 5)) {
         return gsi_false;
@@ -1045,7 +1051,7 @@ static GT2Bool gti2SendNack(GT2Connection connection, unsigned short first, unsi
         length += 2;
     }
     memcpy(packet + length, "\xfe\xfe", 2);
-    packet[length + 2] = 0x65;
+    packet[length + 2] = GTI2MsgNack;
     gti2UShortToBuffer(packet, length + 3, first);
     length += 5;
     if (first != last) {
@@ -1060,7 +1066,7 @@ static GT2Bool gti2SendNack(GT2Connection connection, unsigned short first, unsi
 
 // Answers a ping with a pong
 static GT2Bool gti2SendPong(GT2Connection connection, GT2Byte *data, int length) {
-    data[2] = 0x67;
+    data[2] = GTI2MsgPong;
     return gti2ConnectionSendData(connection, data, length);
 }
 
@@ -1080,7 +1086,7 @@ static GT2Bool gti2SendClosedOnSocket(GT2Socket socket, unsigned int ip, unsigne
         length += 2;
     }
     memcpy(packet + length, "\xfe\xfe", 2);
-    packet[length + 2] = 0x68;
+    packet[length + 2] = GTI2MsgClosed;
     if (!gti2SocketSend(socket, ip, port, packet, length + 3)) {
         return gsi_false;
     }
@@ -1094,7 +1100,8 @@ GT2Bool gti2ResendMessage(GT2Connection connection, GTI2OutgoingBufferMessage *m
         return gsi_false;
     }
     message->lastSend = connection->lastSend;
-    if (connection->outgoingBuffer.buffer[message->start + connection->socket->protocolOffset + 2] == 2) {
+    if (connection->outgoingBuffer.buffer[message->start + connection->socket->protocolOffset + 2] ==
+        GTI2MsgServerChallenge) {
         connection->challengeTime = connection->lastSend;
     }
     return gsi_true;
