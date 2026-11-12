@@ -129,7 +129,8 @@ BOOL Scrcmd_Pokemon_PokePartyIsFullPP(VM *vm, FieldScriptEnv *env) {
     if (CheckGetPartyPokemon(env, index, &pkm) == TRUE) {
         full = TRUE;
 
-        if (PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL) == TRUE || PokeParty_GetParam(pkm, 3, NULL) == TRUE) {
+        if (PokeParty_GetParam(pkm, PKM_PARAM_IS_EGG, NULL) == TRUE ||
+            PokeParty_GetParam(pkm, PKM_PARAM_BAD_EGG, NULL) == TRUE) {
             *result = TRUE;
             return FALSE;
         }
@@ -138,8 +139,8 @@ BOOL Scrcmd_Pokemon_PokePartyIsFullPP(VM *vm, FieldScriptEnv *env) {
             if ((u16)PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + i, NULL) == 0) {
                 continue;
             }
-            pp = (u16)PokeParty_GetParam(pkm, 0x3a + i, NULL);
-            u16 maxPp = (u16)PokeParty_GetParam(pkm, 0x42 + i, NULL);
+            pp = (u16)PokeParty_GetParam(pkm, PKM_PARAM_MOVE1_PP + i, NULL);
+            u16 maxPp = (u16)PokeParty_GetParam(pkm, PKM_PARAM_MOVE1_MAX_PP + i, NULL);
             if (pp != maxPp) {
                 full = FALSE;
                 break;
@@ -195,21 +196,21 @@ BOOL Scrcmd_Pokemon_PokePartyAdjustHappiness(VM *vm, FieldScriptEnv *env) {
     }
     happiness = (u8)PokeParty_GetParam(pkm, PKM_PARAM_HAPPINESS, NULL);
     switch (mode) {
-    case 0:
+    case POKE_PARTY_HAPPINESS_SET:
         if (delta > 255) {
             happiness = 255;
         } else {
             happiness = (u8)delta;
         }
         break;
-    case 1:
+    case POKE_PARTY_HAPPINESS_ADD:
         if (happiness + delta > 255) {
             happiness = 255;
         } else {
             happiness += (u8)delta;
         }
         break;
-    case 2:
+    case POKE_PARTY_HAPPINESS_SUBTRACT:
         if (happiness < delta) {
             happiness = 0;
         } else {
@@ -247,10 +248,10 @@ BOOL Scrcmd_Pokemon_PokePartyGetMemberByType(VM *vm, FieldScriptEnv *env) {
     u16 index;
 
     switch (kind) {
-    case 2:
+    case PARTY_MEMBER_BATTLE_READY:
         index = PokeParty_GetFirstBattleReady(party);
         break;
-    case 1:
+    case PARTY_MEMBER_NON_EGG:
         index = isEggInParty(party);
         break;
     default:
@@ -268,22 +269,22 @@ BOOL Scrcmd_Pokemon_PokePartyGetCount(VM *vm, FieldScriptEnv *env) {
     int count;
 
     switch (kind) {
-    case 0:
+    case POKE_PARTY_COUNT_ALL:
         count = PokeParty_GetPkmCount(party);
         break;
-    case 1:
+    case POKE_PARTY_COUNT_NON_EGGS:
         count = howManyPartyPokesAreNotEggs(party);
         break;
-    case 2:
+    case POKE_PARTY_COUNT_BATTLE_READY:
         count = howManyPokesAreAbleToFight(party);
         break;
-    case 3:
+    case POKE_PARTY_COUNT_EGGS:
         count = countAllEggsInParty(party);
         break;
-    case 4:
+    case POKE_PARTY_COUNT_BAD_EGGS:
         count = countSanityEggsInParty(party);
         break;
-    case 5:
+    case POKE_PARTY_COUNT_EMPTY_SLOTS:
         count = PokeParty_GetCapacity(party);
         int partyCount = PokeParty_GetPkmCount(party);
         if (count < partyCount) {
@@ -334,17 +335,17 @@ BOOL Scrcmd_Pokemon_BoxGetCount(VM *vm, FieldScriptEnv *env) {
     int count;
 
     switch (kind) {
-    case 0:
+    case BOX_COUNT_ALL:
         count = howManyTotalPokesAreInBoxes(boxes);
         break;
-    case 1:
-    case 2:
+    case BOX_COUNT_NON_EGGS:
+    case BOX_COUNT_NON_EGGS_2:
         count = howManyNormalPokesAreInAllBoxes(boxes);
         break;
-    case 3:
+    case BOX_COUNT_EGGS:
         count = howManyTotalPokesAreInBoxes(boxes) - howManyNormalPokesAreInAllBoxes(boxes);
         break;
-    case 5:
+    case BOX_COUNT_EMPTY_SLOTS:
         count = howManyTotalPokesAreInBoxes(boxes);
         if (count > 720) {
             count = 0;
@@ -490,8 +491,8 @@ BOOL Scrcmd_Pokemon_PokePartyAddEx(VM *vm, FieldScriptEnv *env) {
     params.level = level;
     params.item = item;
     params.ability = ability;
-    params.hiddenAbility = params.ability == 3 ? TRUE : FALSE;
-    if (params.ability >= 3) {
+    params.hiddenAbility = params.ability == POKE_ABILITY_HIDDEN ? TRUE : FALSE;
+    if (params.ability >= POKE_ABILITY_HIDDEN) {
         params.ability = 2;
     }
     params.sex = sex;
@@ -737,9 +738,9 @@ BOOL Scrcmd_Pokemon_PokePartyGetMetDate(VM *vm, FieldScriptEnv *env) {
     PartyPkm *pkm;
 
     if (CheckGetPartyPokemon(env, index, &pkm) == TRUE) {
-        *year = PokeParty_GetParam(pkm, 0x92, NULL);
-        *month = PokeParty_GetParam(pkm, 0x93, NULL);
-        *day = PokeParty_GetParam(pkm, 0x94, NULL);
+        *year = PokeParty_GetParam(pkm, PKM_PARAM_MET_YEAR, NULL);
+        *month = PokeParty_GetParam(pkm, PKM_PARAM_MET_MONTH, NULL);
+        *day = PokeParty_GetParam(pkm, PKM_PARAM_MET_DAY, NULL);
     } else {
         *year = 0;
         *month = 0;
@@ -869,7 +870,7 @@ BOOL Scrcmd_Pokemon_BoxAddEx(VM *vm, FieldScriptEnv *env) {
     params.level = level;
     params.item = item;
     params.ability = ability;
-    if (params.ability >= 3)
+    if (params.ability >= POKE_ABILITY_HIDDEN)
         params.ability = 2;
     params.sex = sex;
     if (params.sex >= 3)
@@ -946,7 +947,7 @@ PartyPkm *GameData_MakeBoxPkm(GameData *gameData, BoxPkmCreateParams *params) {
     if (params->hiddenAbility != 0) {
         PokeParty_SetHiddenAbil(pkm, params->species, params->form);
     }
-    if (GetItemParam((u16)params->ball, ITEM_PARAM_KIND, params->heapId) == 4) {
+    if (GetItemParam((u16)params->ball, ITEM_PARAM_KIND, params->heapId) == ITEM_KIND_BALL) {
         PokeParty_SetParam(pkm, PKM_PARAM_POKEBALL, PML_ItemGetMonsBallID((u16)params->ball));
     }
     zoneId = PlayerState_GetZoneID(GameData_GetPlayerState(gameData));
