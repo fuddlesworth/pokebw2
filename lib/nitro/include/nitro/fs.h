@@ -35,7 +35,7 @@ typedef enum FSResult {
 // commands from 19 on act on paths and on the archive; no function of the game sends them. The ROM archive has
 // functions for 19, 23 (the information of a path), 28 (the archive's resources) and 32 and 33 (opening and closing a
 // directory by path). The names are TwlSDK's, which the other commands' arguments fit; 29's is not known, and the
-// arguments of the commands that the ROM archive lacks are left as the words an interface function receives
+// arguments of the commands that the ROM archive lacks are named from the interface function that receives them
 typedef enum FSCommandType {
     FS_COMMAND_READFILE = 0,
     FS_COMMAND_WRITEFILE = 1,
@@ -156,12 +156,19 @@ typedef struct FSDirectoryEntryInfo {
     u32 id;
 } FSDirectoryEntryInfo;
 
+// What an archive tells about itself: its size and the space left, how many files and directories it can have open and
+// has open, and, for an archive with a FAT, its sectors and clusters
 typedef struct FSArchiveResource {
     u64 totalSize;
     u64 availableSize;
-    u64 maxFileSize;
-    u64 maxDirectorySize;
-    u32 unk_20[4];
+    u32 maxFileHandles;
+    u32 currentFileHandles;
+    u32 maxDirectoryHandles;
+    u32 currentDirectoryHandles;
+    u32 bytesPerSector;
+    u32 sectorsPerCluster;
+    u32 totalClusters;
+    u32 availableClusters;
 } FSArchiveResource;
 
 // The functions with which an archive runs its commands, indexed by command number (FSi_InvokeCommand tests the entry
@@ -174,8 +181,8 @@ typedef union FSArchiveInterface {
         FSResult (*seekDirectory)(FSArchive *arc, FSFile *file, u32 id, u32 position);
         FSResult (*readDirectory)(FSArchive *arc, FSFile *file, FSDirectoryEntryInfo *entry);
         FSResult (*findPath)(FSArchive *arc, u32 baseDirId, const char *path, u32 *targetId, BOOL isDirectory);
-        FSResult (*getPath)(FSArchive *arc, FSFile *file, u32 arg0, char *buffer, u32 *length);
-        FSResult (*openFileFast)(FSArchive *arc, FSFile *file, u32 fileId, u32 arg1);
+        FSResult (*getPath)(FSArchive *arc, FSFile *file, BOOL isDirectory, char *buffer, u32 *length);
+        FSResult (*openFileFast)(FSArchive *arc, FSFile *file, u32 fileId, u32 mode);
         FSResult (*openFileDirect)(FSArchive *arc, FSFile *file, u32 top, u32 bottom, u32 *fileId);
         FSResult (*closeFile)(FSArchive *arc, FSFile *file);
         void (*activate)(FSArchive *arc);
@@ -188,22 +195,24 @@ typedef union FSArchiveInterface {
         FSResult (*getFilePosition)(FSArchive *arc, FSFile *file, u32 *position);
         void (*mount)(FSArchive *arc);
         void (*unmount)(FSArchive *arc);
-        FSResult (*getArchiveCaps)(FSArchive *arc, u32 *arg0);
-        FSResult (*createFile)(FSArchive *arc, u32 arg0, u32 arg1, u32 arg2);
-        FSResult (*deleteFile)(FSArchive *arc, u32 arg0, u32 arg1);
-        FSResult (*renameFile)(FSArchive *arc, u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+        FSResult (*getArchiveCaps)(FSArchive *arc, u32 *caps);
+        FSResult (*createFile)(FSArchive *arc, u32 baseDirId, const char *path, u32 permit);
+        FSResult (*deleteFile)(FSArchive *arc, u32 baseDirId, const char *path);
+        FSResult (*renameFile)(FSArchive *arc, u32 srcBaseDirId, const char *srcPath, u32 dstBaseDirId,
+                               const char *dstPath);
         FSResult (*getPathInfo)(FSArchive *arc, u32 baseDirId, const char *path, FSPathInfo *info);
-        FSResult (*setPathInfo)(FSArchive *arc, u32 arg0, u32 arg1, u32 arg2);
-        FSResult (*createDirectory)(FSArchive *arc, u32 arg0, u32 arg1, u32 arg2);
-        FSResult (*deleteDirectory)(FSArchive *arc, u32 arg0, u32 arg1);
-        FSResult (*renameDirectory)(FSArchive *arc, u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+        FSResult (*setPathInfo)(FSArchive *arc, u32 baseDirId, const char *path, FSPathInfo *info);
+        FSResult (*createDirectory)(FSArchive *arc, u32 baseDirId, const char *path, u32 permit);
+        FSResult (*deleteDirectory)(FSArchive *arc, u32 baseDirId, const char *path);
+        FSResult (*renameDirectory)(FSArchive *arc, u32 srcBaseDirId, const char *srcPath, u32 dstBaseDirId,
+                                    const char *dstPath);
         FSResult (*getArchiveResource)(FSArchive *arc, FSArchiveResource *resource);
         void *command29;
         FSResult (*flushFile)(FSArchive *arc, FSFile *file);
-        FSResult (*setFileLength)(FSArchive *arc, FSFile *file, u32 arg0);
-        FSResult (*openDirectory)(FSArchive *arc, FSFile *file, u32 baseDirId, const char *path, u32 arg2);
+        FSResult (*setFileLength)(FSArchive *arc, FSFile *file, u32 length);
+        FSResult (*openDirectory)(FSArchive *arc, FSFile *file, u32 baseDirId, const char *path, u32 mode);
         FSResult (*closeDirectory)(FSArchive *arc, FSFile *file);
-        FSResult (*setSeekCache)(FSArchive *arc, FSFile *file, u32 arg0, u32 arg1);
+        FSResult (*setSeekCache)(FSArchive *arc, FSFile *file, void *buf, u32 bufSize);
     };
     void *command[FS_COMMAND_MAX];
 } FSArchiveInterface;
@@ -228,14 +237,14 @@ typedef struct FSFindPathArgs {
 
 typedef struct FSOpenFileFastArgs {
     u32 fileId;
-    u32 unk_04;
+    u32 mode; // 0 from FS_OpenFileFast, and the mode from FS_OpenFileEx
 } FSOpenFileFastArgs;
 
 typedef struct FSOpenFileDirectArgs {
     u32 fileId;
     u32 top;
     u32 bottom;
-    u32 unk_0c;
+    u32 mode; // set by the caller, and not read by the command
 } FSOpenFileDirectArgs;
 
 typedef struct FSOpenFileArgs {
@@ -256,7 +265,7 @@ typedef struct FSGetFileValueArgs {
 
 // And the commands that no function of the game sends, as an interface function takes them
 typedef struct FSGetPathArgs {
-    u32 unk_00;
+    BOOL isDirectory; // whether the handle is a directory
     char *buffer;
     u32 length; // the size of the buffer, and the length of the path
 } FSGetPathArgs;
@@ -274,7 +283,7 @@ typedef struct FSGetArchiveResourceArgs {
 typedef struct FSOpenDirectoryArgs {
     u32 baseDirId;
     const char *path;
-    u32 unk_08; // passed on, and not used by the ROM archive's function
+    u32 mode; // FS_DIRMODE_*, which the ROM archive's function doesn't use
 } FSOpenDirectoryArgs;
 
 // The bits of FSArchive.flag
