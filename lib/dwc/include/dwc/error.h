@@ -7,9 +7,10 @@
 // code that the server or the part that failed gave with it. The ROM names none of it; the calls that are the SDK's
 // carry its names in the comments, where the code shows them.
 
-// The error that none has set, and the numbers that the part that failed gives: the SDK's DWCError, in its order
-// (recalled from the SDK, which the types that DWC_GetLastErrorEx gives them fit). The numbers from 19 to 22 are left
-// bare. From ND_ANY on, the ROM's numbers sit one below the reference's, whose MO_SC_CONNECT_BLOCK comes before ND_ANY
+// The error that none has set, and the numbers that the part that failed gives: the SDK's DWCError, in its order (which
+// the types that DWC_GetLastErrorEx gives them fit). The SDK's own list (TWL DWC 5.3's macro list) agrees with 0 to 18
+// and continues with GDB_ANY, SCL_ANY, SC_CONNECT_BLOCK and NETWORK_LIGHT, the four that dwc_error.c's switch gives
+// types to
 typedef enum DWCError {
     DWC_ERROR_NONE = 0,
     DWC_ERROR_DS_MEMORY_ANY = 1,
@@ -34,6 +35,13 @@ typedef enum DWCError {
     // The profanity check's answer errors, and its HTTP failure
     DWC_ERROR_PROF_ANY = 17,
     DWC_ERROR_PROF_HTTP = 18,
+    // The other libraries' errors, which DWC itself does not raise
+    DWC_ERROR_GDB_ANY = 19,
+    DWC_ERROR_SCL_ANY = 20,
+    // The server refused a client of server-client matchmaking
+    DWC_ERROR_SC_CONNECT_BLOCK = 21,
+    // A network error that is only reported
+    DWC_ERROR_NETWORK_LIGHT = 22,
 } DWCError;
 
 // What a caller does about an error, which DWC_GetLastErrorEx gives from the error: the SDK's DWCErrorType, in its

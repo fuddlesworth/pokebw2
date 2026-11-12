@@ -35,6 +35,38 @@ typedef int (*MatchCheckFunc)(void *userData, u32 param);
 
 typedef struct DWCFriendsMatchControl DWCFriendsMatchControl;
 
+// The match's state (DWCMatchControl.state): the SDK's DWCMatchState (TWL DWC 5.3's macro list), whose client half runs
+// CL_WAITING to CL_SEARCH_GROUPID_HOST and whose server half SV_WAITING to SV_SYN_CLOSE_WAIT. dwc_main.c acts on the
+// three states that detect a server going down, which dwc/match.h calls the match's states 9 to 11, and on
+// SV_WAIT_CL_LINK
+typedef enum DWCMatchState {
+    DWC_MATCH_STATE_INIT = 0,
+    DWC_MATCH_STATE_CL_WAITING,
+    DWC_MATCH_STATE_CL_SEARCH_HOST,
+    DWC_MATCH_STATE_CL_WAIT_RESV,
+    DWC_MATCH_STATE_CL_SEARCH_EVAL_HOST,
+    DWC_MATCH_STATE_CL_NN,
+    DWC_MATCH_STATE_CL_GT2,
+    DWC_MATCH_STATE_CL_CANCEL_SYN,
+    DWC_MATCH_STATE_CL_SYN,
+    DWC_MATCH_STATE_CL_SVDOWN_1,
+    DWC_MATCH_STATE_CL_SVDOWN_2,
+    DWC_MATCH_STATE_CL_SVDOWN_3,
+    DWC_MATCH_STATE_CL_SEARCH_GROUPID_HOST,
+    DWC_MATCH_STATE_SV_WAITING,
+    DWC_MATCH_STATE_SV_OWN_NN,
+    DWC_MATCH_STATE_SV_OWN_GT2,
+    DWC_MATCH_STATE_SV_WAIT_CL_LINK,
+    DWC_MATCH_STATE_SV_CANCEL_SYN,
+    DWC_MATCH_STATE_SV_CANCEL_SYN_WAIT,
+    DWC_MATCH_STATE_SV_SYN,
+    DWC_MATCH_STATE_SV_SYN_WAIT,
+    DWC_MATCH_STATE_WAIT_CLOSE,
+    DWC_MATCH_STATE_SEARCH_OWN,
+    DWC_MATCH_STATE_SV_SYN_CLOSE_WAIT,
+    DWC_MATCH_STATE_NUM,
+} DWCMatchState;
+
 // The match control (DWCi_GetMatchCnt returns it; it is DWCFriendsMatchControl.match). The fields that the SDK's
 // DWCMatchControl also has take their names from it, and its command control (cmdCnt) is the cmd fields here
 typedef struct DWCMatchControl {
@@ -46,7 +78,7 @@ typedef struct DWCMatchControl {
     u8 unk_0e[0x2];
     qr2_t qr2Obj;
     // The API, the match state machine and the GameSpy callbacks (GP buddy messages, GT2 closes, qr2 keys) share
-    // these, and the original loads them again at every test
+    // these, and the original loads them again at every test: mode and qr2MatchType hold a DWC_MATCH_TYPE
     volatile u8 mode;
     volatile u8 qr2MatchType;
     u8 hostState;
@@ -90,6 +122,7 @@ typedef struct DWCMatchControl {
     u64 nnFailedTime;
     u64 nnFinishTime;
     MatchTarget target;
+    // A DWCMatchState
     s32 state;
     u8 clLinkProgress;
     u8 friendCount;
@@ -168,9 +201,9 @@ typedef struct DWCMatchControl {
 } DWCMatchControl;
 
 // The friends match control, which DWC_InitFriendsMatch allocates: the GT2 socket that the consoles talk through and
-// the callbacks of its connections, the GameSpy Presence connection, the user data, the state (0 before the login, 1
-// checking that the services are up, 2 logging in, 3 logged in, 4 matching, 5 matched), the player's name and profile
-// ID, the game's callbacks and the login, friend list and match parts
+// the callbacks of its connections, the GameSpy Presence connection, the user data, the state (a DWCState: 0 before the
+// login, 1 checking that the services are up, 2 logging in, 3 logged in, 4 matching, 5 matched), the player's name and
+// profile ID, the game's callbacks and the login, friend list and match parts
 struct DWCFriendsMatchControl {
     GTI2Socket *gt2Socket;
     GT2ConnectionCallbacks gt2Callbacks;
@@ -204,7 +237,7 @@ struct DWCFriendsMatchControl {
 int DWC_GetState(void);
 int DWCi_GT2GetConnectionListIdx(void);
 GT2Connection *DWCi_GetGT2ConnectionByIdx(int index);
-GT2Connection *DWCi_GetGT2ConnectionByProfileID(s32 profileId, int a1);
+GT2Connection *DWCi_GetGT2ConnectionByProfileID(s32 profileId, int unused);
 MatchConnectionInfo *DWCi_GetConnectionInfoByIdx(int index);
 void DWCi_MatchInit(DWCMatchControl *cnt, GPConnection *gp, DWCFriendsMatchControl *fm,
                     GT2ConnectionCallbacks *callbacks, char *gameName, char *secretKey, DWCFriendData *friendList,

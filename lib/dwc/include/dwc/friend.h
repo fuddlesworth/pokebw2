@@ -23,6 +23,31 @@ typedef void (*DWCStorageLoginCallback)(DWCError error, void *param);
 typedef void (*DWCSaveToServerCallback)(BOOL success, BOOL isPublic, void *param);
 typedef void (*DWCLoadFromServerCallback)(BOOL success, int index, char *data, int len, void *param);
 
+// A friend's communication status, which the buddy list keeps in GPBuddyStatus.status and DWC_GetFriendStatus returns:
+// the SDK's own list, which redefines GP's statuses and adds its matchmaking states (TWL DWC 5.3's macro list). Only
+// DWC_STATUS_MATCH_SC_SV (6) carries SCM and SCN in the status text, which dwc_friend.c and dwc_main.c read
+enum {
+    DWC_STATUS_OFFLINE = 0,
+    DWC_STATUS_ONLINE,
+    DWC_STATUS_PLAYING,
+    DWC_STATUS_MATCH_ANYBODY,
+    DWC_STATUS_MATCH_FRIEND,
+    DWC_STATUS_MATCH_SC_CL,
+    DWC_STATUS_MATCH_SC_SV,
+    DWC_STATUS_NUM,
+};
+
+// The step of the friend roster's synchronization (DWCFriendControl.buddyUpdateState): the SDK's
+// DWC_BUDDY_UPDATE_STATE_*: 0 waits for the buddy list, 1 goes through the friends, 2 while a profile search runs and 3
+// once the friends are done
+enum {
+    DWC_BUDDY_UPDATE_STATE_WAIT = 0,
+    DWC_BUDDY_UPDATE_STATE_CHECK,
+    DWC_BUDDY_UPDATE_STATE_PSEARCH,
+    DWC_BUDDY_UPDATE_STATE_COMPLETE,
+    DWC_BUDDY_UPDATE_STATE_NUM,
+};
+
 // The friend list's states: the SDK's DWCFriendState
 typedef enum DWCFriendState {
     DWC_FRIEND_STATE_INIT = 0,
@@ -41,8 +66,8 @@ typedef struct DWCFriendControl {
     OSTick lastGpProcess;
     int friendListLen;
     DWCFriendData *friendList;
-    // The friend that the update is at, whether it changed the list, and its step: 0 to read the buddy list, 1 to go
-    // through the friends, 2 while a profile search runs and 3 once the friends are done
+    // The friend that the update is at, whether it changed the list, and its step (a DWC_BUDDY_UPDATE_STATE): 0 to
+    // read the buddy list, 1 to go through the friends, 2 while a profile search runs and 3 once the friends are done
     u8 buddyUpdateIdx;
     u8 friendListChanged;
     u8 buddyUpdateState;

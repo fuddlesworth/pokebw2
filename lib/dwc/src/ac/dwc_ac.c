@@ -33,7 +33,7 @@ static BOOL DWCAc_CheckWirelessAllowed(void);
 
 // Whether a DSi setting's security byte says it uses WPA: any byte from 0x10 on that is not 0xff, which a setting not
 // in use has
-#define SETTING_USES_WPA(setting) ((setting).base.ap.setType >= 0x10 && (setting).base.ap.setType != 0xff)
+#define SETTING_USES_WPA(setting) ((setting).base.ap.setType >= 0x10 && (setting).base.ap.setType != DWC_SETTYPE_NONE)
 
 // Creates auto-connect: the control block and the four more blocks of memory, the settings that it works from (the DS's
 // and, on a DSi, the DSi's), and the wireless manager. FALSE if the wireless manager does not start
@@ -75,25 +75,26 @@ BOOL DWC_AC_Create(DWCACConfig *param) {
     if (OS_IsRunOnTwl()) {
         work->preferWpa = 0;
         DWCBm_ReadTwlSettings(work->dsiSettings);
-        if (work->mode == 0) {
+        if (work->mode == DWC_AC_MODE_ALL) {
             if (SETTING_USES_WPA(work->dsiSettings[0]) || SETTING_USES_WPA(work->dsiSettings[1]) ||
                 SETTING_USES_WPA(work->dsiSettings[2])) {
                 work->preferWpa = 1;
             }
-        } else if (work->mode == 0xb) {
+        } else if (work->mode == DWC_AC_MODE_DSI_USER1) {
             if (SETTING_USES_WPA(work->dsiSettings[0])) {
                 work->preferWpa = 1;
             }
-        } else if (work->mode == 0xc) {
+        } else if (work->mode == DWC_AC_MODE_DSI_USER2) {
             if (SETTING_USES_WPA(work->dsiSettings[1])) {
                 work->preferWpa = 1;
             }
-        } else if (work->mode == 0xd) {
+        } else if (work->mode == DWC_AC_MODE_DSI_USER3) {
             // BUG: the third setting's byte is tested for 0x10 and the second's for 0xff
 #ifdef BUGFIX
             if (SETTING_USES_WPA(work->dsiSettings[2])) {
 #else
-            if (work->dsiSettings[2].base.ap.setType >= 0x10 && work->dsiSettings[1].base.ap.setType != 0xff) {
+            if (work->dsiSettings[2].base.ap.setType >= 0x10 &&
+                work->dsiSettings[1].base.ap.setType != DWC_SETTYPE_NONE) {
 #endif
                 work->preferWpa = 1;
             }
@@ -146,16 +147,16 @@ s32 DWC_AC_Process(void) {
         state = DWCi_AC_ConnectRetryAP();
     } else if (state < 16) {
         state = DWCi_AC_ConnectTest();
-    } else if (state == 17) {
+    } else if (state == DWC_AC_PHASE_ERROR) {
         state = DWCi_AC_Error();
     }
     DWCi_AC_SetPhase(state);
-    if (state == 16) {
+    if (state == DWC_AC_PHASE_COMPLETE) {
         result = CheckDuplicate();
         Free_Disused();
         return result;
     }
-    if (state != 18) {
+    if (state != DWC_AC_PHASE_FAILED) {
         return 0;
     }
     Free_Disused();
@@ -174,22 +175,22 @@ s32 DWC_AC_GetStatus(void) {
     if (state < 7) {
         return 1;
     }
-    if (state == 9) {
+    if (state == DWC_AC_PHASE_CONNECT_RETRY) {
         return 4;
     }
     if (state < 10) {
         return 2;
     }
-    if (state == 11) {
+    if (state == DWC_AC_PHASE_TEST_RETRY) {
         return 4;
     }
     if (state < 16) {
         return 3;
     }
-    if (state == 16) {
+    if (state == DWC_AC_PHASE_COMPLETE) {
         return 5;
     }
-    if (state == 17) {
+    if (state == DWC_AC_PHASE_ERROR) {
         return 4;
     }
     return DWCi_AC_GetResult();
@@ -215,7 +216,7 @@ BOOL DWC_AC_GetApSpotInfo(u8 *spotInfo) {
     if (state >= 10 && state <= 16) {
         ACHOLD *main = sBlocks.main;
 
-        if (main->type == 4 || main->type == 8) {
+        if (main->type == DWC_AC_AP_TYPE_SHOP || main->type == DWC_AC_AP_TYPE_NINTENDOSPOT) {
             MI_CpuCopy8(main->apSpotInfo, spotInfo, sizeof(main->apSpotInfo));
             found = TRUE;
         }
@@ -235,7 +236,7 @@ u8 DWCAc_GetKeyMode(void) {
 BOOL DWC_AC_Destroy(void) {
     u8 state = DWCi_AC_GetPhase();
 
-    if (state == 0 || state == 18) {
+    if (state == DWC_AC_PHASE_NULL || state == DWC_AC_PHASE_FAILED) {
         DWCi_AC_FreeAll();
         return TRUE;
     }
@@ -245,9 +246,9 @@ BOOL DWC_AC_Destroy(void) {
 }
 
 // Gives the connection to make by hand: the first setting of the DS is made from the SSID, the WEP key and its mode and
-// the fourth argument, and the search is made to try that and nothing else. The spot information, if any, and the type
-// that the access point is given are what the connection reports
-void DWC_AC_SetSpecifyApEx(const u8 *ssid, const u8 *key, u32 wepMode, u16 unk_ea, const u8 *spotInfo, u32 type) {
+// the MTU, and the search is made to try that and nothing else. The spot information, if any, and the type that the
+// access point is given are what the connection reports
+void DWC_AC_SetSpecifyApEx(const u8 *ssid, const u8 *key, u32 wepMode, u16 mtu, const u8 *spotInfo, u32 overrideType) {
     ACHOLD *main = DWCi_AC_GetMemPtr(DWC_AC_WORK_MAIN);
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
@@ -256,9 +257,9 @@ void DWC_AC_SetSpecifyApEx(const u8 *ssid, const u8 *key, u32 wepMode, u16 unk_e
     } else {
         MI_CpuFill8(main->apSpotInfo, 0, sizeof(main->apSpotInfo));
     }
-    main->overrideType = type;
+    main->overrideType = overrideType;
     DWC_AC_SetSpecifyAp(ssid, key, wepMode);
-    work->userInfo[0].ap.mtu = unk_ea;
+    work->userInfo[0].ap.mtu = mtu;
 }
 
 // Clears the first setting of the DS and fills it with the SSID (a string of 32 bytes at most) and, unless the mode is
@@ -267,7 +268,7 @@ static void DWC_AC_SetSpecifyAp(const u8 *ssid, const u8 *key, u32 wepMode) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
     int i;
 
-    work->mode = 1;
+    work->mode = DWC_AC_MODE_USER1;
     MI_CpuFill8(work, 0, 0xf0);
     for (i = 0; i < 32; i++) {
         if (ssid[i] == 0) {
@@ -460,15 +461,15 @@ void DWCAc_NoteKeyMode(u8 id) {
 
     if (type >= 10 && type <= 12 && OS_IsRunOnTwl()) {
         type -= 10;
-        main->unk_24 = work->dsiSettings[type].unk_182;
-        main->unk_25 = work->dsiSettings[type].unk_183;
-        main->unk_26 = work->dsiSettings[type].unk_1e8;
-        MI_CpuCopy8(work->dsiSettings[type].unk_184, main->unk_28, sizeof(main->unk_28));
-        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk0, main->unk_8c, sizeof(main->unk_8c));
-        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk20, main->unk_ac, sizeof(main->unk_ac));
+        main->proxyMode = work->dsiSettings[type].proxyMode;
+        main->proxyAuthType = work->dsiSettings[type].proxyAuthType;
+        main->proxyPort = work->dsiSettings[type].proxyPort;
+        MI_CpuCopy8(work->dsiSettings[type].proxyHost, main->proxyHost, sizeof(main->proxyHost));
+        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk0, main->proxyId, sizeof(main->proxyId));
+        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk20, main->proxyPass, sizeof(main->proxyPass));
         if (work->dsiSettings[type].base.ap.setType == 0x10 || work->dsiSettings[type].base.ap.setType == 0x11 ||
             work->dsiSettings[type].base.ap.setType == 0x12 || work->dsiSettings[type].base.ap.setType == 0x13) {
-            main->keyMode = work->dsiSettings[type].wcmMode;
+            main->keyMode = work->dsiSettings[type].wpaMode;
         } else {
             main->keyMode = work->dsiSettings[type].base.ap.wepMode;
         }
