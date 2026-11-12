@@ -48,8 +48,10 @@ static BOOL vct_response_reject(SSPHeader *packet, VCTResult *result);
 static BOOL vct_handle_notify(SSPHeader *packet, VCTResult *result);
 
 // The events that a packet gives the application, by the command of the broadcast and of the direct packet
-static const u8 sBroadcastEvents[5] = { 1, 8, 4, 10, 0 };
-static const u8 sDirectEvents[7] = { 7, 12, 2, 3, 9, 2, 0 };
+static const u8 sBroadcastEvents[5] = { VCT_EVENT_INCOMING, VCT_EVENT_RESPONDBYE, VCT_EVENT_CANCEL, VCT_EVENT_CONTACT,
+                                        VCT_EVENT_NONE };
+static const u8 sDirectEvents[7] = { VCT_EVENT_CONNECTED,    VCT_EVENT_ABORT,  VCT_EVENT_REJECT, VCT_EVENT_BUSY,
+                                     VCT_EVENT_DISCONNECTED, VCT_EVENT_REJECT, VCT_EVENT_NONE };
 
 // What a control packet does to a machine in each state (a row each), by the command (a column each: those of a
 // broadcast packet, then those of a direct one): the next state, -1 to take no notice, or -2 to refuse. The first two
@@ -84,7 +86,7 @@ static u64 sRequestTime;
 static VCTSessionState sSessionState;
 
 VCTSession *VCT_CreateSession(u8 aid) {
-    if (vct.SSPMode == 0 || vct.SSPMode == 2) {
+    if (vct.SSPMode == VCT_MODE_NULL || vct.SSPMode == VCT_MODE_TRANSCEIVER) {
         return NULL;
     }
     return vct_create_session_impl(aid);
@@ -97,15 +99,15 @@ BOOL VCT_DeleteSession(VCTSession *session) {
     if (session == NULL) {
         return FALSE;
     }
-    if (vct.SSPMode == 2) {
+    if (vct.SSPMode == VCT_MODE_TRANSCEIVER) {
         if (session == &sSession.trans) {
-            sSession.trans.mode = 0;
+            sSession.trans.mode = VCT_MODE_NULL;
         }
         return TRUE;
     }
     while (current != NULL) {
         if (current == session) {
-            session->mode = 0;
+            session->mode = VCT_MODE_NULL;
             if (previous != NULL) {
                 previous->next = session->next;
             } else if (current->next != NULL) {
@@ -126,33 +128,33 @@ BOOL VCT_DeleteSession(VCTSession *session) {
 // Makes a control packet to send as a request, returning 0 or what is wrong with it
 static int vct_build_request_data(VCTSession *session, u32 command, SSPHeader *packet, u32 size) {
     if (session == NULL) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
     if (size < 0x10) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
-    if (vct.listenMode == 1) {
-        return -3;
+    if (vct.listenMode == LISTEN_MODE_SERVER) {
+        return VCT_ERROR_BAD_REQUEST;
     }
-    if (command >= 5) {
-        return -3;
+    if (command >= VCT_REQUEST_END) {
+        return VCT_ERROR_BAD_REQUEST;
     }
     packet->method = VCT_METHOD_REQUEST;
     vct_build_ssp_header(session, packet, command);
     if (!vct_check_send_state(session, packet)) {
-        return -3;
+        return VCT_ERROR_BAD_REQUEST;
     }
-    if (vct.SSPMode == 1 && command == 0) {
+    if (vct.SSPMode == VCT_MODE_PHONE && command == VCT_REQUEST_INVITE) {
         if (!vct_check_multisession(session)) {
-            return -3;
+            return VCT_ERROR_BAD_REQUEST;
         }
     }
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 int VCT_Request(VCTSession *session, VCTRequestCode command) {
-    if (vct.SSPMode == 2) {
-        return -3;
+    if (vct.SSPMode == VCT_MODE_TRANSCEIVER) {
+        return VCT_ERROR_BAD_REQUEST;
     }
     return vct_request_impl(session, command);
 }
@@ -160,33 +162,33 @@ int VCT_Request(VCTSession *session, VCTRequestCode command) {
 // Makes a control packet to send as a reply
 static int vct_build_response_data(VCTSession *session, u32 command, SSPHeader *packet, u32 size) {
     if (session == NULL) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
     if (size < 0x10) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
-    if (command >= 6) {
-        return -3;
+    if (command >= VCT_RESPONSE_END) {
+        return VCT_ERROR_BAD_REQUEST;
     }
     packet->method = VCT_METHOD_RESPONSE;
     vct_build_ssp_header(session, packet, command);
-    if (command == 0) {
-        if (vct.SSPMode == 1 && session->state == 4) {
+    if (command == VCT_RESPONSE_OK) {
+        if (vct.SSPMode == VCT_MODE_PHONE && session->state == VCT_STATE_INCOMING) {
             if (!vct_check_multisession(session)) {
-                return -3;
+                return VCT_ERROR_BAD_REQUEST;
             }
         }
         session->aidBitmap = session->aid != 0 ? 1 << session->aid : 1;
     }
     if (!vct_check_send_state(session, packet)) {
-        return -3;
+        return VCT_ERROR_BAD_REQUEST;
     }
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 int VCT_Response(VCTSession *session, VCTResponseCode command) {
-    if (vct.SSPMode == 2) {
-        return -3;
+    if (vct.SSPMode == VCT_MODE_TRANSCEIVER) {
+        return VCT_ERROR_BAD_REQUEST;
     }
     return vct_response_impl(session, command);
 }
@@ -194,50 +196,50 @@ int VCT_Response(VCTSession *session, VCTResponseCode command) {
 int VCT_AddConferenceClient(u8 aid) {
     VCTSession *session;
 
-    if (vct.SSPMode != 3) {
-        return -2;
+    if (vct.SSPMode != VCT_MODE_CONFERENCE) {
+        return VCT_ERROR_BAD_MODE;
     }
-    if (sSessionState.count == 3) {
-        return -6;
+    if (sSessionState.count == VCT_MAX_CONFERENCE_CLIENT - 1) {
+        return VCT_ERROR_EXHAUST_CLIENTS;
     }
     if (aid == vct.myAID) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
     if (vct_find_session(aid) != NULL) {
-        return 0;
+        return VCT_ERROR_NONE;
     }
     session = VCT_CreateSession(aid);
     if (session == NULL) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
     session->aid = aid;
     session->talking = aid;
-    session->state = 2;
+    session->state = VCT_STATE_TALKING;
     session->aidBitmap = 1 << aid;
-    vct.callback(aid, 7, session, vct.userData);
+    vct.callback(aid, VCT_EVENT_CONNECTED, session, vct.userData);
     sSessionState.count++;
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 int VCT_RemoveConferenceClient(u8 aid) {
     VCTSession *session;
 
-    if (vct.SSPMode != 3) {
-        return -2;
+    if (vct.SSPMode != VCT_MODE_CONFERENCE) {
+        return VCT_ERROR_BAD_MODE;
     }
     session = vct_find_session(aid);
     if (session == NULL) {
-        return -1;
+        return VCT_ERROR_BAD_PARAM;
     }
-    vct.callback(aid, 9, session, vct.userData);
+    vct.callback(aid, VCT_EVENT_DISCONNECTED, session, vct.userData);
     sSessionState.count--;
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 BOOL vct_init_ssp(VCTConfig *config) {
     unsigned int i;
 
-    if (config->session == NULL || config->numSession == 0 || config->numSession > 8) {
+    if (config->session == NULL || config->numSession == 0 || config->numSession > VCT_MAX_SESSION) {
         return FALSE;
     }
     sSession.free = config->session;
@@ -267,10 +269,10 @@ void vct_finish_ssp(void) {
 void vct_check_timeout(void) {
     u64 now = OS_GetTick();
 
-    if (vct.SSPMode != 2) {
+    if (vct.SSPMode != VCT_MODE_TRANSCEIVER) {
         return;
     }
-    if (vct.listenMode == 0) {
+    if (vct.listenMode == LISTEN_MODE_CLIENT) {
         return;
     }
     if (sRequestTime == 0) {
@@ -280,10 +282,10 @@ void vct_check_timeout(void) {
         return;
     }
     sRequestTime = 0;
-    sSession.trans.mode = 0;
-    sSession.trans.state = 0;
-    vct_send_notify(0);
-    vct.callback(sSession.trans.aid, 9, &sSession.trans, vct.userData);
+    sSession.trans.mode = VCT_MODE_NULL;
+    sSession.trans.state = VCT_STATE_INIT;
+    vct_send_notify(VCT_NOTIFY_FREE);
+    vct.callback(sSession.trans.aid, VCT_EVENT_DISCONNECTED, &sSession.trans, vct.userData);
 }
 
 // Takes in a control packet, returning whether it has given the application an event
@@ -297,7 +299,7 @@ BOOL vct_handle_ssp(int aid, SSPHeader *packet, int size, VCTResult *result) {
     if (packet->version != sizeof(SSPHeader)) {
         return vct_response_reject(packet, result);
     }
-    if (vct.listenMode == 0) {
+    if (vct.listenMode == LISTEN_MODE_CLIENT) {
         return vct_handle_ssp_client(packet, result);
     }
     return vct_handle_ssp_server(packet, result);
@@ -327,30 +329,30 @@ static int vct_request_impl(VCTSession *session, int command) {
     SSPHeader packet;
     int result = vct_build_request_data(session, command, &packet, sizeof(packet));
 
-    if (result != 0) {
+    if (result != VCT_ERROR_NONE) {
         return result;
     }
     if (!vct_send_ssp(session, &packet)) {
-        return -4;
+        return VCT_ERROR_SEND_FAIL;
     }
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 static int vct_response_impl(VCTSession *session, int command) {
     SSPHeader packet;
     int result = vct_build_response_data(session, command, &packet, sizeof(packet));
 
-    if (result != 0) {
+    if (result != VCT_ERROR_NONE) {
         return result;
     }
     if (!vct_send_ssp(session, &packet)) {
-        return -4;
+        return VCT_ERROR_SEND_FAIL;
     }
-    return 0;
+    return VCT_ERROR_NONE;
 }
 
 static void vct_add_notify_aid_list(VCTSession *session, SSPHeader *packet) {
-    if (packet->info == 1) {
+    if (packet->info == VCT_NOTIFY_BUSY) {
         packet->talking = session->aid;
         packet->aidBitmap = sSessionState.mask;
     }
@@ -370,19 +372,19 @@ static int vct_send_notify_impl(VCTSession *session, SSPHeader *packet) {
             }
         }
     }
-    if (packet->info == 1) {
+    if (packet->info == VCT_NOTIFY_BUSY) {
         session->aidBitmap = sSessionState.mask;
-    } else if (packet->info == 0) {
+    } else if (packet->info == VCT_NOTIFY_FREE) {
         session->aidBitmap = 0;
     }
-    return sent == 0 ? -4 : 0;
+    return sent == 0 ? VCT_ERROR_SEND_FAIL : VCT_ERROR_NONE;
 }
 
 static void vct_send_notify(int flag) {
     SSPHeader packet;
 
     packet.method = VCT_METHOD_REQUEST;
-    vct_build_ssp_header(&sSession.trans, &packet, 4);
+    vct_build_ssp_header(&sSession.trans, &packet, VCT_REQUEST_NOTIFY);
     packet.info = flag;
     vct_send_notify_impl(&sSession.trans, &packet);
 }
@@ -390,12 +392,12 @@ static void vct_send_notify(int flag) {
 static void vct_init_session(VCTSession *session, u8 aid) {
     memset(session, 0, sizeof(VCTSession));
     session->mode = vct.SSPMode;
-    session->state = 0;
+    session->state = VCT_STATE_INIT;
     session->aid = aid;
 }
 
 static BOOL vct_send_ssp(VCTSession *session, SSPHeader *packet) {
-    if (packet->method == VCT_METHOD_REQUEST && packet->code == 4) {
+    if (packet->method == VCT_METHOD_REQUEST && packet->code == VCT_REQUEST_NOTIFY) {
         vct_send_notify_impl((VCTSession *)session, packet);
     } else {
         if (!DWC_SendReliable(session->aid, packet, sizeof(SSPHeader))) {
@@ -409,21 +411,21 @@ static BOOL vct_send_ssp(VCTSession *session, SSPHeader *packet) {
 static int vct_dispatch_session(SSPHeader *packet, VCTSession *session) {
     session->talking = packet->talking;
     if (packet->method == VCT_METHOD_REQUEST) {
-        if (packet->code == 0) {
+        if (packet->code == VCT_REQUEST_INVITE) {
             session->aidBitmap = session->aid != 0 ? 1 << session->aid : 1;
         }
         return sBroadcastEvents[packet->code];
     } else if (packet->method == VCT_METHOD_RESPONSE) {
-        if (packet->code == 0) {
-            if (session->state == 1) {
+        if (packet->code == VCT_RESPONSE_OK) {
+            if (session->state == VCT_STATE_OUTGOING) {
                 session->aidBitmap = session->aid != 0 ? 1 << session->aid : 1;
-                return 7;
+                return VCT_EVENT_CONNECTED;
             }
-            return session->state == 5 ? 9 : 12;
+            return session->state == VCT_STATE_DISCONNECTING ? VCT_EVENT_DISCONNECTED : VCT_EVENT_ABORT;
         }
         return sDirectEvents[packet->code];
     }
-    return 12;
+    return VCT_EVENT_ABORT;
 }
 
 // Fills in a control packet from this machine to the session's. It returns 0, which no caller reads
@@ -433,7 +435,7 @@ static int vct_build_ssp_header(VCTSession *session, SSPHeader *packet, u8 comma
     packet->code = command;
     packet->from = vct.myAID;
     packet->to = session->aid;
-    packet->info = 0;
+    packet->info = VCT_NOTIFY_FREE;
     packet->talking = vct.myAID;
     packet->aidBitmap = 0;
     return 0;
@@ -451,25 +453,25 @@ static int vct_check_recv_state(VCTSession *session, SSPHeader *packet) {
         column = -1;
     }
     if (column < 0) {
-        return -1;
+        return VCT_NO_CHANGE;
     }
-    if (vct.SSPMode == 1) {
+    if (vct.SSPMode == VCT_MODE_PHONE) {
         next = sRecvState[session->state][column];
     } else {
         next = sTransRecvState[session->state][column];
     }
     switch (next) {
-    case -1:
+    case VCT_NO_CHANGE:
         return next;
-    case -2:
-        vct_response_impl(session, 1);
-        session->state = 0;
-        session->mode = 0;
+    case VCT_STATE_ERROR:
+        vct_response_impl(session, VCT_RESPONSE_BAD_REQUEST);
+        session->state = VCT_STATE_INIT;
+        session->mode = VCT_MODE_NULL;
         return next;
-    case -3:
-        vct_response_impl(session, 3);
-        session->state = 0;
-        session->mode = 0;
+    case VCT_CONTACT_FAIL:
+        vct_response_impl(session, VCT_RESPONSE_BUSY_HERE);
+        session->state = VCT_STATE_INIT;
+        session->mode = VCT_MODE_NULL;
         return next;
     default:
         return next;
@@ -480,7 +482,7 @@ static BOOL vct_check_multisession(VCTSession *session) {
     VCTSession *other;
 
     for (other = sSession.use; other != NULL; other = other->next) {
-        if (other->mode != 0 && other->state == 2 && session != other) {
+        if (other->mode != VCT_MODE_NULL && other->state == VCT_STATE_TALKING && session != other) {
             return FALSE;
         }
     }
@@ -499,17 +501,17 @@ static int vct_check_send_state(VCTSession *session, SSPHeader *packet) {
         column = -1;
     }
     if (column < 0) {
-        return -1;
+        return VCT_NO_CHANGE;
     }
-    if (vct.SSPMode == 1) {
+    if (vct.SSPMode == VCT_MODE_PHONE) {
         next = sSendState[session->state][column];
     } else {
         next = sTransSendState[session->state][column];
     }
-    if (next == -1) {
+    if (next == VCT_NO_CHANGE) {
         return TRUE;
     }
-    if (next == -2) {
+    if (next == VCT_STATE_ERROR) {
         return FALSE;
     }
     session->state = next;
@@ -519,14 +521,14 @@ static int vct_check_send_state(VCTSession *session, SSPHeader *packet) {
 static VCTSession *vct_find_session(int aid) {
     VCTSession *session = sSession.use;
 
-    if (vct.SSPMode == 2) {
-        if (sSession.trans.mode != 0 && sSession.trans.aid == aid) {
+    if (vct.SSPMode == VCT_MODE_TRANSCEIVER) {
+        if (sSession.trans.mode != VCT_MODE_NULL && sSession.trans.aid == aid) {
             return &sSession.trans;
         }
         return NULL;
     }
     for (; session != NULL; session = session->next) {
-        if (session->mode != 0 && session->aid == aid) {
+        if (session->mode != VCT_MODE_NULL && session->aid == aid) {
             return session;
         }
     }
@@ -538,10 +540,10 @@ static BOOL vct_handle_ssp_client(SSPHeader *packet, VCTResult *result) {
     int next;
 
     if (packet->method == VCT_METHOD_REQUEST) {
-        if (packet->code == 4) {
+        if (packet->code == VCT_REQUEST_NOTIFY) {
             return vct_handle_notify(packet, result);
         }
-        if (packet->code == 3) {
+        if (packet->code == VCT_REQUEST_CONTACT) {
             return FALSE;
         }
     }
@@ -549,11 +551,11 @@ static BOOL vct_handle_ssp_client(SSPHeader *packet, VCTResult *result) {
     if (session != NULL) {
         next = vct_check_recv_state(session, packet);
         switch (next) {
-        case -1:
+        case VCT_NO_CHANGE:
             return FALSE;
-        case -2:
-            result->event = 12;
-            session->mode = 0;
+        case VCT_STATE_ERROR:
+            result->event = VCT_EVENT_ABORT;
+            session->mode = VCT_MODE_NULL;
             result->session = session;
             return TRUE;
         }
@@ -565,11 +567,11 @@ static BOOL vct_handle_ssp_client(SSPHeader *packet, VCTResult *result) {
     session = vct_create_session_impl(packet->from);
     if (session == NULL) {
         vct_init_session(&sSession.tmp, packet->from);
-        vct_response_impl(&sSession.tmp, 3);
+        vct_response_impl(&sSession.tmp, VCT_RESPONSE_BUSY_HERE);
         return FALSE;
     }
     next = vct_check_recv_state(session, packet);
-    if (next == -2 || next == -1) {
+    if (next == VCT_STATE_ERROR || next == VCT_NO_CHANGE) {
         VCT_DeleteSession(session);
         return FALSE;
     }
@@ -583,17 +585,17 @@ static BOOL vct_handle_ssp_server(SSPHeader *packet, VCTResult *result) {
     VCTSession *host;
     int next;
 
-    if (sSession.trans.mode == 2) {
+    if (sSession.trans.mode == VCT_MODE_TRANSCEIVER) {
         if (sSession.trans.aid == packet->from) {
             host = &sSession.trans;
             next = vct_check_recv_state(host, packet);
             switch (next) {
-            case -2:
-                result->event = 12;
+            case VCT_STATE_ERROR:
+                result->event = VCT_EVENT_ABORT;
                 result->session = NULL;
                 return TRUE;
-            case -3:
-            case -1:
+            case VCT_CONTACT_FAIL:
+            case VCT_NO_CHANGE:
                 return FALSE;
             }
             result->event = vct_dispatch_session(packet, host);
@@ -608,26 +610,26 @@ static BOOL vct_handle_ssp_server(SSPHeader *packet, VCTResult *result) {
             return FALSE;
         }
         sSession.trans.aid = packet->from;
-        sSession.trans.mode = 2;
-        sSession.trans.state = 0;
+        sSession.trans.mode = VCT_MODE_TRANSCEIVER;
+        sSession.trans.state = VCT_STATE_INIT;
         host = &sSession.trans;
         next = vct_check_recv_state(host, packet);
         switch (next) {
-        case -3:
-        case -2:
-        case -1:
-            sSession.trans.mode = 0;
+        case VCT_CONTACT_FAIL:
+        case VCT_STATE_ERROR:
+        case VCT_NO_CHANGE:
+            sSession.trans.mode = VCT_MODE_NULL;
             return FALSE;
         }
         result->event = vct_dispatch_session(packet, host);
         result->session = host;
         host->state = next;
     }
-    if (result->event == 10) {
-        vct_send_notify(1);
+    if (result->event == VCT_EVENT_CONTACT) {
+        vct_send_notify(VCT_NOTIFY_BUSY);
         sRequestTime = OS_GetTick();
     } else {
-        vct_send_notify(0);
+        vct_send_notify(VCT_NOTIFY_FREE);
         sRequestTime = 0;
     }
     return TRUE;
@@ -636,52 +638,52 @@ static BOOL vct_handle_ssp_server(SSPHeader *packet, VCTResult *result) {
 static BOOL vct_response_reject(SSPHeader *packet, VCTResult *result) {
     VCTSession *session;
 
-    if (packet->method == VCT_METHOD_REQUEST && packet->code == 4) {
+    if (packet->method == VCT_METHOD_REQUEST && packet->code == VCT_REQUEST_NOTIFY) {
         return FALSE;
     }
     session = vct_find_session(packet->from);
     if (session != NULL) {
-        result->event = 2;
+        result->event = VCT_EVENT_REJECT;
         result->session = session;
-        session->mode = 0;
-        vct_response_impl(session, 2);
+        session->mode = VCT_MODE_NULL;
+        vct_response_impl(session, VCT_RESPONSE_NOT_ACCEPTABLE);
         return TRUE;
     }
     vct_init_session(&sSession.tmp, packet->from);
-    vct_response_impl(&sSession.tmp, 2);
+    vct_response_impl(&sSession.tmp, VCT_RESPONSE_NOT_ACCEPTABLE);
     return FALSE;
 }
 
 static BOOL vct_handle_notify(SSPHeader *packet, VCTResult *result) {
-    if (vct.SSPMode != 2) {
+    if (vct.SSPMode != VCT_MODE_TRANSCEIVER) {
         return FALSE;
     }
     if (vct.serverAID != packet->from) {
         return FALSE;
     }
     switch (packet->info) {
-    case 0:
-        if (sSession.trans.mode == 0) {
+    case VCT_NOTIFY_FREE:
+        if (sSession.trans.mode == VCT_MODE_NULL) {
             return FALSE;
         }
-        if (sSession.trans.state == 5 || sSession.trans.state == 2) {
-            result->event = 9;
+        if (sSession.trans.state == VCT_STATE_DISCONNECTING || sSession.trans.state == VCT_STATE_TALKING) {
+            result->event = VCT_EVENT_DISCONNECTED;
         } else {
-            result->event = 5;
+            result->event = VCT_EVENT_NOTIFY_FREE;
         }
-        sSession.trans.mode = 0;
-        sSession.trans.state = 0;
+        sSession.trans.mode = VCT_MODE_NULL;
+        sSession.trans.state = VCT_STATE_INIT;
         result->session = &sSession.trans;
         break;
-    case 1:
-        sSession.trans.mode = 2;
+    case VCT_NOTIFY_BUSY:
+        sSession.trans.mode = VCT_MODE_TRANSCEIVER;
         if (packet->talking == vct.myAID) {
-            sSession.trans.state = 2;
-            result->event = 7;
+            sSession.trans.state = VCT_STATE_TALKING;
+            result->event = VCT_EVENT_CONNECTED;
             sSession.trans.aidBitmap = packet->aidBitmap;
         } else {
-            sSession.trans.state = 3;
-            result->event = 6;
+            sSession.trans.state = VCT_STATE_CONNECTED;
+            result->event = VCT_EVENT_NOTIFY_BUSY;
             sSession.trans.aidBitmap = packet->talking != 0 ? 1 << packet->talking : 1;
         }
         sSession.trans.talking = packet->talking;

@@ -72,7 +72,7 @@ BOOL vct_init_audio(void) {
     sEnableVAD = TRUE;
     sNumStream = 0;
     sBitmap = 0;
-    if (vct.SSPMode == 1) {
+    if (vct.SSPMode == VCT_MODE_PHONE) {
         sCodec = VCT_CODEC_8BIT_RAW;
     } else {
         sCodec = VCT_CODEC_4BIT_ADPCM;
@@ -109,7 +109,7 @@ BOOL VCT_StartStreaming(VCTSession *session) {
     if (sNumStream == VCT_SLOT_MAX) {
         return FALSE;
     }
-    if (session->state != 2 && session->state != 3) {
+    if (session->state != VCT_STATE_TALKING && session->state != VCT_STATE_CONNECTED) {
         return FALSE;
     }
     for (slot = 0; slot < VCT_SLOT_MAX; slot++) {
@@ -127,7 +127,7 @@ BOOL VCT_StartStreaming(VCTSession *session) {
     sBitmap |= session->aidBitmap;
     vct_init_stream(&sStream[slot], slot, session->talking);
     vct_init_audio_queue(slot);
-    if (session->state != 2) {
+    if (session->state != VCT_STATE_TALKING) {
         return TRUE;
     }
     if (sNumStream == 1) {
@@ -180,7 +180,7 @@ BOOL VCT_SendAudio(void *samples, u32 size) {
         return FALSE;
     }
     for (i = 0; i < VCT_SLOT_MAX; i++) {
-        if (sAudioSession[i] != NULL && sAudioSession[i]->state == 2) {
+        if (sAudioSession[i] != NULL && sAudioSession[i]->state == VCT_STATE_TALKING) {
             hasSender = TRUE;
             break;
         }
@@ -243,10 +243,10 @@ static BOOL VCTi_ReceiveAudioData(u8 *dst, int size, int slot, u32 *heardMask) {
                     }
                 }
                 receiver->lastPlayedSequence = packet->sequence;
-                if (more && receiver->unk70 != 0) {
+                if (more && receiver->skewCount != 0) {
                     count = vct_save_previous_buffer(receiver, packet);
                     vct_top_audio_queue(slot);
-                    receiver->unk70--;
+                    receiver->skewCount--;
                 } else {
                     u32 delay = now - packet->receive_time;
                     int change = delay - receiver->lastDelay;
@@ -384,13 +384,13 @@ static AudioHeader *vct_prepare_send_buffer(void) {
     if (sEnableVAD) {
         sVADStatus = VCTi_GetVADStatus(energy, rms, NULL);
         switch (sVADStatus) {
-        case 0:
+        case VCT_VAD_NONE:
             sSendInfo.read++;
             return NULL;
-        case 1:
+        case VCT_VAD_DETECT:
             packet->codec |= 0x80;
             break;
-        case 3:
+        case VCT_VAD_LOST:
             packet->header = VCT_HEADER_AUDIO_END;
             break;
         }
@@ -549,7 +549,7 @@ BOOL vct_flush_send_buffer(void) {
         return TRUE;
     }
     sends = 1;
-    if (vct.SSPMode == 2) {
+    if (vct.SSPMode == VCT_MODE_TRANSCEIVER) {
         sends = sTransceiverBalance[sSendInfo.scheduleRow][sSendInfo.scheduleColumn++];
     }
     for (i = 0; i < sends; i++) {

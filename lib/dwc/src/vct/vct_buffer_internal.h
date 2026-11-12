@@ -13,7 +13,7 @@ struct AudioStream {
     int skewDifference;
     u32 lastSequenceSeen;
     u32 lostCount;
-    u32 unk18;
+    u32 jitter;
     u32 lateCount;
     u32 playedCount;
     VCTCodec codec;
@@ -23,10 +23,10 @@ struct AudioStream {
     u32 channel;
     int aid;
     UDPPacket *prevBuffer;
-    int unk40;
+    int recoverCount;
     u64 firstArrival;
     u32 firstTimestamp;
-    u32 unk50;
+    u32 prevTimestamp;
     u32 lastSequence;
     u32 lastPlayedSequence;
     int needsReset;
@@ -35,7 +35,7 @@ struct AudioStream {
     u16 sequence16;
     u8 pad6a[2];
     u32 warmup;
-    int unk70;
+    int skewCount;
     int skewAverage;
     int skewFirst;
     int jitterAverage;
