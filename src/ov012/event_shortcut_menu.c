@@ -556,10 +556,17 @@ void ShortcutMenu_Open(u32 mode, ShortcutMenuWork *work) {
     }
 }
 
+// ShortcutMenu_Close's steps: deleting the menu's app, restoring the message background, and ending
+enum {
+    SHORTCUT_MENU_CLOSE_STEP_DELETE_APP,
+    SHORTCUT_MENU_CLOSE_STEP_RESTORE_MSG_BG,
+    SHORTCUT_MENU_CLOSE_STEP_END,
+};
+
 BOOL ShortcutMenu_Close(ShortcutMenuWork *work) {
     if (work->done == 0) {
         switch (work->state) {
-        case 0:
+        case SHORTCUT_MENU_CLOSE_STEP_DELETE_APP:
             if (work->app) {
                 GFL_BGSysSetBGEnabled(1, 0);
                 ShortcutMenu_Delete(work->app);
@@ -569,11 +576,11 @@ BOOL ShortcutMenu_Close(ShortcutMenuWork *work) {
                 work->state = 2;
             }
             break;
-        case 1:
+        case SHORTCUT_MENU_CLOSE_STEP_RESTORE_MSG_BG:
             MsgBGPrinter_SetupBgSingle(Field_GetMsgBGSys(work->field));
             work->state = 2;
             break;
-        case 2:
+        case SHORTCUT_MENU_CLOSE_STEP_END:
             work->state = 0;
             return TRUE;
         }
@@ -581,6 +588,13 @@ BOOL ShortcutMenu_Close(ShortcutMenuWork *work) {
     }
     return TRUE;
 }
+
+// ShortcutMenu_CanRetry's steps: the decision to reopen the menu, the menu's print, and the end of the app call
+enum {
+    SHORTCUT_MENU_RETRY_STEP_DECIDE,
+    SHORTCUT_MENU_RETRY_STEP_WAIT_PRINT,
+    SHORTCUT_MENU_RETRY_STEP_END,
+};
 
 BOOL ShortcutMenu_CanRetry(FieldAppCallInput *input, void *arg) {
     ShortcutMenuWork *work = arg;
@@ -592,7 +606,7 @@ BOOL ShortcutMenu_CanRetry(FieldAppCallInput *input, void *arg) {
     save = GameData_GetSaveControl(gameData);
     shortcut = SaveControl_GetShortcutSave(save);
     switch (work->state) {
-    case 0:
+    case SHORTCUT_MENU_RETRY_STEP_DECIDE:
         if (ShortcutSave_GetShortcutCount(shortcut) == 0) {
             work->done = 1;
             work->state = 2;
@@ -604,12 +618,12 @@ BOOL ShortcutMenu_CanRetry(FieldAppCallInput *input, void *arg) {
             work->state = 1;
         }
         break;
-    case 1:
+    case SHORTCUT_MENU_RETRY_STEP_WAIT_PRINT:
         if (ShortcutMenu_RunPrint(work->app)) {
             work->state = 2;
         }
         break;
-    case 2:
+    case SHORTCUT_MENU_RETRY_STEP_END:
         work->state = 0;
         return TRUE;
     }
