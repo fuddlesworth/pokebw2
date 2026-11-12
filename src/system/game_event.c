@@ -131,16 +131,22 @@ BOOL GSYS_FeedEventsFromProvider(GameSystem *gsys, GameEventProvider provider, v
     return FALSE;
 }
 
+// The proc event's steps: queue the proc, then wait for the proc manager to finish it
+enum {
+    EVENT_PROCESS_CALL_SEQ_QUEUE_PROC,
+    EVENT_PROCESS_CALL_SEQ_WAIT_PROC,
+};
+
 static GameEventReturnCode EventProcessCall_Callback(GameEvent *event, u32 *state, void *data) {
     EventProcessCallWork *work = data;
     GameSystem *gsys = GameEvent_GetGameSystem(event);
 
     switch (*state) {
-    case 0:
+    case EVENT_PROCESS_CALL_SEQ_QUEUE_PROC:
         GSYS_QueueProc(gsys, work->overlayId, work->functions, work->param);
         (*state)++;
         break;
-    case 1:
+    case EVENT_PROCESS_CALL_SEQ_WAIT_PROC:
         if (!GSYS_GetProcMgrState(gsys)) {
             return GAMEEVENT_DONE;
         }
@@ -159,16 +165,22 @@ void GSYS_QueueProcAsEvent(GameEvent *event, s32 overlayId, const GameProcFuncti
     GameEvent_ChainNext(event, procEvent);
 }
 
+// The overlay delegate's steps: chain the overlay's event, then unload the overlay when it is done
+enum {
+    EVENT_CALL_OVERLAY_DELEGATE_SEQ_CHAIN_EVENT,
+    EVENT_CALL_OVERLAY_DELEGATE_SEQ_UNLOAD_OVERLAY,
+};
+
 static GameEventReturnCode EventCallOverlayDelegateEvent_Callback(GameEvent *event, u32 *state, void *data) {
     EventCallOverlayDelegateWork *work = data;
     GameSystem *gsys = GameEvent_GetGameSystem(event);
 
     switch (*state) {
-    case 0:
+    case EVENT_CALL_OVERLAY_DELEGATE_SEQ_CHAIN_EVENT:
         GameEvent_ChainNext(event, work->event);
         (*state)++;
         break;
-    case 1:
+    case EVENT_CALL_OVERLAY_DELEGATE_SEQ_UNLOAD_OVERLAY:
         GFL_OvlUnload(work->overlayId);
         return GAMEEVENT_DONE;
     }
