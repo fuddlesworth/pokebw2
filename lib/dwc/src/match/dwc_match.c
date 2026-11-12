@@ -2525,7 +2525,7 @@ static int DWCi_SendResvCommandToFriend(int a0, int a1, int a2) {
             int err2 = gpGetBuddyStatus(DWCi_GetMatchCnt()->pGpObj, index, &status);
 
             err1 |= err2;
-            if (DWCi_GetBuddyStatusLCK(&status) == 0 && err1 == 0 && status.status == GP_CHATTING) {
+            if (DWCi_GetBuddyStatusLCK(&status) == 0 && err1 == 0 && status.status == DWC_STATUS_MATCH_FRIEND) {
                 found = 1;
                 break;
             }
