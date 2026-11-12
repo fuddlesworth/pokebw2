@@ -19,7 +19,7 @@ typedef struct GHIEncryptor GHIEncryptor;
 
 // What the encryption keeps of a connection: its SSL connection (ghttpEncryption.c) and whether that has started
 typedef struct GHIEncryptorState {
-    struct GHISslConnection *ssl;
+    CPSSslConnection *ssl;
     gsi_bool started;
 } GHIEncryptorState;
 
@@ -71,9 +71,10 @@ static inline void ghiCopy(void *dest, const void *src, gsi_u32 size) {
     }
 }
 
-// The certificates a root of trust is made of: the array and its length
+// The certificates a root of trust is made of: the array and its length. They are NitroWiFi's CPSCaInfo records,
+// which the SSL connection takes as its named_params
 typedef struct GHICertList {
-    void **certs;
+    CPSCaInfo **certs;
     int count;
 } GHICertList;
 
