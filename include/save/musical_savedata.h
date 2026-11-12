@@ -19,6 +19,7 @@ typedef struct {
     s16 rotation;
     // The position it is worn at, 10 for none
     u8 pos;
+    // The three bytes that complete the record's eight-byte slot; no code reads or writes them
     u8 unk5[3];
 } MusicalShotEquip;
 
@@ -43,9 +44,11 @@ typedef struct {
     u32 day : 6;
     // The player's Pokémon
     u32 player : 2;
+    // MusicalEvent_TakeShot clears these three bits; no code reads them
     u32 unk0_29 : 3;
     MusicalShotPoke pokes[4];
     u16 title[0x25];
+    // MusicalEvent_TakeShot writes 23 and 1; no code reads them
     u8 unk1AE;
     u8 unk1AF;
 } MusicalShot;
@@ -60,6 +63,7 @@ typedef struct {
 // A prop that the Pokémon wears: its position (10 for none), the prop and its rotation
 typedef struct {
     u8 pos;
+    // The byte that aligns itemId; no code reads or writes it
     u8 unk1;
     u16 itemId;
     s16 rotation;

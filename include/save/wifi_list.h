@@ -36,6 +36,7 @@ enum {
 // What the Pal Pad keeps of a friend besides their DWC friend data
 struct WifiListFriend {
     u16 name[8];
+    // The rest of the 0x1c bytes that aletheia's WifiFriendInfo keeps as its opaque nameData; never read or written
     u8 unk10[0xc];
     s32 profileId;
     u32 id;
@@ -48,7 +49,8 @@ struct WifiListFriend {
     u8 lastDay;
     u8 trainerView;
     u8 gender : 2;
-    u8 unk2F_2 : 6;
+    // aletheia's WifiFriendInfo.statusFlags, the same six bits; B2W2 never reads or writes them
+    u8 statusFlags : 6;
 }; // size: 0x30
 
 // Block 0x1e: the player's own DWC account and the Pal Pad's friends
@@ -56,12 +58,14 @@ struct WifiList {
     DWCUserData myUserData;
     DWCFriendData friendData[WIFI_LIST_FRIEND_MAX];
     WifiListFriend friends[WIFI_LIST_FRIEND_MAX];
-    u8 unk7C0[4];
+    // aletheia's WifiList.reserved, the block's last four bytes; B2W2 only clears and copies it
+    u8 reserved[4];
 }; // size: 0x7c4
 
 // Block 0x1f (swan's getPalPadFriendListAddress): the players traded with, the latest first, and how many trades
 struct PalPadFriendList {
     PlayerInfo players[PAL_PAD_PLAYER_MAX];
+    // Never read or written; the block is cleared, saved whole and copied to a backup
     u8 unkC80[0xd0];
     u32 tradeCount;
 }; // size: 0xd54
