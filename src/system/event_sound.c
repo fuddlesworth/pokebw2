@@ -201,7 +201,7 @@ GameEvent *EventBGMPop_CreateEx(GameSystem *gsys, u32 fadeOutFrames, u32 fadeInF
     return event;
 }
 
-// The BGM pop-all event's steps: pop all but the last, then finish
+// The BGM pop-all event's steps: pop all but the last at once, fade in the BGM under them, then finish
 enum {
     EVENT_BGM_POP_ALL_SEQ_POP_ALL,
     EVENT_BGM_POP_ALL_SEQ_DONE,
@@ -242,7 +242,7 @@ GameEvent *EventBGMPopAll_Create(GameSystem *gsys, u32 fadeInFrames) {
 
 // The BGM play event's steps: push the old BGM and change to the new one, then finish
 enum {
-    EVENT_BGM_PLAY_PUSH_EX_SEQ_PUSH_AND_PLAY,
+    EVENT_BGM_PLAY_PUSH_EX_SEQ_PUSH_AND_CHANGE,
     EVENT_BGM_PLAY_PUSH_EX_SEQ_DONE,
 };
 
@@ -251,7 +251,7 @@ static GameEventReturnCode EventBGMPlayPushEx_Callback(GameEvent *event, u32 *st
     FieldSound *fieldSound = work->fieldSound;
 
     switch (*state) {
-    case EVENT_BGM_PLAY_PUSH_EX_SEQ_PUSH_AND_PLAY:
+    case EVENT_BGM_PLAY_PUSH_EX_SEQ_PUSH_AND_CHANGE:
         FieldSnd_SendRequest(fieldSound, FIELD_SND_BGM_PUSH, 0, work->fadeOutFrames, 0);
         FieldSnd_SendRequest(fieldSound, FIELD_SND_BGM_CHANGE, work->bgm, 0, work->fadeInFrames);
         (*state)++;

@@ -107,13 +107,12 @@ GameEvent *CreateFieldCloseEvent(GameSystem *gsys, Field *field) {
     return event;
 }
 
-// The same without the sound: ask the field to close, then wait for its procs
+// The same without waiting for the field's sound: ask the field to close, then wait for its procs
 enum {
     EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_REQUEST_CLOSE,
     EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_WAIT_CLOSED,
 };
 
-// The same without waiting for the field's sound
 static GameEventReturnCode EventFieldCloseKeepSound_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldCloseWork *wk = data;
     GameSystem *gsys = wk->gsys;
@@ -421,34 +420,34 @@ static GameEventReturnCode EventPokeList_Callback(GameEvent *event, u32 *state, 
     switch (*state) {
     case EVENT_POKE_LIST_SEQ_OPEN_LIST:
         GSYS_QueueProc(gsys, OVERLAY_ID(165), &POKELIST_PROC_FUNCTIONS, wk->param);
-        *state = 1;
+        *state = EVENT_POKE_LIST_SEQ_WAIT_LIST;
         break;
     case EVENT_POKE_LIST_SEQ_WAIT_LIST:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
-        *state = 2;
+        *state = EVENT_POKE_LIST_SEQ_CHECK_RESULT;
         break;
     case EVENT_POKE_LIST_SEQ_CHECK_RESULT:
         if (wk->param->result == 0) {
-            *state = 5;
+            *state = EVENT_POKE_LIST_SEQ_DONE;
         } else if (wk->param->result == 1) {
             wk->summaryParam->partyIndex = wk->param->index;
-            *state = 3;
+            *state = EVENT_POKE_LIST_SEQ_OPEN_SUMMARY;
         } else {
-            *state = 5;
+            *state = EVENT_POKE_LIST_SEQ_DONE;
         }
         break;
     case EVENT_POKE_LIST_SEQ_OPEN_SUMMARY:
         GSYS_QueueProc(gsys, OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, wk->summaryParam);
-        *state = 4;
+        *state = EVENT_POKE_LIST_SEQ_WAIT_SUMMARY;
         break;
     case EVENT_POKE_LIST_SEQ_WAIT_SUMMARY:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
         wk->param->index = wk->summaryParam->partyIndex;
-        *state = 0;
+        *state = EVENT_POKE_LIST_SEQ_OPEN_LIST;
         break;
     case EVENT_POKE_LIST_SEQ_DONE:
         return GAMEEVENT_DONE;
