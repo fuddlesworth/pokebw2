@@ -22,10 +22,10 @@ u8 DWCi_AC_ConnectAP(void) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
     switch (state) {
-    case 7:
+    case DWC_AC_PHASE_CONNECT_START:
         state = ConnectStart(work);
         break;
-    case 8:
+    case DWC_AC_PHASE_CONNECT:
         state = ConnectAP(work);
         break;
     }
@@ -74,7 +74,7 @@ static u8 ConnectAP(ACWORK *work) {
     WMBssDesc *bss = &work->bssDesc[work->connectNo];
     u32 option;
 
-    if (state == 3) {
+    if (state == WCM_PHASE_IDLE) {
         option = GetPowerMode(work);
         if (++work->attempts > 3) {
             work->attempts = 0;
@@ -84,11 +84,11 @@ static u8 ConnectAP(ACWORK *work) {
         if (work->attempts != 1) {
             if (work->failureReason == 1) {
                 work->sharedKey = 0;
-            } else if (work->failureReason == 2) {
+            } else if (work->failureReason == DWC_AC_FAILURE_CHALLENGE) {
                 work->attempts = 0;
                 work->findList[work->connectNo].state = DWC_AC_RESULT_WRONG_KEY;
                 return 9;
-            } else if (work->failureReason == 3) {
+            } else if (work->failureReason == DWC_AC_FAILURE_FULL) {
                 work->attempts = 0;
                 work->findList[work->connectNo].state = DWC_AC_RESULT_FULL;
                 return 9;
@@ -97,11 +97,11 @@ static u8 ConnectAP(ACWORK *work) {
             }
         }
         WCM_ConnectAsync(bss, &work->wepKey, option | GetAuthMode(work));
-    } else if (state == 9) {
+    } else if (state == DWC_AC_PHASE_CONNECT_RETRY) {
         work->attempts = 0;
         work->timeOut = OS_GetTick();
         return 10;
-    } else if (state == 11) {
+    } else if (state == DWC_AC_PHASE_TEST_RETRY) {
         DWCi_AC_SetError(0);
         return 17;
     } else if (state > 11) {
@@ -122,7 +122,7 @@ static u8 GetConnectType(ACWORK *work) {
     u8 count = DWCAc_CountTargets();
 
     if (!work->sameSsid) {
-        if (bss->ssidLength == 0x20) {
+        if (bss->ssidLength == sizeof(bss->ssid)) {
             id = DWCi_AC_CheckNintendoSSID(bss);
             if (id > 0) {
                 matches++;
@@ -187,63 +187,63 @@ static BOOL GetWepKey(ACWORK *work, u8 id, DWCAcKeyDesc *desc) {
     const DWCAcDsiSetting *dsi = work->dsiSettings;
 
     switch (id) {
-    case 2:
+    case DWC_AC_ID_USER3:
         ds++;
-    case 1:
+    case DWC_AC_ID_USER2:
         ds++;
-    case 0:
+    case DWC_AC_ID_USER1:
         desc->mode = ds->ap.wepMode;
         MI_CpuCopy8(ds->ap.wepKey[0], desc->key, 16);
         break;
-    case 5:
+    case DWC_AC_ID_USER3_AOSS:
         ds++;
-    case 4:
+    case DWC_AC_ID_USER2_AOSS:
         ds++;
-    case 3:
+    case DWC_AC_ID_USER1_AOSS:
         desc->mode = 1;
         MI_CpuCopy8(ds->ap.wep2[0], desc->key, 5);
         break;
-    case 8:
+    case DWC_AC_ID_DSI_USER3:
         dsi++;
-    case 7:
+    case DWC_AC_ID_DSI_USER2:
         dsi++;
-    case 6:
+    case DWC_AC_ID_DSI_USER1:
         if (dsi->base.ap.setType == 0x10 || dsi->base.ap.setType == 0x12 || dsi->base.ap.setType == 0x13) {
-            desc->mode = dsi->wcmMode;
+            desc->mode = dsi->wpaMode;
             desc->length = 32;
-            MI_CpuCopy8(dsi->wpaKey, desc->key, 32);
+            MI_CpuCopy8(dsi->passphrase, desc->key, 32);
             desc->key[32] = 0;
         } else {
             desc->mode = dsi->base.ap.wepMode;
             MI_CpuCopy8(dsi->base.ap.wepKey[0], desc->key, 16);
         }
         break;
-    case 11:
+    case DWC_AC_ID_DSI_USER3_AOSS:
         dsi++;
-    case 10:
+    case DWC_AC_ID_DSI_USER2_AOSS:
         dsi++;
-    case 9:
+    case DWC_AC_ID_DSI_USER1_AOSS:
         desc->mode = 1;
         MI_CpuCopy8(dsi->base.ap.wep2[0], desc->key, 5);
         break;
-    case 14:
+    case DWC_AC_ID_DSI_USER3_WPA:
         dsi++;
-    case 13:
+    case DWC_AC_ID_DSI_USER2_WPA:
         dsi++;
-    case 12:
+    case DWC_AC_ID_DSI_USER1_WPA:
         desc->mode = 4;
         desc->length = 32;
-        MI_CpuCopy8(dsi->wpaKey, desc->key, 32);
+        MI_CpuCopy8(dsi->passphrase, desc->key, 32);
         desc->key[32] = 0;
         break;
-    case 17:
+    case DWC_AC_ID_DSI_USER3_WPA2:
         dsi++;
-    case 16:
+    case DWC_AC_ID_DSI_USER2_WPA2:
         dsi++;
-    case 15:
+    case DWC_AC_ID_DSI_USER1_WPA2:
         desc->mode = 6;
         desc->length = 32;
-        MI_CpuCopy8(dsi->wpaKey2, desc->key, 32);
+        MI_CpuCopy8(dsi->pmk, desc->key, 32);
         desc->key[32] = 0;
         break;
     case DWC_AC_ID_NWCUSBAP:

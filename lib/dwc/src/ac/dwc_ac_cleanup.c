@@ -22,7 +22,7 @@ BOOL DWCi_AC_CloseNetwork(u8 *state) {
             *state = 0x12;
             return TRUE;
         }
-    } else if (*state == 14) {
+    } else if (*state == DWC_AC_PHASE_TEST_PROCESS) {
         DWC_Netcheck_Abort();
         DWC_Netcheck_Destroy();
         *state = 12;
@@ -37,24 +37,24 @@ BOOL DWCi_AC_CloseNetwork(u8 *state) {
 // Asks the wireless manager for the next step down from the state it is in; 1 once it is down, -1 if it cannot be
 static int DisConnectAP(void) {
     switch (WCM_GetPhase()) {
-    case 0:
+    case WCM_PHASE_NULL:
         return 1;
-    case 1:
+    case WCM_PHASE_WAIT:
         WCM_Finish();
         break;
-    case 3:
+    case WCM_PHASE_IDLE:
         WCM_CleanupAsync();
         break;
-    case 6:
+    case WCM_PHASE_SEARCH:
         WCM_EndSearchAsync();
         break;
-    case 9:
+    case WCM_PHASE_DCF:
         WCM_DisconnectAsync();
         break;
-    case 12:
+    case WCM_PHASE_IRREGULAR:
         WCM_TerminateAsync();
         break;
-    case 11:
+    case WCM_PHASE_FATAL_ERROR:
         DWCi_AC_SetError(0);
         return -1;
     }
