@@ -40,6 +40,14 @@
 #define SURVEY_QUESTION_LAST 0x1d
 // The survey question answered by play time, in tens of hours
 #define SURVEY_QUESTION_PLAY_TIME 0x1d
+// A survey question that has no answer
+#define SURVEY_QUESTION_NONE 0xff
+
+// The keys that a distribution's beacon carries, by its type
+#define GAME_BEACON_GIFT_KEY_SPECIES 0x2932013a
+#define GAME_BEACON_GIFT_KEY_ITEM 0x48841dc1
+#define GAME_BEACON_GIFT_KEY_MYSTERY 0x701ddc92
+#define GAME_BEACON_GIFT_KEY_PASS_POWER 0xfee48201
 
 // A beacon type's priority, against the current type's (GameBeaconSys_CanSendType), and how many frames it is sent
 typedef struct {
@@ -66,7 +74,7 @@ static void GameBeaconSys_SendCaptureWild(u16 species);
 static void GameBeacon_SetCaptureWild(GameBeacon *beacon, u16 species);
 static void GameBeaconSys_SendCaptureSpecial(u16 species);
 static void GameBeacon_SetCaptureSpecial(GameBeacon *beacon, u16 species);
-static BOOL GameBeaconSys_SendCaptureMission(u16 species, BOOL a1, BOOL a2);
+static BOOL GameBeaconSys_SendCaptureMission(u16 species, BOOL effectEncount, BOOL disguised);
 static void GameBeacon_SetType10(GameBeacon *beacon, const StrBuf *nickname);
 static void GameBeacon_SetEvolution(GameBeacon *beacon, u16 species, const StrBuf *nickname);
 static void GameBeaconSys_SendPlayTime(u16 hours);
@@ -241,13 +249,13 @@ void GameBeaconSys_Update(void) {
         sys->avenueAdRequest = TRUE;
     }
     if (GFL_NetGetGameCommandBase() == 3 && !NetWhpipe_IsScanning() && GameBeaconSys_UpdateAvenueAdTimer(sys) &&
-        sys->mine.beacon.type <= 1) {
+        sys->mine.beacon.type <= GAME_BEACON_TYPE_DEFAULT) {
         sys->avenueAdRequest = TRUE;
     }
     if (sys->gameData != NULL && !GameData_CheckEventsPaused(sys->gameData) && sys->enabled &&
         GFL_NetGetGameCommandBase() == 3) {
         if (!NetWhpipe_IsScanning()) {
-            if (sys->mine.beacon.type <= 1 && sys->avenueAdRequest == TRUE) {
+            if (sys->mine.beacon.type <= GAME_BEACON_TYPE_DEFAULT && sys->avenueAdRequest == TRUE) {
                 GameBeaconSys_SendAvenueAd(sys);
                 sys->avenueAdRequest = FALSE;
             }
@@ -322,12 +330,12 @@ BOOL GameBeaconSys_CheckNotice(u32 bit) {
 }
 
 static BOOL GameBeaconSendSlot_UpdateTimer(GameBeaconSendSlot *slot) {
-    if (slot->beacon.type != 1) {
+    if (slot->beacon.type != GAME_BEACON_TYPE_DEFAULT) {
         slot->timer++;
         if (slot->timer > sGameBeaconTypeInfo[slot->beacon.type].lifetime) {
             slot->timer = 0;
-            slot->beacon.type = 0;
-            slot->beacon.targetVersions = 0xff;
+            slot->beacon.type = GAME_BEACON_TYPE_NONE;
+            slot->beacon.targetVersions = GAME_BEACON_TARGET_VERSIONS_ALL;
             slot->beacon.passPower = GAME_BEACON_PASS_POWER_NONE;
             return TRUE;
         }
@@ -354,7 +362,7 @@ static BOOL GameBeaconSys_CountSurveyAnswers(GameBeaconSystem *sys, const GameBe
     }
     for (i = 0; i < 3; i++) {
         question = SurveySave_GetQuestion(survey, i);
-        if (question == 0xff) {
+        if (question == SURVEY_QUESTION_NONE) {
             continue;
         }
         if (fromBW1 && SurveyQuestion_IsNewInB2W2(question)) {
@@ -380,7 +388,7 @@ static BOOL GameBeaconSys_CountSurveyAnswers(GameBeaconSystem *sys, const GameBe
         for (j = 0; j < 3; j++) {
             u16 myQuestion = TrainerGameInfo_GetSurveyAnswer(info, j);
 
-            if (myQuestion != 0xff && myQuestion == question) {
+            if (myQuestion != SURVEY_QUESTION_NONE && myQuestion == question) {
                 TrainerGameInfo_AddSurveyCount(info, j, 1);
             }
         }
@@ -418,7 +426,7 @@ static void GameBeaconSys_AddLog(GameBeaconSystem *sys, const GameBeacon *beacon
 }
 
 static BOOL GameBeacon_IsBW1Incompatible(const GameBeacon *beacon, BOOL b2w2Only) {
-    if (b2w2Only == TRUE || beacon->targetVersions == 0xfc) {
+    if (b2w2Only == TRUE || beacon->targetVersions == GAME_BEACON_TARGET_VERSIONS_B2W2) {
         return TRUE;
     }
     if (beacon->zoneId >= ZONE_ID_BW1_MAX || beacon->parentZoneId >= ZONE_ID_BW1_MAX) {
@@ -434,7 +442,7 @@ static void GameBeacon_PrepareSend(GameBeacon *beacon, BOOL b2w2Only) {
     int i;
 
     if (GameBeacon_IsBW1Incompatible(beacon, b2w2Only)) {
-        beacon->targetVersions = 0xfc;
+        beacon->targetVersions = GAME_BEACON_TARGET_VERSIONS_B2W2;
         return;
     }
     // Black and White don't have these questions
@@ -478,7 +486,7 @@ static void GameBeaconSys_CheckMission(GameBeaconSystem *sys, const GameBeacon *
         return;
     }
     FestMissionOffers_AddBeacon(festival, beacon);
-    if (status == 0 || beacon->type == 0x3d) {
+    if (status == 0 || beacon->type == GAME_BEACON_TYPE_MISSION_OFFER) {
         return;
     }
     result = LinkFestival_GetState(festival);
@@ -518,7 +526,7 @@ static void GameBeaconSys_UpdateNotices(GameBeaconSystem *sys, const GameBeacon 
     }
     if (isNew) {
         GameBeaconSys_SetNotice(1);
-    } else if (beacon->type == 0x12 || beacon->type == 0x32) {
+    } else if (beacon->type == GAME_BEACON_TYPE_PASS_POWER || beacon->type == GAME_BEACON_TYPE_GIFT_PASS_POWER) {
         GameBeaconSys_SetNotice(1);
     }
 }
@@ -535,10 +543,10 @@ BOOL GameBeaconSys_Receive(const GameBeacon *beacon) {
     if (!(beacon->targetVersions & (1 << (GAME_VERSION - VERSION_WHITE)))) {
         return isUpdate;
     }
-    if (beacon->type == 0 || beacon->type >= GAME_BEACON_TYPE_MAX) {
+    if (beacon->type == GAME_BEACON_TYPE_NONE || beacon->type >= GAME_BEACON_TYPE_MAX) {
         return FALSE;
     }
-    if (beacon->type == 0x18 && sys->mine.beacon.trainerId != beacon->payload.message.trainerId) {
+    if (beacon->type == GAME_BEACON_TYPE_THANKS && sys->mine.beacon.trainerId != beacon->payload.message.trainerId) {
         return isUpdate;
     }
     if (GameBeacon_IsInvalid(beacon)) {
@@ -550,7 +558,7 @@ BOOL GameBeaconSys_Receive(const GameBeacon *beacon) {
         if (beacon->trainerId == sys->log[index].beacon.trainerId) {
             if (beacon->serial == sys->log[index].beacon.serial) {
                 isSame = TRUE;
-            } else if (beacon->type == 1) {
+            } else if (beacon->type == GAME_BEACON_TYPE_DEFAULT) {
                 isAvenueUpdate = TRUE;
             } else {
                 isUpdate = TRUE;
@@ -566,12 +574,13 @@ BOOL GameBeaconSys_Receive(const GameBeacon *beacon) {
         return FALSE;
     }
 
-    if (beacon->type == 1) {
+    if (beacon->type == GAME_BEACON_TYPE_DEFAULT) {
         if (sys->avenueVisitorPending == FALSE &&
             GameBeaconSys_AddAvenueVisitor(sys, beacon, JOIN_AVE_ARRIVAL_PASSERBY)) {
             sys->avenueVisitorPending = TRUE;
         }
-    } else if (GameBeacon_IsMissionType(beacon) && beacon->type != 0x3d && sys->avenueVisitorPending == FALSE &&
+    } else if (GameBeacon_IsMissionType(beacon) && beacon->type != GAME_BEACON_TYPE_MISSION_OFFER &&
+               sys->avenueVisitorPending == FALSE &&
                GameBeaconSys_AddAvenueVisitor(sys, beacon, JOIN_AVE_ARRIVAL_FUNFEST)) {
         sys->avenueVisitorPending = TRUE;
     }
@@ -583,20 +592,20 @@ BOOL GameBeaconSys_Receive(const GameBeacon *beacon) {
         return FALSE;
     }
 
-    if (beacon->type == 0x19) {
-        if (beacon->payload.gift.key != 0x2932013a) {
+    if (beacon->type == GAME_BEACON_TYPE_GIFT_SPECIES) {
+        if (beacon->payload.gift.key != GAME_BEACON_GIFT_KEY_SPECIES) {
             return FALSE;
         }
-    } else if (beacon->type == 0x1a) {
-        if (beacon->payload.gift.key != 0x48841dc1) {
+    } else if (beacon->type == GAME_BEACON_TYPE_GIFT_ITEM) {
+        if (beacon->payload.gift.key != GAME_BEACON_GIFT_KEY_ITEM) {
             return FALSE;
         }
-    } else if (beacon->type == 0x1b) {
-        if (beacon->payload.gift.key != 0x701ddc92) {
+    } else if (beacon->type == GAME_BEACON_TYPE_GIFT_MYSTERY) {
+        if (beacon->payload.gift.key != GAME_BEACON_GIFT_KEY_MYSTERY) {
             return FALSE;
         }
-    } else if (beacon->type == 0x32) {
-        if (beacon->payload.gift.key != 0xfee48201) {
+    } else if (beacon->type == GAME_BEACON_TYPE_GIFT_PASS_POWER) {
+        if (beacon->payload.gift.key != GAME_BEACON_GIFT_KEY_PASS_POWER) {
             return FALSE;
         }
     }
@@ -712,7 +721,7 @@ static void GameBeacon_Init(GameBeacon *beacon, GameData *gameData) {
     int i;
 
     OS_GetOwnerInfo(&owner);
-    beacon->targetVersions = 0xff;
+    beacon->targetVersions = GAME_BEACON_TARGET_VERSIONS_ALL;
     beacon->zoneId = PlayerState_GetZoneID(GameData_GetPlayerState(gameData));
     if (GetZoneIsUnionRoom(beacon->zoneId) == TRUE || IsZone150Or151(beacon->zoneId) == TRUE) {
         beacon->zoneId = GameData_GetNextZone(gameData)->zoneId;
@@ -762,7 +771,7 @@ static void GameBeacon_Init(GameBeacon *beacon, GameData *gameData) {
         }
     }
     GameBeacon_ClearRecent(beacon);
-    beacon->type = 0;
+    beacon->type = GAME_BEACON_TYPE_NONE;
 }
 
 static BOOL GameBeaconSys_AddAvenueVisitor(GameBeaconSystem *sys, const GameBeacon *beacon, u32 arrivalMethod) {
@@ -802,11 +811,11 @@ static void GameBeaconSendSlot_ResetHeader(GameBeaconSendSlot *slot, u8 targetVe
 }
 
 void GameBeaconSendSlot_Reset(GameBeaconSendSlot *slot) {
-    GameBeaconSendSlot_ResetHeader(slot, 0xff);
+    GameBeaconSendSlot_ResetHeader(slot, GAME_BEACON_TARGET_VERSIONS_ALL);
 }
 
 void GameBeaconSendSlot_ResetB2W2Only(GameBeaconSendSlot *slot) {
-    GameBeaconSendSlot_ResetHeader(slot, 0xfc);
+    GameBeaconSendSlot_ResetHeader(slot, GAME_BEACON_TARGET_VERSIONS_B2W2);
 }
 
 void GameBeaconSendSlot_SetMission(GameBeaconSendSlot *slot, u16 type, u32 value) {
@@ -827,17 +836,17 @@ void GameBeaconSendSlot_SetMissionEx(GameBeaconSendSlot *slot, u16 type, u32 val
     newSlot = *slot;
     GameBeaconSendSlot_ResetB2W2Only(&newSlot);
     LinkFestival_FillMissionInfo(festival, &beacon->payload.missionInfo, value);
-    if (type == 0x67) {
+    if (type == GAME_BEACON_TYPE_MISSION_TEXT) {
         GameBeacon_StoreTextN((const StrBuf *)value, beacon->payload.mission.text, 8);
-        beacon->arg.mission.unk = extra;
+        beacon->arg.mission.presetIndex = extra;
     } else {
-        beacon->arg.mission.unk = 0;
+        beacon->arg.mission.presetIndex = 0;
     }
     beacon->type = type;
     beacon->arg.mission.missionId = config->missionId;
     beacon->missionWord = config->seed;
     GameBeacon_ClearRecent(beacon);
-    if (type != 0x3c) {
+    if (type != GAME_BEACON_TYPE_MISSION) {
         FestMissionLog_AddBeacon(festival, &newSlot.beacon, LinkFestival_GetScore(festival), 2, 1);
     }
     if (GameBeaconSys_CanSendType(type) == TRUE) {
@@ -846,14 +855,14 @@ void GameBeaconSendSlot_SetMissionEx(GameBeaconSendSlot *slot, u16 type, u32 val
 }
 
 BOOL GameBeacon_IsMissionType(const GameBeacon *beacon) {
-    if (beacon->type < 0x3c || beacon->type > 0x67) {
+    if (beacon->type < GAME_BEACON_TYPE_MISSION || beacon->type > GAME_BEACON_TYPE_MISSION_TEXT) {
         return FALSE;
     }
     return TRUE;
 }
 
 BOOL GameBeacon_HasMissionInfo(const GameBeacon *beacon) {
-    if (beacon->type < 0x3c || beacon->type > 0x66) {
+    if (beacon->type < GAME_BEACON_TYPE_MISSION || beacon->type > GAME_BEACON_TYPE_MISSION_LOW_PP) {
         return FALSE;
     }
     return TRUE;
@@ -984,54 +993,54 @@ void GameBeaconSys_SetFavoriteMedal(u32 value) {
     slot->updated = TRUE;
 }
 
-void GameBeaconSys_SendCapture(u16 species, BOOL a1, BOOL a2) {
+void GameBeaconSys_SendCapture(u16 species, BOOL effectEncount, BOOL disguised) {
     if (GameBeacon_IsSpecialSpecies(species)) {
         GameBeaconSys_SendCaptureSpecial(species);
         return;
     }
-    if (!GameBeaconSys_SendCaptureMission(species, a1, a2)) {
+    if (!GameBeaconSys_SendCaptureMission(species, effectEncount, disguised)) {
         GameBeaconSys_SendCaptureWild(species);
     }
 }
 
 static void GameBeaconSys_SendCaptureWild(u16 species) {
-    if (GameBeaconSys_CanSendType(0xe)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_WILD_CAPTURE)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_SetCaptureWild(&GameBeaconSys->mine.beacon, species);
     }
 }
 
 static void GameBeacon_SetCaptureWild(GameBeacon *beacon, u16 species) {
-    beacon->type = 0xe;
+    beacon->type = GAME_BEACON_TYPE_WILD_CAPTURE;
     beacon->arg.value = species;
     GameBeacon_ClearRecent(beacon);
 }
 
 static void GameBeaconSys_SendCaptureSpecial(u16 species) {
-    if (GameBeaconSys_CanSendType(0xf)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_SPECIAL_CAPTURE)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_SetCaptureSpecial(&GameBeaconSys->mine.beacon, species);
     }
 }
 
 static void GameBeacon_SetCaptureSpecial(GameBeacon *beacon, u16 species) {
-    beacon->type = 0xf;
+    beacon->type = GAME_BEACON_TYPE_SPECIAL_CAPTURE;
     beacon->arg.value = species;
     GameBeacon_ClearRecent(beacon);
 }
 
-static BOOL GameBeaconSys_SendCaptureMission(u16 species, BOOL a1, BOOL a2) {
+static BOOL GameBeaconSys_SendCaptureMission(u16 species, BOOL effectEncount, BOOL disguised) {
     u16 type;
     u32 mission;
 
-    if (a1) {
-        type = 0x4e;
-        mission = 0x14;
-    } else if (a2) {
-        type = 0x50;
-        mission = 0x16;
+    if (effectEncount) {
+        type = GAME_BEACON_TYPE_MISSION_KIND1_CAUGHT;
+        mission = LOG_KIND_KIND1_CAUGHT;
+    } else if (disguised) {
+        type = GAME_BEACON_TYPE_MISSION_FLAGS_CAUGHT;
+        mission = LOG_KIND_FLAGS_CAUGHT;
     } else {
-        type = 0x40;
+        type = GAME_BEACON_TYPE_MISSION_CAUGHT;
         mission = 6;
     }
     if (GameBeaconSys_AddMissionScore(mission, species)) {
@@ -1041,18 +1050,18 @@ static BOOL GameBeaconSys_SendCaptureMission(u16 species, BOOL a1, BOOL a2) {
     return FALSE;
 }
 
-void GameBeaconSys_SendDefeatMission(u16 species, BOOL a1, BOOL a2) {
+void GameBeaconSys_SendDefeatMission(u16 species, BOOL effectEncount, BOOL disguised) {
     u16 type;
     u32 mission;
 
-    if (a1) {
-        type = 0x4d;
-        mission = 0x13;
-    } else if (a2) {
-        type = 0x4f;
-        mission = 0x15;
+    if (effectEncount) {
+        type = GAME_BEACON_TYPE_MISSION_KIND1_DEFEATED;
+        mission = LOG_KIND_KIND1_DEFEATED;
+    } else if (disguised) {
+        type = GAME_BEACON_TYPE_MISSION_FLAGS_DEFEATED;
+        mission = LOG_KIND_FLAGS_DEFEATED;
     } else {
-        type = 0x3f;
+        type = GAME_BEACON_TYPE_MISSION_DEFEATED;
         mission = 5;
     }
     if (GameBeaconSys_AddMissionScore(mission, species)) {
@@ -1061,50 +1070,50 @@ void GameBeaconSys_SendDefeatMission(u16 species, BOOL a1, BOOL a2) {
 }
 
 void GameBeaconSys_SendNickname(const StrBuf *nickname) {
-    if (GameBeaconSys_CanSendType(0x10)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_LEVEL_UP)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_SetType10(&GameBeaconSys->mine.beacon, nickname);
     }
 }
 
 static void GameBeacon_SetType10(GameBeacon *beacon, const StrBuf *nickname) {
-    beacon->type = 0x10;
+    beacon->type = GAME_BEACON_TYPE_LEVEL_UP;
     GameBeacon_StoreText(nickname, beacon->payload.text);
 }
 
 void GameBeaconSys_SendEvolution(u16 species, const StrBuf *nickname) {
-    if (GameBeaconSys_CanSendType(0x11)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_EVOLUTION)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_SetEvolution(&GameBeaconSys->mine.beacon, species, nickname);
     }
 }
 
 static void GameBeacon_SetEvolution(GameBeacon *beacon, u16 species, const StrBuf *nickname) {
-    beacon->type = 0x11;
+    beacon->type = GAME_BEACON_TYPE_EVOLUTION;
     beacon->arg.value = species;
     GameBeacon_StoreText(nickname, beacon->payload.text);
     GameBeacon_ClearRecent(beacon);
 }
 
 static void GameBeaconSys_SendPlayTime(u16 hours) {
-    if (GameBeaconSys_CanSendType(0x14)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_PLAY_TIME)) {
         GameBeaconSendSlot_Reset(&GameBeaconSys->mine);
         GameBeacon_SetPlayTime(&GameBeaconSys->mine.beacon, hours);
     }
 }
 
 static void GameBeacon_SetPlayTime(GameBeacon *beacon, u16 hours) {
-    beacon->type = 0x14;
+    beacon->type = GAME_BEACON_TYPE_PLAY_TIME;
     beacon->payload.value = hours;
     GameBeacon_ClearRecent(beacon);
 }
 
 void GameBeaconSys_SendItemUse(u16 item) {
     if (GameBeaconSys_AddMissionScore(0xb, item)) {
-        GameBeaconSendSlot_SetMission(&GameBeaconSys->mine, 0x45, item);
+        GameBeaconSendSlot_SetMission(&GameBeaconSys->mine, GAME_BEACON_TYPE_MISSION_USED_ITEM, item);
         return;
     }
-    if (GameBeaconSys_CanSendType(0x23)) {
+    if (GameBeaconSys_CanSendType(GAME_BEACON_TYPE_ITEM_USED)) {
         if (PML_ItemIsB2W2Only(item)) {
             GameBeaconSendSlot_ResetB2W2Only(&GameBeaconSys->mine);
         } else {
@@ -1115,7 +1124,7 @@ void GameBeaconSys_SendItemUse(u16 item) {
 }
 
 static void GameBeacon_SetItem(GameBeacon *beacon, u16 item) {
-    beacon->type = 0x23;
+    beacon->type = GAME_BEACON_TYPE_ITEM_USED;
     beacon->payload.value = item;
     GameBeacon_ClearRecent(beacon);
 }
@@ -1145,28 +1154,28 @@ static void GameBeacon_UpdateZone(GameBeacon *beacon, u16 zoneId, GameData *game
 }
 
 void GameBeacon_SetRecentKind0(GameBeacon *beacon, u16 species) {
-    beacon->recentKind = 0;
+    beacon->recentKind = GAME_BEACON_RECENT_WILD_SPECIES;
     beacon->recentValue = species;
 }
 
 void GameBeacon_SetRecentKind1(GameBeacon *beacon, u16 species) {
-    beacon->recentKind = 1;
+    beacon->recentKind = GAME_BEACON_RECENT_SPECIAL_SPECIES;
     beacon->recentValue = species;
 }
 
-void GameBeacon_SetRecentKind2(GameBeacon *beacon, u16 item) {
-    beacon->recentKind = 2;
-    beacon->recentValue = item;
+void GameBeacon_SetRecentKind2(GameBeacon *beacon, u16 trainerId) {
+    beacon->recentKind = GAME_BEACON_RECENT_TRAINER;
+    beacon->recentValue = trainerId;
 }
 
-void GameBeacon_SetRecentKind3(GameBeacon *beacon, u16 item) {
-    beacon->recentKind = 3;
-    beacon->recentValue = item;
+void GameBeacon_SetRecentKind3(GameBeacon *beacon, u16 trainerId) {
+    beacon->recentKind = GAME_BEACON_RECENT_LEADER;
+    beacon->recentValue = trainerId;
 }
 
-void GameBeacon_SetRecentKind4(GameBeacon *beacon, u16 item) {
-    beacon->recentKind = 4;
-    beacon->recentValue = item;
+void GameBeacon_SetRecentKind4(GameBeacon *beacon, u16 trainerId) {
+    beacon->recentKind = GAME_BEACON_RECENT_SPECIAL_TRAINER;
+    beacon->recentValue = trainerId;
 }
 
 void GameBeacon_ClearRecent(GameBeacon *beacon) {
@@ -1188,7 +1197,7 @@ static void GameBeacon_SetMyCGearRecord(const PMSData *record) {
 }
 
 void GameBeaconSys_SendMission(void) {
-    u16 type = 0x3c;
+    u16 type = GAME_BEACON_TYPE_MISSION;
 
     if (GameBeaconSys_CanSendType(type)) {
         GameBeaconSendSlot_SetMission(&GameBeaconSys->mine, type, 0);
@@ -1218,8 +1227,8 @@ static void GameBeaconSys_SendAvenueAd(GameBeaconSystem *sys) {
     JoinAvenueVisitor_StoreInBeacon(work, &sys->mine.beacon);
     GameBeaconSendSlot_Reset(&sys->mine);
     JoinAvenueVisitor_Free(work);
-    if (sys->mine.beacon.type == 0) {
-        sys->mine.beacon.type = 1;
+    if (sys->mine.beacon.type == GAME_BEACON_TYPE_NONE) {
+        sys->mine.beacon.type = GAME_BEACON_TYPE_DEFAULT;
     }
 }
 
