@@ -57,6 +57,12 @@ BoxPkm *BoxSaveAccessor_GetPkm(BoxSaveAccessor *boxes, u32 box, u32 slot);
 // Allocates a copy of a boxed Pokémon, which BoxSaveAccessor_FreePkmCopy frees
 BoxPkm *copyBoxedPkmToBuf(BoxSaveAccessor *boxes, u32 box, u32 slot, HeapID heapId);
 void BoxSaveAccessor_FreePkmCopy(BoxPkm *pkm);
+// The sets of extra wallpapers that are unlocked, which BoxSaveAccessor_SetFlags and _CheckFlags take
+enum {
+    BOX_WALLPAPER_SET_1 = 1,
+    BOX_WALLPAPER_SET_2 = 2,
+};
+
 // Sets flags of the main block: the sets of extra wallpapers that are unlocked
 void BoxSaveAccessor_SetFlags(BoxSaveAccessor *boxes, u32 flags);
 // Whether a set of extra wallpapers (1 or 2) is unlocked

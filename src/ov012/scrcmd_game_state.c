@@ -13,6 +13,7 @@
 #include "field/scrcmd_game_state.h"
 #include "field/trainer_script.h"
 #include "field/zone.h"
+#include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
 #include "gfl/random.h"
@@ -307,10 +308,10 @@ BOOL Scrcmd_GameState_PokeDexRegist(VM *vm, FieldScriptEnv *env) {
     PartyPkm *pkm = PokeParty_NewTempPkm(species, 1, 0xffffffff00000000ULL, heapId);
 
     switch (kind) {
-    case 0:
+    case POKEDEX_REGIST_SEEN:
         PokeDex_RegistPkm(pokedex, pkm);
         break;
-    case 1:
+    case POKEDEX_REGIST_CAUGHT:
         break;
     }
 
@@ -325,10 +326,10 @@ BOOL Scrcmd_GameState_PokeDexIsRegist(VM *vm, FieldScriptEnv *env) {
     u16 *result = ScriptReadVar(vm, env);
 
     switch (kind) {
-    case 0:
+    case POKEDEX_REGIST_SEEN:
         *result = PokeDex_IsSeen(pokedex, species);
         break;
-    case 1:
+    case POKEDEX_REGIST_CAUGHT:
         *result = PokeDex_IsCaught(pokedex, species);
         break;
     default:
@@ -344,10 +345,10 @@ BOOL Scrcmd_GameState_PokeDexGetCount(VM *vm, FieldScriptEnv *env) {
     u16 *result = ScriptReadVar(vm, env);
 
     switch (kind) {
-    case 0:
+    case POKEDEX_REGIST_SEEN:
         *result = PokeDex_GetSeenNoNational(pokedex);
         break;
-    case 1:
+    case POKEDEX_REGIST_CAUGHT:
         *result = PokeDex_GetCaughtNoNational(pokedex);
         break;
     default:
@@ -391,10 +392,10 @@ BOOL Scrcmd_GameState_SetSoftResetBlocked(VM *vm, FieldScriptEnv *env) {
     u16 index = ScriptReadAny(vm, env);
 
     switch (mode) {
-    case 0:
+    case SOFT_RESET_SET_BLOCKED:
         GCTX_HIDBlockSoftReset(sSystemUIFlags[index]);
         break;
-    case 1:
+    case SOFT_RESET_CLEAR_BLOCKED:
         GCTX_HIDUnblockSoftReset(sSystemUIFlags[index]);
         break;
     }
@@ -429,11 +430,11 @@ BOOL Scrcmd_GameState_SaveDataCheckRequired(VM *vm, FieldScriptEnv *env) {
     u16 *value = ScriptReadVar(vm, env);
 
     switch (Config_GetSaveBeforeIR(config)) {
-    case 0:
-        *value = 0;
+    case FALSE:
+        *value = FALSE;
         break;
-    case 1:
-        *value = 1;
+    case TRUE:
+        *value = TRUE;
         break;
     }
     return FALSE;
@@ -449,7 +450,7 @@ BOOL Scrcmd_GameState_BoxUnlockWallpapers(VM *vm, FieldScriptEnv *env) {
     u16 flags = ScriptReadAny(vm, env);
     BoxSaveAccessor *box = GameData_GetBoxSaveAccessor(FieldScriptEnv_GetGameData(env));
 
-    if (flags == 1 || flags == 2) {
+    if (flags == BOX_WALLPAPER_SET_1 || flags == BOX_WALLPAPER_SET_2) {
         BoxSaveAccessor_SetFlags(box, flags);
     }
     return FALSE;
@@ -508,19 +509,19 @@ BOOL Scrcmd_GameState_HOFCheckIntegrity(VM *vm, FieldScriptEnv *env) {
     if (EventWork_FlagGet(eventWork, 0x960)) {
         save = GameData_GetSaveControl(gameData);
         switch (SaveControl_OpenExtraBlock(save, 8, HEAPID_GAMEEVENT)) {
-        case 0:
-            *result = 0;
+        case SAVE_LOAD_RESULT_NONE:
+            *result = HOF_INTEGRITY_NO_TEAMS;
             break;
-        case 1:
-        case 2:
+        case SAVE_LOAD_RESULT_OK:
+        case SAVE_LOAD_RESULT_OK_PARTIAL:
             if (HallOfFameSave_GetTeamCount(getAddressOfExtraSaveBlk(save, 8, 0)) == 0) {
-                *result = 0;
+                *result = HOF_INTEGRITY_NO_TEAMS;
             } else {
-                *result = 1;
+                *result = HOF_INTEGRITY_HAS_TEAMS;
             }
             break;
         default:
-            *result = 2;
+            *result = HOF_INTEGRITY_UNREADABLE;
             break;
         }
         freeIntermediateSaveExtraBlksAfterLoad(save, 8);

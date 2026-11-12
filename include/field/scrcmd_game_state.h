@@ -9,6 +9,27 @@
 #include "struct_decls.h"
 #include "system/vm.h"
 
+// What Scrcmd_GameState_PokeDexRegist, _PokeDexIsRegist and _PokeDexGetCount ask of a species: whether it is seen or
+// caught. Regist's caught mode does nothing, as the scripts register a species as seen
+enum {
+    POKEDEX_REGIST_SEEN = 0,
+    POKEDEX_REGIST_CAUGHT = 1,
+};
+
+// What Scrcmd_GameState_SetSoftResetBlocked does with the system UI's 0x40 flag: blocks the soft reset or unblocks it
+enum {
+    SOFT_RESET_SET_BLOCKED = 0,
+    SOFT_RESET_CLEAR_BLOCKED = 1,
+};
+
+// What Scrcmd_GameState_HOFCheckIntegrity reports of the Hall of Fame's block: no teams, teams, or a block that would
+// not open, which the record system's script checks
+enum {
+    HOF_INTEGRITY_NO_TEAMS = 0,
+    HOF_INTEGRITY_HAS_TEAMS = 1,
+    HOF_INTEGRITY_UNREADABLE = 2,
+};
+
 BOOL Scrcmd_GameState_GameGetVersion(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_GameState_ConfigToggleKanji(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_GameState_ConfigGetKanji(VM *vm, FieldScriptEnv *env);
