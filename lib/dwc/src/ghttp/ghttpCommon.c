@@ -90,7 +90,7 @@ GHIRecvResult ghiDoReceive(GHIConnection *connection, char buffer[], int *size) 
         }
     }
 
-    if (connection->encryptor.mEngine != 0 && connection->encryptor.mSessionEstablished == 1 &&
+    if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None && connection->encryptor.mSessionEstablished == 1 &&
         connection->encryptor.mEncryptOnSend == 1) {
         int length = max;
 
@@ -144,7 +144,7 @@ int ghiDoSend(GHIConnection *connection, const char *data, int size) {
         return 0;
     }
 
-    if (connection->encryptor.mEngine != 0 && connection->encryptor.mSessionEstablished == 1 &&
+    if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None && connection->encryptor.mSessionEstablished == 1 &&
         connection->encryptor.mEncryptOnSend == 1) {
         int count = 0;
 
@@ -185,7 +185,7 @@ int ghiDoSend(GHIConnection *connection, const char *data, int size) {
 GHITrySendResult ghiTrySendThenBuffer(GHIConnection *connection, const char *data, int size) {
     int sent = 0;
 
-    if (connection->encryptor.mEngine != 0 && connection->encryptor.mSessionEstablished == 1 &&
+    if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None && connection->encryptor.mSessionEstablished == 1 &&
         connection->encryptor.mEncryptOnBuffer == 1) {
         if (!ghiEncryptDataToBuffer(&connection->sendBuffer, data, size)) {
             return 0;

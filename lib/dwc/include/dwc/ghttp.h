@@ -23,9 +23,9 @@ typedef enum {
     GHTTPReceivingStatus,
     GHTTPReceivingHeaders,
     GHTTPReceivingFile,
-    // BW2's client adds the closing of a connection after the client's own states: ghiProcessConnection sets it when
-    // the close has to wait, and logs "Connection Closing"
-    GHTTPClosing
+    // The client's last state, for closing a connection: ghttpCancelRequest sets it, and ghiProcessConnection sets it
+    // when the close has to wait, logging "Connection Closing"
+    GHTTPDisconnecting
 } GHTTPState;
 
 typedef enum {
@@ -47,7 +47,8 @@ typedef enum {
     GHTTPFileIncomplete,
     GHTTPFileToBig,
     GHTTPEncryptionError,
-    GHTTPRequestCancelled
+    GHTTPRequestCancelled,
+    GHTTPRecvFileTimeout
 } GHTTPResult;
 
 typedef enum {
@@ -55,6 +56,7 @@ typedef enum {
     GHTTPEncryptionEngine_GameSpy,
     GHTTPEncryptionEngine_MatrixSsl,
     GHTTPEncryptionEngine_RevoEx,
+    GHTTPEncryptionEngine_Twl,
     GHTTPEncryptionEngine_Default
 } GHTTPEncryptionEngine;
 
