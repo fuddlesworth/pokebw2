@@ -53,6 +53,15 @@ enum {
     NHTTP_STAGE_DONE,
 };
 
+// What a step of the thread returns: go on with the request, stop it, start it again because the server closed the
+// connection, or stop it because the connection is gone or the request was canceled
+enum {
+    NHTTP_THREAD_CONTINUE,
+    NHTTP_THREAD_STOP,
+    NHTTP_THREAD_RETRY,
+    NHTTP_THREAD_CANCELED,
+};
+
 typedef struct NHttpState NHttpState;
 typedef struct NHTTPReq NHTTPReq;
 typedef struct NHTTPRes NHTTPRes;
@@ -153,17 +162,6 @@ struct NHTTPRes {
     void *userParam;
 };
 
-// The settings that NHttpSslConnect gives the socket library to make a connection secure
-typedef struct NHttpSslInfo {
-    u8 unk_000[0x800];
-    char *hostName;
-    u8 unk_804[0xc];
-    u32 (*filter)(u32);
-    void *rootCerts;
-    int rootCertCount;
-    u8 unk_81C[0x14];
-} NHttpSslInfo;
-
 // What a request is: its url and the parts of it, the headers and post data it carries, and the settings that
 // NHTTP_SetRootCA and the like give
 struct NHTTPReq {
@@ -184,7 +182,9 @@ struct NHTTPReq {
     char boundary[NHTTP_BOUNDARY_SIZE];
     char authorization[0x5c];
     int authorizationSize;
-    NHttpSslInfo *ssl;
+    // The settings that SOCL_EnableSsl takes, NitroWiFi's CPSSslConnection: the server to check the certificate
+    // against, the callback that checks it and the root CAs
+    CPSSslConnection *ssl;
     int unk_B0;
     int unk_B4;
     int unk_B8;
@@ -247,7 +247,8 @@ typedef struct NHttpRoot {
 typedef struct NHttpThreadWork {
     int id;
     char hostName[0x100];
-    char unk_104[0x200];
+    // Takes the body when the caller's buffer is full and its callback gives no other
+    char scratchBuffer[0x200];
     char statusLine[0xe];
     u8 unk_312[2];
     u32 address;
@@ -395,6 +396,16 @@ BOOL NHTTPi_IsCreateCommThreadMessageQueue(NHttpThreadInfo *info);
 BOOL NHTTPi_CheckHeaderEnd(const char *tail, int count);
 int saveBuf(NHTTPReq *request, u8 *sendBuffer, int sock, int *count, const u8 *data, int size);
 void NHTTPi_CommThreadProcMain(void);
+
+// What NHTTPi_ControlConnectionList does with the list: find the connection that is the key, or that holds the request
+// or the response that is the key, or put the key in or take it out
+enum {
+    NHTTP_CONNECTION_LIST_FIND,
+    NHTTP_CONNECTION_LIST_FIND_BY_REQUEST,
+    NHTTP_CONNECTION_LIST_FIND_BY_RESPONSE,
+    NHTTP_CONNECTION_LIST_ADD,
+    NHTTP_CONNECTION_LIST_REMOVE,
+};
 
 // d_nhttp_common
 NHttpRoot *NHTTPi_GetSystemInfoP(void);

@@ -70,13 +70,13 @@ u8 DWCi_AC_Start(void) {
         DWCi_AC_MakeSearchList(0);
         result = WCM_StartupAsync(&config, DWCi_AC_CallBackWCM);
         if (result == 1 || result >= 4) {
-            DWCi_AC_SetError(1);
-            return 0x11;
+            DWCi_AC_SetError(DWC_AC_ERROR_WCM_START);
+            return DWC_AC_PHASE_ERROR;
         }
     } else {
-        return 1;
+        return DWC_AC_PHASE_START;
     }
-    return 2;
+    return DWC_AC_PHASE_SEARCH_START;
 }
 
 // The states 10 to 15. While the wireless manager holds the connection (its state 9), each does its
@@ -88,42 +88,42 @@ u8 DWCi_AC_ConnectTest(void) {
     u8 state = DWCi_AC_GetPhase();
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
-    if (WCM_GetPhase() == 9) {
+    if (WCM_GetPhase() == WCM_PHASE_DCF) {
         switch (state) {
-        case 10:
+        case DWC_AC_PHASE_TEST_START:
             state = ConnectTestStart(work);
             break;
-        case 12:
+        case DWC_AC_PHASE_TEST_ADDRESS:
             state = GetIPAddress(work);
             break;
-        case 13:
+        case DWC_AC_PHASE_TEST_CREATE:
             state = ConnectTestCreate();
             break;
-        case 14:
+        case DWC_AC_PHASE_TEST_PROCESS:
             state = ConnectTestProcess(work);
             break;
-        case 15:
+        case DWC_AC_PHASE_TEST_END:
             state = ConnectTestEnd(work);
             break;
-        case 11:
+        case DWC_AC_PHASE_TEST_RETRY:
             state = ConnectTestRetry();
             break;
         }
     } else {
         switch (state) {
-        case 15:
+        case DWC_AC_PHASE_TEST_END:
             state = ConnectTestEnd(work);
             break;
-        case 11:
+        case DWC_AC_PHASE_TEST_RETRY:
             state = ConnectTestRetry();
             break;
-        case 14:
+        case DWC_AC_PHASE_TEST_PROCESS:
             DWC_Netcheck_Abort();
             DWC_Netcheck_Destroy();
             // fall through to the loss of the candidate
         default:
             work->findList[work->connectNo].state = DWC_AC_RESULT_LOST;
-            state = 11;
+            state = DWC_AC_PHASE_TEST_RETRY;
             break;
         }
     }
@@ -139,10 +139,10 @@ static u8 ConnectTestStart(ACWORK *work) {
     MakeSOCConfig(main, work, config);
     SOCLiYieldWait = 4;
     if (SOC_Startup(config) == 0) {
-        return 12;
+        return DWC_AC_PHASE_TEST_ADDRESS;
     }
-    DWCi_AC_SetError(2);
-    return 0x11;
+    DWCi_AC_SetError(DWC_AC_ERROR_SOC_START);
+    return DWC_AC_PHASE_ERROR;
 }
 
 // State 12, waits for the address. When it has come, gives SOC the DNS servers of the setting, and
@@ -154,31 +154,31 @@ static u8 GetIPAddress(ACWORK *work) {
     if (SOC_GetHostID() != 0) {
         CheckSetDNS(work);
         if (work->skipConnectionTest == 1) {
-            return 15;
+            return DWC_AC_PHASE_TEST_END;
         }
         type = DWCi_ConvConnectAPType(work->connectApType);
         if (type >= 10 && type <= 12) {
-            if (OS_IsRunOnTwl() && work->dsiSettings[(u8)(type - 10)].unk_182 != 0) {
-                return 15;
+            if (OS_IsRunOnTwl() && work->dsiSettings[(u8)(type - 10)].proxyMode != 0) {
+                return DWC_AC_PHASE_TEST_END;
             }
         }
-        return 13;
+        return DWC_AC_PHASE_TEST_CREATE;
     }
     if (OS_TicksToSeconds(OS_GetTick() - work->timeOut) < 10) {
-        return 12;
+        return DWC_AC_PHASE_TEST_ADDRESS;
     }
     work->findList[work->connectNo].state = DWC_AC_RESULT_GAVE_UP;
-    return 11;
+    return DWC_AC_PHASE_TEST_RETRY;
 }
 
 // State 13, starts the connection test of overlay 11 with the memory functions. 14 to wait
 // for it, or 0x11, the teardown, if it will not start
 static u8 ConnectTestCreate(void) {
     if (DWC_Netcheck_Create(DWCi_AC_GetMemPtr(DWC_AC_WORK_MEMFUNCS)) == 0) {
-        return 14;
+        return DWC_AC_PHASE_TEST_PROCESS;
     }
-    DWCi_AC_SetError(3);
-    return 0x11;
+    DWCi_AC_SetError(DWC_AC_ERROR_NETCHECK_CREATE);
+    return DWC_AC_PHASE_ERROR;
 }
 
 // State 14, waits for the connection test. Once it is over, takes its result for the error
@@ -193,19 +193,19 @@ static u8 ConnectTestProcess(ACWORK *work) {
             main->errorTest = DWC_Netcheck_GetReturnCode();
         }
         DWC_Netcheck_Destroy();
-        if (status != 11) {
+        if (status != DWCNETCHECK_E_NETAVAIL) {
             work->findList[work->connectNo].state = DWC_AC_RESULT_GAVE_UP;
             if (CPSNoIpReason == CPS_NOIP_REASON_COLLISION) {
                 main->addressInUse = 1;
             } else {
                 main->addressInUse = 0;
             }
-            return 11;
+            return DWC_AC_PHASE_TEST_RETRY;
         } else {
-            return 15;
+            return DWC_AC_PHASE_TEST_END;
         }
     } else {
-        return 14;
+        return DWC_AC_PHASE_TEST_PROCESS;
     }
 }
 
@@ -214,7 +214,7 @@ static u8 ConnectTestProcess(ACWORK *work) {
 static u8 ConnectTestEnd(ACWORK *work) {
     DWCi_AC_SetApType(work->connectApType);
     DWCAc_NoteKeyMode(work->connectApType);
-    return 16;
+    return DWC_AC_PHASE_COMPLETE;
 }
 
 // State 11, takes the sockets down: SOCL first, then SOC. 9, the end of the candidate, once they are
@@ -223,13 +223,13 @@ static u8 ConnectTestRetry(void) {
     int result;
 
     if (SOCL_CalmDown() != 0) {
-        return 11;
+        return DWC_AC_PHASE_TEST_RETRY;
     }
     result = SOC_Cleanup();
     if (result == 0 || result == SOCL_ENETRESET) {
-        return 9;
+        return DWC_AC_PHASE_CONNECT_RETRY;
     }
-    return 11;
+    return DWC_AC_PHASE_TEST_RETRY;
 }
 
 // Makes the configuration for SOC_Startup from the setting that the connection is with: the

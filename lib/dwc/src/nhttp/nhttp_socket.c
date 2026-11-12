@@ -5,18 +5,19 @@
 // The bytes that seed the random numbers of a secure connection
 static u32 sEntropy[8];
 
-static u32 NHttpSocSslFilterDropBit15(u32 flags);
-static u32 NHttpSocSslFilterNone(u32 flags);
+static int NHttpSocSslValidateCertificate(int result, CPSSslConnection *connection, int index);
+static int NHttpSocSslValidateCertificateNone(int result, CPSSslConnection *connection, int index);
 static void NHTTPi_SetSSLseed(void);
 
-static u32 NHttpSocSslFilterDropBit15(u32 flags) {
-    if (flags & 0x8000) {
-        flags &= ~0x8000;
+// Drops only NitroWiFi's "certificate out of date" bit, which the request's verify option ignores
+static int NHttpSocSslValidateCertificate(int result, CPSSslConnection *connection, int index) {
+    if (result & CPS_CERT_OUTOFDATE) {
+        result &= ~CPS_CERT_OUTOFDATE;
     }
-    return flags;
+    return result;
 }
 
-static u32 NHttpSocSslFilterNone(u32 flags) {
+static int NHttpSocSslValidateCertificateNone(int result, CPSSslConnection *connection, int index) {
     return 0;
 }
 
@@ -90,20 +91,20 @@ int NHTTPi_SocConnect(NHttpState *state, NHttpMutexInfo *mutexInfo, NHTTPReq *re
 // Makes the socket's connection secure, with the request's root certificates and its host to check the server's
 // against
 int NHTTPi_SocSSLConnect(NHttpState *state, NHttpMutexInfo *mutexInfo, NHTTPReq *request, int sock) {
-    NHttpSslInfo *ssl = request->ssl;
+    CPSSslConnection *ssl = request->ssl;
 
     if (ssl == NULL) {
-        ssl = NHTTPi_alloc(sizeof(NHttpSslInfo), 4);
+        ssl = NHTTPi_alloc(sizeof(CPSSslConnection), 4);
         request->ssl = ssl;
-        NHTTPi_memclr(ssl, sizeof(NHttpSslInfo));
+        NHTTPi_memclr(ssl, sizeof(CPSSslConnection));
     }
-    ssl->rootCerts = request->rootCerts;
-    ssl->rootCertCount = request->rootCertCount;
-    ssl->hostName = request->host;
+    ssl->named_params = request->rootCerts;
+    ssl->named_param_count = request->rootCertCount;
+    ssl->hostname = request->host;
     if (request->skipVerify != 0) {
-        ssl->filter = NHttpSocSslFilterNone;
+        ssl->validate_certificate = NHttpSocSslValidateCertificateNone;
     } else {
-        ssl->filter = NHttpSocSslFilterDropBit15;
+        ssl->validate_certificate = NHttpSocSslValidateCertificate;
     }
     if (SOCL_EnableSsl(sock, ssl) < 0) {
         return NHTTP_SOCKET_ERROR;

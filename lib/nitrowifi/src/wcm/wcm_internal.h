@@ -10,8 +10,12 @@
 typedef struct WCMWork WCMWork;
 typedef struct WCMCpsifWork WCMCpsifWork;
 
-// WCM's work, which WCM_Init's caller gives it: WCM_WORK_SIZE bytes for the DS's wireless (mode 1), 0x4800 for the
-// DSi's (mode 2), whose backend in the LTD autoload (wcm_dsi.c) drives NWM where the DS's drives WM. The part from
+// The status code of a failed association whose rate set the access point rejected
+#define WCM_CONNECT_STATUSCODE_ILLEGAL_RATESET 18
+
+// WCM's work, which WCM_Init's caller gives it: WCM_WORK_SIZE bytes for the DS's wireless
+// (WCM_DEVICEID_WM), 0x4800 for the DSi's (WCM_DEVICEID_NWM), whose backend in the LTD autoload (wcm_dsi.c)
+// drives NWM where the DS's drives WM. The part from
 // 0x13a0 is each backend's own. Most of the connect and search scratch area remains unmapped.
 struct WCMWork {
     u8 unk_0000[0x600];
@@ -23,7 +27,7 @@ struct WCMWork {
     // Descriptive private storage recovered from WCM's copies and WM command arguments.
     struct {
         u8 data[0x50];
-        u8 mode;     // Secondary descriptor mode.
+        u8 mode;     // A WCM_PRIVACYMODE_*: the secondary descriptor's mode.
         u8 argument; // Legacy key index or variable-copy byte count; mode zero retains the previous byte.
         u8 padding[2];
     } connectionStorage;  // 0x1240..0x1293; no original SDK type identity established
@@ -31,7 +35,7 @@ struct WCMWork {
     s32 dmaNo;            // 0x12c0, from WCMConfig.dmano
     void *apBuffer;       // 0x12c4, from WCMConfig.pbdbuffer: a WCMApListHeader followed by its entries
     u32 apBufferBytes;    // 0x12c8, from WCMConfig.nbdbuffer
-    u32 scanMode;         // 0x12cc, from WCMConfig.nbdmode
+    u32 scanMode;         // 0x12cc, a WCM_APLIST_MODE_* from WCMConfig.nbdmode
     WCMNotify notify;     // 0x12d0
     u32 searchOption;     // 0x12d4
     u16 scanChannelTime;  // 0x12d8, zero selects the WM default
@@ -65,8 +69,8 @@ struct WCMWork {
 
 // sWcmGlobal, right after WCM's anchor: the globals WCMi_InitCpsif sets up once
 struct WCMCpsifWork {
-    u8 initialized; // 0x00, set once WCMi_InitCpsif has initialized the send state
-    u8 unk_01[3];
+    u8 initialized;          // 0x00, set once WCMi_InitCpsif has initialized the send state
+    u8 padding_01[3];        // 0x01, aligns sendQueue
     OSThreadQueue sendQueue; // 0x04
     OSMutex mutex;           // 0x0c
     u16 sendStatus;          // 0x24
@@ -74,7 +78,7 @@ struct WCMCpsifWork {
     WCMRecvInd recvCallback;     // 0x28
     void (*sendCompletion)(s32); // 0x2c
     u8 ownMac[6];                // 0x30
-    u8 unk_36[2];
+    u8 padding_36[2];            // 0x36, tail padding
 };
 
 // An access point WCM found during a search, in a doubly linked list off the caller's apBuffer. WCM_PointApList's
@@ -82,7 +86,7 @@ struct WCMCpsifWork {
 typedef struct WCMApList WCMApList;
 struct WCMApList {
     u8 inUse;
-    u8 unk_01;
+    u8 padding_01;     // 0x01, aligns scanLinkLevel
     u16 scanLinkLevel; // DS scan link level; the DSi producer's value domain is unconfirmed
     u32 id;            // the AP list header's count when this entry was allocated or reused
     WCMApList *prev;
@@ -106,9 +110,9 @@ u16 WCMi_GetNextScanChannel(s32 channelIndex);
 // Notification callbacks run synchronously with temporary notice storage and must not retain its pointer.
 // Mixed pointer/integer payloads use ARM32 words; a host port must widen this representation.
 void WCMi_Notify(s16 result, void *parameter, u32 detail, u32 line);
-void WCMi_NotifyEx(s16 notify, s16 result, s32 parameter, void *param1, s32 param2);
+void WCMi_NotifyEx(s16 notify, s16 result, s32 parameter0, void *parameter1, s32 parameter2);
 void WCMi_SetPhase(s32 newState);
-// Cancels the timeout alarm and rearms it while connected in state 9.
+// Cancels the timeout alarm and rearms it while connected (WCM_PHASE_DCF).
 void WCMi_ResetKeepAliveAlarm(void);
 
 // wcm_cpsif.c

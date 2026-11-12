@@ -193,6 +193,7 @@ s32 OS_TryLockCard(u16 lockID) {
 // NitroSDK's OSi_AllocateCardBus, which takes the card for the ARM9 (and on the DSi, in a card slot status, sets a bit
 // of the card's control), and OSi_FreeCardBus
 static void OSi_AllocateCardBus(void) {
+    // The card slot's status, which the hardware reports and no SDK header here names
     if (((reg_SCFG_MC & 0xc) >> 2) == 2) {
         reg_MI_MCCNT1 |= REG_MI_MCCNT1_RESB_MASK;
     }
