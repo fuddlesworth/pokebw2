@@ -35,7 +35,7 @@ WMLinkLevel WCM_GetLinkLevel(void) {
     WCMWork *work = WCMi_GetSystemWork();
     WMLinkLevel quality = WM_LINK_LEVEL_0;
 
-    if (work != NULL && work->state == 9) {
+    if (work != NULL && work->state == WCM_PHASE_DCF) {
         quality = WCM_CalcLinkLevel(WCMi_GetRssiAverage());
     }
     OS_RestoreInterrupts(irq);
@@ -44,7 +44,7 @@ WMLinkLevel WCM_GetLinkLevel(void) {
 
 static WMLinkLevel WCM_CalcLinkLevel(u32 rssi) {
     switch (WCMi_GetSystemWork()->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
     default:
         if (rssi >= 0x1c) {
             return WM_LINK_LEVEL_3;
@@ -56,7 +56,7 @@ static WMLinkLevel WCM_CalcLinkLevel(u32 rssi) {
             return WM_LINK_LEVEL_1;
         }
         return WM_LINK_LEVEL_0;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (rssi >= 0x16) {
             return WM_LINK_LEVEL_3;
         }
@@ -93,9 +93,9 @@ static u8 WCMi_GetRssiAverage(void) {
 // no physical units for the encoded input or the resulting sample have been established.
 void WCMi_ShelterRssi(s32 rssi) {
     switch (WCMi_GetSystemWork()->wirelessMode) {
-    case 2:
+    case WCM_DEVICEID_NWM:
         break;
-    case 1:
+    case WCM_DEVICEID_WM:
     default:
         if (rssi & 2) {
             rssi = (u8)(rssi >> 2);

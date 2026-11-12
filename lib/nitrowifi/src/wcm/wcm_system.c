@@ -18,8 +18,8 @@ const u8 WCM_Essid_Any[] = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 };
 
-// The device ID (1 for the DS's wireless, 2 for the DSi's) that WCM_InitEx takes when its caller gives 0, ahead of the
-// hardware's default; nothing in the ROM sets it
+// The device ID (WCM_DEVICEID_WM for the DS's wireless, WCM_DEVICEID_NWM for the DSi's) that WCM_InitEx takes
+// when its caller gives WCM_DEVICEID_DEFAULT, ahead of the hardware's default; nothing in the ROM sets it
 static u8 WCMi_OverridedDeviceId = 0;
 // WCM's work, which WCM_InitEx sets and WCM_Finish clears. The two are initialized statics, which MWCC reaches from the
 // first one's address
@@ -33,7 +33,7 @@ static void WcmKeepAliveAlarm(void);
 static s32 WCMi_GetDefaultDeviceId(void);
 
 s32 WCM_Init(void *work, s32 size) {
-    return WCM_InitEx(work, size, 1);
+    return WCM_InitEx(work, size, WCM_DEVICEID_WM);
 }
 
 s32 WCM_InitEx(void *work, s32 size, s32 requestedMode) {
@@ -53,9 +53,9 @@ s32 WCM_InitEx(void *work, s32 size, s32 requestedMode) {
         return 1;
     }
     MI_CpuFill8(work, 0, size);
-    if (requestedMode == 0) {
+    if (requestedMode == WCM_DEVICEID_DEFAULT) {
         requestedMode = WCMi_OverridedDeviceId;
-        if (requestedMode == 0) {
+        if (requestedMode == WCM_DEVICEID_DEFAULT) {
             requestedMode = WCMi_GetDefaultDeviceId();
         }
     }
@@ -68,8 +68,8 @@ s32 WCM_InitEx(void *work, s32 size, s32 requestedMode) {
         return 6;
     }
     wcmw = work;
-    wcmw->state = 1;
-    wcmw->pendingNotify = 0;
+    wcmw->state = WCM_PHASE_WAIT;
+    wcmw->pendingNotify = WCM_NOTIFY_COMMON;
     wcmw->scanChannelTime = 0;
     wcmw->apListLocked = 0;
     wcmw->resetPending = 0;
@@ -94,7 +94,7 @@ s32 WCM_Finish(void) {
         OS_RestoreInterrupts(irq);
         return 1;
     }
-    if (wcmw->state != 1) {
+    if (wcmw->state != WCM_PHASE_WAIT) {
         OS_RestoreInterrupts(irq);
         return 1;
     }
@@ -104,14 +104,14 @@ s32 WCM_Finish(void) {
 }
 
 static BOOL WCM_GetWorkSize(s32 *size, s32 mode) {
-    if (mode == 0) {
+    if (mode == WCM_DEVICEID_DEFAULT) {
         mode = WCMi_GetDefaultDeviceId();
     }
     switch (mode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         *size = WCM_WORK_SIZE;
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (!OS_IsRunOnTwl()) {
             return FALSE;
         }
@@ -133,13 +133,13 @@ s32 WCM_StartupAsync(WCMConfig *config, WCMNotify notify) {
         return 1;
     }
     switch (wcmw->state) {
-    case 1:
+    case WCM_PHASE_WAIT:
         WcmConfigure(config, notify);
         break;
-    case 2:
+    case WCM_PHASE_WAIT_TO_IDLE:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 3:
+    case WCM_PHASE_IDLE:
         OS_RestoreInterrupts(irq);
         return 0;
     default:
@@ -155,15 +155,15 @@ s32 WCM_StartupAsync(WCMConfig *config, WCMNotify notify) {
         return 5;
     }
     switch (wcmw->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         result = WCMi_WmifStartupAsync();
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (OS_IsRunOnTwl()) {
             result = WCMi_NwmifStartupAsync();
             break;
         }
-        // Mode 2 without DSi hardware is unsupported, like any other mode
+        // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
     default:
         result = 7;
         break;
@@ -184,12 +184,12 @@ s32 WCM_CleanupAsync(void) {
         return 1;
     }
     switch (work->state) {
-    case 3:
+    case WCM_PHASE_IDLE:
         break;
-    case 4:
+    case WCM_PHASE_IDLE_TO_WAIT:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 1:
+    case WCM_PHASE_WAIT:
         OS_RestoreInterrupts(irq);
         return 0;
     default:
@@ -198,15 +198,15 @@ s32 WCM_CleanupAsync(void) {
     }
 
     switch (work->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         result = WCMi_WmifCleanupAsync();
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (OS_IsRunOnTwl()) {
             result = WCMi_NwmifCleanupAsync();
             break;
         }
-        // Mode 2 without DSi hardware is unsupported, like any other mode
+        // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
     default:
         result = 7;
         break;
@@ -234,15 +234,15 @@ static s32 WCM_BeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
         return 1;
     }
     switch (work->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         result = WCMi_WmifBeginSearchAsync(bssid, essid, option);
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (OS_IsRunOnTwl()) {
             result = WCMi_NwmifBeginSearchAsync(bssid, essid, option);
             break;
         }
-        // Mode 2 without DSi hardware is unsupported, like any other mode
+        // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
     default:
         result = 7;
         break;
@@ -259,14 +259,14 @@ s32 WCM_EndSearchAsync(void) {
         return 1;
     }
     switch (wcmw->state) {
-    case 6:
-        WCMi_SetPhase(7);
+    case WCM_PHASE_SEARCH:
+        WCMi_SetPhase(WCM_PHASE_SEARCH_TO_IDLE);
         wcmw->pendingNotify = WCM_NOTIFY_END_SEARCH;
         break;
-    case 7:
+    case WCM_PHASE_SEARCH_TO_IDLE:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 3:
+    case WCM_PHASE_IDLE:
         OS_RestoreInterrupts(irq);
         return 0;
     default:
@@ -289,7 +289,7 @@ s32 WCM_ConnectAsync(void *bssDesc, void *wepDesc, u32 option) {
         return 1;
     }
     switch (work->state) {
-    case 3:
+    case WCM_PHASE_IDLE:
         if (bssDesc == NULL) {
             OS_RestoreInterrupts(irq);
             return 1;
@@ -304,17 +304,18 @@ s32 WCM_ConnectAsync(void *bssDesc, void *wepDesc, u32 option) {
             // BUG: The original checks the previous argument byte, allowing a new length beyond the apparent 0x40
             // limit.
 #ifdef BUGFIX
-            if ((descriptor[0] <= 3 && descriptor[1] >= 4) || descriptor[1] > 0x40) {
+            if ((descriptor[0] <= WCM_PRIVACYMODE_128 && descriptor[1] >= 4) || descriptor[1] > 0x40) {
 #else
-            if ((descriptor[0] <= 3 && descriptor[1] >= 4) || work->connectionStorage.argument > 0x40) {
+            if ((descriptor[0] <= WCM_PRIVACYMODE_128 && descriptor[1] >= 4) ||
+                work->connectionStorage.argument > 0x40) {
 #endif
                 OS_RestoreInterrupts(irq);
                 return 1;
             }
             work->connectionStorage.mode = descriptor[0];
-            if (descriptor[0] == 0) {
+            if (descriptor[0] == WCM_PRIVACYMODE_NONE) {
                 MI_CpuFill8(work->connectionStorage.data, 0, sizeof(work->connectionStorage.data));
-            } else if (descriptor[0] <= 3) {
+            } else if (descriptor[0] <= WCM_PRIVACYMODE_128) {
                 work->connectionStorage.argument = descriptor[1];
                 MI_CpuCopy8(descriptor + 2, work->connectionStorage.data, sizeof(work->connectionStorage.data));
             } else {
@@ -327,10 +328,10 @@ s32 WCM_ConnectAsync(void *bssDesc, void *wepDesc, u32 option) {
         MI_CpuCopy8(bssDesc, &work->connectBss, sizeof(work->connectBss));
         WCM_UpdateOption(option);
         break;
-    case 8:
+    case WCM_PHASE_IDLE_TO_DCF:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 9:
+    case WCM_PHASE_DCF:
         OS_RestoreInterrupts(irq);
         return 0;
     default:
@@ -339,15 +340,15 @@ s32 WCM_ConnectAsync(void *bssDesc, void *wepDesc, u32 option) {
     }
 
     switch (work->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         result = WCMi_WmifConnectAsync();
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (OS_IsRunOnTwl()) {
             result = WCMi_NwmifConnectAsync();
             break;
         }
-        // Mode 2 without DSi hardware is unsupported, like any other mode
+        // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
     default:
         result = 7;
         break;
@@ -366,12 +367,12 @@ s32 WCM_DisconnectAsync(void) {
         return 1;
     }
     switch (work->state) {
-    case 9:
+    case WCM_PHASE_DCF:
         break;
-    case 10:
+    case WCM_PHASE_DCF_TO_IDLE:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 3:
+    case WCM_PHASE_IDLE:
         OS_RestoreInterrupts(irq);
         return 0;
     default:
@@ -380,19 +381,19 @@ s32 WCM_DisconnectAsync(void) {
     }
 
     if (work->resetPending == 1) {
-        WCMi_SetPhase(10);
-        wcmw->pendingNotify = 6;
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
+        wcmw->pendingNotify = WCM_NOTIFY_DISCONNECT;
     } else {
         switch (work->wirelessMode) {
-        case 1:
+        case WCM_DEVICEID_WM:
             result = WCMi_WmifDisconnectAsync();
             break;
-        case 2:
+        case WCM_DEVICEID_NWM:
             if (OS_IsRunOnTwl()) {
                 result = WCMi_NwmifDisconnectAsync();
                 break;
             }
-            // Mode 2 without DSi hardware is unsupported, like any other mode
+            // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
         default:
             result = 7;
             break;
@@ -411,20 +412,20 @@ s32 WCM_TerminateAsync(void) {
         return 1;
     }
     switch (wcmw->state) {
-    case 13:
+    case WCM_PHASE_TERMINATING:
         OS_RestoreInterrupts(irq);
         return 2;
-    case 1:
+    case WCM_PHASE_WAIT:
         OS_RestoreInterrupts(irq);
         return 0;
-    case 6:
-        WCMi_SetPhase(13);
-        wcmw->pendingNotify = 9;
+    case WCM_PHASE_SEARCH:
+        WCMi_SetPhase(WCM_PHASE_TERMINATING);
+        wcmw->pendingNotify = WCM_NOTIFY_TERMINATE;
         OS_RestoreInterrupts(irq);
         return 3;
-    case 3:
-    case 9:
-    case 12:
+    case WCM_PHASE_IDLE:
+    case WCM_PHASE_DCF:
+    case WCM_PHASE_IRREGULAR:
         break;
     default:
         OS_RestoreInterrupts(irq);
@@ -432,19 +433,19 @@ s32 WCM_TerminateAsync(void) {
     }
 
     if (wcmw->resetPending == 1) {
-        WCMi_SetPhase(13);
-        wcmw->pendingNotify = 9;
+        WCMi_SetPhase(WCM_PHASE_TERMINATING);
+        wcmw->pendingNotify = WCM_NOTIFY_TERMINATE;
     } else {
         switch (wcmw->wirelessMode) {
-        case 1:
+        case WCM_DEVICEID_WM:
             result = WCMi_WmifTerminateAsync();
             break;
-        case 2:
+        case WCM_DEVICEID_NWM:
             if (OS_IsRunOnTwl()) {
                 result = WCMi_NwmifTerminateAsync();
                 break;
             }
-            // Mode 2 without DSi hardware is unsupported, like any other mode
+            // WCM_DEVICEID_NWM without DSi hardware is unsupported, like any other mode
         default:
             result = 7;
             break;
@@ -517,9 +518,9 @@ s32 WCM_GetAllowedChannel(void) {
 
     if (work->state >= 3 && work->state <= 10) {
         switch (work->wirelessMode) {
-        case 1:
+        case WCM_DEVICEID_WM:
             return WCMi_WmifGetAllowedChannel();
-        case 2:
+        case WCM_DEVICEID_NWM:
             if (OS_IsRunOnTwl()) {
                 return WCMi_NwmifGetAllowedChannel();
             }
@@ -577,12 +578,12 @@ void WCMi_Notify(s16 result, void *parameter, u32 detail, u32 line) {
     WCMWork *work = wcmw;
     s16 notify = work->pendingNotify;
 
-    work->pendingNotify = 0;
+    work->pendingNotify = WCM_NOTIFY_COMMON;
     // The SDK transports mixed pointer/integer payloads as 32-bit words; a host port must widen this representation.
     WCMi_NotifyEx(notify, result, (s32)parameter, (void *)detail, line);
 }
 
-void WCMi_NotifyEx(s16 notify, s16 result, s32 parameter, void *param1, s32 param2) {
+void WCMi_NotifyEx(s16 notify, s16 result, s32 parameter0, void *parameter1, s32 parameter2) {
     WCMWork *work = wcmw;
     WCMNotice notice;
 
@@ -591,22 +592,22 @@ void WCMi_NotifyEx(s16 notify, s16 result, s32 parameter, void *param1, s32 para
     }
     notice.notify = notify;
     notice.result = result;
-    notice.parameter[0].n = parameter;
-    notice.parameter[1].p = param1;
-    notice.parameter[2].n = param2;
+    notice.parameter[0].n = parameter0;
+    notice.parameter[1].p = parameter1;
+    notice.parameter[2].n = parameter2;
     work->notify(&notice);
 }
 
 void WCMi_SetPhase(s32 newState) {
     u32 irq = OS_DisableInterrupts();
 
-    if (wcmw->state == 9 && newState != 9) {
+    if (wcmw->state == WCM_PHASE_DCF && newState != WCM_PHASE_DCF) {
         OS_CancelAlarm(&wcmw->alarm);
     }
-    if (wcmw->state != 11) {
+    if (wcmw->state != WCM_PHASE_FATAL_ERROR) {
         wcmw->state = newState;
     }
-    if (newState == 9) {
+    if (newState == WCM_PHASE_DCF) {
         OS_CancelAlarm(&wcmw->alarm);
         OS_SetAlarm(&wcmw->alarm, 0x22f5341, (void (*)(void *))WcmKeepAliveAlarm, NULL);
     }
@@ -617,7 +618,7 @@ void WCMi_ResetKeepAliveAlarm(void) {
     u32 irq = OS_DisableInterrupts();
 
     OS_CancelAlarm(&wcmw->alarm);
-    if (wcmw->state == 9) {
+    if (wcmw->state == WCM_PHASE_DCF) {
         OS_SetAlarm(&wcmw->alarm, 0x22f5341, (void (*)(void *))WcmKeepAliveAlarm, NULL);
     }
     OS_RestoreInterrupts(irq);
@@ -628,5 +629,5 @@ static void WcmKeepAliveAlarm(void) {
 }
 
 static s32 WCMi_GetDefaultDeviceId(void) {
-    return OS_IsRunOnTwl() ? 2 : 1;
+    return OS_IsRunOnTwl() ? WCM_DEVICEID_NWM : WCM_DEVICEID_WM;
 }
