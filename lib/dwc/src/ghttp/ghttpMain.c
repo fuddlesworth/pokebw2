@@ -83,7 +83,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
     if (connection->state == GHTTPReceivingFile) {
         ghiDoReceivingFile(connection);
     }
-    if (connection->state == GHTTPClosing) {
+    if (connection->state == GHTTPDisconnecting) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_State, GSIDebugLevel_Comment, "Connection Closing\n");
     }
 
@@ -103,7 +103,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
             ghiHandleStatus(connection);
             if (!ghiCloseConnection(connection)) {
                 connection->processing = gsi_false;
-                connection->state = GHTTPClosing;
+                connection->state = GHTTPDisconnecting;
                 return gsi_false;
             }
             ghiCallCompletedCallback(connection);
@@ -114,7 +114,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
         } else {
             if (!ghiCloseConnection(connection)) {
                 connection->processing = gsi_false;
-                connection->state = GHTTPClosing;
+                connection->state = GHTTPDisconnecting;
                 return gsi_false;
             }
             ghiCallCompletedCallback(connection);
@@ -244,13 +244,13 @@ GHTTPBool ghttpRequestThink(GHTTPRequest request) {
     return gsi_true;
 }
 
-// Ends a request, as cancelled (0x12)
+// Ends a request, as cancelled
 void ghttpCancelRequest(GHTTPRequest request) {
     GHIConnection *connection = ghiRequestToConnection(request);
 
     if (connection != NULL) {
         connection->result = GHTTPRequestCancelled;
-        connection->state = GHTTPClosing;
+        connection->state = GHTTPDisconnecting;
         connection->completed = gsi_true;
         ghiCloseConnection(connection);
     }

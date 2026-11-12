@@ -19,15 +19,16 @@ typedef struct GHIRootCAEntry {
 static gsi_u32 sSslEntropy[8];
 static void *sRootCAList;
 
-// What the connection has: 0 for no encryption, or the engine. 5 is taken as 4, the one that exists
+// What the connection has: no encryption (0) or an engine. The default engine (5) is taken as TWL's (4), the one this
+// build has
 GHTTPBool ghttpSetRequestEncryptionEngine(GHTTPRequest request, GHTTPEncryptionEngine engine) {
     GHIConnection *connection = ghiRequestToConnection(request);
 
     if (connection == NULL) {
         return gsi_false;
     }
-    if (engine == 5) {
-        engine = 4;
+    if (engine == GHTTPEncryptionEngine_Default) {
+        engine = GHTTPEncryptionEngine_Twl;
     }
     if (connection->encryptor.mEngine == engine) {
         return gsi_true;
