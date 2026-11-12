@@ -1,6 +1,7 @@
 // The Trial House's events: picking the Pokémon to enter, the battle, its statistics and the results screen. Function
 // names from swan; the file's name is descriptive
 #include "types.h"
+#include "app/pokelist.h"
 #include "app/th_award.h"
 #include "battle/btl_setup.h"
 #include "constants/pokemon.h"
@@ -24,7 +25,8 @@ typedef struct {
     u32 unk08;
     // Set to whether Pokémon were picked
     u16 *result;
-    u32 unk10;
+    // The Battle Test's type, TRIAL_HOUSE_BATTLE_*
+    u32 battleType;
     u32 regulationId;
     PokeParty *party;
     // The Battle Box's party, made for the screen
@@ -44,6 +46,20 @@ typedef struct {
 static GameEventReturnCode EventTrialHouseTeamSelect_Callback(GameEvent *event, u32 *state, void *work);
 static GameEventReturnCode EventTrialHouseResults_Callback(GameEvent *event, u32 *state, void *work);
 
+// The battle type of the work, which MWCC loads before the other arguments only when it goes through a variable of an
+// enum type
+typedef enum {
+    TRIAL_HOUSE_BATTLE_SINGLE,
+    TRIAL_HOUSE_BATTLE_DOUBLE,
+} TrialHouseBattleType;
+
+// The regulations a Battle Test asks for, the single and the double: the Battle Subway's ids 20 and 21
+// (BSUBWAY_RULE_*), which the scripts pass and CheckPartyRegulation checks
+enum {
+    TRIAL_HOUSE_REGULATION_SINGLE = 20,
+    TRIAL_HOUSE_REGULATION_DOUBLE = 21,
+};
+
 GameEvent *CallTrialHouseTeamSelect(GameSystem *gsys, TrialHouseWork *work, u32 mode, BOOL battleBox, u16 *result) {
     GameEvent *event;
     GameData *gameData = GSYS_GetGameData(gsys);
@@ -56,17 +72,17 @@ GameEvent *CallTrialHouseTeamSelect(GameSystem *gsys, TrialHouseWork *work, u32 
     data->field = GSYS_GetField(gsys);
     data->result = result;
     data->work = work;
-    if (mode == 20 || mode == 21) {
-        if (mode == 20) {
-            data->unk10 = 0;
-            data->regulationId = 20;
+    if (mode == TRIAL_HOUSE_REGULATION_SINGLE || mode == TRIAL_HOUSE_REGULATION_DOUBLE) {
+        if (mode == TRIAL_HOUSE_REGULATION_SINGLE) {
+            data->battleType = TRIAL_HOUSE_BATTLE_SINGLE;
+            data->regulationId = TRIAL_HOUSE_REGULATION_SINGLE;
         } else {
-            data->unk10 = 1;
-            data->regulationId = 21;
+            data->battleType = TRIAL_HOUSE_BATTLE_DOUBLE;
+            data->regulationId = TRIAL_HOUSE_REGULATION_DOUBLE;
         }
     } else {
-        data->unk10 = 0;
-        data->regulationId = 20;
+        data->battleType = TRIAL_HOUSE_BATTLE_SINGLE;
+        data->regulationId = TRIAL_HOUSE_REGULATION_SINGLE;
     }
     if (battleBox == FALSE) {
         data->battleBoxParty = NULL;
@@ -78,22 +94,30 @@ GameEvent *CallTrialHouseTeamSelect(GameSystem *gsys, TrialHouseWork *work, u32 
     return event;
 }
 
+// EventTrialHouseTeamSelect_Callback's steps: the party screen, and its result
+enum {
+    TRIAL_HOUSE_TEAM_SELECT_STEP_PARTY_SCREEN,
+    TRIAL_HOUSE_TEAM_SELECT_STEP_RESULT,
+};
+
 static GameEventReturnCode EventTrialHouseTeamSelect_Callback(GameEvent *event, u32 *state, void *work) {
     TrialHousePokeSelectData *data = work;
     GameSystem *gsys = data->gsys;
 
     switch (*state) {
-    case 0:
-        GameEvent_ChainNext(event, EventBtlInstPokeSelect_Create(gsys, data->unk10, 0x17, data->regulationId,
-                                                                 data->party, data->picked, &data->choice,
-                                                                 &data->screenResult, data->work->party));
+    case TRIAL_HOUSE_TEAM_SELECT_STEP_PARTY_SCREEN:
+        GameEvent_ChainNext(event,
+                            EventBtlInstPokeSelect_Create(gsys, data->battleType, POKELIST_MODE_BATTLE_INSTITUTE,
+                                                          data->regulationId, data->party, data->picked, &data->choice,
+                                                          &data->screenResult, data->work->party));
         *state = 1;
         break;
-    case 1:
+    case TRIAL_HOUSE_TEAM_SELECT_STEP_RESULT:
         if (data->battleBoxParty != NULL) {
             GFL_HeapFree(data->battleBoxParty);
         }
-        if (data->screenResult != 0 || data->choice == 7 || data->choice == 8) {
+        if (data->screenResult != 0 || data->choice == POKELIST_CURSOR_CANCEL ||
+            data->choice == POKELIST_CURSOR_CLOSE) {
             *data->result = FALSE;
         } else {
             *data->result = TRUE;
@@ -102,13 +126,6 @@ static GameEventReturnCode EventTrialHouseTeamSelect_Callback(GameEvent *event, 
     }
     return GAMEEVENT_CONTINUE;
 }
-
-// The battle type of the work, which MWCC loads before the other arguments only when it goes through a variable of an
-// enum type
-typedef enum {
-    TRIAL_HOUSE_BATTLE_SINGLE,
-    TRIAL_HOUSE_BATTLE_DOUBLE,
-} TrialHouseBattleType;
 
 GameEvent *CallTrialHouseBattle(GameSystem *gsys, TrialHouseWork *work) {
     Field *field = GSYS_GetField(gsys);
@@ -158,15 +175,21 @@ GameEvent *CallTrialHouseResults(GameSystem *gsys, u32 downloaded, u32 playJingl
     return event;
 }
 
+// EventTrialHouseResults_Callback's steps: the results screen, and its end
+enum {
+    TRIAL_HOUSE_RESULTS_STEP_SCREEN,
+    TRIAL_HOUSE_RESULTS_STEP_END,
+};
+
 static GameEventReturnCode EventTrialHouseResults_Callback(GameEvent *event, u32 *state, void *work) {
     TrialHouseResultsData *data = GameEvent_GetData(event);
 
     switch (*state) {
-    case 0:
+    case TRIAL_HOUSE_RESULTS_STEP_SCREEN:
         GSYS_QueueProcAsEvent(event, OVERLAY_TH_AWARD, &TH_AWARD_PROC_FUNCTIONS, &data->param);
         (*state)++;
         break;
-    case 1:
+    case TRIAL_HOUSE_RESULTS_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

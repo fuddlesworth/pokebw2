@@ -16,6 +16,7 @@
 #include "constants/version.h"
 #include "dsprot/dsprot.h"
 #include "field/badge_gate.h"
+#include "field/enc_pokeset.h"
 #include "field/encounter.h"
 #include "field/event_battle.h"
 #include "field/event_battle_lose.h"
@@ -111,7 +112,8 @@ typedef struct {
     // Whether the caller returns to the field itself, and handles a loss
     u8 callerReturns;
     u8 specialIndex;
-    u8 unk0A;
+    // Whether the battle started on a fishing cast, whose start hid the player's reflection
+    u8 wasFishing;
     // An ENCOUNT_MODE_*
     u32 encountMode;
 } EventWildBattleCallWork;
@@ -130,8 +132,10 @@ static void *EventBattleCall_DSProtNop1(void *seed, void *work);
 static void *EventBattleCall_DSProtTamper3(void *seed, void *work);
 static void *EventBattleCall_DSProtNop3(void *seed, void *work);
 
-// The result of a wild battle for each battle result
-static const u8 WILD_BATTLE_RESULT[7] = { 0xff, 2, 0xff, 1, 1, 0, 0 };
+// The result of a wild battle for each battle result, as the scripts get it; 0xff for a battle result with no wild
+// result, which answers as any other end
+#define WILD_BATTLE_RESULT_NONE 0xff
+static const u8 WILD_BATTLE_RESULT[7] = { WILD_BATTLE_RESULT_NONE, 2, WILD_BATTLE_RESULT_NONE, 1, 1, 0, 0 };
 
 // The beacons a trainer battle sends, for its kind of trainer and whether it starts or ends
 static void (*const TRAINER_BATTLE_BEACONS[3][2])(u16 trainerId) = {
@@ -161,13 +165,22 @@ static u16 sSpecialBeaconTrainerClasses[7] = {
     TRAINER_CLASS_PKMN_TRAINER_CILAN,
 };
 
+// EventWildBattleCall_Callback's steps: the battle, its result and the return to the field, a frame with nothing to
+// do, and the end
+enum {
+    WILD_BATTLE_CALL_STEP_BATTLE,
+    WILD_BATTLE_CALL_STEP_RESULT,
+    WILD_BATTLE_CALL_STEP_IDLE,
+    WILD_BATTLE_CALL_STEP_END,
+};
+
 static GameEventReturnCode EventWildBattleCall_Callback(GameEvent *event, u32 *state, void *work) {
     EventWildBattleCallWork *wk = work;
     GameSystem *gsys = wk->gsys;
     GameData *gameData = GSYS_GetGameData(gsys);
 
     switch (*state) {
-    case 0: {
+    case WILD_BATTLE_CALL_STEP_BATTLE: {
         GameEvent *battle = GameEvent_Create(gsys, NULL, EventBattleCall_Callback, sizeof(EventBattleCallWork));
         EventBattleCallWork *battleWork = GameEvent_GetData(battle);
         PartyPkm *pkm;
@@ -186,16 +199,16 @@ static GameEventReturnCode EventWildBattleCall_Callback(GameEvent *event, u32 *s
         (*state)++;
         break;
     }
-    case 1: {
+    case WILD_BATTLE_CALL_STEP_RESULT: {
         u32 result = GameData_GetLastBtlResult(gameData);
         BOOL defeat = IsBattleResultDefeat(result, 0);
 
-        if (result == BTL_RESULT_CAPTURE && wk->specialIndex != 0xff) {
+        if (result == BTL_RESULT_CAPTURE && wk->specialIndex != N_POKE_NONE) {
             EncountSave *save = SaveControl_GetEncountSave(GameData_GetSaveControl(gameData));
 
             SetNPokeCaught(save, wk->specialIndex);
         }
-        if (wk->unk0A) {
+        if (wk->wasFishing) {
             FieldActor *player = FindPlayerFieldActor(GameData_GetMMSys(gameData));
 
             if (IsActorReflectionHidden(player)) {
@@ -219,10 +232,10 @@ static GameEventReturnCode EventWildBattleCall_Callback(GameEvent *event, u32 *s
         (*state)++;
         break;
     }
-    case 2:
+    case WILD_BATTLE_CALL_STEP_IDLE:
         (*state)++;
         break;
-    case 3:
+    case WILD_BATTLE_CALL_STEP_END:
         CommPlayerSupport_Init(GameData_GetCommPlayerSupport(gameData));
         return GAMEEVENT_DONE;
     }
@@ -239,7 +252,7 @@ GameEvent *EventWildBattleCall_CreateCore(GameSystem *gsys, Field *field, BtlSet
     work->callerReturns = callerReturns;
     work->encountMode = encountMode;
     work->specialIndex = specialIndex;
-    work->unk0A = BtlSetup_CheckFlag(setup, BTL_SETUP_FLAG_FISHING);
+    work->wasFishing = BtlSetup_CheckFlag(setup, BTL_SETUP_FLAG_FISHING);
     if (encountMode == ENCOUNT_MODE_EFFECT) {
         BtlSetup_SetFlag(setup, BTL_SETUP_FLAG_EFFECT_ENCOUNT);
     }
@@ -251,7 +264,7 @@ GameEvent *EventWildBattleCall_CreateCore(GameSystem *gsys, Field *field, BtlSet
 
 GameEvent *EventWildBattleCall_Create(GameSystem *gsys, Field *field, BtlSetup *setup, u8 callerReturns,
                                       u32 encountMode) {
-    return EventWildBattleCall_CreateCore(gsys, field, setup, callerReturns, encountMode, 0xff);
+    return EventWildBattleCall_CreateCore(gsys, field, setup, callerReturns, encountMode, N_POKE_NONE);
 }
 
 GameEvent *EventTrainerBattleCall_Create(GameSystem *gsys, Field *field, u32 style, u32 partnerId, u32 trainerId,
@@ -557,6 +570,14 @@ static GameEventReturnCode EventBattleCall_Callback(GameEvent *event, u32 *state
     return GAMEEVENT_CONTINUE;
 }
 
+// The BGM groups of GetTrainerClassBGMGroupId that the beacon kinds tell apart: the gym leaders', the ordinary
+// trainers' (every class the special table lacks) and Team Plasma's, which sends the ordinary trainers' beacon
+enum {
+    TRAINER_BGM_GROUP_GYM_LEADER = 0,
+    TRAINER_BGM_GROUP_PLASMA = 7,
+    TRAINER_BGM_GROUP_ORDINARY = 15,
+};
+
 // The kind of beacon for the trainer: special for the classes of sSpecialBeaconTrainerClasses, and otherwise by the
 // class's music group
 static u32 EventBattleCall_GetTrainerBeaconKind(u16 trainerId) {
@@ -569,10 +590,10 @@ static u32 EventBattleCall_GetTrainerBeaconKind(u16 trainerId) {
             return TRAINER_BEACON_KIND_SPECIAL;
         }
     }
-    if (group == 0xf || group == 7) {
+    if (group == TRAINER_BGM_GROUP_ORDINARY || group == TRAINER_BGM_GROUP_PLASMA) {
         return TRAINER_BEACON_KIND_TRAINER;
     }
-    if (group == 0) {
+    if (group == TRAINER_BGM_GROUP_GYM_LEADER) {
         return TRAINER_BEACON_KIND_LEADER;
     }
     return TRAINER_BEACON_KIND_SPECIAL;
@@ -630,7 +651,7 @@ static void EventBattleCall_BroadcastBattleResult(EventBattleCallWork *work) {
         GFL_StrBufFree(name);
     }
     switch (setup->battleType) {
-    case 0:
+    case BTL_TYPE_WILD:
         if (setup->result == BTL_RESULT_FLEE) {
             EventBattleCall_BroadcastWildBattle(setup, BATTLE_BEACON_ESCAPE);
         } else if (setup->result == BTL_RESULT_FLEE_FOE) {
@@ -639,7 +660,7 @@ static void EventBattleCall_BroadcastBattleResult(EventBattleCallWork *work) {
             EventBattleCall_BroadcastWildBattle(setup, BATTLE_BEACON_WIN);
         }
         break;
-    case 1:
+    case BTL_TYPE_TRAINER:
         if (setup->result == BTL_RESULT_VICTORY && !(work->flags & 4)) {
             EventBattleCall_BroadcastTrainerBattle(setup->trainers[1]->trainerId, BATTLE_BEACON_WIN);
         }
@@ -651,13 +672,13 @@ static void EventBattleCall_RecordEnemyFled(EventBattleCallWork *work) {
     BtlSetup *setup = work->setup;
     GameRecords *records = GameData_GetRecords(GSYS_GetGameData(work->gsys));
 
-    if (setup->battleType == 0 && setup->result == BTL_RESULT_FLEE_FOE) {
+    if (setup->battleType == BTL_TYPE_WILD && setup->result == BTL_RESULT_FLEE_FOE) {
         RecordAddOne(records, 0x4f);
     }
 }
 
 BOOL IsBattleResultDefeat(u32 result, u32 battleType) {
-    if (battleType == 4) {
+    if (battleType == BTL_TYPE_CAPTURE_DEMO) {
         return FALSE;
     }
     if (BTL_RESULT_LUT[result][battleType] == 0) {
@@ -669,7 +690,7 @@ BOOL IsBattleResultDefeat(u32 result, u32 battleType) {
 u32 GetWildBattleResultByCombined(u32 result) {
     u8 wildResult = WILD_BATTLE_RESULT[result];
 
-    if (wildResult == 0xff) {
+    if (wildResult == WILD_BATTLE_RESULT_NONE) {
         wildResult = 1;
     }
     return wildResult;

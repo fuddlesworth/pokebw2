@@ -8,7 +8,7 @@ void ghiCallCompletedCallback(GHIConnection *connection) {
     ghttpCompletedCallback completed;
     char *buffer;
 
-    if (connection->result != 0) {
+    if (connection->result != GHTTPSuccess) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Network, GSIDebugLevel_WarmError, "Socket Error: %d\n",
                       connection->socketError);
     }

@@ -43,6 +43,18 @@ static inline u16 CPS_SWAP16(u16 x) {
 #define CPS_PROTO_TCP 6
 #define CPS_PROTO_UDP 17
 
+// ARP's hardware type, its operation codes, and its hardware and protocol address lengths 6 and 4 packed as the packet
+// stores them (ntrtwl's NitroWiFi: HARDWARE_TYPE_ETHERNET, ARP_REQUEST/ARP_REPLY, and sizeof(CPSMacAddress) << 8 |
+// sizeof(CPSInAddr))
+#define CPS_ARP_HARDWARE_ETHERNET 1
+#define CPS_ARP_OP_REQUEST 1
+#define CPS_ARP_OP_REPLY 2
+#define CPS_ARP_LENGTHS ((6 << 8) | 4)
+
+// ICMP's echo types (ntrtwl's NitroWiFi: ICMP_ECHO_REPLY and ICMP_ECHO_REQUEST)
+#define CPS_ICMP_ECHO_REPLY 0
+#define CPS_ICMP_ECHO_REQUEST 8
+
 // The most an IP packet carries past its header
 #define CPS_IP_MTU 1480
 
@@ -50,6 +62,8 @@ static inline u16 CPS_SWAP16(u16 x) {
 #define CPSi_GetTick() ((u32)(OS_GetTick() >> 16))
 // How long an ACK may wait for more data to go with it
 #define CPS_ACK_DELAY OS_MilliSecondsToTicks(200)
+// What CPSi_SendDelayedAcks leaves its wait at when no ACK waits
+#define CPS_ACK_WAIT_NONE 0xffffffff
 
 // TCP's flags
 #define CPS_TCP_FIN 0x01
@@ -58,6 +72,15 @@ static inline u16 CPS_SWAP16(u16 x) {
 #define CPS_TCP_PSH 0x08
 #define CPS_TCP_ACK 0x10
 #define CPS_TCP_URG 0x20
+
+// The TCP option kinds that parse_mss reads, and the length byte the MSS and SACK-permitted options carry (ntrtwl's
+// NitroWiFi has TCP_OPTION_END, TCP_OPTION_NOP and TCP_OPTION_MSS)
+#define CPS_TCP_OPTION_END 0
+#define CPS_TCP_OPTION_NOP 1
+#define CPS_TCP_OPTION_MSS 2
+#define CPS_TCP_OPTION_SACK_PERMITTED 4
+#define CPS_TCP_OPTION_MSS_LEN 4
+#define CPS_TCP_OPTION_SACK_PERMITTED_LEN 2
 
 // Where a packet's data begins in a socket's send buffer: past the Ethernet and IP headers
 #define CPS_SNDBUF_HEADER (sizeof(CPSEtherHeader) + sizeof(CPSIpHeader))

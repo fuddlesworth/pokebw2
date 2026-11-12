@@ -22,7 +22,10 @@ typedef enum {
     GHTTPWaiting,
     GHTTPReceivingStatus,
     GHTTPReceivingHeaders,
-    GHTTPReceivingFile
+    GHTTPReceivingFile,
+    // BW2's client adds the closing of a connection after the client's own states: ghiProcessConnection sets it when
+    // the close has to wait, and logs "Connection Closing"
+    GHTTPClosing
 } GHTTPState;
 
 typedef enum {
