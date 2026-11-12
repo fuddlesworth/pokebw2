@@ -1,5 +1,6 @@
 #include "types.h"
 #include "app/bag.h"
+#include "app/battle_recorder.h"
 #include "app/mailbox.h"
 #include "app/marine_tube_board.h"
 #include "app/monolith.h"
@@ -8,6 +9,7 @@
 #include "app/psel.h"
 #include "app/regional_pokedex_award.h"
 #include "app/subway_map.h"
+#include "app/wifibattlematch.h"
 #include "field/entree_forest.h"
 #include "field/event_3d_demo.h"
 #include "field/event_battle_video.h"
@@ -182,11 +184,11 @@ void MoveReminder_ReadResult(void *arg) {
 
     data = work->resource;
     switch (data->status) {
-    case 0:
+    case MOVE_REMINDER_STATUS_LEARNED:
     default:
         result = FALSE;
         break;
-    case 1:
+    case MOVE_REMINDER_STATUS_CANCELLED:
         result = TRUE;
         break;
     }
@@ -298,26 +300,26 @@ BOOL Scrcmd_Proc_CallPokedexDiploma(VM *vm, FieldScriptEnv *env) {
         GameBeacon_BroadcastPokedexComplete();
     }
     switch (mode) {
-    case 0:
+    case POKEDEX_DIPLOMA_REGIONAL:
         award = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PokedexAwardParam), TRUE, "scrcmd_proc.c", 546);
         award->gameData = gameData;
         award->skipIntro = value;
         CreateScrCmdOverlayProcess(vm, env, OVERLAY_REGIONAL_POKEDEX_AWARD, &REGIONAL_POKEDEX_AWARD_PROC_FUNCTIONS,
                                    award, NULL, NULL);
         break;
-    case 1:
+    case POKEDEX_DIPLOMA_NATIONAL:
         award = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(PokedexAwardParam), TRUE, "scrcmd_proc.c", 554);
         award->gameData = gameData;
         award->skipIntro = value;
         CreateScrCmdOverlayProcess(vm, env, OVERLAY_NATIONAL_POKEDEX_AWARD, &NATIONAL_POKEDEX_AWARD_PROC_FUNCTIONS,
                                    award, NULL, NULL);
         break;
-    case 2:
+    case POKEDEX_DIPLOMA_SUBWAY_MAP:
         subwayMap = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(SubwayMapParam), TRUE, "scrcmd_proc.c", 563);
         subwayMap->playerInfo = playerInfo;
         CreateScrCmdOverlayProcess(vm, env, OVERLAY_SUBWAY_MAP, &SUBWAY_MAP_PROC_FUNCTIONS, subwayMap, NULL, NULL);
         break;
-    case 3:
+    case POKEDEX_DIPLOMA_MARINE_TUBE_BOARD:
         board = GFL_HeapAllocate(HEAPID_GAMEEVENT, sizeof(MarineTubeBoardParam), TRUE, "scrcmd_proc.c", 570);
         board->gsys = gsys;
         board->board = value;
@@ -360,28 +362,28 @@ BOOL Scrcmd_Proc_NetConnectWiFiBattle(VM *vm, FieldScriptEnv *env) {
     battleType = ScriptReadAny(vm, env);
     mode = ScriptReadAny(vm, env);
     switch (battleType) {
-    case 15:
-        type = 0;
+    case WIFI_BATTLE_TYPE_SINGLE:
+        type = WIFIBATTLEMATCH_TYPE_SINGLE;
         break;
-    case 16:
-        type = 1;
+    case WIFI_BATTLE_TYPE_DOUBLE:
+        type = WIFIBATTLEMATCH_TYPE_DOUBLE;
         break;
-    case 17:
-        type = 2;
+    case WIFI_BATTLE_TYPE_TRIPLE:
+        type = WIFIBATTLEMATCH_TYPE_TRIPLE;
         break;
-    case 18:
-        type = 3;
+    case WIFI_BATTLE_TYPE_ROTATION:
+        type = WIFIBATTLEMATCH_TYPE_ROTATION;
         break;
-    case 19:
-        type = 4;
+    case WIFI_BATTLE_TYPE_TRIPLE_2:
+        type = WIFIBATTLEMATCH_TYPE_TRIPLE_2;
         break;
     }
     switch (mode) {
-    case 0:
-        option = 0;
+    case WIFIBATTLEMATCH_TEAM_PARTY:
+        option = WIFIBATTLEMATCH_TEAM_PARTY;
         break;
-    case 1:
-        option = 1;
+    case WIFIBATTLEMATCH_TEAM_BATTLE_BOX:
+        option = WIFIBATTLEMATCH_TEAM_BATTLE_BOX;
         break;
     }
     args.field = GSYS_GetField(gsys);
@@ -403,10 +405,10 @@ BOOL Scrcmd_Proc_NetConnectBattleVideo(VM *vm, FieldScriptEnv *env) {
     work = FieldScriptEnv_GetScriptWork(env);
     gsys = FieldScriptEnv_GetGameSystem(env);
     mode = ScriptReadAny(vm, env);
-    if (mode == 0) {
-        mode = 1;
+    if (mode == BATTLE_VIDEO_MODE_GLOBAL_BV) {
+        mode = BR_MODE_GLOBAL_BV;
     } else {
-        mode = 2;
+        mode = BR_MODE_GLOBAL_MUSICAL;
     }
     args.field = GSYS_GetField(gsys);
     args.mode = mode;

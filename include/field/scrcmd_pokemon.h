@@ -8,6 +8,46 @@
 #include "struct_decls.h"
 #include "system/vm.h"
 
+// What Scrcmd_Pokemon_PokePartyAdjustHappiness does with the happiness: sets it, adds to it, or subtracts from it
+enum {
+    POKE_PARTY_HAPPINESS_SET = 0,
+    POKE_PARTY_HAPPINESS_ADD = 1,
+    POKE_PARTY_HAPPINESS_SUBTRACT = 2,
+};
+
+// The ability argument of Scrcmd_Pokemon_PokePartyAddEx and _BoxAddEx: 3 asks for the species' hidden ability, which
+// the scripts pass for the Pokémon that have one. Any value from 3 up is stored as the second ability
+#define POKE_ABILITY_HIDDEN 3
+
+// What Scrcmd_Pokemon_PokePartyGetMemberByType looks for in the party: the first slot, the first Pokémon that is not
+// an egg, or the first that can battle
+enum {
+    PARTY_MEMBER_FIRST = 0,
+    PARTY_MEMBER_NON_EGG = 1,
+    PARTY_MEMBER_BATTLE_READY = 2,
+};
+
+// What Scrcmd_Pokemon_PokePartyGetCount counts: all the party's Pokémon, the ones that are not eggs, the ones that
+// can battle, the eggs that are not bad eggs, the bad eggs, and the slots left
+enum {
+    POKE_PARTY_COUNT_ALL = 0,
+    POKE_PARTY_COUNT_NON_EGGS = 1,
+    POKE_PARTY_COUNT_BATTLE_READY = 2,
+    POKE_PARTY_COUNT_EGGS = 3,
+    POKE_PARTY_COUNT_BAD_EGGS = 4,
+    POKE_PARTY_COUNT_EMPTY_SLOTS = 5,
+};
+
+// What Scrcmd_Pokemon_BoxGetCount counts: all the boxed Pokémon, the ones that are not eggs, the eggs, and the slots
+// left. Its modes 1 and 2 count the same, and 4 has no case
+enum {
+    BOX_COUNT_ALL = 0,
+    BOX_COUNT_NON_EGGS = 1,
+    BOX_COUNT_NON_EGGS_2 = 2,
+    BOX_COUNT_EGGS = 3,
+    BOX_COUNT_EMPTY_SLOTS = 5,
+};
+
 BOOL CheckGetPartyPokemon(FieldScriptEnv *env, u32 index, PartyPkm **pkm);
 u32 GetScrPokeStat(FieldScriptEnv *env, u32 index, u32 param);
 BOOL CheckPokeMoveLearned_NonEgg(PartyPkm *pkm, u16 move);
