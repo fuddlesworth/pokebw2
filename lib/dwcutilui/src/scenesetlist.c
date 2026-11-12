@@ -211,11 +211,11 @@ void DWCUtilAddressSettings_Init(void) {
         sAddressSettings.work->marks[i] = DWCi_CEINlSetExObj(0, 0x29);
     }
     switch (edit->connection.setType) {
-    case 1:
+    case DWC_SETTYPE_AOSS:
         sAddressSettings.work->setupIcon = DWCi_CEINlSetExObj(0, 0x50);
         G2_SetOBJPriority(sAddressSettings.work->setupIcon, 3);
         break;
-    case 2:
+    case DWC_SETTYPE_RAKU:
         sAddressSettings.work->setupIcon = DWCi_CEINlSetExObj(0, 0x51);
         G2_SetOBJPriority(sAddressSettings.work->setupIcon, 3);
         break;
@@ -662,16 +662,16 @@ static void DWCUtilAddressSettings_DrawRowText(int index, int row) {
         return;
     case ADDRESS_ROW_WEP_KEY:
         switch (edit->connection.wepMode) {
-        case 0:
+        case DWC_WEPMODE_NONE:
             return;
-        case 1:
-            length = 10;
+        case DWC_WEPMODE_40:
+            length = DWC_WEP_KEY_HEX_LENGTH_40;
             break;
-        case 2:
-            length = 26;
+        case DWC_WEPMODE_104:
+            length = DWC_WEP_KEY_HEX_LENGTH_104;
             break;
-        case 3:
-            length = 32;
+        case DWC_WEPMODE_128:
+            length = DWC_WEP_KEY_HEX_LENGTH_128;
         }
         if (edit->connection.wepNotation == 1) {
             length /= 2;
@@ -1324,7 +1324,7 @@ static BOOL isCorrect(void) {
 }
 
 static void procError(void) {
-    if (DWCi_WINlGet() == 0) {
+    if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
         DWCi_SCREENlSetPalette(sAddressSettings.work->palettes[0]);

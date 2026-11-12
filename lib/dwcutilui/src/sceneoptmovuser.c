@@ -75,7 +75,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_WINlGet() != -2) {
+    if (DWCi_WINlGet() != DWC_UTIL_DIALOG_HIDDEN) {
         DWCi_ChangeScene(procScene);
     }
 }
@@ -84,11 +84,11 @@ static void procScene(void) {
     input();
     draw();
     switch (DWCi_WINlGet()) {
-    case 0:
+    case DWC_UTIL_DIALOG_BUTTON_FIRST:
         sPageMove.yes = FALSE;
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_DIALOG_BUTTON_SECOND:
         sPageMove.yes = TRUE;
         DWCi_SNDlPlay(0xe);
         break;

@@ -17,7 +17,29 @@
 // What the settings keep of one connection (a slot of the console's Wi-Fi settings): the network name, the WEP keys,
 // the address settings, the WEP mode, a byte that says whether the connection is in use, its MTU, and in the first two
 // pages the mask of the connections in use (bit n is set while connection n is). The first 0xF0 bytes of a page
+//
+// What made a connection (DWCBMApInfo.setType): 0xFF is a slot that is not in use; 0 to 2 are the kinds that an NTR
+// console has, of which an AOSS setup and an easy setup (Rakuraku) are 1 and 2, and more kinds are the TWL's
 #define DWC_SETTYPE_NONE 0xFF
+enum {
+    DWC_SETTYPE_AOSS = 1,
+    DWC_SETTYPE_RAKU = 2,
+};
+
+// The WEP mode of a connection (DWCBMApInfo.wepMode): no WEP, or an RC4 key of 40, 104 or 128 bits (the modes that the
+// SDK's DWCApInfoSecurity gives an access point's security), and how long those keys are in characters or hex digits
+enum {
+    DWC_WEPMODE_NONE = 0,
+    DWC_WEPMODE_40,
+    DWC_WEPMODE_104,
+    DWC_WEPMODE_128,
+};
+#define DWC_WEP_KEY_LENGTH_40 5
+#define DWC_WEP_KEY_LENGTH_104 13
+#define DWC_WEP_KEY_LENGTH_128 16
+#define DWC_WEP_KEY_HEX_LENGTH_40 10
+#define DWC_WEP_KEY_HEX_LENGTH_104 26
+#define DWC_WEP_KEY_HEX_LENGTH_128 32
 typedef struct DWCBMApInfo {
     u8 unk0[0x20];
     u8 unk20[0x20];
@@ -30,9 +52,9 @@ typedef struct DWCBMApInfo {
     u8 netmask;    // how many of the mask's high bits are set, 0x20 at most
     u8 wep2[4][5]; // the 40-bit WEP keys of an AOSS setup
     u8 unkE5;
-    u8 wepMode : 2;     // 0 for no WEP, 1 for a key of 5 bytes, 2 of 13 and 3 of 16
+    u8 wepMode : 2;     // DWC_WEPMODE_NONE, or a key of 40, 104 or 128 bits
     u8 wepNotation : 6; // 1 when the key was entered as characters, 0 when as hex digits
-    u8 setType;         // DWC_SETTYPE_NONE; 0 to 2 are the kinds that an NTR console has, more are the TWL's
+    u8 setType;         // DWC_SETTYPE_NONE, DWC_SETTYPE_AOSS, DWC_SETTYPE_RAKU, or another kind
     u8 unkE8[2];
     u16 mtu; // 0 for the default
     u8 unkEC[3];

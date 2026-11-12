@@ -89,7 +89,7 @@ void DWCi_WINlInitEx(int msgIndex, int layout, BOOL fade, int slot, int value) {
     str = DWCi_MSGlGetEx(gDWCUtilMsg, msgIndex, slot, value);
     sDialog = DWCi_HEAPlAllocEx(sizeof(DWCUtilDialog), 4);
     sDialog->layout = layout;
-    sDialog->choice = -2;
+    sDialog->choice = DWC_UTIL_DIALOG_HIDDEN;
     sDialog->fade = fade;
     G2x_SetBlendBrightness_(REG_BLDCNT_ADDR, 0x1f, 0);
     sDialog->frame = DWCi_CEINlSetExCell(0, sDialogFrameCells[layout], FALSE);
@@ -188,11 +188,11 @@ static void taskMain(DWCUtilTask *task, void *arg) {
             return;
         }
     }
-    sDialog->choice = -1;
+    sDialog->choice = DWC_UTIL_DIALOG_NONE;
 }
 
 static void taskMain1(DWCUtilTask *task, void *arg) {
-    sDialog->choice = -1;
+    sDialog->choice = DWC_UTIL_DIALOG_NONE;
     sDialog->frames++;
     if (sDialog->frames >= 120) {
         DWCi_TSKlDelete(0, task);

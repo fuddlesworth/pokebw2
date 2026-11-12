@@ -2,6 +2,7 @@
 #include "cellinfo.h"
 #include "comment.h"
 #include "common.h"
+#include "dwc/utility.h"
 #include "effect.h"
 #include "focus.h"
 #include "graphics.h"
@@ -46,10 +47,10 @@ void DWCi_SceneInit(void) {
     DWCi_CMNlLoadResource("char/jbObjMain.ncg.l", GX_LoadOBJ);
     DWCi_CMNlLoadResource("char/ybObjMain.ncl.l", GX_LoadOBJPltt);
     switch (DWCi_Entry()) {
-    case 0:
+    case DWC_UTILITY_TOP_MENU_FOR_USA:
         DWCi_CMNlLoadResource("char/jtTop.nsc.l", GXS_LoadBG1Scr);
         break;
-    case 1:
+    case DWC_UTILITY_SETTING_FOR_USA:
         DWCi_CMNlLoadResource("char/jtStep1.nsc.l", GXS_LoadBG1Scr);
         break;
     }
@@ -70,11 +71,11 @@ static void procFade(void) {
 static void procWait(void) {
     if (DWCi_EFFlCheck(1) == 0 && DWCi_EFFlCheck(0) == 0) {
         switch (DWCi_Entry()) {
-        case 0:
+        case DWC_UTILITY_TOP_MENU_FOR_USA:
             DWCi_SetParam_(0, 1);
             DWCi_ChangeScene(DWCi_SceneMenu);
             break;
-        case 1:
+        case DWC_UTILITY_SETTING_FOR_USA:
             DWCi_SetParam_(1, 1);
             DWCi_ChangeScene(DWCi_SceneSetSelectAp);
             break;

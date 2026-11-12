@@ -6,6 +6,7 @@
 #include "comment.h"
 #include "common.h"
 #include "dwc/bm.h"
+#include "dwc/utility.h"
 #include "dwc_util_shared.h"
 #include "effect.h"
 #include "focus.h"
@@ -216,11 +217,11 @@ static void button(void) {
     switch (DWCi_BTNlGet()) {
     case DWC_UTIL_BUTTON_CANCEL:
         switch (DWCi_Entry()) {
-        case 0:
+        case DWC_UTILITY_TOP_MENU_FOR_USA:
             DWCi_SNDlPlay(7);
             sScreenAp.work->end = SCREEN_AP_CANCELLED;
             break;
-        case 1:
+        case DWC_UTILITY_SETTING_FOR_USA:
             DWCi_BTNlDisable();
             DWCi_ChangeScene(DWCi_SceneEnd);
             return;
@@ -451,7 +452,7 @@ static void procErase(void) {
     int index = sScreenAp.cursor - SCREEN_AP_FIRST_ERASE;
 
     switch (DWCi_WINlGet()) {
-    case 1:
+    case DWC_UTIL_DIALOG_BUTTON_SECOND:
         DWCi_SNDlPlay(0xe);
         DWCi_SETTINGlErasePage(index);
         DWCi_CEINlSet(0, 0x56, DWCi_CELLlGetObj(sScreenAp.work->buttons[index], 0));
@@ -461,7 +462,7 @@ static void procErase(void) {
         DWCi_CELLlDelete(sScreenAp.work->eraseButtons[index]);
         sScreenAp.work->eraseButtons[index] = NULL;
         break;
-    case 0:
+    case DWC_UTIL_DIALOG_BUTTON_FIRST:
         DWCi_SNDlPlay(7);
         DWCi_CEINlSet(0, 0x11, DWCi_CELLlGetObj(sScreenAp.work->eraseButtons[index], 0));
         DWCi_CELLlSetPosition(sScreenAp.work->eraseButtons[index], -1, sScreenApButtonPos[index + 3][0],

@@ -1,6 +1,7 @@
 #include "headline.h"
 #include "archive.h"
 #include "common.h"
+#include "dwc/utility.h"
 #include "dwc_util_shared.h"
 #include "heap.h"
 #include "main.h"
@@ -27,10 +28,10 @@ void DWCi_HLlInit(void) {
     sOverlayScreen = DWCi_HEAPlAllocEx(DWC_UTIL_BG_OVERLAY_SIZE, 4);
     DWCi_CMNlLoadResource("char/jbBgHl.ncg.l", GX_LoadBG1Char);
     switch (DWCi_Entry()) {
-    case 0:
+    case DWC_UTILITY_TOP_MENU_FOR_USA:
         DWCi_CMNlLoadResource(sScreenPaths[0], GX_LoadBG1Scr);
         break;
-    case 1:
+    case DWC_UTILITY_SETTING_FOR_USA:
         DWCi_CMNlLoadResource(sScreenPaths[1], GX_LoadBG1Scr);
         break;
     }

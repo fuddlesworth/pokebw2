@@ -21,8 +21,9 @@
 #include "str.h"
 #include "window.h"
 
-// The longest text, and the font's character of the space
-#define WEP_KEYBOARD_LENGTH 32
+// The characters on a row, the longest text (two rows), and the font's character of the space
+#define WEP_KEYBOARD_ROW_LENGTH 16
+#define WEP_KEYBOARD_LENGTH (WEP_KEYBOARD_ROW_LENGTH * 2)
 #define WEP_KEYBOARD_SPACE 0xe01d
 
 // How the entry ended
@@ -92,7 +93,7 @@ void DWCi_SceneSetEdit32(void) {
 // Where the characters are drawn: the two rows' y, the size of a character and each column's x
 static const u8 sWepKeyboardRowY[2] = { 0x20, 0x31 };
 static const u16 sWepKeyboardCharSize[2] = { 14, 16 };
-static const u8 sWepKeyboardColumnX[16] = {
+static const u8 sWepKeyboardColumnX[WEP_KEYBOARD_ROW_LENGTH] = {
     0x08, 0x17, 0x26, 0x35, 0x44, 0x53, 0x62, 0x71, 0x80, 0x8f, 0x9e, 0xad, 0xbc, 0xcb, 0xda, 0xe9,
 };
 
@@ -132,7 +133,7 @@ static void procInit1(void) {
 }
 
 static void procInit2(void) {
-    if (DWCi_KBlGet() != 0xff) {
+    if (DWCi_KBlGet() != DWC_UTIL_KEY_IDLE) {
         DWCi_ChangeScene(procScene);
     }
 }
@@ -146,9 +147,9 @@ static void input(void) {
     int key = DWCi_KBlGet();
 
     switch (key) {
-    case 0:
+    case DWC_UTIL_KEY_NONE:
         break;
-    case 0x80:
+    case DWC_UTIL_KEY_BACKSPACE:
         if (sWepKeyboard->length != 0) {
             DWCi_SNDlPlay(3);
             sWepKeyboard->length--;
@@ -159,12 +160,12 @@ static void input(void) {
             DWCi_KBlSetInput(TRUE);
         }
         break;
-    case 0x82:
+    case DWC_UTIL_KEY_CANCEL:
         DWCi_SNDlPlay(7);
         sWepKeyboard->result = WEP_KEYBOARD_CANCELLED;
         DWCi_ChangeScene(DWCUtilWepKeyboard_StartClose);
         return;
-    case 0x83:
+    case DWC_UTIL_KEY_CONFIRM:
         if (isCorrect()) {
             DWCi_SNDlPlay(6);
             sWepKeyboard->result = WEP_KEYBOARD_ENTERED;
@@ -271,7 +272,7 @@ static void drawSsid(void) {
     DWCi_FNTlClear(sWepKeyboard->text, 0);
     str[1] = 0;
     for (i = 0, column = 0; i < WEP_KEYBOARD_LENGTH; i++, column++) {
-        if (i == 16) {
+        if (i == WEP_KEYBOARD_ROW_LENGTH) {
             rect[1] = sWepKeyboardRowY[1];
             column = 0;
         }
@@ -302,10 +303,10 @@ static void dispCaret(void) {
 static void procWin(void) {
     sWepKeyboard->result = DWCi_WINlGet();
     switch (sWepKeyboard->result) {
-    case 0:
+    case DWC_UTIL_DIALOG_BUTTON_FIRST:
         DWCi_SNDlPlay(7);
         break;
-    case 1:
+    case DWC_UTIL_DIALOG_BUTTON_SECOND:
         DWCi_SNDlPlay(0xe);
         break;
     default:
@@ -321,7 +322,7 @@ static void procWin1(void) {
     int field;
 
     if (!DWCi_WINlIsInit()) {
-        if (sWepKeyboard->result == 0) {
+        if (sWepKeyboard->result == DWC_UTIL_DIALOG_BUTTON_FIRST) {
             G2_SetOBJEffect(sWepKeyboard->cursor, GX_OAM_EFFECT_NONE, 0);
             DWCi_ChangeScene(procInit1);
             return;
@@ -357,13 +358,13 @@ static BOOL isCorrect(void) {
     length = DWCi_STRlNLen(sWepKeyboard->str, WEP_KEYBOARD_LENGTH);
     switch (length) {
     case 0:
-    case 5:
-    case 13:
-    case 16:
+    case DWC_WEP_KEY_LENGTH_40:
+    case DWC_WEP_KEY_LENGTH_104:
+    case DWC_WEP_KEY_LENGTH_128:
         return TRUE;
-    case 10:
-    case 26:
-    case 32:
+    case DWC_WEP_KEY_HEX_LENGTH_40:
+    case DWC_WEP_KEY_HEX_LENGTH_104:
+    case DWC_WEP_KEY_HEX_LENGTH_128:
         for (i = 0; i < length; i++) {
             u8 c = sWepKeyboard->str[i];
 
@@ -378,7 +379,7 @@ static BOOL isCorrect(void) {
 }
 
 static void procError(void) {
-    if (DWCi_WINlGet() == 0) {
+    if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
         DWCi_ChangeScene(procError1);

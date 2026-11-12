@@ -171,7 +171,7 @@ static void DWCUtilTestProgress_PollTest(void) {
 }
 
 static void DWCUtilTestProgress_WaitDialog(void) {
-    if (DWCi_WINlGet() == 0) {
+    if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
         DWCi_ChangeScene(DWCUtilTestProgress_WaitDialogClosed);

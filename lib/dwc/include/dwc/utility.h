@@ -9,9 +9,10 @@
 // The work that DWC_StartUtility needs, as the caller allocates it
 #define DWC_UTILITY_WORK_SIZE 0x40000
 
-// Languages and starting screens of the settings
+// Languages and starting screens of the settings: the top menu, or the selection of the connection target
 #define DWC_LANGUAGE_ENGLISH 1
 #define DWC_UTILITY_TOP_MENU_FOR_USA 0
+#define DWC_UTILITY_SETTING_FOR_USA 1
 
 // Runs the settings until the player leaves them; negative when the game runs on a DSi or the parameters are wrong
 int DWC_StartUtility(void *work, int language, int param);

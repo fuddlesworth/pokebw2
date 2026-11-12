@@ -1,6 +1,7 @@
 #include "scenesettestcomp.h"
 #include "comment.h"
 #include "common.h"
+#include "dwc/utility.h"
 #include "dwc_util_shared.h"
 #include "effect.h"
 #include "font.h"
@@ -106,9 +107,9 @@ static void wait(void) {
     if (sAutoConnectOkFrames >= 180) {
         DWCi_GetParam2_(NULL, &from);
         switch (DWCi_Entry()) {
-        case 0:
+        case DWC_UTILITY_TOP_MENU_FOR_USA:
             break;
-        case 1:
+        case DWC_UTILITY_SETTING_FOR_USA:
             if (from != 0) {
                 DWCi_ChangeScene(DWCi_SceneEnd);
                 return;
