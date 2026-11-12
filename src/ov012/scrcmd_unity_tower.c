@@ -11,6 +11,20 @@
 // The script commands of the Unity Tower (a descriptive name). Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
+// UnityTowerGetStateParam's param: the UnityTowerFloor field the script asks for: the visitors the floor
+// lists, the floor (each floor is a country), and the value UnityTowerSetFloor saved with it
+enum {
+    UNITY_TOWER_STATE_PARAM_COUNT,
+    UNITY_TOWER_STATE_PARAM_FLOOR,
+    UNITY_TOWER_STATE_PARAM_VALUE,
+};
+
+// EventUnityTowerFloorSelect_Callback's steps: the floor select, and its result
+enum {
+    UNITY_TOWER_FLOOR_SELECT_STEP_OPEN,
+    UNITY_TOWER_FLOOR_SELECT_STEP_RESULT,
+};
+
 // The floor select's parameter, and what the event writes its result to
 typedef struct {
     UnSelectParam param;
@@ -35,11 +49,11 @@ static u8 UnityTowerState_GetTrainerClass(const UnityTowerFloor *state, u8 index
 
 static u8 UnityTowerState_GetParam(const UnityTowerFloor *state, u16 param) {
     switch (param) {
-    case 0:
+    case UNITY_TOWER_STATE_PARAM_COUNT:
         return state->count;
-    case 1:
+    case UNITY_TOWER_STATE_PARAM_FLOOR:
         return state->floor;
-    case 2:
+    case UNITY_TOWER_STATE_PARAM_VALUE:
         return state->value;
     }
     return 0;
@@ -85,11 +99,11 @@ static GameEventReturnCode EventUnityTowerFloorSelect_Callback(GameEvent *event,
     UnityTowerFloorSelectEvent *work = GameEvent_GetData(event);
 
     switch (*state) {
-    case 0:
+    case UNITY_TOWER_FLOOR_SELECT_STEP_OPEN:
         GSYS_QueueProcAsEvent(event, OVERLAY_UN_SELECT, &UN_SELECT_PROC_FUNCTIONS, &work->param);
         (*state)++;
         break;
-    case 1:
+    case UNITY_TOWER_FLOOR_SELECT_STEP_RESULT:
         if (work->param.selected == TRUE) {
             *work->selectedResult = TRUE;
             *work->floorResult = work->param.selectedFloor;

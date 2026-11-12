@@ -4576,7 +4576,7 @@
    "area": "HollowRival"
   },
   "612": {
-   "handler": "func_ov012_0216a748",
+   "handler": "Scrcmd_HollowRival_HollowRivalCheckCount",
    "overlay": 12,
    "args": [
     "var",

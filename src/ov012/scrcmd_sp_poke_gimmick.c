@@ -65,7 +65,7 @@ BOOL Scrcmd_SpPokeGimmick_SpPokeJump(VM *vm, FieldScriptEnv *env) {
 
 BOOL Scrcmd_SpPokeGimmick_SpPokeAppear(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
-    u16 a1 = ScriptReadAny(vm, env);
+    u16 mode = ScriptReadAny(vm, env);
     u16 x = ScriptReadAny(vm, env);
     u16 y = ScriptReadAny(vm, env);
     u16 z = ScriptReadAny(vm, env);
@@ -74,7 +74,7 @@ BOOL Scrcmd_SpPokeGimmick_SpPokeAppear(VM *vm, FieldScriptEnv *env) {
     pos.x = GRID_CENTER(x);
     pos.y = GRID_HEIGHT(y);
     pos.z = GRID_CENTER(z);
-    SpPokeEvent_Appear(gsys, a1, &pos);
+    SpPokeEvent_Appear(gsys, mode, &pos);
     return FALSE;
 }
 

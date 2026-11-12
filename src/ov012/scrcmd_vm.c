@@ -708,7 +708,7 @@ const FieldScriptCommand EVCMD_TABLE[] = {
     NULL,                                               // 0x261
     Scrcmd_HollowRival_HollowRivalSetValue,             // 0x262
     Scrcmd_HollowRival_HollowRivalSetFlag,              // 0x263
-    func_ov012_0216a748,                                // 0x264
+    Scrcmd_HollowRival_HollowRivalCheckCount,           // 0x264
     Scrcmd_ProcFld_CallXTransceiverSecret,              // 0x265
     Scrcmd_HollowRival_HollowRivalGetCounter,           // 0x266
     Scrcmd_HollowRival_HollowRivalSetMet,               // 0x267

@@ -8,6 +8,13 @@
 #include "struct_decls.h"
 #include "system/vm.h"
 
+// MemoryLinkCheckMusical's mode: whether the downloaded Musical props were added, or whether the Musical's program
+// is at least the downloaded one
+enum {
+    MEMORY_LINK_MUSICAL_PROPS_ADDED,
+    MEMORY_LINK_MUSICAL_PROGRAM_UP_TO_DATE,
+};
+
 BOOL Scrcmd_DownloadData_MemoryLinkCheckFlag(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_DownloadData_MemoryLinkGetVar(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_DownloadData_MemoryLinkIsPlayerLinked(VM *vm, FieldScriptEnv *env);

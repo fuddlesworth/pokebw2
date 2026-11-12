@@ -148,6 +148,9 @@ enum {
     LIST_MENU_ANCHOR_TOP_LEFT,
     LIST_MENU_ANCHOR_TOP_RIGHT,
 };
+
+// A list menu item without a description: the scripts pass 0xffff as ListMenuAdd's description
+#define LIST_MENU_DESCRIPTION_NONE 0xffff
 void InitListMenu(FieldScriptEnv *env, u16 x, u16 y, u16 cursor, u16 flags, u32 align, u16 *result, WordSet *wordSet,
                   MsgData *msgData);
 void AddItemToListMenu(FieldScriptEnv *env, u32 messageId, u32 descriptionId, u32 value, StrBuf *expanded,
