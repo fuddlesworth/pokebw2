@@ -101,13 +101,17 @@ a rule here changes, change it there too.
 | Add a file to both versions | `.venv/bin/python tools/decomp/add_source_file.py src/X.c overlays/ov033 .text:A-B ... --incomplete` |
 | Mark complete | `.venv/bin/python tools/decomp/mark_complete.py src/X.c` |
 | Name a symbol | `.venv/bin/python tools/decomp/rename_symbol.py func_ov033_0217acd4 Name` |
-| What is left to name | `.venv/bin/python tools/decomp/naming_report.py [--module ov033]` |
+| What is left to name | `.venv/bin/python tools/decomp/naming_report.py [--module ov033]` (quote its total row) |
 | Which remaining functions are linker veneers | `.venv/bin/python tools/decomp/naming_report.py --veneers` |
 | Script commands after renaming handlers | `.venv/bin/python tools/script/sync_handler_names.py` |
 | Rename a constant of `generated/` and its uses | `.venv/bin/python tools/data/rename_constant.py OLD NEW` |
 | Progress of the local build | `ninja progress` |
 | Build and verify | `python3 configure.py && ninja 2>&1 \| tail -20` (configure only when source files were added) |
 | Check for warnings, every file and version | `.venv/bin/python tools/decomp/compile_all.py -j 6 \| tail -3` |
+
+`naming_report.py` counts `data` from the last build's map (`build/b2_us/arm9.o.xMAP`); run `ninja` first, so the
+compiler's anonymous objects are excluded. Any build of this ROM will do, because naming-only commits do not move
+layout.
 
 ## Skills and agents
 
