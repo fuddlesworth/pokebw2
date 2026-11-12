@@ -46,11 +46,17 @@ GameEvent *CallEventPrepareResidentActorsForZoneChange(GameSystem *gsys, Field *
     return event;
 }
 
+// EventActionCall_Callback's steps: the actor's action task, and the wait for the tasks to end
+enum {
+    EVENT_ACTION_CALL_STEP_CREATE_TASK,
+    EVENT_ACTION_CALL_STEP_WAIT_TASKS,
+};
+
 GameEventReturnCode EventActionCall_Callback(GameEvent *event, u32 *state, void *data) {
     EventActionCallWork *work = data;
     MMSys *mmSys = Field_GetActorSystem(work->field);
     switch (*state) {
-    case 0: {
+    case EVENT_ACTION_CALL_STEP_CREATE_TASK: {
         FieldActor *actor = EventActionCall_FindActor(mmSys, work->actorId);
         if (actor == NULL) {
             return GAMEEVENT_DONE;
@@ -60,7 +66,7 @@ GameEventReturnCode EventActionCall_Callback(GameEvent *event, u32 *state, void 
         (*state)++;
         break;
     }
-    case 1:
+    case EVENT_ACTION_CALL_STEP_WAIT_TASKS:
         if (!EventActionCall_UpdateTCBs(work)) {
             return GAMEEVENT_DONE;
         }
@@ -146,6 +152,12 @@ BOOL EventActionCall_UpdateTCBs(EventActionCallWork *work) {
     return active;
 }
 
+// EventActorJump_Callback's steps: the rise along JUMP_ANY_HEIGHT_TABLE, and the fall onto the landing
+enum {
+    EVENT_ACTOR_JUMP_STEP_RISE,
+    EVENT_ACTOR_JUMP_STEP_FALL,
+};
+
 GameEventReturnCode EventActorJump_Callback(GameEvent *event, u32 *state, void *data) {
     EventActorJumpWork *work = data;
     VecFx32 position;
@@ -154,7 +166,7 @@ GameEventReturnCode EventActorJump_Callback(GameEvent *event, u32 *state, void *
     BOOL done = FALSE;
 
     switch (*state) {
-    case 0:
+    case EVENT_ACTOR_JUMP_STEP_RISE:
         position = work->start;
         position.y += JUMP_ANY_HEIGHT_TABLE[work->frame];
         work->frame += 2;
@@ -165,7 +177,7 @@ GameEventReturnCode EventActorJump_Callback(GameEvent *event, u32 *state, void *
             (*state)++;
         }
         break;
-    case 1:
+    case EVENT_ACTOR_JUMP_STEP_FALL:
         CopyActorWPos(work->actor, &position);
         landingY = work->start.y + work->displacement.y;
         y = position.y - 8 * FX32_ONE;
@@ -197,6 +209,13 @@ GameEvent *EventActorJump_Create(GameSystem *gsys, FieldActor *actor, const VecF
     return event;
 }
 
+// EventActorLinearMove_Callback's steps: the movement's start, its frames, and its end
+enum {
+    EVENT_ACTOR_LINEAR_MOVE_STEP_START,
+    EVENT_ACTOR_LINEAR_MOVE_STEP_MOVE,
+    EVENT_ACTOR_LINEAR_MOVE_STEP_END,
+};
+
 GameEventReturnCode EventActorLinearMove_Callback(GameEvent *event, u32 *state, void *data) {
     EventActorLinearMoveWork *work = data;
     fx32 progress;
@@ -206,12 +225,12 @@ GameEventReturnCode EventActorLinearMove_Callback(GameEvent *event, u32 *state, 
 
     GameEvent_GetGameSystem(event);
     switch (*state) {
-    case 0:
+    case EVENT_ACTOR_LINEAR_MOVE_STEP_START:
         EnableActorMovement(work->actor);
         SetActorMovementFlag(work->actor, ACTOR_MOVEMENT_FLAG_HIDE_SHADOW);
         *state = 1;
         break;
-    case 1:
+    case EVENT_ACTOR_LINEAR_MOVE_STEP_MOVE:
         work->frame++;
         progress = FX32_CONST((f32)work->frame / (f32)work->duration);
         vecfx_mul(&work->start, FX32_ONE - progress, &fromStart);
@@ -222,7 +241,7 @@ GameEventReturnCode EventActorLinearMove_Callback(GameEvent *event, u32 *state, 
             *state = 2;
         }
         break;
-    case 2:
+    case EVENT_ACTOR_LINEAR_MOVE_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

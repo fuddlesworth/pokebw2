@@ -12,23 +12,31 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 
+// EventBattleLose_Callback's steps: the message and the screen's fade, the blackout, the script, and the end
+enum {
+    BATTLE_LOSE_STEP_START,
+    BATTLE_LOSE_STEP_BLACKOUT,
+    BATTLE_LOSE_STEP_SCRIPT,
+    BATTLE_LOSE_STEP_END,
+};
+
 GameEventReturnCode EventBattleLose_Callback(GameEvent *event, u32 *state, void *data) {
     BattleLoseData *work = data;
 
     switch (*state) {
-    case 0:
+    case BATTLE_LOSE_STEP_START:
         BrightnessController_SetScreenBrightness(-16, 0x37, 1);
         BrightnessController_SetScreenBrightness(-16, 0x3f, 2);
         GameBeacon_BroadcastBattleLostMission();
         GSYS_QueueProcAsEvent(event, OVERLAY_ID(295), &BATTLE_LOSE_MESSAGE_PROC_FUNCTIONS, work);
         (*state)++;
         break;
-    case 1:
+    case BATTLE_LOSE_STEP_BLACKOUT:
         BrightnessController_SetScreenBrightness(0, 0x3f, 3);
         GameEvent_ChainNext(event, EventMapChangeBlackout_CreateExternal(work->gsys));
         (*state)++;
         break;
-    case 2:
+    case BATTLE_LOSE_STEP_SCRIPT:
         if (!work->returnNonLeague) {
             EventScriptCall_Start(event, 2, NULL, 0, HEAPID_FIELDMAP);
         } else {
@@ -36,7 +44,7 @@ GameEventReturnCode EventBattleLose_Callback(GameEvent *event, u32 *state, void 
         }
         (*state)++;
         break;
-    case 3:
+    case BATTLE_LOSE_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

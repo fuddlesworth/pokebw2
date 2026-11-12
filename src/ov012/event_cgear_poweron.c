@@ -16,6 +16,16 @@ static void EventCGearPowerOn_SubscreenCallback(void *work) {
     data->subscreenChanged = TRUE;
 }
 
+// EventCGearPowerOn_Callback's steps: stopping the communication, booting it when asked to, and the C-Gear's screen
+enum {
+    CGEAR_POWER_ON_STEP_STOP_COMM,
+    CGEAR_POWER_ON_STEP_WAIT_COMM_EXIT,
+    CGEAR_POWER_ON_STEP_BOOT_COMM,
+    CGEAR_POWER_ON_STEP_CHANGE_SUBSCREEN,
+    CGEAR_POWER_ON_STEP_WAIT_SUBSCREEN,
+    CGEAR_POWER_ON_STEP_END,
+};
+
 static GameEventReturnCode EventCGearPowerOn_Callback(GameEvent *event, u32 *state, void *work) {
     CGearPowerOnData *data = work;
     GameSystem *gsys = data->gsys;
@@ -23,19 +33,19 @@ static GameEventReturnCode EventCGearPowerOn_Callback(GameEvent *event, u32 *sta
     GameCommSys *comm = GSYS_GetGameCommSystem(gsys);
 
     switch (*state) {
-    case 0:
+    case CGEAR_POWER_ON_STEP_STOP_COMM:
         if (GameCommSys_BootCheck(comm)) {
             GameCommSys_ExitReq(comm);
         }
         (*state)++;
         break;
-    case 1:
+    case CGEAR_POWER_ON_STEP_WAIT_COMM_EXIT:
         if (!GameCommSys_BootCheck(comm)) {
             GSYS_SetCGearOn(gsys, 0);
             (*state)++;
         }
         break;
-    case 2:
+    case CGEAR_POWER_ON_STEP_BOOT_COMM:
         if (data->bootComm) {
             GSYS_SetCGearOn(gsys, 1);
             GSYS_TryBootGameComm(gsys);
@@ -43,17 +53,17 @@ static GameEventReturnCode EventCGearPowerOn_Callback(GameEvent *event, u32 *sta
         }
         (*state)++;
         break;
-    case 3:
+    case CGEAR_POWER_ON_STEP_CHANGE_SUBSCREEN:
         FieldSubscreen_ReqChangeEx(subscreen, FLD_SUBSCREEN_ID_CGEAR_WELCOME, EventCGearPowerOn_SubscreenCallback,
                                    data);
         (*state)++;
         break;
-    case 4:
+    case CGEAR_POWER_ON_STEP_WAIT_SUBSCREEN:
         if (data->subscreenChanged) {
             (*state)++;
         }
         break;
-    case 5:
+    case CGEAR_POWER_ON_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

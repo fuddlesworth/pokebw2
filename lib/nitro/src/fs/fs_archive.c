@@ -143,13 +143,13 @@ static FSResult FSi_InvokeCommand(FSFile *file, u32 command) {
         case FS_COMMAND_GETPATH: {
             FSGetPathArgs *args = file->argument;
 
-            result = vtbl->getPath(arc, file, args->unk_00, args->buffer, &args->length);
+            result = vtbl->getPath(arc, file, args->isDirectory, args->buffer, &args->length);
             break;
         }
         case FS_COMMAND_OPENFILEFAST: {
             FSOpenFileFastArgs *args = file->argument;
 
-            result = vtbl->openFileFast(arc, file, args->fileId, args->unk_04);
+            result = vtbl->openFileFast(arc, file, args->fileId, args->mode);
             break;
         }
         case FS_COMMAND_OPENFILEDIRECT: {
@@ -209,19 +209,19 @@ static FSResult FSi_InvokeCommand(FSFile *file, u32 command) {
         case FS_COMMAND_CREATEFILE: {
             u32 *args = file->argument;
 
-            result = vtbl->createFile(arc, args[0], args[1], args[2]);
+            result = vtbl->createFile(arc, args[0], (const char *)args[1], args[2]);
             break;
         }
         case FS_COMMAND_DELETEFILE: {
             u32 *args = file->argument;
 
-            result = vtbl->deleteFile(arc, args[0], args[1]);
+            result = vtbl->deleteFile(arc, args[0], (const char *)args[1]);
             break;
         }
         case FS_COMMAND_RENAMEFILE: {
             u32 *args = file->argument;
 
-            result = vtbl->renameFile(arc, args[0], args[1], args[2], args[3]);
+            result = vtbl->renameFile(arc, args[0], (const char *)args[1], args[2], (const char *)args[3]);
             break;
         }
         case FS_COMMAND_GETPATHINFO: {
@@ -233,25 +233,25 @@ static FSResult FSi_InvokeCommand(FSFile *file, u32 command) {
         case FS_COMMAND_SETPATHINFO: {
             u32 *args = file->argument;
 
-            result = vtbl->setPathInfo(arc, args[0], args[1], args[2]);
+            result = vtbl->setPathInfo(arc, args[0], (const char *)args[1], (FSPathInfo *)args[2]);
             break;
         }
         case FS_COMMAND_CREATEDIRECTORY: {
             u32 *args = file->argument;
 
-            result = vtbl->createDirectory(arc, args[0], args[1], args[2]);
+            result = vtbl->createDirectory(arc, args[0], (const char *)args[1], args[2]);
             break;
         }
         case FS_COMMAND_DELETEDIRECTORY: {
             u32 *args = file->argument;
 
-            result = vtbl->deleteDirectory(arc, args[0], args[1]);
+            result = vtbl->deleteDirectory(arc, args[0], (const char *)args[1]);
             break;
         }
         case FS_COMMAND_RENAMEDIRECTORY: {
             u32 *args = file->argument;
 
-            result = vtbl->renameDirectory(arc, args[0], args[1], args[2], args[3]);
+            result = vtbl->renameDirectory(arc, args[0], (const char *)args[1], args[2], (const char *)args[3]);
             break;
         }
         case FS_COMMAND_GETARCHIVERESOURCE: {
@@ -272,7 +272,7 @@ static FSResult FSi_InvokeCommand(FSFile *file, u32 command) {
         case FS_COMMAND_OPENDIRECTORY: {
             FSOpenDirectoryArgs *args = file->argument;
 
-            result = vtbl->openDirectory(arc, file, args->baseDirId, args->path, args->unk_08);
+            result = vtbl->openDirectory(arc, file, args->baseDirId, args->path, args->mode);
             break;
         }
         case FS_COMMAND_CLOSEDIRECTORY:
@@ -281,7 +281,7 @@ static FSResult FSi_InvokeCommand(FSFile *file, u32 command) {
         case FS_COMMAND_SETSEEKCACHE: {
             u32 *args = file->argument;
 
-            result = vtbl->setSeekCache(arc, file, args[0], args[1]);
+            result = vtbl->setSeekCache(arc, file, (void *)args[0], args[1]);
             break;
         }
         default:

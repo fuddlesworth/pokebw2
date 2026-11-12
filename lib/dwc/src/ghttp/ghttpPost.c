@@ -471,7 +471,7 @@ static GHIPostingResult ghiPostStringStateDoPosting(GHIPostState *state, GHIConn
         int i;
         char c;
 
-        if (connection->encryptor.mEngine == 0) {
+        if (connection->encryptor.mEngine == GHTTPEncryptionEngine_None) {
             buffer = &connection->sendBuffer;
         } else {
             buffer = &connection->encodeBuffer;
@@ -494,13 +494,13 @@ static GHIPostingResult ghiPostStringStateDoPosting(GHIPostState *state, GHIConn
         }
     } else {
         switch (ghiTrySendThenBuffer(connection, item->data.string.value, item->data.string.length)) {
-        case 0:
+        case GHITrySendError:
             return gsi_false;
         default:
             return gsi_true;
         }
     }
-    if (connection->encryptor.mEngine == 0) {
+    if (connection->encryptor.mEngine == GHTTPEncryptionEngine_None) {
         if (!ghiSendBufferedData(connection)) {
             return gsi_false;
         }
@@ -528,7 +528,7 @@ static GHIPostingResult ghiPostXmlStateDoPosting(GHIPostState *state, GHIConnect
             padLength = 0;
         }
     }
-    if (connection->encryptor.mEngine != 0 && connection->encryptor.mEncryptOnBuffer == 1) {
+    if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None && connection->encryptor.mEncryptOnBuffer == 1) {
         if (!ghiAppendDataToBuffer(&connection->encodeBuffer, gsXmlWriterGetData(message),
                                    gsXmlWriterGetDataLength(message)) ||
             !ghiAppendDataToBuffer(&connection->encodeBuffer, padding, padLength) ||
@@ -549,7 +549,7 @@ static GHIPostingResult ghiPostXmlStateDoPosting(GHIPostState *state, GHIConnect
         return gsi_false;
     }
     switch (ghiTrySendThenBuffer(connection, padding, padLength)) {
-    case 0:
+    case GHITrySendError:
         return gsi_false;
     default:
         return gsi_true;
@@ -566,13 +566,13 @@ static GHIPostingResult ghiPostFileDiskStateDoPosting(GHIPostState *state, GHICo
         count = fread(buffer, 1, sizeof(buffer), state->file);
         if (count <= 0) {
             connection->completed = gsi_true;
-            connection->result = 14;
+            connection->result = GHTTPFileReadFailed;
             return 0;
         }
         state->pos += count;
         if (state->pos > state->fileSize) {
             connection->completed = gsi_true;
-            connection->result = 14;
+            connection->result = GHTTPFileReadFailed;
             return 0;
         }
         result = ghiTrySendThenBuffer(connection, buffer, count);
@@ -606,7 +606,7 @@ static GHIPostingResult ghiPostFileMemoryStateDoPosting(GHIPostState *state, GHI
     if (length == 0) {
         return 1;
     }
-    if (connection->encryptor.mEngine == 0) {
+    if (connection->encryptor.mEngine == GHTTPEncryptionEngine_None) {
         do {
             result = ghiDoSend(connection, item->data.memory.data + state->pos, length - state->pos);
             if (result == -1) {
@@ -792,7 +792,8 @@ static GHIPostingResult ghiPostStateDoPosting(GHIPostState *state, GHIConnection
             }
         }
 
-        if (connection->encryptor.mEngine != 0 && connection->encryptor.mEncryptOnBuffer == 1) {
+        if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None &&
+            connection->encryptor.mEncryptOnBuffer == 1) {
             if (length == 0) {
                 length = strlen(buffer);
             }
@@ -814,7 +815,7 @@ static GHIPostingResult ghiPostStateDoPosting(GHIPostState *state, GHIConnection
             if (!result) {
                 return 0;
             }
-            if (result == 2) {
+            if (result == GHITrySendBuffered) {
                 return 2;
             }
             ghiResetBuffer(&connection->sendBuffer);
@@ -863,7 +864,7 @@ GHIPostingResult ghiPostDoPosting(GHIConnection *connection) {
             if (!result) {
                 return 0;
             }
-            if (result == 2) {
+            if (result == GHITrySendBuffered) {
                 return 2;
             }
             if (connection->postingState.waitPostContinue == 1) {
@@ -883,13 +884,13 @@ GHIPostingResult ghiPostDoPosting(GHIConnection *connection) {
         if (!result) {
             return 0;
         }
-        if (result == 2) {
+        if (result == GHIPostingPosting) {
             return 2;
         }
         posting->index++;
     }
 
-    if (connection->encryptor.mEngine != 0) {
+    if (connection->encryptor.mEngine != GHTTPEncryptionEngine_None) {
         if (connection->encodeBuffer.len > 0) {
             if (!ghiEncryptDataToBuffer(&connection->sendBuffer, connection->encodeBuffer.data,
                                         connection->encodeBuffer.len)) {

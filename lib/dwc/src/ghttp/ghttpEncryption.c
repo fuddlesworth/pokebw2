@@ -8,28 +8,6 @@
 
 #define GHI_FILE "ghttpEncryption.c"
 
-// How a certificate that the server sent is checked (the SSL library tells of what it found, and the callback says
-// which of the faults to ignore by clearing their bits)
-typedef struct GHISslCertInfo {
-    gsi_u8 unk_000[0x5b0];
-    char issuer[0x100];
-    char subject[0x100];
-    char commonName[0x100];
-} GHISslCertInfo;
-
-typedef int (*GHISslAuthFunc)(gsi_u32 result, GHISslCertInfo *info, int length);
-
-// What the SSL library's socket takes to make a connection secure
-typedef struct GHISslConnection {
-    gsi_u8 unk_000[0x800];
-    int unk_800;
-    gsi_u8 unk_804[0xc];
-    GHISslAuthFunc authCallback;
-    void **certs;
-    int certCount;
-    gsi_u8 unk_81C[0x14];
-} GHISslConnection;
-
 // The root certificates of a host that a request may be secured with, and how many have asked for them
 typedef struct GHIRootCAEntry {
     char *url;
@@ -57,12 +35,12 @@ GHTTPBool ghttpSetRequestEncryptionEngine(GHTTPRequest request, GHTTPEncryptionE
     if (connection->encryptor.mInterface != NULL && connection->encryptor.mEngine != engine) {
         return gsi_false;
     }
-    if (engine == 0 && strncmp(connection->URL, "https://", 8) == 0) {
+    if (engine == GHTTPEncryptionEngine_None && strncmp(connection->URL, "https://", 8) == 0) {
         return gsi_false;
     }
 
     connection->encryptor.mEngine = engine;
-    if (engine == 0) {
+    if (engine == GHTTPEncryptionEngine_None) {
         connection->encryptor.mInterface = NULL;
         return gsi_true;
     }
@@ -199,12 +177,12 @@ GHTTPBool ghiEncryptorCleanupTwlRootCA(const char *url) {
 }
 
 // Tells what the SSL library found in the server's certificate and which of the faults it may ignore. Returns the
-// faults that remain
-static int SslAuthCallback(gsi_u32 result, GHISslCertInfo *info, int length) {
+// faults that remain. The connection is the one that the SSL layer parsed the certificate into (nitrowifi/cps.h)
+static int SslAuthCallback(int result, CPSSslConnection *info, int length) {
     gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Notice, "%s(@%s:%d):SSL - RECEIVED CERTFICATE\n",
                   GHI_FILE, __FUNCTION__, 938);
     gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Notice, "l:%d\n\ts:%s\n\tCN=%s\n\ti:%s\n", length,
-                  info->subject, info->commonName, info->issuer);
+                  info->subject, info->common_name, info->issuer);
     if (result & 0x8000) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d): Certificate is out-of-date - Ignoring\r\n", GHI_FILE, __FUNCTION__, 946);
@@ -237,21 +215,21 @@ static int SslAuthCallback(gsi_u32 result, GHISslCertInfo *info, int length) {
 }
 
 // Makes the SSL connection of a host, with the certificates that it is to trust
-static GHISslConnection *ghiTwlSSLInit(const char *url) {
-    GHISslConnection *ssl = NULL;
+static CPSSslConnection *ghiTwlSSLInit(const char *url) {
+    CPSSslConnection *ssl = NULL;
     GHICertList *rootCA = ghiEncryptorGetRootCAList(url);
 
     if (rootCA != NULL) {
         if (rootCA->certs != NULL && rootCA->count > 0) {
             OS_GetLowEntropyData(sSslEntropy);
             CPS_SslAddRandomSeed(sSslEntropy, sizeof(sSslEntropy));
-            ssl = gsimalloc(sizeof(GHISslConnection));
+            ssl = gsimalloc(sizeof(CPSSslConnection));
             if (ssl != NULL) {
-                memset(ssl, 0, sizeof(GHISslConnection));
-                ssl->unk_800 = 0;
-                ssl->certs = rootCA->certs;
-                ssl->certCount = rootCA->count;
-                ssl->authCallback = SslAuthCallback;
+                memset(ssl, 0, sizeof(CPSSslConnection));
+                ssl->hostname = NULL;
+                ssl->named_params = rootCA->certs;
+                ssl->named_param_count = rootCA->count;
+                ssl->validate_certificate = SslAuthCallback;
             } else {
                 gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Memory, GSIDebugLevel_WarmError,
                               "%s(@%s:%d): TWL Failed to allocate memory for ssl connection\r\n", GHI_FILE,
@@ -311,12 +289,12 @@ GHIEncryptionResult ghiEncryptorSslStartFunc(GHIConnection *connection, GHIEncry
         error = SOCL_EnableSsl(connection->socket, state->ssl);
         if (error < 0) {
             switch (error) {
-            case -28:
+            case SOCL_EINVAL:
                 gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Debug,
                               "%s(@%s:%d):GameSpy SSL (TWL) Invalid processing. Socket config is invalid\r\n", GHI_FILE,
                               __FUNCTION__, 1113);
                 break;
-            case -33:
+            case SOCL_EMFILE:
                 // BUG: the text ends with the file name, as if its arguments were one short, so the format is given
                 // the function name and the line for its first two conversions
 #ifdef BUGFIX
@@ -329,12 +307,12 @@ GHIEncryptionResult ghiEncryptorSslStartFunc(GHIConnection *connection, GHIEncry
                               __FUNCTION__, 1118);
 #endif
                 break;
-            case -39:
+            case SOCL_ENETRESET:
                 gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Debug,
                               "%s(@%s:%d):GameSpy SSL (TWL) Socket library is not initialized.\r\n", GHI_FILE,
                               __FUNCTION__, 1124);
                 break;
-            case -42:
+            case -42: // SOCL's insufficient-resources error, which soc.h has no constant for
                 gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Debug,
                               "%s(@%s:%d):GameSpy SSL (TWL)Insufficient resources.\r\n", GHI_FILE, __FUNCTION__, 1129);
                 break;
@@ -345,7 +323,7 @@ GHIEncryptionResult ghiEncryptorSslStartFunc(GHIConnection *connection, GHIEncry
                 break;
             }
             connection->completed = gsi_true;
-            connection->result = 6;
+            connection->result = GHTTPConnectFailed;
             connection->socketError = error;
             return 3;
         }

@@ -37,14 +37,14 @@ GHTTPBool ghiDecryptReceivedData(GHIConnection *connection) {
             out = connection->recvBuffer.data + connection->recvBuffer.len;
             outSize = connection->recvBuffer.size - connection->recvBuffer.len;
             result = connection->encryptor.mDecryptFunc(connection, &connection->encryptor, in, &inSize, out, &outSize);
-            if (result == 2) {
+            if (result == GHIEncryptionResult_BufferTooSmall) {
                 if (!ghiResizeBuffer(&connection->recvBuffer, connection->recvBuffer.sizeIncrement)) {
                     return gsi_false;
                 }
-            } else if (result == 3) {
+            } else if (result == GHIEncryptionResult_Error) {
                 return gsi_false;
             }
-        } while (result == 2 && outSize == 0);
+        } while (result == GHIEncryptionResult_BufferTooSmall && outSize == 0);
 
         if (inSize > connection->decodeBuffer.len) {
             gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_HotError,
@@ -101,7 +101,7 @@ GHIRecvResult ghiDoReceive(GHIConnection *connection, char buffer[], int *size) 
             received = length;
         } else {
             connection->completed = gsi_true;
-            connection->result = 5;
+            connection->result = GHTTPSocketFailed;
             connection->socketError = 0;
             connection->connectionClosed = gsi_true;
             return 3;
@@ -118,7 +118,7 @@ GHIRecvResult ghiDoReceive(GHIConnection *connection, char buffer[], int *size) 
                 return 1;
             }
             connection->completed = gsi_true;
-            connection->result = 5;
+            connection->result = GHTTPSocketFailed;
             connection->socketError = error;
             connection->connectionClosed = gsi_true;
             return 3;
@@ -155,7 +155,7 @@ int ghiDoSend(GHIConnection *connection, const char *data, int size) {
             sent = count;
         } else {
             connection->completed = gsi_true;
-            connection->result = 5;
+            connection->result = GHTTPSocketFailed;
             connection->socketError = 0;
             return -1;
         }
@@ -168,13 +168,13 @@ int ghiDoSend(GHIConnection *connection, const char *data, int size) {
                 return 0;
             }
             connection->completed = gsi_true;
-            connection->result = 5;
+            connection->result = GHTTPSocketFailed;
             connection->socketError = error;
             return -1;
         }
     }
 
-    if (connection->state == 6 && !connection->postingState.waitPostContinue) {
+    if (connection->state == GHTTPPosting && !connection->postingState.waitPostContinue) {
         connection->postingState.bytesPosted += sent;
     }
     return sent;
