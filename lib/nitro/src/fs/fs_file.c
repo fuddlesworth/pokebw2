@@ -62,7 +62,7 @@ BOOL FS_OpenFileDirect(FSFile *file, FSArchive *archive, u32 start, u32 end, u32
     args.fileId = fileId;
     args.top = start;
     args.bottom = end;
-    args.unk_0c = 0;
+    args.mode = 0;
     return FSi_SendCommand(file, FS_COMMAND_OPENFILEDIRECT, TRUE);
 }
 
@@ -76,7 +76,7 @@ BOOL FS_OpenFileFast(FSFile *file, FSFileID fileId) {
         file->arc = fileId.arc;
         file->argument = &args;
         args.fileId = fileId.file_id;
-        args.unk_04 = 0;
+        args.mode = 0;
         result = FSi_SendCommand(file, FS_COMMAND_OPENFILEFAST, TRUE);
     }
     return result;

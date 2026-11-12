@@ -62,6 +62,13 @@ typedef enum {
     THIRD_ACTOR_PRESENT,
 } ThirdActorKind;
 
+// EventPrepareResidentActors_Callback's steps: enabling the actors that are moving, and waiting for them to stop
+enum {
+    PREPARE_RESIDENT_ACTORS_STEP_ENABLE_MOVING,
+    PREPARE_RESIDENT_ACTORS_STEP_WAIT_STOPPED,
+    PREPARE_RESIDENT_ACTORS_STEP_END,
+};
+
 GameEventReturnCode EventPrepareResidentActors_Callback(GameEvent *event, u32 *state, void *data) {
     PrepareResidentActorsWork *work = data;
     Field *field = work->field;
@@ -72,7 +79,7 @@ GameEventReturnCode EventPrepareResidentActors_Callback(GameEvent *event, u32 *s
     ThirdActorKind kind;
 
     switch (*state) {
-    case 0:
+    case PREPARE_RESIDENT_ACTORS_STEP_ENABLE_MOVING:
         actorSystem = Field_GetActorSystem(field);
         player = FindPlayerFieldActor(actorSystem);
         actor = FindActorByMoveCode(actorSystem, MOVE_CODE_FOLLOW_PLAYER);
@@ -94,7 +101,7 @@ GameEventReturnCode EventPrepareResidentActors_Callback(GameEvent *event, u32 *s
         }
         (*state)++;
         break;
-    case 1:
+    case PREPARE_RESIDENT_ACTORS_STEP_WAIT_STOPPED:
         actorSystem = Field_GetActorSystem(field);
         player = FindPlayerFieldActor(actorSystem);
         if ((work->movingActors & RESIDENT_ACTOR_PLAYER) && FldAct_CheckAcmdEnd(player) == TRUE) {
@@ -119,7 +126,7 @@ GameEventReturnCode EventPrepareResidentActors_Callback(GameEvent *event, u32 *s
             (*state)++;
         }
         break;
-    case 2:
+    case PREPARE_RESIDENT_ACTORS_STEP_END:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

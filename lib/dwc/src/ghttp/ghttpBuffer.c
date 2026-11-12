@@ -110,12 +110,12 @@ GHTTPBool ghiAppendDataToBuffer(GHIBuffer *buffer, const char *data, int size) {
     while (newLength >= buffer->size) {
         if (buffer->fixed) {
             buffer->connection->completed = gsi_true;
-            buffer->connection->result = 2;
+            buffer->connection->result = GHTTPBufferOverflow;
             return gsi_false;
         }
         if (!ghiResizeBuffer(buffer, buffer->sizeIncrement)) {
             buffer->connection->completed = gsi_true;
-            buffer->connection->result = 1;
+            buffer->connection->result = GHTTPOutOfMemory;
             return gsi_false;
         }
     }
@@ -142,7 +142,8 @@ GHTTPBool ghiEncryptDataToBuffer(GHIBuffer *buffer, const char *data, int size) 
     if (buffer->readOnly) {
         return gsi_false;
     }
-    if (buffer->connection->encryptor.mEngine == 0 || !buffer->connection->encryptor.mSessionEstablished) {
+    if (buffer->connection->encryptor.mEngine == GHTTPEncryptionEngine_None ||
+        !buffer->connection->encryptor.mSessionEstablished) {
         return ghiAppendDataToBuffer(buffer, data, size);
     }
     if (size == 0) {
@@ -166,12 +167,12 @@ GHTTPBool ghiEncryptDataToBuffer(GHIBuffer *buffer, const char *data, int size) 
                                                        data + offset, size, buffer->data + buffer->len, &available);
 #endif
 
-        if (result == 2) {
+        if (result == GHIEncryptionResult_BufferTooSmall) {
             if (!ghiResizeBuffer(buffer, buffer->sizeIncrement)) {
                 return gsi_false;
             }
             available = buffer->size - buffer->len;
-        } else if (result == 1) {
+        } else if (result == GHIEncryptionResult_Success) {
             offset += chunk;
             buffer->len = buffer->size - available;
         } else {
@@ -212,12 +213,12 @@ GHTTPBool ghiAppendCharToBuffer(GHIBuffer *buffer, int c) {
     if (buffer->len + 1 >= buffer->size) {
         if (buffer->fixed) {
             buffer->connection->completed = gsi_true;
-            buffer->connection->result = 2;
+            buffer->connection->result = GHTTPBufferOverflow;
             return gsi_false;
         }
         if (!ghiResizeBuffer(buffer, buffer->sizeIncrement)) {
             buffer->connection->completed = gsi_true;
-            buffer->connection->result = 1;
+            buffer->connection->result = GHTTPOutOfMemory;
             return gsi_false;
         }
     }
@@ -250,12 +251,13 @@ GHTTPBool ghiSendBufferedData(GHIConnection *connection) {
     do {
         int sent;
 
-        if (connection->encryptor.mEngine == 0 || connection->encryptor.mEncryptOnBuffer == 1) {
+        if (connection->encryptor.mEngine == GHTTPEncryptionEngine_None ||
+            connection->encryptor.mEncryptOnBuffer == 1) {
             int result = GSISocketSelect(connection->socket, 0, &ready, &failed);
 
             if (result == -1 || (result == 1 && failed != 0)) {
                 connection->completed = gsi_true;
-                connection->result = 5;
+                connection->result = GHTTPSocketFailed;
                 if (result == -1) {
                     connection->socketError = GOAGetLastError(connection->socket);
                 } else {
