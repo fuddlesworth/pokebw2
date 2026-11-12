@@ -58,11 +58,11 @@ GameEvent *EventFieldMenu_Create(GameSystem *gsys, Field *field, u16 param) {
     work->appCall.appParam = -1;
     screenId = FieldSubscreen_GetScreenID(subscreen);
     switch (screenId) {
-    case 4:
-        work->screenId = 4;
+    case FLD_SUBSCREEN_ID_ENTRALINK:
+        work->screenId = FLD_SUBSCREEN_ID_ENTRALINK;
         break;
-    case 10:
-        work->screenId = 10;
+    case FLD_SUBSCREEN_ID_FUNFEST:
+        work->screenId = FLD_SUBSCREEN_ID_FUNFEST;
         break;
     default:
         work->screenId = FieldSubscreen_GetIDForChange(Field_GetSubscreen(work->field), 0);

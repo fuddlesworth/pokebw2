@@ -15,14 +15,14 @@ void ghiHandleStatus(GHIConnection *connection) {
     case 4:
         switch (connection->statusCode) {
         case 401:
-            connection->result = 9;
+            connection->result = GHTTPUnauthorized;
             break;
         case 403:
-            connection->result = 10;
+            connection->result = GHTTPForbidden;
             break;
         case 404:
         case 410:
-            connection->result = 11;
+            connection->result = GHTTPFileNotFound;
             break;
         case 402:
         case 405:
@@ -31,12 +31,12 @@ void ghiHandleStatus(GHIConnection *connection) {
         case 408:
         case 409:
         default:
-            connection->result = 8;
+            connection->result = GHTTPRequestRejected;
             break;
         }
         break;
     case 5:
-        connection->result = 12;
+        connection->result = GHTTPServerError;
         break;
     }
 }
@@ -50,40 +50,40 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
     }
     connection->processing = gsi_true;
 
-    if (connection->state == 0) {
+    if (connection->state == GHTTPSocketInit) {
         ghiDoSocketInit(connection);
     }
-    if (connection->state == 1) {
+    if (connection->state == GHTTPHostLookup) {
         ghiDoHostLookup(connection);
     }
-    if (connection->state == 2) {
+    if (connection->state == GHTTPLookupPending) {
         ghiDoLookupPending(connection);
     }
-    if (connection->state == 3) {
+    if (connection->state == GHTTPConnecting) {
         ghiDoConnecting(connection);
     }
-    if (connection->state == 4) {
+    if (connection->state == GHTTPSecuringSession) {
         ghiDoSecuringSession(connection);
     }
-    if (connection->state == 5) {
+    if (connection->state == GHTTPSendingRequest) {
         ghiDoSendingRequest(connection);
     }
-    if (connection->state == 6) {
+    if (connection->state == GHTTPPosting) {
         ghiDoPosting(connection);
     }
-    if (connection->state == 7) {
+    if (connection->state == GHTTPWaiting) {
         ghiDoWaiting(connection);
     }
-    if (connection->state == 8) {
+    if (connection->state == GHTTPReceivingStatus) {
         ghiDoReceivingStatus(connection);
     }
-    if (connection->state == 9) {
+    if (connection->state == GHTTPReceivingHeaders) {
         ghiDoReceivingHeaders(connection);
     }
-    if (connection->state == 10) {
+    if (connection->state == GHTTPReceivingFile) {
         ghiDoReceivingFile(connection);
     }
-    if (connection->state == 11) {
+    if (connection->state == GHTTPClosing) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_State, GSIDebugLevel_Comment, "Connection Closing\n");
     }
 
@@ -92,7 +92,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
     }
 
     completed = connection->completed;
-    if (connection->result == 0x12 && !completed) {
+    if (connection->result == GHTTPRequestCancelled && !completed) {
         if (!CanReceiveOnSocket(connection->socket)) {
             connection->completed = gsi_true;
         }
@@ -103,7 +103,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
             ghiHandleStatus(connection);
             if (!ghiCloseConnection(connection)) {
                 connection->processing = gsi_false;
-                connection->state = 11;
+                connection->state = GHTTPClosing;
                 return gsi_false;
             }
             ghiCallCompletedCallback(connection);
@@ -114,7 +114,7 @@ GHTTPBool ghiProcessConnection(GHIConnection *connection) {
         } else {
             if (!ghiCloseConnection(connection)) {
                 connection->processing = gsi_false;
-                connection->state = 11;
+                connection->state = GHTTPClosing;
                 return gsi_false;
             }
             ghiCallCompletedCallback(connection);
@@ -182,7 +182,7 @@ GHTTPRequest ghttpGetExA(const char *url, const char *headers, char *buffer, int
     if (connection == NULL) {
         return -1;
     }
-    connection->type = 0;
+    connection->type = GHIGET;
     connection->URL = goastrdup(url);
     if (connection->URL == NULL) {
         ghiFreeConnection(connection);
@@ -249,8 +249,8 @@ void ghttpCancelRequest(GHTTPRequest request) {
     GHIConnection *connection = ghiRequestToConnection(request);
 
     if (connection != NULL) {
-        connection->result = 0x12;
-        connection->state = 11;
+        connection->result = GHTTPRequestCancelled;
+        connection->state = GHTTPClosing;
         connection->completed = gsi_true;
         ghiCloseConnection(connection);
     }

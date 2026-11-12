@@ -2979,6 +2979,21 @@ overlays/ov189 0x021acd85 add_data sActionCount
 overlays/ov189 0x021acda4 section_start lib/dwc/src/nd/nd.c:.rodata
 overlays/ov189 0x021acea0 section_end lib/dwc/src/enc/dwc_encsession.c:.rodata
 overlays/ov189 0x021acea0 section_start lib/dwc/src/crypt/crypt.c:.rodata
+overlays/ov189 0x021adc6d remove_symbol
+overlays/ov189 0x021adc95 remove_symbol
+overlays/ov189 0x021adcb5 remove_symbol
+overlays/ov189 0x021adcd5 remove_symbol
+overlays/ov189 0x021add19 remove_symbol
+overlays/ov189 0x021add5d remove_symbol
+overlays/ov189 0x021adde1 remove_symbol
+overlays/ov189 0x021aded9 remove_symbol
+overlays/ov189 0x021adf1d remove_symbol
+overlays/ov189 0x021adf61 remove_symbol
+overlays/ov189 0x021adfa5 remove_symbol
+overlays/ov189 0x021adfe1 remove_symbol
+overlays/ov189 0x021ae02d remove_symbol
+overlays/ov189 0x021ae03c remove_symbol
+overlays/ov189 0x021ae075 remove_symbol
 overlays/ov189 0x021ae0cc section_start lib/dwc/src/nd/nd.c:.data
 overlays/ov189 0x021ae301 remove_symbol
 overlays/ov189 0x021ae335 remove_symbol
