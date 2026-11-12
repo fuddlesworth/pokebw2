@@ -1892,8 +1892,7 @@ BOOL ServerControl_CheckPledgeCombo(BtlServerFlow *flow, BattleMon *mon, u16 mov
     return FALSE;
 }
 
-// BattleHandler_Result: 0 when no handler ran, 1 when one ran without setting a result, 2 when one ran and
-// succeeded
+// BattleHandler_Result: 0 when no handler ran, 1 when one ran and failed, 2 when one ran and succeeded
 enum {
     BTL_HANDLER_RESULT_NONE = 0,
     BTL_HANDLER_RESULT_FAILED = 1,
@@ -2070,10 +2069,11 @@ void ServerControl_RecordMoveUse(BtlServerFlow *flow, BattleMon *mon, u16 move) 
 enum {
     // Not returned; the switch keeps the case
     BTL_CHARGE_NONE = 0,
-    // The charge's check failed, so the move doesn't run
+    // The charge's check or start failed, so the move doesn't run
     BTL_CHARGE_FAILED = 1,
-    // The mon began its charge turn, which ends without the move
-    BTL_CHARGE_STARTED = 2,
+    // The mon used up its charge turn, which ends without the move; the start may have failed, with the failure's
+    // message shown
+    BTL_CHARGE_TURN_USED = 2,
     // The charge's release event failed, so the move doesn't run
     BTL_CHARGE_RELEASE_FAILED = 3,
     // The charge was released, so the move runs
@@ -2102,7 +2102,7 @@ BOOL ServerControl_ExecuteMove(BtlServerFlow *flow, BattleMon *mon, u16 move, Bt
             break;
         case BTL_CHARGE_FAILED:
             return isDamage;
-        case BTL_CHARGE_STARTED:
+        case BTL_CHARGE_TURN_USED:
             return success;
         case BTL_CHARGE_RELEASE_FAILED:
             return isDamage;
@@ -2568,7 +2568,7 @@ u32 ServerControl_CheckChargeTurn(BtlServerFlow *flow, BattleMon *mon, BtlMonSet
                 BattleCondition cond = AddTurnCondition(2, move);
                 ServerDisplay_AddCondition(flow, mon, 0x1a, cond);
             }
-            return BTL_CHARGE_STARTED;
+            return BTL_CHARGE_TURN_USED;
         }
         if (!ServerControl_StartChargeTurn(flow, mon, pos, targets, move)) {
             return BTL_CHARGE_FAILED;
@@ -2903,9 +2903,10 @@ void ServerControl_MoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 c
 void ServerDisplay_MoveFailMessage(BtlServerFlow *flow, BattleMon *mon, u16 move, u32 cause) {
     u8 monId = GetMonID(mon);
 
-    // The move-fail causes the move handlers write to BTL_EVAR_FAIL_CAUSE: 2 asleep, 3 paralysed, 4 frozen, 8
-    // infatuated, 9 disabled, and the handlers' others. The same variable carries other checks' causes, so the
-    // values keep their numbers until the handlers name the set
+    // The move-fail causes, in the game's own numbering: this file's checks write most of the cases (1, 2, 3, 4, 6,
+    // 7, 8, 9, 0xa, 0xc, 0xd, 0x14, 0x16 and 0x17), the handlers write 0xd, 0xe, 0xf, 0x13 and 0x19, and their
+    // 0x1a takes the default; nothing in src writes 0xb or 0x12. The same variable carries both sets, so the
+    // numbers stay as the game's until a shared header names the set
     switch (cause) {
     case 2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0x135, monId, SC_MSG_ARG_END);

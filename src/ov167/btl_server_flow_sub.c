@@ -745,7 +745,7 @@ enum {
     BAG_ITEM_PLACEMENT_BATTLE = 0,
     // In a rotation battle's back slots, which an item can still reach
     BAG_ITEM_PLACEMENT_ROTATION_BACK = 1,
-    // In the party, where only the items with an exact effect reach it
+    // In the party, out of the battle's reach except for the items whose effect works on any mon
     BAG_ITEM_PLACEMENT_PARTY = 2,
 };
 

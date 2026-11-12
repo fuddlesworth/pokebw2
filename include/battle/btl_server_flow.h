@@ -395,7 +395,8 @@ void ServerControl_MoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 c
 void ServerControl_ConsumePP(BtlServerFlow *flow, BattleMon *mon, u16 move, u8 moveSlot, BtlMonSet *targets);
 u32 ServerEvent_CalcPPDecrement(BtlServerFlow *flow, BattleMon *mon, u8 moveSlot, u16 move, BtlMonSet *targets);
 void ServerControl_CalcDamageList(BtlServerFlow *flow, BattleMon *attacker, BtlMonSet *targets,
-                                  const BtlFlowMoveParam *param, u32 *effectiveness, u32 arg5, BtlFlowDamageList *list);
+                                  const BtlFlowMoveParam *param, u32 *effectiveness, u32 ratio,
+                                  BtlFlowDamageList *list);
 u32 BtlFlowDamageList_GetCount(const BtlFlowDamageList *list);
 u32 BtlFlowDamageList_GetMons(BtlServerFlow *flow, const BtlFlowDamageList *list, BattleMon **mons);
 u32 BtlFlowDamageList_GetDirectHits(BtlServerFlow *flow, const BtlFlowDamageList *list, BattleMon **mons, u16 *damages,
