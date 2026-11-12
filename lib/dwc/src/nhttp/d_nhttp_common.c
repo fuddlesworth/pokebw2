@@ -46,16 +46,15 @@ void NHTTPi_WakeConnection(NHttpConnection *connection) {
     OS_WakeupThread(&info->waiters);
 }
 
-// Looks for a connection in the list, or puts one in it or takes one out. How it looks for it is the mode: 0 for the
-// connection itself, 1 for the one that has a request, 2 for the one that has a response, 3 to put one in and 4 to take
-// one out. Returns the connection found, or NULL
+// Looks for a connection in the list, or puts one in it or takes one out, as the mode says. Returns the connection
+// found, or NULL
 NHttpConnection *NHTTPi_ControlConnectionList(NHttpMutexInfo *mutexInfo, NHttpConnection *key, int mode) {
     NHttpConnection *found = NULL;
     NHttpConnection **link;
     NHttpConnection *node;
 
     NHTTPi_lockReqList(mutexInfo);
-    if (mode == 3) {
+    if (mode == NHTTP_CONNECTION_LIST_ADD) {
         found = key;
         key->next = sConnectionList;
         sConnectionList = key;
@@ -65,22 +64,22 @@ NHttpConnection *NHTTPi_ControlConnectionList(NHttpMutexInfo *mutexInfo, NHttpCo
         if (node != NULL) {
             do {
                 switch (mode) {
-                case 0:
+                case NHTTP_CONNECTION_LIST_FIND:
                     if (node == key) {
                         found = node;
                     }
                     break;
-                case 1:
+                case NHTTP_CONNECTION_LIST_FIND_BY_REQUEST:
                     if (node->request == (NHTTPReq *)key) {
                         found = node;
                     }
                     break;
-                case 2:
+                case NHTTP_CONNECTION_LIST_FIND_BY_RESPONSE:
                     if (node->response == (NHTTPRes *)key) {
                         found = node;
                     }
                     break;
-                case 4:
+                case NHTTP_CONNECTION_LIST_REMOVE:
                     if (node == key) {
                         found = *link;
                         *link = found->next;
@@ -101,11 +100,11 @@ NHttpConnection *NHTTPi_ControlConnectionList(NHttpMutexInfo *mutexInfo, NHttpCo
 }
 
 int NHTTPi_CommitConnectionList(NHttpMutexInfo *mutexInfo, NHttpConnection *connection) {
-    return -(NHTTPi_ControlConnectionList(mutexInfo, connection, 3) == NULL);
+    return -(NHTTPi_ControlConnectionList(mutexInfo, connection, NHTTP_CONNECTION_LIST_ADD) == NULL);
 }
 
 int NHTTPi_OmitConnectionList(NHttpMutexInfo *mutexInfo, NHttpConnection *connection) {
-    return -(NHTTPi_ControlConnectionList(mutexInfo, connection, 4) == NULL);
+    return -(NHTTPi_ControlConnectionList(mutexInfo, connection, NHTTP_CONNECTION_LIST_REMOVE) == NULL);
 }
 
 NHTTPRes *NHTTPi_Connection2Response(NHttpMutexInfo *mutexInfo, NHttpConnection *connection) {
@@ -118,15 +117,15 @@ NHTTPRes *NHTTPi_Connection2Response(NHttpMutexInfo *mutexInfo, NHttpConnection 
 }
 
 NHttpConnection *NHTTPi_Request2Connection(NHttpMutexInfo *mutexInfo, NHTTPReq *request) {
-    return NHTTPi_ControlConnectionList(mutexInfo, (NHttpConnection *)request, 1);
+    return NHTTPi_ControlConnectionList(mutexInfo, (NHttpConnection *)request, NHTTP_CONNECTION_LIST_FIND_BY_REQUEST);
 }
 
 NHttpConnection *NHTTPi_Response2Connection(NHttpMutexInfo *mutexInfo, NHTTPRes *response) {
-    return NHTTPi_ControlConnectionList(mutexInfo, (NHttpConnection *)response, 2);
+    return NHTTPi_ControlConnectionList(mutexInfo, (NHttpConnection *)response, NHTTP_CONNECTION_LIST_FIND_BY_RESPONSE);
 }
 
 NHttpConnection *NHTTPi_GetConnection(NHttpMutexInfo *mutexInfo, NHttpConnection *connection) {
-    return NHTTPi_ControlConnectionList(mutexInfo, connection, 0);
+    return NHTTPi_ControlConnectionList(mutexInfo, connection, NHTTP_CONNECTION_LIST_FIND);
 }
 
 // The request of a connection, or the argument if it is not one

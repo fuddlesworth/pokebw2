@@ -28,18 +28,18 @@ BOOL DWCi_AC_MakeSearchList(u32 step) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
     switch (step) {
-    case 0:
+    case DWC_AC_LIST_AROUND:
         MI_CpuClear32(work->searchList, sizeof(work->searchList));
         work->searchListNum = MakeAroundList(work);
         break;
-    case 1:
+    case DWC_AC_LIST_DIFFER_CHANNEL:
         work->searchListNum = MakeDifferChannelList(work);
         work->searchListNo = CheckDifferChannelStart(work);
         if (work->searchListNum == 0) {
             return FALSE;
         }
         break;
-    case 2:
+    case DWC_AC_LIST_STEALTH:
         MI_CpuClear32(work->searchList, sizeof(work->searchList));
         work->searchListNo = 0;
         work->searchListNum = MakeStealthList(work);
@@ -57,7 +57,7 @@ BOOL DWCi_AC_MakeSearchList(u32 step) {
 int DWCi_AC_CheckFreespot(const WMBssDesc *bss) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
-    if (work->mode == 0 || work->mode == 6) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_FREESPOT) {
         if (strncmp(bss->ssid, FREESPOT_SSID, sizeof(FREESPOT_SSID)) == 0) {
             return DWC_AC_ID_FREESPOT;
         }
@@ -86,7 +86,7 @@ static u8 MakeAroundList(ACWORK *work) {
     count = MakeUserList(work);
     target += count;
 
-    if (work->mode == 0 || work->mode == 6) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_FREESPOT) {
         MI_CpuCopy8(FREESPOT_SSID, target->ssid, sizeof(FREESPOT_SSID));
         target->length = sizeof(FREESPOT_SSID);
         target->type = DWC_AC_ID_FREESPOT;
@@ -104,14 +104,14 @@ static u8 MakeStealthList(ACWORK *work) {
     count = MakeUserList(work);
     target += count;
 
-    if (work->mode == 0 || work->mode == 4) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_NWCUSBAP) {
         MI_CpuCopy8(sNwcUsbApSsid, target->ssid, 8);
         target->length = 8;
         target->type = DWC_AC_ID_NWCUSBAP;
         count++;
         target++;
     }
-    if (work->mode == 0 || work->mode == 8) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_NINTENDOWFC) {
         MI_CpuCopy8(NINTENDOWFC_SSID, target->ssid, 11);
         target->length = 11;
         target->type = DWC_AC_ID_NINTENDOWFC;
@@ -151,8 +151,8 @@ static u8 MakeUserList(ACWORK *work) {
     ACSL *target = work->searchList;
 
     for (i = 0; i < 3; i++, ds++) {
-        if (work->mode == 0 || work->mode == i + 1) {
-            if (ds->ap.setType != 0xff) {
+        if (work->mode == DWC_AC_MODE_ALL || work->mode == i + 1) {
+            if (ds->ap.setType != DWC_SETTYPE_NONE) {
                 if (AddTarget(target, ds->ap.ssid, i)) {
                     count++;
                     target++;
@@ -169,8 +169,8 @@ static u8 MakeUserList(ACWORK *work) {
 
     if (OS_IsRunOnTwl()) {
         for (i = 0; i < 3; i++, dsi++) {
-            if (work->mode == 0 || work->mode == i + 0xb) {
-                if (dsi->base.ap.setType != 0xff) {
+            if (work->mode == DWC_AC_MODE_ALL || work->mode == i + 0xb) {
+                if (dsi->base.ap.setType != DWC_SETTYPE_NONE) {
                     if (AddTarget(target, dsi->base.ap.ssid, i + 6)) {
                         count++;
                         target++;
@@ -180,11 +180,11 @@ static u8 MakeUserList(ACWORK *work) {
                             count++;
                             target++;
                         }
-                        if (AddTarget(target, dsi->ssid3, i + 12)) {
+                        if (AddTarget(target, dsi->ssid[0], i + 12)) {
                             count++;
                             target++;
                         }
-                        if (AddTarget(target, dsi->ssid4, i + 15)) {
+                        if (AddTarget(target, dsi->ssid[1], i + 15)) {
                             count++;
                             target++;
                         }

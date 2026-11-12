@@ -17,7 +17,7 @@
 
 typedef struct OSTitleIdList {
     u8 count;
-    u8 unk_01[0x4f];
+    u8 rsv[0x4f]; // the IDs start at 0x50
     u64 titleIds[OS_TITLE_ID_LIST_MAX];
 } OSTitleIdList;
 

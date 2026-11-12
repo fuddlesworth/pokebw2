@@ -45,6 +45,60 @@ typedef struct DWCACConfig {
     u8 unk_11[3];
 } DWCACConfig;
 
+// The phase that the control block's byte at 9 holds, which DWCi_AC_SetPhase writes and DWC_AC_Process dispatches on:
+// the states 1 to 15 and 17 have a handler in one of the ac files. The SDK's DWC_AC_GetStatus reports the phase as
+// its own few values, the DWC_AC_STATE_* of NitroDWC's ac/dwc_ac.h, which are not these
+enum {
+    DWC_AC_PHASE_NULL = 0,              // before the control block exists
+    DWC_AC_PHASE_START,                 // dwc_ac_soc.c's DWCi_AC_Start: the wireless manager starts
+    DWC_AC_PHASE_SEARCH_START,          // dwc_ac_search.c's DWCi_AC_SearchAP: measures the channels, starts the scan
+    DWC_AC_PHASE_SEARCH_AROUND,         // SearchAround: a round's channels for any access point
+    DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL, // SearchDifferChannel: each candidate on its own channel
+    DWC_AC_PHASE_SEARCH_STEALTH,        // SearchStealth: each target's SSID where a beacon came with no SSID
+    DWC_AC_PHASE_SEARCH_END,            // SearchEndCheck: the end of the search
+    DWC_AC_PHASE_CONNECT_START,         // dwc_ac_connect.c's ConnectStart: the candidate's key and its fitness
+    DWC_AC_PHASE_CONNECT,               // ConnectAP: the connection to the candidate
+    DWC_AC_PHASE_CONNECT_RETRY,         // dwc_ac_search.c's DWCi_AC_ConnectRetryAP: the end of the connection to it
+    DWC_AC_PHASE_TEST_START,            // dwc_ac_soc.c's ConnectTestStart: SOC starts
+    DWC_AC_PHASE_TEST_RETRY,            // ConnectTestRetry: the sockets go down again
+    DWC_AC_PHASE_TEST_ADDRESS,          // GetIPAddress: waits for the address from DHCP
+    DWC_AC_PHASE_TEST_CREATE,           // ConnectTestCreate: the connection test starts
+    DWC_AC_PHASE_TEST_PROCESS,          // ConnectTestProcess: the connection test runs
+    DWC_AC_PHASE_TEST_END,              // ConnectTestEnd: the connection is noted
+    DWC_AC_PHASE_COMPLETE,              // the connection is up
+    DWC_AC_PHASE_ERROR,                 // dwc_ac_result.c's DWCi_AC_Error: the teardown
+    DWC_AC_PHASE_FAILED,                // the teardown is over: the failure
+};
+
+// What DWCi_AC_SetError notes (ACHOLD.error), which DWCi_AC_GetResult turns into the code that the game is told
+enum {
+    DWC_AC_ERROR_WCM = 0,         // the wireless manager reported one
+    DWC_AC_ERROR_WCM_START,       // WCM_StartupAsync would not start it
+    DWC_AC_ERROR_SOC_START,       // SOC_Startup would not start the sockets
+    DWC_AC_ERROR_NETCHECK_CREATE, // DWC_Netcheck_Create would not start the connection test
+    DWC_AC_ERROR_IRREGULAR,       // the wireless manager ended without being asked to
+    DWC_AC_ERROR_NO_AP,           // the search ended without finding an access point
+    DWC_AC_ERROR_NO_INET,         // the search ended with every candidate tried
+    DWC_AC_ERROR_EULA,            // the DSi's license agreement has not been agreed to
+    DWC_AC_ERROR_WIRELESS_OFF,    // the settings or the parental controls forbid the wireless connection
+};
+
+// The kind of access point that ACHOLD.type and ACHOLD.overrideType hold: NitroDWC's DWC_AC_AP_TYPE (its ac/dwc_ac.h),
+// with the DSi's own kinds after NINTENDOSPOT at 10 to 12. DWC_AC_AP_TYPE_FALSE is "none"
+enum {
+    DWC_AC_AP_TYPE_USER1 = 0,
+    DWC_AC_AP_TYPE_USER2,
+    DWC_AC_AP_TYPE_USER3,
+    DWC_AC_AP_TYPE_USB,
+    DWC_AC_AP_TYPE_SHOP,
+    DWC_AC_AP_TYPE_FREESPOT,
+    DWC_AC_AP_TYPE_WAYPORT,
+    DWC_AC_AP_TYPE_NINTENDOWFC,
+    DWC_AC_AP_TYPE_NINTENDOSPOT,
+    DWC_AC_AP_TYPE_UNKNOWN = 99,
+    DWC_AC_AP_TYPE_FALSE = 0xff
+};
+
 // The control block, 0xcc bytes. Only the bytes that the files seen so far touch are named
 typedef struct ACHOLD {
     DWCACAlloc alloc;
@@ -66,12 +120,13 @@ typedef struct ACHOLD {
                          // DWC_AC_SetSpecifyApEx got
     u8 overrideType;     // 0x22; the type that DWC_AC_SetSpecifyApEx got: nonzero when the game gave the access point
     u8 keyMode; // 0x23; the key mode of the setting: the WCM mode of WPA, the WEP mode, or 2 for NWCUSBAP and NDWCSHAP
-    u8 unk_24;  // 0x24; the connection's setting on a DSi: this byte, the next, the halfword and the 0x64 bytes
-    u8 unk_25;  //   are the DSi setting's 0x182, 0x183, 0x1e8 and 0x184, and the last two blocks its first 0x40
-    u16 unk_26; //   bytes
-    u8 unk_28[0x64];
-    u8 unk_8c[0x20];
-    u8 unk_ac[0x20];
+    // 0x24; the proxy of the connection's setting, which DWCAc_NoteKeyMode copies from the DSi setting
+    u8 proxyMode;       // 0x24
+    u8 proxyAuthType;   // 0x25
+    u16 proxyPort;      // 0x26
+    u8 proxyHost[0x64]; // 0x28
+    u8 proxyId[0x20];   // 0x8c; the setting's first 32-byte identifier (base.ap.unk0)
+    u8 proxyPass[0x20]; // 0xac; and its second (base.ap.unk20)
 } ACHOLD;
 
 // What a search looks for, one entry per kind of access point: the SSID to look for and the id that an access point
@@ -80,12 +135,37 @@ typedef struct ACSL {
     u8 find : 4;      // 1 once the search has seen an access point with this SSID
     u8 duplicate : 4; // 1 for a later target of the SSID that is still to be tried on the access point that took one
     u8 type;
-    u8 unk_02;
+    u8 unk_02; // no writer or reader
     u8 length;
     char ssid[32];
 } ACSL;
 
 #define DWC_AC_TARGET_MAX 21
+
+// The ids of the targets that the search makes from the stored settings (MakeUserList), which are also the ids that the
+// connection reads the keys by (dwc_ac_connect.c's GetWepKey): for each of the DS's three settings and each of the
+// DSi's, the SSID of the setting, the SSID that goes with its 40-bit WEP key of an AOSS setup, and, for the DSi's, the
+// two SSIDs that go with its WPA keys
+enum {
+    DWC_AC_ID_USER1 = 0,
+    DWC_AC_ID_USER2,
+    DWC_AC_ID_USER3,
+    DWC_AC_ID_USER1_AOSS, // 3; the SSID that goes with the AOSS setup's 40-bit key
+    DWC_AC_ID_USER2_AOSS,
+    DWC_AC_ID_USER3_AOSS,
+    DWC_AC_ID_DSI_USER1, // 6
+    DWC_AC_ID_DSI_USER2,
+    DWC_AC_ID_DSI_USER3,
+    DWC_AC_ID_DSI_USER1_AOSS, // 9
+    DWC_AC_ID_DSI_USER2_AOSS,
+    DWC_AC_ID_DSI_USER3_AOSS,
+    DWC_AC_ID_DSI_USER1_WPA, // 12; the SSID that goes with the WPA key of the mode 4
+    DWC_AC_ID_DSI_USER2_WPA,
+    DWC_AC_ID_DSI_USER3_WPA,
+    DWC_AC_ID_DSI_USER1_WPA2, // 15; and the one of the mode 6
+    DWC_AC_ID_DSI_USER2_WPA2,
+    DWC_AC_ID_DSI_USER3_WPA2,
+};
 
 // The ids of the access points that are told by their SSIDs: one that starts with "NWCUSBAP", one that decodes to
 // "NDWCSHAP", one that starts with "FREESPOT" (dwc_ac_aplist.c's DWCi_AC_CheckFreespot) and one that is "NINTENDOWFC".
@@ -121,18 +201,19 @@ typedef struct ACFL {
 // pages of 0x100 bytes (dwc/bm.h's DWCMemPage), and the DSi three more of 0x200, which go on with the passphrases of
 // WPA
 typedef struct DWCAcDsiSetting {
-    DWCMemPage base;
-    u8 wpaKey[0x20];  // 0x100; the key for the WCM mode that wcmMode says, and for the mode 4
-    u8 wpaKey2[0x20]; // 0x120; the key for the mode 6
-    u8 ssid3[32];     // 0x140; the SSID that goes with the key of wpaKey
-    u8 ssid4[32];     // 0x160; and the one that goes with wpaKey2
-    u8 unk_180;
-    u8 wcmMode; // 0x181; the mode that WCM_ConnectAsync wants of the setting's WPA
-    u8 unk_182; // 0x182; the proxy flag, by the layout of a DSi's settings: the connection test is skipped for a proxy
-    u8 unk_183;
-    u8 unk_184[0x64];
-    u16 unk_1e8;
-    u8 unk_1ea[0x16];
+    DWCMemPage base;     // 0x0000; NitroDWC's NCFGSlotInfo
+    u8 passphrase[0x20]; // 0x0100; NitroDWC's NCFGApInfoEx: the key for the WCM mode that wpaMode says, and for 4
+    u8 pmk[0x20];        // 0x0120; and the key for the mode 6
+    u8 ssid[2][0x20];    // 0x0140; the SSIDs that go with the two keys
+    u8 ssidLength0;      // 0x0180
+    u8 wpaMode;          // 0x0181; the mode that WCM_ConnectAsync wants of the setting's WPA
+    u8 proxyMode;        // 0x0182; nonzero for a proxy, whose connection test is skipped
+    u8 proxyAuthType;    // 0x0183
+    u8 proxyHost[0x64];  // 0x0184
+    u16 proxyPort;       // 0x01e8
+    u8 rsvEx[6];         // 0x01ea
+    u8 rsv[0x0e];        // 0x01f0; the two runs of reserved bytes of the second half
+    u16 crcEx;           // 0x01fe; the CRC16 of the second half
 } DWCAcDsiSetting;
 
 // What WCM_ConnectAsync is given for the key: the mode (WCM's WEP modes 1 to 3, WPA 4 to 7, 0 for an open network),
@@ -142,6 +223,41 @@ typedef struct DWCAcKeyDesc {
     u8 length;
     u8 key[0x50];
 } DWCAcKeyDesc;
+
+// What ACWORK.mode asks the search to look for: everything, one of the DS's three settings (MakeUserList), one of the
+// special access points alone (MakeAroundList, MakeStealthList, DWCi_AC_CheckNintendoSSID, DWCi_AC_CheckFreespot), or
+// one of the DSi's three settings (0xb is the first)
+enum {
+    DWC_AC_MODE_ALL = 0,         // everything
+    DWC_AC_MODE_USER1,           // the DS's first setting alone
+    DWC_AC_MODE_USER2,           // its second
+    DWC_AC_MODE_USER3,           // and its third
+    DWC_AC_MODE_NWCUSBAP,        // an NWCUSBAP alone
+    DWC_AC_MODE_NDWCSHAP,        // an NDWCSHAP alone
+    DWC_AC_MODE_FREESPOT,        // FREESPOT alone
+    DWC_AC_MODE_NINTENDOWFC = 8, // NINTENDOWFC alone
+    DWC_AC_MODE_DSI_USER1 = 0xb, // the DSi's first setting alone
+    DWC_AC_MODE_DSI_USER2,       // its second
+    DWC_AC_MODE_DSI_USER3,       // and its third
+};
+
+// Why the connection to a candidate failed (ACWORK.failureReason), from the status code that the access point gave
+// (dwc_ac_wcm.c's DWCi_AC_CallBackWCM): an authentication algorithm that it does not support, a challenge that failed,
+// or that it cannot take another station; any other is OTHER
+enum {
+    DWC_AC_FAILURE_AUTH_ALG = 1,
+    DWC_AC_FAILURE_CHALLENGE,
+    DWC_AC_FAILURE_FULL,
+    DWC_AC_FAILURE_OTHER,
+};
+
+// The step of DWCi_AC_MakeSearchList: the list of the first search (MakeAroundList), the candidates that are still to
+// visit (MakeDifferChannelList), or the targets of the second search (MakeStealthList)
+enum {
+    DWC_AC_LIST_AROUND = 0,
+    DWC_AC_LIST_DIFFER_CHANNEL,
+    DWC_AC_LIST_STEALTH,
+};
 
 // The search's work, 0x14d8 bytes
 typedef struct ACWORK {
@@ -157,9 +273,7 @@ typedef struct ACWORK {
     u8 radioOn : 2;      // 0x14bb; 1 to connect with the radio always on, else in the wireless manager's power saving
     u8 sharedKey : 2;    // 1 to authenticate with a shared key, else open; the connection drops it when that fails
     u8 round : 4;        // how many times the search went on to its second round (dwc_ac_search.c's SearchAround2ndLap)
-    // 0x14bc; what the search looks for: 0 everything; 1 to 3 only the DS setting of that number (MakeUserList),
-    // 0xb to 0xd only the DSi setting (0xb is the first); 4 NWCUSBAP, 5 NDWCSHAP, 6 FREESPOT and 8 NINTENDOWFC alone
-    // (MakeAroundList, MakeStealthList, DWCi_AC_CheckNintendoSSID)
+    // 0x14bc; what the search looks for (DWC_AC_MODE)
     u8 mode : 4;
     u8 skipConnectionTest : 1; // 1 to skip the connection test (dwc_ac_soc.c); from DWCACConfig
     u8 rssiPacked : 1; // the beacon's signal is in the DSi's form, a quarter of what it is in the DS's, and 0x19 less
@@ -174,8 +288,7 @@ typedef struct ACWORK {
     s8 tag;
     u8 candidateCount;  // 0x14c2
     u8 connectNo;       // 0x14c3; the candidate that the connection works on
-    u8 failureReason;   // 0x14c4; why the last connection failed: 1, 2 and 3 for the status codes 13, 15 and 17, 4 for
-                        // any other
+    u8 failureReason;   // 0x14c4; why the last connection failed (DWC_AC_FAILURE)
     u8 attempts;        // 0x14c5; how many times the connection to the candidate has been tried; in the search's third
                         // state, how many of the channels in hiddenMask it is past
     u16 stealthChannel; // 0x14c6; a bit for each channel (by its index) where a beacon came with no SSID
@@ -208,9 +321,9 @@ BOOL DWC_AC_GetApSpotInfo(u8 *spotInfo);
 u8 DWCAc_GetKeyMode(void);
 // Takes auto-connect down, a step at a time. TRUE once it is down, with every block let go
 BOOL DWC_AC_Destroy(void);
-// Gives the connection to make by hand: an SSID, a WEP key with its mode (the length it has), a halfword for the first
-// setting's ap.mtu, the spot information if any, and the type that the access point is given
-void DWC_AC_SetSpecifyApEx(const u8 *ssid, const u8 *key, u32 wepMode, u16 unk_ea, const u8 *spotInfo, u32 type);
+// Gives the connection to make by hand: an SSID, a WEP key with its mode (the length it has), the MTU of the
+// first setting, the spot information if any, and the type that the access point is given
+void DWC_AC_SetSpecifyApEx(const u8 *ssid, const u8 *key, u32 wepMode, u16 mtu, const u8 *spotInfo, u32 overrideType);
 // Whether the SSID of the given length is that of an NDWCSHAP
 BOOL DWC_AC_CheckWiFiStation(const u8 *ssid, u32 length);
 // Replaces the connection of the DS's setting `index` with the 0xf0 bytes of setting
