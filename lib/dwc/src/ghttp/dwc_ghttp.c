@@ -31,7 +31,7 @@ static DWCGHTTPEntry *DWCi_FindGHTTPEntry(int request);
 static void DWCi_FreeAllGHTTPEntries(void);
 
 // The root certificate that DWC's hosts are checked against
-static void *sRootCerts[1] = { &DWCi_RootCertNintendoClass2 };
+static CPSCaInfo *sRootCerts[1] = { &DWCi_RootCertNintendoClass2 };
 static GHICertList sDWCRootCAList = { sRootCerts, 1 };
 
 static DWCGHTTPEntry *sGHTTPEntries;
@@ -88,9 +88,9 @@ static GHTTPBool DWCi_GHTTPCompleted(GHTTPRequest request, GHTTPResult result, c
     completed = entry->param.completed;
     freeBuffer = entry->param.freeBuffer;
     if (completed != NULL) {
-        if (result == 0) {
+        if (result == DWCGHTTPSuccess) {
             completed(buffer, length, result, entry->param.param);
-        } else if (result == 0x12) {
+        } else if (result == GHTTPRequestCancelled) {
             completed(NULL, 0, result, entry->param.param);
         } else {
             DWCi_HandleGHTTPError(result);
@@ -141,7 +141,7 @@ int DWC_GetGHTTPDataEx2(const char *url, int bufferSize, BOOL freeBuffer, GHTTPP
     entryParam.freeBuffer = freeBuffer;
     entry = DWCi_NewGHTTPEntry(&entryParam);
     if (entry == NULL) {
-        request = -5;
+        request = GHTTPInsufficientMemory;
         DWCi_HandleGHTTPError(request);
         completed(NULL, 0, request, param);
         return request;
@@ -150,7 +150,7 @@ int DWC_GetGHTTPDataEx2(const char *url, int bufferSize, BOOL freeBuffer, GHTTPP
     if (bufferSize > 0) {
         buffer = DWC_Alloc(DWC_GHTTP_HEAP, bufferSize);
         if (buffer == NULL) {
-            request = -5;
+            request = GHTTPInsufficientMemory;
             DWCi_HandleGHTTPError(request);
             completed(NULL, 0, request, param);
             DWCi_RemoveDWCGHTTPParamEntry(entry);
@@ -192,68 +192,68 @@ DWCGHTTPResult DWCi_HandleGHTTPError(DWCGHTTPResult error) {
     int code = -98000;
     int type = 7;
 
-    if (error == 0) {
-        return 0;
+    if (error == DWCGHTTPSuccess) {
+        return DWCGHTTPSuccess;
     }
     switch (error) {
-    case -7:
+    case GHTTPFailedToOpenFile:
         code -= 800;
         break;
-    case -6:
+    case GHTTPInvalidPost:
         code -= 810;
         break;
-    case -5:
+    case GHTTPInsufficientMemory:
         code -= 840;
         break;
-    case -4:
-    case -3:
-    case -2:
+    case GHTTPInvalidFileName:
+    case GHTTPInvalidBufferSize:
+    case GHTTPInvalidURL:
         code -= 820;
         break;
-    case -1:
+    case GHTTPUnspecifiedError:
         code -= 830;
         break;
-    case 1:
-    case 20:
+    case DWCGHTTPOutOfMemory:
+    case DWCGHTTPMemoryError:
         type = 9;
         code -= 1;
         break;
-    case 2:
+    case DWCGHTTPBufferOverflow:
         code -= 840;
         break;
-    case 3:
+    case DWCGHTTPParseURLFailed:
         code -= 850;
         break;
-    case 4:
+    case DWCGHTTPHostLookupFailed:
         code -= 30;
         break;
-    case 5:
+    case DWCGHTTPSocketFailed:
         code -= 50;
         break;
-    case 6:
-    case 11:
-    case 12:
+    case DWCGHTTPConnectFailed:
+    case DWCGHTTPFileNotFound:
+    case DWCGHTTPServerError:
         code -= 20;
         break;
-    case 7:
+    case DWCGHTTPBadResponse:
         code -= 860;
         break;
-    case 8:
-    case 9:
-    case 10:
+    case DWCGHTTPRequestRejected:
+    case DWCGHTTPUnauthorized:
+    case DWCGHTTPForbidden:
         code -= 870;
         break;
-    case 13:
-    case 14:
+    case DWCGHTTPFileWriteFailed:
+    case DWCGHTTPFileReadFailed:
         code -= 880;
         break;
-    case 15:
+    case DWCGHTTPFileIncomplete:
         code -= 890;
         break;
-    case 16:
+    case DWCGHTTPFileToBig:
         code -= 900;
         break;
-    case 17:
+    case DWCGHTTPEncryptionError:
         code -= 910;
         break;
     default:

@@ -107,6 +107,24 @@ static s32 resolve_sub(u8 *name, CPSInAddr server, u16 id);
 #define DHCP_RELEASE 7
 #define DHCP_MESSAGE_SIZE 300
 
+// The options that the client sends and reads (ntrtwl's NitroWiFi: the DHCP_OPTION_* enum)
+#define DHCP_OPTION_SUBNET_MASK 1
+#define DHCP_OPTION_ROUTER 3
+#define DHCP_OPTION_DNS_SERVER 6
+#define DHCP_OPTION_HOST_NAME 12
+#define DHCP_OPTION_REQUESTED_IP 50
+#define DHCP_OPTION_LEASE_TIME 51
+#define DHCP_OPTION_MESSAGE_TYPE 53
+#define DHCP_OPTION_SERVER_ID 54
+#define DHCP_OPTION_PARAMETER_REQ_LIST 55
+#define DHCP_OPTION_CLIENT_ID 61
+#define DHCP_OPTION_END 0xff
+// The BOOTP operation codes that a message's first byte holds (ntrtwl's NitroWiFi: DHCP_REQUEST and DHCP_REPLY)
+#define DHCP_BOOTREQUEST 1
+#define DHCP_BOOTREPLY 2
+// The cookie that begins a BOOTP message's options (ntrtwl's NitroWiFi: DHCP_MAGIC_COOKIE)
+#define DHCP_MAGIC_COOKIE 0x63825363
+
 // What waiting for a DHCP answer ends with
 enum {
     DHCP_WAIT_NONE,
@@ -123,10 +141,24 @@ enum {
     DHCP_STATE_DONE,
 };
 
+// What dhcp_send_request asks for (ntrtwl's NitroWiFi: DHCP_MODE_REQUEST_IP, DHCP_MODE_RENEW and DHCP_MODE_REBIND)
+enum {
+    DHCP_MODE_REQUEST_IP,
+    DHCP_MODE_RENEW,
+    DHCP_MODE_REBIND,
+};
+
 #define DNS_PORT 53
 #define DNS_TYPE_A 1
 #define DNS_TYPE_PTR 12
 #define DNS_TYPE_NB 32
+
+// The result code in a reply's flags, and the two high bits that begin a compressed name (ntrtwl's NitroWiFi: the
+// DNSRCode enum, DNS_RCODE_MASK and DNS_COMPRESSION_POINTER_MASK)
+#define DNS_RCODE_MASK 0xf
+#define DNS_RCODE_NOERROR 0
+#define DNS_RCODE_NXDOMAIN 3
+#define DNS_COMPRESSION_POINTER_MASK 0xc0
 
 static u32 sThreadPriority = 16;
 // How long each try waits for an answer to DHCP, in units of 7 * 65536 ticks
@@ -523,7 +555,8 @@ static void put_in_buffer(const u8 *src, const u8 *dst, const u8 *header, u32 he
     if (header[0] != CPS_SNAP_HEADER[0] || header[1] != CPS_SNAP_HEADER[1] || header[2] != CPS_SNAP_HEADER[2]) {
         return;
     }
-    if (header[6] != 8 || (header[7] != 0 && header[7] != 6)) {
+    if (header[6] != CPS_ETHERTYPE_IP >> 8 ||
+        (header[7] != (CPS_ETHERTYPE_IP & 0xff) && header[7] != (CPS_ETHERTYPE_ARP & 0xff))) {
         return;
     }
     size = (len + 9) & ~1;
@@ -928,7 +961,7 @@ static u32 send_tcp(u8 *data, u32 len, CPSSoc *soc, u8 flags) {
 
 // reply_arp: turns a request into its reply and sends it back
 static void reply_arp(CPSArpPacket *arp) {
-    arp->op = 0x200;
+    arp->op = CPS_SWAP16(CPS_ARP_OP_REPLY);
     MI_CpuCopy(arp->src_mac, arp->dst_mac, 10);
     MI_CpuCopy(sMyMac, arp->src_mac, 6);
     CPS_PUT32(arp->src_ip, CPSMyIp);
@@ -953,11 +986,12 @@ static void dispatch_arp(CPSArpPacket *arp, u32 len) {
     if (CPSMyIp == 0) {
         return;
     }
-    if (arp->hardware != 0x100 || arp->protocol != 8 || arp->lengths != 0x406) {
+    if (arp->hardware != CPS_SWAP16(CPS_ARP_HARDWARE_ETHERNET) || arp->protocol != CPS_SWAP16(CPS_ETHERTYPE_IP) ||
+        arp->lengths != CPS_SWAP16(CPS_ARP_LENGTHS)) {
         return;
     }
     op = CPS_GET16(&arp->op);
-    if (op != 1 && op != 2) {
+    if (op != CPS_ARP_OP_REQUEST && op != CPS_ARP_OP_REPLY) {
         return;
     }
     src = CPS_GET32(arp->src_ip);
@@ -966,11 +1000,11 @@ static void dispatch_arp(CPSArpPacket *arp, u32 len) {
     if (!fromMe) {
         reg_arpcache(arp->src_mac, src, toMe);
     }
-    if (op == 1 && toMe) {
+    if (op == CPS_ARP_OP_REQUEST && toMe) {
         reply_arp(arp);
         return;
     }
-    if (op == 2 && toMe && fromMe) {
+    if (op == CPS_ARP_OP_REPLY && toMe && fromMe) {
         sIpCollision = TRUE;
     }
 }
@@ -987,7 +1021,7 @@ static void reply_icmp(CPSIpHeader *ip, CPSIcmpHeader *icmp, u32 len) {
         send_arprequest(hop);
         return;
     }
-    icmp->type = 0;
+    icmp->type = CPS_ICMP_ECHO_REPLY;
     sum = icmp->sum + 8;
     icmp->sum = sum + (sum >> 16);
     send_ip((u8 *)icmp, len, NULL, 0, CPS_GET32(ip->src), CPS_PROTO_ICMP);
@@ -1040,10 +1074,10 @@ static void dispatch_icmp(CPSIpHeader *ip, CPSIcmpHeader *icmp, u32 len) {
         return;
     }
     switch (icmp->type) {
-    case 0:
+    case CPS_ICMP_ECHO_REPLY:
         process_icmp_reply(ip, icmp, len);
         break;
-    case 8:
+    case CPS_ICMP_ECHO_REQUEST:
         reply_icmp(ip, icmp, len);
         break;
     }
@@ -1097,20 +1131,20 @@ static void parse_mss(CPSTcpHeader *tcp, CPSSoc *soc) {
     option = (u8 *)(tcp + 1);
     while (len-- > 0) {
         switch (*option++) {
-        case 0:
+        case CPS_TCP_OPTION_END:
             return;
-        case 1:
+        case CPS_TCP_OPTION_NOP:
             break;
-        case 2:
-            if (len <= 2 || *option != 4) {
+        case CPS_TCP_OPTION_MSS:
+            if (len <= 2 || *option != CPS_TCP_OPTION_MSS_LEN) {
                 return;
             }
             soc->remote_mss = (option[1] << 8) | option[2];
             option += 3;
             len -= 3;
             break;
-        case 4:
-            if (len <= 0 || *option != 2) {
+        case CPS_TCP_OPTION_SACK_PERMITTED:
+            if (len <= 0 || *option != CPS_TCP_OPTION_SACK_PERMITTED_LEN) {
                 return;
             }
             soc->sack_permitted = TRUE;
@@ -1146,14 +1180,21 @@ static void tcp_send_handshake(CPSSoc *soc, u8 flags) {
     send_arprequest(get_targetip(soc->remote_ip));
 }
 
-// tcp_send_ack: acknowledges what came in, now (mode 2), or when there is something to tell (mode 1), or after a
-// second segment or the ACK delay
+// What tcp_send_ack does with the acknowledgment
+enum {
+    CPS_ACK_DELAYED, // waits for a second segment or CPS_ACK_DELAY
+    CPS_ACK_PENDING, // sends when there is something to tell
+    CPS_ACK_NOW,     // sends now, whatever was acknowledged
+};
+
+// tcp_send_ack: acknowledges what came in, now, or when there is something to tell, or after a second segment or the
+// ACK delay
 static void tcp_send_ack(CPSSoc *soc, int mode) {
-    if (mode != 2) {
+    if (mode != CPS_ACK_NOW) {
         if (soc->acked == soc->ackno && soc->acked_window == (u16)(soc->rcvbuf.size - soc->rcvbuf_len)) {
             return;
         }
-        if (mode != 1) {
+        if (mode != CPS_ACK_PENDING) {
             soc->delayed_ack++;
             if (soc->delayed_ack < 2 && (u32)OS_GetTick() - soc->ack_time < CPS_ACK_DELAY) {
                 CPSi_SendDelayedAcks();
@@ -1258,7 +1299,7 @@ static void dt_synack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
     soc->remote_ackno = CPS_GET32(tcp->ack);
     soc->remote_win = CPS_GET16(&tcp->window);
     parse_mss(tcp, soc);
-    tcp_send_ack(soc, 2);
+    tcp_send_ack(soc, CPS_ACK_NOW);
     soc->state = CPS_STT_ESTABLISHED;
     if (soc->block_type == CPS_BLOCK_TCPCON) {
         soc->block_type = CPS_BLOCK_NONE;
@@ -1405,7 +1446,7 @@ static void dt_ack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
             }
         done:
             OS_RestoreInterrupts(enabled);
-            tcp_send_ack(soc, 2);
+            tcp_send_ack(soc, CPS_ACK_NOW);
             return;
         }
     }
@@ -1477,7 +1518,7 @@ static void dt_ack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
         } else {
             OS_RestoreInterrupts(enabled);
             if (len != 0) {
-                tcp_send_ack(soc, 0);
+                tcp_send_ack(soc, CPS_ACK_DELAYED);
             }
         }
         break;
@@ -1486,7 +1527,7 @@ static void dt_ack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
         if (flags & CPS_TCP_FIN) {
             soc->ackno += len + 1;
             OS_RestoreInterrupts(enabled);
-            tcp_send_ack(soc, 2);
+            tcp_send_ack(soc, CPS_ACK_NOW);
             soc->state = CPS_STT_CLOSED;
             if (soc->block_type == CPS_BLOCK_TCPREAD) {
                 soc->block_type = CPS_BLOCK_NONE;
@@ -1497,7 +1538,7 @@ static void dt_ack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
             OS_RestoreInterrupts(enabled);
             if (len != 0) {
                 soc->ackno += len;
-                tcp_send_ack(soc, 2);
+                tcp_send_ack(soc, CPS_ACK_NOW);
             }
         }
         break;
@@ -1515,7 +1556,7 @@ static void dt_ack(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
         if (flags & CPS_TCP_FIN) {
             soc->ackno++;
         }
-        tcp_send_ack(soc, 2);
+        tcp_send_ack(soc, CPS_ACK_NOW);
         break;
     }
     OS_YieldThread();
@@ -1535,12 +1576,12 @@ static void dt_fin(CPSIpHeader *ip, CPSTcpHeader *tcp, u32 len) {
         soc->ackno++;
         soc->state = CPS_STT_CLOSING;
         OS_RestoreInterrupts(enabled);
-        tcp_send_ack(soc, 2);
+        tcp_send_ack(soc, CPS_ACK_NOW);
         break;
     case CPS_STT_FIN_WAIT2:
         soc->ackno++;
         OS_RestoreInterrupts(enabled);
-        tcp_send_ack(soc, 2);
+        tcp_send_ack(soc, CPS_ACK_NOW);
         soc->state = CPS_STT_CLOSED;
         if (soc->block_type == CPS_BLOCK_TCPREAD) {
             soc->block_type = CPS_BLOCK_NONE;
@@ -1714,7 +1755,7 @@ static CPSIpHeader *check_frag(CPSIpHeader *ip, BOOL *allocated) {
         free->data = free->buf + sizeof(CPSEtherHeader) + headerLen;
         MI_CpuCopy(ip, free->buf + sizeof(CPSEtherHeader), headerLen);
     }
-    if (reassembly->count == 8 || total > CPS_REASSEMBLY_SIZE) {
+    if (reassembly->count == CPS_REASSEMBLY_COUNT || total > CPS_REASSEMBLY_SIZE) {
         reassembly->count = 0;
         CPSiFree(reassembly->buf);
         return NULL;
@@ -1982,7 +2023,7 @@ static void CPSi_TcpShutdownRaw(CPSSoc *soc) {
     }
     if (soc->state != CPS_STT_CLOSED) {
         OS_RestoreInterrupts(enabled);
-        tcp_send_ack(soc, 2);
+        tcp_send_ack(soc, CPS_ACK_NOW);
         return;
     }
     OS_RestoreInterrupts(enabled);
@@ -2036,7 +2077,7 @@ static u8 *udp_read_raw(u32 *len, CPSSoc *soc) {
 // CPSi_TcpReadRaw
 u8 *CPSi_TcpReadRaw(u32 *len, CPSSoc *soc) {
     if (soc->state == CPS_STT_ESTABLISHED) {
-        tcp_send_ack(soc, 1);
+        tcp_send_ack(soc, CPS_ACK_PENDING);
     }
     if (soc->rcvbuf_len == 0 && soc->state == CPS_STT_ESTABLISHED) {
         u32 enabled = OS_DisableInterrupts();
@@ -2113,7 +2154,7 @@ void CPSi_SocConsumeRaw(u32 len, CPSSoc *soc) {
     OS_RestoreInterrupts(enabled);
     if (soc->state != CPS_STT_DATAGRAM && soc->state != CPS_STT_PING) {
         if (soc->rcvbuf_len == 0 || wasFull) {
-            tcp_send_ack(soc, 0);
+            tcp_send_ack(soc, CPS_ACK_DELAYED);
         }
     }
 }
@@ -2308,7 +2349,7 @@ s32 CPS_SocGetLength(void) {
 
     if (soc != NULL) {
         if (soc->state == CPS_STT_ESTABLISHED) {
-            tcp_send_ack(soc, 1);
+            tcp_send_ack(soc, CPS_ACK_PENDING);
         }
         if (soc->ssl) {
             return CPSi_SslGetLength(soc);
@@ -2404,7 +2445,7 @@ static void scavenger(void *arg) {
                             CPSNoIpReason = CPS_NOIP_REASON_DHCPDISCOVERY;
                             first = FALSE;
                         }
-                        if (!dhcp_discover_server() || !dhcp_request_server(&leaseTimer, 0)) {
+                        if (!dhcp_discover_server() || !dhcp_request_server(&leaseTimer, DHCP_MODE_REQUEST_IP)) {
                             set_fixed_ip();
                             state = DHCP_STATE_DONE;
                         } else {
@@ -2422,7 +2463,7 @@ static void scavenger(void *arg) {
                         }
                         break;
                     case DHCP_STATE_BOUND:
-                        if (!dhcp_request_server(&leaseTimer, 1) && leaseTimer < 60) {
+                        if (!dhcp_request_server(&leaseTimer, DHCP_MODE_RENEW) && leaseTimer < 60) {
                             state = DHCP_STATE_REBINDING;
                         } else if (CPSi_AddressRejected()) {
                             reset_network_vars(CPS_NOIP_REASON_REJECTED);
@@ -2434,7 +2475,7 @@ static void scavenger(void *arg) {
                         }
                         break;
                     case DHCP_STATE_REBINDING:
-                        if (dhcp_request_server(&leaseTimer, 2)) {
+                        if (dhcp_request_server(&leaseTimer, DHCP_MODE_REBIND)) {
                             if (CPSi_AddressRejected()) {
                                 reset_network_vars(CPS_NOIP_REASON_REJECTED);
                                 set_fixed_ip();
@@ -2514,7 +2555,7 @@ static void scavenger(void *arg) {
 
 // CPSi_SendDelayedAcks: sends the ACKs that waited long enough, and sets the alarm for the next one
 static void CPSi_SendDelayedAcks(void) {
-    u32 wait = 0xffffffff;
+    u32 wait = CPS_ACK_WAIT_NONE;
     u32 enabled = OS_DisableInterrupts();
     u32 now = OS_GetTick();
     OSThread *thread;
@@ -2526,13 +2567,13 @@ static void CPSi_SendDelayedAcks(void) {
             u32 waited = now - soc->ack_time;
 
             if (waited >= CPS_ACK_DELAY) {
-                tcp_send_ack(soc, 1);
+                tcp_send_ack(soc, CPS_ACK_PENDING);
             } else if (wait > CPS_ACK_DELAY - waited) {
                 wait = (u32)CPS_ACK_DELAY - waited;
             }
         }
     }
-    if (wait != 0xffffffff) {
+    if (wait != CPS_ACK_WAIT_NONE) {
         OS_CancelAlarm(&sAckAlarm);
         OS_SetAlarm(&sAckAlarm, wait, CPSi_AckAlarm, NULL);
     }
@@ -2555,31 +2596,31 @@ static void CPSi_AckAlarm(void *arg) {
 // dhcp_setcommon: the BOOTP header and the options every message has, returning where the rest go
 static u8 *dhcp_setcommon(u8 *buf, u8 type) {
     MI_CpuFill8(buf, 0, 0xec);
-    *(u16 *)buf = 0x101;
+    *(u16 *)buf = (DHCP_BOOTREQUEST << 8) | CPS_ARP_HARDWARE_ETHERNET;
     buf[2] = 6;
     CPS_PUT32(buf + 4, sDhcpXid);
     CPS_PUT32(buf + 12, CPSMyIp);
     MI_CpuCopy(sMyMac, buf + 28, 6);
-    *(u16 *)(buf + 0xec) = 0x8263;
-    *(u16 *)(buf + 0xee) = 0x6353;
-    *(u16 *)(buf + 0xf0) = 0x135;
+    *(u16 *)(buf + 0xec) = CPS_SWAP16(DHCP_MAGIC_COOKIE >> 16);
+    *(u16 *)(buf + 0xee) = CPS_SWAP16(DHCP_MAGIC_COOKIE & 0xffff);
+    *(u16 *)(buf + 0xf0) = CPS_SWAP16((DHCP_OPTION_MESSAGE_TYPE << 8) | 1);
     buf += 0xf2;
     *buf++ = type;
-    *buf++ = 61;
+    *buf++ = DHCP_OPTION_CLIENT_ID;
     *buf++ = 7;
     *buf++ = 1;
     MI_CpuCopy(sMyMac, buf, 6);
     buf += 6;
     if (type != DHCP_RELEASE) {
-        *buf++ = 12;
+        *buf++ = DHCP_OPTION_HOST_NAME;
         *buf++ = 10;
         MI_CpuCopy("NintendoDS", buf, 10);
         buf += 10;
-        *buf++ = 55;
+        *buf++ = DHCP_OPTION_PARAMETER_REQ_LIST;
         *buf++ = 3;
-        *buf++ = 1;
-        *buf++ = 3;
-        *buf++ = 6;
+        *buf++ = DHCP_OPTION_SUBNET_MASK;
+        *buf++ = DHCP_OPTION_ROUTER;
+        *buf++ = DHCP_OPTION_DNS_SERVER;
     }
     return buf;
 }
@@ -2605,12 +2646,12 @@ static u32 dhcp_send_discover(void) {
     sDhcpXid = MATH_Rand32(&CPSiRand32ctx, 0);
     p = dhcp_setcommon(buf, DHCP_DISCOVER);
     if (sRequestedIp != 0) {
-        p[0] = 50;
+        p[0] = DHCP_OPTION_REQUESTED_IP;
         p[1] = 4;
         CPS_PUTBE32(p + 2, sRequestedIp);
         p += 6;
     }
-    *p++ = 0xff;
+    *p++ = DHCP_OPTION_END;
     CPS_SocWrite(buf, pad_mem(0, DHCP_MESSAGE_SIZE, p, p - buf) - buf);
     return sDhcpXid;
 }
@@ -2620,16 +2661,16 @@ static u32 dhcp_send_request(int mode) {
     u8 *buf = DHCP_BUF;
     u8 *p = dhcp_setcommon(buf, DHCP_REQUEST);
 
-    if (mode == 0) {
-        p[0] = 50;
+    if (mode == DHCP_MODE_REQUEST_IP) {
+        p[0] = DHCP_OPTION_REQUESTED_IP;
         p[1] = 4;
         CPS_PUTBE32(p + 2, sRequestedIp);
-        p[6] = 54;
+        p[6] = DHCP_OPTION_SERVER_ID;
         p[7] = 4;
         CPS_PUTBE32(p + 8, sDhcpServerIp);
         p += 12;
     }
-    *p++ = 0xff;
+    *p++ = DHCP_OPTION_END;
     CPS_SocWrite(buf, pad_mem(0, DHCP_MESSAGE_SIZE, p, p - buf) - buf);
     return sDhcpXid;
 }
@@ -2652,25 +2693,27 @@ static int dhcp_analyze_response(u32 xid, int try) {
             yield_thread();
         } else {
             msg = CPS_SocRead(&len);
-            if (len > 0xf0 && msg[0] == 2 && xid == CPS_GET32(msg + 4) && !maccmp((u16 *)(msg + 28), (u16 *)sMyMac)) {
+            if (len > 0xf0 && msg[0] == DHCP_BOOTREPLY && xid == CPS_GET32(msg + 4) &&
+                !maccmp((u16 *)(msg + 28), (u16 *)sMyMac)) {
                 CPSInAddr yourIp;
 
                 result = DHCP_WAIT_OTHER;
                 yourIp = CPS_BE32(msg + 16);
                 end = msg + len;
                 msg += 0xec;
-                if (*msg++ == 0x63 && *msg++ == 0x82 && *msg++ == 0x53 && *msg++ == 0x63) {
+                if (*msg++ == ((DHCP_MAGIC_COOKIE >> 24) & 0xff) && *msg++ == ((DHCP_MAGIC_COOKIE >> 16) & 0xff) &&
+                    *msg++ == ((DHCP_MAGIC_COOKIE >> 8) & 0xff) && *msg++ == (DHCP_MAGIC_COOKIE & 0xff)) {
 
-                    while (msg < end && (code = *msg++) != 0xff) {
+                    while (msg < end && (code = *msg++) != DHCP_OPTION_END) {
                         if (code != 0) {
                             switch (code) {
-                            case 1:
+                            case DHCP_OPTION_SUBNET_MASK:
                                 CPSNetMask = CPS_BE32(msg + 1);
                                 break;
-                            case 3:
+                            case DHCP_OPTION_ROUTER:
                                 CPSGatewayIp = CPS_BE32(msg + 1);
                                 break;
-                            case 6:
+                            case DHCP_OPTION_DNS_SERVER:
                                 if (!(CPSMode & CPS_MODE_STATIC_DNS)) {
                                     if (msg[0] < 8) {
                                         CPSDnsIp[1] = 0;
@@ -2680,10 +2723,10 @@ static int dhcp_analyze_response(u32 xid, int try) {
                                     CPSDnsIp[0] = CPS_BE32(msg + 1);
                                 }
                                 break;
-                            case 51:
+                            case DHCP_OPTION_LEASE_TIME:
                                 sLeaseTime = CPS_BE32(msg + 1);
                                 break;
-                            case 53:
+                            case DHCP_OPTION_MESSAGE_TYPE:
                                 switch (msg[1]) {
                                 case DHCP_OFFER:
                                     sRequestedIp = yourIp;
@@ -2695,7 +2738,7 @@ static int dhcp_analyze_response(u32 xid, int try) {
                                     break;
                                 }
                                 break;
-                            case 54:
+                            case DHCP_OPTION_SERVER_ID:
                                 sDhcpServerIp = CPS_BE32(msg + 1);
                                 break;
                             }
@@ -2735,7 +2778,7 @@ static BOOL dhcp_request_server(u32 *timer, int mode) {
 
     CPS_SocUse();
     CPS_SocDatagramMode();
-    if (mode == 1) {
+    if (mode == DHCP_MODE_RENEW) {
         CPS_SocBind(DHCP_CLIENT_PORT, DHCP_SERVER_PORT, sDhcpServerIp);
     } else {
         CPS_SocBind(DHCP_CLIENT_PORT, DHCP_SERVER_PORT, CPS_BROADCAST_ADDR);
@@ -2755,13 +2798,13 @@ static BOOL dhcp_request_server(u32 *timer, int mode) {
     sRenewTime /= 2;
     *timer = sRenewTime;
     switch (mode) {
-    case 1:
+    case DHCP_MODE_RENEW:
         if (*timer < 60) {
             *timer = 1;
             sRenewTime = sLeaseTime / 8;
         }
         break;
-    case 2:
+    case DHCP_MODE_REBIND:
         if (*timer < 60) {
             *timer = 1;
         }
@@ -2780,10 +2823,10 @@ static void dhcp_release_server(void) {
     CPS_SocBind(DHCP_CLIENT_PORT, DHCP_SERVER_PORT, sDhcpServerIp);
     buf = DHCP_BUF;
     p = dhcp_setcommon(buf, DHCP_RELEASE);
-    p[0] = 54;
+    p[0] = DHCP_OPTION_SERVER_ID;
     p[1] = 4;
     CPS_PUTBE32(p + 2, sDhcpServerIp);
-    p[6] = 0xff;
+    p[6] = DHCP_OPTION_END;
     p += 7;
     CPS_SocWrite(buf, pad_mem(0, DHCP_MESSAGE_SIZE, p, p - buf) - buf);
     CPS_SocRelease();
@@ -2794,7 +2837,7 @@ static u8 *dns_skipname(u8 *p) {
     u8 len = *p++;
 
     while (len != 0) {
-        if ((len & 0xc0) == 0xc0) {
+        if ((len & DNS_COMPRESSION_POINTER_MASK) == DNS_COMPRESSION_POINTER_MASK) {
             return p + 1;
         }
         p += len;
@@ -2860,9 +2903,9 @@ static s32 resolve_common(u8 *name, u32 type, u16 id, u8 *result, u32 resultSize
         }
         reply = CPS_SocRead(&len);
         if (len > 12 && CPS_GET16(reply) == id) {
-            if ((reply[3] & 0xf) == 3) {
+            if ((reply[3] & DNS_RCODE_MASK) == DNS_RCODE_NXDOMAIN) {
                 answer = -1;
-            } else if ((reply[3] & 0xf) == 0) {
+            } else if ((reply[3] & DNS_RCODE_MASK) == DNS_RCODE_NOERROR) {
                 end = reply + len;
                 count = (u16)(reply[5] | (reply[4] << 8));
                 p = reply + 12;

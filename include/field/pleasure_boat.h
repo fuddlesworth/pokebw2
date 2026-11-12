@@ -70,6 +70,16 @@ u32 PleasureBoat_GetPassengerType(PleasureBoat *boat, u32 room);
 u32 PleasureBoat_GetPassengerExtra(PleasureBoat *boat, u32 room, u32 index);
 BOOL PleasureBoat_GetPassengerOccupied(PleasureBoat *boat, u32 room);
 
+// What PleasureBoatGetRoomInfo asks of a room: the object code of its person, the kind, Trainer ID and extra values
+// of its passenger, and whether the passenger counts as occupied
+enum {
+    PLEASURE_BOAT_ROOM_INFO_OBJ_CODE = 4,
+    PLEASURE_BOAT_ROOM_INFO_PASSENGER_PARAM,
+    PLEASURE_BOAT_ROOM_INFO_PASSENGER_TYPE,
+    PLEASURE_BOAT_ROOM_INFO_PASSENGER_EXTRA,
+    PLEASURE_BOAT_ROOM_INFO_PASSENGER_OCCUPIED,
+};
+
 // Overlay 12's event_royal_unova.c
 BOOL Scrcmd_RoyalUnova_PleasureBoatGetRoomInfo(VM *vm, FieldScriptEnv *env);
 BOOL Scrcmd_RoyalUnova_CallRoyalUnovaView(VM *vm, FieldScriptEnv *env);
