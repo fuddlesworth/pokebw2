@@ -260,10 +260,12 @@ WMOtherElements WM_GetOtherElements(const WMBssDesc *bssDesc) {
 
 // The TGID for a parent's next beacon, counting up from the minute and second at the first call
 u16 WM_GetNextTgid(void) {
-    static u32 tgid_bak = 0x10000;
+    // NitroSDK's TGID_DEFAULT: no TGID has been made from the clock yet
+    enum { TGID_DEFAULT = (1 << 16) };
+    static u32 tgid_bak = (u32)TGID_DEFAULT;
     RTCTime time;
 
-    if (tgid_bak == 0x10000) {
+    if (tgid_bak == (u32)TGID_DEFAULT) {
         RTC_Init();
         if (RTC_GetTime(&time) == 0) {
             tgid_bak = (u16)(time.second + (time.minute << 8));

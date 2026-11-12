@@ -37,7 +37,7 @@ void DWCi_LoginInit(DWCLoginControl *control, DWCUserData *userData, GPConnectio
     sLogin = control;
     MI_CpuFill8(control, 0, sizeof(DWCLoginControl));
     sLogin->pGpObj = connection;
-    sLogin->state = 0;
+    sLogin->state = DWC_LOGIN_STATE_INIT;
     sLogin->productID = productId;
     sLogin->gamecode = gameCode;
     sLogin->playerName = playerName;
@@ -49,7 +49,7 @@ void DWCi_LoginInit(DWCLoginControl *control, DWCUserData *userData, GPConnectio
 
 BOOL DWCi_LoginAsync(void) {
     if (DWCi_RemoteLogin()) {
-        sLogin->state = 1;
+        sLogin->state = DWC_LOGIN_STATE_REMOTE_AUTH;
         sLogin->connectFlag = FALSE;
         return TRUE;
     }
@@ -59,15 +59,15 @@ BOOL DWCi_LoginAsync(void) {
 void DWCi_LoginProcess(void) {
     if (sLogin != NULL && !DWCi_IsError()) {
         switch (sLogin->state) {
-        case 0:
-        case 5:
+        case DWC_LOGIN_STATE_INIT:
+        case DWC_LOGIN_STATE_CONNECTED:
             break;
-        case 1:
+        case DWC_LOGIN_STATE_REMOTE_AUTH:
             DWCi_RemoteLoginProcess();
             return;
-        case 2:
-        case 3:
-        case 4:
+        case DWC_LOGIN_STATE_CONNECTING:
+        case DWC_LOGIN_STATE_GPGETINFO:
+        case DWC_LOGIN_STATE_GPSETINFO:
             if (sLogin->pGpObj != NULL && *sLogin->pGpObj != NULL) {
                 gpProcess(sLogin->pGpObj);
             }
@@ -107,7 +107,7 @@ void DWCi_ShutdownLogin(void) {
 static void DWCi_CloseLogin(void) {
     if (sLogin != NULL) {
         DWCi_Auth_EndAuthentication();
-        sLogin->state = 0;
+        sLogin->state = DWC_LOGIN_STATE_INIT;
         sLogin->connectFlag = FALSE;
     }
 }
@@ -121,19 +121,19 @@ static int DWCi_HandleLoginGPError(int result) {
         return 0;
     }
     switch (result) {
-    case 1:
+    case GP_MEMORY_ERROR:
         error = DWC_ERROR_FATAL;
         code = error - 10;
         break;
-    case 2:
+    case GP_PARAMETER_ERROR:
         error = DWC_ERROR_FATAL;
         code = error - 11;
         break;
-    case 3:
+    case GP_NETWORK_ERROR:
         error = DWC_ERROR_NETWORK;
         code = error - 16;
         break;
-    case 4:
+    case GP_SERVER_ERROR:
         error = DWC_ERROR_NETWORK;
         code = error - 26;
         break;
@@ -161,9 +161,9 @@ static void DWCi_GPConnectCallback(GPConnection *connection, GPConnectResponseAr
         return;
     }
     if (arg->result == 0) {
-        if (sLogin->state == 2) {
+        if (sLogin->state == DWC_LOGIN_STATE_CONNECTING) {
             if (sLogin->userdata->gs_profile_id == arg->profile) {
-                sLogin->state = 5;
+                sLogin->state = DWC_LOGIN_STATE_CONNECTED;
                 if (DWCi_HandleLoginGPError(DWCi_GPSetServerStatus(1)) != 0) {
                     return;
                 }
@@ -176,7 +176,7 @@ static void DWCi_GPConnectCallback(GPConnection *connection, GPConnectResponseAr
             } else {
                 DWCi_StopLogin(DWC_ERROR_NETWORK, -60000);
             }
-        } else if (sLogin->state == 3) {
+        } else if (sLogin->state == DWC_LOGIN_STATE_GPGETINFO) {
             if (DWCi_HandleLoginGPError(
                     gpGetInfo(connection, arg->profile, 0, 0, (GPCallback)DWCi_GPGetInfoCallback, NULL)) != 0) {
                 return;
@@ -231,11 +231,11 @@ static void DWCi_RemoteLoginProcess(void) {
             DWCi_Auth_GetGameSpyToken(sLogin->authToken, sLogin->partnerChallenge);
             DWCi_Auth_EndAuthentication();
             if (DWCi_Acc_IsAuthentic(sLogin->userdata)) {
-                DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, 2);
+                DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, DWC_LOGIN_STATE_CONNECTING);
                 return;
             }
             DWCi_Acc_SetUserId(&sLogin->tempLoginId, DWCi_Auth_GetConsoleUserId());
-            DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, 3);
+            DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, DWC_LOGIN_STATE_GPGETINFO);
             return;
         }
         {
@@ -258,13 +258,13 @@ static void DWCi_GPGetInfoCallback(GPConnection *connection, GPGetInfoResponseAr
     char tempName[0x15];
 
     if (arg->result == 0) {
-        if (sLogin->state == 3) {
+        if (sLogin->state == DWC_LOGIN_STATE_GPGETINFO) {
             if (arg->lastname[0] == 0) {
                 DWCi_Acc_LoginIdToUserName(&sLogin->userdata->pseudo, sLogin->gamecode, loginName);
                 if (DWCi_HandleLoginGPError(gpSetInfosA(connection, GP_INFO_LASTNAME, loginName)) != 0) {
                     return;
                 }
-                sLogin->state = 4;
+                sLogin->state = DWC_LOGIN_STATE_GPSETINFO;
                 if (DWCi_HandleLoginGPError(
                         gpGetInfo(connection, arg->profile, 0, 0, (GPCallback)DWCi_GPGetInfoCallback, NULL)) != 0) {
                     return;
@@ -272,15 +272,15 @@ static void DWCi_GPGetInfoCallback(GPConnection *connection, GPGetInfoResponseAr
             } else {
                 gpDisconnect(connection);
                 DWCi_RemoteLogin();
-                sLogin->state = 1;
+                sLogin->state = DWC_LOGIN_STATE_REMOTE_AUTH;
             }
-        } else if (sLogin->state == 4) {
+        } else if (sLogin->state == DWC_LOGIN_STATE_GPSETINFO) {
             DWCi_Acc_LoginIdToUserName(&sLogin->userdata->pseudo, sLogin->gamecode, userName);
             if (strcmp(arg->lastname, userName) == 0) {
                 DWCi_Acc_LoginIdToUserName(&sLogin->tempLoginId, sLogin->gamecode, tempName);
                 DWCi_Acc_SetLoginIdToUserData(sLogin->userdata, &sLogin->tempLoginId, arg->profile);
                 gpDisconnect(connection);
-                DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, 2);
+                DWCi_GPConnect((GPCallback)DWCi_GPConnectCallback, DWC_LOGIN_STATE_CONNECTING);
                 return;
             }
             if (DWCi_HandleLoginGPError(
@@ -293,7 +293,7 @@ static void DWCi_GPGetInfoCallback(GPConnection *connection, GPGetInfoResponseAr
 
 // Whether GP is logged in
 BOOL DWCi_CheckLogin(void) {
-    if (sLogin != NULL && sLogin->state == 5) {
+    if (sLogin != NULL && sLogin->state == DWC_LOGIN_STATE_CONNECTED) {
         return TRUE;
     }
     return FALSE;

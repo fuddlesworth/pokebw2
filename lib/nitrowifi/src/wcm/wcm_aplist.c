@@ -107,17 +107,17 @@ void WCMi_EntryApList(const WMBssDesc *bss, u16 scanLinkLevel) {
     if (work == NULL || work->apListLocked != 0) {
         return;
     }
-    if (OS_IsRunOnTwl() && work->wirelessMode == 2 && WCMi_GetGameInfo(bss) != NULL) {
+    if (OS_IsRunOnTwl() && work->wirelessMode == WCM_DEVICEID_NWM && WCMi_GetGameInfo(bss) != NULL) {
         return;
     }
-    if (work->wirelessMode == 1 && bss->gameInfoLength != 0) {
+    if (work->wirelessMode == WCM_DEVICEID_WM && bss->gameInfoLength != 0) {
         return;
     }
     entry = WcmSearchApList(bss->bssid);
     if (entry == NULL) {
         entry = WcmAllocApList();
     }
-    if (entry == NULL && work->scanMode == 1) {
+    if (entry == NULL && work->scanMode == WCM_APLIST_MODE_EXCHANGE) {
         entry = WcmGetOldestApList();
     }
     if (entry != NULL) {
@@ -320,7 +320,7 @@ static void *WCMi_GetGameInfo(const WMBssDesc *bss) {
         return NULL;
     }
     if (OS_IsRunOnTwl()) {
-        if (work->wirelessMode == 2) {
+        if (work->wirelessMode == WCM_DEVICEID_NWM) {
             NWMInfoElements *ie = NULL;
 
             if (bss->otherElementCount != 0) {

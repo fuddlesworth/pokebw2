@@ -59,7 +59,7 @@ u8 DWCi_AC_ConnectRetryAP(void) {
     u8 state = 9;
 
     switch (WCM_GetPhase()) {
-    case 3:
+    case WCM_PHASE_IDLE:
         state = work->resumeState;
         if (work->sameSsid == 1) {
             work->findList[work->connectNo].state = 0;
@@ -68,20 +68,20 @@ u8 DWCi_AC_ConnectRetryAP(void) {
             DWCi_AC_SearchReStart(state);
         }
         break;
-    case 6:
+    case WCM_PHASE_SEARCH:
         WCM_EndSearchAsync();
         break;
-    case 9:
+    case WCM_PHASE_DCF:
         WCM_DisconnectAsync();
         break;
-    case 12:
+    case WCM_PHASE_IRREGULAR:
         WCM_TerminateAsync();
-        DWCi_AC_SetError(4);
-        state = 17;
+        DWCi_AC_SetError(DWC_AC_ERROR_IRREGULAR);
+        state = DWC_AC_PHASE_ERROR;
         break;
-    case 11:
-        DWCi_AC_SetError(0);
-        state = 17;
+    case WCM_PHASE_FATAL_ERROR:
+        DWCi_AC_SetError(DWC_AC_ERROR_WCM);
+        state = DWC_AC_PHASE_ERROR;
         break;
     }
     return state;
@@ -97,7 +97,7 @@ u8 DWCi_AC_SearchAP(void) {
     u8 state = DWCi_AC_GetPhase();
     s32 wcmState = WCM_GetPhase();
 
-    if (state == 2 && wcmState == 3) {
+    if (state == DWC_AC_PHASE_SEARCH_START && wcmState == WCM_PHASE_IDLE) {
         u32 channels = WCM_GetAllowedChannel();
         int i;
 
@@ -120,25 +120,25 @@ u8 DWCi_AC_SearchAP(void) {
             work->directedTime = 150;
         }
         state = SearchStart(work);
-    } else if (state == 6) {
+    } else if (state == DWC_AC_PHASE_SEARCH_END) {
         state = SearchEndCheck(work, state);
-    } else if (wcmState == 3 || wcmState == 6) {
+    } else if (wcmState == WCM_PHASE_IDLE || wcmState == WCM_PHASE_SEARCH) {
         state = SearchEndCheck(work, state);
-        if (state != 7) {
-            if (state == 3) {
+        if (state != DWC_AC_PHASE_CONNECT_START) {
+            if (state == DWC_AC_PHASE_SEARCH_AROUND) {
                 state = SearchAround(work);
-            } else if (state == 4) {
+            } else if (state == DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL) {
                 state = SearchDifferChannel(work);
-            } else if (state == 5) {
+            } else if (state == DWC_AC_PHASE_SEARCH_STEALTH) {
                 state = SearchStealth(work);
             }
         }
-    } else if (wcmState == 11) {
-        DWCi_AC_SetError(0);
-        return 17;
-    } else if (wcmState > 11) {
-        DWCi_AC_SetError(4);
-        return 17;
+    } else if (wcmState == WCM_PHASE_FATAL_ERROR) {
+        DWCi_AC_SetError(DWC_AC_ERROR_WCM);
+        return DWC_AC_PHASE_ERROR;
+    } else if (wcmState > WCM_PHASE_FATAL_ERROR) {
+        DWCi_AC_SetError(DWC_AC_ERROR_IRREGULAR);
+        return DWC_AC_PHASE_ERROR;
     }
     return state;
 }
@@ -160,11 +160,11 @@ static void DWCi_AC_SearchReStart(u8 state) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
     switch (state) {
-    case 3:
+    case DWC_AC_PHASE_SEARCH_AROUND:
         work->timeOut = OS_GetTick();
         WCM_SearchAsync(WCM_Bssid_Any, WCM_Essid_Any, DWC_AC_SEARCH_CHANNEL[work->tag] | 0x200000);
         break;
-    case 4:
+    case DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL:
         if (IsChannelAllowed(1 << (work->bssDesc[work->searchListNo].channel - 1)) == TRUE) {
             work->timeOut = OS_GetTick();
             WCM_SearchAsync(work->bssDesc[work->searchListNo].bssid, work->bssDesc[work->searchListNo].ssid,
@@ -173,7 +173,7 @@ static void DWCi_AC_SearchReStart(u8 state) {
             work->findList[work->searchListNo].find = 1;
         }
         break;
-    case 5:
+    case DWC_AC_PHASE_SEARCH_STEALTH:
         work->timeOut = OS_GetTick();
         WCM_SearchAsync(WCM_Bssid_Any, work->searchList[work->searchListNo].ssid,
                         DWC_AC_SEARCH_CHANNEL[work->tag] | 0x300000);
@@ -270,7 +270,7 @@ static u8 SearchStealth(ACWORK *work) {
 // ends (state 6)
 static u8 NextSearchCheck(ACWORK *work, u8 state) {
     switch (state) {
-    case 3:
+    case DWC_AC_PHASE_SEARCH_AROUND:
         if (work->candidateCount != 0 || work->stealthChannel != 0) {
             if (DWCi_AC_MakeSearchList(1) == TRUE) {
                 state = 4;
@@ -283,10 +283,10 @@ static u8 NextSearchCheck(ACWORK *work, u8 state) {
             state = SearchAround2ndLap(work);
         }
         break;
-    case 4:
+    case DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL:
         state = CheckStartStealthSearch(work);
         break;
-    case 5:
+    case DWC_AC_PHASE_SEARCH_STEALTH:
         if (work->round >= 1) {
             state = 6;
         } else {
@@ -307,7 +307,7 @@ static u8 SearchEndCheck(ACWORK *work, u8 state) {
     u8 i;
     u8 count;
 
-    if (state == 17) {
+    if (state == DWC_AC_PHASE_ERROR) {
         return state;
     }
     count = work->candidateCount;
@@ -316,14 +316,14 @@ static u8 SearchEndCheck(ACWORK *work, u8 state) {
             break;
         }
     }
-    if (state == 6) {
+    if (state == DWC_AC_PHASE_SEARCH_END) {
         if (count == i) {
             if (i == 0) {
-                DWCi_AC_SetError(5);
+                DWCi_AC_SetError(DWC_AC_ERROR_NO_AP);
             } else {
-                DWCi_AC_SetError(6);
+                DWCi_AC_SetError(DWC_AC_ERROR_NO_INET);
             }
-            return 17;
+            return DWC_AC_PHASE_ERROR;
         }
     } else {
         if (count == 0) {

@@ -49,7 +49,7 @@ static int DWCi_HandleGPError(int result);
 static GT2Result DWCi_HandleGT2Error(GT2Result result);
 static void DWCi_LoginCallback(DWCError error, int profileId, void *param);
 static void DWCi_UpdateServersCallback(DWCError error, BOOL isChanged, void *param);
-static void DWCi_MatchedCallback(DWCError error, BOOL cancel, BOOL a2, BOOL a3, int index, void *param);
+static void DWCi_MatchedCallback(DWCError error, BOOL cancel, BOOL self, BOOL isServer, int index, void *param);
 static void DWCi_GPErrorCallback(GPConnection *connection, void *arg, void *param);
 static void DWCi_GPRecvBuddyMessageCallback(GPConnection *connection, void *arg, void *param);
 static void DWCi_GT2ReceivedCallback(GT2Connection connection, GT2Byte *message, int length, GT2Bool reliable);
@@ -149,11 +149,11 @@ void DWC_ShutdownFriendsMatch(void) {
 
 void DWC_ProcessFriendsMatch(void) {
     DWC_UpdateConnection();
-    if (sMatchRoot.fm == NULL || sMatchRoot.fm->state == 0 || DWCi_IsError()) {
+    if (sMatchRoot.fm == NULL || sMatchRoot.fm->state == DWC_STATE_INIT || DWCi_IsError()) {
         return;
     }
     switch (sMatchRoot.fm->state) {
-    case 1:
+    case DWC_STATE_AVAILABLE_CHECK:
         switch (GSIAvailableCheckThink()) {
         case GSIACAvailable:
             if (DWCi_HandleGPError(gpInitialize(&sMatchRoot.fm->gpObj, sMatchRoot.fm->logcnt.productID, 0x10, 0xb))) {
@@ -177,7 +177,7 @@ void DWC_ProcessFriendsMatch(void) {
                     gpSetCallback(&sMatchRoot.fm->gpObj, 2, (GPCallback)DWCi_GPRecvBuddyStatusCallback, 0))) {
                 return;
             }
-            DWCi_SetState(2);
+            DWCi_SetState(DWC_STATE_LOGIN);
             if (DWCi_LoginAsync() == 0) {
                 DWCi_StopLogin(2, -20100);
             }
@@ -190,21 +190,22 @@ void DWC_ProcessFriendsMatch(void) {
             return;
         }
         break;
-    case 2:
+    case DWC_STATE_LOGIN:
         DWCi_LoginProcess();
         break;
-    case 3:
+    case DWC_STATE_ONLINE:
         DWCi_FriendProcess();
         DWCi_MatchProcess(0);
         break;
-    case 4:
+    case DWC_STATE_MATCHING:
         DWCi_MatchProcess(1);
         DWCi_FriendProcess();
         break;
-    case 5:
+    case DWC_STATE_CONNECTED:
         DWCi_TransportProcess();
         DWCi_FriendProcess();
-        if (sMatchRoot.fm->matchcnt.mode == 2 || sMatchRoot.fm->matchcnt.mode == 3) {
+        if (sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_SV ||
+            sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_CL) {
             DWCi_MatchProcess(1);
         } else if (sMatchRoot.fm->gt2Socket != NULL) {
             DWCi_MatchProcess(0);
@@ -226,7 +227,7 @@ BOOL DWC_LoginAsync(const u16 *name, const char *reserved, DWCLoginCallback call
     if (name == NULL) {
         return FALSE;
     }
-    if (DWCi_IsError() || sMatchRoot.fm->state != 0) {
+    if (DWCi_IsError() || sMatchRoot.fm->state != DWC_STATE_INIT) {
         return FALSE;
     }
     sMatchRoot.fm->loginCallback = callback;
@@ -243,11 +244,11 @@ BOOL DWC_LoginAsync(const u16 *name, const char *reserved, DWCLoginCallback call
         MIi_CpuCopy16(name, sMatchRoot.fm->playerName, len * 2);
     }
     sMatchRoot.fm->playerName[len] = 0;
-    if (DWC_GetInetStatus() != 4) {
+    if (DWC_GetInetStatus() != DWC_CONNECTINET_STATE_CONNECTED) {
         DWCi_StopLogin(2, -60010);
         return FALSE;
     }
-    DWCi_SetState(1);
+    DWCi_SetState(DWC_STATE_AVAILABLE_CHECK);
     GSIStartAvailableCheckA(sMatchRoot.fm->gameName);
     return TRUE;
 }
@@ -255,7 +256,7 @@ BOOL DWC_LoginAsync(const u16 *name, const char *reserved, DWCLoginCallback call
 BOOL DWC_UpdateServersAsync(const char *name, DWCUpdateServersCallback callback, void *userData,
                             DWCFriendStatusCallback statusCallback, void *statusParam,
                             DWCDeleteFriendListCallback deleteCallback, void *deleteParam) {
-    if (DWCi_IsError() || sMatchRoot.fm->state < 3 || DWCi_IsServerUpdating()) {
+    if (DWCi_IsError() || sMatchRoot.fm->state < DWC_STATE_ONLINE || DWCi_IsServerUpdating()) {
         return FALSE;
     }
     sMatchRoot.fm->updateServersCallback = callback;
@@ -269,14 +270,14 @@ BOOL DWC_ConnectToAnybodyAsync(int type, u8 numEntry, const char *query, DWCMatc
                                void *matchedParam, DWCNewClientCallback newClient, void *newClientParam,
                                DWCEvalPlayerCallback eval, void *evalParam, DWCAttemptFunc attempt, int *attemptParam,
                                void *param) {
-    if (DWCi_IsError() || sMatchRoot.fm->state != 3) {
+    if (DWCi_IsError() || sMatchRoot.fm->state != DWC_STATE_ONLINE) {
         return FALSE;
     }
     DWCi_ClearGT2ConnectionList();
     sMatchRoot.fm->matchedCallback = matched;
     sMatchRoot.fm->matchedParam = matchedParam;
-    DWCi_SetState(4);
-    DWCi_SetMatchType(0);
+    DWCi_SetState(DWC_STATE_MATCHING);
+    DWCi_SetMatchType(DWC_MATCH_TYPE_ANYBODY);
     DWCi_ConnectToAnybodyAsync(type, numEntry - 1, query, DWCi_MatchedCallback, NULL, newClient, newClientParam, eval,
                                evalParam, attempt, attemptParam, param);
     return TRUE;
@@ -285,14 +286,14 @@ BOOL DWC_ConnectToAnybodyAsync(int type, u8 numEntry, const char *query, DWCMatc
 BOOL DWC_SetupGameServer(int type, u8 numEntry, DWCMatchedSCCallback matched, void *matchedParam,
                          DWCNewClientCallback newClient, void *newClientParam, DWCAttemptFunc attempt,
                          int *attemptParam, void *param) {
-    if (DWCi_IsError() || sMatchRoot.fm->state != 3) {
+    if (DWCi_IsError() || sMatchRoot.fm->state != DWC_STATE_ONLINE) {
         return FALSE;
     }
     DWCi_ClearGT2ConnectionList();
     sMatchRoot.fm->matchedCallback = matched;
     sMatchRoot.fm->matchedParam = matchedParam;
-    DWCi_SetState(4);
-    DWCi_SetMatchType(2);
+    DWCi_SetState(DWC_STATE_MATCHING);
+    DWCi_SetMatchType(DWC_MATCH_TYPE_SC_SV);
     DWCi_SetupGameServer(type, numEntry - 1, DWCi_MatchedCallback, NULL, newClient, newClientParam, attempt,
                          attemptParam, param);
     return TRUE;
@@ -309,13 +310,13 @@ BOOL DWC_ConnectToGameServerAsync(int type, int friendIndex, DWCMatchedSCCallbac
     u8 scm;
     u8 scn;
 
-    if (DWCi_IsError() || sMatchRoot.fm->state != 3) {
+    if (DWCi_IsError() || sMatchRoot.fm->state != DWC_STATE_ONLINE) {
         return FALSE;
     }
     DWCi_ClearGT2ConnectionList();
     sMatchRoot.fm->matchedCallback = matched;
     sMatchRoot.fm->matchedParam = matchedParam;
-    DWCi_SetState(4);
+    DWCi_SetState(DWC_STATE_MATCHING);
     profileId = DWCi_GetProfileIDFromList(friendIndex);
     if (profileId == 0 || gpIsBuddy(&sMatchRoot.fm->gpObj, profileId) == 0) {
         error = 0xb;
@@ -323,7 +324,7 @@ BOOL DWC_ConnectToGameServerAsync(int type, int friendIndex, DWCMatchedSCCallbac
     }
     gpGetBuddyIndex(&sMatchRoot.fm->gpObj, profileId, &statusIndex);
     gpGetBuddyStatus(&sMatchRoot.fm->gpObj, statusIndex, &status);
-    if (status.status != 6) {
+    if (status.status != DWC_STATUS_MATCH_SC_SV) {
         error = 0xb;
         goto fail;
     }
@@ -340,15 +341,15 @@ BOOL DWC_ConnectToGameServerAsync(int type, int friendIndex, DWCMatchedSCCallbac
         error = 0xc;
         goto fail;
     }
-    DWCi_SetMatchType(3);
+    DWCi_SetMatchType(DWC_MATCH_TYPE_SC_CL);
     DWCi_ConnectToGameServerAsync(type, profileId, DWCi_MatchedCallback, NULL, newClient, newClientParam, attempt,
                                   attemptParam, param);
     return TRUE;
 fail:
     DWCi_SetError(error, 0);
     sMatchRoot.fm->matchedCallback(error, FALSE, TRUE, FALSE, 0, sMatchRoot.fm->matchedParam);
-    if (sMatchRoot.fm != NULL && sMatchRoot.fm->state == 4) {
-        DWCi_SetState(3);
+    if (sMatchRoot.fm != NULL && sMatchRoot.fm->state == DWC_STATE_MATCHING) {
+        DWCi_SetState(DWC_STATE_ONLINE);
         DWCi_GPSetServerStatus(1);
     }
     return TRUE;
@@ -371,7 +372,8 @@ int DWC_CloseAllConnectionsHard(void) {
     if (DWC_CancelMatch()) {
         return 1;
     }
-    if (sMatchRoot.fm == NULL || DWCi_IsError() || (sMatchRoot.fm->state != 4 && sMatchRoot.fm->state != 5)) {
+    if (sMatchRoot.fm == NULL || DWCi_IsError() ||
+        (sMatchRoot.fm->state != DWC_STATE_MATCHING && sMatchRoot.fm->state != DWC_STATE_CONNECTED)) {
         return -1;
     }
     for (i = 0; i < 0x20; i++) {
@@ -384,7 +386,7 @@ int DWC_CloseAllConnectionsHard(void) {
         DWCi_GetNumNodeInfo();
         DWCi_GPSetServerStatus(1);
         DWCi_NNFreeNegotiateList();
-        DWCi_SetState(3);
+        DWCi_SetState(DWC_STATE_ONLINE);
         DWCi_ClearQR2Key();
         DWCi_InitNodeInfoList();
         DWCi_SetMatchStatus(0);
@@ -406,9 +408,9 @@ int DWC_CloseAllConnectionsHard(void) {
     DWCi_InitNodeInfoList();
     DWCi_SetMatchStatus(0);
     DWCi_CloseMatching();
-    if (DWC_GetState() != 3) {
+    if (DWC_GetState() != DWC_STATE_ONLINE) {
         DWCi_NNFreeNegotiateList();
-        DWCi_SetState(3);
+        DWCi_SetState(DWC_STATE_ONLINE);
         DWCi_ClearQR2Key();
     }
     return 0;
@@ -432,11 +434,11 @@ u8 DWC_GetMyAID(void) {
     DWCNodeInfo *host;
 
     if (sMatchRoot.fm == NULL || !DWCi_IsGetAIDValid()) {
-        return 0xff;
+        return DWC_INVALID_AID;
     }
     host = DWCi_GetNodeInfoByProfileID(sMatchRoot.fm->profileID);
     if (host == NULL) {
-        return 0xff;
+        return DWC_INVALID_AID;
     }
     return host->aid;
 }
@@ -487,14 +489,16 @@ int DWC_GetState(void) {
 static u8 DWC_GetServerAID(void) {
     DWCNodeInfo *host;
 
-    if (sMatchRoot.fm == NULL || sMatchRoot.fm->matchcnt.state == 0 || sMatchRoot.fm->matchcnt.state == 9 ||
-        sMatchRoot.fm->matchcnt.state == 10 || sMatchRoot.fm->matchcnt.state == 11 ||
-        sMatchRoot.fm->matchcnt.matched == 0 || sMatchRoot.fm->matchcnt.hostState == 0) {
-        return 0xff;
+    if (sMatchRoot.fm == NULL || sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_INIT ||
+        sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_CL_SVDOWN_1 ||
+        sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_CL_SVDOWN_2 ||
+        sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_CL_SVDOWN_3 || sMatchRoot.fm->matchcnt.matched == 0 ||
+        sMatchRoot.fm->matchcnt.hostState == 0) {
+        return DWC_INVALID_AID;
     }
     host = DWCi_GetNodeInfoByIndex(0);
     if (host == NULL) {
-        return 0xff;
+        return DWC_INVALID_AID;
     }
     return host->aid;
 }
@@ -503,7 +507,7 @@ BOOL DWC_IsServerMyself(void) {
     if (sMatchRoot.fm == NULL) {
         return FALSE;
     }
-    if (DWC_GetServerAID() == 0xff) {
+    if (DWC_GetServerAID() == DWC_INVALID_AID) {
         return FALSE;
     }
     if (sMatchRoot.fm->matchcnt.hostState == 2) {
@@ -550,7 +554,7 @@ u8 DWCi_GetConnectionAID(GT2Connection connection) {
     if (info != NULL) {
         return info->aid;
     }
-    return 0xff;
+    return DWC_INVALID_AID;
 }
 
 int DWCi_GT2GetConnectionListIdx(void) {
@@ -573,7 +577,7 @@ GT2Connection *DWCi_GetGT2ConnectionByIdx(int index) {
     return &sConnections[index];
 }
 
-GT2Connection *DWCi_GetGT2ConnectionByProfileID(s32 profileId, int a1) {
+GT2Connection *DWCi_GetGT2ConnectionByProfileID(s32 profileId, int unused) {
     int i;
 
     for (i = 0; i < 0x20; i++) {
@@ -635,35 +639,35 @@ static int DWCi_HandleGPError(int result) {
         return 0;
     }
     switch (result) {
-    case 1:
+    case GP_MEMORY_ERROR:
         type = 9;
         code = -1;
         break;
-    case 2:
+    case GP_PARAMETER_ERROR:
         type = 9;
         code = -2;
         break;
-    case 3:
+    case GP_NETWORK_ERROR:
         type = 6;
         code = -10;
         break;
-    case 4:
+    case GP_SERVER_ERROR:
         type = 6;
         code = -20;
         break;
     }
     switch (sMatchRoot.fm->state) {
-    case 1:
+    case DWC_STATE_AVAILABLE_CHECK:
         code -= 61000;
         DWCi_StopLogin(type, code);
         break;
-    case 2:
+    case DWC_STATE_LOGIN:
         code -= 61000;
         if (sMatchRoot.fm->logcnt.state < 1) {
             DWCi_StopLogin(type, code);
         }
         break;
-    case 4:
+    case DWC_STATE_MATCHING:
         code -= 81000;
         DWCi_StopMatching(type, code);
         break;
@@ -683,29 +687,29 @@ static GT2Result DWCi_HandleGT2Error(GT2Result result) {
         return 0;
     }
     switch (result) {
-    case 1:
+    case GT2OutOfMemory:
         type = 9;
         code = -1;
         break;
-    case 2:
-    case 5:
+    case GT2Rejected:
+    case GT2DuplicateAddress:
         type = 0;
         code = 0;
         result = 0;
         break;
-    case 3:
+    case GT2NetworkError:
         type = 6;
         code = -10;
         break;
-    case 4:
+    case GT2AddressError:
         type = 6;
         code = -30;
         break;
-    case 6:
+    case GT2TimedOut:
         type = 6;
         code = -70;
         break;
-    case 7:
+    case GT2NegotiationError:
         type = 6;
         code = -80;
         break;
@@ -720,7 +724,8 @@ int DWCi_CloseConnectionHard(u8 netId) {
     DWCNodeInfo *host;
     void *conn;
 
-    if (sMatchRoot.fm == NULL || DWCi_IsError() || (sMatchRoot.fm->state != 4 && sMatchRoot.fm->state != 5)) {
+    if (sMatchRoot.fm == NULL || DWCi_IsError() ||
+        (sMatchRoot.fm->state != DWC_STATE_MATCHING && sMatchRoot.fm->state != DWC_STATE_CONNECTED)) {
         return -1;
     }
     conn = DWCi_GetGT2Connection(netId);
@@ -739,10 +744,10 @@ int DWCi_CloseConnectionHard(u8 netId) {
 static void DWCi_LoginCallback(DWCError error, int profileId, void *param) {
     if (error == 0) {
         sMatchRoot.fm->profileID = profileId;
-        DWCi_SetState(3);
+        DWCi_SetState(DWC_STATE_ONLINE);
         DWCi_InitGPProcessCount();
     } else {
-        DWCi_SetState(0);
+        DWCi_SetState(DWC_STATE_INIT);
     }
     if (sMatchRoot.fm->loginCallback != NULL) {
         sMatchRoot.fm->loginCallback(error, profileId, sMatchRoot.fm->loginParam);
@@ -753,27 +758,29 @@ static void DWCi_UpdateServersCallback(DWCError error, BOOL isChanged, void *par
     sMatchRoot.fm->updateServersCallback(error, isChanged, sMatchRoot.fm->updateServersParam);
 }
 
-static void DWCi_MatchedCallback(DWCError error, BOOL cancel, BOOL a2, BOOL a3, int index, void *param) {
+static void DWCi_MatchedCallback(DWCError error, BOOL cancel, BOOL self, BOOL isServer, int index, void *param) {
     if (error == 0 && cancel) {
-        if (sMatchRoot.fm->matchcnt.state == 0) {
-            DWCi_SetState(3);
+        if (sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_INIT) {
+            DWCi_SetState(DWC_STATE_ONLINE);
             DWCi_ClearQR2Key();
         }
     } else if (error == 0) {
-        DWCi_SetState(5);
+        DWCi_SetState(DWC_STATE_CONNECTED);
     }
     if (sMatchRoot.fm->matchcnt.suppressMatchedCallback == 0) {
-        sMatchRoot.fm->matchedCallback(error, cancel, a2, a3, index, sMatchRoot.fm->matchedParam);
+        sMatchRoot.fm->matchedCallback(error, cancel, self, isServer, index, sMatchRoot.fm->matchedParam);
     }
-    if (error != 0 && sMatchRoot.fm != NULL && (sMatchRoot.fm->state == 4 || sMatchRoot.fm->state == 5)) {
-        DWCi_SetState(3);
+    if (error != 0 && sMatchRoot.fm != NULL &&
+        (sMatchRoot.fm->state == DWC_STATE_MATCHING || sMatchRoot.fm->state == DWC_STATE_CONNECTED)) {
+        DWCi_SetState(DWC_STATE_ONLINE);
     }
 }
 
 static void DWCi_GPErrorCallback(GPConnection *connection, void *arg, void *param) {
     GPErrorArg *error = arg;
 
-    if (error->errorCode != 0x603 && error->errorCode != 0x901 && error->errorCode != 0xb01) {
+    if (error->errorCode != GP_ADDBUDDY_ALREADY_BUDDY && error->errorCode != GP_BM_NOT_BUDDY &&
+        error->errorCode != GP_DELBUDDY_NOT_BUDDY) {
         DWCi_HandleGPError(3);
     }
 }
@@ -793,8 +800,10 @@ static void DWCi_GPRecvBuddyMessageCallback(GPConnection *connection, void *arg,
         if (len <= 10 && strtoul(version, NULL, 10) == 0x5a) {
             text += len + 1;
             if (memcmp(text, "MAT", strlen("MAT")) == 0) {
-                if (sMatchRoot.fm->state == 4 || (sMatchRoot.fm->state == 5 && (sMatchRoot.fm->matchcnt.mode == 2 ||
-                                                                                sMatchRoot.fm->matchcnt.mode == 3))) {
+                if (sMatchRoot.fm->state == DWC_STATE_MATCHING ||
+                    (sMatchRoot.fm->state == DWC_STATE_CONNECTED &&
+                     (sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_SV ||
+                      sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_CL))) {
                     DWCi_MatchGPRecvBuddyMsgCallback(connection, message->profile, text + strlen("MAT"));
                 }
             }
@@ -821,17 +830,17 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
         return;
     }
     switch (closeType) {
-    case 0:
-    case 1:
+    case GT2LocalClose:
+    case GT2RemoteClose:
         error = 0;
         errorCode = 0;
         break;
-    case 2:
-    case 3:
+    case GT2CommunicationError:
+    case GT2SocketError:
         error = 6;
         errorCode = -7600;
         break;
-    case 4:
+    case GT2NotEnoughMemory:
         error = 9;
         errorCode = -7601;
         break;
@@ -871,7 +880,8 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
     }
     if (sMatchRoot.fm->matchcnt.unlocked == 1 && DWC_IsServerMyself()) {
         sMatchRoot.fm->matchcnt.unlocked = 1;
-    } else if (sMatchRoot.fm->matchcnt.qr2MatchType == 3 || sMatchRoot.fm->matchcnt.qr2MatchType == 2) {
+    } else if (sMatchRoot.fm->matchcnt.qr2MatchType == DWC_MATCH_TYPE_SC_CL ||
+               sMatchRoot.fm->matchcnt.qr2MatchType == DWC_MATCH_TYPE_SC_SV) {
         sMatchRoot.fm->matchcnt.unlocked = 0;
     } else if (DWC_GetNumConnectionHost() == 1) {
         sMatchRoot.fm->matchcnt.unlocked = 1;
@@ -884,7 +894,7 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
             host = DWCi_GetNodeInfoByIndex(i);
             if (host->profileId != sMatchRoot.fm->matchcnt.profileID && DWCi_GetGT2Connection(host->aid) == NULL) {
                 if (sMatchRoot.fm->closedCallback != NULL) {
-                    sMatchRoot.fm->closedCallback(error, closeType == 0, isHost, host->aid,
+                    sMatchRoot.fm->closedCallback(error, closeType == GT2LocalClose, isHost, host->aid,
                                                   DWCi_GetFriendListIndex(host->profileId), sMatchRoot.fm->closedParam);
                 }
                 DWCi_DeleteAID(host->aid);
@@ -894,15 +904,15 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
             }
         }
     }
-    if (closeType != 0 && DWC_IsServerMyself() == 1) {
+    if (closeType != GT2LocalClose && DWC_IsServerMyself() == 1) {
         sMatchRoot.fm->matchcnt.aidListSendTick = 0;
-        if (DWCi_IsFullMesh() != 0 && sMatchRoot.fm->matchcnt.state == 0x10 &&
+        if (DWCi_IsFullMesh() != 0 && sMatchRoot.fm->matchcnt.state == DWC_MATCH_STATE_SV_WAIT_CL_LINK &&
             sMatchRoot.fm->matchcnt.cmdCommand == 8) {
             sMatchRoot.fm->matchcnt.cmdSendTime = 0;
         }
     }
-    if (sMatchRoot.fm->ownCloseFlag == 0 && sMatchRoot.fm->state == 5 && !hadHost) {
-        if (sMatchRoot.fm->matchcnt.mode != 2) {
+    if (sMatchRoot.fm->ownCloseFlag == 0 && sMatchRoot.fm->state == DWC_STATE_CONNECTED && !hadHost) {
+        if (sMatchRoot.fm->matchcnt.mode != DWC_MATCH_TYPE_SC_SV) {
             return;
         }
         if (error != 0) {
@@ -919,7 +929,7 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
         DWCi_SetError(error, errorCode - 80000);
         return;
     }
-    if (sMatchRoot.fm->matchcnt.mode == 2) {
+    if (sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_SV) {
         if (sMatchRoot.fm->ownCloseFlag == 0) {
             DWCi_GPSetServerStatus(-1);
         } else if (DWCi_GetNumNodeInfo() == 1) {
@@ -932,10 +942,10 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
         qr2_send_statechanged(sMatchRoot.fm->matchcnt.qr2Obj);
     }
     if (sMatchRoot.fm->closedCallback != NULL && hadHost) {
-        sMatchRoot.fm->closedCallback(error, closeType == 0, isHost, id, DWCi_GetFriendListIndex(profileId),
+        sMatchRoot.fm->closedCallback(error, closeType == GT2LocalClose, isHost, id, DWCi_GetFriendListIndex(profileId),
                                       sMatchRoot.fm->closedParam);
     }
-    if (sMatchRoot.fm->ownCloseFlag == 0 && sMatchRoot.fm->matchcnt.mode == 2) {
+    if (sMatchRoot.fm->ownCloseFlag == 0 && sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_SV) {
         return;
     }
     if (DWCi_StopMeshMaking() == 1) {
@@ -944,7 +954,7 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
     if (DWCi_GetNumNodeInfo() == 1) {
         if (sMatchRoot.fm->ownCloseFlag != 0) {
             DWCi_NNFreeNegotiateList();
-            DWCi_SetState(3);
+            DWCi_SetState(DWC_STATE_ONLINE);
             DWCi_ClearQR2Key();
             sMatchRoot.fm->matchcnt.hostState = 0;
             return;
@@ -952,7 +962,7 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
         DWCi_SetMatchStatus(0xb);
         return;
     }
-    if (sMatchRoot.fm->matchcnt.mode == 3 && isHost && DWCi_GetNumNodeInfo() >= 1) {
+    if (sMatchRoot.fm->matchcnt.mode == DWC_MATCH_TYPE_SC_CL && isHost && DWCi_GetNumNodeInfo() >= 1) {
         if (DWCi_GetNumNodeInfo() == 1 && DWCi_IsServerChangeEnabled() != 0) {
             DWCi_SetMatchStatus(0xb);
             return;
@@ -962,7 +972,7 @@ static void DWCi_HandleClosedConnection(GT2Connection conn, int closeType, int i
 }
 
 static void DWCi_GT2ClosedCallback(GT2Connection conn, GT2CloseReason closeType) {
-    DWCi_HandleClosedConnection(conn, closeType, 0, 0xff);
+    DWCi_HandleClosedConnection(conn, closeType, 0, DWC_INVALID_AID);
 }
 
 static void DWCi_GT2PingCallback(GT2Connection connection, int latency) {
@@ -984,7 +994,7 @@ u8 DWCi_GetServerOrSubServerAID(void) {
     u8 netId = DWC_GetServerAID();
     DWCNodeInfo *host;
 
-    if (netId == 0xff) {
+    if (netId == DWC_INVALID_AID) {
         host = DWCi_GetNodeInfoByIndex(0);
         if (host != NULL) {
             netId = host->aid;
@@ -996,7 +1006,7 @@ u8 DWCi_GetServerOrSubServerAID(void) {
 static BOOL DWCi_IsGetAIDValid(void) {
     BOOL result = TRUE;
 
-    if (sMatchRoot.fm->matchcnt.qr2MatchType != 2 && sMatchRoot.fm->matchcnt.matched == 0) {
+    if (sMatchRoot.fm->matchcnt.qr2MatchType != DWC_MATCH_TYPE_SC_SV && sMatchRoot.fm->matchcnt.matched == 0) {
         result = FALSE;
     }
     return result;
@@ -1020,7 +1030,7 @@ static BOOL DWC_IsValidCancelMatching(void) {
     if (DWCi_IsError()) {
         return FALSE;
     }
-    if (DWCi_GetMatchCnt() == NULL || DWC_GetState() != 4 || DWCi_GetMatchCnt()->cancelState != 0) {
+    if (DWCi_GetMatchCnt() == NULL || DWC_GetState() != DWC_STATE_MATCHING || DWCi_GetMatchCnt()->cancelState != 0) {
         return FALSE;
     }
     return TRUE;

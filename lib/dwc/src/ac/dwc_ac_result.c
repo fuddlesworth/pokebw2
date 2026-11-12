@@ -33,13 +33,13 @@ s32 DWCi_AC_GetResult(void) {
     if (error < 5) {
         return GetIrregularError();
     }
-    if (error == 5) {
+    if (error == DWC_AC_ERROR_NO_AP) {
         return GetNotFoundAP(main);
     }
-    if (error == 7) {
+    if (error == DWC_AC_ERROR_EULA) {
         return -50599;
     }
-    if (error == 8) {
+    if (error == DWC_AC_ERROR_WIRELESS_OFF) {
         return -50699;
     }
     return GetNotFoundInet(main);
@@ -48,13 +48,13 @@ s32 DWCi_AC_GetResult(void) {
 // The errors 0 to 3: the codes -10 to -7
 static s32 GetProgramaError(s32 error) {
     switch (error) {
-    case 1:
+    case DWC_AC_ERROR_WCM_START:
         return -9;
-    case 0:
+    case DWC_AC_ERROR_WCM:
         return -10;
-    case 2:
+    case DWC_AC_ERROR_SOC_START:
         return -8;
-    case 3:
+    case DWC_AC_ERROR_NETCHECK_CREATE:
         return -7;
     }
     return 0;
@@ -84,9 +84,9 @@ static s32 GetNotFoundInet(const ACHOLD *main) {
     s32 code;
 
     if (maxState < 10) {
-        if (main->endState == 3) {
+        if (main->endState == DWC_AC_RESULT_WRONG_KEY) {
             code = -51100 - type;
-        } else if (main->endState == 4) {
+        } else if (main->endState == DWC_AC_RESULT_FULL) {
             code = -51200 - type;
         } else {
             code = -51300 - type;

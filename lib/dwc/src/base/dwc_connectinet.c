@@ -341,8 +341,10 @@ BOOL DWC_GetApInfo(DWCApInfo *apInfo) {
         return FALSE;
     }
     MI_CpuCopy8(bssid, apInfo->bssid, BSSID_SIZE);
-    if (apInfo->aptype == 0 || apInfo->aptype == 1 || apInfo->aptype == 2 ||
-        (OS_IsRunOnTwl() && (apInfo->aptype == 10 || apInfo->aptype == 11 || apInfo->aptype == 12))) {
+    if (apInfo->aptype == DWC_APINFO_TYPE_USER0 || apInfo->aptype == DWC_APINFO_TYPE_USER1 ||
+        apInfo->aptype == DWC_APINFO_TYPE_USER2 ||
+        (OS_IsRunOnTwl() && (apInfo->aptype == DWC_APINFO_TYPE_USER3 || apInfo->aptype == DWC_APINFO_TYPE_USER4 ||
+                             apInfo->aptype == DWC_APINFO_TYPE_USER5))) {
         ssid = WCM_GetApEssid(&ssidLength);
         DC_InvalidateRange(ssid, SSID_SIZE);
         if (ssid == NULL) {

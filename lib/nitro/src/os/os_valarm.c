@@ -6,6 +6,10 @@
 
 // The lines of a frame
 #define HW_LCD_LINES 263
+// The results of OSi_CompareVCount (NitroSDK's OSi_VALARM_* values)
+#define OSi_VALARM_LATER 0
+#define OSi_VALARM_NOW 1
+#define OSi_VALARM_TIMEOUT 2
 
 typedef struct OSiVAlarmQueue {
     OSiVAlarm *head;
@@ -160,7 +164,7 @@ static void OSi_VAlarmHandler(void) {
         vcount = GX_GetVCount();
         frame = OSi_GetVFrame(vcount);
         switch (OSi_CompareVCount(alarm, frame, vcount)) {
-        case 0:
+        case OSi_VALARM_LATER:
             // Not yet: wait for its line, unless the scan has reached it by now
             OSi_SetNextVAlarm(alarm);
             if (alarm->fire != GX_GetVCount() || alarm->frame != frame) {
@@ -170,7 +174,7 @@ static void OSi_VAlarmHandler(void) {
             reg_GX_DISPSTAT &= ~REG_GX_DISPSTAT_VQI_MASK;
             OS_ResetRequestIrqMask(OS_IE_V_COUNT);
             // fall through
-        case 1:
+        case OSi_VALARM_NOW:
             handler = alarm->handler;
             OSi_DetachVAlarm(alarm);
             alarm->handler = NULL;
@@ -183,7 +187,7 @@ static void OSi_VAlarmHandler(void) {
                 OSi_InsertVAlarm(alarm);
             }
             break;
-        case 2:
+        case OSi_VALARM_TIMEOUT:
             OSi_DetachVAlarm(alarm);
             alarm->frame = OSi_VFrameCount + 1;
             OSi_InsertVAlarm(alarm);

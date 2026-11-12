@@ -45,7 +45,7 @@ u8 *WCM_GetApMacAddress(void) {
     WCMWork *work = WCMi_GetSystemWork();
     u32 irq = OS_DisableInterrupts();
 
-    if (work != NULL && work->state == 9 && work->resetPending == 0) {
+    if (work != NULL && work->state == WCM_PHASE_DCF && work->resetPending == 0) {
         mac = work->connectBss.bssid;
     }
     OS_RestoreInterrupts(irq);
@@ -60,7 +60,7 @@ u8 *WCM_GetApEssid(u16 *ssidLength) {
     u32 irq = OS_DisableInterrupts();
 
     if (work != NULL) {
-        if (work->state == 9 && work->resetPending == 0) {
+        if (work->state == WCM_PHASE_DCF && work->resetPending == 0) {
             ssid = work->connectBss.ssid;
             length = work->connectBss.ssidLength;
         }
@@ -96,17 +96,17 @@ s32 WCM_SendDCFDataEx(const u8 *dst, const u8 *header, s32 headerLen, const u8 *
         OS_RestoreInterrupts(irq);
         return -1;
     }
-    if (work->state != 9 || work->resetPending == 1) {
+    if (work->state != WCM_PHASE_DCF || work->resetPending == 1) {
         OS_UnlockMutex(&sWcmGlobal.mutex);
         OS_RestoreInterrupts(irq);
         return -4;
     }
     sentLen = WCMi_MergeToBuffer(work->wirelessMode, work, header, headerLen, data, dataLen);
     switch (work->wirelessMode) {
-    case 1:
+    case WCM_DEVICEID_WM:
         WCMi_WmifSetDCFData(dst, work, (u16)sentLen, NULL);
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         if (OS_IsRunOnTwl()) {
             WCMi_NwmifSetDCFData(dst, work, (u16)sentLen, NULL);
         }
@@ -144,11 +144,11 @@ static s32 WCMi_MergeToBuffer(s32 mode, void *dest, const void *header, u32 head
 
     total = headerLen + dataLen;
     switch (mode) {
-    case 1:
+    case WCM_DEVICEID_WM:
     default:
         payload = dest;
         break;
-    case 2:
+    case WCM_DEVICEID_NWM:
         // The frame starts with an 802.3 header
         payload = (WCMEthernetHeader *)dest + 1;
         ((WCMEthernetHeader *)dest)->length = (u16)((((u16)total & 0xff00U) >> 8) | (((u16)total & 0x00ff) << 8));
