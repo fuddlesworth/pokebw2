@@ -37,7 +37,7 @@ int SOCL_Bind(int s, u16 local_port) {
         return SOCL_EALREADY;
     }
     socket->local_port = local_port;
-    if (socket->flag == 1) {
+    if (socket->flag == SOCL_FLAGMODE_UDP) {
         return SOCLi_ExecBindCommand(socket);
     }
     return 0;
@@ -101,7 +101,7 @@ static int SOCLi_BindCallBack(void *arg) {
     OS_LockMutex(&pipe->base.mutex);
     CPS_SocBind(cpacket->local_port, cpacket->remote_port, cpacket->remote_ip);
     pipe->cps_read_len = 0;
-    if (cpacket->h.socket_flag == 0 || cpacket->h.socket_flag == 4) {
+    if (cpacket->h.socket_flag == SOCL_FLAGMODE_TCP || cpacket->h.socket_flag == SOCL_FLAGMODE_SSL) {
         result = CPS_TcpConnect();
     }
     OS_UnlockMutex(&pipe->base.mutex);

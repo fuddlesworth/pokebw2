@@ -95,7 +95,8 @@ static int SOCLi_CloseCallBack(void *arg) {
     }
     CPS_SocUnRegister();
     socket->state &= ~(SOCL_STATUS_CONNECTING | SOCL_STATUS_CONNECTED);
-    SOCLi_SendCommandPacket(socket->flag == 2 ? &socket->send_pipe->base : &socket->recv_pipe->base, NULL);
+    SOCLi_SendCommandPacket(socket->flag == SOCL_FLAGMODE_UDPSEND ? &socket->send_pipe->base : &socket->recv_pipe->base,
+                            NULL);
     irq = OS_DisableInterrupts();
     SOCLi_SocketUnregister(socket);
     SOCLi_SocketRegisterTrash(socket);
@@ -116,7 +117,7 @@ static void SOCLi_CleanupSocket(SOCLSocket *socket) {
     if (SOCLi_ModeIsTCP(flag)) {
         SOCLi_FreeCommandPipe(&socket->send_pipe->base);
         SOCLi_FreeCommandPipe(&socket->recv_pipe->base);
-    } else if (flag == 1) {
+    } else if (flag == SOCL_FLAGMODE_UDP) {
         SOCLiSocketUdpData *udp = socket->recv_pipe->udp_head;
 
         while (udp != NULL) {
@@ -130,7 +131,7 @@ static void SOCLi_CleanupSocket(SOCLSocket *socket) {
         socket->recv_pipe->udp_head = NULL;
         OS_WakeupThread(&socket->recv_pipe->udp_wait);
         SOCLi_FreeCommandPipe(&socket->recv_pipe->base);
-    } else if (flag == 2) {
+    } else if (flag == SOCL_FLAGMODE_UDPSEND) {
         SOCLi_FreeCommandPipe(&socket->send_pipe->base);
     }
     irq = OS_DisableInterrupts();

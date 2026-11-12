@@ -18,7 +18,7 @@ int SOCL_GetStatus(int s) {
         if (socket->state & SOCL_STATUS_ERROR) {
             status |= SOCL_POLLERR;
         }
-        if (socket->flag == 1 || (socket->state & SOCL_STATUS_CONNECTED)) {
+        if (socket->flag == SOCL_FLAGMODE_UDP || (socket->state & SOCL_STATUS_CONNECTED)) {
             irq = OS_DisableInterrupts();
             if (SOCLi_GetReadBufferOccpiedSize(socket) > 0) {
                 status |= SOCL_POLLRDNORM;
@@ -49,11 +49,11 @@ static s32 SOCLi_GetReadBufferOccpiedSize(const SOCLSocket *socket) {
     if (pipe != NULL) {
         s8 mode = socket->flag;
 
-        if (mode == 1) {
+        if (mode == SOCL_FLAGMODE_UDP) {
             SOCLiSocketUdpData *head = pipe->udp_head;
 
             size = head != NULL ? head->len : 0;
-        } else if (mode == 0 || mode == 4) {
+        } else if (mode == SOCL_FLAGMODE_TCP || mode == SOCL_FLAGMODE_SSL) {
             size = socket->cps_socket.rcvbuf_len - pipe->cps_read_len;
         }
     }

@@ -43,17 +43,17 @@ static int SOCLi_CreateSocketCallBack(void *arg) {
     CPS_SocRegister(&socket->cps_socket);
     send_pipe = socket->send_pipe;
     switch (socket->flag) {
-    case 0:
-    case 4:
+    case SOCL_FLAGMODE_TCP:
+    case SOCL_FLAGMODE_SSL:
         CPS_SocDup(&send_pipe->base.thread);
         CPS_SocUse();
         break;
-    case 1:
+    case SOCL_FLAGMODE_UDP:
         CPS_SocUse();
         CPS_SocDatagramMode();
         CPS_SetUdpCallback(SOCLi_UdpRecvCallback);
         break;
-    case 2:
+    case SOCL_FLAGMODE_UDPSEND:
         CPS_SocDatagramMode();
         break;
     }
@@ -111,7 +111,7 @@ static u8 *SOCLi_InitSocket(SOCLSocket *socket, const SOCLSocketParam *param) {
         data = SOCLi_InitCommandPipe(data + sizeof(SOCLiSocketRecvCommandPipe), &pipe->base, &param->rcv_pipe);
         data = SOCLi_InitSocketBuffer(data, &socket->cps_socket.rcvbuf, param->buffer.rcvbuf_size);
         data = SOCLi_InitSocketBuffer(data, &socket->cps_socket.linbuf, param->buffer.rcvbuf_aux_size);
-        pipe->udp_queued_max = param->buffer.rcvpipe_unk_e;
+        pipe->udp_queued_max = param->buffer.udpbuf_size;
         pipe->udp_wait.head = pipe->udp_wait.tail = NULL;
     }
     if (param->buffer.sndbuf_size != 0) {
