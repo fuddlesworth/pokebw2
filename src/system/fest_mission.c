@@ -208,7 +208,7 @@ BOOL FestMissionConfig_FromBeacon(FestMissionConfig *config, const GameBeacon *b
     if (GameBeacon_IsMissionType(beacon)) {
         config->info = beacon->payload.missionInfo;
         config->missionId = beacon->arg.mission.missionId;
-        config->unk1A = beacon->arg.mission.unk;
+        config->unk1A = beacon->arg.mission.presetIndex;
         config->seed = beacon->missionWord;
         return TRUE;
     }

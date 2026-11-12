@@ -58,8 +58,8 @@ struct BSubwayTeamConfig {
 
 // A Trainer met in the Battle Subway or the Trial House
 struct BSubwayTrainer {
-    // The number of the trainer's file plus 1
-    u32 unk00;
+    // The number of the trainer's file plus 1, which a Wi-Fi player's trainer leaves 0xffff as it has no file
+    u32 fileNo;
     u16 trainerId;
     u8 unk06[2];
     u16 name[8];

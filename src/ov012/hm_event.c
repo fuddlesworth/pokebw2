@@ -3,6 +3,7 @@
 // file of its own between field_encount_st.c and this one would give the same ROM. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), in English: swan's Hiden (the HMs) is HM
 #include "types.h"
+#include "app/pokelist.h"
 #include "constants/moves.h"
 #include "constants/obj_codes.h"
 #include "field/event_chatot.h"
@@ -19,6 +20,7 @@
 #include "field/game_beacon_set.h"
 #include "field/hidden_event.h"
 #include "field/player_action.h"
+#include "field/player_state.h"
 #include "field/zone.h"
 #include "gfl/heap.h"
 #include "nitro/os.h"
@@ -62,50 +64,50 @@ void CalcPlayerActionPossibilities(Field *field, PlayerActionPossibilities *acti
         actorSystem = Field_GetActorSystem(field);
         CopyActorWPos(actor, &position);
         if (IsNPCStrengthRock(objCode) && !IsSavedStrengthRockAtPos(actorSystem, &position)) {
-            action->flags |= 8;
+            action->flags |= 1 << HM_EVENT_STRENGTH;
         }
         if (objCode == OBJ_CODE_108) {
-            action->flags |= 1;
+            action->flags |= 1 << HM_EVENT_CUT;
         }
     }
     direction = FieldPlayer_GetFaceDir(player);
     tileUnder = FieldPlayer_GetTileTypeUnder(player);
     tileInFront = FieldPlayer_GetTileTypeInDir(player, direction);
     if (CheckSurfHeightAllow(player, direction) == TRUE) {
-        action->flags |= 2;
+        action->flags |= 1 << HM_EVENT_SURF;
     }
     if (CheckCanInteractWaterfall(player, tileUnder, tileInFront) == TRUE) {
-        action->flags |= 4;
+        action->flags |= 1 << HM_EVENT_WATERFALL;
     }
     if (GetZoneFlagsEnableFlyFrom(action->zoneId) == TRUE) {
-        action->flags |= 0x10;
-        action->flags |= 0x40;
+        action->flags |= 1 << HM_EVENT_FLY;
+        action->flags |= 1 << HM_EVENT_TELEPORT;
     }
     if (GetZoneFlagsEnableEscapeRope(action->zoneId) == TRUE) {
-        action->flags |= 0x80;
+        action->flags |= 1 << HM_EVENT_DIG;
     }
     if (FieldStatus_GetFlashPerms(GameData_GetFieldStatus(GSYS_GetGameData(action->gsys))) & FLD_FLASH_ALLOW) {
-        action->flags |= 0x20;
+        action->flags |= 1 << HM_EVENT_FLASH;
     }
     if (GetAbyssalRuinsDiveZoneID(field, &diveZone) == TRUE) {
-        action->flags |= 0x400;
+        action->flags |= 1 << HM_EVENT_DIVE;
     }
     if (IsZoneAbyssalRuinsInside(action->zoneId)) {
         FieldPlayer_GetGPos(Field_GetPlayer(action->field), &x, &y, &z);
         if (IsZoneAbyssalRuinsFlashRock(action->zoneId) &&
             HiddenArea_ContainsUnlessFlag(&ABYSSAL_RUINS_FLASH_ROCK_RADIUS, x, z, 0xd7, field)) {
-            action->flags |= 0x20;
+            action->flags |= 1 << HM_EVENT_FLASH;
         }
         if (IsZoneAbyssalRuinsStrengthRock(action->zoneId) &&
             HiddenArea_ContainsUnlessFlag(&ABYSSAL_RUINS_STRENGTH_ROCK_RADIUS, x, z, 0xd6, field)) {
-            action->flags |= 8;
+            action->flags |= 1 << HM_EVENT_STRENGTH;
         }
     }
     if (!IsZoneNormal(action->zoneId)) {
         action->flags = 0;
     } else {
-        action->flags |= 0x100;
-        action->flags |= 0x200;
+        action->flags |= 1 << HM_EVENT_SWEET_SCENT;
+        action->flags |= 1 << HM_EVENT_CHATTER;
     }
     if (GameData_IsForceSeasonSync(GSYS_GetGameData(action->gsys)) == TRUE) {
         action->flags = 0;
@@ -169,7 +171,7 @@ BOOL HMEvent_CheckPairFlag(PlayerActionPossibilities *context) {
 
 u32 EventCutCall_Check(PlayerActionPossibilities *context) {
     u32 result = FALSE;
-    if (HMEvent_CheckContextFlag(context, 0) == 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_CUT) == 0) {
         result = TRUE;
     }
     return result;
@@ -199,19 +201,19 @@ GameEventReturnCode EventCutCall_Callback(GameEvent *event, u32 *state, void *da
 
 u32 EventSurfCall_Check(PlayerActionPossibilities *context) {
     u32 state = context->exState;
-    if (state == 2) {
-        return 4;
+    if (state == FLD_PLAYER_EXSTATE_SURF) {
+        return POKELIST_HM_CHECK_ALREADY_SURFING;
     }
-    if (state == 3) {
-        return 1;
+    if (state == FLD_PLAYER_EXSTATE_DIVE) {
+        return POKELIST_HM_CHECK_UNAVAILABLE;
     }
-    if (HMEvent_CheckContextFlag(context, 1) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_SURF) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0) {
-            return 3;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
         }
-        return 0;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 GameEvent *EventSurfCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
@@ -237,13 +239,13 @@ GameEventReturnCode EventSurfCall_Callback(GameEvent *event, u32 *state, void *d
 }
 
 u32 EventWaterfallCall_Check(PlayerActionPossibilities *context) {
-    if (HMEvent_CheckContextFlag(context, 2) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_WATERFALL) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0) {
-            return 3;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
         }
-        return 0;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 GameEvent *EventWaterfallCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
@@ -269,10 +271,10 @@ GameEventReturnCode EventWaterfallCall_Callback(GameEvent *event, u32 *state, vo
 }
 
 u32 EventStrengthCall_Check(PlayerActionPossibilities *context) {
-    switch (HMEvent_CheckContextFlag(context, 3)) {
+    switch (HMEvent_CheckContextFlag(context, HM_EVENT_STRENGTH)) {
     default:
         return FALSE;
-    case 0:
+    case FALSE:
         return TRUE;
     }
 }
@@ -300,10 +302,10 @@ GameEventReturnCode EventStrengthCall_Callback(GameEvent *event, u32 *state, voi
 }
 
 u32 EventSweetScentCall_Check(PlayerActionPossibilities *context) {
-    switch (HMEvent_CheckContextFlag(context, 8)) {
+    switch (HMEvent_CheckContextFlag(context, HM_EVENT_SWEET_SCENT)) {
     default:
         return FALSE;
-    case 0:
+    case FALSE:
         return TRUE;
     }
 }
@@ -318,20 +320,20 @@ GameEvent *EventFly_Create(HiddenEventArgs *args, PlayerActionPossibilities *con
 }
 
 u32 EventFly_Check(PlayerActionPossibilities *context) {
-    if (HMEvent_CheckContextFlag(context, 4) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_FLY) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0) {
-            return 3;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
         }
-        return 0;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 u32 EventFlash_Check(PlayerActionPossibilities *context) {
-    switch (HMEvent_CheckContextFlag(context, 5)) {
+    switch (HMEvent_CheckContextFlag(context, HM_EVENT_FLASH)) {
     default:
         return FALSE;
-    case 0:
+    case FALSE:
         return TRUE;
     }
 }
@@ -345,6 +347,13 @@ GameEvent *EventFlash_Create(HiddenEventArgs *param, PlayerActionPossibilities *
     HiddenEventData_Init(data, param, context);
     return event;
 }
+
+// EventFlash_Callback's steps: the script call, the flash itself, and the wait for it to light
+enum {
+    EVENT_FLASH_STEP_START_SCRIPT,
+    EVENT_FLASH_STEP_START_FLASH,
+    EVENT_FLASH_STEP_WAIT_LIT,
+};
 
 GameEventReturnCode EventFlash_Callback(GameEvent *event, u32 *state, void *data) {
     HiddenEventData *work = data;
@@ -363,13 +372,13 @@ GameEventReturnCode EventFlash_Callback(GameEvent *event, u32 *state, void *data
     flash = FieldSkillMapEff_GetFlash(Field_GetSkillMapEff(GSYS_GetField(work->gsys)));
     heapId = Field_GetHeapID(GSYS_GetField(work->gsys));
     switch (*state) {
-    case 0:
+    case EVENT_FLASH_STEP_START_SCRIPT:
         param = work->args.partySlot;
         scriptWork = EventScriptCall_Start(event, 0x2718, NULL, 0, heapId);
         ScriptWork_SetParams(scriptWork, param, 0, 0, 0);
         ++*state;
         break;
-    case 1:
+    case EVENT_FLASH_STEP_START_FLASH:
         if (!FieldStatus_CheckFlashUsed(status)) {
             status2 = GameData_GetFieldStatus(gameData);
             FieldStatus_SetFlashUsed(status, TRUE);
@@ -384,7 +393,7 @@ GameEventReturnCode EventFlash_Callback(GameEvent *event, u32 *state, void *data
         }
         ++*state;
         break;
-    case 2:
+    case EVENT_FLASH_STEP_WAIT_LIT:
         if (FieldFlash_GetState(flash) == FIELD_FLASH_STATE_LIT)
             return GAMEEVENT_DONE;
         break;
@@ -393,12 +402,12 @@ GameEventReturnCode EventFlash_Callback(GameEvent *event, u32 *state, void *data
 }
 
 u32 EventDigCall_Check(PlayerActionPossibilities *context) {
-    if (HMEvent_CheckContextFlag(context, 7) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_DIG) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0)
-            return 3;
-        return 0;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 GameEvent *EventDigCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
@@ -411,19 +420,25 @@ GameEvent *EventDigCall_Create(HiddenEventArgs *param, PlayerActionPossibilities
     return event;
 }
 
+// EventDigCall_Callback's steps: the script call, then the map change
+enum {
+    EVENT_DIG_STEP_START_SCRIPT,
+    EVENT_DIG_STEP_START_MAP_CHANGE,
+};
+
 GameEventReturnCode EventDigCall_Callback(GameEvent *event, u32 *state, void *data) {
     HiddenEventData *work = data;
     ScriptWork *scriptWork;
     u16 param;
 
     switch (*state) {
-    case 0:
+    case EVENT_DIG_STEP_START_SCRIPT:
         param = work->args.partySlot;
         scriptWork = EventScriptCall_Start(event, 0x271a, NULL, 0, 0x15);
         ScriptWork_SetParams(scriptWork, param, 0, 0, 0);
         ++*state;
         break;
-    case 1:
+    case EVENT_DIG_STEP_START_MAP_CHANGE:
         GameEvent_Replace(event, EventMapChangeDig_Create(work->gsys));
         break;
     }
@@ -431,12 +446,12 @@ GameEventReturnCode EventDigCall_Callback(GameEvent *event, u32 *state, void *da
 }
 
 u32 EventTeleportCall_Check(PlayerActionPossibilities *context) {
-    if (HMEvent_CheckContextFlag(context, 6) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_TELEPORT) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0)
-            return 3;
-        return 0;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 GameEvent *EventTeleportCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
@@ -449,19 +464,25 @@ GameEvent *EventTeleportCall_Create(HiddenEventArgs *param, PlayerActionPossibil
     return event;
 }
 
+// EventTeleportCall_Callback's steps: the script call, then the map change
+enum {
+    EVENT_TELEPORT_STEP_START_SCRIPT,
+    EVENT_TELEPORT_STEP_START_MAP_CHANGE,
+};
+
 GameEventReturnCode EventTeleportCall_Callback(GameEvent *event, u32 *state, void *data) {
     HiddenEventData *work = data;
     ScriptWork *scriptWork;
     u16 param;
 
     switch (*state) {
-    case 0:
+    case EVENT_TELEPORT_STEP_START_SCRIPT:
         param = work->args.partySlot;
         scriptWork = EventScriptCall_Start(event, 0x2719, NULL, 0, 0x15);
         ScriptWork_SetParams(scriptWork, param, 0, 0, 0);
         ++*state;
         break;
-    case 1:
+    case EVENT_TELEPORT_STEP_START_MAP_CHANGE:
         GameEvent_Replace(event, EventMapChangeTeleport_Create(work->gsys));
         break;
     }
@@ -469,12 +490,12 @@ GameEventReturnCode EventTeleportCall_Callback(GameEvent *event, u32 *state, voi
 }
 
 u32 EventDivingCall_Check(PlayerActionPossibilities *context) {
-    if (HMEvent_CheckContextFlag(context, 10) != 0) {
+    if (HMEvent_CheckContextFlag(context, HM_EVENT_DIVE) != 0) {
         if (HMEvent_CheckPairFlag(context) != 0)
-            return 3;
-        return 0;
+            return POKELIST_HM_CHECK_WITH_PARTNER;
+        return POKELIST_HM_CHECK_ALLOWED;
     }
-    return 1;
+    return POKELIST_HM_CHECK_UNAVAILABLE;
 }
 
 GameEvent *EventDivingCall_Create(HiddenEventArgs *param, PlayerActionPossibilities *context) {
@@ -499,10 +520,10 @@ GameEventReturnCode EventDivingCall_Callback(GameEvent *event, u32 *state, void 
 }
 
 u32 EventChatterCall_Check(PlayerActionPossibilities *context) {
-    switch (HMEvent_CheckContextFlag(context, 9)) {
+    switch (HMEvent_CheckContextFlag(context, HM_EVENT_CHATTER)) {
     default:
         return FALSE;
-    case 0:
+    case FALSE:
         return TRUE;
     }
 }
@@ -511,6 +532,12 @@ GameEvent *EventChatterCall_Create(HiddenEventArgs *args, PlayerActionPossibilit
     GameBeacon_BroadcastFieldMove(MOVE_CHATTER);
     return EventChatotRecord_Create(context->gsys, context->field, args->partySlot);
 }
+
+// EventRuinsStrengthCall_Callback's steps: the script call, then the script that pushes the boulder
+enum {
+    EVENT_RUINS_STRENGTH_STEP_START_SCRIPT,
+    EVENT_RUINS_STRENGTH_STEP_REPLACE_SCRIPT,
+};
 
 GameEventReturnCode EventRuinsStrengthCall_Callback(GameEvent *event, u32 *state, void *data) {
     HiddenEventData *work = data;
@@ -521,13 +548,13 @@ GameEventReturnCode EventRuinsStrengthCall_Callback(GameEvent *event, u32 *state
     GameData_GetEventWork(GSYS_GetGameData(work->gsys));
     heapId = Field_GetHeapID(GSYS_GetField(work->gsys));
     switch (*state) {
-    case 0:
+    case EVENT_RUINS_STRENGTH_STEP_START_SCRIPT:
         param = work->args.partySlot;
         scriptWork = EventScriptCall_Start(event, 0x271e, NULL, 0, heapId);
         ScriptWork_SetParams(scriptWork, param, 0, 0, 0);
         ++*state;
         break;
-    case 1:
+    case EVENT_RUINS_STRENGTH_STEP_REPLACE_SCRIPT:
         EventScriptCall_Replace(event, 0x28ed, 0, 0);
         break;
     }
@@ -543,6 +570,12 @@ GameEvent *EventRuinsStrengthCall_Create(HiddenEventArgs *param, PlayerActionPos
     return event;
 }
 
+// EventRuinsFlash_Callback's steps: the script call, then the script that lights the ruins
+enum {
+    EVENT_RUINS_FLASH_STEP_START_SCRIPT,
+    EVENT_RUINS_FLASH_STEP_REPLACE_SCRIPT,
+};
+
 GameEventReturnCode EventRuinsFlash_Callback(GameEvent *event, u32 *state, void *data) {
     HiddenEventData *work = data;
     ScriptWork *scriptWork;
@@ -552,13 +585,13 @@ GameEventReturnCode EventRuinsFlash_Callback(GameEvent *event, u32 *state, void 
     GameData_GetEventWork(GSYS_GetGameData(work->gsys));
     heapId = Field_GetHeapID(GSYS_GetField(work->gsys));
     switch (*state) {
-    case 0:
+    case EVENT_RUINS_FLASH_STEP_START_SCRIPT:
         param = work->args.partySlot;
         scriptWork = EventScriptCall_Start(event, 0x271d, NULL, 0, heapId);
         ScriptWork_SetParams(scriptWork, param, 0, 0, 0);
         ++*state;
         break;
-    case 1:
+    case EVENT_RUINS_FLASH_STEP_REPLACE_SCRIPT:
         EventScriptCall_Replace(event, 0x28ec, 0, 0);
         break;
     }
@@ -575,7 +608,7 @@ GameEvent *EventRuinsFlash_Create(HiddenEventArgs *param, PlayerActionPossibilit
 }
 
 HiddenCheckFunc GetHMEventCheckFunc(PlayerActionPossibilities *context, u32 kind) {
-    if ((s32)kind >= 11) {
+    if ((s32)kind >= HM_EVENT_MAX) {
         return NULL;
     }
     if (IsZoneAbyssalRuinsInside(context->zoneId)) {
@@ -585,7 +618,7 @@ HiddenCheckFunc GetHMEventCheckFunc(PlayerActionPossibilities *context, u32 kind
 }
 
 HiddenCtorFunc GetHMEventCtorFunc(PlayerActionPossibilities *context, u32 kind) {
-    if ((s32)kind >= 11) {
+    if ((s32)kind >= HM_EVENT_MAX) {
         return NULL;
     }
     if (IsZoneAbyssalRuinsInside(context->zoneId)) {

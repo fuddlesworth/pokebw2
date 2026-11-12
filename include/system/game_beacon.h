@@ -22,16 +22,151 @@
 #define GAME_BEACON_TYPE_MAX 0x68
 // A beacon's passPower when no Pass Power is active
 #define GAME_BEACON_PASS_POWER_NONE 0x30
-// A beacon's recentKind when it has no recent event
-#define GAME_BEACON_RECENT_NONE 5
+// A beacon's targetVersions: a bit for each game version that may receive it, (version - VERSION_WHITE), 0xff for every
+// version and 0xfc for Black 2 and White 2 alone
+#define GAME_BEACON_TARGET_VERSIONS_ALL 0xff
+#define GAME_BEACON_TARGET_VERSIONS_B2W2 0xfc
 
-// Beacon type categories used by the log and its offers.
+// A beacon's recent event (GameBeacon.recentKind): a wild or special Pokémon's species, a trainer of one of the three
+// kinds, or none
 enum {
+    GAME_BEACON_RECENT_WILD_SPECIES,
+    GAME_BEACON_RECENT_SPECIAL_SPECIES,
+    GAME_BEACON_RECENT_TRAINER,
+    GAME_BEACON_RECENT_LEADER,
+    GAME_BEACON_RECENT_SPECIAL_TRAINER,
+    GAME_BEACON_RECENT_NONE,
+};
+
+// A beacon's type, GameBeacon.type. Types 0, 1, 0x12, 0x18, 0x32, 0x3c and 0x3d were named from the code; the rest
+// are ours from the message each type shows: BeaconView_GetTypeMsgId gives types 1 to 59 game_beacon.txt's
+// GameBeacon_Text_Nearby plus the type - 1, and a mission's GameBeacon_Text_Nearby itself. A type from
+// GAME_BEACON_TYPE_MISSION on is a Funfest mission's (GameBeacon_IsMissionType), and the mission's log takes the type
+// minus 0x3a as its kind (FestMissionLog_GetKind), whose message funfest_mission_view.txt has.
+enum {
+    // No beacon, which GameBeacon_GetType reads as GAME_BEACON_TYPE_DEFAULT
+    GAME_BEACON_TYPE_NONE = 0x0,
+    // What this game sends with nothing to say, and what a Join Avenue advertisement starts as
     GAME_BEACON_TYPE_DEFAULT = 0x1,
+    // A battle's start and its win, against a wild Pokémon, a special Pokémon, a trainer, a Gym Leader or a special
+    // trainer, and 0xc and 0xd again, whose messages are the ROM's _2 pair
+    GAME_BEACON_TYPE_WILD_BATTLE_START = 0x2,
+    GAME_BEACON_TYPE_WILD_BATTLE_WIN = 0x3,
+    GAME_BEACON_TYPE_SPECIAL_BATTLE_START = 0x4,
+    GAME_BEACON_TYPE_SPECIAL_BATTLE_WIN = 0x5,
+    GAME_BEACON_TYPE_TRAINER_BATTLE_START = 0x6,
+    GAME_BEACON_TYPE_TRAINER_BATTLE_WIN = 0x7,
+    GAME_BEACON_TYPE_LEADER_BATTLE_START = 0x8,
+    GAME_BEACON_TYPE_LEADER_BATTLE_WIN = 0x9,
+    GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_START = 0xa,
+    GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_WIN = 0xb,
+    GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_START_2 = 0xc,
+    GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_WIN_2 = 0xd,
+    // A wild or a special Pokémon caught
+    GAME_BEACON_TYPE_WILD_CAPTURE = 0xe,
+    GAME_BEACON_TYPE_SPECIAL_CAPTURE = 0xf,
+    // A battle Pokémon's level went up, or it evolved
+    GAME_BEACON_TYPE_LEVEL_UP = 0x10,
+    GAME_BEACON_TYPE_EVOLUTION = 0x11,
+    // A Pass Power activated
     GAME_BEACON_TYPE_PASS_POWER = 0x12,
+    // An item found
+    GAME_BEACON_TYPE_ITEM_FOUND = 0x13,
+    // The playing time reached a milestone
+    GAME_BEACON_TYPE_PLAY_TIME = 0x14,
+    GAME_BEACON_TYPE_POKEDEX_COMPLETE = 0x15,
+    // The thanked count reached a milestone
+    GAME_BEACON_TYPE_THANKED_COUNT = 0x16,
+    GAME_BEACON_TYPE_UNION_ROOM_RECEPTION = 0x17,
+    // A message to one trainer
     GAME_BEACON_TYPE_THANKS = 0x18,
+    // A distribution of a Pokémon, an item, a Mystery Gift or a Pass Power
+    GAME_BEACON_TYPE_GIFT_SPECIES = 0x19,
+    GAME_BEACON_TYPE_GIFT_ITEM = 0x1a,
+    GAME_BEACON_TYPE_GIFT_MYSTERY = 0x1b,
+    // A battle event: a critical hit dealt or taken, an escape, low HP or PP, a faint, a status condition
+    GAME_BEACON_TYPE_CRITICAL_HIT = 0x1c,
+    GAME_BEACON_TYPE_TOOK_CRITICAL_HIT = 0x1d,
+    GAME_BEACON_TYPE_BATTLE_ESCAPE = 0x1e,
+    GAME_BEACON_TYPE_LOW_HP = 0x1f,
+    GAME_BEACON_TYPE_LOW_PP = 0x20,
+    GAME_BEACON_TYPE_FAINTED = 0x21,
+    GAME_BEACON_TYPE_STATUS_CONDITION = 0x22,
+    // An item or a move used
+    GAME_BEACON_TYPE_ITEM_USED = 0x23,
+    GAME_BEACON_TYPE_MOVE_USED = 0x24,
+    // An Egg received, or hatched
+    GAME_BEACON_TYPE_EGG_RECEIVED = 0x25,
+    GAME_BEACON_TYPE_EGG_HATCHED = 0x26,
+    GAME_BEACON_TYPE_SHOPPING = 0x27,
+    GAME_BEACON_TYPE_BATTLE_SUBWAY_CHALLENGE = 0x28,
+    GAME_BEACON_TYPE_BATTLE_SUBWAY_STREAK = 0x29,
+    GAME_BEACON_TYPE_BATTLE_SUBWAY_TROPHY = 0x2a,
+    GAME_BEACON_TYPE_BATTLE_INSTITUTE_CHALLENGE = 0x2b,
+    GAME_BEACON_TYPE_BATTLE_INSTITUTE_RANK = 0x2c,
+    GAME_BEACON_TYPE_FERRIS_WHEEL = 0x2d,
+    GAME_BEACON_TYPE_POKE_TRANSFER = 0x2e,
+    GAME_BEACON_TYPE_MUSICAL = 0x2f,
+    // The Pass Power that this game was given used
+    GAME_BEACON_TYPE_GIFT_PASS_POWER_USED = 0x30,
+    // A phrase that the player chose, and the Pass Power of a distribution
     GAME_BEACON_TYPE_PHRASE = 0x31,
     GAME_BEACON_TYPE_GIFT_PASS_POWER = 0x32,
+    GAME_BEACON_TYPE_POKEWOOD_SHOOTING = 0x33,
+    GAME_BEACON_TYPE_POKEWOOD_WATCHING = 0x34,
+    GAME_BEACON_TYPE_TOURNAMENT_CHALLENGE = 0x35,
+    GAME_BEACON_TYPE_TOURNAMENT_ROUND_WIN = 0x36,
+    GAME_BEACON_TYPE_TOURNAMENT_ROUND_LOST = 0x37,
+    GAME_BEACON_TYPE_TOURNAMENT_WIN = 0x38,
+    GAME_BEACON_TYPE_JOIN_AVENUE_SHOPPING = 0x39,
+    // An area of the Black Tower or the White Treehollow
+    GAME_BEACON_TYPE_AREA_CHALLENGE = 0x3a,
+    GAME_BEACON_TYPE_AREA_CLEARED = 0x3b,
+    // A Funfest mission: the beacon that a player in one sends, an offer of one, and then a log entry's kind plus 0x3a
+    GAME_BEACON_TYPE_MISSION = 0x3c,
+    GAME_BEACON_TYPE_MISSION_OFFER = 0x3d,
+    GAME_BEACON_TYPE_MISSION_BATTLING = 0x3e,
+    GAME_BEACON_TYPE_MISSION_DEFEATED = 0x3f,
+    GAME_BEACON_TYPE_MISSION_CAUGHT = 0x40,
+    GAME_BEACON_TYPE_MISSION_ESCAPED = 0x41,
+    GAME_BEACON_TYPE_MISSION_BATTLING_TRAINER = 0x42,
+    GAME_BEACON_TYPE_MISSION_DEFEATED_TRAINER = 0x43,
+    GAME_BEACON_TYPE_MISSION_WAS_DEFEATED = 0x44,
+    GAME_BEACON_TYPE_MISSION_USED_ITEM = 0x45,
+    GAME_BEACON_TYPE_MISSION_PICKED_UP_ITEM = 0x46,
+    GAME_BEACON_TYPE_MISSION_USED_MOVE = 0x47,
+    GAME_BEACON_TYPE_MISSION_SHOPPING = 0x48,
+    GAME_BEACON_TYPE_MISSION_USED_PASS_POWER = 0x49,
+    GAME_BEACON_TYPE_MISSION_RODE_FERRIS_WHEEL = 0x4a,
+    GAME_BEACON_TYPE_MISSION_CHECKED_SIGNBOARD = 0x4b,
+    GAME_BEACON_TYPE_MISSION_EGG_RECEIVED = 0x4c,
+    GAME_BEACON_TYPE_MISSION_KIND1_DEFEATED = 0x4d,
+    GAME_BEACON_TYPE_MISSION_KIND1_CAUGHT = 0x4e,
+    GAME_BEACON_TYPE_MISSION_FLAGS_DEFEATED = 0x4f,
+    GAME_BEACON_TYPE_MISSION_FLAGS_CAUGHT = 0x50,
+    GAME_BEACON_TYPE_MISSION_FOUND_ITEM = 0x51,
+    GAME_BEACON_TYPE_MISSION_RANG_BELL = 0x52,
+    GAME_BEACON_TYPE_MISSION_FOUND_ITEM_2 = 0x53,
+    GAME_BEACON_TYPE_MISSION_FOUND_ITEM_3 = 0x54,
+    GAME_BEACON_TYPE_MISSION_HATCHED = 0x55,
+    GAME_BEACON_TYPE_MISSION_REELED = 0x56,
+    GAME_BEACON_TYPE_MISSION_FOUND_SPECIES = 0x57,
+    GAME_BEACON_TYPE_MISSION_HELPED_LOST_CHILD = 0x58,
+    GAME_BEACON_TYPE_MISSION_GAVE_ITEM = 0x59,
+    GAME_BEACON_TYPE_MISSION_TRADED_ITEMS = 0x5a,
+    GAME_BEACON_TYPE_MISSION_BOUGHT_ITEM = 0x5b,
+    GAME_BEACON_TYPE_MISSION_WON_ROCK_PAPER_SCISSORS = 0x5c,
+    GAME_BEACON_TYPE_MISSION_ANSWERED_QUIZ = 0x5d,
+    GAME_BEACON_TYPE_MISSION_HELPED_TRAIN = 0x5e,
+    GAME_BEACON_TYPE_MISSION_RECEIVED_ITEM = 0x5f,
+    GAME_BEACON_TYPE_MISSION_ANSWERED_QUIZ_2 = 0x60,
+    GAME_BEACON_TYPE_MISSION_NOT_ENOUGH_MONEY = 0x61,
+    GAME_BEACON_TYPE_MISSION_LOST_ROCK_PAPER_SCISSORS = 0x62,
+    GAME_BEACON_TYPE_MISSION_ANSWERED_QUIZ_WRONG = 0x63,
+    GAME_BEACON_TYPE_MISSION_FAINTED = 0x64,
+    GAME_BEACON_TYPE_MISSION_LOW_HP = 0x65,
+    GAME_BEACON_TYPE_MISSION_LOW_PP = 0x66,
+    GAME_BEACON_TYPE_MISSION_TEXT = 0x67,
 };
 
 // What a beacon's type sends
@@ -113,7 +248,8 @@ struct GameBeacon {
         u16 value;
         struct {
             u16 missionId : 14;
-            u16 unk : 2;
+            // The phrase's preset index, for GAME_BEACON_TYPE_MISSION_TEXT
+            u16 presetIndex : 2;
         } mission;
     } arg;
     GameBeaconPayload payload;
@@ -217,7 +353,8 @@ u16 GameBeaconSys_GetAge(u16 trainerId);
 // Refresh the beacon's header for a new type, sent to all versions or to Black 2 and White 2 only
 void GameBeaconSendSlot_Reset(GameBeaconSendSlot *slot);
 void GameBeaconSendSlot_ResetB2W2Only(GameBeaconSendSlot *slot);
-// Set a Funfest mission beacon of type, if its priority allows; for type 0x67, value is a StrBuf
+// Set a Funfest mission beacon of type, if its priority allows; for type 0x67, value is a StrBuf and extra is the
+// phrase's preset index
 void GameBeaconSendSlot_SetMission(GameBeaconSendSlot *slot, u16 type, u32 value);
 void GameBeaconSendSlot_SetMissionEx(GameBeaconSendSlot *slot, u16 type, u32 value, u32 extra);
 // Whether the beacon's type is a Funfest mission's, 0x3c to 0x67
@@ -244,10 +381,10 @@ void GameBeaconSys_UpdateGreeting(void);
 // Sets the medal count that the game's beacon sends
 void GameBeaconSys_SetMedalCount(u8 count);
 void GameBeaconSys_SetFavoriteMedal(u32 value);
-// Sends that the player caught species, of a wild battle of the kinds a1 and a2
-void GameBeaconSys_SendCapture(u16 species, BOOL a1, BOOL a2);
-// Sends a Funfest mission beacon for a defeated species, of a wild battle of the kinds a1 and a2
-void GameBeaconSys_SendDefeatMission(u16 species, BOOL a1, BOOL a2);
+// Sends that the player caught species, of an effect encounter or a disguised Pokémon
+void GameBeaconSys_SendCapture(u16 species, BOOL effectEncount, BOOL disguised);
+// Sends a Funfest mission beacon for a defeated species, of an effect encounter or a disguised Pokémon
+void GameBeaconSys_SendDefeatMission(u16 species, BOOL effectEncount, BOOL disguised);
 // Sends a beacon of type 0x10 with a battle Pokémon's nickname
 void GameBeaconSys_SendNickname(const StrBuf *nickname);
 void GameBeaconSys_SendEvolution(u16 species, const StrBuf *nickname);
@@ -257,9 +394,9 @@ void GameBeacon_SetZone(u16 zoneId, GameData *gameData);
 // Set the beacon's recent event, of kinds 0 to 4
 void GameBeacon_SetRecentKind0(GameBeacon *beacon, u16 species);
 void GameBeacon_SetRecentKind1(GameBeacon *beacon, u16 species);
-void GameBeacon_SetRecentKind2(GameBeacon *beacon, u16 item);
-void GameBeacon_SetRecentKind3(GameBeacon *beacon, u16 item);
-void GameBeacon_SetRecentKind4(GameBeacon *beacon, u16 item);
+void GameBeacon_SetRecentKind2(GameBeacon *beacon, u16 trainerId);
+void GameBeacon_SetRecentKind3(GameBeacon *beacon, u16 trainerId);
+void GameBeacon_SetRecentKind4(GameBeacon *beacon, u16 trainerId);
 void GameBeacon_ClearRecent(GameBeacon *beacon);
 // Sends the Funfest mission beacon of type 0x3c
 void GameBeaconSys_SendMission(void);

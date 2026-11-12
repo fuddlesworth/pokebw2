@@ -13,6 +13,7 @@
 #include "field/bsubway_scr.h"
 #include "field/field.h"
 #include "field/field_event.h"
+#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
@@ -25,6 +26,7 @@
 #include "nitro/math.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
+#include "save/bsubway_save.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 
@@ -134,7 +136,7 @@ static void BtlSetup_SetTrialHouseParty(BtlSetup *setup, BSubwayTrainer *trainer
         copyWords = FALSE;
         break;
     }
-    BtlInst_SetSetupTrainer(mode, trainer->unk00, trainer, dest, 0x87, clearWords, copyWords);
+    BtlInst_SetSetupTrainer(mode, trainer->fileNo, trainer, dest, 0x87, clearWords, copyWords);
     LoadTrialHouseParty(trainer, setup->party[client], 50, count, heapId);
 }
 
@@ -163,7 +165,7 @@ BtlSetup *SetupTrialHouseBattle(GameSystem *gsys, PokeParty *party, u32 mode, BS
 // Sets up the client's trainer from trainer, numbered from trainerIdBase
 static inline void SetTrialHouseTrainer(BtlSetup *setup, SetupClient client, const BSubwayTrainer *trainer,
                                         u32 trainerIdBase) {
-    setup->trainers[client]->trainerId = trainer->unk00 - 1;
+    setup->trainers[client]->trainerId = trainer->fileNo - 1;
     BtlInst_SetSetupTrainer(0, trainerIdBase + setup->trainers[client]->trainerId, trainer, setup->trainers[client],
                             0x87, TRUE, FALSE);
 }
@@ -212,16 +214,16 @@ BtlSetup *BtlSetup_SetTrainerRental(GameSystem *gsys, PokeParty *party, int mode
     SaveBtlFieldStatus(&status, gameData, GSYS_GetField(gsys));
     setup = BtlSetup_Create(4);
     switch (mode) {
-    case 0:
+    case WBT_STYLE_SINGLE:
         BtlSetup_SetTrainer1v1Single(setup, gameData, &status, 0, 4);
         break;
-    case 1:
+    case WBT_STYLE_DOUBLE:
         BtlSetup_SetTrainer1v1Double(setup, gameData, &status, 0, 4);
         break;
-    case 2:
+    case WBT_STYLE_TRIPLE:
         BtlSetup_SetTrainer3v3(setup, gameData, &status, 0, 4);
         break;
-    case 3:
+    case WBT_STYLE_ROTATION:
         BtlSetup_SetTrainerRotation(setup, gameData, &status, 0, 4);
         break;
     }
@@ -257,21 +259,21 @@ static BtlSetup *BtlSetup_SetTrainerTrialHouse(GameSystem *gsys, u16 mode, BtlFi
     SaveBtlFieldStatus(status, gameData, GSYS_GetField(gsys));
     setup = BtlSetup_Create(heapId);
     switch (mode) {
-    case 0:
-    case 4:
-    case 5:
+    case BSUBWAY_MODE_SINGLE:
+    case BSUBWAY_MODE_WIFI:
+    case BSUBWAY_MODE_SUPER_SINGLE:
         BtlSetup_SetTrainer1v1Single(setup, gameData, status, 0, heapId);
         break;
-    case 1:
-    case 6:
+    case BSUBWAY_MODE_DOUBLE:
+    case BSUBWAY_MODE_SUPER_DOUBLE:
         BtlSetup_SetTrainer1v1Double(setup, gameData, status, 0, heapId);
         break;
-    case 2:
-    case 7:
+    case BSUBWAY_MODE_MULTI:
+    case BSUBWAY_MODE_SUPER_MULTI:
         BtlSetup_SetTrainer2v2(setup, gameData, status, 0, 0, 0, heapId);
         break;
-    case 3:
-    case 8:
+    case BSUBWAY_MODE_COMM_MULTI:
+    case BSUBWAY_MODE_SUPER_COMM_MULTI:
         handle = NetHandle_GetOwn();
         netId = 0;
         if (NetSystem_GetNetId()) {
@@ -317,7 +319,7 @@ static void BtlInst_SetSetupTrainer(u32 mode, u32 trainerId, const BSubwayTraine
     }
     if (copyWords == TRUE) {
         // The trainer keeps its phrases as four words each, which BtlInst_TrainerHasWords checks one by one
-        if (mode == 4) {
+        if (mode == BSUBWAY_MODE_WIFI) {
             dest->winWords = *(const PMSData *)trainer->winWords;
             dest->loseWords = *(const PMSData *)trainer->loseWords;
         } else if (BtlInst_TrainerHasWords(trainer)) {
@@ -515,7 +517,7 @@ void *BtlInst_MakeRomTrainer(BSubwayTrainer *trainer, u32 arcId, u16 trainerId, 
 
     MI_CpuFill8(trainer, 0, sizeof(BSubwayTrainer));
     trainerData = BtlInst_LoadTrainerData(arcId, trainerId, heapId);
-    trainer->unk00 = trainerId + 1;
+    trainer->fileNo = trainerId + 1;
     trainer->message.type = 0xffff;
     trainer->message.id = trainerId * 3;
     trainer->trainerId = trainerData[0];

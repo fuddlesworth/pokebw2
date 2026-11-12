@@ -424,7 +424,7 @@ u16 BSubwayWifiData_GetPlayerRoom(BSubwayWifiData *data) {
 void BSubwayWifiData_GetTrainer(BSubwayWifiData *data, BSubwayTrainer *trainer, u8 round, u16 id) {
     BSubwayWifiPlayer *player = &data->players[round];
 
-    trainer->unk00 = 0xffff;
+    trainer->fileNo = 0xffff;
     trainer->trainerId = player->trainerClass;
     MI_CpuCopy8(player->name, trainer->name, sizeof(player->name));
     MI_CpuCopy8(player->message, &trainer->message, sizeof(player->message));
