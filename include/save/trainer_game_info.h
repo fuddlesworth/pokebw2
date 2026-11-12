@@ -45,11 +45,13 @@ struct TrainerGameInfoSave {
     s64 surveySeconds;
     u16 gymParties[TRAINER_GAME_INFO_GYM_COUNT][6];
     u32 drTable[TRAINER_GAME_INFO_DR_COUNT];
+    // Never accessed: the block is cleared and saved whole
     u8 unkdc[4];
     // The color of the Battle Recorder
     u32 battleRecorderColor;
     // Set to a day at the game's end: the minutes left while the gates' boards show the Hall of Fame
     u16 hallOfFameMinutes;
+    // Never accessed: the block is cleared and saved whole
     u8 unke6[0xa];
 };
 

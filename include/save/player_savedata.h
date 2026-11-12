@@ -19,6 +19,7 @@ typedef struct {
 // The save block 0x1c (player_savedata.c, a guessed name). The names of the fields are guessed.
 struct PlayerSave {
     ZoneSpawnInfo nowSpawn;
+    // Never accessed: GameData points its outbound warp spawn at nowSpawn instead
     ZoneSpawnInfo unk1C;
     ZoneSpawnInfo nextSpawn;
     ZoneSpawnInfo escapeRopeSpawn;
@@ -26,6 +27,7 @@ struct PlayerSave {
     u8 flashUsed;
     u8 season;
     u8 weather;
+    // Never accessed: the block is cleared and saved whole. Aletheia's PlayerLocationData calls it reserved75
     u8 unk75;
     u16 placeNameZoneId;
     u32 eggCycleSubsteps;
@@ -41,6 +43,7 @@ struct PlayerSave {
     u16 followTrainerId;
     // 0xffff when no step counter is running
     u16 stepCounter;
+    // Never accessed: the block is cleared and saved whole
     u16 unkA6;
 };
 
