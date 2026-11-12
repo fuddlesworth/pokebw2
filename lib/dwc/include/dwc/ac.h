@@ -46,12 +46,12 @@ typedef struct DWCACConfig {
 } DWCACConfig;
 
 // The phase that the control block's byte at 9 holds, which DWCi_AC_SetPhase writes and DWC_AC_Process dispatches on:
-// each phase has a handler in one of the ac files. The SDK's DWC_AC_GetStatus reports them as its own few values, the
-// DWC_AC_STATE_* of NitroDWC's ac/dwc_ac.h, which are not these
+// the states 1 to 15 and 17 have a handler in one of the ac files. The SDK's DWC_AC_GetStatus reports the phase as
+// its own few values, the DWC_AC_STATE_* of NitroDWC's ac/dwc_ac.h, which are not these
 enum {
     DWC_AC_PHASE_NULL = 0,              // before the control block exists
     DWC_AC_PHASE_START,                 // dwc_ac_soc.c's DWCi_AC_Start: the wireless manager starts
-    DWC_AC_PHASE_SEARCH_START,          // dwc_ac_search.c's SearchStart: measures the channels, starts the scan
+    DWC_AC_PHASE_SEARCH_START,          // dwc_ac_search.c's DWCi_AC_SearchAP: measures the channels, starts the scan
     DWC_AC_PHASE_SEARCH_AROUND,         // SearchAround: a round's channels for any access point
     DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL, // SearchDifferChannel: each candidate on its own channel
     DWC_AC_PHASE_SEARCH_STEALTH,        // SearchStealth: each target's SSID where a beacon came with no SSID

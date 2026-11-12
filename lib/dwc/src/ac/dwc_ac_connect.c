@@ -97,14 +97,14 @@ static u8 ConnectAP(ACWORK *work) {
             }
         }
         WCM_ConnectAsync(bss, &work->wepKey, option | GetAuthMode(work));
-    } else if (state == DWC_AC_PHASE_CONNECT_RETRY) {
+    } else if (state == WCM_PHASE_DCF) {
         work->attempts = 0;
         work->timeOut = OS_GetTick();
         return 10;
-    } else if (state == DWC_AC_PHASE_TEST_RETRY) {
+    } else if (state == WCM_PHASE_FATAL_ERROR) {
         DWCi_AC_SetError(0);
         return 17;
-    } else if (state > 11) {
+    } else if (state > WCM_PHASE_FATAL_ERROR) {
         DWCi_AC_SetError(4);
         return 17;
     }
