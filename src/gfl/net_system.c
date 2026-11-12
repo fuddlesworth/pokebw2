@@ -93,8 +93,8 @@ enum {
     NET_SYSTEM_PACKET_IDLE = 4,
 };
 
-// The step of the parent's packet, which every machine writes as well: written and waiting to be sent,
-// sent and waiting for the parent's own, the parent's received, and idle, ready to write the next one
+// The step of the parent's packet, which every machine writes as well: written and waiting to be sent, the send
+// started (set back to written when it fails), the parent's packet read, and idle, ready to write the next one
 enum {
     NET_SYSTEM_MP_SEND_WRITTEN = 1,
     NET_SYSTEM_MP_SEND_SENT,

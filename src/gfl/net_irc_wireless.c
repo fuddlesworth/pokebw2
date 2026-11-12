@@ -11,8 +11,9 @@
 
 // How many MAC addresses are collected over infrared
 #define _COLLECTMAC_NUM 4
-// The machines of the multi battle, the game the infrared link collects the MAC addresses for
-#define _MULTI_MACHINE_NUM 4
+// The four machines of the games that change over, the multi battle and the musical, whose MAC addresses the
+// infrared link collects
+#define _FOUR_MACHINE_GAME_NUM 4
 
 typedef struct {
     int num;
@@ -67,7 +68,8 @@ enum {
     NETIW_STATE_WAIT_LINK,
     // Waits for the timing pair that the other machines answer
     NETIW_STATE_WAIT_LINK_TIMING,
-    // Sends the base command that ends the infrared network, 1 from the parent and 16 from a child
+    // Sends the base command that ends the infrared network: the parent sends the exit request, 1, which ends it; a
+    // child sends 16, the base table's spare, which does nothing
     NETIW_STATE_SEND_EXIT,
     // Waits for the infrared network to end, and calls irEnded
     NETIW_STATE_WAIT_EXITED,
@@ -271,10 +273,10 @@ void NetIw_Update(void) {
             if (NetIwSys->irEndedCallback != NULL) {
                 NetIwSys->irEndedCallback(NetIwSys->work);
             }
-            if (sys->netIdOverridden && sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM && sys->netId == 0) {
+            if (sys->netIdOverridden && sys->aNetInit.maxConnectNum == _FOUR_MACHINE_GAME_NUM && sys->netId == 0) {
                 NetIw_SetState(sys, NETIW_STATE_START_LINK_AGAIN);
                 sys->linkedCount++;
-            } else if (sys->netId == 0 && sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM) {
+            } else if (sys->netId == 0 && sys->aNetInit.maxConnectNum == _FOUR_MACHINE_GAME_NUM) {
                 sys->linkedCount++;
                 GFL_NetExit(NULL);
                 sys->linkChangedCallback(sys->work, TRUE);
@@ -349,7 +351,7 @@ void NetIw_Update(void) {
             if (sys->netId == 0) {
                 GFL_NetStartServer();
                 NetIw_SetState(sys, NETIW_STATE_SEND_NEGOTIATION);
-            } else if (sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM) {
+            } else if (sys->aNetInit.maxConnectNum == _FOUR_MACHINE_GAME_NUM) {
                 GFL_NetStartScan();
                 NetIw_SetState(sys, NETIW_STATE_FIND_PARENT_BEACON);
             } else {
@@ -441,9 +443,9 @@ void NetIw_Update(void) {
             if (NetIwSys->irEndedCallback != NULL) {
                 NetIwSys->irEndedCallback(NetIwSys->work);
             }
-            if (sys->netIdOverridden && sys->linkedCount < 3) {
+            if (sys->netIdOverridden && sys->linkedCount < _FOUR_MACHINE_GAME_NUM - 1) {
                 sys->linkedCount++;
-                if (sys->linkedCount >= 3) {
+                if (sys->linkedCount >= _FOUR_MACHINE_GAME_NUM - 1) {
                     NetIw_SetState(sys, NETIW_STATE_START_WIRELESS);
                 } else {
                     NetIw_SetState(sys, NETIW_STATE_START_LINK_AGAIN);

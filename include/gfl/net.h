@@ -68,6 +68,8 @@ typedef struct {
     u8 maxConnectNum;
     // The largest packet
     u8 maxSendSize;
+    // A general count, not one meaning: GflNet_GetFriendListNum returns it as the Wi-Fi friend list's size,
+    // and wih_dwc.c loops over the beacons by it. The games set 2, 4, 8, 10 or 16, so no single name fits
     u8 unk62;
     u8 unk63;
     // Whether the parent relays every machine's data (MP mode)
@@ -113,9 +115,10 @@ enum {
     GFL_NET_GAME_COMMAND_IR_MULTI_BATTLE = 37,
 };
 
-// The statuses a device's update returns: the match is connected, it has ended, it has failed, and 1007 while the
-// connection is ready and nothing has happened yet. A negative value is an error, and 10 or more a failure. The Wi-Fi
-// device (dwc_rap.c, an overlay) keeps the same numbers in its errorCode
+// The statuses that NetState_WifiConnecting tells apart from a device's update: the match is connected, it has
+// ended, it has failed, and 1007 while the connection is ready and nothing has happened yet. Any other value of 10
+// or more, such as the Wi-Fi device's 1003, 1004, 1006 and 1008, is a failure too, and a negative value is an
+// error. The Wi-Fi device (dwc_rap.c, an overlay) keeps the same numbers in its errorCode
 enum {
     GFL_NET_DEVICE_STATUS_CONNECTED = 1000,
     GFL_NET_DEVICE_STATUS_MATCH_ENDED = 1001,
@@ -330,7 +333,7 @@ void GFL_NetChangeoverConnect(void (*callback)(void *work));
 // The argument is unused
 void GFL_NetStartSearch(int unused);
 void GFL_NetHoldScan(int unused);
-void GFL_NetSetChangeoverMode(int mode, int a1, const u8 *mac);
+void GFL_NetSetChangeoverMode(int mode, int useParentMac, const u8 *mac);
 BOOL GFL_NetIwFinishCollecting(void);
 void GFL_NetIwOverrideNetId(int netId);
 u8 GFL_NetIwGetLinkedCount(void);

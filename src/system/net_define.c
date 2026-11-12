@@ -107,8 +107,9 @@ void NetDefine_Update(void) {
 }
 
 BOOL GflNet_IsWifiGameKind(void) {
-    // The battle kinds whose bases are named. The rest, 0xd to 0x10, 0x1c, 0x26 and 0x30, are the bases of the other
-    // games that fight over the network, which no list in the tree names
+    // The battle kinds whose command bases are named. The rest, 0xd to 0x10, 0x1c, 0x26 and 0x30, are also bases of
+    // games that fight over the network, which no list in the tree names; 0x1c is IrcBattleMatch's trade mode and
+    // 0x26 its multi mode
     switch (GFL_NetGetGameCommandBase()) {
     case GFL_NET_GAME_COMMAND_IR_BATTLE:
     case 0xd:
