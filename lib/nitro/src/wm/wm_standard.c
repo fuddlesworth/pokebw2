@@ -280,10 +280,12 @@ WMErrCode WM_StartScanEx(WMCallbackFunc callback, const WMScanExParam *param) {
     if (param->ssidLength > sizeof(param->ssid)) {
         return WM_ERRCODE_INVALID_PARAM;
     }
-    if (param->scanType != 0 && param->scanType != 1 && param->scanType != 2 && param->scanType != 3) {
+    if (param->scanType != WM_SCANTYPE_ACTIVE && param->scanType != WM_SCANTYPE_PASSIVE &&
+        param->scanType != WM_SCANTYPE_ACTIVE_CUSTOM && param->scanType != WM_SCANTYPE_PASSIVE_CUSTOM) {
         return WM_ERRCODE_INVALID_PARAM;
     }
-    if ((param->scanType == 2 || param->scanType == 3) && param->ssidMatchLength > sizeof(param->ssid)) {
+    if ((param->scanType == WM_SCANTYPE_ACTIVE_CUSTOM || param->scanType == WM_SCANTYPE_PASSIVE_CUSTOM) &&
+        param->ssidMatchLength > sizeof(param->ssid)) {
         return WM_ERRCODE_INVALID_PARAM;
     }
 
