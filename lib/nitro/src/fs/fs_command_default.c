@@ -601,7 +601,7 @@ static FSResult FSi_ROMFAT_FindPath(FSArchive *arc, u32 baseDirId, const char *p
 
 // FS_COMMAND_GETPATH of the interface. The command leaves the length of the path in pathLength, and what this gives
 // back to the caller is the size of the buffer that it started with
-static FSResult FSi_ROMFAT_GetPath(FSArchive *arc, FSFile *file, u32 arg0, char *buffer, u32 *length) {
+static FSResult FSi_ROMFAT_GetPath(FSArchive *arc, FSFile *file, BOOL isDirectory, char *buffer, u32 *length) {
     FSPathBuffer *args = &file->arg.getPath;
     FSResult result;
 
@@ -617,7 +617,7 @@ static FSResult FSi_ROMFAT_GetPath(FSArchive *arc, FSFile *file, u32 arg0, char 
 }
 
 // FS_COMMAND_OPENFILEFAST of the interface
-static FSResult FSi_ROMFAT_OpenFileFast(FSArchive *arc, FSFile *file, u32 fileId, u32 arg1) {
+static FSResult FSi_ROMFAT_OpenFileFast(FSArchive *arc, FSFile *file, u32 fileId, u32 mode) {
     FSFileID *args = &file->arg.openFileFast;
     FSResult result;
 
@@ -712,14 +712,14 @@ static FSResult FSi_ROMFAT_SeekFile(FSArchive *arc, FSFile *file, s32 *offset, i
     s32 position = *offset;
 
     switch (whence) {
-    case 0:
+    case FS_SEEK_SET:
         position += range->top;
         break;
-    case 1:
+    case FS_SEEK_CUR:
     default:
         position += range->position;
         break;
-    case 2:
+    case FS_SEEK_END:
         position += range->bottom;
         break;
     }
@@ -769,7 +769,7 @@ static FSResult FSi_ROMFAT_GetArchiveCaps(FSArchive *arc, u32 *value) {
 }
 
 // FS_COMMAND_OPENDIRECTORY of the interface: finds the directory that a path names, and opens it
-static FSResult FSi_ROMFAT_OpenDirectory(FSArchive *arc, FSFile *file, u32 baseDirId, const char *path, u32 arg2) {
+static FSResult FSi_ROMFAT_OpenDirectory(FSArchive *arc, FSFile *file, u32 baseDirId, const char *path, u32 mode) {
     u32 dirId = 0;
     FSResult result = FSi_ROMFAT_FindPath(arc, baseDirId, path, &dirId, TRUE);
 
@@ -828,14 +828,16 @@ static FSResult FSi_ROMFAT_GetPathInfo(FSArchive *arc, u32 baseDirId, const char
 static FSResult FSi_ROMFAT_GetArchiveResource(FSArchive *arc, FSArchiveResource *resource) {
     const CARDRomHeader *header = (const CARDRomHeader *)CARD_GetRomHeader();
 
-    resource->unk_20[0] = 0;
-    resource->unk_20[1] = 0;
-    resource->unk_20[2] = 0;
-    resource->unk_20[3] = 0;
+    resource->bytesPerSector = 0;
+    resource->sectorsPerCluster = 0;
+    resource->totalClusters = 0;
+    resource->availableClusters = 0;
     resource->totalSize = header->rom_size;
     resource->availableSize = 0;
-    resource->maxFileSize = 0x7fffffff;
-    resource->maxDirectorySize = 0x7fffffff;
+    resource->maxFileHandles = 0x7fffffff;
+    resource->currentFileHandles = 0;
+    resource->maxDirectoryHandles = 0x7fffffff;
+    resource->currentDirectoryHandles = 0;
     return FS_RESULT_SUCCESS;
 }
 
