@@ -15,6 +15,19 @@
 // dwc_main.c and dwc_match.c and, for the API with a topology, the newer Wii DWC's headers; the ones that BW2's DWC
 // added have names of ours in their style.
 
+// The state of the friends match that DWC_GetState reports, which is the control's state: the SDK's DWCState (TWL DWC
+// 5.3's dwc_main.h), in the order that dwc_main.c's switch runs it: 0 before the login, 1 checking that the services
+// are up, 2 logging in, 3 logged in, 4 matching and 5 matched
+typedef enum DWCState {
+    DWC_STATE_INIT = 0,
+    DWC_STATE_AVAILABLE_CHECK,
+    DWC_STATE_LOGIN,
+    DWC_STATE_ONLINE,
+    DWC_STATE_MATCHING,
+    DWC_STATE_CONNECTED,
+    DWC_STATE_NUM,
+} DWCState;
+
 // A machine of the match, as the match's list keeps it: its profile ID, its public and local addresses, the address
 // of the host it was reached through, its aid, whether it is behind a NAT (it has a private address), how often
 // connecting to it failed and when it is tried next, and its user data
@@ -49,6 +62,17 @@ BOOL DWC_LoginAsync(const u16 *name, const char *reserved, DWCLoginCallback call
 BOOL DWC_UpdateServersAsync(const char *name, DWCUpdateServersCallback callback, void *userData,
                             DWCFriendStatusCallback statusCallback, void *statusParam,
                             DWCDeleteFriendListCallback deleteCallback, void *deleteParam);
+
+// The kind of matchmaking that the match control's mode and qr2MatchType hold and that the matching API's type is: the
+// SDK's DWC_MATCH_TYPE_* (TWL DWC 5.3's macro list): friend-unspecified peer matchmaking, friend-specified, and the
+// server and client sides of server-client
+enum {
+    DWC_MATCH_TYPE_ANYBODY = 0,
+    DWC_MATCH_TYPE_FRIEND,
+    DWC_MATCH_TYPE_SC_SV,
+    DWC_MATCH_TYPE_SC_CL,
+    DWC_MATCH_TYPE_NUM,
+};
 
 // Matching: with the key and number, anybody, or a friend, and the callbacks that tell how it went
 typedef void (*DWCMatchedSCCallback)(DWCError error, BOOL cancel, BOOL self, BOOL isServer, int index, void *param);

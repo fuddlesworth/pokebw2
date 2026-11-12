@@ -24,8 +24,7 @@ DWCError DWC_GetLastErrorEx(int *code, DWCErrorType *type) {
         *code = sErrorInfo.code;
     }
     if (type != NULL) {
-        // The type that each error gets. The errors that end the connection and those that are shown are met twice,
-        // in two groups of the numbers
+        // The type that each error gets, in the groups that share one
         switch (sErrorInfo.error) {
         case DWC_ERROR_AUTH_ANY:
         case DWC_ERROR_AUTH_OUT_OF_SERVICE:
@@ -37,7 +36,7 @@ DWCError DWC_GetLastErrorEx(int *code, DWCErrorType *type) {
         case DWC_ERROR_NETWORK:
             *type = DWC_ETYPE_SHUTDOWN_FM;
             break;
-        case 22:
+        case DWC_ERROR_NETWORK_LIGHT:
             *type = DWC_ETYPE_SHOW_ERROR;
             break;
         case DWC_ERROR_GHTTP_ANY:
@@ -46,7 +45,7 @@ DWCError DWC_GetLastErrorEx(int *code, DWCErrorType *type) {
         case DWC_ERROR_FRIENDS_SHORTAGE:
         case DWC_ERROR_NOT_FRIEND_SERVER:
         case DWC_ERROR_SERVER_FULL:
-        case 21:
+        case DWC_ERROR_SC_CONNECT_BLOCK:
             *type = DWC_ETYPE_LIGHT;
             break;
         case DWC_ERROR_DS_MEMORY_ANY:
@@ -63,8 +62,8 @@ DWCError DWC_GetLastErrorEx(int *code, DWCErrorType *type) {
             break;
         case DWC_ERROR_SVL_ANY:
         case DWC_ERROR_PROF_ANY:
-        case 19:
-        case 20:
+        case DWC_ERROR_GDB_ANY:
+        case DWC_ERROR_SCL_ANY:
             *type = DWC_ETYPE_SHOW_ERROR;
             break;
         default:

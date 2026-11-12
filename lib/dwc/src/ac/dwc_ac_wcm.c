@@ -32,7 +32,7 @@ static void DWCi_AC_GetBeacon(const WMBssDesc *bss) {
 
     control->findAP = 1;
     switch (DWCi_AC_GetPhase()) {
-    case 3:
+    case DWC_AC_PHASE_SEARCH_AROUND:
         tag = work->tag;
         if (bss->ssidLength == 0 || bss->ssid[0] == 0) {
             DWCi_AC_SetStealthChannel(bss->channel);
@@ -43,14 +43,14 @@ static void DWCi_AC_GetBeacon(const WMBssDesc *bss) {
             id = CompareList(bss, work->searchListNum, work->searchList);
         }
         break;
-    case 4:
+    case DWC_AC_PHASE_SEARCH_DIFFER_CHANNEL:
         tag = work->bssDesc[work->searchListNo].channel - 1;
         id = CompareListDiff(bss, work);
         if (id >= 0) {
             work->findList[work->searchListNo].find = 1;
         }
         break;
-    case 5:
+    case DWC_AC_PHASE_SEARCH_STEALTH:
         tag = work->tag;
         id = CompareList(bss, 1, &work->searchList[work->searchListNo]);
         if (id >= 0) {
@@ -69,14 +69,14 @@ static void DWCi_AC_GetBeacon(const WMBssDesc *bss) {
 int DWCi_AC_CheckNintendoSSID(const WMBssDesc *bss) {
     ACWORK *work = DWCi_AC_GetMemPtr(DWC_AC_WORK_SEARCH);
 
-    if (work->mode == 0 || work->mode == 4) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_NWCUSBAP) {
         if (((bss->capaInfo >> 4) & 1) == 1) {
             if (DWCi_AC_CheckNintendoUsbAP(bss->ssid) == TRUE) {
                 return DWC_AC_ID_NWCUSBAP;
             }
         }
     }
-    if (work->mode == 0 || work->mode == 5) {
+    if (work->mode == DWC_AC_MODE_ALL || work->mode == DWC_AC_MODE_NDWCSHAP) {
         if (((bss->capaInfo >> 4) & 1) == 1) {
             if (DWCi_AC_CheckNintendoShopAP(bss->ssid) == TRUE) {
                 return DWC_AC_ID_NDWCSHAP;
@@ -104,7 +104,7 @@ static int CompareList(const WMBssDesc *bss, int count, const ACSL *targets) {
     int i;
     u16 length;
 
-    if (bss->ssidLength == 0x20) {
+    if (bss->ssidLength == sizeof(bss->ssid)) {
         int id = DWCi_AC_CheckNintendoSSID(bss);
 
         if (id > 0) {
@@ -131,7 +131,7 @@ static int CompareListDiff(const WMBssDesc *bss, ACWORK *work) {
     s16 count;
     u16 length;
 
-    if (bss->ssidLength == 0x20) {
+    if (bss->ssidLength == sizeof(bss->ssid)) {
         int id = DWCi_AC_CheckNintendoSSID(bss);
 
         if (id > 0) {

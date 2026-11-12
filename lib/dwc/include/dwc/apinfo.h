@@ -9,9 +9,10 @@
 // the SDK's names, and DWCi_GetBssDescParseWorkSize and DWCi_BssDescToApInfo are ours, from what they do. They are a
 // header of their own, apart from dwc/connectinet.h, to keep nitro/wm.h out of that header's includers.
 
-// The kinds of access point, the SDK's DWCApInfoType as NitroDWC's base/dwc_connectinet.h has it: 0 to 3 (and 10 to 12,
-// which it doesn't name) are the console's own settings, 4 to 6 and 8 hotspots (the game's wireless scan takes them
-// for those), and 99 one that DWC does not know. Only 4 and 8 have an area and spot information
+// The kinds of access point, the SDK's DWCApInfoType (TWL DWC 5.3's macro list): 0 to 3 and 10 to 12 are the console's
+// own settings, the last three only on a DSi (the SDK notes that Nitro ROMs do not have them), 4 to 6 and 8 hotspots
+// (the game's wireless scan takes them for those), and 99 one that DWC does not know. Only 4 and 8 have an area and
+// spot information
 typedef enum DWCApInfoType {
     DWC_APINFO_TYPE_USER0 = 0,
     DWC_APINFO_TYPE_USER1,
@@ -23,6 +24,9 @@ typedef enum DWCApInfoType {
     DWC_APINFO_TYPE_OTHER,
     DWC_APINFO_TYPE_NINTENDOWFC = DWC_APINFO_TYPE_OTHER,
     DWC_APINFO_TYPE_NINTENDOSPOT,
+    DWC_APINFO_TYPE_USER3 = 0x0a,
+    DWC_APINFO_TYPE_USER4,
+    DWC_APINFO_TYPE_USER5,
     DWC_APINFO_TYPE_UNKNOWN = 99,
 } DWCApInfoType;
 

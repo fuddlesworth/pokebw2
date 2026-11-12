@@ -67,6 +67,26 @@ typedef enum NWMState {
     NWM_STATE_ADHOC_CONNECTED
 } NWMState;
 
+// Why a connection ended, which NWMConnectCallback.reason carries. libntr spells INVALID_PROFILE "INVAILD_PROFILE";
+// the spelling is corrected here.
+typedef enum NWMReasonCode {
+    NWM_REASON_API_SUCCESS,
+    NWM_REASON_NO_NETWORK_AVAIL,
+    NWM_REASON_LOST_LINK,
+    NWM_REASON_DISCONNECT_CMD,
+    NWM_REASON_BSS_DISCONNECTED,
+    NWM_REASON_AUTH_FAILED,
+    NWM_REASON_ASSOC_FAILED,
+    NWM_REASON_NO_RESOURCES_AVAIL,
+    NWM_REASON_CSERV_DISCONNECT,
+    NWM_REASON_INVALID_PROFILE,
+    NWM_REASON_WEP_KEY_ERROR,
+    NWM_REASON_WPA_KEY_ERROR,
+    NWM_REASON_TKIP_MIC_ERROR,
+    NWM_REASON_NO_QOS_RESOURCES_AVAIL,
+    NWM_REASON_UNKNOWN,
+} NWMReasonCode;
+
 // The argument of NWM_SetPowerSaveMode, which WCM gives from its power saving option after it connects
 typedef enum NWMPowerMode { NWM_POWERMODE_ACTIVE, NWM_POWERMODE_STANDARD, NWM_POWERMODE_UAPSD } NWMPowerMode;
 

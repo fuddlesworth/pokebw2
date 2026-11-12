@@ -8124,10 +8124,12 @@ overlays/ov011 0x0218df74 WCMi_OverridedDeviceId
 overlays/ov011 0x0218df7c sWcmGlobal
 overlays/ov011 0x0218dfb4 sWcmRssiCursor
 overlays/ov011 0x0218dfb5 sWcmRssiSamples
+overlays/ov011 0x0218dfc8 gameCode
 overlays/ov011 0x0218dfd0 sNasLogin
 overlays/ov011 0x0218dfd4 DWCi_NasTimeValid
 overlays/ov011 0x0218dfd8 DWCi_NasTimeLocalSeconds
 overlays/ov011 0x0218dfe0 DWCi_NasTimeOffset
+overlays/ov011 0x0218dfe8 sRandom
 overlays/ov011 0x0218e000 sCloseStats
 overlays/ov011 0x0218e014 sLogin
 overlays/ov011 0x0218e018 sMatchRoot
@@ -26504,6 +26506,7 @@ overlays/ov189 0x021ae6a0 sNHttpRap
 overlays/ov189 0x021ae6a4 sEntropy
 overlays/ov189 0x021ae6c4 sConnectionList
 overlays/ov189 0x021ae6cc sWaitInfo
+overlays/ov189 0x021ae700 sRootStorage
 overlays/ov189 0x021b2860 sGHTTPStartCount
 overlays/ov189 0x021b2868 ghiProxyPort
 overlays/ov189 0x021b286c ghiProxyAddress
