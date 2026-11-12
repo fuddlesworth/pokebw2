@@ -121,7 +121,7 @@ struct BtlvScu {
     HeapID heapId;                     // 0x13C
     u8 printedAtOnce;                  // 0x13E set by BtlvScu_PrintMsgAtOnce: the window is neither cleared nor
                                        //       streamed
-    u8 msgSeq;                         // 0x13F the state of BtlvScu_WaitMsg, 7 when done
+    u8 msgSeq;                         // 0x13F the state of BtlvScu_WaitMsg, BTLV_SCU_MSG_SEQ_DONE when done
     u8 clientId;                       // 0x140 only stored
     u8 msgFinished;                    // 0x141 set when the stream reports PRINT_STREAM_DONE, read and cleared by
                                        //       BtlvScu_IsMsgFinished
@@ -595,6 +595,14 @@ static void BtlvScu_EncountFadeIn(s32 wait) {
     }
 }
 
+// The steps of a recorded battle's encounter: show every mon and its gauge at once, then end. Every caller is a
+// chapter-skip playback, so the sequence ends at this step; the fade and wait after it are retained dead code.
+enum {
+    BTLV_SCU_REC_PLAY_SEQ_SHOW_MONS,
+    BTLV_SCU_REC_PLAY_SEQ_FADE_IN_OR_DONE,
+    BTLV_SCU_REC_PLAY_SEQ_WAIT_EFFECT,
+};
+
 // A recorded battle shows the mons and their gauges at once
 static BOOL BtlvScu_EncountRecPlay(BtlvScu *scu, s32 *seq, const u8 *viewPos, u16 count) {
     u8 view;
@@ -602,7 +610,7 @@ static BOOL BtlvScu_EncountRecPlay(BtlvScu *scu, s32 *seq, const u8 *viewPos, u1
     u32 i;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_REC_PLAY_SEQ_SHOW_MONS:
         for (i = 0; i < count; i++) {
             view = viewPos[i];
             pos = ViewPosToBattlePos(scu->mainModule, view);
@@ -611,14 +619,14 @@ static BOOL BtlvScu_EncountRecPlay(BtlvScu *scu, s32 *seq, const u8 *viewPos, u1
         }
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_REC_PLAY_SEQ_FADE_IN_OR_DONE:
         if (scu->recPlay) {
             return TRUE;
         }
         BtlvScu_EncountFadeIn(-3);
         (*seq)++;
         break;
-    case 2:
+    case BTLV_SCU_REC_PLAY_SEQ_WAIT_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             return TRUE;
         }
@@ -639,6 +647,21 @@ static BOOL BtlvScu_EncountRecPlayTriple(BtlvScu *scu, s32 *seq) {
     return BtlvScu_EncountRecPlay(scu, seq, sTripleViewPos, NELEMS(sTripleViewPos));
 }
 
+// The steps of a wild single encounter: hide the message window and show the wild mon, its message and effect, then
+// the player's send-out and the gauge
+enum {
+    BTLV_SCU_WILD_SINGLE_SEQ_HIDE_MSG_WIN,
+    BTLV_SCU_WILD_SINGLE_SEQ_SHOW_ENEMY,
+    BTLV_SCU_WILD_SINGLE_SEQ_ENEMY_APPEAR,
+    BTLV_SCU_WILD_SINGLE_SEQ_ENEMY_MSG,
+    BTLV_SCU_WILD_SINGLE_SEQ_WAIT_ENEMY_MSG,
+    BTLV_SCU_WILD_SINGLE_SEQ_PLAYER_EFFECT,
+    BTLV_SCU_WILD_SINGLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_WILD_SINGLE_SEQ_WAIT_PLAYER_MSG,
+    BTLV_SCU_WILD_SINGLE_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_WILD_SINGLE_SEQ_SHOW_GAUGE,
+};
+
 // A wild single battle
 static BOOL BtlvScu_EncountWildSingle(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
@@ -648,7 +671,7 @@ static BOOL BtlvScu_EncountWildSingle(s32 *seq, void *arg) {
         return BtlvScu_EncountRecPlaySingle(scu, seq);
     }
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_WILD_SINGLE_SEQ_HIDE_MSG_WIN:
         work->viewPos = 1;
         work->pos = ViewPosToBattlePos(scu->mainModule, work->viewPos);
         work->mon = PokeCon_GetPosMonInner(scu->pokeCon, work->pos);
@@ -656,38 +679,38 @@ static BOOL BtlvScu_EncountWildSingle(s32 *seq, void *arg) {
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_WILD_SINGLE_SEQ_SHOW_ENEMY:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mon), work->viewPos);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_WILD_SINGLE_SEQ_ENEMY_APPEAR:
         BtlvEffect_StartPos(work->viewPos, 0x231);
         BtlvScu_EncountFadeIn(2);
         (*seq)++;
         break;
-    case 3:
+    case BTLV_SCU_WILD_SINGLE_SEQ_ENEMY_MSG:
         if (!BtlvEffect_IsBusy()) {
             BtlString_FormatStdMsg(scu->strbuf, BtlvScu_GetWildEncountMsg(scu), 1, work->monId);
             BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_WILD_SINGLE_SEQ_WAIT_ENEMY_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuGauge_Show(&scu->gauges[work->pos]);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_WILD_SINGLE_SEQ_PLAYER_EFFECT:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_Start(BtlSetup_GetBattleType(scu->mainModule) == BTL_TYPE_CAPTURE_DEMO ? 0x23c : 0x232);
             (*seq)++;
         }
         break;
-    case 6:
+    case BTLV_SCU_WILD_SINGLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy()) {
             work->viewPos = 0;
             work->pos = ViewPosToBattlePos(scu->mainModule, work->viewPos);
@@ -700,18 +723,18 @@ static BOOL BtlvScu_EncountWildSingle(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 7:
+    case BTLV_SCU_WILD_SINGLE_SEQ_WAIT_PLAYER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 8:
+    case BTLV_SCU_WILD_SINGLE_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             (*seq)++;
         }
         break;
-    case 9:
+    case BTLV_SCU_WILD_SINGLE_SEQ_SHOW_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos]);
             return TRUE;
@@ -741,6 +764,23 @@ static u16 BtlvScu_GetWildEncountMsg(BtlvScu *scu) {
     return 1;
 }
 
+// The steps of a trainer single encounter: the trainer, the enemy's ball gauge and mon, then the player's ball gauge
+// and mon, and the gauge
+enum {
+    BTLV_SCU_TRAINER_SINGLE_SEQ_SETUP_TRAINER,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_TRAINER_APPEAR,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_TRAINER_MSG,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_WAIT_TRAINER_MSG,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_SEND_OUT_MSG,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_SHOW_ENEMY,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_BALL_GAUGE,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_EFFECT,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_WAIT_PLAYER_MSG,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_CLEAR_MSG_WIN,
+    BTLV_SCU_TRAINER_SINGLE_SEQ_SHOW_GAUGE,
+};
+
 // A trainer single battle
 static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
@@ -750,7 +790,7 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
         return BtlvScu_EncountRecPlaySingle(scu, seq);
     }
     switch (*seq) {
-    case 0: {
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_SETUP_TRAINER: {
         u8 pos = ViewPosToBattlePos(scu->mainModule, 1);
         u8 clientId = GetClientIDFromPos(scu->mainModule, pos);
 
@@ -765,14 +805,14 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
         (*seq)++;
         break;
     }
-    case 1:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_TRAINER_APPEAR:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_StartPos(work->viewPos, 0x237);
             BtlvScu_EncountFadeIn(2);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_TRAINER_MSG:
         if (!BtlvEffect_IsBusy()) {
             BtlvBGaugeParam balls;
 
@@ -783,21 +823,21 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_WAIT_TRAINER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_StartPos(work->viewPos, 0x238);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_SEND_OUT_MSG:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlString_FormatStdMsg(scu->strbuf, 14, 2, 1, work->monId);
             BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_SHOW_ENEMY:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mon), work->viewPos);
             BtlvEffect_StartPos(work->viewPos, 0x239);
@@ -806,7 +846,7 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 6:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_BALL_GAUGE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvBGaugeParam balls;
 
@@ -815,12 +855,12 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 7:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_EFFECT:
         BtlvScuGauge_Show(&scu->gauges[work->pos]);
         BtlvEffect_Start(0x232);
         (*seq)++;
         break;
-    case 8:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy() && !BtlvEffect_IsBallGaugeBusy(0)) {
             work->viewPos = 0;
             work->pos = ViewPosToBattlePos(scu->mainModule, work->viewPos);
@@ -833,20 +873,20 @@ static BOOL BtlvScu_EncountTrainerSingle(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 9:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_WAIT_PLAYER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_DelBallGauge(0);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 10:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_CLEAR_MSG_WIN:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvScu_ClearMsgWin(scu);
             (*seq)++;
         }
         break;
-    case 11:
+    case BTLV_SCU_TRAINER_SINGLE_SEQ_SHOW_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos]);
             return TRUE;
@@ -873,6 +913,21 @@ static BOOL BtlvScu_EncountCommSingle(s32 *seq, void *arg) {
     return TRUE;
 }
 
+// The steps of a wild double encounter: hide the message window, show both wild mons, their message and effect, then
+// the player's send-out and the gauges
+enum {
+    BTLV_SCU_WILD_DOUBLE_SEQ_SETUP_ENEMIES,
+    BTLV_SCU_WILD_DOUBLE_SEQ_SHOW_ENEMY_FIRST,
+    BTLV_SCU_WILD_DOUBLE_SEQ_SHOW_ENEMY_SECOND,
+    BTLV_SCU_WILD_DOUBLE_SEQ_ENEMY_MSG,
+    BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_ENEMY_MSG,
+    BTLV_SCU_WILD_DOUBLE_SEQ_PLAYER_EFFECT,
+    BTLV_SCU_WILD_DOUBLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_PLAYER_MSG,
+    BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_WILD_DOUBLE_SEQ_DONE,
+};
+
 // A wild double battle
 static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
@@ -884,7 +939,7 @@ static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
         return BtlvScu_EncountRecPlayDouble(scu, seq);
     }
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_SETUP_ENEMIES:
         viewPos = GetClientBattlePos(scu->mainModule, scu->clientId, 0);
         work->pos[0] = GetOpposingPos(scu->mainModule, viewPos, 0);
         work->mons[0] = PokeCon_GetPosMonInner(scu->pokeCon, work->pos[0]);
@@ -895,14 +950,14 @@ static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_SHOW_ENEMY_FIRST:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             viewPos = BattlePosToViewPos(scu->mainModule, work->pos[0]);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), viewPos);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_SHOW_ENEMY_SECOND:
         if (!BtlvEffect_IsBusy()) {
             viewPos = BattlePosToViewPos(scu->mainModule, work->pos[1]);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[1]), viewPos);
@@ -911,14 +966,14 @@ static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_ENEMY_MSG:
         if (!BtlvEffect_IsBusy()) {
             BtlString_FormatStdMsg(scu->strbuf, 2, 2, work->monIds[0], work->monIds[1]);
             BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_ENEMY_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             BtlvScuGauge_Show(&scu->gauges[work->pos[1]]);
@@ -926,13 +981,13 @@ static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_PLAYER_EFFECT:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_Start(0x232);
             (*seq)++;
         }
         break;
-    case 6:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy()) {
             work->viewPos[0] = 2;
             work->viewPos[1] = 4;
@@ -952,20 +1007,20 @@ static BOOL BtlvScu_EncountWildDouble(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 7:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_PLAYER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 8:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             BtlvScuGauge_Show(&scu->gauges[work->pos[1]]);
             (*seq)++;
         }
         break;
-    case 9:
+    case BTLV_SCU_WILD_DOUBLE_SEQ_DONE:
         if (!BtlvEffect_IsBusy()) {
             return TRUE;
         }
@@ -1086,13 +1141,23 @@ static BOOL BtlvScu_EncountCommTriple(s32 *seq, void *arg) {
     return TRUE;
 }
 
+// The steps of the wild double encounter of a multi battle, whose two wild mons appear before the player's side does
+enum {
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SETUP_ENEMIES,
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SHOW_ENEMY_FIRST,
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SHOW_ENEMY_SECOND,
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_ENEMY_MSG,
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_WAIT_ENEMY_MSG,
+    BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_WAIT_MSG_WIN_HIDE,
+};
+
 // The two wild mons of a multi battle's wild double
 static BOOL BtlvScu_StepWildDoubleAppear(BtlvScu *scu, s32 *seq) {
     BtlvScuWildDoubleWork *work = (BtlvScuWildDoubleWork *)scu->work;
     u8 viewPos;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SETUP_ENEMIES:
         viewPos = GetClientBattlePos(scu->mainModule, scu->clientId, 0);
         work->pos[0] = GetOpposingPos(scu->mainModule, viewPos, 0);
         work->mons[0] = PokeCon_GetPosMonInner(scu->pokeCon, work->pos[0]);
@@ -1103,14 +1168,14 @@ static BOOL BtlvScu_StepWildDoubleAppear(BtlvScu *scu, s32 *seq) {
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SHOW_ENEMY_FIRST:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             viewPos = BattlePosToViewPos(scu->mainModule, work->pos[0]);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), viewPos);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_SHOW_ENEMY_SECOND:
         if (!BtlvEffect_IsBusy()) {
             viewPos = BattlePosToViewPos(scu->mainModule, work->pos[1]);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[1]), viewPos);
@@ -1119,14 +1184,14 @@ static BOOL BtlvScu_StepWildDoubleAppear(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_ENEMY_MSG:
         if (!BtlvEffect_IsBusy()) {
             BtlString_FormatStdMsg(scu->strbuf, 2, 2, work->monIds[0], work->monIds[1]);
             BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_WAIT_ENEMY_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             BtlvScuGauge_Show(&scu->gauges[work->pos[1]]);
@@ -1134,7 +1199,7 @@ static BOOL BtlvScu_StepWildDoubleAppear(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_WILD_DOUBLE_APPEAR_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             return TRUE;
         }
@@ -1157,27 +1222,36 @@ static BOOL BtlvScu_StepTrainersAppear(BtlvScu *scu, s32 *seq) {
     return BtlvScu_StepOneTrainerAppear(scu, seq, clientId1);
 }
 
-// One opposing trainer sends out a mon
+// The steps of one opposing trainer's appearance: the trainer, the ball gauge and the message
+enum {
+    BTLV_SCU_TRAINER_APPEAR_SEQ_SETUP_TRAINER,
+    BTLV_SCU_TRAINER_APPEAR_SEQ_TRAINER_APPEAR,
+    BTLV_SCU_TRAINER_APPEAR_SEQ_TRAINER_MSG,
+    BTLV_SCU_TRAINER_APPEAR_SEQ_WAIT_TRAINER_MSG,
+    BTLV_SCU_TRAINER_APPEAR_SEQ_WAIT_MSG_WIN_HIDE,
+};
+
+// One opposing trainer appears: the trainer sprite, the ball gauge and the message
 static BOOL BtlvScu_StepOneTrainerAppear(BtlvScu *scu, s32 *seq, u8 clientId) {
     BtlvScuTrainerWork *work = (BtlvScuTrainerWork *)scu->work;
     BtlvBGaugeParam balls;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_TRAINER_APPEAR_SEQ_SETUP_TRAINER:
         work->viewPos[1] = 9;
         BtlvEffect_SetTrainer(GetClientTrainerClass(scu->mainModule, clientId), work->viewPos[1], 0, 0, 0);
         BtlvEffect_SetPokeAnimeSpeed(work->viewPos[1], 0);
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_TRAINER_APPEAR_SEQ_TRAINER_APPEAR:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_StartPos(work->viewPos[1], 0x237);
             BtlvScu_EncountFadeIn(2);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_TRAINER_APPEAR_SEQ_TRAINER_MSG:
         if (!BtlvEffect_IsBusy()) {
             u32 battleType = BtlSetup_GetBattleType(scu->mainModule);
             u32 message = 7;
@@ -1193,14 +1267,14 @@ static BOOL BtlvScu_StepOneTrainerAppear(BtlvScu *scu, s32 *seq, u8 clientId) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_TRAINER_APPEAR_SEQ_WAIT_TRAINER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_StartPos(work->viewPos[1], 0x238);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_TRAINER_APPEAR_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             return TRUE;
         }
@@ -1209,13 +1283,22 @@ static BOOL BtlvScu_StepOneTrainerAppear(BtlvScu *scu, s32 *seq, u8 clientId) {
     return FALSE;
 }
 
+// The steps of two opposing trainers' appearance in a multi battle: the trainers, their ball gauge and message
+enum {
+    BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_SETUP_TRAINERS,
+    BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_TRAINERS_APPEAR,
+    BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_TRAINERS_MSG,
+    BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_WAIT_TRAINERS_MSG,
+    BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_WAIT_MSG_WIN_HIDE,
+};
+
 // Two opposing trainers
 static BOOL BtlvScu_StepTwoTrainersAppear(BtlvScu *scu, s32 *seq, u8 clientId1, u8 clientId2) {
     BtlvScuTrainerWork *work = (BtlvScuTrainerWork *)scu->work;
     BtlvBGaugeParam balls;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_SETUP_TRAINERS:
         work->viewPos[0] = 11;
         work->viewPos[1] = 13;
         BtlvEffect_SetTrainer(GetClientTrainerClass(scu->mainModule, clientId1), work->viewPos[0], 0, 0, 0);
@@ -1225,14 +1308,14 @@ static BOOL BtlvScu_StepTwoTrainersAppear(BtlvScu *scu, s32 *seq, u8 clientId1, 
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_TRAINERS_APPEAR:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvEffect_StartPos(work->viewPos[0], 0x237);
             BtlvScu_EncountFadeIn(2);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_TRAINERS_MSG:
         if (!BtlvEffect_IsBusy()) {
             u32 battleType = BtlSetup_GetBattleType(scu->mainModule);
             u32 message = 9;
@@ -1248,14 +1331,14 @@ static BOOL BtlvScu_StepTwoTrainersAppear(BtlvScu *scu, s32 *seq, u8 clientId1, 
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_WAIT_TRAINERS_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_StartPos(work->viewPos[0], 0x238);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_TWO_TRAINERS_APPEAR_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             return TRUE;
         }
@@ -1264,12 +1347,21 @@ static BOOL BtlvScu_StepTwoTrainersAppear(BtlvScu *scu, s32 *seq, u8 clientId1, 
     return FALSE;
 }
 
+// The steps of the opponent's send-out in a single battle: its message, then the mon and its gauge
+enum {
+    BTLV_SCU_ENEMY_SINGLE_SEQ_SEND_OUT_MSG,
+    BTLV_SCU_ENEMY_SINGLE_SEQ_WAIT_MSG,
+    BTLV_SCU_ENEMY_SINGLE_SEQ_SHOW_ENEMY,
+    BTLV_SCU_ENEMY_SINGLE_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_ENEMY_SINGLE_SEQ_DONE,
+};
+
 // The opponent sends out one mon
 static BOOL BtlvScu_StepEnemySendOutSingle(BtlvScu *scu, s32 *seq) {
     BtlvScuSingleWork *work = (BtlvScuSingleWork *)scu->work;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_ENEMY_SINGLE_SEQ_SEND_OUT_MSG:
         work->viewPos = 1;
         work->opponentId = GetOpponentClientID(scu->mainModule, GetPlayerClientID(scu->mainModule), 0);
         work->pos = ViewPosToBattlePos(scu->mainModule, work->viewPos);
@@ -1279,25 +1371,25 @@ static BOOL BtlvScu_StepEnemySendOutSingle(BtlvScu *scu, s32 *seq) {
         BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_ENEMY_SINGLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_ENEMY_SINGLE_SEQ_SHOW_ENEMY:
         BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mon), work->viewPos);
         BtlvEffect_StartPos(work->viewPos, 0x239);
         BtlvEffect_DelBallGauge(1);
         (*seq)++;
         break;
-    case 3:
+    case BTLV_SCU_ENEMY_SINGLE_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos]);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_ENEMY_SINGLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
@@ -1314,12 +1406,21 @@ static BOOL BtlvScu_StepEnemySendOutDouble(BtlvScu *scu, s32 *seq) {
     return BtlvScu_StepEnemySendOutDoubleOneTrainer(scu, seq, clientId1);
 }
 
+// The steps of the send-out of two mons by one opponent: one message for the two, then the mons and their gauges
+enum {
+    BTLV_SCU_ENEMY_DOUBLE_SEQ_SEND_OUT_MSG,
+    BTLV_SCU_ENEMY_DOUBLE_SEQ_WAIT_MSG,
+    BTLV_SCU_ENEMY_DOUBLE_SEQ_SHOW_ENEMIES,
+    BTLV_SCU_ENEMY_DOUBLE_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_ENEMY_DOUBLE_SEQ_DONE,
+};
+
 static BOOL BtlvScu_StepEnemySendOutDoubleOneTrainer(BtlvScu *scu, s32 *seq, u8 clientId) {
     BtlvScuDoubleWork *work = (BtlvScuDoubleWork *)scu->work;
     u32 i;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_ENEMY_DOUBLE_SEQ_SEND_OUT_MSG:
         work->viewPos[0] = 3;
         work->viewPos[1] = 5;
         work->clientId = clientId;
@@ -1337,13 +1438,13 @@ static BOOL BtlvScu_StepEnemySendOutDoubleOneTrainer(BtlvScu *scu, s32 *seq, u8 
         BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_ENEMY_DOUBLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_ENEMY_DOUBLE_SEQ_SHOW_ENEMIES:
         BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), work->viewPos[0]);
         if (work->count == 2) {
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[1]), work->viewPos[1]);
@@ -1352,7 +1453,7 @@ static BOOL BtlvScu_StepEnemySendOutDoubleOneTrainer(BtlvScu *scu, s32 *seq, u8 
         BtlvEffect_DelBallGauge(1);
         (*seq)++;
         break;
-    case 3:
+    case BTLV_SCU_ENEMY_DOUBLE_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             if (work->count == 2) {
@@ -1361,17 +1462,27 @@ static BOOL BtlvScu_StepEnemySendOutDoubleOneTrainer(BtlvScu *scu, s32 *seq, u8 
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_ENEMY_DOUBLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
 
+// The steps of the send-out of one mon by each of two opponents: a message for each, then the mons and their gauges
+enum {
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SEND_OUT_MSG_FIRST,
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_WAIT_MSG,
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SEND_OUT_MSG_SECOND,
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SHOW_ENEMIES,
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_DONE,
+};
+
 static BOOL BtlvScu_StepEnemySendOutDoubleTwoTrainers(BtlvScu *scu, s32 *seq, u8 clientId1, u8 clientId2) {
     BtlvScuDoubleWork *work = (BtlvScuDoubleWork *)scu->work;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SEND_OUT_MSG_FIRST:
         work->viewPos[0] = 3;
         work->pos[0] = ViewPosToBattlePos(scu->mainModule, work->viewPos[0]);
         work->mons[0] = PokeCon_GetPosMonInner(scu->pokeCon, work->pos[0]);
@@ -1384,20 +1495,20 @@ static BOOL BtlvScu_StepEnemySendOutDoubleTwoTrainers(BtlvScu *scu, s32 *seq, u8
         BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SEND_OUT_MSG_SECOND:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlString_FormatStdMsg(scu->strbuf, BtlvScu_GetSendOutMsg(scu, 1), 2, clientId2, work->monIds[1]);
             BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_SHOW_ENEMIES:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), work->viewPos[0]);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[1]), work->viewPos[1]);
@@ -1407,18 +1518,28 @@ static BOOL BtlvScu_StepEnemySendOutDoubleTwoTrainers(BtlvScu *scu, s32 *seq, u8
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             BtlvScuGauge_Show(&scu->gauges[work->pos[1]]);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_ENEMY_DOUBLE_TWO_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
+
+// The steps of the send-out of three mons by the opponents: one message for those not fainted, then the mons and
+// their gauges
+enum {
+    BTLV_SCU_ENEMY_TRIPLE_SEQ_SEND_OUT_MSG,
+    BTLV_SCU_ENEMY_TRIPLE_SEQ_WAIT_MSG,
+    BTLV_SCU_ENEMY_TRIPLE_SEQ_SHOW_ENEMIES,
+    BTLV_SCU_ENEMY_TRIPLE_SEQ_WAIT_MSG_WIN_HIDE,
+    BTLV_SCU_ENEMY_TRIPLE_SEQ_DONE,
+};
 
 // The opponents send out three mons
 static BOOL BtlvScu_StepEnemySendOutTriple(BtlvScu *scu, s32 *seq) {
@@ -1426,7 +1547,7 @@ static BOOL BtlvScu_StepEnemySendOutTriple(BtlvScu *scu, s32 *seq) {
     u32 i;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_ENEMY_TRIPLE_SEQ_SEND_OUT_MSG:
         work->viewPos[0] = 3;
         work->viewPos[1] = 5;
         work->viewPos[2] = 7;
@@ -1445,13 +1566,13 @@ static BOOL BtlvScu_StepEnemySendOutTriple(BtlvScu *scu, s32 *seq) {
         BtlvScu_StartMsg(scu, scu->strbuf, 80, NULL);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_ENEMY_TRIPLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_ENEMY_TRIPLE_SEQ_SHOW_ENEMIES:
         BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), work->viewPos[0]);
         if (work->count > 1) {
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[1]), work->viewPos[1]);
@@ -1463,7 +1584,7 @@ static BOOL BtlvScu_StepEnemySendOutTriple(BtlvScu *scu, s32 *seq) {
         BtlvEffect_DelBallGauge(1);
         (*seq)++;
         break;
-    case 3:
+    case BTLV_SCU_ENEMY_TRIPLE_SEQ_WAIT_MSG_WIN_HIDE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             if (work->count > 1) {
@@ -1475,11 +1596,21 @@ static BOOL BtlvScu_StepEnemySendOutTriple(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_ENEMY_TRIPLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
+
+// The steps of the player's send-out in a single battle: the ball gauge and the effect, the message, then the gauge
+enum {
+    BTLV_SCU_PLAYER_SINGLE_SEQ_BALL_GAUGE,
+    BTLV_SCU_PLAYER_SINGLE_SEQ_START_EFFECT,
+    BTLV_SCU_PLAYER_SINGLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_PLAYER_SINGLE_SEQ_WAIT_MSG,
+    BTLV_SCU_PLAYER_SINGLE_SEQ_SHOW_GAUGE,
+    BTLV_SCU_PLAYER_SINGLE_SEQ_DONE,
+};
 
 // The player sends out one mon
 static BOOL BtlvScu_StepPlayerSendOutSingle(BtlvScu *scu, s32 *seq) {
@@ -1487,19 +1618,19 @@ static BOOL BtlvScu_StepPlayerSendOutSingle(BtlvScu *scu, s32 *seq) {
     BtlvBGaugeParam balls;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_BALL_GAUGE:
         work->clientId = GetPlayerClientID(scu->mainModule);
         BtlvScu_SetupBallGauge(scu, &balls, work->clientId, 4, 0);
         BtlvEffect_AddBallGauge(&balls);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_START_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_Start(0x232);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy() && !BtlvEffect_IsBallGaugeBusy(0)) {
             work->viewPos = 0;
             work->clientId = GetPlayerClientID(scu->mainModule);
@@ -1513,20 +1644,20 @@ static BOOL BtlvScu_StepPlayerSendOutSingle(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_DelBallGauge(0);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_SHOW_GAUGE:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos]);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_PLAYER_SINGLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
@@ -1543,25 +1674,35 @@ static BOOL BtlvScu_StepPlayerSendOutDouble(BtlvScu *scu, s32 *seq) {
     return BtlvScu_StepPlayerSendOutDoubleWithPartner(scu, seq, clientId, partnerId);
 }
 
+// The steps of the player's send-out of two mons alone: the ball gauge and the effect, the message, then the gauges
+enum {
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_BALL_GAUGE,
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_START_EFFECT,
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_WAIT_MSG,
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_SHOW_GAUGES,
+    BTLV_SCU_PLAYER_DOUBLE_SEQ_DONE,
+};
+
 static BOOL BtlvScu_StepPlayerSendOutDoubleAlone(BtlvScu *scu, s32 *seq, u8 clientId) {
     BtlvScuDoubleWork *work = (BtlvScuDoubleWork *)scu->work;
     u32 i;
     BtlvBGaugeParam balls;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_BALL_GAUGE:
         work->clientId = clientId;
         BtlvScu_SetupBallGauge(scu, &balls, work->clientId, 4, 0);
         BtlvEffect_AddBallGauge(&balls);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_START_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_Start(0x232);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy() && !BtlvEffect_IsBallGaugeBusy(0)) {
             u16 message;
 
@@ -1593,14 +1734,14 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleAlone(BtlvScu *scu, s32 *seq, u8 clie
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_DelBallGauge(0);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_SHOW_GAUGES:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             if (work->count > 1) {
@@ -1609,11 +1750,23 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleAlone(BtlvScu *scu, s32 *seq, u8 clie
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_PLAYER_DOUBLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
+
+// The steps of the player's and a partner's send-out: the ball gauge and the effect, the partner's message, then the
+// player's and the gauges
+enum {
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_BALL_GAUGE,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_START_EFFECT,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_SEND_OUT_MSG,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_WAIT_MSG,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_WAIT_PLAYER_MSG,
+    BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_SHOW_GAUGES,
+};
 
 // The player and a partner each send out a mon
 static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u8 clientId, u8 partnerId) {
@@ -1624,7 +1777,7 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u
     u8 playerIdx;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_BALL_GAUGE:
         if (clientId < partnerId) {
             BtlvScu_SetupBallGauge(scu, &balls, clientId, partnerId, 0);
         } else {
@@ -1633,13 +1786,13 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u
         BtlvEffect_AddBallGauge(&balls);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_START_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_Start(0x233);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_SEND_OUT_MSG:
         if (!BtlvEffect_IsBusy() && !BtlvEffect_IsBallGaugeBusy(0)) {
             u16 message;
 
@@ -1658,14 +1811,14 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_DelBallGauge(0);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_PLAYER_SEND_OUT:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             playerIdx = GetPlayerMultiTrainerIndex(scu->mainModule);
             BtlvEffect_AddPokemon(BattleMon_GetViewSrcData(work->mons[0]), work->viewPos[0]);
@@ -1676,13 +1829,13 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_WAIT_PLAYER_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 6:
+    case BTLV_SCU_PLAYER_DOUBLE_PARTNER_SEQ_SHOW_GAUGES:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             BtlvScuGauge_Show(&scu->gauges[work->pos[1]]);
@@ -1693,6 +1846,16 @@ static BOOL BtlvScu_StepPlayerSendOutDoubleWithPartner(BtlvScu *scu, s32 *seq, u
     return FALSE;
 }
 
+// The steps of the player's send-out of three mons: the ball gauge and the effect, the message, then the gauges
+enum {
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_BALL_GAUGE,
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_START_EFFECT,
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_PLAYER_SEND_OUT,
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_WAIT_MSG,
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_SHOW_GAUGES,
+    BTLV_SCU_PLAYER_TRIPLE_SEQ_DONE,
+};
+
 // The player sends out three mons
 static BOOL BtlvScu_StepPlayerSendOutTriple(BtlvScu *scu, s32 *seq) {
     BtlvScuTripleWork *work = (BtlvScuTripleWork *)scu->work;
@@ -1700,19 +1863,19 @@ static BOOL BtlvScu_StepPlayerSendOutTriple(BtlvScu *scu, s32 *seq) {
     BtlvBGaugeParam balls;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_BALL_GAUGE:
         work->clientId = GetPlayerClientID(scu->mainModule);
         BtlvScu_SetupBallGauge(scu, &balls, work->clientId, 4, 0);
         BtlvEffect_AddBallGauge(&balls);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_START_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_Start(0x232);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_PLAYER_SEND_OUT:
         if (!BtlvEffect_IsBusy() && !BtlvEffect_IsBallGaugeBusy(0)) {
             u16 message;
 
@@ -1747,14 +1910,14 @@ static BOOL BtlvScu_StepPlayerSendOutTriple(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_WAIT_MSG:
         if (BtlvScu_WaitMsg(scu)) {
             BtlvEffect_DelBallGauge(0);
             BtlvScuWinFade_StartHide(&scu->msgFade);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_SHOW_GAUGES:
         if (BtlvScuWinFade_Update(&scu->msgFade) && !BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(&scu->gauges[work->pos[0]]);
             if (work->count > 1) {
@@ -1768,7 +1931,7 @@ static BOOL BtlvScu_StepPlayerSendOutTriple(BtlvScu *scu, s32 *seq) {
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_SCU_PLAYER_TRIPLE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
@@ -1777,11 +1940,11 @@ static BOOL BtlvScu_StepPlayerSendOutTriple(BtlvScu *scu, s32 *seq) {
 // The message of a send-out by the count of mons and the battle type
 static u16 BtlvScu_GetSendOutMsg(BtlvScu *scu, u8 count) {
     switch (BtlSetup_GetBattleType(scu->mainModule)) {
-    case 0:
+    case BTL_TYPE_WILD:
     default:
         return count == 1 ? 1 : 2;
-    case 1:
-    case 2:
+    case BTL_TYPE_TRAINER:
+    case BTL_TYPE_FACILITY:
         if (count == 1) {
             return 14;
         }
@@ -1789,7 +1952,7 @@ static u16 BtlvScu_GetSendOutMsg(BtlvScu *scu, u8 count) {
             return 15;
         }
         return 16;
-    case 3:
+    case BTL_TYPE_COMM:
         if (count == 1) {
             return 17;
         }
@@ -1828,6 +1991,7 @@ void BtlvScu_StartMsg(BtlvScu *scu, const StrBuf *strbuf, u16 wait, BtlvMsgCallb
     PrintStream_Pause(scu->printStream);
     scu->msgSeq = 0;
     scu->printedAtOnce = FALSE;
+    // 0xff is the wait of a message that ends into a choice: 80 frames after each page and none after the last
     if (wait == 0xff) {
         scu->waitTimer = 80;
         scu->endWait = 0;
@@ -1847,25 +2011,38 @@ BOOL BtlvScu_IsMsgFinished(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_WaitMsg: fade the window in, stream the text, wait at a page until the player advances it or
+// its wait ends, and at the end until its sound ends
+enum {
+    BTLV_SCU_MSG_SEQ_START_SHOW,
+    BTLV_SCU_MSG_SEQ_WAIT_SHOW,
+    BTLV_SCU_MSG_SEQ_RUN_STREAM,
+    BTLV_SCU_MSG_SEQ_WAIT_PAGE,
+    BTLV_SCU_MSG_SEQ_WAIT_COMM_PAGE,
+    BTLV_SCU_MSG_SEQ_NEXT_PAGE,
+    BTLV_SCU_MSG_SEQ_WAIT_END_SE,
+    BTLV_SCU_MSG_SEQ_DONE,
+};
+
 // Runs the message: fades the window in, streams the text, waits at the pages and at the end
 BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
     switch (scu->msgSeq) {
-    case 0:
+    case BTLV_SCU_MSG_SEQ_START_SHOW:
         BtlvScuWinFade_StartShow(&scu->msgFade, scu->printedAtOnce, BtlvScu_GetClearColor(scu, 12));
         scu->msgSeq++;
-    case 1:
+    case BTLV_SCU_MSG_SEQ_WAIT_SHOW:
         if (!BtlvScuWinFade_Update(&scu->msgFade)) {
             break;
         }
         if (scu->printedAtOnce) {
-            scu->msgSeq = 6;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_WAIT_END_SE;
             break;
         }
         if (scu->printStream != NULL) {
             PrintStream_Resume(scu->printStream);
         }
         scu->msgSeq++;
-    case 2:
+    case BTLV_SCU_MSG_SEQ_RUN_STREAM:
         if (scu->printStream != NULL) {
             if (!GetCommMode(scu->mainModule)) {
                 if ((GCTX_HIDGetHeldKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchHeld()) {
@@ -1879,9 +2056,9 @@ BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
             scu->streamState = PrintStream_GetState(scu->printStream);
             if (scu->streamState != 0) {
                 if (!GetCommMode(scu->mainModule)) {
-                    scu->msgSeq = 3;
+                    scu->msgSeq = BTLV_SCU_MSG_SEQ_WAIT_PAGE;
                 } else {
-                    scu->msgSeq = 4;
+                    scu->msgSeq = BTLV_SCU_MSG_SEQ_WAIT_COMM_PAGE;
                 }
                 if (scu->streamState == PRINT_STREAM_DONE) {
                     scu->waitTimer = scu->endWait;
@@ -1889,53 +2066,53 @@ BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
                 }
             }
         } else {
-            scu->msgSeq = 6;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_WAIT_END_SE;
         }
         break;
-    case 3:
+    case BTLV_SCU_MSG_SEQ_WAIT_PAGE:
         if ((GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) || GFL_HIDIsTouchPressed()) {
             scu->waitTimer = 0;
         }
         if (scu->waitTimer != 0) {
             scu->waitTimer--;
         } else {
-            scu->msgSeq = 5;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_NEXT_PAGE;
         }
         break;
-    case 4:
+    case BTLV_SCU_MSG_SEQ_WAIT_COMM_PAGE:
         if (scu->waitTimer != 0) {
             scu->waitTimer--;
         } else {
-            scu->msgSeq = 5;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_NEXT_PAGE;
         }
         break;
-    case 5:
+    case BTLV_SCU_MSG_SEQ_NEXT_PAGE:
         if (scu->streamState == PRINT_STREAM_DONE) {
             GFL_TextRndResetColorIndexLUT();
             PrintStream_Delete(scu->printStream);
             scu->printStream = NULL;
-            scu->msgSeq = 6;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_WAIT_END_SE;
         } else {
             PrintStream_Continue(scu->printStream);
             GFL_SndSEPlay(0x547);
-            scu->msgSeq = 2;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_RUN_STREAM;
             scu->waitTimer = scu->pageWait;
         }
         break;
-    case 6:
+    case BTLV_SCU_MSG_SEQ_WAIT_END_SE:
         if (!GFL_SndIsPlaying(0x547)) {
-            scu->msgSeq = 7;
+            scu->msgSeq = BTLV_SCU_MSG_SEQ_DONE;
             return TRUE;
         }
         break;
-    case 7:
+    case BTLV_SCU_MSG_SEQ_DONE:
     default:
         return TRUE;
     }
     return FALSE;
 }
 
-// Starts the effect of a move
+// Starts the effect of a move. arg6 goes to the effect parameter's unk0D, the effect VM's unk2; no caller sets it
 void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
                              u8 arg6) {
     BtlvMoveEffectParam *param = (BtlvMoveEffectParam *)scu->work;
@@ -1949,22 +2126,29 @@ void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 mov
     BtlvScu_SetSubProc(scu, BtlvScu_MoveEffectProc);
 }
 
+// The steps of BtlvScu_MoveEffectProc: hide the message window, start the move's effect and wait for it
+enum {
+    BTLV_SCU_MOVE_EFFECT_SEQ_HIDE_MSG_WIN,
+    BTLV_SCU_MOVE_EFFECT_SEQ_START_MOVE,
+    BTLV_SCU_MOVE_EFFECT_SEQ_WAIT_EFFECT,
+};
+
 static BOOL BtlvScu_MoveEffectProc(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_MOVE_EFFECT_SEQ_HIDE_MSG_WIN:
         BtlvScuWinFade_StartHide(&scu->msgFade);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_MOVE_EFFECT_SEQ_START_MOVE:
         if (BtlvScuWinFade_Update(&scu->msgFade)) {
             BtlvScu_ClearMsgWin(scu);
             BtlvEffect_StartMove((BtlvMoveEffectParam *)scu->work);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_SCU_MOVE_EFFECT_SEQ_WAIT_EFFECT:
         if (!BtlvEffect_IsBusy()) {
             GFL_SndStop();
             (*seq)++;
@@ -2073,22 +2257,29 @@ BOOL BtlvScu_WaitMemberOut(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_MemberOutTask: the effect, then the gauge and the mon hidden
+enum {
+    BTLV_SCU_MEMBER_OUT_SEQ_START_EFFECT,
+    BTLV_SCU_MEMBER_OUT_SEQ_HIDE,
+    BTLV_SCU_MEMBER_OUT_SEQ_END,
+};
+
 static void BtlvScu_MemberOutTask(TCBEx *task, void *data) {
     BtlvScuGaugeHideTask *work = data;
 
     switch (work->seq) {
-    case 0:
+    case BTLV_SCU_MEMBER_OUT_SEQ_START_EFFECT:
         BtlvEffect_StartPos(work->pos, work->effect);
         work->seq++;
         break;
-    case 1:
+    case BTLV_SCU_MEMBER_OUT_SEQ_HIDE:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_DelGauge(work->pos);
             BtlvEffect_DelPokemon(work->pos);
             work->seq++;
         }
         break;
-    case 2:
+    case BTLV_SCU_MEMBER_OUT_SEQ_END:
         (*work->count)--;
         GFL_TCBExRequestEnd(task);
         break;
@@ -2121,17 +2312,23 @@ BOOL BtlvScu_WaitMemberIn(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_MemberInTask: the gauge shown once the mon's effect ends
+enum {
+    BTLV_SCU_MEMBER_IN_SEQ_SHOW_GAUGE,
+    BTLV_SCU_MEMBER_IN_SEQ_END,
+};
+
 static void BtlvScu_MemberInTask(TCBEx *task, void *data) {
     BtlvScuGaugeShowTask *work = data;
 
     switch (work->seq) {
-    case 0:
+    case BTLV_SCU_MEMBER_IN_SEQ_SHOW_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvScuGauge_Show(work->gauge);
             work->seq++;
         }
         break;
-    case 1:
+    case BTLV_SCU_MEMBER_IN_SEQ_END:
         (*work->count)--;
         GFL_TCBExRequestEnd(task);
         break;
@@ -2214,12 +2411,18 @@ BOOL BtlvScu_WaitChangeMon(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_ChangeMonTask: the sprite changed, then its gauge added
+enum {
+    BTLV_SCU_CHANGE_MON_SEQ_CHANGE_SPRITE,
+    BTLV_SCU_CHANGE_MON_SEQ_ADD_GAUGE,
+};
+
 static void BtlvScu_ChangeMonTask(TCBEx *task, void *data) {
     BtlvScuMonTask *work = data;
     PartyPkm *pkm;
 
     switch (work->seq) {
-    case 0:
+    case BTLV_SCU_CHANGE_MON_SEQ_CHANGE_SPRITE:
         pkm = GetSrcData(PokeCon_GetPosMonInner(work->scu->pokeCon, work->pos));
         if (!work->immediate) {
             BtlvEffect_StartChangeSprite(pkm, work->viewPos);
@@ -2229,7 +2432,7 @@ static void BtlvScu_ChangeMonTask(TCBEx *task, void *data) {
         BtlvEffect_DelGauge(work->viewPos);
         work->seq++;
         break;
-    case 1:
+    case BTLV_SCU_CHANGE_MON_SEQ_ADD_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvEffect_AddGauge(work->scu->mainModule, PokeCon_GetPosMonInner(work->scu->pokeCon, work->pos),
                                 work->viewPos);
@@ -2273,11 +2476,17 @@ BOOL BtlvScu_WaitChangeSprite(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_ChangeSpriteTask: the sprite changed and waited for
+enum {
+    BTLV_SCU_CHANGE_SPRITE_SEQ_CHANGE,
+    BTLV_SCU_CHANGE_SPRITE_SEQ_END,
+};
+
 static void BtlvScu_ChangeSpriteTask(TCBEx *task, void *data) {
     BtlvScuPkmTask *work = data;
 
     switch (work->seq) {
-    case 0:
+    case BTLV_SCU_CHANGE_SPRITE_SEQ_CHANGE:
         if (!work->immediate) {
             BtlvEffect_StartChangeSprite(work->pkm, work->viewPos);
         } else {
@@ -2285,7 +2494,7 @@ static void BtlvScu_ChangeSpriteTask(TCBEx *task, void *data) {
         }
         work->seq++;
         break;
-    case 1:
+    case BTLV_SCU_CHANGE_SPRITE_SEQ_END:
         if (!BtlvEffect_IsBusy()) {
             (*work->count)--;
             GFL_TCBExRequestEnd(task);
@@ -2334,14 +2543,14 @@ static void BtlvScuWinFade_StartShow(BtlvScuWinFade *fade, BOOL keepWindow, u32 
 
 static BOOL BtlvScuWinFade_Update(BtlvScuWinFade *fade) {
     switch (fade->state) {
-    case 2:
+    case BTLV_SCU_WIN_FADE_HIDDEN:
         return TRUE;
-    case 0:
+    case BTLV_SCU_WIN_FADE_SHOWN:
         return TRUE;
-    case 4:
+    case BTLV_SCU_WIN_FADE_SHOW_REQUESTED:
         fade->state = BTLV_SCU_WIN_FADE_SHOWING;
         return FALSE;
-    case 3:
+    case BTLV_SCU_WIN_FADE_SHOWING:
         if (fade->frames != 0) {
             fade->ev1 += fade->ev1Step;
             fade->ev2 += fade->ev2Step;
@@ -2352,7 +2561,7 @@ static BOOL BtlvScuWinFade_Update(BtlvScuWinFade *fade) {
             fade->state = BTLV_SCU_WIN_FADE_SHOWN;
         }
         break;
-    case 1:
+    case BTLV_SCU_WIN_FADE_HIDING:
         if (fade->frames != 0) {
             fade->ev1 += fade->ev1Step;
             fade->ev2 += fade->ev2Step;
@@ -2387,15 +2596,21 @@ BOOL BtlvScu_WaitMsgWinHide(BtlvScu *scu) {
     return FALSE;
 }
 
+// The steps of BtlvScu_MsgWinHideTask: the message window hidden, then cleared
+enum {
+    BTLV_SCU_MSG_WIN_HIDE_SEQ_HIDE,
+    BTLV_SCU_MSG_WIN_HIDE_SEQ_END,
+};
+
 static void BtlvScu_MsgWinHideTask(TCBEx *task, void *data) {
     BtlvScuMsgHideTask *work = data;
 
     switch (work->seq) {
-    case 0:
+    case BTLV_SCU_MSG_WIN_HIDE_SEQ_HIDE:
         BtlvScuWinFade_StartHide(&work->scu->msgFade);
         work->seq++;
         break;
-    case 1:
+    case BTLV_SCU_MSG_WIN_HIDE_SEQ_END:
         if (BtlvScuWinFade_Update(&work->scu->msgFade)) {
             BtlvScu_ClearMsgWin(work->scu);
             (*work->count)--;
@@ -2570,6 +2785,17 @@ static void BtlvScuAbilityWin_StartShow(BtlvScuAbilityWin *win, u8 pos, BOOL fla
     BtlvEffect_SetAbility(pos, ability);
 }
 
+// The steps of BtlvScuAbilityWin_RunShow: the pop-up drawn a column at a time, then, if it flashes, its palette
+enum {
+    BTLV_SCU_ABILITY_SHOW_SEQ_LOAD_CHARS,
+    BTLV_SCU_ABILITY_SHOW_SEQ_SLIDE_IN,
+    BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_SLIDE,
+    BTLV_SCU_ABILITY_SHOW_SEQ_DRAW_TEXT,
+    BTLV_SCU_ABILITY_SHOW_SEQ_FLASH,
+    BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_FLASH,
+    BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_SE,
+};
+
 static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
     PaletteFade *palFade;
     TCBManager *tcbManager;
@@ -2579,11 +2805,11 @@ static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
     u32 i;
 
     switch (win->seq) {
-    case 0:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_LOAD_CHARS:
         GFL_BGSysLoadChar(win->bg, win->chars, 0x900, win->charOffset);
         win->seq++;
         break;
-    case 1:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_SLIDE_IN:
         win->timer = 8;
         if (win->side == BTLV_SCU_SIDE_PLAYER) {
             win->scrollX = FX32_CONST(144);
@@ -2597,7 +2823,7 @@ static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
         GFL_SndSEPlay(SEQ_SE_SHOOTER);
         win->seq++;
         break;
-    case 2:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_SLIDE:
         if (win->timer != 0) {
             win->scrollX += win->scrollStep;
             GFL_BGSysMoveBG(win->bg, BG_MOVE_SET_X, FX_Whole(win->scrollX));
@@ -2608,7 +2834,7 @@ static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
             win->seq++;
         }
         break;
-    case 3:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_DRAW_TEXT:
         // Shows the text a column of characters a frame, in its four rows of 18
         if (win->count < 17) {
             src = GFL_BitmapGetPixelData(win->bitmap);
@@ -2626,7 +2852,7 @@ static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
             win->seq++;
         }
         break;
-    case 4:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_FLASH:
         palFade = BtlvEffect_GetPaletteFade();
         tcbManager = BtlvEffect_GetTCBManager();
         palettes = 1 << (win->side + 1);
@@ -2634,12 +2860,12 @@ static BOOL BtlvScuAbilityWin_RunShow(BtlvScuAbilityWin *win) {
         PaletteFade_StartFade(palFade, 1, palettes, 0, 16, 0, 0x7FFF, tcbManager);
         win->seq++;
         break;
-    case 5:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_FLASH:
         if (PaletteFade_GetActiveMask(BtlvEffect_GetPaletteFade()) == 0) {
             win->seq++;
         }
         break;
-    case 6:
+    case BTLV_SCU_ABILITY_SHOW_SEQ_WAIT_SE:
         if (!GFL_SndIsPlaying(SEQ_SE_DECIDE6) && !GFL_SndIsPlaying(SEQ_SE_SHOOTER)) {
             return TRUE;
         }
@@ -2722,9 +2948,19 @@ static void BtlvScuAbilityWin_StartChange(BtlvScuAbilityWin *win, u8 pos) {
     BtlvEffect_SetAbility(pos, ability);
 }
 
+// The steps of BtlvScuAbilityWin_RunChange: the pop-up's mosaic raised, its characters reloaded, the mosaic lowered
+enum {
+    BTLV_SCU_ABILITY_CHANGE_SEQ_MOSAIC_UP,
+    BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_MOSAIC_UP,
+    BTLV_SCU_ABILITY_CHANGE_SEQ_LOAD_CHARS,
+    BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_MOSAIC_DOWN,
+    BTLV_SCU_ABILITY_CHANGE_SEQ_MOSAIC_OFF,
+    BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_SE,
+};
+
 static BOOL BtlvScuAbilityWin_RunChange(BtlvScuAbilityWin *win) {
     switch (win->seq) {
-    case 0:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_MOSAIC_UP:
         G2_SetBGMosaicSize(0, 0);
         if (win->side == BTLV_SCU_SIDE_PLAYER) {
             G2_BG2Mosaic(TRUE);
@@ -2736,7 +2972,7 @@ static BOOL BtlvScuAbilityWin_RunChange(BtlvScuAbilityWin *win) {
         GFL_SndSEPlay(SEQ_SE_DECIDE3);
         win->seq++;
         break;
-    case 1:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_MOSAIC_UP:
         win->timer++;
         if (win->timer > 1) {
             win->timer = 0;
@@ -2747,11 +2983,11 @@ static BOOL BtlvScuAbilityWin_RunChange(BtlvScuAbilityWin *win) {
             }
         }
         break;
-    case 2:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_LOAD_CHARS:
         GFL_BGSysLoadChar(win->bg, GFL_BitmapGetPixelData(win->bitmap), 0x900, win->charOffset);
         win->seq++;
         break;
-    case 3:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_MOSAIC_DOWN:
         win->timer++;
         if (win->timer > 1) {
             win->timer = 0;
@@ -2762,7 +2998,7 @@ static BOOL BtlvScuAbilityWin_RunChange(BtlvScuAbilityWin *win) {
             }
         }
         break;
-    case 4:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_MOSAIC_OFF:
         if (win->side == BTLV_SCU_SIDE_PLAYER) {
             G2_BG2Mosaic(FALSE);
         } else {
@@ -2770,7 +3006,7 @@ static BOOL BtlvScuAbilityWin_RunChange(BtlvScuAbilityWin *win) {
         }
         win->seq++;
         break;
-    case 5:
+    case BTLV_SCU_ABILITY_CHANGE_SEQ_WAIT_SE:
         if (!GFL_SndIsPlaying(SEQ_SE_DECIDE3)) {
             win->seq++;
         }
@@ -2879,12 +3115,21 @@ BOOL BtlvScu_WaitLevelUpWinClose(BtlvScu *scu) {
     return BtlvScu_RunSubProc(scu);
 }
 
+// The steps of BtlvScu_LevelUpWinOpenProc: the window's frame and the gains drawn, then the window slid in
+enum {
+    BTLV_SCU_LEVEL_UP_OPEN_SEQ_OPEN,
+    BTLV_SCU_LEVEL_UP_OPEN_SEQ_GAINS,
+    BTLV_SCU_LEVEL_UP_OPEN_SEQ_FLUSH,
+    BTLV_SCU_LEVEL_UP_OPEN_SEQ_SLIDE_IN,
+    BTLV_SCU_LEVEL_UP_OPEN_SEQ_DONE,
+};
+
 // Opens the stat window with the gains of the level-up
 static BOOL BtlvScu_LevelUpWinOpenProc(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_LEVEL_UP_OPEN_SEQ_OPEN:
         GFL_TextRndUpdateColorIndexLUT(1, 9, 12);
         BmpWin_FlushMap(scu->statWin);
         BmpWin_MakeFrameScreen(scu->statWin, scu->statFrameCharOffset, 3);
@@ -2892,34 +3137,41 @@ static BOOL BtlvScu_LevelUpWinOpenProc(s32 *seq, void *arg) {
         GFL_BGSysLoadScr(BmpWin_GetBGIndex(scu->statWin));
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_LEVEL_UP_OPEN_SEQ_GAINS:
         BtlString_FormatLevelUpGains(scu->strbuf, scu->levelUp.hp, scu->levelUp.attack, scu->levelUp.defense,
                                      scu->levelUp.spAttack, scu->levelUp.spDefense, scu->levelUp.speed);
         GFL_TextRendererDrawToBitmap(scu->statBitmap, 0, 0, scu->strbuf, scu->font);
         (*seq)++;
         break;
-    case 2:
+    case BTLV_SCU_LEVEL_UP_OPEN_SEQ_FLUSH:
         BmpWin_FlushChar(scu->statWin);
         (*seq)++;
         break;
-    case 3:
+    case BTLV_SCU_LEVEL_UP_OPEN_SEQ_SLIDE_IN:
         GFL_BGSysMoveBG(3, BG_MOVE_SET_X, 0);
         GFL_BGSysMoveBG(3, BG_MOVE_SET_Y, 0x100);
         GFL_SndSEPlay(SEQ_SE_MESSAGE);
         (*seq)++;
         break;
-    case 4:
+    case BTLV_SCU_LEVEL_UP_OPEN_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
+
+// The steps of BtlvScu_LevelUpWinStatsProc: the new stats drawn over the gains
+enum {
+    BTLV_SCU_LEVEL_UP_STATS_SEQ_STATS,
+    BTLV_SCU_LEVEL_UP_STATS_SEQ_FLUSH,
+    BTLV_SCU_LEVEL_UP_STATS_SEQ_DONE,
+};
 
 // Shows the new stats in the stat window
 static BOOL BtlvScu_LevelUpWinStatsProc(s32 *seq, void *arg) {
     BtlvScu *scu = arg;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_LEVEL_UP_STATS_SEQ_STATS:
         BattleMon_GetSrcStats(scu->levelUpMon, &scu->levelUp);
         BtlString_FormatLevelUpStats(scu->strbuf, scu->levelUp.hp, scu->levelUp.attack, scu->levelUp.defense,
                                      scu->levelUp.spAttack, scu->levelUp.spDefense, scu->levelUp.speed);
@@ -2927,16 +3179,23 @@ static BOOL BtlvScu_LevelUpWinStatsProc(s32 *seq, void *arg) {
         GFL_TextRendererDrawToBitmap(scu->statBitmap, 0, 0, scu->strbuf, scu->font);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_LEVEL_UP_STATS_SEQ_FLUSH:
         BmpWin_FlushChar(scu->statWin);
         GFL_SndSEPlay(SEQ_SE_MESSAGE);
         (*seq)++;
         break;
-    case 2:
+    case BTLV_SCU_LEVEL_UP_STATS_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
 }
+
+// The steps of BtlvScu_LevelUpWinCloseProc: the window cleared and slid out
+enum {
+    BTLV_SCU_LEVEL_UP_CLOSE_SEQ_CLEAR,
+    BTLV_SCU_LEVEL_UP_CLOSE_SEQ_SLIDE_OUT,
+    BTLV_SCU_LEVEL_UP_CLOSE_SEQ_DONE,
+};
 
 // Closes the stat window
 static BOOL BtlvScu_LevelUpWinCloseProc(s32 *seq, void *arg) {
@@ -2948,7 +3207,7 @@ static BOOL BtlvScu_LevelUpWinCloseProc(s32 *seq, void *arg) {
     u8 bg;
 
     switch (*seq) {
-    case 0:
+    case BTLV_SCU_LEVEL_UP_CLOSE_SEQ_CLEAR:
         x = BmpWin_GetPosX(scu->statWin) - 1;
         y = BmpWin_GetPosY(scu->statWin) - 1;
         width = BmpWin_GetSizeX(scu->statWin) + 2;
@@ -2959,12 +3218,12 @@ static BOOL BtlvScu_LevelUpWinCloseProc(s32 *seq, void *arg) {
         GFL_SndSEPlay(SEQ_SE_MESSAGE);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_SCU_LEVEL_UP_CLOSE_SEQ_SLIDE_OUT:
         GFL_BGSysMoveBG(3, BG_MOVE_SET_X, -0x90);
         GFL_BGSysMoveBG(3, BG_MOVE_SET_Y, 0);
         (*seq)++;
         break;
-    case 2:
+    case BTLV_SCU_LEVEL_UP_CLOSE_SEQ_DONE:
         return TRUE;
     }
     return FALSE;
