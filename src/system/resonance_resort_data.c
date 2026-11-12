@@ -214,13 +214,13 @@ static void JoinAvenueShop_Init(JoinAvenueShop *shop) {
 
 u32 JoinAvenueShop_GetField(JoinAvenueShop *shop, u32 which) {
     switch (which) {
-    case 0:
+    case JOIN_AVE_SHOP_FIELD_ID:
         return shop->id;
-    case 1:
+    case JOIN_AVE_SHOP_FIELD_LEVEL:
         return shop->level;
-    case 2:
+    case JOIN_AVE_SHOP_FIELD_EXPERIENCE:
         return shop->experience;
-    case 3:
+    case JOIN_AVE_SHOP_FIELD_FLAGS:
         return shop->flags;
     }
     return 0;
@@ -228,16 +228,16 @@ u32 JoinAvenueShop_GetField(JoinAvenueShop *shop, u32 which) {
 
 void JoinAvenueShop_SetField(JoinAvenueShop *shop, u32 which, u32 value) {
     switch (which) {
-    case 0:
+    case JOIN_AVE_SHOP_FIELD_ID:
         shop->id = value;
         break;
-    case 1:
+    case JOIN_AVE_SHOP_FIELD_LEVEL:
         shop->level = value;
         break;
-    case 2:
+    case JOIN_AVE_SHOP_FIELD_EXPERIENCE:
         shop->experience = value;
         break;
-    case 3:
+    case JOIN_AVE_SHOP_FIELD_FLAGS:
         shop->flags = value;
         break;
     }
@@ -449,28 +449,28 @@ static void JoinAvenueData_FillAdventure(JoinAvenueData *data, GameData *gameDat
         person = JoinAvenueOccupants_GetPerson(occupants, i);
         if (!JoinAvenuePerson_IsEmpty(person)) {
             switch (joinAveTextHandler(person, JOIN_AVE_PARAM_SHOP_KIND, NULL)) {
-            case 5:
+            case JOIN_AVE_SHOP_KIND_NURSERY:
                 adventure->shopCount5++;
                 break;
-            case 4:
+            case JOIN_AVE_SHOP_KIND_DOJO:
                 adventure->shopCount4++;
                 break;
-            case 0:
+            case JOIN_AVE_SHOP_KIND_RAFFLE:
                 adventure->shopCount0++;
                 break;
-            case 6:
+            case JOIN_AVE_SHOP_KIND_ANTIQUE:
                 adventure->shopCount6++;
                 break;
-            case 1:
+            case JOIN_AVE_SHOP_KIND_BEAUTY_SALON:
                 adventure->shopCount1++;
                 break;
-            case 2:
+            case JOIN_AVE_SHOP_KIND_MARKET:
                 adventure->shopCount2++;
                 break;
-            case 7:
+            case JOIN_AVE_SHOP_KIND_CAFE:
                 adventure->shopCount7++;
                 break;
-            case 3:
+            case JOIN_AVE_SHOP_KIND_FLOWER:
                 adventure->shopCount3++;
                 break;
             }
@@ -687,8 +687,8 @@ void JoinAvenuePerson_InitPlayer(JoinAvenuePerson *person, GameData *gameData) {
 
 void JoinAvenuePerson_Clear(JoinAvenuePerson *person) {
     MI_CpuFill8(person, 0, sizeof(JoinAvenuePerson));
-    person->data[5].message.str[0] = GFL_StrBufGetTerminator();
-    person->data[6].message.str[0] = GFL_StrBufGetTerminator();
+    person->data[JOIN_AVE_DATA_MESSAGE1].message.str[0] = GFL_StrBufGetTerminator();
+    person->data[JOIN_AVE_DATA_MESSAGE2].message.str[0] = GFL_StrBufGetTerminator();
     person->profile.greeting[0] = GFL_StrBufGetTerminator();
     JoinAvenueShop_Init(&person->shop);
 }
@@ -926,47 +926,47 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
     case JOIN_AVE_PARAM_SEED:
         return person->seed;
     case JOIN_AVE_PARAM_LAST_MEDAL:
-        return person->data[0].adventure.lastMedal;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.lastMedal;
     case JOIN_AVE_PARAM_MEDAL_DATE:
-        return person->data[0].adventure.medalDate;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalDate;
     case JOIN_AVE_PARAM_MEDAL_COUNT:
-        return person->data[0].adventure.medalCount;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalCount;
     case JOIN_AVE_PARAM_MEDAL_RANK:
-        return person->data[0].adventure.medalRank;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalRank;
     case JOIN_AVE_PARAM_START_DATE:
-        return person->data[0].adventure.startDate;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.startDate;
     case JOIN_AVE_PARAM_HALL_OF_FAME_DATE:
-        return person->data[0].adventure.hallOfFameDate;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.hallOfFameDate;
     case JOIN_AVE_PARAM_DEX_CAUGHT:
-        return person->data[0].adventure.dexCaught;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.dexCaught;
     case JOIN_AVE_PARAM_SPECIES:
-        return person->data[0].adventure.species;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.species;
     case JOIN_AVE_PARAM_SHOP_COUNT + 0:
-        return person->data[0].adventure.shopCount0;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount0;
     case JOIN_AVE_PARAM_SHOP_COUNT + 1:
-        return person->data[0].adventure.shopCount1;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount1;
     case JOIN_AVE_PARAM_SHOP_COUNT + 2:
-        return person->data[0].adventure.shopCount2;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount2;
     case JOIN_AVE_PARAM_SHOP_COUNT + 3:
-        return person->data[0].adventure.shopCount3;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount3;
     case JOIN_AVE_PARAM_SHOP_COUNT + 4:
-        return person->data[0].adventure.shopCount4;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount4;
     case JOIN_AVE_PARAM_SHOP_COUNT + 5:
-        return person->data[0].adventure.shopCount5;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount5;
     case JOIN_AVE_PARAM_SHOP_COUNT + 6:
-        return person->data[0].adventure.shopCount6;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount6;
     case JOIN_AVE_PARAM_SHOP_COUNT + 7:
-        return person->data[0].adventure.shopCount7;
+        return person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount7;
     case JOIN_AVE_PARAM_RECORD1 + 0:
     case JOIN_AVE_PARAM_RECORD1 + 1:
     case JOIN_AVE_PARAM_RECORD1 + 2:
     case JOIN_AVE_PARAM_RECORD1 + 3:
-        return person->data[1].records[param - JOIN_AVE_PARAM_RECORD1];
+        return person->data[JOIN_AVE_DATA_RECORDS1].records[param - JOIN_AVE_PARAM_RECORD1];
     case JOIN_AVE_PARAM_RECORD2 + 0:
     case JOIN_AVE_PARAM_RECORD2 + 1:
     case JOIN_AVE_PARAM_RECORD2 + 2:
     case JOIN_AVE_PARAM_RECORD2 + 3:
-        return person->data[2].records[param - JOIN_AVE_PARAM_RECORD2];
+        return person->data[JOIN_AVE_DATA_RECORDS2].records[param - JOIN_AVE_PARAM_RECORD2];
     case JOIN_AVE_PARAM_VALUE + 0:
     case JOIN_AVE_PARAM_VALUE + 1:
     case JOIN_AVE_PARAM_VALUE + 2:
@@ -983,35 +983,35 @@ u32 joinAveTextHandler(const JoinAvenuePerson *person, JoinAvenuePersonParam par
     case JOIN_AVE_PARAM_VALUE + 13:
     case JOIN_AVE_PARAM_VALUE + 14:
     case JOIN_AVE_PARAM_VALUE + 15:
-        return person->data[3].values[param - JOIN_AVE_PARAM_VALUE];
+        return person->data[JOIN_AVE_DATA_VALUES].values[param - JOIN_AVE_PARAM_VALUE];
     case JOIN_AVE_PARAM_RECENT_ID + 0:
     case JOIN_AVE_PARAM_RECENT_ID + 1:
     case JOIN_AVE_PARAM_RECENT_ID + 2:
     case JOIN_AVE_PARAM_RECENT_ID + 3:
-        return person->data[4].recent.ids[param - JOIN_AVE_PARAM_RECENT_ID];
+        return person->data[JOIN_AVE_DATA_RECENT].recent.ids[param - JOIN_AVE_PARAM_RECENT_ID];
     case JOIN_AVE_PARAM_RECENT_DATE + 0:
     case JOIN_AVE_PARAM_RECENT_DATE + 1:
     case JOIN_AVE_PARAM_RECENT_DATE + 2:
     case JOIN_AVE_PARAM_RECENT_DATE + 3:
-        return person->data[4].recent.dates[param - JOIN_AVE_PARAM_RECENT_DATE];
+        return person->data[JOIN_AVE_DATA_RECENT].recent.dates[param - JOIN_AVE_PARAM_RECENT_DATE];
     case JOIN_AVE_PARAM_MESSAGE1:
-        getSpecialJoinAveTextToBuf(&person->data[5].message, buffer, person->profile.trainerId);
+        getSpecialJoinAveTextToBuf(&person->data[JOIN_AVE_DATA_MESSAGE1].message, buffer, person->profile.trainerId);
         return 0;
     case JOIN_AVE_PARAM_MESSAGE2:
-        JoinAvenue_GetMessage2(&person->data[6].message, buffer, person->profile.trainerId);
+        JoinAvenue_GetMessage2(&person->data[JOIN_AVE_DATA_MESSAGE2].message, buffer, person->profile.trainerId);
         return 0;
     case JOIN_AVE_PARAM_MESSAGE1_RAW:
         if (buffer != NULL) {
-            MI_CpuCopy8(&person->data[5].message, buffer, sizeof(JoinAvenueMessage));
+            MI_CpuCopy8(&person->data[JOIN_AVE_DATA_MESSAGE1].message, buffer, sizeof(JoinAvenueMessage));
             ((u16 *)buffer)[8] = GFL_StrBufGetTerminator();
         }
-        return (u32)&person->data[5].message;
+        return (u32)&person->data[JOIN_AVE_DATA_MESSAGE1].message;
     case JOIN_AVE_PARAM_MESSAGE2_RAW:
         if (buffer != NULL) {
-            MI_CpuCopy8(&person->data[6].message, buffer, sizeof(JoinAvenueMessage));
+            MI_CpuCopy8(&person->data[JOIN_AVE_DATA_MESSAGE2].message, buffer, sizeof(JoinAvenueMessage));
             ((u16 *)buffer)[8] = GFL_StrBufGetTerminator();
         }
-        return (u32)&person->data[6].message;
+        return (u32)&person->data[JOIN_AVE_DATA_MESSAGE2].message;
     }
     return 0;
 }
@@ -1138,64 +1138,64 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
         person->seed = value;
         break;
     case JOIN_AVE_PARAM_LAST_MEDAL:
-        person->data[0].adventure.lastMedal = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.lastMedal = value;
         break;
     case JOIN_AVE_PARAM_MEDAL_DATE:
-        person->data[0].adventure.medalDate = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalDate = value;
         break;
     case JOIN_AVE_PARAM_MEDAL_COUNT:
-        person->data[0].adventure.medalCount = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalCount = value;
         break;
     case JOIN_AVE_PARAM_MEDAL_RANK:
-        person->data[0].adventure.medalRank = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.medalRank = value;
         break;
     case JOIN_AVE_PARAM_START_DATE:
-        person->data[0].adventure.startDate = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.startDate = value;
         break;
     case JOIN_AVE_PARAM_HALL_OF_FAME_DATE:
-        person->data[0].adventure.hallOfFameDate = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.hallOfFameDate = value;
         break;
     case JOIN_AVE_PARAM_DEX_CAUGHT:
-        person->data[0].adventure.dexCaught = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.dexCaught = value;
         break;
     case JOIN_AVE_PARAM_SPECIES:
-        person->data[0].adventure.species = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.species = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 0:
-        person->data[0].adventure.shopCount0 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount0 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 1:
-        person->data[0].adventure.shopCount1 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount1 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 2:
-        person->data[0].adventure.shopCount2 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount2 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 3:
-        person->data[0].adventure.shopCount3 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount3 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 4:
-        person->data[0].adventure.shopCount4 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount4 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 5:
-        person->data[0].adventure.shopCount5 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount5 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 6:
-        person->data[0].adventure.shopCount6 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount6 = value;
         break;
     case JOIN_AVE_PARAM_SHOP_COUNT + 7:
-        person->data[0].adventure.shopCount7 = value;
+        person->data[JOIN_AVE_DATA_ADVENTURE].adventure.shopCount7 = value;
         break;
     case JOIN_AVE_PARAM_RECORD1 + 0:
     case JOIN_AVE_PARAM_RECORD1 + 1:
     case JOIN_AVE_PARAM_RECORD1 + 2:
     case JOIN_AVE_PARAM_RECORD1 + 3:
-        person->data[1].records[param - JOIN_AVE_PARAM_RECORD1] = value;
+        person->data[JOIN_AVE_DATA_RECORDS1].records[param - JOIN_AVE_PARAM_RECORD1] = value;
         break;
     case JOIN_AVE_PARAM_RECORD2 + 0:
     case JOIN_AVE_PARAM_RECORD2 + 1:
     case JOIN_AVE_PARAM_RECORD2 + 2:
     case JOIN_AVE_PARAM_RECORD2 + 3:
-        person->data[2].records[param - JOIN_AVE_PARAM_RECORD2] = value;
+        person->data[JOIN_AVE_DATA_RECORDS2].records[param - JOIN_AVE_PARAM_RECORD2] = value;
         break;
     case JOIN_AVE_PARAM_VALUE + 0:
     case JOIN_AVE_PARAM_VALUE + 1:
@@ -1213,25 +1213,25 @@ void JoinAvenuePerson_SetParam(JoinAvenuePerson *person, JoinAvenuePersonParam p
     case JOIN_AVE_PARAM_VALUE + 13:
     case JOIN_AVE_PARAM_VALUE + 14:
     case JOIN_AVE_PARAM_VALUE + 15:
-        person->data[3].values[param - JOIN_AVE_PARAM_VALUE] = value;
+        person->data[JOIN_AVE_DATA_VALUES].values[param - JOIN_AVE_PARAM_VALUE] = value;
         break;
     case JOIN_AVE_PARAM_RECENT_ID + 0:
     case JOIN_AVE_PARAM_RECENT_ID + 1:
     case JOIN_AVE_PARAM_RECENT_ID + 2:
     case JOIN_AVE_PARAM_RECENT_ID + 3:
-        person->data[4].recent.ids[param - JOIN_AVE_PARAM_RECENT_ID] = value;
+        person->data[JOIN_AVE_DATA_RECENT].recent.ids[param - JOIN_AVE_PARAM_RECENT_ID] = value;
         break;
     case JOIN_AVE_PARAM_RECENT_DATE + 0:
     case JOIN_AVE_PARAM_RECENT_DATE + 1:
     case JOIN_AVE_PARAM_RECENT_DATE + 2:
     case JOIN_AVE_PARAM_RECENT_DATE + 3:
-        person->data[4].recent.dates[param - JOIN_AVE_PARAM_RECENT_DATE] = value;
+        person->data[JOIN_AVE_DATA_RECENT].recent.dates[param - JOIN_AVE_PARAM_RECENT_DATE] = value;
         break;
     case JOIN_AVE_PARAM_MESSAGE1:
-        MI_CpuCopy8((void *)value, &person->data[5].message, sizeof(JoinAvenueMessage));
+        MI_CpuCopy8((void *)value, &person->data[JOIN_AVE_DATA_MESSAGE1].message, sizeof(JoinAvenueMessage));
         break;
     case JOIN_AVE_PARAM_MESSAGE2:
-        MI_CpuCopy8((void *)value, &person->data[6].message, sizeof(JoinAvenueMessage));
+        MI_CpuCopy8((void *)value, &person->data[JOIN_AVE_DATA_MESSAGE2].message, sizeof(JoinAvenueMessage));
         break;
     }
 }
@@ -1532,7 +1532,7 @@ void JoinAvenueEntry_SetParam(JoinAvenueEntry *entry, JoinAvenuePersonParam para
 }
 
 static BOOL JoinAvenueEntry_Merge(JoinAvenueEntry *entry, const JoinAvenueEntry *src) {
-    if (entry->shopKind == 4) {
+    if (entry->shopKind == JOIN_AVE_SHOP_KIND_DOJO) {
         u16 greeting[8];
 
         MI_CpuCopy8(entry->profile.greeting, greeting, sizeof(greeting));
@@ -1579,7 +1579,7 @@ u32 JoinAvenueEntryList_Add(JoinAvenueEntryList *list, JoinAvenueEntry *entry) {
     skipFirst = FALSE;
     if (JoinAvenue_GetParam(sJoinAvenue.info, JOIN_AVE_INFO_UNOPENED, NULL)) {
         kind = JoinAvenueEntry_GetParam(entry, JOIN_AVE_PARAM_SHOP_KIND, NULL);
-        if (kind != 2 && kind != 3) {
+        if (kind != JOIN_AVE_SHOP_KIND_MARKET && kind != JOIN_AVE_SHOP_KIND_FLOWER) {
             skipFirst = TRUE;
         }
     }
@@ -1843,8 +1843,8 @@ void JoinAvenuePerson_InitFromEntry(JoinAvenuePerson *person, const JoinAvenueEn
                                     u32 slot, u16 row) {
     JoinAvenuePerson_Clear(person);
     person->profile = entry->profile;
-    person->data[5].message = entry->message1;
-    person->data[6].message = entry->message2;
+    person->data[JOIN_AVE_DATA_MESSAGE1].message = entry->message1;
+    person->data[JOIN_AVE_DATA_MESSAGE2].message = entry->message2;
     person->year = entry->year;
     person->month = entry->month;
     person->day = entry->day;
@@ -1866,8 +1866,8 @@ static void JoinAvenuePerson_SetupShop(JoinAvenuePerson *person, ResortShopData 
     JoinAvenueShop *shop = JoinAvenuePerson_GetShop(person);
 
     JoinAvenueShop_Init(shop);
-    JoinAvenueShop_SetField(shop, 0, id);
-    JoinAvenueShop_SetField(shop, 1, level);
+    JoinAvenueShop_SetField(shop, JOIN_AVE_SHOP_FIELD_ID, id);
+    JoinAvenueShop_SetField(shop, JOIN_AVE_SHOP_FIELD_LEVEL, level);
 }
 
 static void JoinAvenuePerson_AddVisitorData(JoinAvenuePerson *person, const JoinAvenueVisitor *visitor) {
@@ -1923,9 +1923,9 @@ static BOOL JoinAvenueRecord_MatchesEntry(JoinAvenueRecord *record, const JoinAv
 
 static u32 JoinAvenueRecord_MergeVisitor(JoinAvenueRecord *record, const JoinAvenueVisitor *visitor) {
     record->profile = visitor->profile;
-    if (visitor->dataIndex == 5) {
+    if (visitor->dataIndex == JOIN_AVE_DATA_MESSAGE1) {
         MI_CpuCopy8(&visitor->data, &record->message1, sizeof(JoinAvenueMessage));
-    } else if (visitor->dataIndex == 6) {
+    } else if (visitor->dataIndex == JOIN_AVE_DATA_MESSAGE2) {
         MI_CpuCopy8(&visitor->data, &record->message2, sizeof(JoinAvenueMessage));
     }
     return 1;
@@ -1934,10 +1934,10 @@ static u32 JoinAvenueRecord_MergeVisitor(JoinAvenueRecord *record, const JoinAve
 static u32 JoinAvenueRecord_MergePerson(JoinAvenueRecord *record, const JoinAvenuePerson *person) {
     record->profile = person->profile;
     if (person->dataMask & (1 << 5)) {
-        record->message1 = person->data[5].message;
+        record->message1 = person->data[JOIN_AVE_DATA_MESSAGE1].message;
     }
     if (person->dataMask & (1 << 6)) {
-        record->message2 = person->data[6].message;
+        record->message2 = person->data[JOIN_AVE_DATA_MESSAGE2].message;
     }
     return 1;
 }
@@ -2023,8 +2023,8 @@ void JoinAvenueRecord_InitFromPerson(JoinAvenueRecord *record, const JoinAvenueP
     record->year = person->year;
     record->month = person->month;
     record->day = person->day;
-    record->message1 = person->data[5].message;
-    record->message2 = person->data[6].message;
+    record->message1 = person->data[JOIN_AVE_DATA_MESSAGE1].message;
+    record->message2 = person->data[JOIN_AVE_DATA_MESSAGE2].message;
     record->shopKind = shopKind;
     record->slot = slot;
     record->row = row;
@@ -2152,7 +2152,7 @@ void JoinAvenueOccupants_ResetDaily(JoinAvenueOccupants *occupants, BOOL fullDay
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_SHOP_CHANGE_BLOCKED, 0);
             JoinAvenuePerson_SetParam(person, JOIN_AVE_PARAM_SEED,
                                       gfRand(joinAveTextHandler(person, JOIN_AVE_PARAM_SEED, NULL)));
-            JoinAvenueShop_SetField(shop, 3, 0);
+            JoinAvenueShop_SetField(shop, JOIN_AVE_SHOP_FIELD_FLAGS, 0);
         }
     }
 }
@@ -2179,8 +2179,8 @@ u32 JoinAvenuePerson_GetShopId(JoinAvenuePerson *person, PlayerInfo *playerInfo)
 static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
     switch (sDefaultShopKinds[trainerId % 7][0]) {
     default:
-    case 0:
-    case 5:
+    case JOIN_AVE_SHOP_KIND_RAFFLE:
+    case JOIN_AVE_SHOP_KIND_NURSERY:
         switch (version) {
         case VERSION_BLACK:
             return 1;
@@ -2192,7 +2192,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 241;
         }
-    case 4:
+    case JOIN_AVE_SHOP_KIND_DOJO:
         switch (version) {
         case VERSION_BLACK:
             return 41;
@@ -2204,7 +2204,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 281;
         }
-    case 2:
+    case JOIN_AVE_SHOP_KIND_MARKET:
         switch (version) {
         case VERSION_BLACK:
             return 21;
@@ -2216,7 +2216,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 261;
         }
-    case 3:
+    case JOIN_AVE_SHOP_KIND_FLOWER:
         switch (version) {
         case VERSION_BLACK:
             return 31;
@@ -2228,7 +2228,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 271;
         }
-    case 6:
+    case JOIN_AVE_SHOP_KIND_ANTIQUE:
         switch (version) {
         case VERSION_BLACK:
             return 61;
@@ -2240,7 +2240,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 301;
         }
-    case 1:
+    case JOIN_AVE_SHOP_KIND_BEAUTY_SALON:
         switch (version) {
         case VERSION_BLACK:
             return 11;
@@ -2252,7 +2252,7 @@ static u32 JoinAvenue_GetDefaultShop(u16 trainerId, u16 version) {
         default:
             return 251;
         }
-    case 7:
+    case JOIN_AVE_SHOP_KIND_CAFE:
         switch (version) {
         case VERSION_BLACK:
             return 71;
@@ -2387,7 +2387,7 @@ void JoinAvenueInfo_Init(JoinAvenueInfo *info) {
     info->seed = GFL_RandomLC(0);
     info->rank = 1;
     info->unopened = TRUE;
-    MIi_CpuClear32(0xffffffff, info->visitorIds, sizeof(info->visitorIds));
+    MIi_CpuClear32(JOIN_AVE_VISITOR_ID_NONE, info->visitorIds, sizeof(info->visitorIds));
 
     msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, MSG_JOIN_AVENUE_NAMES, HEAPID_TAIL(HEAPID_SAVEDATA));
     str = GFL_MsgDataLoadStrbufNew(msgData, MSG_JOIN_AVENUE_DEFAULT_NAME);
@@ -2560,7 +2560,7 @@ void JoinAvenueInfo_SetParam(JoinAvenueInfo *info, u32 param, u32 value) {
 
 void JoinAvenueInfo_ResetDaily(JoinAvenueInfo *info, BOOL fullDay) {
     if (!fullDay) {
-        MIi_CpuClear32(0xffffffff, info->visitorIds, sizeof(info->visitorIds));
+        MIi_CpuClear32(JOIN_AVE_VISITOR_ID_NONE, info->visitorIds, sizeof(info->visitorIds));
         info->visitorIdIndex = 0;
         info->visitorIdCount = 0;
         info->seed = gfRand(info->seed);
@@ -2591,7 +2591,7 @@ static BOOL JoinAvenueInfo_HasVisitorId(const JoinAvenueInfo *info, u32 id) {
     int i;
 
     for (i = 0; i < info->visitorIdCount; i++) {
-        if (info->visitorIds[i] != 0xffffffff && id == info->visitorIds[i]) {
+        if (info->visitorIds[i] != JOIN_AVE_VISITOR_ID_NONE && id == info->visitorIds[i]) {
             return TRUE;
         }
     }
@@ -2634,12 +2634,12 @@ static u32 gfRand(u32 seed) {
 
 u16 JoinAvenue_ChooseShop(u16 shopId, u16 trainerId, u16 version, BOOL keepShopLevel, JoinAvenueInfo *info,
                           ResortShopData *shops) {
-    u32 unk13 = JoinAvenue_GetParam(info, JOIN_AVE_INFO_UNLOCKED_6, NULL);
+    u32 nurseryUnlocked = JoinAvenue_GetParam(info, JOIN_AVE_INFO_UNLOCKED_6, NULL);
     const u16 *shop = ResortShopData_GetShop(shops, shopId);
     u16 level = ResortShopData_GetShopParam(shop, 2);
     u16 kind = ResortShopData_GetShopParam(shop, 0);
 
-    if (shopId == 0 || (unk13 == 0 && kind == 5) || (level != 0 && !keepShopLevel)) {
+    if (shopId == 0 || (nurseryUnlocked == 0 && kind == JOIN_AVE_SHOP_KIND_NURSERY) || (level != 0 && !keepShopLevel)) {
         return JoinAvenue_GetDefaultShop(trainerId, version);
     }
     return shopId;

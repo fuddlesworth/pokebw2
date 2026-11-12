@@ -28,21 +28,45 @@ enum {
     JOIN_AVE_ARRIVAL_FUNFEST = 9,
 };
 
+// The kinds of shop a person runs, in the ROM's shop-name order: SCRIPT_TEXT_GLOBAL_10685's messages 280 to 287,
+// which overlay 137 loads as the kind's name (shopName + 280)
+enum {
+    JOIN_AVE_SHOP_KIND_RAFFLE,
+    JOIN_AVE_SHOP_KIND_BEAUTY_SALON,
+    JOIN_AVE_SHOP_KIND_MARKET,
+    JOIN_AVE_SHOP_KIND_FLOWER,
+    JOIN_AVE_SHOP_KIND_DOJO,
+    JOIN_AVE_SHOP_KIND_NURSERY,
+    JOIN_AVE_SHOP_KIND_ANTIQUE,
+    JOIN_AVE_SHOP_KIND_CAFE,
+};
+
 // The Join Avenue's saved data (resonance_resort_data.c). Names from swan (https://github.com/ds-pokemon-hacking/swan,
 // GPL-3.0): JoinAvenuePerson_IsEmpty, joinAveTextHandler, JoinAvenuePerson_SetParam, JoinAvenuePersonList_Create,
 // JoinAvenuePersonList_Free, JoinAvenuePersonList_GetCount, JoinAvenuePersonList_Get, JoinAvenue_GetParam,
 // JoinAvenue_GetInfo, JoinAvenue_GetPersonList, getAddressOfBeginningOfOccupants and setImportantJABlockAddresses.
 // The rest, and the fields, are ours
 
-// The extra data a person brings: the adventure, two sets of the records of ResortWork_Get, the player's own values,
-// the recent activities and two messages
-#define JOIN_AVE_DATA_COUNT 7
+// The extra data a person brings, in the order the file fills them: the adventure, two sets of the records of
+// ResortWork_Get, the player's own values, the recent activities and two messages
+enum {
+    JOIN_AVE_DATA_ADVENTURE,
+    JOIN_AVE_DATA_RECORDS1,
+    JOIN_AVE_DATA_RECORDS2,
+    JOIN_AVE_DATA_VALUES,
+    JOIN_AVE_DATA_RECENT,
+    JOIN_AVE_DATA_MESSAGE1,
+    JOIN_AVE_DATA_MESSAGE2,
+    JOIN_AVE_DATA_COUNT,
+};
 // The people who run the avenue's shops, the records of those who left, and the recent activities
 #define JOIN_AVE_OCCUPANT_COUNT 8
 #define JOIN_AVE_RECORD_COUNT 4
 #define JOIN_AVE_RECENT_COUNT 4
 // The trainer IDs of the visitors the info remembers, so that a visitor is added once a day
 #define JOIN_AVE_VISITOR_ID_COUNT 32
+// The saved ID that means no visitor
+#define JOIN_AVE_VISITOR_ID_NONE 0xffffffff
 
 // A field of a person, which joinAveTextHandler reads and JoinAvenuePerson_SetParam writes, as overlay 137's people
 // do through their data. Entries and records have some of them. The UNK selectors are those no caller passes: the
@@ -152,6 +176,14 @@ typedef struct {
     u8 rank : 7;
     u16 shopId;
 } JoinAvenueShopChoice;
+
+// The fields of a person's shop, which JoinAvenueShop_GetField reads and JoinAvenueShop_SetField sets
+enum {
+    JOIN_AVE_SHOP_FIELD_ID,
+    JOIN_AVE_SHOP_FIELD_LEVEL,
+    JOIN_AVE_SHOP_FIELD_EXPERIENCE,
+    JOIN_AVE_SHOP_FIELD_FLAGS,
+};
 
 // The state of the shop a person runs
 typedef struct {
@@ -513,7 +545,7 @@ BOOL JoinAvenuePerson_HasExtraData(JoinAvenuePerson *person, u32 index);
 JoinAvenueShop *JoinAvenuePerson_GetShop(JoinAvenuePerson *person);
 // The shop the player would run: the player's own choice, or the default one of the player's ID and version
 u32 JoinAvenuePerson_GetShopId(JoinAvenuePerson *person, PlayerInfo *playerInfo);
-// The fields of a person's shop: 0 the ID, 1 the level, 2 and 3 the flags
+// A field of a person's shop, as JOIN_AVE_SHOP_FIELD_*
 u32 JoinAvenueShop_GetField(JoinAvenueShop *shop, u32 which);
 void JoinAvenueShop_SetField(JoinAvenueShop *shop, u32 which, u32 value);
 BOOL JoinAvenueShop_GetFlag(JoinAvenueShop *shop, u32 bit);
