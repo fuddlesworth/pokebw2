@@ -97,25 +97,25 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
     cmd->spec.initial_status = 0xff;
     if (device == CARD_BACKUP_TYPE_DEVICE_EEPROM) {
         switch (size) {
-        case 0x200:
+        case 0x200: // CARD_BACKUP_TYPE_EEPROM_4KBITS
             cmd->spec.pageSize = 0x10;
             cmd->spec.addrWidth = 1;
             cmd->spec.programPage = 5;
             cmd->spec.initial_status = 0xf0;
             break;
-        case 0x2000:
+        case 0x2000: // CARD_BACKUP_TYPE_EEPROM_64KBITS
             cmd->spec.pageSize = 0x20;
             cmd->spec.addrWidth = 2;
             cmd->spec.programPage = 5;
             cmd->spec.initial_status = 0;
             break;
-        case 0x10000:
+        case 0x10000: // CARD_BACKUP_TYPE_EEPROM_512KBITS
             cmd->spec.pageSize = 0x80;
             cmd->spec.addrWidth = 2;
             cmd->spec.programPage = 10;
             cmd->spec.initial_status = 0;
             break;
-        case 0x20000:
+        case 0x20000: // CARD_BACKUP_TYPE_EEPROM_1MBITS
             cmd->spec.pageSize = 0x100;
             cmd->spec.addrWidth = 3;
             cmd->spec.programPage = 5;
@@ -133,9 +133,9 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
     }
     if (device == CARD_BACKUP_TYPE_DEVICE_FLASH) {
         switch (size) {
-        case 0x40000:
-        case 0x80000:
-        case 0x100000:
+        case 0x40000:  // CARD_BACKUP_TYPE_FLASH_2MBITS
+        case 0x80000:  // CARD_BACKUP_TYPE_FLASH_4MBITS
+        case 0x100000: // CARD_BACKUP_TYPE_FLASH_8MBITS
             cmd->spec.writePage = 25;
             cmd->spec.writePageTotal = 300;
             cmd->spec.erasePage = 300;
@@ -143,7 +143,7 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_WRITE_BACKUP);
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_ERASE_PAGE_BACKUP);
             break;
-        case 0x200000:
+        case 0x200000: // CARD_BACKUP_TYPE_FLASH_16MBITS
             cmd->spec.writePage = 23;
             cmd->spec.writePageTotal = 300;
             cmd->spec.eraseSector = 500;
@@ -156,7 +156,7 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_ERASE_CHIP_BACKUP);
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_WRITE_STATUS);
             break;
-        case 0x400000:
+        case 0x400000: // CARD_BACKUP_TYPE_FLASH_32MBITS
             cmd->spec.eraseSector = 600;
             cmd->spec.eraseSectorTotal = 3000;
             cmd->spec.eraseSubsector = 70;
@@ -169,7 +169,7 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_ERASE_CHIP_BACKUP);
             cmd->spec.caps |= CARD_CAPS(CARD_REQ_WRITE_STATUS);
             break;
-        case 0x800000:
+        case 0x800000: // CARD_BACKUP_TYPE_FLASH_64MBITS
             if (vendor == 0) {
                 cmd->spec.eraseSector = 1000;
                 cmd->spec.eraseSectorTotal = 3000;
@@ -202,6 +202,7 @@ static void CARDi_IdentifyBackupCore(CARDBackupType type) {
         return;
     }
     if (device == CARD_BACKUP_TYPE_DEVICE_FRAM) {
+        // The two FRAM capacities: CARD_BACKUP_TYPE_FRAM_64KBITS and CARD_BACKUP_TYPE_FRAM_256KBITS
         if (size == 0x2000 || size == 0x8000) {
             cmd->spec.pageSize = size;
             cmd->spec.sectSize = size;

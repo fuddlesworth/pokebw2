@@ -336,7 +336,7 @@ void CARDi_ReadRom(u32 dma, const void *src, void *dst, u32 len, MIDmaCallback c
     CARDiDmaReadInfo.src = p->src;
     CARDiDmaReadInfo.dst = p->dst;
     CARDiDmaReadInfo.len = p->len;
-    CARDiDmaReadInfo.unk_18 = 0;
+    CARDiDmaReadInfo.work = 0;
     if (sRomReader == CARDi_ReadRomWithCPU && CARDi_IsRomDmaAvailable(p->dma, (u32)dst, p->src, len)) {
         OSIntrMode irq = OS_DisableInterrupts();
         if (sInvalidateIC) {
@@ -415,8 +415,8 @@ static u32 CARDi_ReadCardWithHashInternalAsync(void *arg, void *dst, u32 src, u3
         sSecureRead.src = src;
         sSecureRead.dst = (u32)dst;
         sSecureRead.len = len;
-        sSecureRead.unk_00 = 0;
-        sSecureRead.unk_18 = 0;
+        sSecureRead.command = 0;
+        sSecureRead.work = 0;
         CARDi_ReadRomWithDMA(&sSecureRead);
     }
     return len;
