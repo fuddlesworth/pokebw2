@@ -204,7 +204,7 @@ BOOL Scrcmd_WbtStadium_ListPartyPokemon(VM *vm, FieldScriptEnv *env) {
             message = 55;
         }
         WbtStadium_LoadPartySpeciesName(env, party, i, 0);
-        AddItemToListMenu(env, message, 0xffff, value, strbuf, text);
+        AddItemToListMenu(env, message, LIST_MENU_DESCRIPTION_NONE, value, strbuf, text);
     }
     return FALSE;
 }
