@@ -102,7 +102,8 @@
 #define PKM_PARAM_MET_LOCATION 0x96
 #define PKM_PARAM_MET_LEVEL 0x99
 #define PKM_PARAM_OT_GENDER 0x9a
-#define PKM_PARAM_UNK9B 0x9b
+// The ground tile it was caught on (swan's PF_GroundTile)
+#define PKM_PARAM_GROUND_TILE 0x9b
 #define PKM_PARAM_UNK9C 0x9c
 #define PKM_PARAM_POKERUS 0x97
 #define PKM_PARAM_POKEBALL 0x98
