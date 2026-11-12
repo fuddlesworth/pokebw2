@@ -61,7 +61,7 @@ static u8 DWC_GetFriendStatusSC(const DWCFriendData *friendData, u8 *scm, u8 *sc
     u8 result;
 
     if (DWCi_GetFriendBuddyStatus(friendData, &status)) {
-        if (status.status == 6) {
+        if (status.status == DWC_STATUS_MATCH_SC_SV) {
             if (scm != NULL) {
                 if (DWC_GetCommonValueString("SCM", number, status.statusString, '/') > 0) {
                     *scm = strtoul(number, NULL, 10);
@@ -164,7 +164,7 @@ void DWCi_FriendInit(DWCFriendControl *control, GPConnection *connection, const 
     sFriendControl->friendList = friendList;
     sFriendControl->buddyUpdateIdx = 0;
     sFriendControl->friendListChanged = 0;
-    sFriendControl->buddyUpdateState = 0;
+    sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_WAIT;
     sFriendControl->updateSteps = 0;
     sFriendControl->persLogin = 0;
     sFriendControl->profileID = 0;
@@ -218,13 +218,13 @@ void DWCi_FriendProcess(void) {
         if (sFriendControl->state == 0) {
             return;
         }
-        if (sFriendControl->friendList != NULL && sFriendControl->buddyUpdateState != 3 &&
+        if (sFriendControl->friendList != NULL && sFriendControl->buddyUpdateState != DWC_BUDDY_UPDATE_STATE_COMPLETE &&
             sFriendControl->gpProcessCount > 7) {
-            if (sFriendControl->buddyUpdateState <= 1) {
+            if (sFriendControl->buddyUpdateState <= DWC_BUDDY_UPDATE_STATE_CHECK) {
                 DWCi_UpdateFriendReq(sFriendControl->friendList, sFriendControl->friendListLen);
             }
             if (sFriendControl->buddyUpdateIdx >= sFriendControl->friendListLen) {
-                sFriendControl->buddyUpdateState = 3;
+                sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_COMPLETE;
                 sFriendControl->updateSteps++;
             }
         }
@@ -285,7 +285,7 @@ void DWCi_UpdateServersAsync(const char *authToken, const char *partnerChallenge
     sFriendControl->deleteCallback = deleteCallback;
     sFriendControl->deleteParam = deleteParam;
     sFriendControl->friendListChanged = 0;
-    sFriendControl->buddyUpdateState = 0;
+    sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_WAIT;
     sFriendControl->updateSteps = 0;
     sFriendControl->buddyUpdateIdx = 0;
     sFriendControl->state = 1;
@@ -420,7 +420,7 @@ static int DWCi_GPProcess(void) {
 static void DWCi_CloseFriendProcess(void) {
     if (sFriendControl != NULL) {
         sFriendControl->state = 0;
-        sFriendControl->buddyUpdateState = 0;
+        sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_WAIT;
         sFriendControl->updateSteps = 0;
     }
 }
@@ -434,7 +434,7 @@ static void DWCi_UpdateFriendReq(DWCFriendData *friendList, int friendListLen) {
     GPBuddyStatus status;
     int i;
 
-    if (sFriendControl->buddyUpdateState == 0) {
+    if (sFriendControl->buddyUpdateState == DWC_BUDDY_UPDATE_STATE_WAIT) {
         DWCi_HandleFriendGPError(gpGetNumBuddies(sFriendControl->pGpObj, &count));
         for (index = 0; index < count; index++) {
             DWCi_HandleFriendGPError(gpGetBuddyStatus(sFriendControl->pGpObj, index, &status));
@@ -457,7 +457,7 @@ static void DWCi_UpdateFriendReq(DWCFriendData *friendList, int friendListLen) {
                 index--;
             }
         }
-        sFriendControl->buddyUpdateState = 1;
+        sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_CHECK;
     }
     for (; sFriendControl->buddyUpdateIdx < friendListLen; sFriendControl->buddyUpdateIdx++) {
         if (DWCi_Acc_IsFlag5(&friendList[sFriendControl->buddyUpdateIdx])) {
@@ -478,7 +478,7 @@ static void DWCi_UpdateFriendReq(DWCFriendData *friendList, int friendListLen) {
                 DWC_LoginIdToUserName(DWCi_GetUserData(), &friendList[sFriendControl->buddyUpdateIdx], loginName);
                 gpProfileSearchA(sFriendControl->pGpObj, NULL, NULL, NULL, NULL, loginName, 0, 0,
                                  (GPCallback)DWCi_GPProfileSearchCallback, (void *)sFriendControl->buddyUpdateIdx);
-                sFriendControl->buddyUpdateState = 2;
+                sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_PSEARCH;
                 return;
             }
         }
@@ -604,19 +604,19 @@ static int DWCi_HandleFriendGPError(int result) {
         return 0;
     }
     switch (result) {
-    case 1:
+    case GP_MEMORY_ERROR:
         error = DWC_ERROR_FATAL;
         code = error - 10;
         break;
-    case 2:
+    case GP_PARAMETER_ERROR:
         error = DWC_ERROR_FATAL;
         code = error - 11;
         break;
-    case 3:
+    case GP_NETWORK_ERROR:
         error = DWC_ERROR_NETWORK;
         code = error - 16;
         break;
-    case 4:
+    case GP_SERVER_ERROR:
         error = DWC_ERROR_NETWORK;
         code = error - 26;
         break;
@@ -639,7 +639,7 @@ static void DWCi_GPProfileSearchCallback(GPConnection *connection, GPProfileSear
         for (i = 0; i < arg->numMatches; i++) {
             if (DWCi_RefreshFriendListForth(sFriendControl->friendList, index, arg->matches[i].profile)) {
                 sFriendControl->buddyUpdateIdx++;
-                sFriendControl->buddyUpdateState = 1;
+                sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_CHECK;
                 arg->more = GP_DONE;
                 return;
             }
@@ -658,7 +658,7 @@ static void DWCi_GPProfileSearchCallback(GPConnection *connection, GPProfileSear
                 }
                 DWCi_CallBuddyFriendCallback(index);
                 sFriendControl->buddyUpdateIdx++;
-                sFriendControl->buddyUpdateState = 1;
+                sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_CHECK;
                 arg->more = GP_DONE;
                 sFriendControl->friendListChanged = 1;
                 return;
@@ -666,7 +666,7 @@ static void DWCi_GPProfileSearchCallback(GPConnection *connection, GPProfileSear
         }
         if (arg->more != GP_MORE) {
             sFriendControl->buddyUpdateIdx++;
-            sFriendControl->buddyUpdateState = 1;
+            sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_CHECK;
         }
         return;
     }
@@ -677,7 +677,7 @@ static void DWCi_GPProfileSearchCallback(GPConnection *connection, GPProfileSear
     } else if (sFriendControl->state == 1 ||
                DWC_GetFriendDataType(&sFriendControl->friendList[index]) == DWC_ACC_FRIENDDATA_NODATA) {
         sFriendControl->buddyUpdateIdx++;
-        sFriendControl->buddyUpdateState = 1;
+        sFriendControl->buddyUpdateState = DWC_BUDDY_UPDATE_STATE_CHECK;
     }
 }
 
