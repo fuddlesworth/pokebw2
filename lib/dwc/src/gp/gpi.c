@@ -172,7 +172,7 @@ GPResult gpiProcessConnectionManager(GPConnection *connection) {
         result =
             gpiRecvToBuffer(connection, iconnection->cmSocket, &iconnection->socketBuffer, &len, &connClosed, "CM");
         if (result != 0) {
-            if (result != 3) {
+            if (result != GP_NETWORK_ERROR) {
                 return result;
             }
             gpiSetError(connection, 5, "There was an error reading from the server.");

@@ -7,11 +7,11 @@
 #include "dwc/gpiUtility.h"
 
 // GameSpy GP's info of the profiles (gpiInfo.c). The functions' names, from pret/pokerevo's Wii build and GameSpy's
-// later SDK, are in dwc/gp.h. info is GameSpy's GPEnum of what to set: 0x700 the nick, 0x701 the unique nick, 0x702 the
-// e-mail, 0x703 the password, 0x704 and 0x705 the first and last names, 0x706 the ICQ number, 0x707 the homepage, 0x708
-// the zip code, 0x709 the country code, 0x70b the sex, 0x70c to 0x716 the machine (CPU, memory, video cards,
-// connection, network and OS), 0x717 the AIM name, and 0x718 to 0x71e the picture, occupation, industry, income,
-// marriage, children and interests
+// later SDK, are in dwc/gp.h. info is GameSpy's GPEnum of what to set: GP_NICK the nick, GP_UNIQUENICK the unique
+// nick, GP_EMAIL the e-mail, GP_PASSWORD the password, GP_FIRSTNAME and GP_LASTNAME the names, GP_ICQUIN the ICQ
+// number, GP_HOMEPAGE the homepage, GP_ZIPCODE the zip code, GP_COUNTRYCODE the country code, GP_SEX the sex,
+// GP_CPUBRANDID to GP_OSSTRING the machine (CPU, memory, video cards, connection, network and OS), GP_AIMNAME the AIM
+// name, and GP_PIC to GP_INTERESTS1 the picture, occupation, industry, income, marriage, children and interests
 
 static GPIBool gpiIsValidDate(int day, int month, int year);
 static GPResult gpiIntToDate(GPConnection *connection, int date, int *day, int *month, int *year);
@@ -430,7 +430,7 @@ static int gpiSetInfoi(GPConnection *connection, int info, int value) {
     int result;
 
     switch (info) {
-    case 0x708:
+    case GP_ZIPCODE:
         if (value < 0) {
             gpiSetErrorString(connection, "Invalid zipcode.");
             return 2;
@@ -441,21 +441,21 @@ static int gpiSetInfoi(GPConnection *connection, int info, int value) {
             return result;
         }
         break;
-    case 0x70b:
+    case GP_SEX:
         switch (value) {
-        case 0x500:
+        case GP_MALE:
             result = gpiSendLocalInfo(connection, "\\sex\\", "0");
             if (result != 0) {
                 return result;
             }
             break;
-        case 0x501:
+        case GP_FEMALE:
             result = gpiSendLocalInfo(connection, "\\sex\\", "1");
             if (result != 0) {
                 return result;
             }
             break;
-        case 0x502:
+        case GP_PAT:
             result = gpiSendLocalInfo(connection, "\\sex\\", "2");
             if (result != 0) {
                 return result;
@@ -466,63 +466,63 @@ static int gpiSetInfoi(GPConnection *connection, int info, int value) {
             return 2;
         }
         break;
-    case 0x706:
+    case GP_ICQUIN:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\icquin\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70c:
+    case GP_CPUBRANDID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendUserInfo(connection, "\\cpubrandid\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70d:
+    case GP_CPUSPEED:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendUserInfo(connection, "\\cpuspeed\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70e:
+    case GP_MEMORY:
         OS_SPrintf(buffer, "%d", value / 16);
         result = gpiSendUserInfo(connection, "\\memory\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x710:
+    case GP_VIDEOCARD1RAM:
         OS_SPrintf(buffer, "%d", value / 4);
         result = gpiSendUserInfo(connection, "\\videocard1ram\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x712:
+    case GP_VIDEOCARD2RAM:
         OS_SPrintf(buffer, "%d", value / 4);
         result = gpiSendUserInfo(connection, "\\videocard2ram\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x713:
+    case GP_CONNECTIONID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendUserInfo(connection, "\\connectionid\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x714:
+    case GP_CONNECTIONSPEED:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendUserInfo(connection, "\\connectionspeed\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x715:
+    case GP_HASNETWORK:
         if (value != 0) {
             value = 1;
         }
@@ -532,49 +532,49 @@ static int gpiSetInfoi(GPConnection *connection, int info, int value) {
             return result;
         }
         break;
-    case 0x718:
+    case GP_PIC:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\pic\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x719:
+    case GP_OCCUPATIONID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\occ\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71a:
+    case GP_INDUSTRYID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\ind\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71b:
+    case GP_INCOMEID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\inc\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71c:
+    case GP_MARRIEDID:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\mar\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71d:
+    case GP_CHILDCOUNT:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\chc\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71e:
+    case GP_INTERESTS1:
         OS_SPrintf(buffer, "%d", value);
         result = gpiSendLocalInfo(connection, "\\i1\\", buffer);
         if (result != 0) {
@@ -600,7 +600,7 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
         return 2;
     }
     switch (info) {
-    case 0x700:
+    case GP_NICK:
         if (value[0] == '\0') {
             gpiSetErrorString(connection, "Invalid value.");
             return 2;
@@ -612,7 +612,7 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x701:
+    case GP_UNIQUENICK:
         if (value[0] == '\0') {
             gpiSetErrorString(connection, "Invalid value.");
             return 2;
@@ -624,7 +624,7 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x702:
+    case GP_EMAIL:
         if (value[0] == '\0') {
             gpiSetErrorString(connection, "Invalid value.");
             return 2;
@@ -637,7 +637,7 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x703:
+    case GP_PASSWORD:
         if (value[0] == '\0') {
             gpiSetErrorString(connection, "Invalid value.");
             return 2;
@@ -650,35 +650,35 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x704:
+    case GP_FIRSTNAME:
         strzcpy(buffer, value, 31);
         result = gpiSendLocalInfo(connection, "\\firstname\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x705:
+    case GP_LASTNAME:
         strzcpy(buffer, value, 31);
         result = gpiSendLocalInfo(connection, "\\lastname\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x707:
+    case GP_HOMEPAGE:
         strzcpy(buffer, value, 76);
         result = gpiSendLocalInfo(connection, "\\homepage\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x708:
+    case GP_ZIPCODE:
         strzcpy(buffer, value, 11);
         result = gpiSendLocalInfo(connection, "\\zipcode\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x709:
+    case GP_COUNTRYCODE:
         if (strlen(value) != 2) {
             gpiSetErrorString(connection, "Invalid countrycode.");
             return 2;
@@ -689,7 +689,7 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x70b:
+    case GP_SEX:
         sex = toupper(value[0]);
         if (sex == 'M') {
             buffer[0] = '0';
@@ -704,120 +704,120 @@ GPResult gpiSetInfos(GPConnection *connection, GPEnum info, const char *value) {
             return result;
         }
         break;
-    case 0x706:
+    case GP_ICQUIN:
         gsiSafeStrcpyA(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\icquin\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70d:
-        result = gpiSetInfoi(connection, 0x70d, atol(value));
+    case GP_CPUSPEED:
+        result = gpiSetInfoi(connection, GP_CPUSPEED, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70e:
-        result = gpiSetInfoi(connection, 0x70e, atol(value));
+    case GP_MEMORY:
+        result = gpiSetInfoi(connection, GP_MEMORY, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x70f:
+    case GP_VIDEOCARD1STRING:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\videocard1string\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x710:
-        result = gpiSetInfoi(connection, 0x710, atol(value));
+    case GP_VIDEOCARD1RAM:
+        result = gpiSetInfoi(connection, GP_VIDEOCARD1RAM, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x711:
+    case GP_VIDEOCARD2STRING:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\videocard2string\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x712:
-        result = gpiSetInfoi(connection, 0x712, atol(value));
+    case GP_VIDEOCARD2RAM:
+        result = gpiSetInfoi(connection, GP_VIDEOCARD2RAM, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x714:
-        result = gpiSetInfoi(connection, 0x714, atol(value));
+    case GP_CONNECTIONSPEED:
+        result = gpiSetInfoi(connection, GP_CONNECTIONSPEED, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x715:
-        result = gpiSetInfoi(connection, 0x715, atol(value));
+    case GP_HASNETWORK:
+        result = gpiSetInfoi(connection, GP_HASNETWORK, atol(value));
         if (result != 0) {
             return result;
         }
         break;
-    case 0x716:
+    case GP_OSSTRING:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\osstring\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x717:
+    case GP_AIMNAME:
         strzcpy(buffer, value, 51);
         result = gpiSendLocalInfo(connection, "\\aim\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x718:
+    case GP_PIC:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\pic\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x719:
+    case GP_OCCUPATIONID:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\occ\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71a:
+    case GP_INDUSTRYID:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\ind\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71b:
+    case GP_INCOMEID:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\inc\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71c:
+    case GP_MARRIEDID:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\mar\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71d:
+    case GP_CHILDCOUNT:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\chc\\", buffer);
         if (result != 0) {
             return result;
         }
         break;
-    case 0x71e:
+    case GP_INTERESTS1:
         strzcpy(buffer, value, 256);
         result = gpiSendLocalInfo(connection, "\\i1\\", buffer);
         if (result != 0) {

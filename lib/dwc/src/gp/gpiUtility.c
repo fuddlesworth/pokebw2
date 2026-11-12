@@ -86,16 +86,16 @@ GPResult gpiCheckSocketConnect(GPConnection *connection, SOCKET sock, int *state
     if (result > 0) {
         if (exceptFlag) {
             gsDebugFormat(GSIDebugCat_GP, GSIDebugType_Network, GSIDebugLevel_HotError, "Connection rejected\n");
-            *state = 4;
+            *state = GPI_DISCONNECTED;
             return 0;
         }
         if (writeFlag) {
             gsDebugFormat(GSIDebugCat_GP, GSIDebugType_Network, GSIDebugLevel_Notice, "Connection accepted\n");
-            *state = 3;
+            *state = GPI_CONNECTED;
             return 0;
         }
     }
-    *state = 0;
+    *state = GPI_NOT_CONNECTED;
     return 0;
 }
 
