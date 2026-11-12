@@ -6,8 +6,9 @@
 #include "nitro/wm.h"
 
 // NitroWiFi's wireless connection manager (WCM), in overlays 11 and 12, which DWC's settings in overlay 182 drive. The
-// ROM names none of it: the names are NitroWiFi's own, as ntrtwl's reconstruction of NitroWiFi has them, where the code
-// shows them; the descriptive ones are noted below.
+// ROM names none of it: the names are NitroWiFi's own, as ntrtwl's reconstruction of NitroWiFi has them where the code
+// shows them; the device IDs and privacy modes are TwlSDK's WCM documentation's, the WM values are NitroSDK's (wm.h),
+// and the descriptive ones are noted below.
 
 // A word of a WCM notification, which carries a number or a pointer
 typedef union {
@@ -143,6 +144,16 @@ u32 WCM_UpdateOption(u32 option);
 #define WCM_OPTION_POWER_ACTIVE 0x30000
 #define WCM_OPTION_AUTH_OPENSYSTEM 0x80000
 #define WCM_OPTION_AUTH_SHAREDKEY 0xc0000
+// The scan type and round-scan options, in the same shape: the upper bit of each pair says that the option is given and
+// the lower one is its value. A search reads them back as "== 0x300000" for an active scan and "== 0xc00000" for a
+// round-scan notification.
+#define WCM_OPTION_MASK_SCANTYPE 0x300000
+#define WCM_OPTION_SCANTYPE_ACTIVE 0x300000
+#define WCM_OPTION_MASK_ROUNDSCAN 0xc00000
+#define WCM_OPTION_ROUNDSCAN_NOTIFY 0xc00000
+
+// The rate-set mask that WCM adds to a rejected connection's descriptor before it retries
+#define WCM_CAMOUFLAGE_RATESET 0x24
 // DS mode fills gaps between the lowest and highest hardware-allowed channel bits; DSi uses its backend mask.
 // Returns zero outside states 3 through 10.
 s32 WCM_GetAllowedChannel(void);

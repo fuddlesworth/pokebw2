@@ -278,7 +278,7 @@ static void WcmWmcbIndication(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     if (indication->errcode == WM_ERRCODE_FIFO_ERROR) {
-        if (indication->state == WM_STATECODE_FIFO_ERROR && indication->reason == 0x25) {
+        if (indication->state == WM_STATECODE_FIFO_ERROR && indication->reason == WM_APIID_AUTO_DISCONNECT) {
             switch (work->state) {
             case WCM_PHASE_IDLE_TO_DCF:
                 WCMi_SetPhase(WCM_PHASE_IRREGULAR);
@@ -397,7 +397,7 @@ static void WcmWmcbScanEx(void *ind) {
                     WCMi_NotifyEx(WCM_NOTIFY_FOUND_AP, WCM_RESULT_SUCCESS, (s32)callback->bssDesc[i], ind, 0x35c);
                 }
             }
-            if ((work->searchOption & 0xc00000) == 0xc00000) {
+            if ((work->searchOption & WCM_OPTION_MASK_ROUNDSCAN) == WCM_OPTION_ROUNDSCAN_NOTIFY) {
                 u32 count = MATH_CountPopulation(work->searchOption & 0x3ffe);
 
                 if (count > 0) {
@@ -678,8 +678,8 @@ static void WcmWmcbReset(void *ind) {
 
             work->connectionFailureReason = 0;
             if (reason == WCM_CONNECT_STATUSCODE_ILLEGAL_RATESET) {
-                if ((work->connectBss.rateSetSupport & 0x24) != 0x24) {
-                    work->connectBss.rateSetSupport |= 0x24;
+                if ((work->connectBss.rateSetSupport & WCM_CAMOUFLAGE_RATESET) != WCM_CAMOUFLAGE_RATESET) {
+                    work->connectBss.rateSetSupport |= WCM_CAMOUFLAGE_RATESET;
                     result = WM_StartConnectEx(
                         (WMCallbackFunc)WcmWmcbConnect, &work->connectBss, NULL,
                         (work->searchOption & WCM_OPTION_POWER_ACTIVE) == WCM_OPTION_POWER_ACTIVE ? FALSE : TRUE,
@@ -758,7 +758,7 @@ static void WcmEditScanExParam(const u8 *bssid, const u8 *essid, u32 option) {
         channelTime = WM_GetDispersionScanPeriod();
     }
     work->scanRequest.maxChannelTime = channelTime;
-    work->scanRequest.scanType = ((work->searchOption & 0x300000) != 0x300000);
+    work->scanRequest.scanType = ((work->searchOption & WCM_OPTION_MASK_SCANTYPE) != WCM_OPTION_SCANTYPE_ACTIVE);
     if (bssid == NULL) {
         MI_CpuCopy8(WCM_Bssid_Any, work->scanRequest.bssid, 6);
     } else {

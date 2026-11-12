@@ -428,7 +428,7 @@ static void WcmNwmcbScanEx(void *arg) {
                     WCMi_NotifyEx(WCM_NOTIFY_FOUND_AP, WCM_RESULT_SUCCESS, (s32)event->bssDesc[i], arg, 0x3b9);
                 }
             }
-            if ((work->searchOption & 0xc00000) == 0xc00000) {
+            if ((work->searchOption & WCM_OPTION_MASK_ROUNDSCAN) == WCM_OPTION_ROUNDSCAN_NOTIFY) {
                 u32 count = MATH_CountPopulation(work->searchOption & 0x3ffe);
 
                 if (count > 0) {
@@ -502,18 +502,18 @@ static void WcmNwmcbConnect(void *arg) {
         break;
     case NWM_RETCODE_FAILED:
         switch (event->reason) {
-        case 1:
-        case 2:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
+        case NWM_REASON_NO_NETWORK_AVAIL:
+        case NWM_REASON_LOST_LINK:
+        case NWM_REASON_BSS_DISCONNECTED:
+        case NWM_REASON_AUTH_FAILED:
+        case NWM_REASON_ASSOC_FAILED:
+        case NWM_REASON_NO_RESOURCES_AVAIL:
+        case NWM_REASON_CSERV_DISCONNECT:
+        case NWM_REASON_INVALID_PROFILE:
+        case NWM_REASON_WEP_KEY_ERROR:
+        case NWM_REASON_WPA_KEY_ERROR:
+        case NWM_REASON_TKIP_MIC_ERROR:
+        case NWM_REASON_NO_QOS_RESOURCES_AVAIL:
             switch (work->state) {
             case WCM_PHASE_DCF:
             case WCM_PHASE_DCF_TO_IDLE:
@@ -521,14 +521,14 @@ static void WcmNwmcbConnect(void *arg) {
             case WCM_PHASE_IDLE_TO_DCF:
                 work->nwmAssociationId = 0;
                 switch (event->reason) {
-                case 5:
+                case NWM_REASON_AUTH_FAILED:
                     work->nwmConnectionFailureReason = 13;
                     break;
-                case 10:
-                case 11:
+                case NWM_REASON_WEP_KEY_ERROR:
+                case NWM_REASON_WPA_KEY_ERROR:
                     work->nwmConnectionFailureReason = 15;
                     break;
-                case 7:
+                case NWM_REASON_NO_RESOURCES_AVAIL:
                     work->nwmConnectionFailureReason = 17;
                     break;
                 }
@@ -537,7 +537,7 @@ static void WcmNwmcbConnect(void *arg) {
                 break;
             }
             break;
-        case 3:
+        case NWM_REASON_DISCONNECT_CMD:
             if (work->state == WCM_PHASE_IDLE_TO_DCF) {
                 work->nwmAssociationId = 0;
                 WcmNwmReset();
@@ -691,7 +691,7 @@ static void WcmEditScanExParam(const u8 *bssid, const u8 *essid, u32 option) {
     work->nwmScanRequest.scanBuf = (NWMBssDesc *)work->ioBuffer.nwm;
     work->nwmScanRequest.scanBufSize = sizeof(work->ioBuffer.nwm);
     work->nwmScanRequest.channelList = (u16)((1 << WCMi_GetNextScanChannel(0)) >> 1);
-    work->nwmScanRequest.scanType = (work->searchOption & 0x300000) == 0x300000;
+    work->nwmScanRequest.scanType = (work->searchOption & WCM_OPTION_MASK_SCANTYPE) == WCM_OPTION_SCANTYPE_ACTIVE;
     channelTime = work->scanChannelTime;
     if (channelTime == 0) {
         channelTime = NWM_GetDispersionScanPeriod(work->nwmScanRequest.scanType);

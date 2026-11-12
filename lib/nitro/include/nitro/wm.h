@@ -99,6 +99,7 @@ typedef enum {
     WM_APIID_SET_BEACON_IND = 0x19,
     WM_APIID_SET_LIFETIME = 0x1d,
     WM_APIID_MEASURE_CHANNEL = 0x1e,
+    WM_APIID_AUTO_DISCONNECT = 0x25,
     WM_APIID_START_SCAN_EX = 0x26,
     WM_APIID_SET_WEPKEY_EX = 0x27,
     WM_NUM_OF_CALLBACK = 0x2c, // The commands are below it; the ARM7's own messages are above
