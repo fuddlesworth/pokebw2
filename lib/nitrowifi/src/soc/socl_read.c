@@ -76,7 +76,7 @@ static int SOCLi_ReadAndConsumeBuffer(SOCLSocket *socket, u8 *buf, int len, u16 
         was_peeking = pipe->peek;
         pipe->peek = 1;
     }
-    if (socket->flag == 1) {
+    if (socket->flag == SOCL_FLAGMODE_UDP) {
         result = SOCLi_ReadUdpBuffer(socket, buf, len, remote_port, remote_ip, block);
     } else {
         result = SOCLi_ReadBuffer(socket, buf, len, remote_port, remote_ip, block);
@@ -93,7 +93,7 @@ static int SOCLi_ReadAndConsumeBuffer(SOCLSocket *socket, u8 *buf, int len, u16 
 static int SOCLi_ReadBuffer(SOCLSocket *socket, void *buf, int len, u16 *remote_port, CPSInAddr *remote_ip, s32 block) {
     int result;
 
-    if (socket->flag == 4) {
+    if (socket->flag == SOCL_FLAGMODE_SSL) {
         return SOCLi_ExecReadCommand(socket, buf, len, remote_port, remote_ip, block);
     }
     result = SOCLi_CopyCPSBuffer(socket, buf, len, remote_port, remote_ip);
@@ -218,7 +218,7 @@ static int SOCLi_ReadCallBack(void *arg) {
     if (socket->state & SOCL_STATUS_RESET) {
         return SOCL_ECONNRESET;
     }
-    if (socket->flag == 4) {
+    if (socket->flag == SOCL_FLAGMODE_SSL) {
         if (data == NULL) {
             return 0;
         }

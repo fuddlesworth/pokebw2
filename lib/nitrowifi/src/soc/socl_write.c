@@ -59,7 +59,7 @@ static int SOCLi_WriteBuffer(SOCLSocket *socket, const u8 *buf, s32 len, u16 rem
     s32 written = 0;
 
     sndbuf_len = pipe->socket->cps_socket.sndbuf.size;
-    if (socket->flag == 1) {
+    if (socket->flag == SOCL_FLAGMODE_UDP) {
         sndbuf_len -= 0x2a;
         if (len > sndbuf_len) {
             return SOCL_EMSGSIZE;
@@ -143,7 +143,7 @@ static int SOCLi_ExecWriteCommand(SOCLSocket *socket, const u8 *buf, s32 len, s3
     if (packet == NULL) {
         return SOCL_EMFILE;
     }
-    if ((block & 1) && socket->flag != 1) {
+    if ((block & 1) && socket->flag != SOCL_FLAGMODE_UDP) {
         packet->h.flag_block = 3;
     } else {
         packet->h.flag_block = 0;
@@ -168,7 +168,7 @@ static int SOCLi_ExecWriteCommand(SOCLSocket *socket, const u8 *buf, s32 len, s3
     old_write_pos = pipe->write_pos;
     packet->write.write_end = pos;
     pipe->write_pos = packet->write.write_end;
-    if (socket->flag == 1) {
+    if (socket->flag == SOCL_FLAGMODE_UDP) {
         if (socket->local_port == 0) {
             socket->local_port = CPS_SocGetEport();
             socket->cps_socket.local_port = socket->local_port;
@@ -203,17 +203,18 @@ static int SOCLi_WriteCallBack(void *arg) {
     int len;
     int written;
 
-    if (socket->flag == 2 && (socket->state & SOCL_STATUS_CLOSING)) {
+    if (socket->flag == SOCL_FLAGMODE_UDPSEND && (socket->state & SOCL_STATUS_CLOSING)) {
         return SOCL_EINVAL;
     }
-    if (socket->flag != 0 && socket->flag != 4 || (socket->state & SOCL_STATUS_CONNECTED)) {
+    if (socket->flag != SOCL_FLAGMODE_TCP && socket->flag != SOCL_FLAGMODE_SSL ||
+        (socket->state & SOCL_STATUS_CONNECTED)) {
         if (cpacket->remote_ip != 0) {
             CPS_SocBind(cpacket->local_port, cpacket->remote_port, cpacket->remote_ip);
         }
         mode = socket->flag;
         overhead = SOCLi_ModeIsTCP(mode) ? 0x36 : 0x2a;
         data = socket->cps_socket.sndbuf.data;
-        if (mode == 0 || mode == 4) {
+        if (mode == SOCL_FLAGMODE_TCP || mode == SOCL_FLAGMODE_SSL) {
             chunk = SOCLi_GetOptimumSendBufLen(socket->cps_socket.sndbuf.size - overhead);
         } else {
             chunk = socket->cps_socket.sndbuf.size - overhead;

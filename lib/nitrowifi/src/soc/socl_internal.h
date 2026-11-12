@@ -44,14 +44,14 @@ typedef struct SOCLiSocketRecvCommandPipe {
     vs32 cps_read_len;
     u16 rcvbuf_consume_min; // From SOCLSocketParam: how much to take before CPS_SocConsume
     s8 peek;                // Suppresses UDP dequeue/CPS offset advances; SSL command reads ignore it
-    u8 unk_ff;
+    u8 padding;
     // The datagrams that came in, oldest first. volatile: CPS's callback appends while readers take them;
     // SOCLi_UdpRecvCallback loads the tail again for its store, and SOCLi_GetReadBufferOccpiedSize reads the head once
     // into a local (ntrtwl's NitroWiFi has both ends and the byte count volatile)
     SOCLiSocketUdpData *volatile udp_tail;
     SOCLiSocketUdpData *volatile udp_head;
     vu16 udp_queued;        // The bytes of datagram data they hold (volatile like the list ends)
-    u16 udp_queued_max;     // From SOCLSocketParam's rcvpipe_unk_e
+    u16 udp_queued_max;     // From SOCLSocketParam's udpbuf_size
     OSThreadQueue udp_wait; // Where a blocking UDP read sleeps
 } SOCLiSocketRecvCommandPipe;
 
@@ -114,10 +114,10 @@ static inline BOOL SOCL_SocketIsCreated(const SOCLSocket *socket) {
     return created;
 }
 
-// SOCLSocket.flag: 0 and 4 are TCP. SOCLi_ModeIsTCP tests a mode that was read already
+// SOCLSocket.flag: the TCP modes are TCP and SSL. SOCLi_ModeIsTCP tests a mode that was read already
 static inline BOOL SOCLi_ModeIsTCP(s8 mode) {
     BOOL tcp = TRUE;
-    if (mode != 0 && mode != 4) {
+    if (mode != SOCL_FLAGMODE_TCP && mode != SOCL_FLAGMODE_SSL) {
         tcp = FALSE;
     }
     return tcp;
@@ -125,7 +125,7 @@ static inline BOOL SOCLi_ModeIsTCP(s8 mode) {
 
 static inline BOOL SOCL_SocketIsTCP(const SOCLSocket *socket) {
     BOOL tcp = TRUE;
-    if (socket->flag != 0 && socket->flag != 4) {
+    if (socket->flag != SOCL_FLAGMODE_TCP && socket->flag != SOCL_FLAGMODE_SSL) {
         tcp = FALSE;
     }
     return tcp;

@@ -180,13 +180,13 @@ int SOC_Fcntl(int sock, int command, int flags) {
         return -1;
     }
     switch (command) {
-    case 3:
+    case SOC_F_GETFL:
         if (socket->flag_block == 1) {
             return 0;
         }
-        return 4;
-    case 4:
-        if (flags & 4) {
+        return SOC_O_NONBLOCK;
+    case SOC_F_SETFL:
+        if (flags & SOC_O_NONBLOCK) {
             socket->flag_block = 0;
         } else {
             socket->flag_block = 1;

@@ -35,6 +35,13 @@ typedef struct SOCLSocketCommandPipeParam {
     u8 queue_length; // Message count
 } SOCLSocketCommandPipeParam;
 
+// SOCLSocketParam's flag_mode: the transport a socket is made for. SOCL_EnableSsl moves a TCP socket to the SSL mode
+// (TCP through CPS's SSL layer) and back; the UDP send mode sends every UDP socket's datagrams.
+#define SOCL_FLAGMODE_TCP 0
+#define SOCL_FLAGMODE_UDP 1
+#define SOCL_FLAGMODE_UDPSEND 2
+#define SOCL_FLAGMODE_SSL 4
+
 // How a socket is created: SOCLSocketParamTCP, SOCLSocketParamUDP and SOCLSocketParamUDPSend (soc.c). A socket has a
 // receive pipe when rcvbuf_size is not 0 and a send pipe when sndbuf_size is not 0; without one it uses the UDP send
 // socket's.
@@ -49,7 +56,7 @@ typedef struct SOCLSocketParam {
         u16 rcvbuf_aux_size;
         u16 sndbuf_aux_size;
         u16 sndpipe_buf_size;
-        u16 rcvpipe_unk_e;
+        u16 udpbuf_size; // The datagram bytes a UDP receive pipe queues
     } buffer;
     SOCLSocketCommandPipeParam rcv_pipe;
     SOCLSocketCommandPipeParam snd_pipe;
@@ -80,6 +87,10 @@ extern SOCLSocketParam SOCLSocketParamUDPSend;
 #define SOC_AF_INET 2
 #define SOC_SOCK_STREAM 1
 #define SOC_SHUT_RDWR 2
+// SOC_Fcntl's commands, F_GETFL and F_SETFL, and the flag its flags argument sets and reads (O_NONBLOCK)
+#define SOC_F_GETFL 3
+#define SOC_F_SETFL 4
+#define SOC_O_NONBLOCK 0x04
 #define SOC_EWOULDBLOCK (-6)
 #define SOC_EINPROGRESS (-26)
 #define SOC_EISCONN (-30)
