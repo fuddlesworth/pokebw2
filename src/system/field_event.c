@@ -64,6 +64,12 @@ static GameEventReturnCode EventFieldSubprocessTransitionWithCallback_Callback(G
 static GameEventReturnCode EventFieldSubprocessCallWithCallback_Callback(GameEvent *event, u32 *state, void *data);
 static GameEventReturnCode EventPokeList_Callback(GameEvent *event, u32 *state, void *data);
 
+// The field-closing event's steps: ask the field to close, then wait for its procs and its sound
+enum {
+    EVENT_FIELD_CLOSE_SEQ_REQUEST_CLOSE,
+    EVENT_FIELD_CLOSE_SEQ_WAIT_CLOSED,
+};
+
 static GameEventReturnCode EventFieldClose_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldCloseWork *wk = data;
     GameSystem *gsys = wk->gsys;
@@ -71,11 +77,11 @@ static GameEventReturnCode EventFieldClose_Callback(GameEvent *event, u32 *state
     FieldSound *fieldSound = GameData_GetFieldSoundSystem(wk->gameData);
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_CLOSE_SEQ_REQUEST_CLOSE:
         Field_RequestClose(field);
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_CLOSE_SEQ_WAIT_CLOSED:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
@@ -101,7 +107,12 @@ GameEvent *CreateFieldCloseEvent(GameSystem *gsys, Field *field) {
     return event;
 }
 
-// The same without waiting for the field's sound
+// The same without waiting for the field's sound: ask the field to close, then wait for its procs
+enum {
+    EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_REQUEST_CLOSE,
+    EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_WAIT_CLOSED,
+};
+
 static GameEventReturnCode EventFieldCloseKeepSound_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldCloseWork *wk = data;
     GameSystem *gsys = wk->gsys;
@@ -109,11 +120,11 @@ static GameEventReturnCode EventFieldCloseKeepSound_Callback(GameEvent *event, u
     FieldSound *fieldSound = GameData_GetFieldSoundSystem(wk->gameData);
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_REQUEST_CLOSE:
         Field_RequestClose(field);
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_CLOSE_KEEP_SOUND_SEQ_WAIT_CLOSED:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
@@ -137,25 +148,32 @@ GameEvent *EventFieldCloseKeepSound_Create(GameSystem *gsys, Field *field) {
     return event;
 }
 
+// The field-opening event's steps: wait for the last proc, start the field, then wait for the map
+enum {
+    EVENT_FIELD_OPEN_SEQ_START_FIELD,
+    EVENT_FIELD_OPEN_SEQ_WAIT_MAP_LOAD,
+    EVENT_FIELD_OPEN_SEQ_DONE,
+};
+
 static GameEventReturnCode EventFieldOpen_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldOpenWork *wk = data;
     GameSystem *gsys = wk->gsys;
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_OPEN_SEQ_START_FIELD:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
         GSYS_StartFieldmapProc(gsys);
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_OPEN_SEQ_WAIT_MAP_LOAD:
         if (!Field_CheckMapLoadFinished(GSYS_GetField(gsys))) {
             break;
         }
         (*state)++;
         break;
-    case 2:
+    case EVENT_FIELD_OPEN_SEQ_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -186,56 +204,73 @@ GameEvent *EventFieldOpen_Create(GameSystem *gsys) {
     return event;
 }
 
+// The fading subprocess's steps: fade the map out, run the proc, then fade the map in
+enum {
+    EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_FADE_OUT,
+    EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_CALL_SUBPROCESS,
+    EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_FADE_IN,
+    EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_DONE,
+};
+
 static GameEventReturnCode EventFieldSubprocessTransition_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldSubprocessWork *wk = data;
     GameSystem *gsys = wk->gsys;
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_FADE_OUT:
         GameEvent_ChainNext(event,
                             CallFieldMapEntranceOutTransitionDefault(gsys, wk->field, FIELD_TRANSITION_FADE_BLACK, 0));
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_CALL_SUBPROCESS:
         GameEvent_ChainNext(event,
                             EventFieldSubprocessCall_Create(gsys, wk->field, wk->overlayId, wk->functions, wk->param));
         (*state)++;
         break;
-    case 2:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_FADE_IN:
         GameEvent_ChainNext(event,
                             CallFieldMapEntranceInTransition(gsys, wk->field, FIELD_TRANSITION_FADE_BLACK, 0, 1, 0, 0));
         (*state)++;
         break;
-    case 3:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_SEQ_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
 }
+
+// The subprocess's steps: close the field, run the proc, then open the field again
+enum {
+    EVENT_FIELD_SUBPROCESS_CALL_SEQ_CLOSE_FIELD,
+    EVENT_FIELD_SUBPROCESS_CALL_SEQ_QUEUE_PROC,
+    EVENT_FIELD_SUBPROCESS_CALL_SEQ_WAIT_PROC,
+    EVENT_FIELD_SUBPROCESS_CALL_SEQ_OPEN_FIELD,
+    EVENT_FIELD_SUBPROCESS_CALL_SEQ_DONE,
+};
 
 static GameEventReturnCode EventFieldSubprocessCall_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldSubprocessWork *wk = data;
     GameSystem *gsys = wk->gsys;
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_SUBPROCESS_CALL_SEQ_CLOSE_FIELD:
         GameEvent_ChainNext(event, CreateFieldCloseEvent(gsys, wk->field));
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_SUBPROCESS_CALL_SEQ_QUEUE_PROC:
         GSYS_QueueProc(gsys, wk->overlayId, wk->functions, wk->param);
         (*state)++;
         break;
-    case 2:
+    case EVENT_FIELD_SUBPROCESS_CALL_SEQ_WAIT_PROC:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
         (*state)++;
         break;
-    case 3:
+    case EVENT_FIELD_SUBPROCESS_CALL_SEQ_OPEN_FIELD:
         GameEvent_ChainNext(event, EventFieldOpen_CreateHeadless(gsys));
         (*state)++;
         break;
-    case 4:
+    case EVENT_FIELD_SUBPROCESS_CALL_SEQ_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;
@@ -270,23 +305,30 @@ GameEvent *EventFieldSubprocessCall_Create(GameSystem *gsys, Field *field, s32 o
     return event;
 }
 
+// The fading subprocess's steps with a callback: run the transition, call it, then free its work
+enum {
+    EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_RUN_TRANSITION,
+    EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_CALLBACK,
+    EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_FREE_WORK,
+};
+
 static GameEventReturnCode EventFieldSubprocessTransitionWithCallback_Callback(GameEvent *event, u32 *state,
                                                                                void *data) {
     EventFieldSubprocessCallbackWork *wk = data;
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_RUN_TRANSITION:
         GameEvent_ChainNext(
             event, EventFieldSubprocessTransition_Create(wk->gsys, wk->field, wk->overlayId, wk->functions, wk->param));
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_CALLBACK:
         if (wk->callback != NULL) {
             wk->callback(wk->work);
         }
         (*state)++;
         break;
-    case 2:
+    case EVENT_FIELD_SUBPROCESS_TRANSITION_CALLBACK_SEQ_FREE_WORK:
         if (wk->work != NULL) {
             GFL_HeapFree(wk->work);
         }
@@ -295,22 +337,29 @@ static GameEventReturnCode EventFieldSubprocessTransitionWithCallback_Callback(G
     return GAMEEVENT_CONTINUE;
 }
 
+// The subprocess's steps with a callback: run the subprocess, call it, then free its work
+enum {
+    EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_RUN_SUBPROCESS,
+    EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_CALLBACK,
+    EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_FREE_WORK,
+};
+
 static GameEventReturnCode EventFieldSubprocessCallWithCallback_Callback(GameEvent *event, u32 *state, void *data) {
     EventFieldSubprocessCallbackWork *wk = data;
 
     switch (*state) {
-    case 0:
+    case EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_RUN_SUBPROCESS:
         GameEvent_ChainNext(
             event, EventFieldSubprocessCall_Create(wk->gsys, wk->field, wk->overlayId, wk->functions, wk->param));
         (*state)++;
         break;
-    case 1:
+    case EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_CALLBACK:
         if (wk->callback != NULL) {
             wk->callback(wk->work);
         }
         (*state)++;
         break;
-    case 2:
+    case EVENT_FIELD_SUBPROCESS_CALL_CALLBACK_SEQ_FREE_WORK:
         if (wk->work != NULL) {
             GFL_HeapFree(wk->work);
         }
@@ -353,44 +402,54 @@ GameEvent *EventFieldSubprocessCall_CreateWithCallback(GameSystem *gsys, Field *
     return event;
 }
 
+// The party list's steps: open the list, then the summary screen of the Pokemon picked, until the list is done
+enum {
+    EVENT_POKE_LIST_SEQ_OPEN_LIST,
+    EVENT_POKE_LIST_SEQ_WAIT_LIST,
+    EVENT_POKE_LIST_SEQ_CHECK_RESULT,
+    EVENT_POKE_LIST_SEQ_OPEN_SUMMARY,
+    EVENT_POKE_LIST_SEQ_WAIT_SUMMARY,
+    EVENT_POKE_LIST_SEQ_DONE,
+};
+
 // Switches between the party list and the summary screen until the list is done. The field is closed already.
 static GameEventReturnCode EventPokeList_Callback(GameEvent *event, u32 *state, void *data) {
     EventPokeListWork *wk = data;
     GameSystem *gsys = wk->gsys;
 
     switch (*state) {
-    case 0:
+    case EVENT_POKE_LIST_SEQ_OPEN_LIST:
         GSYS_QueueProc(gsys, OVERLAY_ID(165), &POKELIST_PROC_FUNCTIONS, wk->param);
-        *state = 1;
+        *state = EVENT_POKE_LIST_SEQ_WAIT_LIST;
         break;
-    case 1:
+    case EVENT_POKE_LIST_SEQ_WAIT_LIST:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
-        *state = 2;
+        *state = EVENT_POKE_LIST_SEQ_CHECK_RESULT;
         break;
-    case 2:
+    case EVENT_POKE_LIST_SEQ_CHECK_RESULT:
         if (wk->param->result == 0) {
-            *state = 5;
+            *state = EVENT_POKE_LIST_SEQ_DONE;
         } else if (wk->param->result == 1) {
             wk->summaryParam->partyIndex = wk->param->index;
-            *state = 3;
+            *state = EVENT_POKE_LIST_SEQ_OPEN_SUMMARY;
         } else {
-            *state = 5;
+            *state = EVENT_POKE_LIST_SEQ_DONE;
         }
         break;
-    case 3:
+    case EVENT_POKE_LIST_SEQ_OPEN_SUMMARY:
         GSYS_QueueProc(gsys, OVERLAY_PSTATUS, &PSTATUS_PROC_FUNCTIONS, wk->summaryParam);
-        *state = 4;
+        *state = EVENT_POKE_LIST_SEQ_WAIT_SUMMARY;
         break;
-    case 4:
+    case EVENT_POKE_LIST_SEQ_WAIT_SUMMARY:
         if (GSYS_GetProcMgrState(gsys)) {
             break;
         }
         wk->param->index = wk->summaryParam->partyIndex;
-        *state = 0;
+        *state = EVENT_POKE_LIST_SEQ_OPEN_LIST;
         break;
-    case 5:
+    case EVENT_POKE_LIST_SEQ_DONE:
         return GAMEEVENT_DONE;
     }
     return GAMEEVENT_CONTINUE;

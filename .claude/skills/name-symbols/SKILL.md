@@ -92,7 +92,10 @@ new names; the build checks that the scripts assemble to the same bytes.
 - **Bits that combine:** `#define`s, or an enum with explicit values when a field holds the combination.
 - **Stays a number:** coordinates, pixel and tile positions, colors, timings and frame counts, fixed-point factors and
   other measurements used where they are written, and a loop's literal bound that is just the size of what it walks.
-- Constants never change the code, but an enum's type can (`-enum int`): build after each file.
+- A constant that only replaces a bare number in an expression, a comparison or a `case` the switch does not otherwise
+  reach is codegen-neutral; an enum's type can still move code (`-enum int`), so build after each file. A `case` for a
+  value the switch already reaches through `default:` is not neutral: it changes the compiled switch. Leave such a
+  value to its `default` and keep its constant in the header.
 
 ## 7. Verify, commit and publish
 

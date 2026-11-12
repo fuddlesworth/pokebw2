@@ -95,7 +95,7 @@ void ghiDoSocketInit(GHIConnection *connection) {
     if (connection->protocol == GHIHttps && connection->encryptor.mEngine == GHTTPEncryptionEngine_None) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Network, GSIDebugLevel_WarmError,
                       "Encryption engine not set for HTTPS.  Using default engine\r\n");
-        ghttpSetRequestEncryptionEngine(connection->request, 5);
+        ghttpSetRequestEncryptionEngine(connection->request, GHTTPEncryptionEngine_Default);
     } else if (connection->protocol != GHIHttps && connection->encryptor.mEngine != GHTTPEncryptionEngine_None) {
         ghttpSetRequestEncryptionEngine(connection->request, GHTTPEncryptionEngine_None);
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Network, GSIDebugLevel_WarmError,
@@ -195,8 +195,8 @@ void ghiDoConnecting(GHIConnection *connection) {
         if (connection->throttle != 0) {
             SetReceiveBufferSize(connection->socket, ghiThrottleBufferSize);
         }
-        // 4 is the engine this build has, TWL's SSL through SOCL_EnableSsl; the 5 that HTTPS asks for is taken as 4
-        if (connection->encryptor.mEngine == 4) {
+        // The engine this build has: TWL's SSL through SOCL_EnableSsl, which the default engine resolves to
+        if (connection->encryptor.mEngine == GHTTPEncryptionEngine_Twl) {
             if (connection->encryptor.mStartFunc(connection, &connection->encryptor) == GHIEncryptionResult_Error) {
                 connection->completed = gsi_true;
                 connection->result = GHTTPEncryptionError;
@@ -910,7 +910,7 @@ void ghiDoReceivingFile(GHIConnection *connection) {
                           "Receive File Idle Timeout %d ===== \r\n", current_time() - connection->receiveFileIdleTime);
             connection->receiveFileIdleTime = 0;
             connection->completed = gsi_true;
-            connection->result = 19; // not a GHTTPResult: the receive idle timeout, which BW2's client added
+            connection->result = GHTTPRecvFileTimeout;
             return;
         }
         connection->receiveFileIdleTime = 0;
