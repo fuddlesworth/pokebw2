@@ -781,43 +781,7 @@ sNHttpRap kind:bss addr:0x021ae6e0
 sEntropy kind:bss addr:0x021ae6e4
 sConnectionList kind:bss addr:0x021ae704
 sWaitInfo kind:bss addr:0x021ae70c
-data_ov189_021ae700 kind:bss addr:0x021ae740
-data_ov189_021ae711 kind:bss addr:0x021ae751 ambiguous
-data_ov189_021ae72d kind:bss addr:0x021ae76d ambiguous
-data_ov189_021ae79d kind:bss addr:0x021ae7dd ambiguous
-data_ov189_021ae7bd kind:bss addr:0x021ae7fd ambiguous
-data_ov189_021ae7d5 kind:bss addr:0x021ae815 ambiguous
-data_ov189_021ae7ed kind:bss addr:0x021ae82d ambiguous
-data_ov189_021ae85d kind:bss addr:0x021ae89d ambiguous
-data_ov189_021ae8c9 kind:bss addr:0x021ae909 ambiguous
-data_ov189_021ae905 kind:bss addr:0x021ae945 ambiguous
-data_ov189_021ae92d kind:bss addr:0x021ae96d ambiguous
-data_ov189_021ae959 kind:bss addr:0x021ae999 ambiguous
-data_ov189_021aea41 kind:bss addr:0x021aea81 ambiguous
-data_ov189_021aea8d kind:bss addr:0x021aeacd ambiguous
-data_ov189_021aedf5 kind:bss addr:0x021aee35 ambiguous
-data_ov189_021aee6d kind:bss addr:0x021aeead ambiguous
-data_ov189_021aeedd kind:bss addr:0x021aef1d ambiguous
-data_ov189_021aef61 kind:bss addr:0x021aefa1 ambiguous
-data_ov189_021aefc9 kind:bss addr:0x021af009 ambiguous
-data_ov189_021af0b1 kind:bss addr:0x021af0f1 ambiguous
-data_ov189_021af105 kind:bss addr:0x021af145 ambiguous
-data_ov189_021af341 kind:bss addr:0x021af381 ambiguous
-data_ov189_021af371 kind:bss addr:0x021af3b1 ambiguous
-data_ov189_021af3b1 kind:bss addr:0x021af3f1 ambiguous
-data_ov189_021af435 kind:bss addr:0x021af475 ambiguous
-data_ov189_021af4e5 kind:bss addr:0x021af525 ambiguous
-data_ov189_021af531 kind:bss addr:0x021af571 ambiguous
-data_ov189_021af585 kind:bss addr:0x021af5c5 ambiguous
-data_ov189_021af5d5 kind:bss addr:0x021af615 ambiguous
-data_ov189_021af659 kind:bss addr:0x021af699 ambiguous
-data_ov189_021af709 kind:bss addr:0x021af749 ambiguous
-data_ov189_021af821 kind:bss addr:0x021af861 ambiguous
-data_ov189_021af865 kind:bss addr:0x021af8a5 ambiguous
-data_ov189_021af8b5 kind:bss addr:0x021af8f5 ambiguous
-data_ov189_021af8fd kind:bss addr:0x021af93d ambiguous
-data_ov189_021af94d kind:bss addr:0x021af98d ambiguous
-data_ov189_021af9dd kind:bss addr:0x021afa1d ambiguous
+sRootStorage kind:bss addr:0x021ae740
 data_ov189_021afd0d_w2_us kind:bss addr:0x021afd0d ambiguous
 data_ov189_021afd35_w2_us kind:bss addr:0x021afd35 ambiguous
 data_ov189_021afdd5_w2_us kind:bss addr:0x021afdd5 ambiguous
@@ -843,7 +807,6 @@ data_ov189_021b0681_w2_us kind:bss addr:0x021b0681 ambiguous
 data_ov189_021b0905_w2_us kind:bss addr:0x021b0905 ambiguous
 data_ov189_021b0d03_w2_us kind:bss addr:0x021b0d03 ambiguous
 data_ov189_021b0fdc_w2_us kind:bss addr:0x021b0fdc ambiguous
-data_ov189_021b26bc kind:bss addr:0x021b26fc ambiguous
 data_ov189_021b2850 kind:bss addr:0x021b2890
 sGHTTPStartCount kind:bss addr:0x021b28a0
 ghiProxyPort kind:bss addr:0x021b28a8

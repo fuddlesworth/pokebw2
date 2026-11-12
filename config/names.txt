@@ -26504,6 +26504,7 @@ overlays/ov189 0x021ae6a0 sNHttpRap
 overlays/ov189 0x021ae6a4 sEntropy
 overlays/ov189 0x021ae6c4 sConnectionList
 overlays/ov189 0x021ae6cc sWaitInfo
+overlays/ov189 0x021ae700 sRootStorage
 overlays/ov189 0x021b2860 sGHTTPStartCount
 overlays/ov189 0x021b2868 ghiProxyPort
 overlays/ov189 0x021b286c ghiProxyAddress
