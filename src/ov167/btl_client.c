@@ -4319,7 +4319,7 @@ static BOOL AISelectChangePoke(BtlClient *client, s32 *seq) {
 }
 
 static BOOL BattleClient_RecPlaySelectChangePoke(BtlClient *client, s32 *seq) {
-    return RecPlaySelectActionCore(client, seq, 0);
+    return RecPlaySelectActionCore(client, seq, FALSE);
 }
 
 // The player's choice of the mons to send out
@@ -4522,12 +4522,12 @@ static BOOL BattleClient_RecPlayExitCommBattle(BtlClient *client, s32 *seq) {
     return TRUE;
 }
 
-// The steps of BattleClient_ExitCommBattle: show how the battle ended, wait for the message, and on a loss wait
-// for the BGM to fade out
+// The steps of BattleClient_ExitCommBattle: show how the battle ended, wait for the message, and on a defeat or a
+// draw wait for the BGM to fade out
 enum {
     EXIT_COMM_SEQ_SHOW_RESULT,
     EXIT_COMM_SEQ_WAIT_WIN_MSG,
-    EXIT_COMM_SEQ_WAIT_LOSE_MSG,
+    EXIT_COMM_SEQ_WAIT_OTHER_MSG,
     EXIT_COMM_SEQ_WAIT_BGM_FADE,
 };
 
@@ -4565,7 +4565,7 @@ static BOOL BattleClient_ExitCommBattle(BtlClient *client, s32 *seq) {
             Btlv_StringParam_AddArg(&client->strParam, GetPlayerOpponentClientID(client->mainModule, 1));
         }
         BtlvCore_StartMsg(client->viewCore, &client->strParam);
-        if (result == 1) {
+        if (result == BTL_RESULT_VICTORY) {
             GFL_SndBGMPlay(GetWinBGM(client->mainModule), 0xffff);
             (*seq)++;
         } else {
@@ -4578,7 +4578,7 @@ static BOOL BattleClient_ExitCommBattle(BtlClient *client, s32 *seq) {
             return TRUE;
         }
         break;
-    case EXIT_COMM_SEQ_WAIT_LOSE_MSG:
+    case EXIT_COMM_SEQ_WAIT_OTHER_MSG:
         if (BtlvCore_WaitMsg(client->viewCore)) {
             (*seq)++;
         }
@@ -4659,7 +4659,7 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
         } else if (GetStudioMode(client->mainModule) == BTL_STUDIO_MODE_PLAYBACK) {
             result = GetBattleResultForClient(client);
             StudioScore_SetTurnPoints(client, &client->studio.score);
-            if (result == 1) {
+            if (result == BTL_RESULT_VICTORY) {
                 client->studio.seq = 0;
                 client->turnCount = 100;
             } else {
