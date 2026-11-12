@@ -652,7 +652,7 @@ static void NetState_WifiConnecting(NetState *state) {
     GFLNetSys *sys = GFL_NetGetSys();
     int result = sys->pDevTable->update(0);
 
-    if (result == 1000) {
+    if (result == GFL_NET_DEVICE_STATUS_CONNECTED) {
         NetState_SetFuncLine(_pNetState, NetState_WifiConnected, 0, 1393);
         return;
     }
@@ -660,14 +660,14 @@ static void NetState_WifiConnecting(NetState *state) {
         NetState_SetFuncLine(_pNetState, NetState_WifiConnected, 0, 1397);
         return;
     }
-    if (result == 1007) {
+    if (result == GFL_NET_DEVICE_STATUS_READY) {
         return;
     }
-    if (result == 1001) {
+    if (result == GFL_NET_DEVICE_STATUS_MATCH_ENDED) {
         NetState_SetFuncLine(_pNetState, NetState_WifiMatchEnded, 0, 1403);
         return;
     }
-    if (result == 1002) {
+    if (result == GFL_NET_DEVICE_STATUS_MATCH_FAILED) {
         NetState_SetFuncLine(_pNetState, NetState_WifiFailed, 0, 1406);
         return;
     }
@@ -757,13 +757,13 @@ static void NetState_WifiReady(NetState *state) {
 
 static void NetState_WifiDisconnecting(NetState *state) {
     GFLNetSys *sys = GFL_NetGetSys();
-    BOOL a0 = FALSE;
+    BOOL requestClose = FALSE;
 
     NetSystem_SetWifiConnected(0);
     if (!state->disconnectAsChild) {
-        a0 = TRUE;
+        requestClose = TRUE;
     }
-    if (sys->pDevTable->close(a0, 0)) {
+    if (sys->pDevTable->close(requestClose, 0)) {
         NetSystem_ResetBuffersIfAllocated();
         NetHandle_FreeAll(sys);
         NetHandle_InitAll(sys);
@@ -775,9 +775,9 @@ static void NetState_WifiDisconnecting(NetState *state) {
     }
 }
 
-void NetState_WifiDisconnect(BOOL a0) {
+void NetState_WifiDisconnect(BOOL external) {
     if (_pNetState != NULL) {
-        if (a0) {
+        if (external) {
             if (NetSystem_GetNetId() == 0) {
                 _pNetState->disconnectAsChild = FALSE;
             } else {
@@ -890,21 +890,21 @@ void NetState_SetAutoExit(u8 autoExit) {
     }
 }
 
-void NetState_SetDisconnectError(int a0) {
+void NetState_SetDisconnectError(int isError) {
     GFLNetSys *sys = GFL_NetGetSys();
 
     if (_pNetState != NULL) {
-        _pNetState->disconnectError = a0;
+        _pNetState->disconnectError = isError;
     }
-    sys->pDevTable->setDisconnectError(a0);
+    sys->pDevTable->setDisconnectError(isError);
 }
 
 static void NetState_NoProc(void) {
 }
 
-BOOL NetState_SetError(u8 a0) {
+BOOL NetState_SetError(u8 error) {
     if (_pNetState != NULL) {
-        _pNetState->errorFlag = a0;
+        _pNetState->errorFlag = error;
         NetSystem_SetError();
         NetSystem_Stop();
         return TRUE;

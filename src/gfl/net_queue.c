@@ -92,7 +92,7 @@ static BOOL NetQueueEntry_Write(NetQueueEntry *entry, NetSendBuffer *buffer, Net
             entry->data += buffer->size;
         }
         entry->size -= buffer->size;
-        buffer->size = 0xffff;
+        buffer->size = NET_SEND_BUFFER_FULL;
         entry->headerSent = TRUE;
         return TRUE;
     }
@@ -184,7 +184,7 @@ BOOL NetQueue_FillBuffer(NetQueue *queue, NetSendBuffer *buffer) {
             break;
         }
         checkSpace = TRUE;
-        if (buffer->size == 0xffff) {
+        if (buffer->size == NET_SEND_BUFFER_FULL) {
             queue->current = entry;
             return FALSE;
         }

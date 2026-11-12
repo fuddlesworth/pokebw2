@@ -7,7 +7,8 @@
 
 // Sending data larger than a packet in pieces, a little each frame, to buffers the receiving machines set up
 
-void NetLdata_Init(HeapID heapId, BOOL a1);
+// waitAck makes each piece wait for the other machine's acknowledgement before the next
+void NetLdata_Init(HeapID heapId, BOOL waitAck);
 void NetLdata_Exit(void);
 // Starts sending, to the machines in dest, from the server's handle or this machine's
 void NetLdata_StartSend(void *data, u32 size, int dest, BOOL fromServer);

@@ -282,9 +282,12 @@ void GFL_NetErrShowFatal(void) {
     GFL_NetErrShow(TRUE);
 }
 
+// Wire results select errors 13201 through 13209. Apart from service discontinuation, the retained messages do not
+// distinguish the protocol meanings of these values, so their cases stay numbers; ov260's
+// WifiBattleMatchNet_GetHttpResultMessage, the same switch over its own copies, says the same
 u32 GFL_NetErrGetServerMessage(int result) {
     switch (result) {
-    case 0:
+    case NET_ERR_SERVER_RESULT_OK:
         GFL_ASSERT(0);
         return 0;
     case 1:
@@ -297,7 +300,7 @@ u32 GFL_NetErrGetServerMessage(int result) {
         return WifiError_Text_CommunicationErrorOccurredPlease_2;
     case 5:
         return WifiError_Text_ErrorOccurredServerPlease_3;
-    case 6:
+    case NET_ERR_SERVER_RESULT_SERVICE_DISCONTINUED:
         return WifiError_Text_ServiceHasBeenDiscontinued;
     case 7:
         return WifiError_Text_CommunicationErrorOccurredPlease_3;
@@ -409,7 +412,7 @@ void GFL_NetErrRecord(void) {
             work->stateError = NetState_GetError();
             if (work->netType == GFL_NET_TYPE_WIFI || work->netType == GFL_NET_TYPE_WIFI_LOBBY ||
                 work->netType == GFL_NET_TYPE_WIFI_GTS) {
-                if (work->info.errorType == 1 || work->info.errorType == 2) {
+                if (work->info.errorType == DWC_ETYPE_LIGHT || work->info.errorType == DWC_ETYPE_SHOW_ERROR) {
                     work->check = NET_ERR_CHECK_END;
                 } else {
                     work->check = NET_ERR_CHECK_RETRY;
@@ -471,7 +474,7 @@ BOOL GFL_NetErrShutdown(void) {
         do {
             if (init != NULL &&
                 (init->bNetType == GFL_NET_TYPE_WIRELESS || init->bNetType == GFL_NET_TYPE_WIRELESS_LISTEN)) {
-                if (WH_GetSystemState() == 10) {
+                if (WH_GetSystemState() == WH_SYSSTATE_FATAL) {
                     return FALSE;
                 }
             }

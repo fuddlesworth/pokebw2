@@ -44,15 +44,17 @@ enum {
 
 // Returns a NETSTATE_WIFI_STATUS_* value for the current connection state.
 int NetState_GetWifiStatus(void);
-void NetState_WifiDisconnect(BOOL a0);
+// With external set, another machine or the Wi-Fi library asked for the disconnect, so a child only
+// checks for the close instead of requesting it
+void NetState_WifiDisconnect(BOOL external);
 u8 NetState_IsDisconnectReceived(void);
 BOOL NetState_IsWifiConnecting(void);
 BOOL NetState_IsWifiReady(void);
 void NetState_EndWifi(void (*callback)(void *work));
 void NetState_StartWifiLogin(void);
 void NetState_SetAutoExit(u8 autoExit);
-void NetState_SetDisconnectError(int a0);
-BOOL NetState_SetError(u8 a0);
+void NetState_SetDisconnectError(int isError);
+BOOL NetState_SetError(u8 error);
 void NetState_ClearError(void);
 u8 NetState_GetError(void);
 // Records a network error: its code, and type nonzero to set the network error

@@ -11,9 +11,9 @@ BOOL NetSystem_StartWireless(int size, HeapID heapId);
 int NetSystem_CanConnectFriend(int index);
 BOOL NetSystem_StartInfrared(int changeTgid);
 int NetSystem_StartParent(int changeTgid, int size, int anyChannel, BOOL (*callback)(void));
-BOOL NetSystem_StartScan(int a0, int size);
+BOOL NetSystem_StartScan(int clearBeacons, int size);
 BOOL NetSystem_StartSearch(int size);
-void NetSystem_HoldScan(int a0);
+void NetSystem_HoldScan(int unused);
 int NetSystem_StartChild(BOOL allocBuffers, const u8 *mac, int size, void (*callback)(void));
 void NetSystem_Free(void);
 // Forgets what has arrived from a machine, as when it disconnects
@@ -38,8 +38,8 @@ BOOL NetSystem_HasErrorChecked(void);
 // Whether a command is waiting to be sent
 BOOL NetSystem_HasQueuedCommand(u16 command, int dest);
 BOOL NetSystem_IsSendQueueEmpty(void);
-void NetSystem_SetWifiConnected(u8 a0);
-void NetSystem_SetMPSendEnabled(BOOL a0);
+void NetSystem_SetWifiConnected(u8 connected);
+void NetSystem_SetMPSendEnabled(BOOL enabled);
 // Sets and clears the network error
 void NetSystem_SetError(void);
 void NetSystem_ClearError(void);

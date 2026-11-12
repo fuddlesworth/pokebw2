@@ -1,4 +1,5 @@
 #include "types.h"
+#include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_handle.h"
@@ -118,7 +119,7 @@ static void stateFinish(NetSave *save) {
     if (save->func != NULL) {
         save->func(save->work);
     }
-    if (GameData_UpdateSave(save->gameData) == 2) {
+    if (GameData_UpdateSave(save->gameData) == SAVE_RESULT_OK) {
         save->gameData = NULL;
         NetHandle_SendTimingPair(NetHandle_GetOwn(), NET_SAVE_TIMING_END, NET_SAVE_TIMING_GROUP);
         setState(save, stateEnd);

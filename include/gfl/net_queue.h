@@ -50,6 +50,10 @@ typedef struct {
 // The header before each command's data: the command, the size and the sender
 #define NET_QUEUE_HEADER_SIZE 5
 
+// The size a NetSendBuffer takes when the packet filled up partway through a command, so that the command continues in
+// the next packet
+#define NET_SEND_BUFFER_FULL 0xffff
+
 BOOL NetQueue_IsEmpty(NetQueue *queue);
 BOOL NetQueue_Push(NetQueue *queue, int command, u8 *data, int size, u32 unused, BOOL copy, int netId);
 // Fills the buffer, returning FALSE if a command did not fit and continues next time
