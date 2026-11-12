@@ -9,6 +9,12 @@
 // The scenes with N, which overlay 155 plays (a descriptive name). Command names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
+// EventNDemoEnd_Callback's steps: the face-up scene's end, and the overlay's unload
+enum {
+    NDEMO_END_STEP_END_FACE_UP,
+    NDEMO_END_STEP_UNLOAD,
+};
+
 static GameEventReturnCode EventNDemoEnd_Callback(GameEvent *event, u32 *state, void *data);
 
 BOOL Scrcmd_Ndemo_NDemoStart(VM *vm, FieldScriptEnv *env) {
@@ -57,11 +63,11 @@ static GameEventReturnCode EventNDemoEnd_Callback(GameEvent *event, u32 *state, 
     GameSystem *gsys = GameEvent_GetGameSystem(event);
 
     switch (*state) {
-    case 0:
+    case NDEMO_END_STEP_END_FACE_UP:
         GameEvent_ChainNext(event, EventFaceUpEnd_Create(gsys));
         (*state)++;
         break;
-    case 1:
+    case NDEMO_END_STEP_UNLOAD:
         FieldScriptSubEvent_Unregister(SCRIPT_SUB_EVENT_NDEMO);
         GFL_OvlUnload(OVERLAY_ID(155));
         return GAMEEVENT_DONE;

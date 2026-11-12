@@ -178,7 +178,7 @@ BOOL Scrcmd_Misc_ElevatorBuildListMenu(VM *vm, FieldScriptEnv *env) {
         ElevatorFloor *floor = ElevatorTable_GetEntry(table, i);
 
         if (zoneId != floor->zoneId) {
-            AddItemToListMenu(env, floor->messageId, 0xffff, i, expanded, temp);
+            AddItemToListMenu(env, floor->messageId, LIST_MENU_DESCRIPTION_NONE, i, expanded, temp);
         }
     }
     return FALSE;

@@ -75,10 +75,10 @@ BOOL Scrcmd_DownloadData_MemoryLinkCheckMusical(VM *vm, FieldScriptEnv *env) {
     u16 *result = ScriptReadVar(vm, env);
 
     switch (mode) {
-    case 0:
+    case MEMORY_LINK_MUSICAL_PROPS_ADDED:
         *result = MusicalSave_GetDownloadedProps(musical);
         break;
-    case 1: {
+    case MEMORY_LINK_MUSICAL_PROGRAM_UP_TO_DATE: {
         u16 current = FALSE;
 
         if (MemoryLinkSave_GetValue(data, MEMORY_LINK_KIND_MUSICAL_TOTAL_POINTS, NULL) <=

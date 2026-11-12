@@ -3204,7 +3204,7 @@
     .2byte \a0
     .endm
 
-    .macro HollowRivalCmd_0264 a0, a1
+    .macro HollowRivalCheckCount a0, a1
     FieldCommand 612
     .2byte \a0
     .2byte \a1

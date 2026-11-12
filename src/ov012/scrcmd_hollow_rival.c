@@ -35,7 +35,7 @@ BOOL Scrcmd_HollowRival_HollowRivalSetFlag(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-BOOL func_ov012_0216a748(VM *vm, FieldScriptEnv *env) {
+BOOL Scrcmd_HollowRival_HollowRivalCheckCount(VM *vm, FieldScriptEnv *env) {
     GameData *gameData = GSYS_GetGameData(FieldScriptEnv_GetGameSystem(env));
     u16 *result = ScriptReadVar(vm, env);
     HollowRivalSave *block;

@@ -246,7 +246,7 @@ void AddItemToListMenu(FieldScriptEnv *env, u32 messageId, u32 descriptionId, u3
     ScriptListMenu *menu = &env->subwork->listMenu;
     u32 index;
 
-    if (descriptionId != 0xffff) {
+    if (descriptionId != LIST_MENU_DESCRIPTION_NONE) {
         index = ListMenuCore_GetFirstFreeIndex(menu->options);
         if (index >= 32) {
             return;
