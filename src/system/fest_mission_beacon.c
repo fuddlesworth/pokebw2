@@ -60,10 +60,34 @@ static const FestMissionCheckFunc FestMission_CheckFuncs[6] = {
 
 // clang-format on
 
-// What a log entry's value is, by its kind: 1 an item, 3 a move, 5 a Pass Power, 6 a species
+// What a log entry's value is, by its kind (FestMission_LogCategories)
+enum {
+    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_ITEM,
+    FEST_MISSION_LOG_CATEGORY_ZONE,
+    FEST_MISSION_LOG_CATEGORY_MOVE,
+    FEST_MISSION_LOG_CATEGORY_TEXT,
+    FEST_MISSION_LOG_CATEGORY_PASS_POWER,
+    FEST_MISSION_LOG_CATEGORY_SPECIES,
+};
+
 static const u8 FestMission_LogCategories[LOG_KIND_MAX] = {
-    0, 0, 0, 2, 6, 6, 6, 6, 0, 0, 0, 1, 1, 3, 0, 5, 0, 0, 0, 6, 6, 6, 6,
-    1, 0, 1, 1, 6, 6, 6, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 6, 6, 6, 4,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_NONE,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_ZONE,       FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_SPECIES,
+    FEST_MISSION_LOG_CATEGORY_SPECIES,    FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_NONE,    FEST_MISSION_LOG_CATEGORY_ITEM,
+    FEST_MISSION_LOG_CATEGORY_ITEM,       FEST_MISSION_LOG_CATEGORY_MOVE,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_PASS_POWER, FEST_MISSION_LOG_CATEGORY_NONE,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_SPECIES,
+    FEST_MISSION_LOG_CATEGORY_SPECIES,    FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_ITEM,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_ITEM,    FEST_MISSION_LOG_CATEGORY_ITEM,
+    FEST_MISSION_LOG_CATEGORY_SPECIES,    FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_SPECIES,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_ITEM,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_ITEM,       FEST_MISSION_LOG_CATEGORY_NONE,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_ITEM,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_NONE,       FEST_MISSION_LOG_CATEGORY_NONE,    FEST_MISSION_LOG_CATEGORY_NONE,
+    FEST_MISSION_LOG_CATEGORY_SPECIES,    FEST_MISSION_LOG_CATEGORY_SPECIES, FEST_MISSION_LOG_CATEGORY_SPECIES,
+    FEST_MISSION_LOG_CATEGORY_TEXT,
 };
 
 void FestMissionLogEntry_Clear(FestMissionLogEntry *entry) {
@@ -152,7 +176,7 @@ BOOL FestMissionPassPowers_AddBeacon(FestMissionPassPowers *passPowers, const Ga
     }
     FestMissionPassPower_Clear(&passPower);
     switch (beacon->type) {
-    case 0x32:
+    case GAME_BEACON_TYPE_GIFT_PASS_POWER:
         id = beacon->payload.gift.passPower;
         passPower.received = TRUE;
         break;
@@ -301,22 +325,22 @@ BOOL FestMission_IsBeaconInvalid(LinkFestival *festival, const GameBeacon *beaco
         return FALSE;
     }
     switch (FestMission_GetLogCategory(kind)) {
-    case 1:
+    case FEST_MISSION_LOG_CATEGORY_ITEM:
         if (PML_ItemIsDummy(info->unkC_0)) {
             return TRUE;
         }
         break;
-    case 3:
+    case FEST_MISSION_LOG_CATEGORY_MOVE:
         if (info->unkC_0 == MOVE_NONE || info->unkC_0 >= MOVE_COUNT) {
             return TRUE;
         }
         break;
-    case 5:
+    case FEST_MISSION_LOG_CATEGORY_PASS_POWER:
         if (!PassPower_IsIDValid(info->unkC_0)) {
             return TRUE;
         }
         break;
-    case 6:
+    case FEST_MISSION_LOG_CATEGORY_SPECIES:
         if (info->unkC_0 == SPECIES_NONE || info->unkC_0 > SPECIES_GENESECT) {
             return TRUE;
         }
@@ -335,9 +359,9 @@ static BOOL FestMission_IsKind1TargetInvalid(const FestMissionInfo *info) {
 static BOOL FestMission_IsKind2TargetInvalid(const FestMissionInfo *info) {
     // BUG: the target can't be both, so only a target of 0 is valid
 #ifdef BUGFIX
-    if (info->target != 0 && info->target != 590 && info->target != 591) {
+    if (info->target != 0 && info->target != SPECIES_FOONGUS && info->target != SPECIES_AMOONGUSS) {
 #else
-    if (info->target != 0 && (info->target != 590 || info->target != 591)) {
+    if (info->target != 0 && (info->target != SPECIES_FOONGUS || info->target != SPECIES_AMOONGUSS)) {
 #endif
         return TRUE;
     }
@@ -381,17 +405,26 @@ static BOOL FestMission_IsKind5TargetInvalid(const FestMissionInfo *info) {
     return FALSE;
 }
 
-// The kind of a log entry: mode 0 is a player who joined the mission, 1 a player met, and 2 what the beacon's type says
+// The mode of a log entry: a player who joined the mission, a player met, or what a beacon's type says, for an event
+// that the mission's target may count (2) or that improved a member's best (3)
+enum {
+    FEST_MISSION_LOG_MODE_JOINED,
+    FEST_MISSION_LOG_MODE_MET,
+    FEST_MISSION_LOG_MODE_TARGET,
+    FEST_MISSION_LOG_MODE_BEST,
+};
+
+// The kind of a log entry
 static u8 FestMissionLog_GetKind(const GameBeacon *beacon, u32 mode) {
     switch (mode) {
-    case 0:
+    case FEST_MISSION_LOG_MODE_JOINED:
         return LOG_KIND_JOIN;
-    case 1:
+    case FEST_MISSION_LOG_MODE_MET:
         return LOG_KIND_MEET;
     default:
         break;
     }
-    if (beacon->type == 0x3c || beacon->type == 0x3d) {
+    if (beacon->type == GAME_BEACON_TYPE_MISSION || beacon->type == GAME_BEACON_TYPE_MISSION_OFFER) {
         return LOG_KIND_NONE;
     }
     return beacon->type - 0x3a;
@@ -409,7 +442,7 @@ static BOOL FestMissionLogEntry_FromBeacon(LinkFestival *festival, FestMissionLo
     switch (kind) {
     case LOG_KIND_TEXT:
         MIi_CpuCopy16(beacon->payload.mission.text, entry->text, sizeof(beacon->payload.mission.text));
-        entry->value = beacon->arg.mission.unk;
+        entry->value = beacon->arg.mission.presetIndex;
         break;
     case LOG_KIND_MEET:
         entry->value = beacon->parentZoneId;
@@ -417,7 +450,8 @@ static BOOL FestMissionLogEntry_FromBeacon(LinkFestival *festival, FestMissionLo
     default:
         entry->value = ((const FestMissionInfo *)&beacon->payload)->unkC_0;
         // What counts for the player's own mission is logged when the score is given
-        if (!own && mode == 2 && FestMissionConfig_IsTarget(&festival->config, kind, entry->value)) {
+        if (!own && mode == FEST_MISSION_LOG_MODE_TARGET &&
+            FestMissionConfig_IsTarget(&festival->config, kind, entry->value)) {
             return FALSE;
         }
         break;

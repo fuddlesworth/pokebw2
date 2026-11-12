@@ -44,7 +44,6 @@ enum {
     BEACON_FORMAT_COUNT
 };
 
-#define BEACON_FORMAT_TYPE_MAX 0x3c
 // The kinds of a recent event, with GAME_BEACON_RECENT_NONE
 #define BEACON_RECENT_KIND_COUNT 6
 #define BEACON_PLAY_HOURS_MAX 999
@@ -113,9 +112,9 @@ static BOOL (*const sFormatChecks[BEACON_FORMAT_COUNT])(const GameBeacon *beacon
     GameBeacon_IsZoneInvalid,
 };
 
-// By beacon type; the types from BEACON_FORMAT_TYPE_MAX on have no format
+// By beacon type; the types from GAME_BEACON_TYPE_MISSION on have no format
 // clang-format off
-static const GameBeaconTypeFormat sTypeFormats[BEACON_FORMAT_TYPE_MAX] = {
+static const GameBeaconTypeFormat sTypeFormats[GAME_BEACON_TYPE_MISSION] = {
     { 0, 0 }, { 0, 0 }, { 2, 1 }, { 2, 2 },
     { 2, 1 }, { 2, 2 }, { 1, 1 }, { 1, 2 },
     { 1, 1 }, { 1, 2 }, { 1, 1 }, { 1, 2 },
@@ -278,7 +277,7 @@ GameBeaconInfoTable *GameBeaconInfoTable_Alloc(HeapID heapId) {
 }
 
 BOOL GameBeacon_IsInvalid(const GameBeacon *beacon) {
-    if (beacon->type == 0 || beacon->type >= GAME_BEACON_TYPE_MAX) {
+    if (beacon->type == GAME_BEACON_TYPE_NONE || beacon->type >= GAME_BEACON_TYPE_MAX) {
         return TRUE;
     }
     if (beacon->recentKind >= BEACON_RECENT_KIND_COUNT) {
@@ -307,9 +306,9 @@ BOOL GameBeacon_IsInvalid(const GameBeacon *beacon) {
 
 BOOL GameBeacon_IsGiftType(const GameBeacon *beacon) {
     switch (beacon->type) {
-    case 0x19:
-    case 0x1a:
-    case 0x1b:
+    case GAME_BEACON_TYPE_GIFT_SPECIES:
+    case GAME_BEACON_TYPE_GIFT_ITEM:
+    case GAME_BEACON_TYPE_GIFT_MYSTERY:
     case GAME_BEACON_TYPE_GIFT_PASS_POWER:
         return TRUE;
     }
@@ -458,9 +457,9 @@ u16 GameBeacon_GetRecentTrainer(const GameBeacon *beacon) {
     u32 trainerId = beacon->recentValue;
 
     switch (beacon->recentKind) {
-    case 2:
-    case 3:
-    case 4:
+    case GAME_BEACON_RECENT_TRAINER:
+    case GAME_BEACON_RECENT_LEADER:
+    case GAME_BEACON_RECENT_SPECIAL_TRAINER:
         if (trainerId == 0 || trainerId >= BEACON_TRAINER_COUNT) {
             trainerId = 1;
         }
@@ -473,8 +472,8 @@ u16 GameBeacon_GetRecentSpecies(const GameBeacon *beacon) {
     u32 species = beacon->recentValue;
 
     switch (beacon->recentKind) {
-    case 0:
-    case 1:
+    case GAME_BEACON_RECENT_WILD_SPECIES:
+    case GAME_BEACON_RECENT_SPECIAL_SPECIES:
         if (species == SPECIES_NONE || species > SPECIES_GENESECT) {
             species = SPECIES_PATRAT;
         }
@@ -486,7 +485,7 @@ u16 GameBeacon_GetRecentSpecies(const GameBeacon *beacon) {
 u16 GameBeacon_GetType(const GameBeacon *beacon) {
     u16 type = beacon->type;
 
-    if (type == 0 || type >= GAME_BEACON_TYPE_MAX) {
+    if (type == GAME_BEACON_TYPE_NONE || type >= GAME_BEACON_TYPE_MAX) {
         type = GAME_BEACON_TYPE_DEFAULT;
     }
     return type;
@@ -496,14 +495,14 @@ u16 GameBeacon_GetType(const GameBeacon *beacon) {
 
 static u16 GameBeacon_GetSpecies(const GameBeacon *beacon) {
     switch (beacon->type) {
-    case 0x2:
-    case 0x3:
-    case 0x4:
-    case 0x5:
-    case 0xe:
-    case 0xf:
-    case 0x11:
-    case 0x26:
+    case GAME_BEACON_TYPE_WILD_BATTLE_START:
+    case GAME_BEACON_TYPE_WILD_BATTLE_WIN:
+    case GAME_BEACON_TYPE_SPECIAL_BATTLE_START:
+    case GAME_BEACON_TYPE_SPECIAL_BATTLE_WIN:
+    case GAME_BEACON_TYPE_WILD_CAPTURE:
+    case GAME_BEACON_TYPE_SPECIAL_CAPTURE:
+    case GAME_BEACON_TYPE_EVOLUTION:
+    case GAME_BEACON_TYPE_EGG_HATCHED:
         return beacon->arg.value;
     }
     return SPECIES_PATRAT;
@@ -511,29 +510,29 @@ static u16 GameBeacon_GetSpecies(const GameBeacon *beacon) {
 
 static u16 GameBeacon_GetItem(const GameBeacon *beacon) {
     switch (beacon->type) {
-    case 0x13:
-    case 0x23:
+    case GAME_BEACON_TYPE_ITEM_FOUND:
+    case GAME_BEACON_TYPE_ITEM_USED:
         return beacon->payload.value;
     }
     return ITEM_POTION;
 }
 
 static u16 GameBeacon_GetMove(const GameBeacon *beacon) {
-    if (beacon->type == 0x24) {
+    if (beacon->type == GAME_BEACON_TYPE_MOVE_USED) {
         return beacon->payload.value;
     }
     return MOVE_POUND;
 }
 
 static u16 GameBeacon_GetGiftSpecies(const GameBeacon *beacon) {
-    if (beacon->type == 0x19) {
+    if (beacon->type == GAME_BEACON_TYPE_GIFT_SPECIES) {
         return beacon->payload.gift.species;
     }
     return SPECIES_PATRAT;
 }
 
 static u16 GameBeacon_GetGiftItem(const GameBeacon *beacon) {
-    if (beacon->type == 0x1a) {
+    if (beacon->type == GAME_BEACON_TYPE_GIFT_ITEM) {
         return beacon->payload.gift.item;
     }
     return ITEM_POTION;
@@ -547,69 +546,70 @@ u16 GameBeacon_GetGiftPassPower(const GameBeacon *beacon) {
 }
 
 // Loads the nickname of the types that send one. The switch does nothing; its cases are the types whose format has
-// a nickname, and 0x17 is a guess, since the code only shows that the cases from 0x10 to 0x26 are dense
+// a nickname, and GAME_BEACON_TYPE_UNION_ROOM_RECEPTION is a guess, since the code only shows that the types from
+// GAME_BEACON_TYPE_LEVEL_UP to GAME_BEACON_TYPE_EGG_HATCHED are dense
 static void GameBeacon_GetNickname(const GameBeacon *beacon, StrBuf *dest) {
     GFL_StrBufClear(dest);
     GFL_StrBufLoadFixedString(dest, beacon->payload.text, GAME_BEACON_TEXT_LEN + 1);
     switch (beacon->type) {
-    case 0x10:
-    case 0x11:
-    case 0x17:
-    case 0x1c:
-    case 0x1d:
-    case 0x1f:
-    case 0x20:
-    case 0x21:
-    case 0x22:
-    case 0x26:
-    case 0x2f:
+    case GAME_BEACON_TYPE_LEVEL_UP:
+    case GAME_BEACON_TYPE_EVOLUTION:
+    case GAME_BEACON_TYPE_UNION_ROOM_RECEPTION:
+    case GAME_BEACON_TYPE_CRITICAL_HIT:
+    case GAME_BEACON_TYPE_TOOK_CRITICAL_HIT:
+    case GAME_BEACON_TYPE_LOW_HP:
+    case GAME_BEACON_TYPE_LOW_PP:
+    case GAME_BEACON_TYPE_FAINTED:
+    case GAME_BEACON_TYPE_STATUS_CONDITION:
+    case GAME_BEACON_TYPE_EGG_HATCHED:
+    case GAME_BEACON_TYPE_MUSICAL:
         return;
     }
 }
 
 static u16 GameBeacon_GetTrainerID(const GameBeacon *beacon) {
     switch (beacon->type) {
-    case 0x6:
-    case 0x7:
-    case 0x8:
-    case 0x9:
-    case 0xa:
-    case 0xb:
+    case GAME_BEACON_TYPE_TRAINER_BATTLE_START:
+    case GAME_BEACON_TYPE_TRAINER_BATTLE_WIN:
+    case GAME_BEACON_TYPE_LEADER_BATTLE_START:
+    case GAME_BEACON_TYPE_LEADER_BATTLE_WIN:
+    case GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_START:
+    case GAME_BEACON_TYPE_SPECIAL_TRAINER_BATTLE_WIN:
         return beacon->payload.value;
     }
     return 1;
 }
 
 static u32 GameBeacon_GetNumber3Long(const GameBeacon *beacon) {
-    if (beacon->type == 0x16) {
+    if (beacon->type == GAME_BEACON_TYPE_THANKED_COUNT) {
         return beacon->payload.value32;
     }
     return 1;
 }
 
 static u16 GameBeacon_GetNumber3(const GameBeacon *beacon) {
-    if (beacon->type == 0x14) {
+    if (beacon->type == GAME_BEACON_TYPE_PLAY_TIME) {
         return beacon->payload.value;
     }
     return 1;
 }
 
 static u32 GameBeacon_GetNumber1(const GameBeacon *beacon) {
-    if (beacon->type == 0x29) {
+    if (beacon->type == GAME_BEACON_TYPE_BATTLE_SUBWAY_STREAK) {
         return beacon->payload.value32;
     }
     return 1;
 }
 
 static u8 GameBeacon_GetBattleInstitute(const GameBeacon *beacon) {
-    if (beacon->type == 0x2c) {
+    if (beacon->type == GAME_BEACON_TYPE_BATTLE_INSTITUTE_RANK) {
         return beacon->payload.value8;
     }
     return 0;
 }
 
 static u16 GameBeacon_GetPassPowerArg(const GameBeacon *beacon) {
-    if (beacon->type == 0x30) {
+    if (beacon->type == GAME_BEACON_TYPE_GIFT_PASS_POWER_USED) {
         return beacon->payload.value;
     }
     return 0;
@@ -617,8 +617,8 @@ static u16 GameBeacon_GetPassPowerArg(const GameBeacon *beacon) {
 
 static u8 GameBeacon_GetPokewoodLine(const GameBeacon *beacon) {
     switch (beacon->type) {
-    case 0x33:
-    case 0x34:
+    case GAME_BEACON_TYPE_POKEWOOD_SHOOTING:
+    case GAME_BEACON_TYPE_POKEWOOD_WATCHING:
         return beacon->payload.value8;
     }
     return 0;
@@ -626,13 +626,13 @@ static u8 GameBeacon_GetPokewoodLine(const GameBeacon *beacon) {
 
 static void GameBeacon_GetTournamentRound(const GameBeacon *beacon, u8 *tournament, u8 *round) {
     switch (beacon->type) {
-    case 0x35:
-    case 0x36:
-    case 0x38:
+    case GAME_BEACON_TYPE_TOURNAMENT_CHALLENGE:
+    case GAME_BEACON_TYPE_TOURNAMENT_ROUND_WIN:
+    case GAME_BEACON_TYPE_TOURNAMENT_WIN:
         *tournament = beacon->payload.pair.a;
         *round = beacon->payload.pair.b;
         break;
-    case 0x37:
+    case GAME_BEACON_TYPE_TOURNAMENT_ROUND_LOST:
         *tournament = beacon->payload.pair.a;
         *round = beacon->payload.pair.b + 1;
         break;
@@ -645,8 +645,8 @@ static void GameBeacon_GetTournamentRound(const GameBeacon *beacon, u8 *tourname
 
 static u8 GameBeacon_GetZoneAndNumber(const GameBeacon *beacon, u16 *zoneId) {
     switch (beacon->type) {
-    case 0x3a:
-    case 0x3b:
+    case GAME_BEACON_TYPE_AREA_CHALLENGE:
+    case GAME_BEACON_TYPE_AREA_CLEARED:
         *zoneId = beacon->payload.withExtra.value;
         return beacon->payload.withExtra.extra + 1;
     }
@@ -655,14 +655,14 @@ static u8 GameBeacon_GetZoneAndNumber(const GameBeacon *beacon, u16 *zoneId) {
 }
 
 static u8 GameBeacon_GetTypeFormat(int type) {
-    if (type >= BEACON_FORMAT_TYPE_MAX) {
+    if (type >= GAME_BEACON_TYPE_MISSION) {
         return BEACON_FORMAT_NONE;
     }
     return sTypeFormats[type].format;
 }
 
 u8 GameBeacon_GetTypeIcon(int type) {
-    if (type >= BEACON_FORMAT_TYPE_MAX) {
+    if (type >= GAME_BEACON_TYPE_MISSION) {
         return 0;
     }
     return sTypeFormats[type].icon;
@@ -872,10 +872,10 @@ static BOOL GameBeacon_IsTournamentInvalid(const GameBeacon *beacon) {
     if (beacon->payload.pair.a == 0 || beacon->payload.pair.a >= 0x10) {
         return TRUE;
     }
-    if (beacon->type == 0x35) {
+    if (beacon->type == GAME_BEACON_TYPE_TOURNAMENT_CHALLENGE) {
         max = 0;
         min = 0;
-    } else if (beacon->type == 0x37) {
+    } else if (beacon->type == GAME_BEACON_TYPE_TOURNAMENT_ROUND_LOST) {
         min = 0;
         max = 2;
     } else {
