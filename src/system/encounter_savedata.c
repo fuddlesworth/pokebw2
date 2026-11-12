@@ -33,7 +33,7 @@ u8 EncountSave_GetSwarmLocation(EncountSave *save) {
 }
 
 u8 EncountSave_GetEntryState(EncountSave *save, u8 index) {
-    return save->unk2A[index];
+    return save->entryState[index];
 }
 
 u8 EncountSave_GetRoamingPkmZoneClock(EncountSave *save, u8 slot) {
@@ -68,8 +68,8 @@ u32 EncountSave_GetRoamingPkmParam(const RoamingPkm *roamingPkm, u32 param) {
         return roamingPkm->status;
     case ROAMING_PKM_PARAM_ACTIVE:
         return roamingPkm->active;
-    case ROAMING_PKM_PARAM_UNK13:
-        return roamingPkm->unk13;
+    case ROAMING_PKM_PARAM_SPAWNED:
+        return roamingPkm->spawned;
     }
     return 0;
 }

@@ -159,7 +159,8 @@ typedef struct {
     u16 bgm;
     // The music that plays when the battle is won
     u16 winBgm;
-    // The still-opaque BtlSetup.unkA2 value, separate from the trainer's win words.
+    // The still-opaque BtlSetup.unkA2 value, separate from the trainer's win words. The recorder copies it to
+    // and from that field, and a link battle's sync data carries it, but no code gives either a value.
     u16 unk30;
     u8 battleType : 5;
     u8 playerClientId : 3;
@@ -190,6 +191,8 @@ struct BattleRecHeader {
     // Whether the video was saved as a secure one
     u8 secure;
     u8 version;
+    // Never accessed: the header is cleared, copied and CRC'd whole. Aletheia's BattleRecHeader calls these
+    // bytes unusedBytes
     u8 unk2C[0xc];
     // The video's number, which the server gives it and the CRC leaves out
     u64 dataNumber;
