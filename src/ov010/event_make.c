@@ -95,7 +95,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
     }
     switch (*state) {
     case PROC_STEP_COMM_DEMO:
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             battle->players->demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;
         } else {
             battle->players->demoType = COMM_BTL_DEMO_TYPE_MULTI_START;
@@ -107,7 +107,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         if (running == TRUE) {
             break;
         }
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             *state = PROC_STEP_LOAD_BATTLE;
         } else {
             *state = PROC_STEP_SYNC_LIST;
@@ -187,7 +187,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         *state = PROC_STEP_RESULT_DEMO;
         break;
     case PROC_STEP_RESULT_DEMO:
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             battle->players->demoType = COMM_BTL_DEMO_TYPE_SINGLE_END;
         } else {
             battle->players->demoType = COMM_BTL_DEMO_TYPE_MULTI_END;
@@ -210,7 +210,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
             battle->players->result = COMM_BTL_DEMO_RESULT_DRAW;
             break;
         }
-        if (battle->setup->fieldSituation.multiMode == 0) {
+        if (battle->setup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
             last = 1;
             first = 0;
             second = 1;

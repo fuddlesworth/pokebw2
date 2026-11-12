@@ -21,6 +21,77 @@
 #include "system/game_beacon.h"
 #include "system/game_comm.h"
 
+// The steps of BattleServer_ProcStart: send the setup, run the battle's start, then send its first commands and wait
+// for the clients to take them
+enum {
+    BTL_SERVER_START_SEQ_SETUP_VIEW,
+    BTL_SERVER_START_SEQ_WAIT_SETUP_VIEW,
+    BTL_SERVER_START_SEQ_WAIT_RECORD_START,
+    BTL_SERVER_START_SEQ_SEND_COMMANDS,
+    BTL_SERVER_START_SEQ_WAIT_COMMANDS,
+};
+
+// The steps of BattleServer_ProcSelectAction: the bag's mode setup, the clients' actions, and the turn they make
+enum {
+    BTL_SERVER_ACTION_SEQ_RUN_BAG,
+    BTL_SERVER_ACTION_SEQ_WAIT_BAG,
+    BTL_SERVER_ACTION_SEQ_SELECT_ACTION,
+    BTL_SERVER_ACTION_SEQ_WAIT_SELECT,
+    BTL_SERVER_ACTION_SEQ_WAIT_RECORD,
+    BTL_SERVER_ACTION_SEQ_PREPARE_TURN,
+    BTL_SERVER_ACTION_SEQ_RUN_TURN,
+    BTL_SERVER_ACTION_SEQ_WAIT_TURN,
+};
+
+// The steps of BattleServer_ProcAskEscape: ask whether the player goes on, then try to escape
+enum {
+    BTL_SERVER_ESCAPE_SEQ_CONFIRM,
+    BTL_SERVER_ESCAPE_SEQ_WAIT_CONFIRM,
+    BTL_SERVER_ESCAPE_SEQ_WAIT_ESCAPE,
+};
+
+// The steps of BattleServer_ProcChangePokemonEndTurn: the switch after a faint, and the turn it takes
+enum {
+    BTL_SERVER_FAINT_SEQ_SELECT_CHANGE,
+    BTL_SERVER_FAINT_SEQ_WAIT_SELECT,
+    BTL_SERVER_FAINT_SEQ_WAIT_CONFIRM,
+    BTL_SERVER_FAINT_SEQ_WAIT_RECORD,
+    BTL_SERVER_FAINT_SEQ_PREPARE,
+    BTL_SERVER_FAINT_SEQ_RUN,
+    BTL_SERVER_FAINT_SEQ_WAIT_RUN,
+};
+
+// The steps of BattleServer_ProcChangePokemonMidTurn: the switch a move makes in the middle of a turn, and the turn it
+// takes
+enum {
+    BTL_SERVER_MID_TURN_SEQ_SELECT_CHANGE,
+    BTL_SERVER_MID_TURN_SEQ_WAIT_SELECT,
+    BTL_SERVER_MID_TURN_SEQ_WAIT_RECORD,
+    BTL_SERVER_MID_TURN_SEQ_PREPARE,
+    BTL_SERVER_MID_TURN_SEQ_RUN,
+    BTL_SERVER_MID_TURN_SEQ_WAIT_RUN,
+};
+
+// The steps of BattleServer_ProcTimeUp: record the timeout, then tell the clients that time is up
+enum {
+    BTL_SERVER_TIME_UP_SEQ_SEND_TIMEOUT,
+    BTL_SERVER_TIME_UP_SEQ_WAIT_TIMEOUT,
+    BTL_SERVER_TIME_UP_SEQ_WAIT_TIME_UP,
+};
+
+// The steps of BattleServer_ProcWaitExit: wait for the player to press a key or touch the screen
+enum {
+    BTL_SERVER_WAIT_EXIT_SEQ_WAIT_INPUT,
+    BTL_SERVER_WAIT_EXIT_SEQ_END,
+};
+
+// The steps of the procs that end a battle: send the exit command, wait for the replies, then end
+enum {
+    BTL_SERVER_EXIT_SEQ_SEND_EXIT,
+    BTL_SERVER_EXIT_SEQ_WAIT_EXIT,
+    BTL_SERVER_EXIT_SEQ_END,
+};
+
 BtlServer *BattleServer_Create(BtlMainModule *mainModule, const MATHRandContext32 *rand, BtlPokeCon *pokeCon,
                                u32 commCompetitor, HeapID heapId) {
     BtlServer *server = GFL_HeapAllocate(heapId, sizeof(BtlServer), TRUE, "btl_server.c", 0xae);
@@ -117,10 +188,10 @@ void BattleServer_SetSelectActionProc(BtlServer *server) {
 
 BOOL BattleServer_ProcStart(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_START_SEQ_SETUP_VIEW:
         BattleServer_BroadcastCmd(server, BTL_ACMD_SETUP_VIEW);
         (*seq)++;
-    case 1:
+    case BTL_SERVER_START_SEQ_WAIT_SETUP_VIEW:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             if (BtlSetup_GetBattleType(server->mainModule) != BTL_TYPE_CAPTURE_DEMO) {
@@ -131,18 +202,18 @@ BOOL BattleServer_ProcStart(BtlServer *server, int *seq) {
             }
         }
         break;
-    case 2:
+    case BTL_SERVER_START_SEQ_WAIT_RECORD_START:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 3:
+    case BTL_SERVER_START_SEQ_SEND_COMMANDS:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_SERVER_CMD, server->queuePtr->buffer,
                                       server->queuePtr->writePtr);
         (*seq)++;
         break;
-    case 4:
+    case BTL_SERVER_START_SEQ_WAIT_COMMANDS:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             BattleServer_SetSelectActionProc(server);
@@ -154,7 +225,7 @@ BOOL BattleServer_ProcStart(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_ACTION_SEQ_RUN_BAG:
         if (ServerControl_RunBagModeSetup(server->flow)) {
             BattleServer_BroadcastCmdData(server, BTL_ACMD_SERVER_CMD, server->queuePtr->buffer,
                                           server->queuePtr->writePtr);
@@ -163,17 +234,17 @@ BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
             *seq += 2;
         }
         break;
-    case 1:
+    case BTL_SERVER_ACTION_SEQ_WAIT_BAG:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_ACTION_SEQ_SELECT_ACTION:
         BattleServer_BroadcastCmd(server, BTL_ACMD_SELECT_ACTION);
         (*seq)++;
         break;
-    case 3:
+    case BTL_SERVER_ACTION_SEQ_WAIT_SELECT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             if (IsGameTimeUp(server->mainModule)) {
@@ -182,7 +253,8 @@ BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
                 BattleServer_SetProc(server, BattleServer_ProcBattleEnd);
             } else {
                 BattleServer_StoreClientActions(server);
-                if (BattleServer_SendRecActionsChunk(server, 1, BattleServer_IsActionChapter(server))) {
+                if (BattleServer_SendRecActionsChunk(server, BTL_REC_CHECK_TURN,
+                                                     BattleServer_IsActionChapter(server))) {
                     (*seq)++;
                 } else {
                     *seq += 2;
@@ -190,17 +262,17 @@ BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
             }
         }
         break;
-    case 4:
+    case BTL_SERVER_ACTION_SEQ_WAIT_RECORD:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTL_SERVER_ACTION_SEQ_PREPARE_TURN:
         BtlServerFlow_PrepareTurn(server->flow);
         BattleServer_FinishCmd(server);
         (*seq)++;
-    case 6:
+    case BTL_SERVER_ACTION_SEQ_RUN_TURN:
         server->flowResult = BtlServerFlow_RunTurn(server->flow, &server->clientActions);
         if (GetCommMode(server->mainModule)) {
             BattleServer_NoOp(&server->clientActions);
@@ -209,7 +281,7 @@ BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
                                       server->queuePtr->writePtr);
         (*seq)++;
         break;
-    case 7:
+    case BTL_SERVER_ACTION_SEQ_WAIT_TURN:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             switch (server->flowResult) {
@@ -217,7 +289,7 @@ BOOL BattleServer_ProcSelectAction(BtlServer *server, int *seq) {
                 BattleServer_SetSelectActionProc(server);
                 break;
             case BTL_FLOW_RESULT_CONTINUE:
-                *seq = 6;
+                *seq = BTL_SERVER_ACTION_SEQ_RUN_TURN;
                 break;
             case BTL_FLOW_RESULT_FAINT_SWITCH: {
                 u32 battleType = BtlSetup_GetBattleType(server->mainModule);
@@ -257,11 +329,11 @@ BOOL BattleServer_IsActionChapter(BtlServer *server) {
 
 BOOL BattleServer_ProcAskEscape(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_ESCAPE_SEQ_CONFIRM:
         BattleServer_BroadcastCmd(server, BTL_ACMD_CONFIRM_NEXT_POKE);
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_ESCAPE_SEQ_WAIT_CONFIRM:
         if (BattleServer_AllClientsReplied(server)) {
             u8 clientId = GetPlayerClientID(server->mainModule);
             u8 *reply;
@@ -278,7 +350,7 @@ BOOL BattleServer_ProcAskEscape(BtlServer *server, int *seq) {
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_ESCAPE_SEQ_WAIT_ESCAPE:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             if (server->flowResult) {
@@ -293,11 +365,11 @@ BOOL BattleServer_ProcAskEscape(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcChangePokemonEndTurn(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_FAINT_SEQ_SELECT_CHANGE:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_SELECT_CHANGE_FAINTED, server->posList, server->count);
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_FAINT_SEQ_WAIT_SELECT:
         if (BattleServer_AllClientsReplied(server)) {
             if (DoesSwitchModeNeedConfirming(server)) {
                 server->switchModeMonId = GetNextEnemyForSwitchMode(server);
@@ -306,14 +378,14 @@ BOOL BattleServer_ProcChangePokemonEndTurn(BtlServer *server, int *seq) {
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_FAINT_SEQ_WAIT_CONFIRM:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             if (BtlMain_CheckOwnWindowDone(server->mainModule)) {
                 BattleServer_SetProc(server, BattleServer_ProcBattleEnd);
             } else {
                 BattleServer_StoreClientActions(server);
-                if (BattleServer_SendRecActionsChunk(server, 2, FALSE)) {
+                if (BattleServer_SendRecActionsChunk(server, BTL_REC_CHECK_FAINT_SWITCH, FALSE)) {
                     (*seq)++;
                 } else {
                     *seq += 2;
@@ -321,31 +393,31 @@ BOOL BattleServer_ProcChangePokemonEndTurn(BtlServer *server, int *seq) {
             }
         }
         break;
-    case 3:
+    case BTL_SERVER_FAINT_SEQ_WAIT_RECORD:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 4:
+    case BTL_SERVER_FAINT_SEQ_PREPARE:
         BattleServer_FinishCmd(server);
         BtlServerFlow_PrepareFaintSwitch(server->flow);
         (*seq)++;
-    case 5:
+    case BTL_SERVER_FAINT_SEQ_RUN:
         server->flowResult = BtlServerFlow_RunFaintSwitch(server->flow, &server->clientActions);
         BattleServer_BroadcastCmdData(server, BTL_ACMD_SERVER_CMD, server->queuePtr->buffer,
                                       server->queuePtr->writePtr);
         (*seq)++;
         break;
-    case 6:
+    case BTL_SERVER_FAINT_SEQ_WAIT_RUN:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             switch (server->flowResult) {
             case BTL_FLOW_RESULT_FAINT_SWITCH:
-                *seq = 0;
+                *seq = BTL_SERVER_FAINT_SEQ_SELECT_CHANGE;
                 break;
             case BTL_FLOW_RESULT_CONTINUE:
-                *seq = 5;
+                *seq = BTL_SERVER_FAINT_SEQ_RUN;
                 break;
             case BTL_FLOW_RESULT_BATTLE_END:
                 SetBattleResult(server->mainModule, BtlServerFlow_GetBattleResult(server->flow));
@@ -401,18 +473,18 @@ u8 GetNextEnemyForSwitchMode(BtlServer *server) {
 
 BOOL BattleServer_ProcChangePokemonMidTurn(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_MID_TURN_SEQ_SELECT_CHANGE:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_SELECT_CHANGE_MID_TURN, server->posList, server->count);
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_MID_TURN_SEQ_WAIT_SELECT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             if (BtlMain_CheckOwnWindowDone(server->mainModule)) {
                 BattleServer_SetProc(server, BattleServer_ProcBattleEnd);
             } else {
                 BattleServer_StoreClientActions(server);
-                if (BattleServer_SendRecActionsChunk(server, 3, FALSE)) {
+                if (BattleServer_SendRecActionsChunk(server, BTL_REC_CHECK_MID_TURN_SWITCH, FALSE)) {
                     (*seq)++;
                 } else {
                     *seq += 2;
@@ -420,32 +492,32 @@ BOOL BattleServer_ProcChangePokemonMidTurn(BtlServer *server, int *seq) {
             }
         }
         break;
-    case 2:
+    case BTL_SERVER_MID_TURN_SEQ_WAIT_RECORD:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 3:
+    case BTL_SERVER_MID_TURN_SEQ_PREPARE:
         BattleServer_FinishCmd(server);
         BtlServerFlow_PrepareMidTurnSwitch(server->flow);
         (*seq)++;
-    case 4:
+    case BTL_SERVER_MID_TURN_SEQ_RUN:
         BtlServerCmdQueue_Init(server->queuePtr);
         server->flowResult = BtlServerFlow_RunMidTurnSwitch(server->flow, &server->clientActions);
         BattleServer_BroadcastCmdData(server, BTL_ACMD_SERVER_CMD, server->queuePtr->buffer,
                                       server->queuePtr->writePtr);
         (*seq)++;
         break;
-    case 5:
+    case BTL_SERVER_MID_TURN_SEQ_WAIT_RUN:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             switch (server->flowResult) {
             case BTL_FLOW_RESULT_MID_TURN_SWITCH:
-                *seq = 0;
+                *seq = BTL_SERVER_MID_TURN_SEQ_SELECT_CHANGE;
                 break;
             case BTL_FLOW_RESULT_CONTINUE:
-                *seq = 4;
+                *seq = BTL_SERVER_MID_TURN_SEQ_RUN;
                 break;
             case BTL_FLOW_RESULT_FAINT_SWITCH:
                 BattleServer_SetProc(server, BattleServer_ProcChangePokemonEndTurn);
@@ -468,7 +540,7 @@ BOOL BattleServer_ProcChangePokemonMidTurn(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcTimeUp(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0: {
+    case BTL_SERVER_TIME_UP_SEQ_SEND_TIMEOUT: {
         u32 size;
         void *data = BtlRecTool_MakeTimeoutChunk(&server->recTool, &size);
 
@@ -476,14 +548,14 @@ BOOL BattleServer_ProcTimeUp(BtlServer *server, int *seq) {
         (*seq)++;
         break;
     }
-    case 1:
+    case BTL_SERVER_TIME_UP_SEQ_WAIT_TIMEOUT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             BattleServer_BroadcastCmd(server, BTL_ACMD_TIME_UP);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_TIME_UP_SEQ_WAIT_TIME_UP:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             SetBattleResult(server->mainModule, BtlServerFlow_GetBattleResult(server->flow));
@@ -530,7 +602,7 @@ BOOL BattleServer_ProcBattleEnd(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcWaitExit(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0: {
+    case BTL_SERVER_WAIT_EXIT_SEQ_WAIT_INPUT: {
         BOOL done = FALSE;
 
         if (!IsRecPlayMode(server->mainModule)) {
@@ -546,7 +618,7 @@ BOOL BattleServer_ProcWaitExit(BtlServer *server, int *seq) {
         }
         break;
     }
-    case 1:
+    case BTL_SERVER_WAIT_EXIT_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -554,17 +626,17 @@ BOOL BattleServer_ProcWaitExit(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcWildWin(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_EXIT_SEQ_SEND_EXIT:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_EXIT_WILD_WIN, &server->exitData, sizeof(server->exitData));
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_EXIT_SEQ_WAIT_EXIT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_EXIT_SEQ_END:
         BattleServer_SetProc(server, BattleServer_ProcWaitExit);
         break;
     }
@@ -573,17 +645,17 @@ BOOL BattleServer_ProcWildWin(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcWildLose(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_EXIT_SEQ_SEND_EXIT:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_EXIT_WILD_LOSE, &server->exitData, sizeof(server->exitData));
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_EXIT_SEQ_WAIT_EXIT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_EXIT_SEQ_END:
         BattleServer_SetProc(server, BattleServer_ProcWaitExit);
         break;
     }
@@ -592,17 +664,17 @@ BOOL BattleServer_ProcWildLose(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcCommEnd(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_EXIT_SEQ_SEND_EXIT:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_EXIT_COMM, &server->exitData, sizeof(server->exitData));
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_EXIT_SEQ_WAIT_EXIT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_EXIT_SEQ_END:
         return TRUE;
     }
     return FALSE;
@@ -610,17 +682,17 @@ BOOL BattleServer_ProcCommEnd(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcTrainerEnd(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_EXIT_SEQ_SEND_EXIT:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_EXIT_TRAINER, &server->exitData, sizeof(server->exitData));
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_EXIT_SEQ_WAIT_EXIT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_EXIT_SEQ_END:
         BattleServer_SetProc(server, BattleServer_ProcWaitExit);
         break;
     }
@@ -629,17 +701,17 @@ BOOL BattleServer_ProcTrainerEnd(BtlServer *server, int *seq) {
 
 BOOL BattleServer_ProcFacilityEnd(BtlServer *server, int *seq) {
     switch (*seq) {
-    case 0:
+    case BTL_SERVER_EXIT_SEQ_SEND_EXIT:
         BattleServer_BroadcastCmdData(server, BTL_ACMD_EXIT_FACILITY, &server->exitData, sizeof(server->exitData));
         (*seq)++;
         break;
-    case 1:
+    case BTL_SERVER_EXIT_SEQ_WAIT_EXIT:
         if (BattleServer_AllClientsReplied(server)) {
             BattleServer_FinishCmd(server);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTL_SERVER_EXIT_SEQ_END:
         if (!GetCommMode(server->mainModule)) {
             BattleServer_SetProc(server, BattleServer_ProcWaitExit);
             break;
@@ -677,18 +749,18 @@ void BattleServer_NoOp(BtlClientActions *clientActions) {
 BOOL BattleServer_CheckCmdMismatch(BtlServer *server, u32 mode, const void *data, u32 size) {
     BtlServerCmdQueue_Init(server->queuePtr);
     switch (mode) {
-    case 4:
+    case BTL_REC_CHECK_START:
         BtlServerFlow_StartBattle(server->flow);
         break;
-    case 1:
+    case BTL_REC_CHECK_TURN:
         BtlServerFlow_PrepareTurn(server->flow);
         BtlServerFlow_RunTurn(server->flow, &server->clientActions);
         break;
-    case 2:
+    case BTL_REC_CHECK_FAINT_SWITCH:
         BtlServerFlow_PrepareFaintSwitch(server->flow);
         BtlServerFlow_RunFaintSwitch(server->flow, &server->clientActions);
         break;
-    case 3:
+    case BTL_REC_CHECK_MID_TURN_SWITCH:
         BtlServerFlow_PrepareMidTurnSwitch(server->flow);
         BtlServerFlow_RunMidTurnSwitch(server->flow, &server->clientActions);
         break;

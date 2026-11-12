@@ -85,7 +85,7 @@ void EventIRC_RecordFriendBattles(EventIRCWork *work, GameData *gameData) {
     PlayerInfo *info;
     u32 friendIndex;
 
-    if (work->btlSetup->fieldSituation.multiMode == 0) {
+    if (work->btlSetup->fieldSituation.multiMode == BTL_MULTI_MODE_NONE) {
         partner = -1;
         count = 2;
     } else {
@@ -318,7 +318,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
             BtlSetup_SetNetMultiVsNet(work->btlSetup, work->gameData, NetHandle_GetOwn(), 1,
                                       positions[work->ircMatch.order[GFL_NetGetHandleNetId(NetHandle_GetOwn())]],
                                       HEAPID_GAMEEVENT);
-            work->btlSetup->fieldSituation.multiMode = 1;
+            work->btlSetup->fieldSituation.multiMode = BTL_MULTI_MODE_NET_VS_NET;
             work->btlSetup->battleStyle = 1;
             TrimPartiesTo3Members(work);
             break;

@@ -216,7 +216,7 @@ void BtlRecTool_Init(BtlRecTool *tool, BOOL chapter) {
 }
 
 void *BtlRecTool_MakeTurnChunk(BtlRecTool *tool, u32 *size, BOOL chapter) {
-    tool->data[0] = 4;
+    tool->data[0] = BTL_REC_CHECK_START;
     tool->data[1] = MakeHeader(0, BTL_REC_CHUNK_TURN, chapter);
     *size = 2;
     return tool->data;
@@ -253,7 +253,7 @@ void *BtlRecTool_FinishChunk(BtlRecTool *tool, u8 value, u32 *size) {
 }
 
 void *BtlRecTool_MakeTimeoutChunk(BtlRecTool *tool, u32 *size) {
-    tool->data[0] = 0;
+    tool->data[0] = BTL_REC_CHECK_NONE;
     tool->data[1] = MakeHeader(0, BTL_REC_CHUNK_TIMEOUT, FALSE);
     *size = 2;
     return tool->data;

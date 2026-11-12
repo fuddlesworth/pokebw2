@@ -19322,6 +19322,7 @@ overlays/ov167 0x0219c95c GetBagCursor
 overlays/ov167 0x0219c964 IsRecordingEnabled
 overlays/ov167 0x0219c980 IsRecPlayMode
 overlays/ov167 0x0219c988 GetStudioMode
+overlays/ov167 0x0219c99c BtlSetup_GetAlternateFieldVariant
 overlays/ov167 0x0219c9b0 GetStudioMovieId
 overlays/ov167 0x0219c9c0 IsStudioSkipDisabled
 overlays/ov167 0x0219c9d4 SetRecPlayQuit

@@ -54,7 +54,7 @@ struct BtlvEffectSetup {
     BtlMainModule *mainModule; // 0x28
     u16 studioMode;            // 0x2c  BTL_STUDIO_MODE_*, GetStudioMode's value
     u16 studioField;           // 0x2e  the scripted rules' unk24, read when studioMode != 0: a playback's field
-    u32 unk30;                 // 0x30  func_ov167_0219c99c's value
+    u32 alternateFieldVariant; // 0x30  BtlSetup_GetAlternateFieldVariant's value
 };
 
 typedef void (*BtlvEffectTaskCallback)(TCB *task);
@@ -182,7 +182,7 @@ enum {
 };
 
 static u32 BtlvEffect_GetStudioMode(BtlMainModule *mainModule);
-static u32 BtlvEffect_GetStudioParam(BtlMainModule *mainModule);
+static u32 BtlvEffect_GetAlternateFieldVariant(BtlMainModule *mainModule);
 static void BtlvEffect_Stop(void);
 static void BtlvEffect_GetZoomCameraPosTarget(u32 viewPos, VecFx32 *camPos, VecFx32 *camTarget);
 static int BtlvEffect_FindTask(TCB *tcb);
@@ -219,9 +219,9 @@ static u32 BtlvEffect_GetStudioMode(BtlMainModule *mainModule) {
     return BTL_STUDIO_MODE_NONE;
 }
 
-static u32 BtlvEffect_GetStudioParam(BtlMainModule *mainModule) {
+static u32 BtlvEffect_GetAlternateFieldVariant(BtlMainModule *mainModule) {
     if (mainModule != NULL) {
-        return func_ov167_0219c99c(mainModule);
+        return BtlSetup_GetAlternateFieldVariant(mainModule);
     }
     return 0;
 }
@@ -238,7 +238,7 @@ BtlvEffectSetup *BtlvEffect_Create(u32 battleStyle, u32 battleType, const BtlFie
     setup->multi = multi;
     setup->scu = scu;
     setup->mainModule = mainModule;
-    setup->unk30 = BtlvEffect_GetStudioParam(mainModule);
+    setup->alternateFieldVariant = BtlvEffect_GetAlternateFieldVariant(mainModule);
     setup->studioMode = BtlvEffect_GetStudioMode(mainModule);
     if (setup->studioMode != BTL_STUDIO_MODE_NONE) {
         setup->studioField = GetStudioRules(mainModule)->field;
@@ -317,10 +317,11 @@ void BtlvEffect_Init(BtlvEffectSetup *setup, Font *font, HeapID heapId) {
         sBtlvEffect->field =
             BtlvField_Create(BtlSetup_IsBattleType(sBtlvEffect->setup.mainModule, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS),
                              bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain], season, heapId,
-                             setup->studioMode, setup->studioField, setup->unk30);
+                             setup->studioMode, setup->studioField, setup->alternateFieldVariant);
     } else {
-        sBtlvEffect->field = BtlvField_Create(FALSE, bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain],
-                                              season, heapId, setup->studioMode, setup->studioField, setup->unk30);
+        sBtlvEffect->field =
+            BtlvField_Create(FALSE, bgData[setup->fieldEnv.bgType].fieldIds[setup->fieldEnv.terrain], season, heapId,
+                             setup->studioMode, setup->studioField, setup->alternateFieldVariant);
     }
     if (bgData[setup->fieldEnv.bgType].light) {
         Light light;

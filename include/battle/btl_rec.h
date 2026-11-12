@@ -8,8 +8,22 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
-// The actions of a turn, as a chunk of the recording: the chunk's header in data[0] and data[1], then the clients in
-// clientFlags, each with a byte (client ID in bits 5 to 7, action count in bits 0 to 4) and its actions
+// What a recorded chunk asks its playback to check: the server step that made it, in the chunk's first byte
+enum {
+    // A timeout, which checks no step
+    BTL_REC_CHECK_NONE,
+    // A turn's actions
+    BTL_REC_CHECK_TURN,
+    // The switch after a faint
+    BTL_REC_CHECK_FAINT_SWITCH,
+    // The switch a move makes in the middle of a turn
+    BTL_REC_CHECK_MID_TURN_SWITCH,
+    // The battle's start
+    BTL_REC_CHECK_START,
+};
+
+// The actions of a turn, as a chunk of the recording: the check request in data[0], the chunk's header in data[1], then
+// the clients in clientFlags, each with a byte (client ID in bits 5 to 7, action count in bits 0 to 4) and its actions
 typedef struct {
     u8 size;
     u8 clientFlags;
