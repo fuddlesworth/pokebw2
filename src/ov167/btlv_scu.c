@@ -121,7 +121,7 @@ struct BtlvScu {
     HeapID heapId;                     // 0x13C
     u8 printedAtOnce;                  // 0x13E set by BtlvScu_PrintMsgAtOnce: the window is neither cleared nor
                                        //       streamed
-    u8 msgSeq;                         // 0x13F the state of BtlvScu_WaitMsg, 7 when done
+    u8 msgSeq;                         // 0x13F the state of BtlvScu_WaitMsg, BTLV_SCU_MSG_SEQ_DONE when done
     u8 clientId;                       // 0x140 only stored
     u8 msgFinished;                    // 0x141 set when the stream reports PRINT_STREAM_DONE, read and cleared by
                                        //       BtlvScu_IsMsgFinished
@@ -595,11 +595,11 @@ static void BtlvScu_EncountFadeIn(s32 wait) {
     }
 }
 
-// The steps of a recorded battle's encounter: show every mon and its gauge at once, then fade in unless the whole
-// battle is a playback, and wait for the effect
+// The steps of a recorded battle's encounter: show every mon and its gauge at once, then end. Every caller is a
+// chapter-skip playback, so the sequence ends at this step; the fade and wait after it are retained dead code.
 enum {
     BTLV_SCU_REC_PLAY_SEQ_SHOW_MONS,
-    BTLV_SCU_REC_PLAY_SEQ_FADE_IN,
+    BTLV_SCU_REC_PLAY_SEQ_FADE_IN_OR_DONE,
     BTLV_SCU_REC_PLAY_SEQ_WAIT_EFFECT,
 };
 
@@ -619,7 +619,7 @@ static BOOL BtlvScu_EncountRecPlay(BtlvScu *scu, s32 *seq, const u8 *viewPos, u1
         }
         (*seq)++;
         break;
-    case BTLV_SCU_REC_PLAY_SEQ_FADE_IN:
+    case BTLV_SCU_REC_PLAY_SEQ_FADE_IN_OR_DONE:
         if (scu->recPlay) {
             return TRUE;
         }
@@ -1222,7 +1222,7 @@ static BOOL BtlvScu_StepTrainersAppear(BtlvScu *scu, s32 *seq) {
     return BtlvScu_StepOneTrainerAppear(scu, seq, clientId1);
 }
 
-// The steps of one opposing trainer's appearance in a multi battle: the trainer, the ball gauge and the message
+// The steps of one opposing trainer's appearance: the trainer, the ball gauge and the message
 enum {
     BTLV_SCU_TRAINER_APPEAR_SEQ_SETUP_TRAINER,
     BTLV_SCU_TRAINER_APPEAR_SEQ_TRAINER_APPEAR,
@@ -1231,7 +1231,7 @@ enum {
     BTLV_SCU_TRAINER_APPEAR_SEQ_WAIT_MSG_WIN_HIDE,
 };
 
-// One opposing trainer sends out a mon
+// One opposing trainer appears: the trainer sprite, the ball gauge and the message
 static BOOL BtlvScu_StepOneTrainerAppear(BtlvScu *scu, s32 *seq, u8 clientId) {
     BtlvScuTrainerWork *work = (BtlvScuTrainerWork *)scu->work;
     BtlvBGaugeParam balls;
