@@ -20,8 +20,10 @@
 #include "constants/battle.h"
 #include "constants/items.h"
 #include "constants/moves.h"
+#include "constants/pokemon.h"
 #include "constants/types.h"
 #include "gfl/std.h"
+#include "pml/item.h"
 #include "pml/move.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
@@ -613,15 +615,25 @@ typedef struct {
 
 // clang-format off
 static const BtlFlowEVParam sEVParams[6] = {
-    { 0x0a, 0x0d, 0x126 },
-    { 0x0b, 0x0e, 0x121 },
-    { 0x0c, 0x0f, 0x122 },
-    { 0x0d, 0x10, 0x125 },
-    { 0x0e, 0x11, 0x123 },
-    { 0x0f, 0x12, 0x124 },
+    { PERSONAL_EV_HP, PKM_PARAM_EV_HP, ITEM_POWER_WEIGHT },
+    { PERSONAL_EV_ATTACK, PKM_PARAM_EV_ATTACK, ITEM_POWER_BRACER },
+    { PERSONAL_EV_DEFENSE, PKM_PARAM_EV_DEFENSE, ITEM_POWER_BELT },
+    { PERSONAL_EV_SPEED, PKM_PARAM_EV_SPEED, ITEM_POWER_ANKLET },
+    { PERSONAL_EV_SP_ATTACK, PKM_PARAM_EV_SP_ATTACK, ITEM_POWER_LENS },
+    { PERSONAL_EV_SP_DEFENSE, PKM_PARAM_EV_SP_DEFENSE, ITEM_POWER_BAND },
 };
 
 // clang-format on
+
+// The effort values' order, which BtlFlowExpEntry and sEVParams share
+enum {
+    BTL_EV_HP = 0,
+    BTL_EV_ATTACK = 1,
+    BTL_EV_DEFENSE = 2,
+    BTL_EV_SPEED = 3,
+    BTL_EV_SP_ATTACK = 4,
+    BTL_EV_SP_DEFENSE = 5,
+};
 
 // Function name from swan.
 static void AddEVs(BattleMon *mon, BattleMon *defeated, BtlFlowExpEntry *entry) {
@@ -667,22 +679,22 @@ static void AddEVs(BattleMon *mon, BattleMon *defeated, BtlFlowExpEntry *entry) 
             }
             PokeParty_SetParam(pkm, field, total);
             switch (i) {
-            case 0:
+            case BTL_EV_HP:
                 entry->hp = evs[i];
                 break;
-            case 1:
+            case BTL_EV_ATTACK:
                 entry->attack = evs[i];
                 break;
-            case 2:
+            case BTL_EV_DEFENSE:
                 entry->defense = evs[i];
                 break;
-            case 3:
+            case BTL_EV_SPEED:
                 entry->speed = evs[i];
                 break;
-            case 4:
+            case BTL_EV_SP_ATTACK:
                 entry->spAttack = evs[i];
                 break;
-            case 5:
+            case BTL_EV_SP_DEFENSE:
                 entry->spDefense = evs[i];
                 break;
             }
@@ -727,13 +739,23 @@ static const BtlFlowItemEffect sBagItemEffects[23] = {
     { ITEM_RESET_URGE, 2, TRUE, BagItemResetUrge },
 };
 
+// Where the mon a bag item is used on stands
+enum {
+    // In battle, at a position the clients can see
+    BAG_ITEM_PLACEMENT_BATTLE = 0,
+    // In a rotation battle's back slots, which an item can still reach
+    BAG_ITEM_PLACEMENT_ROTATION_BACK = 1,
+    // In the party, where only the items with an exact effect reach it
+    BAG_ITEM_PLACEMENT_PARTY = 2,
+};
+
 // A trainer uses an item from the bag on a party mon
 u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) {
     u8 numOut;
     BattleParty *party;
     u8 clientId;
     u8 targetId;
-    u8 place;
+    u8 placement;
     BattleMon *target;
     u32 state;
     u8 targetPos;
@@ -750,30 +772,30 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
     clientId = GetClientIDFromMonID(GetMonID(mon));
     target = NULL;
     placed = 0;
-    if (slot != 6) {
+    if (slot != BTL_SLOT_NONE) {
         party = GetPartyData(flow->pokeCon, clientId);
         numOut = GetClientBattlerCount(flow->mainModule, clientId);
         target = BattleParty_GetMon(party, slot);
         targetId = GetMonID(target);
         targetPos = GetBattlePos(&flow->posPoke, targetId);
-        // 0 for a mon in battle, 1 for one in a rotation battle's back slots, 2 for one in the party
         if (slot >= numOut) {
-            placed = 2;
+            placed = BAG_ITEM_PLACEMENT_PARTY;
         }
-        place = placed;
-        if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION && place == 2 && slot < 3) {
-            place = 1;
+        placement = placed;
+        if (BtlSetup_GetBattleStyle(flow->mainModule) == BTL_STYLE_ROTATION && placement == BAG_ITEM_PLACEMENT_PARTY &&
+            slot < 3) {
+            placement = BAG_ITEM_PLACEMENT_ROTATION_BACK;
         }
     }
     if (flow->commCompetitor != 1) {
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, 0x21, clientId, item, SC_MSG_ARG_END);
-        if (ItemGetParam(item, 0xf) == 4) {
+        if (ItemGetParam(item, ITEM_PARAM_KIND) == ITEM_KIND_BALL) {
             if (ThrowBall(flow, mon, item)) {
                 BattleClient_SubItem(flow->mainModule, clientId, item);
             }
             return FALSE;
         }
-        if (ItemGetParam(item, 7) == 3) {
+        if (ItemGetParam(item, ITEM_PARAM_BATTLE_FUNC) == ITEM_BATTLE_FUNC_ESCAPE) {
             BattleClient_SubItem(flow->mainModule, clientId, item);
             return TRUE;
         }
@@ -783,7 +805,7 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
             IncRecord(flow->mainModule, 0x6f);
         }
     }
-    usable = place == 0 && targetPos != BTL_POS_NONE ? TRUE : FALSE;
+    usable = placement == BAG_ITEM_PLACEMENT_BATTLE && targetPos != BTL_POS_NONE ? TRUE : FALSE;
     if (!usable) {
         for (i = 0; i < 23; i++) {
             effect = &sBagItemEffects[i];
@@ -792,7 +814,7 @@ u8 UseBagItem(BtlServerFlow *flow, BattleMon *mon, u16 item, u8 param, u8 slot) 
                     usable = TRUE;
                     break;
                 }
-                if (effect->place == 1 && place < 2 && targetPos != BTL_POS_NONE) {
+                if (effect->place == 1 && placement < BAG_ITEM_PLACEMENT_PARTY && targetPos != BTL_POS_NONE) {
                     usable = TRUE;
                     break;
                 }
@@ -994,6 +1016,7 @@ static fx32 GetBallCaptureMod(BtlServerFlow *flow, BattleMon *mon, BattleMon *ta
         if (BtlSetup_IsBattleType(flow->mainModule, BTL_SETUP_FLAG_FISHING)) {
             return FX32_CONST(3.5);
         }
+        // Terrain 6 is the water of a fishing battle
         if (GetFieldEffectData(flow->mainModule)->env.terrain == 6) {
             return FX32_CONST(3.5);
         }
@@ -1028,10 +1051,11 @@ static fx32 GetBallCaptureMod(BtlServerFlow *flow, BattleMon *mon, BattleMon *ta
         const BtlFieldSituation *field = GetFieldEffectData(flow->mainModule);
         u8 period = GetDayPeriod(field->env.season, field->env.hour);
 
+        // Backgrounds 4 and 5 are dark at any hour
         if (field->env.bgType == 4 || field->env.bgType == 5) {
             return FX32_CONST(3.5);
         }
-        if (IsDuskBallBackground(field->env.bgType) && (period == 3 || period == 4)) {
+        if (IsDuskBallBackground(field->env.bgType) && (period == DAY_PERIOD_NIGHT || period == DAY_PERIOD_MIDNIGHT)) {
             return FX32_CONST(3.5);
         }
         break;
@@ -1119,6 +1143,13 @@ static BOOL BagItemGuardSpec(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
     return FALSE;
 }
 
+// Special amounts stored in an item's HP restore field
+enum {
+    HP_RESTORE_QUARTER = 253,
+    HP_RESTORE_HALF = 254,
+    HP_RESTORE_ALL = 255,
+};
+
 // Revives a fainted mon with the HP the item gives
 static BOOL BagItemRevive(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 value, u8 param) {
     u8 monId;
@@ -1128,18 +1159,18 @@ static BOOL BagItemRevive(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 val
         monId = GetMonID(mon);
         revive = BattleHandler_PushWork(flow, BTL_HANDLER_REVIVE, monId);
         revive->monIndex = monId;
-        switch (ItemGetParam(item, 0x3a)) {
-        case 0xff:
+        switch (ItemGetParam(item, ITEM_PARAM_HP_RESTORE_AMOUNT)) {
+        case HP_RESTORE_ALL:
             revive->amount = GetBattleMonStat(mon, BATTLEMON_MAX_HP);
             break;
-        case 0xfe:
+        case HP_RESTORE_HALF:
             revive->amount = DivideMaxHPZeroCheck(mon, 2);
             break;
-        case 0xfd:
+        case HP_RESTORE_QUARTER:
             revive->amount = DivideMaxHPZeroCheck(mon, 4);
             break;
         default:
-            revive->amount = ItemGetParam(item, 0x3a);
+            revive->amount = ItemGetParam(item, ITEM_PARAM_HP_RESTORE_AMOUNT);
             break;
         }
         BattleHandler_StrSetup(&revive->string, 2, 3);
@@ -1195,6 +1226,9 @@ static BOOL BagItemDireHit(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 va
     return FALSE;
 }
 
+// The amount of PokeParty_AddPP that restores all of a move's PP (src/system/poke_recover.c)
+#define PP_RESTORE_ALL 127
+
 // An Ether restores the PP of one move
 static BOOL BagItemRestorePP(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 value, u8 slot) {
     u8 monId;
@@ -1205,8 +1239,8 @@ static BOOL BagItemRestorePP(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
     if (BattleMon_GetOrgMoveCount(mon) > slot) {
         monId = GetMonID(mon);
         amount = BattleMon_GetOrgMovePPUsed(mon, slot);
-        maxAmount = ItemGetParam(item, 0x3b);
-        if (maxAmount != 0x7f && amount > maxAmount) {
+        maxAmount = ItemGetParam(item, ITEM_PARAM_PP_RESTORE_AMOUNT);
+        if (maxAmount != PP_RESTORE_ALL && amount > maxAmount) {
             amount = maxAmount;
         }
         if (amount != 0) {
@@ -1237,7 +1271,7 @@ static BOOL BagItemRestoreAllPP(BtlServerFlow *flow, BattleMon *mon, u16 item, s
     BattleHandlerMessageParam *message;
 
     monId = GetMonID(mon);
-    maxAmount = ItemGetParam(item, 0x3b);
+    maxAmount = ItemGetParam(item, ITEM_PARAM_PP_RESTORE_AMOUNT);
     used = FALSE;
     numMoves = BattleMon_GetOrgMoveCount(mon);
     for (i = 0; i < numMoves; i++) {
@@ -1275,15 +1309,15 @@ static BOOL BagItemRestoreHP(BtlServerFlow *flow, BattleMon *mon, u16 item, s32 
         recover = BattleHandler_PushWork(flow, BTL_HANDLER_RECOVER_HP, monId);
         recover->targetIndex = monId;
         recover->skipCheck = TRUE;
-        amount = ItemGetParam(item, 0x3a);
+        amount = ItemGetParam(item, ITEM_PARAM_HP_RESTORE_AMOUNT);
         switch (amount) {
-        case 0xff:
+        case HP_RESTORE_ALL:
             recover->amount = GetBattleMonStat(mon, BATTLEMON_MAX_HP);
             break;
-        case 0xfe:
+        case HP_RESTORE_HALF:
             recover->amount = DivideMaxHPZeroCheck(mon, 2);
             break;
-        case 0xfd:
+        case HP_RESTORE_QUARTER:
             recover->amount = DivideMaxHPZeroCheck(mon, 4);
             break;
         default:
@@ -1392,6 +1426,7 @@ static BOOL BagItemAbilityUrge(BtlServerFlow *flow, BattleMon *mon, u16 item, s3
         BtlServerFlow_TriggerAbility(flow, mon);
         result = BtlServerFlow_GetHandlerResult(flow);
         PopState(&flow->actionState, state, 0x79c);
+        // 2 is BattleHandler_Result's success
         if (result == 2) {
             return TRUE;
         }
@@ -1534,6 +1569,8 @@ s32 CheckScriptedBattleRules(BtlMainModule *mainModule, BtlPokeCon *pokeCon) {
 
     rules = GetStudioRules(mainModule);
     playerDown = IsPartyAllFainted(GetPartyData(pokeCon, 0));
+    // The movie's rule, which picks its win and loss conditions. The rule ID comes from the movie's data, so the
+    // cases keep its number
     switch (rules->rule) {
     case 2: {
         BattleParty *party = GetPartyData(pokeCon, 1);

@@ -47,6 +47,33 @@ static u16 sHitDamages[3];
 static u8 sHitEndureCauses[3];
 static u8 sHitCritical[3];
 
+// BattleMon_GetSemiInvulnFlag's value when none of the states that keep a mon out of reach is set
+#define BTL_SEMI_INVULN_NONE 0x10
+
+// A weather's duration when it lasts until another move changes it, the field's own (btl_field.c's
+// WEATHER_TURNS_PERMANENT)
+#define WEATHER_TURNS_PERMANENT 0xff
+
+// A move's MOVE_PARAM_CONDITION when its handler decides the condition (ServerEvent_DecideSpecialMoveCondition)
+#define MOVE_CONDITION_SPECIAL 0xffff
+
+// The steps of a turn's check, which fall through from one to the next until one ends the turn
+enum {
+    BTL_TURN_CHECK_SEQ_START = 0,
+    // The weather and the battle's first check of the turn
+    BTL_TURN_CHECK_SEQ_WEATHER = 1,
+    // BTL_EVENT_TURN_CHECK_BEGIN
+    BTL_TURN_CHECK_SEQ_BEGIN = 2,
+    // The mons' conditions
+    BTL_TURN_CHECK_SEQ_CONDITIONS = 3,
+    // The sides' and the field's effects
+    BTL_TURN_CHECK_SEQ_SIDE_FIELD = 4,
+    // BTL_EVENT_TURN_CHECK_END
+    BTL_TURN_CHECK_SEQ_END = 5,
+    // BTL_EVENT_TURN_CHECK_DONE and each mon's end of turn
+    BTL_TURN_CHECK_SEQ_DONE = 6,
+};
+
 BtlServerFlow *BtlServerFlow_Create(BtlServer *server, BtlMainModule *mainModule, BtlPokeCon *pokeCon,
                                     BtlServerCmdQueue *queue, u32 commCompetitor, HeapID heapId) {
     BtlServerFlow *flow;
@@ -96,7 +123,7 @@ void BtlServerFlow_InitWork(BtlServerFlow *flow) {
     flow->lastUsedMove = 0;
     flow->capturePos = BTL_POS_NONE;
     flow->simulationDepth = 0;
-    flow->turnCheckSeq = 0;
+    flow->turnCheckSeq = BTL_TURN_CHECK_SEQ_START;
     flow->serial = 0;
     flow->unk78A_6 = 0;
 }
@@ -404,7 +431,8 @@ BOOL ServerControl_CheckMatchup(BtlServerFlow *flow) {
         }
     }
     func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
-    if ((GetStudioMode(flow->mainModule) == 1 || GetStudioMode(flow->mainModule) == 2) &&
+    if ((GetStudioMode(flow->mainModule) == BTL_STUDIO_MODE_FILM ||
+         GetStudioMode(flow->mainModule) == BTL_STUDIO_MODE_PLAYBACK) &&
         CheckScriptedBattleRules(flow->mainModule, flow->pokeCon)) {
         return TRUE;
     }
@@ -1685,7 +1713,7 @@ void ServerControl_Fight(BtlServerFlow *flow, BattleMon *mon, BattleAction *acti
     } else if (GetConditionCount(mon, 3)) {
         ServerControl_SetMonCounter(flow, mon, 3, 0);
     }
-    if (prevStatus != 0x10 && BattleMon_GetSemiInvulnFlag(mon) != 0x10) {
+    if (prevStatus != BTL_SEMI_INVULN_NONE && BattleMon_GetSemiInvulnFlag(mon) != BTL_SEMI_INVULN_NONE) {
         ServerControl_ClearChargeState(flow, mon);
     }
     if (GetTurnFlag(mon, 0xb)) {
@@ -1864,6 +1892,14 @@ BOOL ServerControl_CheckPledgeCombo(BtlServerFlow *flow, BattleMon *mon, u16 mov
     return FALSE;
 }
 
+// BattleHandler_Result: 0 when no handler ran, 1 when one ran without setting a result, 2 when one ran and
+// succeeded
+enum {
+    BTL_HANDLER_RESULT_NONE = 0,
+    BTL_HANDLER_RESULT_FAILED = 1,
+    BTL_HANDLER_RESULT_SUCCEEDED = 2,
+};
+
 BOOL ServerControl_CheckDelayMove(BtlServerFlow *flow, BattleMon *mon, u16 move, u8 target, BtlFlowFightWork *work) {
     u32 state;
     BOOL result;
@@ -1874,7 +1910,7 @@ BOOL ServerControl_CheckDelayMove(BtlServerFlow *flow, BattleMon *mon, u16 move,
     work->result = 0;
     if (result) {
         pos = MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon));
-        if (BattleHandler_Result(flow) == 2) {
+        if (BattleHandler_Result(flow) == BTL_HANDLER_RESULT_SUCCEEDED) {
             BtlServerCmdQueue_Put(flow->queue, SC_MOVE_ANIM, pos, target, move, 0);
             ServerControl_DelayMoveDecide(flow, mon);
             work->result = 1;
@@ -2030,6 +2066,20 @@ void ServerControl_RecordMoveUse(BtlServerFlow *flow, BattleMon *mon, u16 move) 
     }
 }
 
+// What ServerControl_CheckChargeTurn tells ServerControl_ExecuteMove
+enum {
+    // Not returned; the switch keeps the case
+    BTL_CHARGE_NONE = 0,
+    // The charge's check failed, so the move doesn't run
+    BTL_CHARGE_FAILED = 1,
+    // The mon began its charge turn, which ends without the move
+    BTL_CHARGE_STARTED = 2,
+    // The charge's release event failed, so the move doesn't run
+    BTL_CHARGE_RELEASE_FAILED = 3,
+    // The charge was released, so the move runs
+    BTL_CHARGE_RELEASED = 4,
+};
+
 BOOL ServerControl_ExecuteMove(BtlServerFlow *flow, BattleMon *mon, u16 move, BtlMonSet *targets) {
     s32 quality;
     u8 monId;
@@ -2048,15 +2098,15 @@ BOOL ServerControl_ExecuteMove(BtlServerFlow *flow, BattleMon *mon, u16 move, Bt
     ServerControl_RecordMoveUse(flow, mon, move);
     if (getMoveFlag(move, 1)) {
         switch (ServerControl_CheckChargeTurn(flow, mon, targets, move)) {
-        case 0:
+        case BTL_CHARGE_NONE:
             break;
-        case 1:
+        case BTL_CHARGE_FAILED:
             return isDamage;
-        case 2:
+        case BTL_CHARGE_STARTED:
             return success;
-        case 3:
+        case BTL_CHARGE_RELEASE_FAILED:
             return isDamage;
-        case 4:
+        case BTL_CHARGE_RELEASED:
             break;
         }
     }
@@ -2348,7 +2398,7 @@ BOOL ServerControl_CheckNoEffect(BtlServerFlow *flow, BtlFlowMoveParam *param, B
         if (BattleHandler_StrIsEnabled(&flow->message)) {
             BattleHandler_SetString(flow, &flow->message);
             BattleHandler_StrClear(&flow->message);
-        } else if (BattleHandler_Result(flow) == 0 && !silent) {
+        } else if (BattleHandler_Result(flow) == BTL_HANDLER_RESULT_NONE && !silent) {
             BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0xd2, GetMonID(target), SC_MSG_ARG_END);
         }
     }
@@ -2511,17 +2561,17 @@ u32 ServerControl_CheckChargeTurn(BtlServerFlow *flow, BattleMon *mon, BtlMonSet
         u8 pos = MonIDToBattlePos(flow->mainModule, flow->pokeCon, GetMonID(mon));
         if (ServerEvent_CheckChargeFail(flow, mon, targets)) {
             ServerDisplay_MoveFailed(flow, mon, move);
-            return 1;
+            return BTL_CHARGE_FAILED;
         }
         if (!ServerEvent_CheckChargeSkip(flow, mon, move)) {
             if (ServerControl_StartChargeTurn(flow, mon, pos, targets, move)) {
                 BattleCondition cond = AddTurnCondition(2, move);
                 ServerDisplay_AddCondition(flow, mon, 0x1a, cond);
             }
-            return 2;
+            return BTL_CHARGE_STARTED;
         }
         if (!ServerControl_StartChargeTurn(flow, mon, pos, targets, move)) {
-            return 1;
+            return BTL_CHARGE_FAILED;
         }
         state = PushState(&flow->actionState, 0x1414);
         ServerEvent_ChargeSkipFixed(flow, mon, move);
@@ -2533,7 +2583,7 @@ u32 ServerControl_CheckChargeTurn(BtlServerFlow *flow, BattleMon *mon, BtlMonSet
     PopState(&flow->actionState, state, 0x1420);
     BattleMon_SetTurnFlag(mon, 0xb);
     ServerControl_ClearChargeState(flow, mon);
-    return result ? 4 : 3;
+    return result ? BTL_CHARGE_RELEASED : BTL_CHARGE_RELEASE_FAILED;
 }
 
 BOOL ServerControl_StartChargeTurn(BtlServerFlow *flow, BattleMon *mon, u8 pos, BtlMonSet *targets, u16 move) {
@@ -2574,7 +2624,7 @@ void ServerControl_ClearChargeState(BtlServerFlow *flow, BattleMon *mon) {
         ServerControl_CureCondition(flow, mon, CONDITION_CHARGE, 0);
         BattleMon_SetTurnFlag(mon, 0xb);
     }
-    while ((flag = BattleMon_GetSemiInvulnFlag(mon)) != 0x10) {
+    while ((flag = BattleMon_GetSemiInvulnFlag(mon)) != BTL_SEMI_INVULN_NONE) {
         scPut_ResetContFlag(flow, mon, flag);
     }
 }
@@ -2682,7 +2732,7 @@ BOOL ServerControl_CheckMoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, 
         if (move != MOVE_STRUGGLE) {
             if (CheckCondition(mon, CONDITION_ENCORE)) {
                 u16 prev = GetPreviousMoveUsed(mon);
-                if (prev != 0xa5 && prev != move) {
+                if (prev != MOVE_STRUGGLE && prev != move) {
                     cause = 0x11;
                     break;
                 }
@@ -2853,6 +2903,9 @@ void ServerControl_MoveFail(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 c
 void ServerDisplay_MoveFailMessage(BtlServerFlow *flow, BattleMon *mon, u16 move, u32 cause) {
     u8 monId = GetMonID(mon);
 
+    // The move-fail causes the move handlers write to BTL_EVAR_FAIL_CAUSE: 2 asleep, 3 paralysed, 4 frozen, 8
+    // infatuated, 9 disabled, and the handlers' others. The same variable carries other checks' causes, so the
+    // values keep their numbers until the handlers name the set
     switch (cause) {
     case 2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0x135, monId, SC_MSG_ARG_END);
@@ -3011,7 +3064,7 @@ void ServerControl_DamageMove(BtlServerFlow *flow, BtlFlowMoveParam *param, Batt
 }
 
 void ServerControl_CalcDamageList(BtlServerFlow *flow, BattleMon *attacker, BtlMonSet *targets,
-                                  const BtlFlowMoveParam *param, u32 *effectiveness, u32 arg5,
+                                  const BtlFlowMoveParam *param, u32 *effectiveness, u32 ratio,
                                   BtlFlowDamageList *list) {
     u16 damage;
     u16 adjusted;
@@ -3027,7 +3080,7 @@ void ServerControl_CalcDamageList(BtlServerFlow *flow, BattleMon *attacker, BtlM
         list->entries[i].critical = ServerEvent_CheckCritical(flow, attacker, target, param->move);
         list->entries[i].effectiveness = EffectivenessTable_Get(effectiveness, list->entries[i].monId);
         list->entries[i].fixedDamage =
-            ServerEvent_CalcDamage(flow, attacker, target, param, list->entries[i].effectiveness, arg5,
+            ServerEvent_CalcDamage(flow, attacker, target, param, list->entries[i].effectiveness, ratio,
                                    list->entries[i].critical, FALSE, &damage);
         list->entries[i].damage = damage;
         if (list->entries[i].fixedDamage) {
@@ -3171,9 +3224,9 @@ u32 ServerControl_DamageMultiHit(BtlServerFlow *flow, BtlFlowMoveParam *param, B
             }
             BtlServerCmdQueue_Put(flow->queue, SC_MOVE_ANIM, flow->moveEffect->pos1, flow->moveEffect->pos2,
                                   param->move, 0);
-            ServerControl_CalcDamageList(flow, attacker, targets, param, data, 0x1000, flow->foeDamages);
-            damage += ServerControl_DamageList(flow, param, attacker, targets, flow->foeDamages, flow->hitWork, 0x1000,
-                                               flags);
+            ServerControl_CalcDamageList(flow, attacker, targets, param, data, FX32_ONE, flow->foeDamages);
+            damage += ServerControl_DamageList(flow, param, attacker, targets, flow->foeDamages, flow->hitWork,
+                                               FX32_ONE, flags);
             hits++;
             if (IsFainted(target) || IsFainted(attacker)) {
                 break;
@@ -3369,15 +3422,24 @@ u32 ServerEvent_CheckEndure(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
     return cause;
 }
 
+// What makes a mon hang on, which the move, item and ability handlers write to BTL_EVAR_ENDURE_CAUSE
+enum {
+    BTL_ENDURE_CAUSE_MOVE = 1,
+    BTL_ENDURE_CAUSE_FALSE_SWIPE = 2,
+    // Focus Sash and Focus Band
+    BTL_ENDURE_CAUSE_FOCUS_ITEM = 3,
+    BTL_ENDURE_CAUSE_STURDY = 4,
+};
+
 void ServerControl_Endure(BtlServerFlow *flow, BattleMon *mon, u32 cause) {
     u32 state;
     u8 monId = GetMonID(mon);
 
     switch (cause) {
-    case 1:
+    case BTL_ENDURE_CAUSE_MOVE:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0x202, monId, SC_MSG_ARG_END);
         break;
-    case 3:
+    case BTL_ENDURE_CAUSE_FOCUS_ITEM:
     default:
         state = PushState(&flow->actionState, 0x1a14);
         ServerEvent_EndureUsed(flow, mon, cause);
@@ -3659,11 +3721,11 @@ BOOL ServerEvent_CalcDamage(BtlServerFlow *flow, BattleMon *attacker, BattleMon 
         defense = ServerEvent_GetTargetDefenses(flow, attacker, defender, param, critical);
         level = (u8)GetBattleMonStat(attacker, BATTLEMON_LEVEL);
         value = CalcBaseDamage(power, attack, level, defense);
-        if (ratio != 0x1000) {
+        if (ratio != FX32_ONE) {
             value = fixed_round(value, ratio);
         }
         mod = WeatherPowerMod(ServerEvent_GetWeather(flow), param->type);
-        if (mod != 0x1000) {
+        if (mod != FX32_ONE) {
             value = fixed_round(value, mod);
         }
         if (critical) {
@@ -3758,7 +3820,7 @@ BOOL ServerControl_UseHeldItem(BtlServerFlow *flow, BattleMon *mon) {
             reserved = SCQUE_RESERVE_Pos(flow->queue, SC_USE_HELD_ITEM);
             itemState = PushStateUseItem(&flow->actionState, item, 0x1d04);
             ServerEvent_EquipItem(flow, mon);
-            if (BattleHandler_Result(flow) != 2) {
+            if (BattleHandler_Result(flow) != BTL_HANDLER_RESULT_SUCCEEDED) {
                 result = FALSE;
             }
             PopState(&flow->actionState, itemState, 0x1d09);
@@ -3854,7 +3916,7 @@ u32 ServerEvent_CheckMoveAddCondition(BtlServerFlow *flow, u16 move, BattleMon *
     condition = BattleEventVar_GetValue(BTL_EVAR_CONDITION);
     chance = BattleEventVar_GetValue(BTL_EVAR_CHANCE);
     failed = BattleEventVar_GetValue(BTL_EVAR_FAIL_FLAG);
-    if (condition == 0xffff) {
+    if (condition == MOVE_CONDITION_SPECIAL) {
         condition = 0;
     }
     result.raw = BattleEventVar_GetValue(BTL_EVAR_CONDITION_PARAM);
@@ -3908,9 +3970,9 @@ BOOL ServerControl_MoveConditionCore(BtlServerFlow *flow, BattleMon *attacker, B
     BOOL defaultMessage;
 
     BattleHandler_StrClear(&flow->message);
-    if (condition == 0xffff) {
+    if (condition == MOVE_CONDITION_SPECIAL) {
         condition = ServerEvent_DecideSpecialMoveCondition(flow, attacker, target, &flow->message);
-        if (condition == 0 || condition == 0xffff) {
+        if (condition == 0 || condition == MOVE_CONDITION_SPECIAL) {
             return FALSE;
         }
     } else {
@@ -3996,37 +4058,48 @@ BOOL ServerControl_AddConditionCheckFail(BtlServerFlow *flow, BattleMon *target,
     return failed;
 }
 
+// What stops a condition from being added, which AddConditionCheckFailOverwrite returns and
+// AddConditionCheckFailStandard shows a message for
+enum {
+    // The mon already has the condition
+    BTL_ADD_CONDITION_FAIL_PRESENT = 1,
+    // The mon's type is immune to it
+    BTL_ADD_CONDITION_FAIL_IMMUNE = 2,
+    // Another status or condition keeps it away, as a major status, the sun's freeze, Yawn or Multitype
+    BTL_ADD_CONDITION_FAIL_BLOCKED = 3,
+};
+
 u32 AddConditionCheckFailOverwrite(BtlServerFlow *flow, BattleMon *mon, s32 condition, BattleCondition value,
                                    u8 overwrite) {
     if (CheckCondition(mon, condition) && overwrite != 2) {
-        return 1;
+        return BTL_ADD_CONDITION_FAIL_PRESENT;
     }
     if (condition < 6 && GetBattleMonStatus(mon) != 0 && overwrite == 0) {
-        return 3;
+        return BTL_ADD_CONDITION_FAIL_BLOCKED;
     }
     if (ServerEvent_GetWeather(flow) == BTL_WEATHER_SUN && condition == CONDITION_FREEZE) {
-        return 3;
+        return BTL_ADD_CONDITION_FAIL_BLOCKED;
     }
     if (condition == CONDITION_POISON) {
         PokeTypePair type = GetPokeType(mon);
         if (PokeTypePair_IsMatch(type, 8) || PokeTypePair_IsMatch(type, 3)) {
-            return 2;
+            return BTL_ADD_CONDITION_FAIL_IMMUNE;
         }
     }
     if (condition == CONDITION_BURN && PokeTypePair_IsMatch(GetPokeType(mon), TYPE_FIRE)) {
-        return 2;
+        return BTL_ADD_CONDITION_FAIL_IMMUNE;
     }
     if (condition == CONDITION_FREEZE && PokeTypePair_IsMatch(GetPokeType(mon), TYPE_ICE)) {
-        return 2;
+        return BTL_ADD_CONDITION_FAIL_IMMUNE;
     }
     if (condition == CONDITION_LEECH_SEED && PokeTypePair_IsMatch(GetPokeType(mon), TYPE_GRASS)) {
-        return 2;
+        return BTL_ADD_CONDITION_FAIL_IMMUNE;
     }
     if (condition == CONDITION_YAWN && GetBattleMonStatus(mon) != 0) {
-        return 3;
+        return BTL_ADD_CONDITION_FAIL_BLOCKED;
     }
     if (condition == CONDITION_GASTRO_ACID && GetBattleMonStat(mon, BATTLEMON_ABILITY) == ABILITY_MULTITYPE) {
-        return 3;
+        return BTL_ADD_CONDITION_FAIL_BLOCKED;
     }
     return 0;
 }
@@ -4684,7 +4757,7 @@ void ServerControl_FieldEffect(BtlServerFlow *flow, BtlFlowMoveParam *param, Bat
         BOOL success;
         u32 state = PushState(&flow->actionState, 0x22d8);
         ServerEvent_FieldEffectMove(flow, mon, param->move);
-        success = BattleHandler_Result(flow) == 2;
+        success = BattleHandler_Result(flow) == BTL_HANDLER_RESULT_SUCCEEDED;
         PopState(&flow->actionState, state, 0x22dc);
         if (success) {
             BattleMoveEffectState *effect = flow->moveEffect;
@@ -4709,7 +4782,8 @@ BOOL ServerControl_ChangeWeatherCheck(BtlServerFlow *flow, u8 weather, u8 durati
     if (weather >= 5) {
         return FALSE;
     }
-    if (weather == GetFieldWeather() && (duration != 0xff || FieldStatusGetWeatherTurns() == 0xff)) {
+    if (weather == GetFieldWeather() &&
+        (duration != WEATHER_TURNS_PERMANENT || FieldStatusGetWeatherTurns() == WEATHER_TURNS_PERMANENT)) {
         return FALSE;
     }
     return TRUE;
@@ -4786,7 +4860,7 @@ void ServerControl_UncategorizedMove(BtlServerFlow *flow, BtlFlowMoveParam *para
             result = BattleHandler_Result(flow);
             if (ServerEvent_UncategorizedMove(flow, param, mon, targets, &showFail)) {
                 result = BattleHandler_Result(flow);
-                if (result == 2) {
+                if (result == BTL_HANDLER_RESULT_SUCCEEDED) {
                     BattleMoveEffectState *effect = flow->moveEffect;
                     if (!effect->enabled) {
                         effect->enabled = 1;
@@ -4999,13 +5073,13 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
     BOOL result = FALSE;
     BattleMon *mon;
 
-    if (flow->turnCheckSeq == 0) {
+    if (flow->turnCheckSeq == BTL_TURN_CHECK_SEQ_START) {
         StoreBattleMonsSpeedOrder(flow, monSet);
-        flow->turnCheckSeq = 1;
+        flow->turnCheckSeq = BTL_TURN_CHECK_SEQ_WEATHER;
         ServerControl_CommPlayerSupportHeal(flow);
     }
     switch (flow->turnCheckSeq) {
-    case 1:
+    case BTL_TURN_CHECK_SEQ_WEATHER:
         flow->turnCheckSeq++;
         BtlServerCmdQueue_Put(flow->queue, SC_HIDE_MSG_WINDOW, 0);
         result = FALSE;
@@ -5016,7 +5090,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         if (ServerControl_CheckMatchup(flow)) {
             return result;
         }
-    case 2:
+    case BTL_TURN_CHECK_SEQ_BEGIN:
         flow->turnCheckSeq++;
         if (ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_BEGIN)) {
             result = TRUE;
@@ -5025,7 +5099,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         if (ServerControl_CheckMatchup(flow)) {
             return FALSE;
         }
-    case 3:
+    case BTL_TURN_CHECK_SEQ_CONDITIONS:
         flow->turnCheckSeq++;
         if (ServerControl_TurnCheckConditions(flow, monSet)) {
             result = TRUE;
@@ -5034,11 +5108,11 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         if (ServerControl_CheckMatchup(flow)) {
             return FALSE;
         }
-    case 4:
+    case BTL_TURN_CHECK_SEQ_SIDE_FIELD:
         flow->turnCheckSeq++;
         ServerControl_TurnCheckSideEffects(flow);
         ServerControl_TurnCheckFieldEffects(flow);
-    case 5:
+    case BTL_TURN_CHECK_SEQ_END:
         flow->turnCheckSeq++;
         if (ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_END)) {
             result = TRUE;
@@ -5047,7 +5121,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         if (ServerControl_CheckMatchup(flow)) {
             return FALSE;
         }
-    case 6:
+    case BTL_TURN_CHECK_SEQ_DONE:
         ServerControl_TurnCheckEvent(flow, monSet, BTL_EVENT_TURN_CHECK_DONE);
         flow->turnCheckSeq++;
         BtlMonSet_ResetIndex(monSet);
@@ -5061,7 +5135,7 @@ BOOL ServerControl_TurnCheck(BtlServerFlow *flow) {
         if (flow->turnCount < 0x270f) {
             flow->turnCount++;
         }
-        flow->turnCheckSeq = 0;
+        flow->turnCheckSeq = BTL_TURN_CHECK_SEQ_START;
         flow->simulationDepth = 0;
         return FALSE;
     }
@@ -5111,7 +5185,7 @@ void ServerControl_CommPlayerSupportHeal(BtlServerFlow *flow) {
 
     if (passPower != NULL) {
         u32 type = CommPlayerSupport_GetType(passPower);
-        if (type != 0 && type != 3) {
+        if (type != COMM_PLAYER_SUPPORT_NONE && type != COMM_PLAYER_SUPPORT_USED) {
             u8 monIds[3];
             u8 count;
             u8 i;
@@ -5326,7 +5400,7 @@ void ServerControl_FieldEffectEnd(BtlServerFlow *flow, u32 effect) {
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, SC_MSG_ARG_END);
     }
     BtlServerCmdQueue_Put(flow->queue, SC_OP_REMOVE_FIELD_EFFECT, (u8)effect);
-    if (effect == 7) {
+    if (effect == FIELD_CONDITION_MAGIC_ROOM) {
         BattleMon *mon;
 
         StoreBattleMonsSpeedOrder(flow, flow->tempMons);
@@ -5775,6 +5849,13 @@ void ServerDisplay_Damage(BtlServerFlow *flow, BtlFlowMoveParam *param, u32 coun
     }
 }
 
+// How many mons an effectiveness message names
+enum {
+    BTL_EFFECTIVENESS_MON_COUNT_1 = 1,
+    BTL_EFFECTIVENESS_MON_COUNT_2 = 2,
+    BTL_EFFECTIVENESS_MON_COUNT_3 = 3,
+};
+
 void ServerDisplay_EffectivenessMessageMulti(BtlServerFlow *flow, u32 count, u32 *effectiveness, BattleMon **mons,
                                              BOOL multipleTargets) {
     u8 monIds[3];
@@ -5802,13 +5883,13 @@ void ServerDisplay_EffectivenessMessageMulti(BtlServerFlow *flow, u32 count, u32
                 }
             }
             switch (superEffective) {
-            case 1:
+            case BTL_EFFECTIVENESS_MON_COUNT_1:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 6, monIds[0], SC_MSG_ARG_END);
                 break;
-            case 2:
+            case BTL_EFFECTIVENESS_MON_COUNT_2:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 9, monIds[0], monIds[1], SC_MSG_ARG_END);
                 break;
-            case 3:
+            case BTL_EFFECTIVENESS_MON_COUNT_3:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0xc, monIds[0], monIds[1], monIds[2], SC_MSG_ARG_END);
                 break;
             }
@@ -5821,13 +5902,13 @@ void ServerDisplay_EffectivenessMessageMulti(BtlServerFlow *flow, u32 count, u32
                 }
             }
             switch (notVeryEffective) {
-            case 1:
+            case BTL_EFFECTIVENESS_MON_COUNT_1:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0xf, monIds[0], SC_MSG_ARG_END);
                 break;
-            case 2:
+            case BTL_EFFECTIVENESS_MON_COUNT_2:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0x12, monIds[0], monIds[1], SC_MSG_ARG_END);
                 break;
-            case 3:
+            case BTL_EFFECTIVENESS_MON_COUNT_3:
                 BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0x15, monIds[0], monIds[1], monIds[2],
                                          SC_MSG_ARG_END);
                 break;
@@ -5936,7 +6017,7 @@ void AddConditionCheckFailStandard(BtlServerFlow *flow, BattleMon *mon, u32 caus
     u8 monId = GetMonID(mon);
 
     switch (cause) {
-    case 1:
+    case BTL_ADD_CONDITION_FAIL_PRESENT:
         switch (condition) {
         case CONDITION_POISON:
             BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0xf9, monId, SC_MSG_ARG_END);
@@ -5968,7 +6049,7 @@ void AddConditionCheckFailStandard(BtlServerFlow *flow, BattleMon *mon, u32 caus
         }
         flow->failMessageShown = 1;
         break;
-    case 2:
+    case BTL_ADD_CONDITION_FAIL_IMMUNE:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, 0xd2, monId, SC_MSG_ARG_END);
         flow->failMessageShown = 1;
         break;
@@ -5983,21 +6064,29 @@ void ServerDisplay_SkyDropTargetAppear(BtlServerFlow *flow, BattleMon *mon, u16 
     BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, GetMonID(mon), SC_MSG_ARG_END);
 }
 
+// How many arguments a battle message carries, which the ServerDisplay_*Message functions write out
+enum {
+    BTL_MESSAGE_ARGS_1 = 1,
+    BTL_MESSAGE_ARGS_2 = 2,
+    BTL_MESSAGE_ARGS_3 = 3,
+    BTL_MESSAGE_ARGS_4 = 4,
+};
+
 void ServerDisplay_StandardMessage(BtlServerFlow *flow, u16 message, u32 count, const u32 *args) {
     switch (count) {
     default:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, SC_MSG_ARG_END);
         break;
-    case 1:
+    case BTL_MESSAGE_ARGS_1:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, args[0], SC_MSG_ARG_END);
         break;
-    case 2:
+    case BTL_MESSAGE_ARGS_2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, args[0], args[1], SC_MSG_ARG_END);
         break;
-    case 3:
+    case BTL_MESSAGE_ARGS_3:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, args[0], args[1], args[2], SC_MSG_ARG_END);
         break;
-    case 4:
+    case BTL_MESSAGE_ARGS_4:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD, message, args[0], args[1], args[2], args[3], SC_MSG_ARG_END);
         break;
     }
@@ -6008,17 +6097,17 @@ void ServerDisplay_StandardMessageEx(BtlServerFlow *flow, u16 message, u16 sound
     default:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD_SE, message, soundEffect, SC_MSG_ARG_END);
         break;
-    case 1:
+    case BTL_MESSAGE_ARGS_1:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD_SE, message, soundEffect, args[0], SC_MSG_ARG_END);
         break;
-    case 2:
+    case BTL_MESSAGE_ARGS_2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD_SE, message, soundEffect, args[0], args[1], SC_MSG_ARG_END);
         break;
-    case 3:
+    case BTL_MESSAGE_ARGS_3:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD_SE, message, soundEffect, args[0], args[1], args[2],
                                  SC_MSG_ARG_END);
         break;
-    case 4:
+    case BTL_MESSAGE_ARGS_4:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_STD_SE, message, soundEffect, args[0], args[1], args[2], args[3],
                                  SC_MSG_ARG_END);
         break;
@@ -6030,16 +6119,16 @@ void ServerDisplay_SetMessage(BtlServerFlow *flow, u16 message, u32 count, const
     default:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, SC_MSG_ARG_END);
         break;
-    case 1:
+    case BTL_MESSAGE_ARGS_1:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, args[0], SC_MSG_ARG_END);
         break;
-    case 2:
+    case BTL_MESSAGE_ARGS_2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, args[0], args[1], SC_MSG_ARG_END);
         break;
-    case 3:
+    case BTL_MESSAGE_ARGS_3:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, args[0], args[1], args[2], SC_MSG_ARG_END);
         break;
-    case 4:
+    case BTL_MESSAGE_ARGS_4:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET, message, args[0], args[1], args[2], args[3], SC_MSG_ARG_END);
         break;
     }
@@ -6050,17 +6139,17 @@ void ServerDisplay_SetMessageEx(BtlServerFlow *flow, u16 message, u16 soundEffec
     default:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET_SE, message, soundEffect, SC_MSG_ARG_END);
         break;
-    case 1:
+    case BTL_MESSAGE_ARGS_1:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET_SE, message, soundEffect, args[0], SC_MSG_ARG_END);
         break;
-    case 2:
+    case BTL_MESSAGE_ARGS_2:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET_SE, message, soundEffect, args[0], args[1], SC_MSG_ARG_END);
         break;
-    case 3:
+    case BTL_MESSAGE_ARGS_3:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET_SE, message, soundEffect, args[0], args[1], args[2],
                                  SC_MSG_ARG_END);
         break;
-    case 4:
+    case BTL_MESSAGE_ARGS_4:
         BtlServerCmdQueue_PutMsg(flow->queue, SC_MSG_SET_SE, message, soundEffect, args[0], args[1], args[2], args[3],
                                  SC_MSG_ARG_END);
         break;
@@ -6391,7 +6480,7 @@ BOOL ServerEvent_CheckSemiInvulnAvoid(BtlServerFlow *flow, BattleMon *mon, Battl
     u32 status;
 
     status = BattleMon_GetSemiInvulnFlag(target);
-    if (status != 0x10) {
+    if (status != BTL_SEMI_INVULN_NONE) {
         BattleEventVar_Push(0x2e14);
         BattleEventVar_SetConstValue(BTL_EVAR_ATTACKER, GetMonID(mon));
         BattleEventVar_SetConstValue(BTL_EVAR_DEFENDER, GetMonID(target));
@@ -6534,6 +6623,15 @@ BOOL ServerEvent_CheckCritical(BtlServerFlow *flow, BattleMon *attacker, BattleM
     return critical;
 }
 
+// Which share of HP a move's recoil takes
+enum {
+    BTL_RECOIL_NONE = 0,
+    // A share of the damage dealt
+    BTL_RECOIL_DAMAGE = 1,
+    // A share of the user's maximum HP
+    BTL_RECOIL_MAX_HP = 2,
+};
+
 s32 ServerEvent_CalcRecoil(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 damage, BOOL *forced) {
     u8 monId;
     u8 ratio;
@@ -6545,14 +6643,14 @@ s32 ServerEvent_CalcRecoil(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 da
     monId = GetMonID(mon);
     // A share of the damage dealt, or of the user's max HP
     ratio = PML_MoveGetParam(move, MOVE_PARAM_RECOIL);
-    kind = 0;
+    kind = BTL_RECOIL_NONE;
     *forced = FALSE;
     if (ratio != 0) {
-        kind = 1;
+        kind = BTL_RECOIL_DAMAGE;
     } else {
         ratio = PML_MoveGetParam(move, MOVE_PARAM_HP_COST);
         if (ratio != 0) {
-            kind = 2;
+            kind = BTL_RECOIL_MAX_HP;
         }
     }
     if (PML_MoveGetQuality(move) == MOVE_QUALITY_DAMAGE_DRAIN) {
@@ -6575,7 +6673,7 @@ s32 ServerEvent_CalcRecoil(BtlServerFlow *flow, BattleMon *mon, u16 move, s32 da
     }
     ratio += bonus;
     if (ratio != 0) {
-        if (kind == 2) {
+        if (kind == BTL_RECOIL_MAX_HP) {
             damage = MultiplyValueByRatio(GetBattleMonStat(mon, BATTLEMON_MAX_HP), ratio);
             if (damage < 1) {
                 damage = 1;
@@ -6679,7 +6777,7 @@ void ServerControl_FloatingImmune(BtlServerFlow *flow, BattleMon *mon) {
 
     state = PushState(&flow->actionState, 0x2ff5);
     ServerEvent_FloatingImmune(flow, mon);
-    if (BattleHandler_Result(flow) != 2) {
+    if (BattleHandler_Result(flow) != BTL_HANDLER_RESULT_SUCCEEDED) {
         ServerDisplay_DoesntAffect(flow, mon);
     }
     PopState(&flow->actionState, state, 0x2ffc);
@@ -6720,38 +6818,48 @@ u32 ServerEvent_CheckTypeEffectiveness(BtlServerFlow *flow, BattleMon *attacker,
     return effectiveness;
 }
 
+// How many positions an effect is drawn at, which picks the server command it goes in
+enum {
+    // SC_EFFECT
+    BTL_VIEW_EFFECT_POS_NONE = 0,
+    // SC_EFFECT_BY_POS
+    BTL_VIEW_EFFECT_POS_ONE = 1,
+    // SC_EFFECT_BETWEEN_POS
+    BTL_VIEW_EFFECT_POS_BETWEEN = 2,
+};
+
 void ServerControl_ViewEffect(BtlServerFlow *flow, u16 effect, u8 pos1, u8 pos2, BOOL reserved, u32 reserve) {
     u32 posCount;
 
     if (pos2 != BTL_POS_NONE) {
-        posCount = 2;
+        posCount = BTL_VIEW_EFFECT_POS_BETWEEN;
     } else {
-        posCount = 1;
+        posCount = BTL_VIEW_EFFECT_POS_ONE;
         if (pos1 == BTL_POS_NONE) {
-            posCount = 0;
+            posCount = BTL_VIEW_EFFECT_POS_NONE;
         }
     }
     if (reserved) {
         switch (posCount) {
-        case 0:
+        case BTL_VIEW_EFFECT_POS_NONE:
             BtlServerCmdQueue_PutReserved(flow->queue, (u16)reserve, SC_EFFECT, effect);
             break;
-        case 1:
+        case BTL_VIEW_EFFECT_POS_ONE:
             BtlServerCmdQueue_PutReserved(flow->queue, (u16)reserve, SC_EFFECT_BY_POS, pos1, effect);
             break;
-        case 2:
+        case BTL_VIEW_EFFECT_POS_BETWEEN:
             BtlServerCmdQueue_PutReserved(flow->queue, (u16)reserve, SC_EFFECT_BETWEEN_POS, pos1, pos2, effect);
             break;
         }
     } else {
         switch (posCount) {
-        case 0:
+        case BTL_VIEW_EFFECT_POS_NONE:
             BtlServerCmdQueue_Put(flow->queue, SC_EFFECT, effect);
             break;
-        case 1:
+        case BTL_VIEW_EFFECT_POS_ONE:
             BtlServerCmdQueue_Put(flow->queue, SC_EFFECT_BY_POS, pos1, effect);
             break;
-        case 2:
+        case BTL_VIEW_EFFECT_POS_BETWEEN:
             BtlServerCmdQueue_Put(flow->queue, SC_EFFECT_BETWEEN_POS, pos1, pos2, effect);
             break;
         }
@@ -6915,7 +7023,8 @@ u16 ServerEvent_GetTargetDefenses(BtlServerFlow *flow, BattleMon *attacker, Batt
         defense = GetBattleMonStat(defender, stat);
     }
     // A sandstorm raises the Special Defense of Rock types by half
-    if (ServerEvent_GetWeather(flow) == BTL_WEATHER_SANDSTORM && DoesMonHaveType(defender, TYPE_ROCK) && stat == 11) {
+    if (ServerEvent_GetWeather(flow) == BTL_WEATHER_SANDSTORM && DoesMonHaveType(defender, TYPE_ROCK) &&
+        stat == BATTLEMON_SP_DEFENSE) {
         defense = fixed_round(defense, 0x1800);
     }
     BattleEventVar_Push(0x3178);
@@ -8269,7 +8378,7 @@ u8 BattleHandler_CureCondition(BtlServerFlow *handler, const struct BattleHandle
             } else {
                 BattleHandler_SetString(handler, &param->string);
             }
-            if (code == 0x13) {
+            if (code == CONDITION_EMBARGO) {
                 ServerControl_CheckItemReaction(handler, mon, 0);
             }
         }
@@ -8605,6 +8714,14 @@ u8 BattleHandler_ChangeWeather(BtlServerFlow *handler, BattleHandlerChangeWeathe
     return result;
 }
 
+// BattleHandlerString.enabled: which message command the string's message goes through
+enum {
+    // SC_MSG_STD
+    BTL_HANDLER_STRING_STANDARD = 1,
+    // SC_MSG_SET
+    BTL_HANDLER_STRING_SET = 2,
+};
+
 // Function name from swan.
 BOOL BattleHandler_SetString(BtlServerFlow *handler, const BattleHandlerString *string) {
     u16 soundEffect;
@@ -8614,20 +8731,20 @@ BOOL BattleHandler_SetString(BtlServerFlow *handler, const BattleHandlerString *
 
     if (!((flags << 16) >> 31)) {
         switch ((flags & 0xff)) {
-        case 1:
+        case BTL_HANDLER_STRING_STANDARD:
             ServerDisplay_StandardMessage(handler, string->message, ((flags << 17) >> 25), string->args);
             return TRUE;
-        case 2:
+        case BTL_HANDLER_STRING_SET:
             ServerDisplay_SetMessage(handler, string->message, ((flags << 17) >> 25), string->args);
             return TRUE;
         }
     } else {
         soundEffect = string->soundEffect;
         switch ((flags & 0xff)) {
-        case 1:
+        case BTL_HANDLER_STRING_STANDARD:
             ServerDisplay_StandardMessageEx(handler, string->message, soundEffect, ((flags << 17) >> 25), string->args);
             return TRUE;
-        case 2:
+        case BTL_HANDLER_STRING_SET:
             ServerDisplay_SetMessageEx(handler, string->message, soundEffect, ((flags << 17) >> 25), string->args);
             return TRUE;
         }
@@ -8804,7 +8921,7 @@ u8 BattleHandler_ForceUseItem(BtlServerFlow *handler, BattleHandlerForceUseItemP
             reserve = SCQUE_RESERVE_Pos(handler->queue, SC_USE_HELD_ITEM);
             state = PushState(&handler->actionState, 0x3db8);
             ServerEvent_EquipTempItem(handler, mon, param->monIndex2);
-            if (BattleHandler_Result(handler) == 2) {
+            if (BattleHandler_Result(handler) == BTL_HANDLER_RESULT_SUCCEEDED) {
                 BtlServerCmdQueue_PutReserved(handler->queue, reserve, SC_USE_HELD_ITEM, param->monIndex);
             }
             PopState(&handler->actionState, state, 0x3dbf);
