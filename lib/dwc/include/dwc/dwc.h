@@ -22,6 +22,10 @@
 // functions do is read off their callers. The account and friend data are in dwc/account.h, the error in dwc/error.h,
 // the start in dwc/init.h and the matchmaking in dwc/match.h
 
+// The aid that says that there is no machine: DWC_GetMyAID and the match's server lookups return it, and dwc_main.c
+// tests for it. The SDK's DWC_INVALID_AID, from its macro list (TWL DWC 5.3)
+#define DWC_INVALID_AID (0xff)
+
 // Starts the login to Nintendo's authentication server (FALSE if its memory can't be had), one of the calls that end
 // the connection after a server error
 BOOL DWC_NASLoginAsync(void);

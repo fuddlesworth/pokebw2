@@ -105,33 +105,34 @@ DWCNasLoginState DWC_NASLoginProcess(void) {
     DWCAuthResult result;
 
     if (sNasLogin == NULL) {
-        return 0;
+        return DWC_NASLOGIN_STATE_DIRTY;
     }
     switch (DWC_Auth_GetError()) {
-    case 0:
-        return 2;
-    case 0x15:
+    case DWCAUTH_E_NOERR:
+        return DWC_NASLOGIN_STATE_HTTP;
+    case DWCAUTH_E_FINISH:
         MI_CpuFill8(&result, 0, sizeof(result));
         DWC_Auth_GetResult(&result);
         DWC_Auth_Destroy();
+        // The server's return code 2 asks for the login to be made again
         if (result.returncode == 20002) {
             DWC_Auth_Create(&sNasLogin->param, &sNasLogin->http);
-            return 2;
+            return DWC_NASLOGIN_STATE_HTTP;
         }
         DWC_Free(4, sNasLogin, sizeof(NasLogin));
         sNasLogin = NULL;
-        return 3;
-    case 0x14:
+        return DWC_NASLOGIN_STATE_SUCCESS;
+    case DWCAUTH_E_ABORT:
         DWC_Auth_Destroy();
         DWC_Free(4, sNasLogin, sizeof(NasLogin));
         sNasLogin = NULL;
-        return 5;
+        return DWC_NASLOGIN_STATE_CANCELED;
     default:
         DWC_Auth_GetResult(&result);
         DWC_Auth_Destroy();
         DWC_Free(4, sNasLogin, sizeof(NasLogin));
         sNasLogin = NULL;
         DWCi_SetError(DWC_ERROR_AUTH_ANY, result.returncode);
-        return 4;
+        return DWC_NASLOGIN_STATE_ERROR;
     }
 }
