@@ -8,6 +8,13 @@
 #define NHTTP_ERROR_BAD_URL 4
 #define NHTTP_ERROR_BAD_STATE 11
 
+// How far the reader of the URL's %XX escape has got: 2 after the '%', 1 after its first hex digit
+enum {
+    NHTTP_ESCAPE_NONE,
+    NHTTP_ESCAPE_FIRST_DIGIT,
+    NHTTP_ESCAPE_PERCENT,
+};
+
 static void deleteStrList(NHTTPi_DATALIST *list);
 
 // The length of the scheme in front of the host: http:// or https://
@@ -85,11 +92,11 @@ NHTTPReq *NHTTP_CreateRequest(NHttpState *state, const char *url, int method, vo
     // escapes are left as they are
     in = 0;
     escapes = 0;
-    escapeState = 0;
+    escapeState = NHTTP_ESCAPE_NONE;
     while (in < restLength && rest[in] != '/') {
-        if (escapeState == 2) {
+        if (escapeState == NHTTP_ESCAPE_PERCENT) {
             escapeState--;
-        } else if (escapeState == 1) {
+        } else if (escapeState == NHTTP_ESCAPE_FIRST_DIGIT) {
             c = NHTTPi_strToHex(rest + (in - 1), 2);
             escapeState--;
             if (c < 0) {
@@ -101,12 +108,12 @@ NHTTPReq *NHTTP_CreateRequest(NHttpState *state, const char *url, int method, vo
                 break;
             }
         } else if (rest[in] == '%') {
-            escapeState = 2;
+            escapeState = NHTTP_ESCAPE_PERCENT;
             escapes++;
         }
         in++;
     }
-    if (escapeState != 0) {
+    if (escapeState != NHTTP_ESCAPE_NONE) {
         NHTTPi_SetError(state, NHTTP_ERROR_BAD_URL);
         goto fail;
     }
@@ -121,12 +128,12 @@ NHTTPReq *NHTTP_CreateRequest(NHttpState *state, const char *url, int method, vo
     sawSlash = 0;
     in = 0;
     out = 0;
-    escapeState = 0;
+    escapeState = NHTTP_ESCAPE_NONE;
     if (restLength > 0) {
         do {
-            if (escapeState == 2) {
+            if (escapeState == NHTTP_ESCAPE_PERCENT) {
                 escapeState--;
-            } else if (escapeState == 1) {
+            } else if (escapeState == NHTTP_ESCAPE_FIRST_DIGIT) {
                 c = NHTTPi_strToHex(rest + (in - 1), 2);
                 request->pURL[schemeLength + out - 1] = c;
                 escapeState--;
@@ -139,7 +146,7 @@ NHTTPReq *NHTTP_CreateRequest(NHttpState *state, const char *url, int method, vo
                     sawSlash = 1;
                 }
                 if (!sawSlash && c == '%') {
-                    escapeState = 2;
+                    escapeState = NHTTP_ESCAPE_PERCENT;
                 } else {
                     request->pURL[schemeLength + out] = c;
                 }

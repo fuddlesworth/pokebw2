@@ -796,7 +796,7 @@ sNHttpRap kind:bss addr:0x021ae6a0
 sEntropy kind:bss addr:0x021ae6a4
 sConnectionList kind:bss addr:0x021ae6c4
 sWaitInfo kind:bss addr:0x021ae6cc
-data_ov189_021ae700 kind:bss addr:0x021ae700
+sRootStorage kind:bss addr:0x021ae700
 data_ov189_021b0000 kind:bss addr:0x021b0000 ambiguous
 data_ov189_021b001b kind:bss addr:0x021b001b ambiguous
 data_ov189_021b0215 kind:bss addr:0x021b0215 ambiguous
