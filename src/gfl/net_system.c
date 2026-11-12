@@ -25,6 +25,8 @@
 #define PACKET_FLAG_CONTINUED 2
 // The size field holds the size less 0xff
 #define PACKET_FLAG_LONG 8
+// The size of a command that has not been read yet
+#define NET_RECV_SIZE_UNKNOWN 0xffff
 
 // Where a machine's commands are while they arrive
 typedef struct {
@@ -83,6 +85,23 @@ typedef struct {
     u8 recvState;
 } NetSystemState;
 
+// The step of this machine's own packet: built and ready for the device, handed to it and waiting for the
+// send-done callback, and idle, ready to build the next one
+enum {
+    NET_SYSTEM_PACKET_BUILT = 0,
+    NET_SYSTEM_PACKET_SENT = 2,
+    NET_SYSTEM_PACKET_IDLE = 4,
+};
+
+// The step of the parent's packet, which every machine writes as well: written and waiting to be sent,
+// sent and waiting for the parent's own, the parent's received, and idle, ready to write the next one
+enum {
+    NET_SYSTEM_MP_SEND_WRITTEN = 1,
+    NET_SYSTEM_MP_SEND_SENT,
+    NET_SYSTEM_MP_SEND_RECEIVED,
+    NET_SYSTEM_MP_SEND_IDLE,
+};
+
 // Records a network error, from the line it was found on
 #define NET_ERROR(line)                                                                                                \
     do {                                                                                                               \
@@ -136,8 +155,8 @@ static void NetSystem_SetSendState(u8 state, int line) {
 
 static void NetRecvState_Reset(NetRecvState *state) {
     state->command = 0;
-    state->remaining = 0xffff;
-    state->size = 0xffff;
+    state->remaining = NET_RECV_SIZE_UNKNOWN;
+    state->size = NET_RECV_SIZE_UNKNOWN;
     state->buffer = NULL;
     state->pos = 0;
 }
@@ -210,8 +229,8 @@ static void NetSystem_ResetBuffers(void) {
     }
     sNetSys->serverSends = 0;
     NetRecvState_Reset(&sNetSys->serverRecvState);
-    NetSystem_SetSendState(4, 314);
-    sState.recvState = 4;
+    NetSystem_SetSendState(NET_SYSTEM_MP_SEND_IDLE, 314);
+    sState.recvState = NET_SYSTEM_PACKET_IDLE;
     NetQueue_Clear(&sNetSys->sendQueue);
     NetQueue_Clear(&sNetSys->mpQueue);
     sNetSys->unk1E8 = 0;
@@ -295,19 +314,19 @@ int NetSystem_StartParent(int changeTgid, int size, int anyChannel, BOOL (*callb
     return sys->pDevTable->startParent(anyChannel, callback);
 }
 
-BOOL NetSystem_StartScan(int a0, int size) {
+BOOL NetSystem_StartScan(int clearBeacons, int size) {
     GFLNetSys *sys = GFL_NetGetSys();
     BOOL result;
 
     sys->pDevTable->setDisconnectCallback(NetSystem_OnConnectAsChild);
-    result = sys->pDevTable->startScan(a0, 0);
+    result = sys->pDevTable->startScan(clearBeacons, 0);
     if (result == TRUE) {
         BOOL useSysSize;
 
         sys->pDevTable->setRecvCallback(NetSystem_RecvServerPacket);
         useSysSize = sys->aNetInit.bMPMode && sys->aNetInit.parentPacketSize;
         NetSystem_Alloc(size, GFL_NetGetInitData()->heapId, useSysSize);
-        sState.recvState = 4;
+        sState.recvState = NET_SYSTEM_PACKET_IDLE;
     }
     return result;
 }
@@ -321,16 +340,16 @@ BOOL NetSystem_StartSearch(int size) {
     if (result == TRUE) {
         sys->pDevTable->setRecvCallback(NetSystem_RecvServerPacket);
         NetSystem_Alloc(size, GFL_NetGetInitData()->heapId, FALSE);
-        sState.recvState = 4;
+        sState.recvState = NET_SYSTEM_PACKET_IDLE;
     }
     return result;
 }
 
-void NetSystem_HoldScan(int a0) {
+void NetSystem_HoldScan(int unused) {
     GFLNetSys *sys = GFL_NetGetSys();
 
     if (sys->pDevTable != NULL) {
-        sys->pDevTable->holdScan(a0);
+        sys->pDevTable->holdScan(unused);
     }
 }
 
@@ -343,7 +362,7 @@ int NetSystem_StartChild(BOOL allocBuffers, const u8 *mac, int size, void (*call
         BOOL useSysSize = sys->aNetInit.bMPMode && sys->aNetInit.parentPacketSize;
 
         NetSystem_Alloc(size, GFL_NetGetInitData()->heapId, useSysSize);
-        sState.recvState = 4;
+        sState.recvState = NET_SYSTEM_PACKET_IDLE;
     }
     return sys->pDevTable->startChild(allocBuffers, mac, 0, 0, callback);
 }
@@ -441,7 +460,7 @@ void NetSystem_ResetBuffersIfAllocated(void) {
 static BOOL NetSystem_BuildSendPacket(BOOL server) {
     BOOL result = FALSE;
 
-    if (sState.recvState != 4) {
+    if (sState.recvState != NET_SYSTEM_PACKET_IDLE) {
         return result;
     }
     if (server) {
@@ -453,14 +472,14 @@ static BOOL NetSystem_BuildSendPacket(BOOL server) {
         if (NetSystem_WritePacket(net->sendData, &net->sendQueue, GFL_NetGetMaxSendSize(), net->sendSeq)) {
             sNetSys->sendSeq++;
         }
-        sState.recvState = 0;
+        sState.recvState = NET_SYSTEM_PACKET_BUILT;
         result = TRUE;
     } else {
         NetSystem *net = sNetSys;
 
         if (NetSystem_WritePacket(net->sendData, &net->sendQueue, GFL_NetGetMaxSendSize(), net->sendSeq)) {
             sNetSys->sendSeq++;
-            sState.recvState = 0;
+            sState.recvState = NET_SYSTEM_PACKET_BUILT;
             result = TRUE;
         }
     }
@@ -471,14 +490,15 @@ static void NetSystem_SendOwnPacket(void) {
     GFLNetSys *sys = GFL_NetGetSys();
     int dataSize = GFL_NetGetMaxSendSize();
 
-    if (sys->pDevTable->isConnected() && NetSystem_IsMachineConnected(NetSystem_GetNetId()) && sState.recvState == 0) {
+    if (sys->pDevTable->isConnected() && NetSystem_IsMachineConnected(NetSystem_GetNetId()) &&
+        sState.recvState == NET_SYSTEM_PACKET_BUILT) {
         if (NetSystem_GetNetId() != 0) {
             if (sys->pDevTable->send(sNetSys->sendData, dataSize, 0, NetSystem_OnSendDone)) {
-                sState.recvState = 2;
+                sState.recvState = NET_SYSTEM_PACKET_SENT;
                 sNetSys->serverSends++;
             }
         } else {
-            sState.recvState = 2;
+            sState.recvState = NET_SYSTEM_PACKET_SENT;
             NetSystem_OnSendDone(TRUE);
             NetSystem_RecvPacket(0, sNetSys->sendData, dataSize);
             sNetSys->serverSends++;
@@ -498,7 +518,7 @@ static void NetSystem_UpdateDataSharing(void) {
             int dataSize;
             int machineMax;
 
-            sState.recvState = 4;
+            sState.recvState = NET_SYSTEM_PACKET_IDLE;
             sNetSys->dataShareOk = TRUE;
             dataSize = GFL_NetGetMaxSendSize();
             machineMax = GFL_NetGetMaxConnectNum();
@@ -525,7 +545,7 @@ static void NetSystem_UpdateInfrared(void) {
 
         if (sys->pDevTable->canSend() == TRUE && NetSystem_BuildSendPacket(FALSE)) {
             NetSystem_SendInfraredPacket(sNetSys->sendData, dataSize);
-            sState.recvState = 4;
+            sState.recvState = NET_SYSTEM_PACKET_IDLE;
         }
     }
 }
@@ -568,10 +588,10 @@ static void NetSystem_SendInfraredPacket(u8 *data, int size) {
         GFL_ASSERT(0);
         return;
     }
-    if (sState.recvState == 0) {
+    if (sState.recvState == NET_SYSTEM_PACKET_BUILT) {
         sys->pDevTable->send(data, size, 0, NULL);
         NetSystem_RecvInfraredPacket(sys->pDevTable->getNetId(), data, size);
-        NetSystem_SetSendState(4, 1036);
+        NetSystem_SetSendState(NET_SYSTEM_MP_SEND_IDLE, 1036);
     }
 }
 
@@ -613,17 +633,17 @@ static void NetSystem_UpdateMPSendStep(void) {
     GFLNetSys *sys = GFL_NetGetSys();
 
     GFL_NetGetMaxConnectNum();
-    if (sState.sendState == 1 && NetSystem_CountConnected() > 1) {
-        NetSystem_SetSendState(2, 1130);
+    if (sState.sendState == NET_SYSTEM_MP_SEND_WRITTEN && NetSystem_CountConnected() > 1) {
+        NetSystem_SetSendState(NET_SYSTEM_MP_SEND_SENT, 1130);
         if (sys->pDevTable->isConnected()) {
             if (!sys->pDevTable->send(sNetSys->mpSendData, NetSystem_GetParentPacketSize(), 0,
                                       NetSystem_OnMPSendDone)) {
-                NetSystem_SetSendState(1, 1134);
+                NetSystem_SetSendState(NET_SYSTEM_MP_SEND_WRITTEN, 1134);
             }
         } else if (GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC ||
                    GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC_WIRELESS) {
             if (!sys->pDevTable->canSend()) {
-                NetSystem_SetSendState(1, 1141);
+                NetSystem_SetSendState(NET_SYSTEM_MP_SEND_WRITTEN, 1141);
             } else {
                 if (sNetSys->mpSendData[PACKET_SIZE] == 0) {
                     return;
@@ -632,14 +652,14 @@ static void NetSystem_UpdateMPSendStep(void) {
             }
         }
     }
-    if (sState.sendState == 2) {
+    if (sState.sendState == NET_SYSTEM_MP_SEND_SENT) {
         NetSystem_CountSends();
         NetSystem_RecvServerPacket(0, sNetSys->mpSendData, NetSystem_GetParentPacketSize());
-        NetSystem_SetSendState(3, 1165);
+        NetSystem_SetSendState(NET_SYSTEM_MP_SEND_RECEIVED, 1165);
     }
     if (!sys->pDevTable->isConnected() || GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC ||
         GFL_NetGetInitData()->bNetType == GFL_NET_TYPE_IRC_WIRELESS) {
-        NetSystem_SetSendState(4, 1170);
+        NetSystem_SetSendState(NET_SYSTEM_MP_SEND_IDLE, 1170);
     }
 }
 
@@ -675,31 +695,31 @@ static void NetSystem_UpdateMPSend(void) {
             return;
         }
         GFL_ASSERT(!pNetIni->bMPMode);
-        if (sState.sendState == 4 && sNetSys->mpSendEnabled && NetSystem_AllSendsReturned()) {
-            NetSystem_SetSendState(1, 1242);
+        if (sState.sendState == NET_SYSTEM_MP_SEND_IDLE && sNetSys->mpSendEnabled && NetSystem_AllSendsReturned()) {
+            NetSystem_SetSendState(NET_SYSTEM_MP_SEND_WRITTEN, 1242);
         }
-        if (sState.sendState == 1) {
+        if (sState.sendState == NET_SYSTEM_MP_SEND_WRITTEN) {
             if (sys->pDevTable->send(sNetSys->mpSendData, NetSystem_GetParentPacketSize(), 0, NULL)) {
-                NetSystem_SetSendState(4, 1249);
+                NetSystem_SetSendState(NET_SYSTEM_MP_SEND_IDLE, 1249);
                 NetSystem_CountSends();
             }
         }
     } else if (pNetIni->bNetType == GFL_NET_TYPE_IRC || pNetIni->bNetType == GFL_NET_TYPE_IRC_WIRELESS) {
-        if (sState.sendState == 4) {
+        if (sState.sendState == NET_SYSTEM_MP_SEND_IDLE) {
             NetSystem *net = sNetSys;
 
             NetSystem_WritePacket(net->mpSendData, &net->mpQueue, NetSystem_GetParentPacketSize(), net->mpSeq);
             sNetSys->mpSeq++;
-            NetSystem_SetSendState(1, 1268);
+            NetSystem_SetSendState(NET_SYSTEM_MP_SEND_WRITTEN, 1268);
         }
         NetSystem_UpdateMPSendStep();
     } else if (sys->pDevTable->isConnected() && NetSystem_AllSendsReturned()) {
-        if (sState.sendState == 4) {
+        if (sState.sendState == NET_SYSTEM_MP_SEND_IDLE) {
             NetSystem *net = sNetSys;
 
             NetSystem_WritePacket(net->mpSendData, &net->mpQueue, NetSystem_GetParentPacketSize(), net->mpSeq);
             sNetSys->mpSeq++;
-            NetSystem_SetSendState(1, 1281);
+            NetSystem_SetSendState(NET_SYSTEM_MP_SEND_WRITTEN, 1281);
         }
         NetSystem_UpdateMPSendStep();
     }
@@ -777,8 +797,8 @@ static BOOL NetSystem_RecvServerPacket(u16 netId, u8 *data, u16 size) {
 }
 
 static BOOL NetSystem_OnSendDone(BOOL ok) {
-    if (ok && sState.recvState == 2) {
-        sState.recvState = 4;
+    if (ok && sState.recvState == NET_SYSTEM_PACKET_SENT) {
+        sState.recvState = NET_SYSTEM_PACKET_IDLE;
     } else {
         GFL_ASSERT(0);
     }
@@ -790,7 +810,7 @@ static BOOL NetSystem_OnMPSendDone(BOOL ok) {
     GFL_NetGetMaxConnectNum();
     GFL_NetGetInitData();
     if (ok) {
-        NetSystem_SetSendState(4, 1492);
+        NetSystem_SetSendState(NET_SYSTEM_MP_SEND_IDLE, 1492);
     } else {
         GFL_ASSERT(0);
     }
@@ -818,7 +838,7 @@ static BOOL NetSystem_WritePacket(u8 *packet, NetQueue *queue, int size, u8 seq)
     if (!NetQueue_FillBuffer(queue, &buffer)) {
         queue->pending = TRUE;
     }
-    if (buffer.size != 0xffff) {
+    if (buffer.size != NET_SEND_BUFFER_FULL) {
         len = size - buffer.size - PACKET_HEADER_SIZE;
     } else {
         len = size - PACKET_HEADER_SIZE;
@@ -918,7 +938,7 @@ static void NetSystem_ReadCommands(NetRingBuff *ring, int netId, u8 *temp, NetRe
         }
         savedStart = ring->startPos;
         state->command = command;
-        if (state->size == 0xffff) {
+        if (state->size == NET_RECV_SIZE_UNKNOWN) {
             if (NetRingBuff_GetUsedSize(ring) < 3) {
                 ring->startPos = savedStart;
                 return;
@@ -1145,16 +1165,16 @@ BOOL NetSystem_IsSendQueueEmpty(void) {
     return NetQueue_IsEmpty(&sNetSys->sendQueue);
 }
 
-void NetSystem_SetWifiConnected(u8 a0) {
-    sNetSys->wifiConnected = a0;
+void NetSystem_SetWifiConnected(u8 connected) {
+    sNetSys->wifiConnected = connected;
 }
 
-void NetSystem_SetMPSendEnabled(BOOL a0) {
+void NetSystem_SetMPSendEnabled(BOOL enabled) {
     GFLNetInitData *ini = GFL_NetGetInitData();
 
     if (ini->bNetType == GFL_NET_TYPE_WIFI || ini->bNetType == GFL_NET_TYPE_WIFI_LOBBY) {
-        sNetSys->mpSendEnabled = a0;
-        if (a0) {
+        sNetSys->mpSendEnabled = enabled;
+        if (enabled) {
             sNetSys->serverSends = 0;
             sNetSys->sends[0] = 0;
             sNetSys->sends[1] = 0;

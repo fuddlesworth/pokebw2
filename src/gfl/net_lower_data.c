@@ -9,7 +9,8 @@
 enum {
     NET_LDATA_HEADER_START,
     NET_LDATA_HEADER_END,
-    NET_LDATA_HEADER_2,
+    // The receiver's answer that the next piece may come
+    NET_LDATA_HEADER_ACK,
 };
 
 // The header command, which starts and ends the data
@@ -39,9 +40,12 @@ typedef struct {
     BOOL sendDone;
     // Whether the start header still has to be sent
     BOOL sendStart;
-    BOOL unk38;
-    BOOL unk3C;
-    BOOL unk40;
+    // Whether each piece waits for the other machine's acknowledgement
+    BOOL waitAck;
+    // Whether the next piece may be sent
+    BOOL canSendPiece;
+    // Whether the receiver's acknowledgement has to be sent
+    BOOL ackPending;
     u32 sentSize;
 } NetLdataWork;
 
@@ -50,7 +54,7 @@ static NetLdataWork *netLdataWork;
 static BOOL NetLdata_SendPiece(int size);
 static BOOL NetLdata_SendHeader(int type);
 
-void NetLdata_Init(HeapID heapId, BOOL a1) {
+void NetLdata_Init(HeapID heapId, BOOL waitAck) {
     u8 i;
 
     GFL_ASSERT(netLdataWork == NULL);
@@ -60,9 +64,9 @@ void NetLdata_Init(HeapID heapId, BOOL a1) {
     netLdataWork->sentSize = 0;
     netLdataWork->sendDone = FALSE;
     netLdataWork->sendStart = FALSE;
-    netLdataWork->unk38 = a1;
-    netLdataWork->unk3C = TRUE;
-    netLdataWork->unk40 = FALSE;
+    netLdataWork->waitAck = waitAck;
+    netLdataWork->canSendPiece = TRUE;
+    netLdataWork->ackPending = FALSE;
     for (i = 0; i < GFL_NET_MACHINE_MAX; i++) {
         netLdataWork->postWork[i] = NULL;
     }
@@ -150,7 +154,7 @@ void NetLdata_Update(void) {
             netLdataWork->sendStart = FALSE;
         }
     } else if (netLdataWork->sentSize < netLdataWork->sendSize) {
-        if (netLdataWork->unk3C == TRUE) {
+        if (netLdataWork->canSendPiece == TRUE) {
             GFLNetInitData *ini = GFL_NetGetInitData();
             int size;
 
@@ -166,8 +170,8 @@ void NetLdata_Update(void) {
                 }
                 if (NetLdata_SendPiece(size) == TRUE) {
                     netLdataWork->sentSize += size;
-                    if (netLdataWork->unk38 == TRUE) {
-                        netLdataWork->unk3C = FALSE;
+                    if (netLdataWork->waitAck == TRUE) {
+                        netLdataWork->canSendPiece = FALSE;
                     }
                 }
             }
@@ -178,9 +182,9 @@ void NetLdata_Update(void) {
             netLdataWork->sendData = NULL;
         }
     }
-    if (netLdataWork->unk40 == TRUE) {
-        if (NetLdata_SendHeader(NET_LDATA_HEADER_2) == TRUE) {
-            netLdataWork->unk40 = FALSE;
+    if (netLdataWork->ackPending == TRUE) {
+        if (NetLdata_SendHeader(NET_LDATA_HEADER_ACK) == TRUE) {
+            netLdataWork->ackPending = FALSE;
         }
     }
 }
@@ -230,8 +234,8 @@ void NetLdata_RecvData(int netId, int size, const void *data, void *work, NetHan
         return;
     }
     netLdataWork->postWork[netId]->recvSize += size;
-    if (netLdataWork->unk38 == TRUE && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-        netLdataWork->unk40 = TRUE;
+    if (netLdataWork->waitAck == TRUE && netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
+        netLdataWork->ackPending = TRUE;
     }
 }
 
@@ -281,9 +285,9 @@ void NetLdata_RecvHeader(int netId, int size, const void *data, void *work, NetH
             netLdataWork->postWork[netId]->done = TRUE;
         }
         break;
-    case NET_LDATA_HEADER_2:
+    case NET_LDATA_HEADER_ACK:
         if (netId != GFL_NetGetHandleNetId(NetHandle_GetOwn())) {
-            netLdataWork->unk3C = TRUE;
+            netLdataWork->canSendPiece = TRUE;
         }
         break;
     }

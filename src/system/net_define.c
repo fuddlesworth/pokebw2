@@ -107,15 +107,17 @@ void NetDefine_Update(void) {
 }
 
 BOOL GflNet_IsWifiGameKind(void) {
+    // The battle kinds whose bases are named. The rest, 0xd to 0x10, 0x1c, 0x26 and 0x30, are the bases of the other
+    // games that fight over the network, which no list in the tree names
     switch (GFL_NetGetGameCommandBase()) {
-    case 0xc:
+    case GFL_NET_GAME_COMMAND_IR_BATTLE:
     case 0xd:
     case 0xe:
     case 0xf:
     case 0x10:
     case 0x1c:
-    case 0x1f:
-    case 0x25:
+    case GFL_NET_GAME_COMMAND_LIVE_BATTLE_IR:
+    case GFL_NET_GAME_COMMAND_IR_MULTI_BATTLE:
     case 0x26:
     case 0x30:
         return TRUE;

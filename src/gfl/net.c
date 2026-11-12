@@ -246,17 +246,18 @@ void GFL_NetStartServer(void) {
     }
 }
 
-void GFL_NetIwChangeoverConnect(void (*callback)(void *work), void (*a1)(void *work, BOOL a1), void (*a2)(void *work)) {
+void GFL_NetIwChangeoverConnect(void (*callback)(void *work), void (*linkChanged)(void *work, BOOL linked),
+                                void (*irEnded)(void *work)) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (NetIw_IsRunning() == TRUE) {
-        callback = NetIw_SetCallbacks(callback, a1, a2);
+        callback = NetIw_SetCallbacks(callback, linkChanged, irEnded);
     }
     NetState_StartChangeover(pNet->aNetInit.heapId, callback, 1);
 }
 
-void GFL_NetIwSetGameCommandBase(int a0) {
-    NetIw_SetGameCommandBase(a0);
+void GFL_NetIwSetGameCommandBase(int gameCommandBase) {
+    NetIw_SetGameCommandBase(gameCommandBase);
 }
 
 void GFL_NetIwGetCollectedMac(u8 *mac, int index) {
@@ -283,33 +284,33 @@ void GFL_NetStartSearch(int unused) {
     NetState_StartSearch();
 }
 
-void GFL_NetHoldScan(int a0) {
+void GFL_NetHoldScan(int unused) {
     if (GFL_NetIsInitialized()) {
-        NetSystem_HoldScan(a0);
+        NetSystem_HoldScan(unused);
     }
 }
 
-void GFL_NetSetChangeoverMode(int mode, int a1, const u8 *mac) {
-    NetState_SetChangeoverMode(mode, a1, mac);
+void GFL_NetSetChangeoverMode(int mode, int useParentMac, const u8 *mac) {
+    NetState_SetChangeoverMode(mode, useParentMac, mac);
 }
 
 BOOL GFL_NetIwFinishCollecting(void) {
     return NetIw_FinishCollecting();
 }
 
-void GFL_NetIwOverrideNetId(int a0) {
-    NetIw_OverrideNetId(a0);
+void GFL_NetIwOverrideNetId(int netId) {
+    NetIw_OverrideNetId(netId);
 }
 
 u8 GFL_NetIwGetLinkedCount(void) {
     return NetIw_GetLinkedCount();
 }
 
-void GFL_NetSetTimeout(int a0) {
+void GFL_NetSetTimeout(int frames) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (pNet->pDevTable != NULL) {
-        pNet->pDevTable->setTimeout(a0);
+        pNet->pDevTable->setTimeout(frames);
     }
 }
 
@@ -328,11 +329,11 @@ BOOL GFL_NetIsNegotiated(u8 netId) {
     return NetHandle_IsNegotiated(NetHandle_Get(netId));
 }
 
-void GFL_NetSetAcceptConnect(NetHandle *handle, int a1) {
+void GFL_NetSetAcceptConnect(NetHandle *handle, int accept) {
     GFLNetSys *pNet = GFL_NetGetSys();
 
     if (pNet->pDevTable->setAcceptConnect != NULL) {
-        pNet->pDevTable->setAcceptConnect(a1);
+        pNet->pDevTable->setAcceptConnect(accept);
     }
 }
 
@@ -434,7 +435,7 @@ BOOL GFL_NetSendCommandToMachine(NetHandle *handle, u8 sendID, u16 command, u32 
     if (noDuplicate && NetSystem_HasQueuedCommand(command, NetHandle_GetNetId(handle))) {
         return FALSE;
     }
-    if (sendID != 0xff) {
+    if (sendID != GFL_NET_NETID_SERVER) {
         GFL_ASSERT(sendID < 7);
         dest = 1 << sendID;
     }
@@ -506,8 +507,8 @@ u8 GflNet_GetFriendListNum(void) {
     return pNet->aNetInit.unk62;
 }
 
-void GFL_NetSetMPSendEnabled(BOOL a0) {
-    NetSystem_SetMPSendEnabled(a0);
+void GFL_NetSetMPSendEnabled(BOOL enabled) {
+    NetSystem_SetMPSendEnabled(enabled);
 }
 
 void *GFL_NetGetWork(void) {
@@ -582,12 +583,12 @@ GFLNetInitData *GFL_NetGetInitData(void) {
     return NULL;
 }
 
-void GflNet_SetAutoExit(u8 a0) {
-    NetState_SetAutoExit(a0);
+void GflNet_SetAutoExit(u8 autoExit) {
+    NetState_SetAutoExit(autoExit);
 }
 
-void GFL_NetSetDisconnectError(BOOL a0) {
-    NetState_SetDisconnectError(a0);
+void GFL_NetSetDisconnectError(BOOL isError) {
+    NetState_SetDisconnectError(isError);
 }
 
 // Allocates 32-byte aligned memory, keeping the allocation just before it for GFL_NetFreeAligned32
@@ -642,9 +643,9 @@ void GFL_NetResetIconPos(void) {
     GFL_NetRefreshIcon();
 }
 
-void GFL_NetSetRejectNegotiated(BOOL a0) {
+void GFL_NetSetRejectNegotiated(BOOL reject) {
     if (sNet.pNet != NULL) {
-        if (a0 == TRUE) {
+        if (reject == TRUE) {
             sNet.pNet->rejectNegotiated = TRUE;
         } else {
             sNet.pNet->rejectNegotiated = FALSE;

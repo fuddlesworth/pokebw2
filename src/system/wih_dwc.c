@@ -25,6 +25,9 @@
 #define WIFI_SLOT_COUNT 3
 #define WIFI_SLOT_SSID_COUNT 2
 #define WIFI_CONFIG_SIZE 0xa00
+// FREESPOT's SSID, which the hotspot's beacons carry
+#define FREESPOT_SSID "FREESPOT"
+#define FREESPOT_SSID_LEN 8
 
 enum { AP_TIMER_KNOWN, AP_TIMER_HOTSPOT, AP_TIMER_OPEN, AP_TIMER_LOCKED, AP_TIMER_COUNT };
 
@@ -173,9 +176,11 @@ static BOOL isConfiguredAP(WMBssDesc *bss) {
 // but FREESPOT
 static BOOL isFreeSpot(WMBssDesc *bss) {
 #ifdef BUGFIX
-    if (bss->ssidLength == 8 && GFL_STD_MemCmp("FREESPOT", bss->ssid, 8) == 0 && !(bss->capaInfo & 0x10)) {
+    if (bss->ssidLength == FREESPOT_SSID_LEN && GFL_STD_MemCmp(FREESPOT_SSID, bss->ssid, FREESPOT_SSID_LEN) == 0 &&
+        !(bss->capaInfo & 0x10)) {
 #else
-    if (bss->ssidLength == 8 && GFL_STD_MemCmp("FREESPOT", bss->ssid, 8) != 0 && !(bss->capaInfo & 0x10)) {
+    if (bss->ssidLength == FREESPOT_SSID_LEN && GFL_STD_MemCmp(FREESPOT_SSID, bss->ssid, FREESPOT_SSID_LEN) != 0 &&
+        !(bss->capaInfo & 0x10)) {
 #endif
         return TRUE;
     }
@@ -225,19 +230,20 @@ u32 WihDwc_GetStatus(WifiList *wifiList) {
             _localWork->timers[AP_TIMER_HOTSPOT] = AP_KNOWN_FRAMES;
         } else if (DWCi_BssDescToApInfo(_localWork->parseWork, bss, &apInfo)) {
             switch (apInfo.aptype) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
+            case DWC_APINFO_TYPE_USER0:
+            case DWC_APINFO_TYPE_USER1:
+            case DWC_APINFO_TYPE_USER2:
+            case DWC_APINFO_TYPE_USB:
+            // The DSi's own settings, which the SDK's type list leaves unnamed
             case 10:
             case 11:
             case 12:
                 _localWork->timers[AP_TIMER_KNOWN] = AP_KNOWN_FRAMES;
                 break;
-            case 4:
-            case 5:
-            case 6:
-            case 8:
+            case DWC_APINFO_TYPE_SHOP:
+            case DWC_APINFO_TYPE_FREESPOT:
+            case DWC_APINFO_TYPE_WAYPORT:
+            case DWC_APINFO_TYPE_NINTENDOSPOT:
                 _localWork->timers[AP_TIMER_HOTSPOT] = AP_KNOWN_FRAMES;
                 break;
             }

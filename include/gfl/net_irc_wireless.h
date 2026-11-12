@@ -15,7 +15,10 @@ void NetIw_FreeIfIdle(void);
 // Whether it is running
 BOOL NetIw_IsRunning(void);
 void NetIw_SetPeerFilter(GFLNetPeerFilter filter);
-void (*NetIw_SetCallbacks(void (*a0)(void *work), void (*a1)(void *work, BOOL a1), void (*a2)(void *work)))(void *work);
+// Sets the callbacks of the changeover: the wireless connection made, the infrared link changed, and its end; returns
+// the callback to start the network with
+void (*NetIw_SetCallbacks(void (*connected)(void *work), void (*linkChanged)(void *work, BOOL linked),
+                          void (*irEnded)(void *work)))(void *work);
 // Adds a MAC address to the ones collected
 void NetIw_AddCollectedMac(const u8 *mac);
 // A collected MAC address

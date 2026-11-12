@@ -11,6 +11,8 @@
 
 // How many MAC addresses are collected over infrared
 #define _COLLECTMAC_NUM 4
+// The machines of the multi battle, the game the infrared link collects the MAC addresses for
+#define _MULTI_MACHINE_NUM 4
 
 typedef struct {
     int num;
@@ -29,8 +31,10 @@ typedef struct {
     void (*exitCallback)(void *work);
     // Called once the wireless network is connected
     void (*connectCallback)(void *work);
-    void (*unk88)(void *work, BOOL a1);
-    void (*unk8C)(void *work);
+    // Called when the infrared link changes, with whether it is up
+    void (*linkChangedCallback)(void *work, BOOL linked);
+    // Called when the infrared network has ended
+    void (*irEndedCallback)(void *work);
     NetIwCollectMac collect;
     // The game's beacon data, which the beacons send after the collected MAC addresses
     u8 gameBeacon[0x4c];
@@ -55,6 +59,49 @@ typedef struct {
     u8 netIdOverridden;
     u8 gameCommandBase;
 } NetIrcWireless;
+
+// The steps of the changeover from the infrared link to the wireless one: the machines meet over infrared, swap
+// the MAC addresses they collected, and start the wireless network to find each other's beacons by them
+enum {
+    // Waits for the infrared link to connect
+    NETIW_STATE_WAIT_LINK,
+    // Waits for the timing pair that the other machines answer
+    NETIW_STATE_WAIT_LINK_TIMING,
+    // Sends the base command that ends the infrared network, 1 from the parent and 16 from a child
+    NETIW_STATE_SEND_EXIT,
+    // Waits for the infrared network to end, and calls irEnded
+    NETIW_STATE_WAIT_EXITED,
+    // Starts the infrared link again, to exchange the collected MAC addresses
+    NETIW_STATE_START_MAC_EXCHANGE,
+    // Waits for it, sets the peer filter and connects the changeover
+    NETIW_STATE_WAIT_MAC_EXCHANGE_STARTED,
+    // Sends the MAC addresses it collected
+    NETIW_STATE_SEND_MACS,
+    // Sends the command that ends the exchange
+    NETIW_STATE_SEND_MAC_EXCHANGE_EXIT,
+    // Waits for it to end, and calls irEnded
+    NETIW_STATE_WAIT_MAC_EXCHANGE_ENDED,
+    // Starts the wireless network, with the game command base and the callbacks of its own
+    NETIW_STATE_START_WIRELESS,
+    // Waits for it; the parent serves, a four-machine child scans, and the others start as children
+    NETIW_STATE_WAIT_WIRELESS_STARTED,
+    // Finds the parent's beacon by the collected MAC addresses, and starts as its child
+    NETIW_STATE_FIND_PARENT_BEACON,
+    // Sends the negotiation
+    NETIW_STATE_SEND_NEGOTIATION,
+    // Waits for the machines to negotiate, and calls the connection callback
+    NETIW_STATE_WAIT_NEGOTIATED,
+    // Starts the infrared link again, for the next machine
+    NETIW_STATE_START_LINK_AGAIN,
+    // Waits for it, sets the peer filter and connects the changeover
+    NETIW_STATE_WAIT_LINK_AGAIN_STARTED,
+    // The link is connected: sends the timing pair and starts the changeover
+    NETIW_STATE_LINK_AGAIN_CONNECTED,
+    // Waits for the timing pair, then sends the command that ends the link
+    NETIW_STATE_SEND_LINK_AGAIN_EXIT,
+    // Waits for it, counts the machine, and repeats the link or goes on wireless
+    NETIW_STATE_WAIT_LINK_AGAIN_ENDED,
+};
 
 static NetIrcWireless *NetIwSys;
 
@@ -114,19 +161,19 @@ void NetIw_SetPeerFilter(GFLNetPeerFilter filter) {
     NetIwSys->peerFilter = filter;
 }
 
-void (*NetIw_SetCallbacks(void (*a0)(void *work), void (*a1)(void *work, BOOL a1),
-                          void (*a2)(void *work)))(void *work) {
+void (*NetIw_SetCallbacks(void (*connected)(void *work), void (*linkChanged)(void *work, BOOL linked),
+                          void (*irEnded)(void *work)))(void *work) {
     if (NetIwSys == NULL) {
-        return a0;
+        return connected;
     }
-    if (a0 != NULL) {
-        NetIwSys->connectCallback = a0;
+    if (connected != NULL) {
+        NetIwSys->connectCallback = connected;
     }
-    if (a1 != NULL) {
-        NetIwSys->unk88 = a1;
+    if (linkChanged != NULL) {
+        NetIwSys->linkChangedCallback = linkChanged;
     }
-    if (a2 != NULL) {
-        NetIwSys->unk8C = a2;
+    if (irEnded != NULL) {
+        NetIwSys->irEndedCallback = irEnded;
     }
     return NetIw_ConnectedCallback;
 }
@@ -196,52 +243,52 @@ void NetIw_Update(void) {
         return;
     }
     switch (sys->state) {
-    case 0:
+    case NETIW_STATE_WAIT_LINK:
         if (sys->connected == TRUE) {
             sys->switchingToWireless = TRUE;
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 3, 0);
-            NetIw_SetState(sys, 1);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_LINK_TIMING);
         }
         break;
-    case 1:
+    case NETIW_STATE_WAIT_LINK_TIMING:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 3, 0)) {
-            NetIw_SetState(sys, 2);
+            NetIw_SetState(sys, NETIW_STATE_SEND_EXIT);
         }
         break;
-    case 2:
+    case NETIW_STATE_SEND_EXIT:
         if (NetSystem_GetNetId() == 0) {
             if (GFL_NetSendCommand(NetHandle_GetOwn(), 1, 0, NULL)) {
-                NetIw_SetState(sys, 3);
+                NetIw_SetState(sys, NETIW_STATE_WAIT_EXITED);
                 sys->timer = 200;
             }
         } else if (GFL_NetSendCommand(NetHandle_GetOwn(), 16, 0, NULL)) {
-            NetIw_SetState(sys, 3);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_EXITED);
         }
         break;
-    case 3:
+    case NETIW_STATE_WAIT_EXITED:
         sys->timer--;
         if (GFL_NetIsNotInitialized()) {
-            if (NetIwSys->unk8C != NULL) {
-                NetIwSys->unk8C(NetIwSys->work);
+            if (NetIwSys->irEndedCallback != NULL) {
+                NetIwSys->irEndedCallback(NetIwSys->work);
             }
-            if (sys->netIdOverridden && sys->aNetInit.maxConnectNum == 4 && sys->netId == 0) {
-                NetIw_SetState(sys, 14);
+            if (sys->netIdOverridden && sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM && sys->netId == 0) {
+                NetIw_SetState(sys, NETIW_STATE_START_LINK_AGAIN);
                 sys->linkedCount++;
-            } else if (sys->netId == 0 && sys->aNetInit.maxConnectNum == 4) {
+            } else if (sys->netId == 0 && sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM) {
                 sys->linkedCount++;
                 GFL_NetExit(NULL);
-                sys->unk88(sys->work, TRUE);
-                NetIw_SetState(sys, 4);
+                sys->linkChangedCallback(sys->work, TRUE);
+                NetIw_SetState(sys, NETIW_STATE_START_MAC_EXCHANGE);
             } else {
-                sys->unk88(sys->work, FALSE);
-                NetIw_SetState(sys, 9);
+                sys->linkChangedCallback(sys->work, FALSE);
+                NetIw_SetState(sys, NETIW_STATE_START_WIRELESS);
             }
         }
         if (sys->timer == 0) {
             GFL_NetExit(NULL);
         }
         break;
-    case 4:
+    case NETIW_STATE_START_MAC_EXCHANGE:
         if (!GFL_NetIsInitialized()) {
             sys->aNetInit.bNetType = GFL_NET_TYPE_IRC;
             sys->aNetInit.endCallback = NetIw_EndedCallback;
@@ -251,39 +298,39 @@ void NetIw_Update(void) {
             sys->connected = FALSE;
             sys->ended = FALSE;
             GFL_NetInit(&sys->aNetInit, NULL, sys->work);
-            NetIw_SetState(sys, 5);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_MAC_EXCHANGE_STARTED);
         }
         break;
-    case 5:
+    case NETIW_STATE_WAIT_MAC_EXCHANGE_STARTED:
         if (GFL_NetIsInitialized() == TRUE) {
             GFL_NetGetSys()->pDevTable->setPeerFilter(NetIwSys->peerFilter);
             GFL_NetChangeoverConnect(NetIw_ConnectedCallback);
-            NetIw_SetState(sys, 6);
+            NetIw_SetState(sys, NETIW_STATE_SEND_MACS);
         }
         break;
-    case 6:
+    case NETIW_STATE_SEND_MACS:
         if (sys->connected == TRUE) {
             sys->switchingToWireless = TRUE;
             if (GFL_NetSendCommand(NetHandle_GetOwn(), 9, sizeof(NetIwCollectMac), &NetIwSys->collect)) {
-                NetIw_SetState(sys, 7);
+                NetIw_SetState(sys, NETIW_STATE_SEND_MAC_EXCHANGE_EXIT);
             }
         }
         break;
-    case 7:
+    case NETIW_STATE_SEND_MAC_EXCHANGE_EXIT:
         if (sys->connected == TRUE && GFL_NetSendCommand(NetHandle_GetOwn(), 1, 0, NULL)) {
             GFL_NetSetTimeout(200);
-            NetIw_SetState(sys, 8);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_MAC_EXCHANGE_ENDED);
         }
         break;
-    case 8:
+    case NETIW_STATE_WAIT_MAC_EXCHANGE_ENDED:
         if (GFL_NetIsNotInitialized()) {
-            if (NetIwSys->unk8C != NULL) {
-                NetIwSys->unk8C(NetIwSys->work);
+            if (NetIwSys->irEndedCallback != NULL) {
+                NetIwSys->irEndedCallback(NetIwSys->work);
             }
-            NetIw_SetState(sys, 9);
+            NetIw_SetState(sys, NETIW_STATE_START_WIRELESS);
         }
         break;
-    case 9:
+    case NETIW_STATE_START_WIRELESS:
         if (GFL_NetIsNotInitialized()) {
             if (sys->gameCommandBase != 0) {
                 sys->aNetInit.negotiationCommandBase = 0;
@@ -294,24 +341,24 @@ void NetIw_Update(void) {
             sys->aNetInit.bMPMode = sys->bMPMode;
             GFL_NetInit(&sys->aNetInit, NULL, sys->work);
             NetIwSys->switchingToWireless = FALSE;
-            NetIw_SetState(sys, 10);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_WIRELESS_STARTED);
         }
         break;
-    case 10:
+    case NETIW_STATE_WAIT_WIRELESS_STARTED:
         if (GFL_NetIsInitialized() == TRUE) {
             if (sys->netId == 0) {
                 GFL_NetStartServer();
-                NetIw_SetState(sys, 12);
-            } else if (sys->aNetInit.maxConnectNum == 4) {
+                NetIw_SetState(sys, NETIW_STATE_SEND_NEGOTIATION);
+            } else if (sys->aNetInit.maxConnectNum == _MULTI_MACHINE_NUM) {
                 GFL_NetStartScan();
-                NetIw_SetState(sys, 11);
+                NetIw_SetState(sys, NETIW_STATE_FIND_PARENT_BEACON);
             } else {
                 GFL_NetStartAsParent(sys->collect.macs[0]);
-                NetIw_SetState(sys, 12);
+                NetIw_SetState(sys, NETIW_STATE_SEND_NEGOTIATION);
             }
         }
         break;
-    case 11: {
+    case NETIW_STATE_FIND_PARENT_BEACON: {
         int index = 0;
         u8 mac[6];
         int i;
@@ -327,7 +374,7 @@ void NetIw_Update(void) {
             for (i = 0; i < _COLLECTMAC_NUM; i++) {
                 if (GFL_STD_MemCmp(mac, collect->macs[i], 6) == 0) {
                     GFL_NetStartAsChild(GFL_NetGetBeaconMac(index));
-                    NetIw_SetState(sys, 12);
+                    NetIw_SetState(sys, NETIW_STATE_SEND_NEGOTIATION);
                     break;
                 }
             }
@@ -335,16 +382,16 @@ void NetIw_Update(void) {
         }
         break;
     }
-    case 12:
+    case NETIW_STATE_SEND_NEGOTIATION:
         if (sys->netId == 0) {
             if (NetHandle_CountNegotiated() != 0 && NetHandle_SendNegotiation() == TRUE) {
-                NetIw_SetState(sys, 13);
+                NetIw_SetState(sys, NETIW_STATE_WAIT_NEGOTIATED);
             }
         } else if (NetHandle_SendNegotiation() == TRUE) {
-            NetIw_SetState(sys, 13);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_NEGOTIATED);
         }
         break;
-    case 13:
+    case NETIW_STATE_WAIT_NEGOTIATED:
         if (sys->netId != 0) {
             if (sys->connectCallback != NULL) {
                 sys->connectCallback(sys->work);
@@ -357,52 +404,52 @@ void NetIw_Update(void) {
             NetIw_FreeIfIdle();
         }
         break;
-    case 14:
+    case NETIW_STATE_START_LINK_AGAIN:
         if (!GFL_NetIsInitialized()) {
             sys->aNetInit.bNetType = GFL_NET_TYPE_IRC;
             sys->aNetInit.endCallback = NetIw_EndedCallback;
             sys->connected = FALSE;
             sys->ended = FALSE;
             GFL_NetInit(&sys->aNetInit, NULL, sys->work);
-            NetIw_SetState(sys, 15);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_LINK_AGAIN_STARTED);
         }
         break;
-    case 15:
+    case NETIW_STATE_WAIT_LINK_AGAIN_STARTED:
         if (GFL_NetIsInitialized() == TRUE) {
             GFL_NetGetSys()->pDevTable->setPeerFilter(NetIwSys->peerFilter);
             GFL_NetChangeoverConnect(NetIw_ConnectedCallback);
-            NetIw_SetState(sys, 16);
+            NetIw_SetState(sys, NETIW_STATE_LINK_AGAIN_CONNECTED);
         }
         break;
-    case 16:
+    case NETIW_STATE_LINK_AGAIN_CONNECTED:
         if (sys->connected == TRUE) {
             NetHandle_SendTimingPair(NetHandle_GetOwn(), 3, 0);
             NetIwSys->switchingToWireless = TRUE;
-            NetIw_SetState(sys, 17);
+            NetIw_SetState(sys, NETIW_STATE_SEND_LINK_AGAIN_EXIT);
         }
         break;
-    case 17:
+    case NETIW_STATE_SEND_LINK_AGAIN_EXIT:
         if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 3, 0) &&
             GFL_NetSendCommand(NetHandle_GetOwn(), 1, 0, NULL)) {
-            NetIw_SetState(sys, 18);
+            NetIw_SetState(sys, NETIW_STATE_WAIT_LINK_AGAIN_ENDED);
             sys->timer = 200;
         }
         break;
-    case 18:
+    case NETIW_STATE_WAIT_LINK_AGAIN_ENDED:
         sys->timer--;
         if (GFL_NetIsNotInitialized() || sys->timer == 0) {
-            if (NetIwSys->unk8C != NULL) {
-                NetIwSys->unk8C(NetIwSys->work);
+            if (NetIwSys->irEndedCallback != NULL) {
+                NetIwSys->irEndedCallback(NetIwSys->work);
             }
             if (sys->netIdOverridden && sys->linkedCount < 3) {
                 sys->linkedCount++;
                 if (sys->linkedCount >= 3) {
-                    NetIw_SetState(sys, 9);
+                    NetIw_SetState(sys, NETIW_STATE_START_WIRELESS);
                 } else {
-                    NetIw_SetState(sys, 14);
+                    NetIw_SetState(sys, NETIW_STATE_START_LINK_AGAIN);
                 }
             } else {
-                NetIw_SetState(sys, 9);
+                NetIw_SetState(sys, NETIW_STATE_START_WIRELESS);
             }
         }
         break;
@@ -449,10 +496,10 @@ BOOL NetIw_FinishCollecting(void) {
     if (NetIwSys == NULL) {
         return FALSE;
     }
-    if (NetIwSys->state == 16) {
+    if (NetIwSys->state == NETIW_STATE_LINK_AGAIN_CONNECTED) {
         NetIwSys->maxConnectNum = NetIwSys->linkedCount + 1;
         GFL_NetExit(NULL);
-        NetIwSys->state = 9;
+        NetIwSys->state = NETIW_STATE_START_WIRELESS;
         return TRUE;
     }
     return FALSE;
