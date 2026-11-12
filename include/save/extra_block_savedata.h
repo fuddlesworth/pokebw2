@@ -38,6 +38,7 @@ typedef struct {
     // Bitsets of the banned species and items
     u8 bannedSpecies[WBT_DOWNLOAD_SPECIES_BYTES];
     u8 bannedItems[WBT_DOWNLOAD_ITEM_BYTES];
+    // Never read or written; overlay 326's copy of the record left the same byte unnamed too
     u8 unkA6;
     u8 battleType;
     // Set for a World Championships tournament, which has their music and its own battle background
@@ -53,6 +54,7 @@ typedef struct {
     u16 item;
     // Whether PML_GenPID makes the Pokémon shiny
     u8 shiny : 1;
+    // The rest of the shiny byte; never read or written
     u8 unk1A_1 : 7;
     // The ability, by its number
     u8 ability;
@@ -89,6 +91,7 @@ typedef struct {
     u8 padding3DB;
     // WbtEntrant's aiBits
     u16 aiBits;
+    // Tail padding to the struct's 0x3e0 size; no code reads or writes it
     u8 unk3DE[2];
 } WbtDownloadedTrainer;
 
@@ -104,6 +107,7 @@ typedef struct {
 typedef struct {
     // A WBT_DOWNLOAD_KIND_*
     u32 kind;
+    // Never read or written; the file's header has three unnamed bytes between kind and state
     u8 unk4[3];
     // WBT_DOWNLOAD_STATE_VALID for one that can be used
     u8 state;
