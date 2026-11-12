@@ -49,8 +49,10 @@ typedef enum {
     WM_ERRCODE_FIFO_ERROR = 8,       // No command buffer is free, or the FIFO to the ARM7 is full
     WM_ERRCODE_TIMEOUT = 9,          // No check response of the multi-point mode came in time
     WM_ERRCODE_SEND_QUEUE_FULL = 10, // The queue of the port has no room for the data
-    WM_ERRCODE_SEND_FAILED = 15,     // The parent and child's send and receive sequence did not agree
-    WM_ERRCODE_FLASH_ERROR = 0x13,   // What the ARM7 reports in an indication when it can't go on: the game ends
+    WM_ERRCODE_NO_ENTRY = 11,
+    WM_ERRCODE_OVER_MAX_ENTRY = 12,
+    WM_ERRCODE_SEND_FAILED = 15,   // The parent and child's send and receive sequence did not agree
+    WM_ERRCODE_FLASH_ERROR = 0x13, // What the ARM7 reports in an indication when it can't go on: the game ends
 } WMErrCode;
 
 // The state of the manager, in the first halfword of its status
@@ -114,11 +116,14 @@ typedef enum {
     WM_STATECODE_PARENT_FOUND = 5,
     WM_STATECODE_CONNECT_START = 6,
     WM_STATECODE_CONNECTED = 7,
+    WM_STATECODE_BEACON_LOST = 8,
     WM_STATECODE_DISCONNECTED = 9,
     WM_STATECODE_MP_START = 10,
     WM_STATECODE_MPEND_IND = 11,
     WM_STATECODE_MP_IND = 12,
     WM_STATECODE_MPACK_IND = 13,
+    WM_STATECODE_DCF_START = 14,
+    WM_STATECODE_DCF_IND = 15,
     // The indications, which WM_SetIndCallback takes
     WM_STATECODE_BEACON_RECV = 0x10,
     WM_STATECODE_DISASSOCIATE = 0x11,

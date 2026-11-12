@@ -29,21 +29,21 @@ s32 WCMi_WmifStartupAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (WM_Init(work->startupBuffer, (u16)work->dmaNo)) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         break;
-    case 3:
-        WCMi_SetPhase(11);
+    case WM_ERRCODE_ILLEGAL_STATE:
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
-    case 4:
+    case WM_ERRCODE_WM_DISABLE:
         return 5;
     // WM_ERRCODE_INVALID_PARAM, which the SDK lists with the default
-    case 6:
+    case WM_ERRCODE_INVALID_PARAM:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     if (WM_SetIndCallback((WMCallbackFunc)WcmWmcbIndication) != 0) {
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     {
@@ -53,17 +53,17 @@ s32 WCMi_WmifStartupAsync(void) {
         WCMi_CpsifSetMacAddress(mac);
     }
     switch (WM_Enable((WMCallbackFunc)WcmWmcbCommon)) {
-    case 2:
-        WCMi_SetPhase(2);
-        work->pendingNotify = 1;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_WAIT_TO_IDLE);
+        work->pendingNotify = WCM_NOTIFY_STARTUP;
         break;
-    case 8:
-        WCMi_SetPhase(12);
+    case WM_ERRCODE_FIFO_ERROR:
+        WCMi_SetPhase(WCM_PHASE_IRREGULAR);
         return 1;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -73,16 +73,16 @@ s32 WCMi_WmifCleanupAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (WM_PowerOff((WMCallbackFunc)WcmWmcbCommon)) {
-    case 2:
-        WCMi_SetPhase(4);
-        work->pendingNotify = 2;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_WAIT);
+        work->pendingNotify = WCM_NOTIFY_CLEANUP;
         break;
-    case 8:
+    case WM_ERRCODE_FIFO_ERROR:
         return 4;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(0xb);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -92,13 +92,13 @@ s32 WCMi_WmifBeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (work->state) {
-    case 5:
+    case WCM_PHASE_IDLE_TO_SEARCH:
         WcmEditScanExParam(bssid, essid, option);
         return 2;
-    case 6:
+    case WCM_PHASE_SEARCH:
         WcmEditScanExParam(bssid, essid, option);
         return 0;
-    case 3:
+    case WCM_PHASE_IDLE:
         break;
     default:
         return 1;
@@ -107,16 +107,16 @@ s32 WCMi_WmifBeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
     DC_InvalidateRange(work->scanRequest.scanBuf, work->scanRequest.scanBufSize);
     work->scanCount++;
     switch (WM_StartScanEx((WMCallbackFunc)WcmWmcbScanEx, &work->scanRequest)) {
-    case 2:
-        WCMi_SetPhase(5);
-        work->pendingNotify = 3;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_SEARCH);
+        work->pendingNotify = WCM_NOTIFY_BEGIN_SEARCH;
         break;
-    case 8:
+    case WM_ERRCODE_FIFO_ERROR:
         return 4;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(0xb);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -125,20 +125,20 @@ s32 WCMi_WmifBeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
 s32 WCMi_WmifConnectAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
-    if (work->state == 3) {
+    if (work->state == WCM_PHASE_IDLE) {
         work->connectBss.rateSetSupport = work->connectBss.rateSetBasic | 3;
     }
     switch (WM_SetLifeTime((WMCallbackFunc)WcmWmcbCommon, 0xffff, 0x50, 0xffff, 0xffff)) {
-    case 2:
-        WCMi_SetPhase(8);
-        work->pendingNotify = 5;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
+        work->pendingNotify = WCM_NOTIFY_CONNECT;
         break;
-    case 8:
+    case WM_ERRCODE_FIFO_ERROR:
         return 4;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(0xb);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -148,16 +148,16 @@ s32 WCMi_WmifDisconnectAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (WM_EndDCF((WMCallbackFunc)WcmWmcbEndDCF)) {
-    case 2:
-        WCMi_SetPhase(0xa);
-        work->pendingNotify = 6;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
+        work->pendingNotify = WCM_NOTIFY_DISCONNECT;
         break;
-    case 8:
+    case WM_ERRCODE_FIFO_ERROR:
         return 4;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(0xb);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -170,18 +170,18 @@ s32 WCMi_WmifTerminateAsync(void) {
 
     DC_InvalidateRange((void *)status, 2);
     switch (status->state) {
-    case 0:
+    case WM_STATE_READY:
         result = WM_Finish();
         if (result == 0) {
-            WCMi_SetPhase(1);
-            work->pendingNotify = 0;
+            WCMi_SetPhase(WCM_PHASE_WAIT);
+            work->pendingNotify = WCM_NOTIFY_COMMON;
             return 0;
         }
         break;
-    case 1:
+    case WM_STATE_STOP:
         result = WM_Disable((WMCallbackFunc)WcmWmcbCommon);
         break;
-    case 2:
+    case WM_STATE_IDLE:
         result = WM_PowerOff((WMCallbackFunc)WcmWmcbCommon);
         break;
     default:
@@ -190,16 +190,16 @@ s32 WCMi_WmifTerminateAsync(void) {
         break;
     }
     switch (result) {
-    case 2:
-        WCMi_SetPhase(0xd);
-        work->pendingNotify = 9;
+    case WM_ERRCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_TERMINATING);
+        work->pendingNotify = WCM_NOTIFY_TERMINATE;
         break;
-    case 8:
+    case WM_ERRCODE_FIFO_ERROR:
         return 4;
     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-    case 3:
+    case WM_ERRCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(0xb);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -216,23 +216,23 @@ s32 WCMi_WmifSetDCFData(const u8 *dst, const void *buffer, u16 byteLen, void (*c
         callback = WcmWmcbSetDCFDataAsync;
     }
     switch (WM_SetDCFData(callback, dst, buffer, byteLen)) {
-    case 2:
+    case WM_ERRCODE_OPERATING:
         break;
     // WM_ERRCODE_ILLEGAL_STATE, WM_ERRCODE_INVALID_PARAM and WM_ERRCODE_FIFO_ERROR, which the SDK lists with the
     // default
-    case 3:
-    case 6:
-    case 8:
+    case WM_ERRCODE_ILLEGAL_STATE:
+    case WM_ERRCODE_INVALID_PARAM:
+    case WM_ERRCODE_FIFO_ERROR:
     default:
         return -5;
     }
     if (completion == NULL) {
         OS_SleepThread(&global->sendQueue);
         switch (global->sendStatus) {
-        case 0:
+        case WM_ERRCODE_SUCCESS:
             break;
         // WM_ERRCODE_FAILED, which the SDK lists with the default
-        case 1:
+        case WM_ERRCODE_FAILED:
         default:
             return -5;
         }
@@ -265,9 +265,9 @@ static void WcmWmReset(void) {
 
     if (work->resetPending == 0) {
         work->resetPending = 1;
-        if (WM_Reset((WMCallbackFunc)WcmWmcbReset) != 2) {
-            WCMi_SetPhase(0xb);
-            WCMi_Notify(7, NULL, 0, 0x24f);
+        if (WM_Reset((WMCallbackFunc)WcmWmcbReset) != WM_ERRCODE_OPERATING) {
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x24f);
         }
     }
 }
@@ -277,18 +277,18 @@ static void WcmWmcbIndication(void *ind) {
     const WMIndCallback *indication = ind;
     WCMWork *work = WCMi_GetSystemWork();
 
-    if (indication->errcode == 8) {
-        if (indication->state == 0x16 && indication->reason == 0x25) {
+    if (indication->errcode == WM_ERRCODE_FIFO_ERROR) {
+        if (indication->state == WM_STATECODE_FIFO_ERROR && indication->reason == 0x25) {
             switch (work->state) {
-            case 8:
-                WCMi_SetPhase(0xc);
+            case WCM_PHASE_IDLE_TO_DCF:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
                 break;
-            case 9:
-            case 12:
+            case WCM_PHASE_DCF:
+            case WCM_PHASE_IRREGULAR:
                 WcmWmReset();
                 break;
-            case 10:
-                WCMi_SetPhase(0xc);
+            case WCM_PHASE_DCF_TO_IDLE:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
                 break;
             }
         }
@@ -301,41 +301,41 @@ static void WcmWmcbCommon(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (callback->errcode) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         switch (callback->apiid) {
-        case 3:
+        case WM_APIID_ENABLE:
             result = WM_PowerOn((WMCallbackFunc)WcmWmcbCommon);
             break;
-        case 4:
+        case WM_APIID_DISABLE:
             result = WM_Finish();
             switch (result) {
-            case 0:
-                WCMi_SetPhase(1);
-                WCMi_Notify(0, NULL, 0, 0x2a4);
+            case WM_ERRCODE_SUCCESS:
+                WCMi_SetPhase(WCM_PHASE_WAIT);
+                WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x2a4);
                 break;
             // WM_ERRCODE_WM_DISABLE, whose warning the SDK leaves out of this build
-            case 4:
+            case WM_ERRCODE_WM_DISABLE:
             default:
-                WCMi_SetPhase(11);
-                WCMi_Notify(7, NULL, 0, 0x2ad);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x2ad);
                 break;
             }
             return;
-        case 5:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, NULL, 0, 0x2b4);
+        case WM_APIID_POWER_ON:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x2b4);
             return;
-        case 6:
+        case WM_APIID_POWER_OFF:
             result = WM_Disable((WMCallbackFunc)WcmWmcbCommon);
             break;
-        case 29:
+        case WM_APIID_SET_LIFETIME:
             result = WM_SetBeaconIndication((WMCallbackFunc)WcmWmcbCommon, 0);
             break;
-        case 25:
+        case WM_APIID_SET_BEACON_IND:
             result = WM_SetWEPKeyEx((WMCallbackFunc)WcmWmcbCommon, work->connectionStorage.mode,
                                     work->connectionStorage.argument, work->connectionStorage.data);
             break;
-        case 39:
+        case WM_APIID_SET_WEPKEY_EX:
             result = WM_StartConnectEx(
                 (WMCallbackFunc)WcmWmcbConnect, &work->connectBss, NULL,
                 (work->searchOption & WCM_OPTION_POWER_ACTIVE) == WCM_OPTION_POWER_ACTIVE ? FALSE : TRUE,
@@ -343,30 +343,33 @@ static void WcmWmcbCommon(void *ind) {
             break;
         }
         switch (result) {
-        case 2:
+        case WM_ERRCODE_OPERATING:
             break;
-        case 8:
-            WCMi_SetPhase(12);
-            WCMi_Notify(1, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x2f0);
+        case WM_ERRCODE_FIFO_ERROR:
+            WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+            WCMi_Notify(WCM_RESULT_FAILURE, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                        0x2f0);
             break;
         // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-        case 3:
+        case WM_ERRCODE_ILLEGAL_STATE:
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x2f9);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                        0x2f9);
             break;
         }
         break;
-    case 1:
-        WCMi_SetPhase(12);
-        WCMi_Notify(1, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x31f);
+    case WM_ERRCODE_FAILED:
+        WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+        WCMi_Notify(WCM_RESULT_FAILURE, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x31f);
         break;
     // WM_ERRCODE_ILLEGAL_STATE and WM_ERRCODE_WM_DISABLE, whose warnings the SDK leaves out of this build
-    case 3:
-    case 4:
+    case WM_ERRCODE_ILLEGAL_STATE:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x329);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                    0x329);
         break;
     }
 }
@@ -377,21 +380,21 @@ static void WcmWmcbScanEx(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (callback->errcode) {
-    case 0:
-        if (work->state == 5) {
-            WCMi_SetPhase(6);
-            WCMi_Notify(0, NULL, 0, 0x346);
+    case WM_ERRCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IDLE_TO_SEARCH) {
+            WCMi_SetPhase(WCM_PHASE_SEARCH);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x346);
         }
         switch (work->state) {
-        case 6:
-            work->pendingNotify = 7;
+        case WCM_PHASE_SEARCH:
+            work->pendingNotify = WCM_NOTIFY_FOUND_AP;
             if (callback->state == WM_STATECODE_PARENT_FOUND) {
                 int i;
 
                 DC_InvalidateRange(work->scanRequest.scanBuf, work->scanRequest.scanBufSize);
                 for (i = 0; i < callback->bssDescCount; i++) {
                     WCMi_EntryApList(callback->bssDesc[i], callback->linkLevel[i]);
-                    WCMi_NotifyEx(7, 0, (s32)callback->bssDesc[i], ind, 0x35c);
+                    WCMi_NotifyEx(WCM_NOTIFY_FOUND_AP, WCM_RESULT_SUCCESS, (s32)callback->bssDesc[i], ind, 0x35c);
                 }
             }
             if ((work->searchOption & 0xc00000) == 0xc00000) {
@@ -399,7 +402,7 @@ static void WcmWmcbScanEx(void *ind) {
 
                 if (count > 0) {
                     if (work->scanCount % count == 0) {
-                        WCMi_NotifyEx(8, 0, work->scanCount, NULL, 0x36a);
+                        WCMi_NotifyEx(WCM_NOTIFY_SEARCH_AROUND, WCM_RESULT_SUCCESS, work->scanCount, NULL, 0x36a);
                     }
                 }
             }
@@ -410,56 +413,56 @@ static void WcmWmcbScanEx(void *ind) {
             work->scanCount++;
             result = WM_StartScanEx((WMCallbackFunc)WcmWmcbScanEx, &work->scanRequest);
             break;
-        case 7:
+        case WCM_PHASE_SEARCH_TO_IDLE:
             result = WM_EndScan((WMCallbackFunc)WcmWmcbEndScan);
             break;
-        case 0xd:
+        case WCM_PHASE_TERMINATING:
             WcmWmReset();
             return;
         }
         switch (result) {
-        case 2:
+        case WM_ERRCODE_OPERATING:
             break;
-        case 8:
-            WCMi_SetPhase(0xc);
-            WCMi_Notify(1, NULL, 0, 0x395);
+        case WM_ERRCODE_FIFO_ERROR:
+            WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+            WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x395);
             break;
         // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-        case 3:
+        case WM_ERRCODE_ILLEGAL_STATE:
         default:
-            WCMi_SetPhase(0xb);
-            WCMi_Notify(7, NULL, 0, 0x39e);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x39e);
             break;
         }
         break;
-    case 1:
+    case WM_ERRCODE_FAILED:
         WcmWmReset();
         break;
     // WM_ERRCODE_ILLEGAL_STATE and WM_ERRCODE_WM_DISABLE, whose warnings the SDK leaves out of this build
-    case 3:
-    case 4:
+    case WM_ERRCODE_ILLEGAL_STATE:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, NULL, 0, 0x3af);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x3af);
         break;
     }
 }
 
 static void WcmWmcbEndScan(void *ind) {
     switch (((const WMCallback *)ind)->errcode) {
-    case 0:
-        WCMi_SetPhase(3);
-        WCMi_Notify(0, NULL, 0, 0x3c5);
+    case WM_ERRCODE_SUCCESS:
+        WCMi_SetPhase(WCM_PHASE_IDLE);
+        WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x3c5);
         return;
-    case 1:
+    case WM_ERRCODE_FAILED:
         WcmWmReset();
         return;
     // WM_ERRCODE_ILLEGAL_STATE and WM_ERRCODE_WM_DISABLE, whose warnings the SDK leaves out of this build
-    case 3:
-    case 4:
+    case WM_ERRCODE_ILLEGAL_STATE:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, NULL, 0, 0x3d5);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x3d5);
         return;
     }
 }
@@ -470,49 +473,49 @@ static void WcmWmcbConnect(void *ind) {
     int result;
 
     switch (callback->errcode) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         switch (callback->state) {
-        case 8:
-        case 9:
+        case WM_STATECODE_BEACON_LOST:
+        case WM_STATECODE_DISCONNECTED:
             switch (work->state) {
-            case 10:
+            case WCM_PHASE_DCF_TO_IDLE:
                 work->associationId = 0;
-            case 8:
-                WCMi_SetPhase(0xc);
+            case WCM_PHASE_IDLE_TO_DCF:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
                 break;
-            case 9:
+            case WCM_PHASE_DCF:
                 work->associationId = 0;
-                work->pendingNotify = 6;
-            case 12:
+                work->pendingNotify = WCM_NOTIFY_DISCONNECT;
+            case WCM_PHASE_IRREGULAR:
                 WcmWmReset();
                 break;
             default:
                 break;
             }
             break;
-        case 6:
-        case 0x1a:
+        case WM_STATECODE_CONNECT_START:
+        case WM_STATECODE_DISCONNECTED_FROM_MYSELF:
             break;
-        case 7:
-            if (work->state == 0xc) {
-                WCMi_SetPhase(8);
+        case WM_STATECODE_CONNECTED:
+            if (work->state == WCM_PHASE_IRREGULAR) {
+                WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
                 WcmWmReset();
             } else if (callback->aid >= 1 && callback->aid <= 0x7d7) {
                 work->associationId = callback->aid;
                 result = WM_StartDCF((WMCallbackFunc)WcmWmcbStartDCF, (WMDcfRecvBuf *)work->ioBuffer.receive,
                                      sizeof(work->ioBuffer.receive));
                 switch (result) {
-                case 2:
+                case WM_ERRCODE_OPERATING:
                     break;
-                case 8:
-                    WCMi_SetPhase(0xc);
-                    WCMi_Notify(1, &work->connectBss, 0, 0x430);
+                case WM_ERRCODE_FIFO_ERROR:
+                    WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                    WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, 0, 0x430);
                     break;
                 // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-                case 3:
+                case WM_ERRCODE_ILLEGAL_STATE:
                 default:
-                    WCMi_SetPhase(0xb);
-                    WCMi_Notify(7, &work->connectBss, 0, 0x439);
+                    WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                    WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x439);
                     break;
                 }
             } else {
@@ -520,25 +523,25 @@ static void WcmWmcbConnect(void *ind) {
             }
             break;
         default:
-            WCMi_SetPhase(0xb);
-            WCMi_Notify(7, &work->connectBss, callback->state, 0x447);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, callback->state, 0x447);
             break;
         }
         break;
-    case 1:
+    case WM_ERRCODE_FAILED:
         work->connectionFailureReason = callback->wlStatus;
-    case 6:
-    case 11:
-    case 12:
-        WCMi_SetPhase(8);
+    case WM_ERRCODE_INVALID_PARAM:
+    case WM_ERRCODE_NO_ENTRY:
+    case WM_ERRCODE_OVER_MAX_ENTRY:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
         WcmWmReset();
         break;
     // WM_ERRCODE_ILLEGAL_STATE and WM_ERRCODE_WM_DISABLE, whose warnings the SDK leaves out of this build
-    case 3:
-    case 4:
+    case WM_ERRCODE_ILLEGAL_STATE:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, &work->connectBss, 0, 0x45e);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x45e);
         break;
     }
 }
@@ -548,26 +551,26 @@ static void WcmWmcbDisconnect(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (callback->errcode) {
-    case 0:
-        if (work->state == 0xc) {
-            WCMi_SetPhase(0xa);
+    case WM_ERRCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IRREGULAR) {
+            WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
             WcmWmReset();
         } else {
             work->associationId = 0;
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 0, 0x481);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x481);
         }
         break;
-    case 1:
-    case 3:
-        WCMi_SetPhase(0xa);
+    case WM_ERRCODE_FAILED:
+    case WM_ERRCODE_ILLEGAL_STATE:
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
         WcmWmReset();
         break;
     // WM_ERRCODE_WM_DISABLE, whose warning the SDK leaves out of this build
-    case 4:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, &work->connectBss, 0, 0x493);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x493);
         break;
     }
 }
@@ -577,34 +580,34 @@ static void WcmWmcbStartDCF(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (callback->errcode) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         switch (callback->state) {
-        case 0xe:
-            if (work->state == 0xc) {
-                WCMi_SetPhase(8);
+        case WM_STATECODE_DCF_START:
+            if (work->state == WCM_PHASE_IRREGULAR) {
+                WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
                 WcmWmReset();
             } else {
-                WCMi_SetPhase(9);
-                WCMi_Notify(0, &work->connectBss, 0, 0x4b7);
+                WCMi_SetPhase(WCM_PHASE_DCF);
+                WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x4b7);
             }
             break;
-        case 0xf:
+        case WM_STATECODE_DCF_IND:
             WCMi_ShelterRssi((u8)(callback->recvBuf->rate_rssi >> 8));
             DC_InvalidateRange(callback->recvBuf, 0x620);
             WCMi_CpsifRecvCallback(callback->recvBuf->srcAdrs, callback->recvBuf->destAdrs,
                                    (u8 *)callback->recvBuf->data, callback->recvBuf->length);
             break;
         default:
-            WCMi_SetPhase(0xb);
-            WCMi_Notify(7, &work->connectBss, callback->state, 0x4c6);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, callback->state, 0x4c6);
             break;
         }
         break;
     // WM_ERRCODE_WM_DISABLE, whose warning the SDK leaves out of this build
-    case 4:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, &work->connectBss, 0, 0x4d1);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x4d1);
         break;
     }
 }
@@ -614,39 +617,39 @@ static void WcmWmcbEndDCF(void *ind) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (callback->errcode) {
-    case 0:
-        if (work->state == 0xc) {
-            WCMi_SetPhase(0xa);
+    case WM_ERRCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IRREGULAR) {
+            WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
             WcmWmReset();
         } else {
             switch (WM_Disconnect((WMCallbackFunc)WcmWmcbDisconnect, 0)) {
-            case 2:
+            case WM_ERRCODE_OPERATING:
                 break;
-            case 8:
-                WCMi_SetPhase(0xc);
-                WCMi_Notify(1, &work->connectBss, 0, 0x4fa);
+            case WM_ERRCODE_FIFO_ERROR:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, 0, 0x4fa);
                 break;
-            case 3:
-                WCMi_SetPhase(0xa);
+            case WM_ERRCODE_ILLEGAL_STATE:
+                WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
                 WcmWmReset();
                 break;
             default:
-                WCMi_SetPhase(0xb);
-                WCMi_Notify(7, &work->connectBss, 0, 0x506);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x506);
                 break;
             }
         }
         break;
-    case 1:
-    case 3:
-        WCMi_SetPhase(0xa);
+    case WM_ERRCODE_FAILED:
+    case WM_ERRCODE_ILLEGAL_STATE:
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
         WcmWmReset();
         break;
     // WM_ERRCODE_WM_DISABLE, whose warning the SDK leaves out of this build
-    case 4:
+    case WM_ERRCODE_WM_DISABLE:
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, &work->connectBss, 0, 0x519);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x519);
         break;
     }
 }
@@ -657,24 +660,24 @@ static void WcmWmcbReset(void *ind) {
     int result;
 
     switch (callback->errcode) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         work->resetPending = 0;
         work->associationId = 0;
         switch (work->state) {
-        case 5:
-        case 6:
-            WCMi_SetPhase(3);
-            WCMi_Notify(1, NULL, 0, 0x53c);
+        case WCM_PHASE_IDLE_TO_SEARCH:
+        case WCM_PHASE_SEARCH:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x53c);
             break;
-        case 7:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, NULL, 0, 0x542);
+        case WCM_PHASE_SEARCH_TO_IDLE:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x542);
             break;
-        case 8: {
+        case WCM_PHASE_IDLE_TO_DCF: {
             u16 reason = work->connectionFailureReason;
 
             work->connectionFailureReason = 0;
-            if (reason == 0x12) {
+            if (reason == WCM_CONNECT_STATUSCODE_ILLEGAL_RATESET) {
                 if ((work->connectBss.rateSetSupport & 0x24) != 0x24) {
                     work->connectBss.rateSetSupport |= 0x24;
                     result = WM_StartConnectEx(
@@ -683,61 +686,61 @@ static void WcmWmcbReset(void *ind) {
                         (work->searchOption & WCM_OPTION_AUTH_SHAREDKEY) == WCM_OPTION_AUTH_SHAREDKEY ? (u16)1
                                                                                                       : (u16)0);
                     switch (result) {
-                    case 2:
+                    case WM_ERRCODE_OPERATING:
                         break;
-                    case 8:
-                        WCMi_SetPhase(0xc);
-                        WCMi_Notify(1, &work->connectBss, reason, 0x563);
+                    case WM_ERRCODE_FIFO_ERROR:
+                        WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                        WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, reason, 0x563);
                         break;
                     // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-                    case 3:
+                    case WM_ERRCODE_ILLEGAL_STATE:
                     default:
-                        WCMi_SetPhase(0xb);
-                        WCMi_Notify(7, &work->connectBss, reason, 0x56c);
+                        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, reason, 0x56c);
                         break;
                     }
                     return;
                 }
             }
-            WCMi_SetPhase(3);
-            WCMi_Notify(1, &work->connectBss, reason, 0x574);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, reason, 0x574);
             break;
         }
-        case 9:
-        case 12:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 1, 0x57c);
+        case WCM_PHASE_DCF:
+        case WCM_PHASE_IRREGULAR:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 1, 0x57c);
             break;
-        case 10:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 0, 0x583);
+        case WCM_PHASE_DCF_TO_IDLE:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x583);
             break;
-        case 13:
+        case WCM_PHASE_TERMINATING:
             result = WM_PowerOff((WMCallbackFunc)WcmWmcbCommon);
             switch (result) {
-            case 2:
+            case WM_ERRCODE_OPERATING:
                 break;
-            case 8:
-                WCMi_SetPhase(0xc);
-                WCMi_Notify(1, NULL, 0, 0x591);
+            case WM_ERRCODE_FIFO_ERROR:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x591);
                 break;
             // WM_ERRCODE_ILLEGAL_STATE, whose warning the SDK leaves out of this build
-            case 3:
+            case WM_ERRCODE_ILLEGAL_STATE:
             default:
-                WCMi_SetPhase(0xb);
-                WCMi_Notify(7, NULL, 0, 0x59a);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x59a);
                 break;
             }
             break;
         default:
-            WCMi_SetPhase(0xb);
-            WCMi_Notify(7, NULL, work->state, 0x5a0);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, work->state, 0x5a0);
             break;
         }
         break;
     default:
-        WCMi_SetPhase(0xb);
-        WCMi_Notify(7, NULL, 0, 0x5a7);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x5a7);
         break;
     }
 }
@@ -782,7 +785,7 @@ static void WcmWmcbSetDCFData(void *ind) {
     WCMCpsifWork *global = WCMi_GetCpsifWork();
     const WMCallback *result = ind;
 
-    if (result->apiid != 0x12) {
+    if (result->apiid != WM_APIID_SET_DCF_DATA) {
         return;
     }
     global->sendStatus = result->errcode;
@@ -798,7 +801,7 @@ static void WcmWmcbSetDCFDataAsync(void *ind) {
     s32 status;
     void (*completion)(s32);
 
-    if (result->apiid != 0x12) {
+    if (result->apiid != WM_APIID_SET_DCF_DATA) {
         return;
     }
     global->sendStatus = result->errcode;
@@ -806,11 +809,11 @@ static void WcmWmcbSetDCFDataAsync(void *ind) {
         WCMi_ResetKeepAliveAlarm();
     }
     switch (global->sendStatus) {
-    case 0:
+    case WM_ERRCODE_SUCCESS:
         status = 0;
         break;
     // WM_ERRCODE_FAILED, which the SDK lists with the default
-    case 1:
+    case WM_ERRCODE_FAILED:
     default:
         status = -5;
         break;

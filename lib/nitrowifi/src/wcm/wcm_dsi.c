@@ -37,30 +37,30 @@ s32 WCMi_NwmifStartupAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (NWM_Init(work->nwmSystemBuffer, 0x3000, work->dmaNo)) {
-    case 0:
+    case NWM_RETCODE_SUCCESS:
         break;
-    case 3:
-        WCMi_SetPhase(11);
+    case NWM_RETCODE_ILLEGAL_STATE:
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
-    case 4:
+    case NWM_RETCODE_NWM_DISABLE:
         return 5;
-    case 5:
+    case NWM_RETCODE_INVALID_PARAM:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     work->nwmConnectionFailureReason = 0;
     switch (NWM_LoadDevice(WcmNwmcbCommon)) {
-    case 2:
-        WCMi_SetPhase(2);
-        work->pendingNotify = 1;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_WAIT_TO_IDLE);
+        work->pendingNotify = WCM_NOTIFY_STARTUP;
         break;
-    case 6:
-        WCMi_SetPhase(12);
+    case NWM_RETCODE_FIFO_ERROR:
+        WCMi_SetPhase(WCM_PHASE_IRREGULAR);
         return 1;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -70,15 +70,15 @@ s32 WCMi_NwmifCleanupAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (NWM_Close(WcmNwmcbCommon)) {
-    case 2:
-        WCMi_SetPhase(4);
-        work->pendingNotify = 2;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_WAIT);
+        work->pendingNotify = WCM_NOTIFY_CLEANUP;
         break;
-    case 6:
+    case NWM_RETCODE_FIFO_ERROR:
         return 4;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -88,13 +88,13 @@ s32 WCMi_NwmifBeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (work->state) {
-    case 5:
+    case WCM_PHASE_IDLE_TO_SEARCH:
         WcmEditScanExParam(bssid, essid, option);
         return 2;
-    case 6:
+    case WCM_PHASE_SEARCH:
         WcmEditScanExParam(bssid, essid, option);
         return 0;
-    case 3:
+    case WCM_PHASE_IDLE:
         break;
     default:
         return 1;
@@ -103,15 +103,15 @@ s32 WCMi_NwmifBeginSearchAsync(const u8 *bssid, const u8 *essid, u32 option) {
     DC_InvalidateRange(work->nwmScanRequest.scanBuf, work->nwmScanRequest.scanBufSize);
     work->nwmScanCount++;
     switch (NWM_StartScanEx(WcmNwmcbScanEx, &work->nwmScanRequest)) {
-    case 2:
-        WCMi_SetPhase(5);
-        work->pendingNotify = 3;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_SEARCH);
+        work->pendingNotify = WCM_NOTIFY_BEGIN_SEARCH;
         break;
-    case 6:
+    case NWM_RETCODE_FIFO_ERROR:
         return 4;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -123,10 +123,10 @@ s32 WCMi_NwmifConnectAsync(void) {
     s32 result;
 
     switch (work->connectionStorage.mode) {
-    case 0:
-    case 1:
-    case 2:
-    case 3: {
+    case WCM_PRIVACYMODE_NONE:
+    case WCM_PRIVACYMODE_40:
+    case WCM_PRIVACYMODE_104:
+    case WCM_PRIVACYMODE_128: {
         u16 authMode = 0; // Open system, or 1 for a shared key
 
         if ((work->searchOption & WCM_OPTION_AUTH_SHAREDKEY) == WCM_OPTION_AUTH_SHAREDKEY) {
@@ -136,25 +136,25 @@ s32 WCMi_NwmifConnectAsync(void) {
                                work->connectionStorage.data, authMode);
         break;
     }
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    case WCM_PRIVACYMODE_WPA_TKIP:
+    case WCM_PRIVACYMODE_WPA2_TKIP:
+    case WCM_PRIVACYMODE_WPA_AES:
+    case WCM_PRIVACYMODE_WPA2_AES:
         MI_CpuCopy8(work->connectionStorage.data, pmk.psk, sizeof(pmk.psk));
         pmk.auth = work->connectionStorage.mode;
         result = NWM_SetWPAPSK(WcmNwmcbCommon, &pmk);
         break;
     }
     switch (result) {
-    case 2:
-        WCMi_SetPhase(8);
-        work->pendingNotify = 5;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
+        work->pendingNotify = WCM_NOTIFY_CONNECT;
         break;
-    case 6:
+    case NWM_RETCODE_FIFO_ERROR:
         return 4;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -164,15 +164,15 @@ s32 WCMi_NwmifDisconnectAsync(void) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (NWM_UnsetReceivingFrameBuffer(WcmNwmcbUnsetRecvFrmBuf, 0)) {
-    case 2:
-        WCMi_SetPhase(10);
-        work->pendingNotify = 6;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
+        work->pendingNotify = WCM_NOTIFY_DISCONNECT;
         break;
-    case 6:
+    case NWM_RETCODE_FIFO_ERROR:
         return 4;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -184,21 +184,21 @@ s32 WCMi_NwmifTerminateAsync(void) {
     s32 result;
 
     switch (NWM_GetState()) {
-    case 1:
+    case NWM_STATE_INITIALIZED:
         result = NWM_End();
         if (result == 0) {
-            WCMi_SetPhase(1);
-            work->pendingNotify = 0;
+            WCMi_SetPhase(WCM_PHASE_WAIT);
+            work->pendingNotify = WCM_NOTIFY_COMMON;
             return 0;
         }
         break;
-    case 2:
+    case NWM_STATE_LOADED:
         result = NWM_UnloadDevice(WcmNwmcbCommon);
         break;
-    case 3:
+    case NWM_STATE_DISCONNECTED:
         result = NWM_Close(WcmNwmcbCommon);
         break;
-    case 4:
+    case NWM_STATE_INFRA_CONNECTED:
         result = NWM_Disconnect(WcmNwmcbDisconnect);
         break;
     default:
@@ -207,15 +207,15 @@ s32 WCMi_NwmifTerminateAsync(void) {
         break;
     }
     switch (result) {
-    case 2:
-        WCMi_SetPhase(13);
-        work->pendingNotify = 9;
+    case NWM_RETCODE_OPERATING:
+        WCMi_SetPhase(WCM_PHASE_TERMINATING);
+        work->pendingNotify = WCM_NOTIFY_TERMINATE;
         break;
-    case 6:
+    case NWM_RETCODE_FIFO_ERROR:
         return 4;
-    case 3:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
         return 7;
     }
     return 3;
@@ -232,20 +232,20 @@ s32 WCMi_NwmifSetDCFData(const u8 *dst, const void *buffer, u16 byteLength, void
         callback = WcmNwmcbSetDCFDataAsync;
     }
     switch (NWM_SendFrame(callback, dst, buffer, byteLength)) {
-    case 2:
+    case NWM_RETCODE_OPERATING:
         break;
-    case 3:
-    case 5:
-    case 6:
+    case NWM_RETCODE_ILLEGAL_STATE:
+    case NWM_RETCODE_INVALID_PARAM:
+    case NWM_RETCODE_FIFO_ERROR:
     default:
         return -5;
     }
     if (completion == NULL) {
         OS_SleepThread(&global->sendQueue);
         switch (global->sendStatus) {
-        case 0:
+        case NWM_RETCODE_SUCCESS:
             break;
-        case 1:
+        case NWM_RETCODE_FAILED:
         default:
             return -5;
         }
@@ -269,50 +269,50 @@ static void WcmNwmReset(void) {
         work->resetPending = 0;
         work->nwmAssociationId = 0;
         switch (work->state) {
-        case 5:
-        case 6:
-            WCMi_SetPhase(3);
-            WCMi_Notify(1, NULL, 0, 0x29b);
+        case WCM_PHASE_IDLE_TO_SEARCH:
+        case WCM_PHASE_SEARCH:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x29b);
             break;
-        case 7:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, NULL, 0, 0x2a1);
+        case WCM_PHASE_SEARCH_TO_IDLE:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x2a1);
             break;
-        case 8: {
+        case WCM_PHASE_IDLE_TO_DCF: {
             u16 reason = work->nwmConnectionFailureReason;
 
             work->nwmConnectionFailureReason = 0;
-            WCMi_SetPhase(3);
-            WCMi_Notify(1, &work->connectBss, reason, 0x2ab);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, reason, 0x2ab);
             break;
         }
-        case 9:
-        case 12:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 1, 0x2b3);
+        case WCM_PHASE_DCF:
+        case WCM_PHASE_IRREGULAR:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 1, 0x2b3);
             break;
-        case 10:
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 0, 0x2ba);
+        case WCM_PHASE_DCF_TO_IDLE:
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x2ba);
             break;
-        case 13:
+        case WCM_PHASE_TERMINATING:
             switch (NWM_Close(WcmNwmcbCommon)) {
-            case 2:
+            case NWM_RETCODE_OPERATING:
                 break;
-            case 6:
-                WCMi_SetPhase(12);
-                WCMi_Notify(1, NULL, 0, 0x2c8);
+            case NWM_RETCODE_FIFO_ERROR:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x2c8);
                 break;
-            case 3:
+            case NWM_RETCODE_ILLEGAL_STATE:
             default:
-                WCMi_SetPhase(11);
-                WCMi_Notify(7, NULL, 0, 0x2d1);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x2d1);
                 break;
             }
             break;
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, NULL, work->state, 0x2d7);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, work->state, 0x2d7);
             break;
         }
     }
@@ -326,76 +326,80 @@ static void WcmNwmcbCommon(void *arg) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (event->retcode) {
-    case 0:
+    case NWM_RETCODE_SUCCESS:
         switch (event->apiid) {
-        case 3:
+        case NWM_APIID_LOAD_DEVICE:
             result = NWM_Open(WcmNwmcbCommon);
             break;
-        case 4:
+        case NWM_APIID_UNLOAD_DEVICE:
             result = NWM_End();
             switch (result) {
-            case 0:
-                WCMi_SetPhase(1);
-                WCMi_Notify(0, NULL, 0, 0x300);
+            case NWM_RETCODE_SUCCESS:
+                WCMi_SetPhase(WCM_PHASE_WAIT);
+                WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x300);
                 break;
-            case 4:
+            case NWM_RETCODE_NWM_DISABLE:
             default:
-                WCMi_SetPhase(11);
-                WCMi_Notify(7, NULL, 0, 0x309);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x309);
                 break;
             }
             return;
-        case 5: {
+        case NWM_APIID_OPEN: {
             u8 mac[6];
 
             OS_GetMacAddress(mac);
             WCMi_CpsifSetMacAddress(mac);
         }
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, NULL, 0, 0x316);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x316);
             return;
-        case 6:
+        case NWM_APIID_CLOSE:
             result = NWM_UnloadDevice(WcmNwmcbCommon);
             break;
-        case 13:
-        case 18:
+        case NWM_APIID_SET_WEPKEY:
+        case NWM_APIID_SET_WPA_PSK:
             result = NWM_SetPowerSaveMode(WcmNwmcbCommon,
                                           (work->searchOption & WCM_OPTION_POWER_ACTIVE) == WCM_OPTION_POWER_ACTIVE
                                               ? NWM_POWERMODE_ACTIVE
                                               : NWM_POWERMODE_STANDARD);
             break;
-        case 14:
+        case NWM_APIID_SET_PS_MODE:
             result =
                 NWM_SetReceivingFrameBuffer(WcmNwmcbSetRecvFrmBuf, work->ioBuffer.nwm, sizeof(work->ioBuffer.nwm), 0);
             break;
         }
         switch (result) {
-        case 2:
+        case NWM_RETCODE_OPERATING:
             break;
-        case 6:
-            WCMi_SetPhase(12);
-            WCMi_Notify(1, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x34a);
+        case NWM_RETCODE_FIFO_ERROR:
+            WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+            WCMi_Notify(WCM_RESULT_FAILURE, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                        0x34a);
             break;
-        case 3:
+        case NWM_RETCODE_ILLEGAL_STATE:
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x353);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                        0x353);
             break;
         }
         break;
-    case 1:
-        WCMi_SetPhase(12);
-        WCMi_Notify(1, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x372);
+    case NWM_RETCODE_FAILED:
+        WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+        WCMi_Notify(WCM_RESULT_FAILURE, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x372);
         break;
-    case 10:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x378);
+    case NWM_RETCODE_SDIO_ERROR:
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                    0x378);
         break;
-    case 3:
-    case 4:
+    case NWM_RETCODE_ILLEGAL_STATE:
+    case NWM_RETCODE_NWM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0, 0x385);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, work->pendingNotify == WCM_NOTIFY_CONNECT ? &work->connectBss : NULL, 0,
+                    0x385);
         break;
     }
 }
@@ -407,21 +411,21 @@ static void WcmNwmcbScanEx(void *arg) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (event->header.retcode) {
-    case 0:
-        if (work->state == 5) {
-            WCMi_SetPhase(6);
-            WCMi_Notify(0, NULL, 0, 0x3a3);
+    case NWM_RETCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IDLE_TO_SEARCH) {
+            WCMi_SetPhase(WCM_PHASE_SEARCH);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x3a3);
         }
         switch (work->state) {
-        case 6:
-            work->pendingNotify = 7;
+        case WCM_PHASE_SEARCH:
+            work->pendingNotify = WCM_NOTIFY_FOUND_AP;
             if (event->bssDescCount != 0) {
                 int i;
 
                 DC_InvalidateRange(work->nwmScanRequest.scanBuf, work->nwmScanRequest.scanBufSize);
                 for (i = 0; i < event->bssDescCount; i++) {
                     WCMi_EntryApList((const WMBssDesc *)event->bssDesc[i], event->linkLevel[i]);
-                    WCMi_NotifyEx(7, 0, (s32)event->bssDesc[i], arg, 0x3b9);
+                    WCMi_NotifyEx(WCM_NOTIFY_FOUND_AP, WCM_RESULT_SUCCESS, (s32)event->bssDesc[i], arg, 0x3b9);
                 }
             }
             if ((work->searchOption & 0xc00000) == 0xc00000) {
@@ -429,7 +433,7 @@ static void WcmNwmcbScanEx(void *arg) {
 
                 if (count > 0) {
                     if (work->nwmScanCount % count == 0) {
-                        WCMi_NotifyEx(8, 0, work->nwmScanCount, NULL, 0x3c7);
+                        WCMi_NotifyEx(WCM_NOTIFY_SEARCH_AROUND, WCM_RESULT_SUCCESS, work->nwmScanCount, NULL, 0x3c7);
                     }
                 }
             }
@@ -439,37 +443,37 @@ static void WcmNwmcbScanEx(void *arg) {
             work->nwmScanCount++;
             result = NWM_StartScanEx(WcmNwmcbScanEx, &work->nwmScanRequest);
             break;
-        case 7:
+        case WCM_PHASE_SEARCH_TO_IDLE:
             result = 2;
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, NULL, 0, 0x3d7);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, NULL, 0, 0x3d7);
             break;
-        case 13:
+        case WCM_PHASE_TERMINATING:
             WcmNwmReset();
             return;
         }
         switch (result) {
-        case 2:
+        case NWM_RETCODE_OPERATING:
             break;
-        case 6:
-            WCMi_SetPhase(12);
-            WCMi_Notify(1, NULL, 0, 0x3f3);
+        case NWM_RETCODE_FIFO_ERROR:
+            WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+            WCMi_Notify(WCM_RESULT_FAILURE, NULL, 0, 0x3f3);
             break;
-        case 3:
+        case NWM_RETCODE_ILLEGAL_STATE:
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, NULL, 0, 0x3fc);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x3fc);
             break;
         }
         break;
-    case 1:
+    case NWM_RETCODE_FAILED:
         WcmNwmReset();
         break;
-    case 3:
-    case 4:
+    case NWM_RETCODE_ILLEGAL_STATE:
+    case NWM_RETCODE_NWM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, NULL, 0, 0x40d);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, NULL, 0, 0x40d);
         break;
     }
 }
@@ -481,22 +485,22 @@ static void WcmNwmcbConnect(void *arg) {
     u16 nwmState = NWM_GetState();
 
     switch (event->header.retcode) {
-    case 0:
-        if (nwmState == 4) {
-            if (work->state == 12) {
-                WCMi_SetPhase(8);
+    case NWM_RETCODE_SUCCESS:
+        if (nwmState == NWM_STATE_INFRA_CONNECTED) {
+            if (work->state == WCM_PHASE_IRREGULAR) {
+                WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
                 WcmNwmReset();
                 return;
             }
             work->nwmAssociationId = event->aid;
-            WCMi_SetPhase(9);
-            WCMi_Notify(0, &work->connectBss, 0, 0x436);
+            WCMi_SetPhase(WCM_PHASE_DCF);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x436);
         } else {
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, &work->connectBss, 0, 0x43c);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x43c);
         }
         break;
-    case 1:
+    case NWM_RETCODE_FAILED:
         switch (event->reason) {
         case 1:
         case 2:
@@ -511,10 +515,10 @@ static void WcmNwmcbConnect(void *arg) {
         case 12:
         case 13:
             switch (work->state) {
-            case 9:
-            case 10:
-                work->pendingNotify = 6;
-            case 8:
+            case WCM_PHASE_DCF:
+            case WCM_PHASE_DCF_TO_IDLE:
+                work->pendingNotify = WCM_NOTIFY_DISCONNECT;
+            case WCM_PHASE_IDLE_TO_DCF:
                 work->nwmAssociationId = 0;
                 switch (event->reason) {
                 case 5:
@@ -528,32 +532,32 @@ static void WcmNwmcbConnect(void *arg) {
                     work->nwmConnectionFailureReason = 17;
                     break;
                 }
-            case 12:
+            case WCM_PHASE_IRREGULAR:
                 WcmNwmReset();
                 break;
             }
             break;
         case 3:
-            if (work->state == 8) {
+            if (work->state == WCM_PHASE_IDLE_TO_DCF) {
                 work->nwmAssociationId = 0;
                 WcmNwmReset();
             }
             break;
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, &work->connectBss, event->reason, 0x481);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, event->reason, 0x481);
             break;
         }
         break;
-    case 5:
-        WCMi_SetPhase(8);
+    case NWM_RETCODE_INVALID_PARAM:
+        WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
         WcmNwmReset();
         break;
-    case 3:
-    case 4:
+    case NWM_RETCODE_ILLEGAL_STATE:
+    case NWM_RETCODE_NWM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, &work->connectBss, 0, 0x495);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x495);
         break;
     }
 }
@@ -564,27 +568,27 @@ static void WcmNwmcbDisconnect(void *arg) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (event->retcode) {
-    case 0:
-        if (work->state == 12) {
-            WCMi_SetPhase(10);
+    case NWM_RETCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IRREGULAR) {
+            WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
             WcmNwmReset();
-        } else if (work->state == 13) {
+        } else if (work->state == WCM_PHASE_TERMINATING) {
             WcmNwmReset();
         } else {
             work->nwmAssociationId = 0;
-            WCMi_SetPhase(3);
-            WCMi_Notify(0, &work->connectBss, 0, 0x4bd);
+            WCMi_SetPhase(WCM_PHASE_IDLE);
+            WCMi_Notify(WCM_RESULT_SUCCESS, &work->connectBss, 0, 0x4bd);
         }
         break;
-    case 1:
-    case 3:
-        WCMi_SetPhase(10);
+    case NWM_RETCODE_FAILED:
+    case NWM_RETCODE_ILLEGAL_STATE:
+        WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
         WcmNwmReset();
         break;
-    case 4:
+    case NWM_RETCODE_NWM_DISABLE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, &work->connectBss, 0, 0x4cf);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x4cf);
         break;
     }
 }
@@ -595,9 +599,9 @@ static void WcmNwmcbSetRecvFrmBuf(void *arg) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (event->header.retcode) {
-    case 0:
-        if (work->state == 12) {
-            WCMi_SetPhase(8);
+    case NWM_RETCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IRREGULAR) {
+            WCMi_SetPhase(WCM_PHASE_IDLE_TO_DCF);
             WcmNwmReset();
             return;
         }
@@ -607,20 +611,20 @@ static void WcmNwmcbSetRecvFrmBuf(void *arg) {
             sConnectIndex = 0;
         }
         switch (NWM_Connect(WcmNwmcbConnect, sConnectIndex, (const NWMBssDesc *)&work->connectBss)) {
-        case 2:
+        case NWM_RETCODE_OPERATING:
             break;
-        case 6:
-            WCMi_SetPhase(12);
-            WCMi_Notify(1, &work->connectBss, 0, 0x506);
+        case NWM_RETCODE_FIFO_ERROR:
+            WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+            WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, 0, 0x506);
             break;
-        case 3:
+        case NWM_RETCODE_ILLEGAL_STATE:
         default:
-            WCMi_SetPhase(11);
-            WCMi_Notify(7, &work->connectBss, 0, 0x50f);
+            WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+            WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x50f);
             break;
         }
         break;
-    case 11: {
+    case NWM_RETCODE_RECV_IND: {
         s32 rssi;
 
         DC_InvalidateRange(event->recvBuf, 0x620);
@@ -644,36 +648,36 @@ static void WcmNwmcbUnsetRecvFrmBuf(void *arg) {
     WCMWork *work = WCMi_GetSystemWork();
 
     switch (event->retcode) {
-    case 0:
-        if (work->state == 12) {
-            WCMi_SetPhase(10);
+    case NWM_RETCODE_SUCCESS:
+        if (work->state == WCM_PHASE_IRREGULAR) {
+            WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
             WcmNwmReset();
         } else {
             switch (NWM_Disconnect(WcmNwmcbDisconnect)) {
-            case 2:
-                WCMi_SetPhase(10);
-                work->pendingNotify = 6;
+            case NWM_RETCODE_OPERATING:
+                WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
+                work->pendingNotify = WCM_NOTIFY_DISCONNECT;
                 break;
-            case 6:
-                WCMi_SetPhase(12);
-                WCMi_Notify(1, &work->connectBss, 0, 0x555);
+            case NWM_RETCODE_FIFO_ERROR:
+                WCMi_SetPhase(WCM_PHASE_IRREGULAR);
+                WCMi_Notify(WCM_RESULT_FAILURE, &work->connectBss, 0, 0x555);
                 break;
-            case 3:
-                WCMi_SetPhase(10);
+            case NWM_RETCODE_ILLEGAL_STATE:
+                WCMi_SetPhase(WCM_PHASE_DCF_TO_IDLE);
                 WcmNwmReset();
                 break;
             default:
-                WCMi_SetPhase(11);
-                WCMi_Notify(7, &work->connectBss, 0, 0x562);
+                WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+                WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x562);
                 break;
             }
         }
         break;
-    case 1:
-    case 3:
+    case NWM_RETCODE_FAILED:
+    case NWM_RETCODE_ILLEGAL_STATE:
     default:
-        WCMi_SetPhase(11);
-        WCMi_Notify(7, &work->connectBss, 0, 0x56e);
+        WCMi_SetPhase(WCM_PHASE_FATAL_ERROR);
+        WCMi_Notify(WCM_RESULT_FATAL_ERROR, &work->connectBss, 0, 0x56e);
         break;
     }
 }
@@ -722,7 +726,7 @@ static void WcmNwmcbSetDCFData(void *arg) {
     WCMCpsifWork *global = WCMi_GetCpsifWork();
     const NWMCallback *event = arg;
 
-    if (event->apiid != 11) {
+    if (event->apiid != NWM_APIID_SEND_FRAME) {
         return;
     }
     global->sendStatus = event->retcode;
@@ -739,7 +743,7 @@ static void WcmNwmcbSetDCFDataAsync(void *arg) {
     s32 status;
     void (*completion)(s32);
 
-    if (event->apiid != 11) {
+    if (event->apiid != NWM_APIID_SEND_FRAME) {
         return;
     }
     global->sendStatus = event->retcode;
@@ -747,10 +751,10 @@ static void WcmNwmcbSetDCFDataAsync(void *arg) {
         WCMi_ResetKeepAliveAlarm();
     }
     switch (global->sendStatus) {
-    case 0:
+    case NWM_RETCODE_SUCCESS:
         status = 0;
         break;
-    case 1:
+    case NWM_RETCODE_FAILED:
     default:
         status = -5;
         break;
