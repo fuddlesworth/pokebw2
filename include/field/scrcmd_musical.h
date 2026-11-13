@@ -15,7 +15,7 @@ enum {
     MUSICAL_INFO_SHOW_COUNT = 0,
     MUSICAL_INFO_WIN_COUNT = 1,
     MUSICAL_INFO_LAST_POINTS = 2,
-    // The kind of prop the last show's Pokémon wore the most, 4 when none or when several tie
+    // The kind of prop the last show's Pokémon wore the most, MUSICAL_PROP_KIND_NONE when none or when several tie
     MUSICAL_INFO_MOST_PROP_KIND = 3,
     MUSICAL_INFO_PROGRAM = 4,
     // Sets the program to the argument

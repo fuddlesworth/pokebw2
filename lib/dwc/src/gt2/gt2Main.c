@@ -48,19 +48,19 @@ GT2Result gt2Connect(GT2Socket socket, GT2Connection *connection, const char *re
     gsi_bool done;
 
     if (!gt2StringToAddress(remoteAddress, &ip, &port) || ip == 0 || port == 0) {
-        return 4;
+        return GT2AddressError;
     }
-    // A multicast address
-    if ((GTI2_SWAP32(ip) & 0xe0000000) == 0xe0000000) {
-        return 4;
+    // A class D (multicast) or class E (experimental) address
+    if ((GTI2_SWAP32(ip) & GTI2_INVALID_IP_MASK) == GTI2_INVALID_IP_MASK) {
+        return GT2AddressError;
     }
     result = gti2NewOutgoingConnection(socket, &created, ip, port);
-    if (result != 0) {
+    if (result != GT2Success) {
         return result;
     }
     created->timeout = timeout;
     result = gti2StartConnectionAttempt(created, message, length, callbacks);
-    if (result != 0) {
+    if (result != GT2Success) {
         gti2FreeSocketConnection(created);
         return result;
     }
@@ -68,26 +68,26 @@ GT2Result gt2Connect(GT2Socket socket, GT2Connection *connection, const char *re
         if (connection != NULL) {
             *connection = created;
         }
-        return 0;
+        return GT2Success;
     }
     created->callbackLevel++;
     do {
         gt2Think(socket);
-        done = created->state >= 5;
+        done = created->state >= GTI2Connected;
         if (!done) {
             msleep(1);
         }
     } while (!done);
     created->callbackLevel--;
-    if (created->state == 5) {
+    if (created->state == GTI2Connected) {
         *connection = created;
     }
     return created->connectionResult;
 }
 
 GT2Result gt2Send(GT2Connection connection, const GT2Byte *message, int length, GT2Bool reliable) {
-    if (connection->state != 5) {
-        return 8;
+    if (connection->state != GTI2Connected) {
+        return GT2InvalidConnection;
     }
     gti2MessageCheck(&message, &length);
     // A reliable message of protocol 2 starts with its own length, copied out as it may be unaligned
@@ -99,17 +99,17 @@ GT2Result gt2Send(GT2Connection connection, const GT2Byte *message, int length, 
         dest[0] = src[0];
         dest[1] = src[1];
         if (length != size + connection->socket->protocolOffset) {
-            return 9;
+            return GT2InvalidMessage;
         }
     }
     if (ArrayLength(connection->sendFilters) != 0) {
         gti2SendFilterCallback(connection, 0, message, length, reliable);
-        return 0;
+        return GT2Success;
     }
     if (gti2Send(connection, message, length, reliable)) {
-        return 0;
+        return GT2Success;
     }
-    return 10;
+    return GT2SendFailed;
 }
 
 void gt2CloseConnectionHard(GT2Connection connection) {
@@ -125,16 +125,16 @@ void gt2CloseAllConnectionsHard(GT2Socket socket) {
 }
 
 GT2ConnectionState gt2GetConnectionState(GT2Connection connection) {
-    if (connection->state < 5) {
-        return 0;
+    if (connection->state < GTI2Connected) {
+        return GT2Connecting;
     }
-    if (connection->state == 5) {
-        return 1;
+    if (connection->state == GTI2Connected) {
+        return GT2Connected;
     }
-    if (connection->state == 6) {
-        return 2;
+    if (connection->state == GTI2Closing) {
+        return GT2Closing;
     }
-    return 3;
+    return GT2Closed;
 }
 
 unsigned int gt2GetRemoteIP(GT2Connection connection) {

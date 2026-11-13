@@ -12,6 +12,10 @@
 // The length of a message handler's init message and header
 #define GS_UDP_MSG_HEADER_LEN 16
 
+// The default buffer sizes of a connection when the caller gives 0: the MSS 1460 outgoing, 1500 incoming
+#define GS_UDP_DEFAULT_OUT_BUFFSIZE 1460
+#define GS_UDP_DEFAULT_IN_BUFFSIZE 1500
+
 typedef enum _GSUdpErrorCode {
     GS_UDP_NO_ERROR,
     GS_UDP_NO_MEMORY,

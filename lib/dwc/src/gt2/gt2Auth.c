@@ -54,6 +54,7 @@ GT2Byte *gti2GetResponse(GT2Byte *buffer, const GT2Byte *challenge) {
 
     valid = gti2VerifyChallenge(challenge);
     for (i = 0; i < 32; i++) {
+        // Spots 0 and 13 of a response are random
         if (!valid || i == 0 || i == 13) {
             buffer[i] = 33 + rand() % 93;
         } else {
