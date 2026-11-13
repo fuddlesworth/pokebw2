@@ -73,7 +73,7 @@ GHIConnection *ghiNewConnection(void) {
     connection->serverPort = 0;
     connection->requestPath = NULL;
     connection->sendHeaders = NULL;
-    connection->unk_30 = 0;
+    connection->saveFile = NULL;
     connection->blocking = gsi_false;
     connection->persistConnection = gsi_false;
     connection->result = GHTTPSuccess;
@@ -99,7 +99,7 @@ GHIConnection *ghiNewConnection(void) {
     connection->lastThrottleRecv = 0;
     connection->post = NULL;
     connection->maxRecvTime = 500;
-    connection->proxyOverridePort = 80;
+    connection->proxyOverridePort = GHI_DEFAULT_PORT;
     connection->proxyOverrideServer = NULL;
     connection->encryptor.mInterface = NULL;
     connection->encryptor.mInitialized = gsi_false;
@@ -178,8 +178,8 @@ GHTTPBool ghiFreeConnectionData(GHIConnection *connection) {
     ghiLock();
     gsifree(connection->URL);
     connection->URL = NULL;
-    gsifree(connection->unk_34);
-    connection->unk_34 = NULL;
+    gsifree(connection->saveFileName);
+    connection->saveFileName = NULL;
     gsifree(connection->serverAddress);
     connection->serverAddress = NULL;
     gsifree(connection->requestPath);

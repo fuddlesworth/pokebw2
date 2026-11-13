@@ -12,7 +12,7 @@
 typedef struct GHIRootCAEntry {
     char *url;
     GHICertList *certList;
-    int unk_08;
+    unsigned int ipAddress;
     int refCount;
 } GHIRootCAEntry;
 
@@ -184,30 +184,30 @@ static int SslAuthCallback(int result, CPSSslConnection *info, int length) {
                   GHI_FILE, __FUNCTION__, 938);
     gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_Notice, "l:%d\n\ts:%s\n\tCN=%s\n\ti:%s\n", length,
                   info->subject, info->common_name, info->issuer);
-    if (result & 0x8000) {
+    if (result & CPS_CERT_OUTOFDATE) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d): Certificate is out-of-date - Ignoring\r\n", GHI_FILE, __FUNCTION__, 946);
-        result &= ~0x8000;
+        result &= ~CPS_CERT_OUTOFDATE;
     }
-    if (result & 0x4000) {
+    if (result & CPS_CERT_BADSERVER) {
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d): SSL: Server name does not match - Ignoring\r\n", GHI_FILE, __FUNCTION__, 954);
-        result &= ~0x4000;
+        result &= ~CPS_CERT_BADSERVER;
     }
     switch ((gsi_u8)result) {
-    case 1:
+    case CPS_CERT_NOROOTCA:
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d): SSL: No root CA installed.(DO NOT IGNORE)\r\n", GHI_FILE, __FUNCTION__, 963);
         break;
-    case 2:
+    case CPS_CERT_BADSIGNATURE:
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d): SSL: Bad signature.(DO NOT IGNORE)\n", GHI_FILE, __FUNCTION__, 969);
         break;
-    case 3:
+    case CPS_CERT_UNKNOWN_SIGALGORITHM:
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d):SSL: Unknown signature algorithm\n", GHI_FILE, __FUNCTION__, 975);
         break;
-    case 4:
+    case CPS_CERT_UNKNOWN_PUBKEYALGORITHM:
         gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_Misc, GSIDebugLevel_WarmError,
                       "%s(@%s:%d):SSL: Unknown public key alrorithm\n", GHI_FILE, __FUNCTION__, 981);
         break;

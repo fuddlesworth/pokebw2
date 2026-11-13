@@ -55,9 +55,9 @@ GHTTPBool ghiParseURL(GHIConnection *connection) {
             url++;
         } while (url[0] != '\0' && url[0] != '/');
     } else if (connection->protocol == GHIHttps) {
-        connection->serverPort = 443;
+        connection->serverPort = GHI_DEFAULT_SECURE_PORT;
     } else {
-        connection->serverPort = 80;
+        connection->serverPort = GHI_DEFAULT_PORT;
     }
 
     if (url[0] == '\0') {
@@ -359,7 +359,7 @@ void ghiDoSendingRequest(GHIConnection *connection) {
         }
         ghiAppendDataToBuffer(buffer, " HTTP/1.1\r\n", 0);
 
-        if (connection->serverPort == 80) {
+        if (connection->serverPort == GHI_DEFAULT_PORT) {
             ghiAppendHeaderToBuffer(buffer, "Host", connection->serverAddress);
         } else {
             ghiAppendDataToBuffer(buffer, "Host: ", 0);
