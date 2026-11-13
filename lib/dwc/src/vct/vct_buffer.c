@@ -354,13 +354,13 @@ void vct_init_stream(AudioStream *receiver, u32 slot, int aid) {
     receiver->firstTimestamp = 0;
     receiver->firstArrival = 0;
     receiver->warmup = 0;
-    receiver->unk70 = 0;
-    receiver->unk50 = 0;
+    receiver->skewCount = 0;
+    receiver->prevTimestamp = 0;
     receiver->lastSequence = 0;
     receiver->lastPlayedSequence = 0;
     receiver->needsReset = TRUE;
     receiver->prevBuffer = NULL;
-    receiver->unk40 = 0;
+    receiver->recoverCount = 0;
     receiver->syncSequence = 0;
 }
 
@@ -477,7 +477,7 @@ BOOL vct_calc_jitter_and_skew(AudioStream *receiver, UDPPacket *packet) {
         }
         if (receiver->burstCount <= 0) {
             receiver->jitterAverage += (change - receiver->jitterAverage) >> 4;
-            receiver->unk18 = receiver->jitterAverage;
+            receiver->jitter = receiver->jitterAverage;
         }
     }
     packet->performance_time = tickDelta + receiver->firstArrival + receiver->playoutDelay;
@@ -525,7 +525,7 @@ BOOL vct_calc_jitter_and_skew(AudioStream *receiver, UDPPacket *packet) {
         }
         if (receiver->skewDifference < -0x8701) {
             trend = -1;
-            receiver->unk70++;
+            receiver->skewCount++;
         }
         if (trend != 0) {
             receiver->warmup = 0;

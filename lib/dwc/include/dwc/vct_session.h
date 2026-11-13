@@ -4,6 +4,11 @@
 #include "types.h"
 #include "struct_decls.h"
 
+// The most sessions the caller can give the library, and the most clients a conference can have, which the library
+// counts one short of (libVCT's vct.h)
+#define VCT_MAX_SESSION 8
+#define VCT_MAX_CONFERENCE_CLIENT 4
+
 // A machine that the voice chat is talking to. A machine is asked to take part with a request, answers with a reply,
 // and the application hears of what comes of it in an event
 // The library's modes, a session's states, and the requests and replies that sessions exchange: the SDK's VCTMode,

@@ -25,6 +25,14 @@ struct UDPPacket {
     u8 *samples;
 };
 
+// What VCTi_GetVADStatus found: no voice, its start, its middle or its end (libVCT's VCTVADStatus, its vad.h)
+typedef enum VCTVADStatus {
+    VCT_VAD_NONE = 0,
+    VCT_VAD_DETECT,
+    VCT_VAD_ACTIVE,
+    VCT_VAD_LOST,
+} VCTVADStatus;
+
 // vct_packet_pool.c: packet memory; vct_vad.c: microphone levels; vct_dsp.c: the filter and the echo; vct_mixer.c
 BOOL vct_init_packet_buffer(void *buffer, u32 size);
 void vct_cleanup_packet_buffer(void);

@@ -35,6 +35,22 @@ typedef struct MoveEventAddEntry {
     const BattleEventHandlerEntry *(*eventAdd)(u32 *numHandlers);
 } MoveEventAddEntry;
 
+// The slot BattleMon_FindMoveSlot returns for a move the mon doesn't have, past its four
+#define MOVE_SLOT_NONE 4
+
+// The states BattleMon_GetSemiInvulnFlag returns for a mon out of reach, which are also the additional-condition
+// flags that set them (btl_pokeparam.c: in the air, underground, under water and vanished, and 0x10 for none)
+enum {
+    BTL_SEMI_INVULN_AIR = 3,
+    BTL_SEMI_INVULN_UNDERWATER = 4,
+    BTL_SEMI_INVULN_UNDERGROUND = 5,
+};
+
+// The battle's terrain, BtlFieldEnv.terrain: a stage of the background's data, which a wild battle's tile class picks
+// (ov036's GetTileEncountType) and which special battles set by hand, 14 by the PWT, the films and the link battles and
+// 18 and 19 by Black 2's tower and White 2's tree hollow. Its values keep their numbers until that data names them: 15
+// and 16 are set nowhere. See HandlerCamouflage, CommonSecretPowerGetParams and HandlerNaturePower.
+
 static BOOL DoesMoveEventExist(u8 monId, u16 move, u8 *found);
 static void RemoveHandlerForce(u8 monId, u16 move);
 static const BattleEventHandlerEntry *EventAddConversion(u32 *priority);
@@ -1025,6 +1041,8 @@ static void HandlerCamouflage(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     BattleHandlerChangeTypeParam *param;
 
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId) {
+        // The battle's terrain, whose values keep their numbers (see the top of the file): the type Camouflage gives
+        // the mon on each
         switch (GetBattleTerrain(flow)) {
         case 1:
         case 2:
@@ -1033,27 +1051,27 @@ static void HandlerCamouflage(BattleEventItem *item, BtlServerFlow *flow, u8 mon
         case 9:
         case 15:
         case 17:
-            type = 4;
+            type = TYPE_GROUND;
             break;
         default:
-            type = 0;
+            type = TYPE_NORMAL;
             break;
         case 10:
         case 19:
-            type = 5;
+            type = TYPE_ROCK;
             break;
         case 0:
         case 5:
-            type = 0xb;
+            type = TYPE_GRASS;
             break;
         case 6:
         case 11:
         case 12:
-            type = 0xa;
+            type = TYPE_WATER;
             break;
         case 7:
         case 13:
-            type = 0xe;
+            type = TYPE_ICE;
             break;
         }
         pair = PokeTypePair_MakeMonotype(type);
@@ -1308,9 +1326,10 @@ static void HandlerMimic(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
             if (used != move) {
                 move = used;
             }
-            if (move != MOVE_NONE && !IsMimicExcludedMove(move) && BattleMon_FindMoveSlot(mon, move) == 4) {
+            if (move != MOVE_NONE && !IsMimicExcludedMove(move) &&
+                BattleMon_FindMoveSlot(mon, move) == MOVE_SLOT_NONE) {
                 slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
-                if (slot != 4) {
+                if (slot != MOVE_SLOT_NONE) {
                     update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
                     update->monIndex = monId;
                     update->slot = slot;
@@ -1358,7 +1377,7 @@ static void HandlerSketch(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         if (move != MOVE_NONE && move != MOVE_SKETCH && move != MOVE_STRUGGLE && move != MOVE_CHATTER &&
             !MoveIsUsable(mon, move) && !TransformCheck(mon)) {
             slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
-            if (slot != 4) {
+            if (slot != MOVE_SLOT_NONE) {
                 update = BattleHandler_PushWork(flow, BTL_HANDLER_UPDATE_MOVE, monId);
                 update->monIndex = monId;
                 update->slot = slot;
@@ -1740,8 +1759,15 @@ static const BattleEventHandlerEntry *EventAddSecretPower(u32 *priority) {
     return sHandlersSecretPower;
 }
 
-// The effect of Secret Power on the battle's terrain: its effect index, then whether it inflicts a status (0), lowers
-// a stat (1) or flinches (2), and which status or stat
+// What Secret Power does on the battle's terrain: inflict a status, lower a stat or flinch
+enum {
+    SECRET_POWER_EFFECT_STATUS = 0,
+    SECRET_POWER_EFFECT_STAT = 1,
+    SECRET_POWER_EFFECT_FLINCH = 2,
+};
+
+// The effect of Secret Power on the battle's terrain: its effect index, then what it does (a SECRET_POWER_EFFECT_*) and
+// which status or stat
 static u8 CommonSecretPowerGetParams(BtlServerFlow *flow, u8 *kind, u8 *arg) {
     u32 terrain;
     u8 effect;
@@ -1749,6 +1775,7 @@ static u8 CommonSecretPowerGetParams(BtlServerFlow *flow, u8 *kind, u8 *arg) {
     u8 effectArg;
 
     terrain = GetBattleTerrain(flow);
+    // The battle's terrain, whose values keep their numbers (see the top of the file)
     switch (terrain) {
     case 1:
     case 2:
@@ -1756,43 +1783,43 @@ static u8 CommonSecretPowerGetParams(BtlServerFlow *flow, u8 *kind, u8 *arg) {
     case 8:
     case 15:
     case 17:
-        effectKind = 1;
+        effectKind = SECRET_POWER_EFFECT_STAT;
         effectArg = 6;
         effect = 1;
         break;
     default:
-        effectKind = 0;
-        effectArg = 1;
+        effectKind = SECRET_POWER_EFFECT_STATUS;
+        effectArg = CONDITION_PARALYSIS;
         effect = 0;
         break;
     case 10:
     case 19:
-        effectKind = 2;
+        effectKind = SECRET_POWER_EFFECT_FLINCH;
         effectArg = 0;
         effect = 6;
         break;
     case 0:
     case 5:
-        effectKind = 0;
-        effectArg = 2;
+        effectKind = SECRET_POWER_EFFECT_STATUS;
+        effectArg = CONDITION_SLEEP;
         effect = 7;
         break;
     case 6:
     case 11:
     case 12:
-        effectKind = 1;
+        effectKind = SECRET_POWER_EFFECT_STAT;
         effectArg = 1;
         effect = 5;
         break;
     case 9:
-        effectKind = 1;
+        effectKind = SECRET_POWER_EFFECT_STAT;
         effectArg = 5;
         effect = 2;
         break;
     case 7:
     case 13:
-        effectKind = 0;
-        effectArg = 3;
+        effectKind = SECRET_POWER_EFFECT_STATUS;
+        effectArg = CONDITION_FREEZE;
         effect = terrain == 7 ? 3 : 4;
         break;
     }
@@ -1826,14 +1853,14 @@ static void HandlerSecretPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
         targetId = BattleEventVar_GetValue(BTL_EVAR_TARGET_1);
         CommonSecretPowerGetParams(flow, &kind, &arg);
         switch (kind) {
-        case 0:
+        case SECRET_POWER_EFFECT_STATUS:
             condition = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             condition->targetIndex = targetId;
             condition->condition = arg;
             BtlCalc_MakeDefaultCondition(arg, mon, &condition->value);
             BattleHandler_PopWork(flow, condition);
             break;
-        case 1:
+        case SECRET_POWER_EFFECT_STAT:
             stat = BattleHandler_PushWork(flow, BTL_HANDLER_STAT_CHANGE, monId);
             stat->count = 1;
             stat->monIds[0] = targetId;
@@ -1841,7 +1868,7 @@ static void HandlerSecretPower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             stat->change = -1;
             BattleHandler_PopWork(flow, stat);
             break;
-        case 2:
+        case SECRET_POWER_EFFECT_FLINCH:
             flinch = BattleHandler_PushWork(flow, BTL_HANDLER_FLINCH, monId);
             flinch->monIndex = targetId;
             flinch->flag = 100;
@@ -1964,14 +1991,15 @@ static const BattleEventHandlerEntry *EventAddWhirlpool(u32 *priority) {
 
 static void HandlerWhirlpoolDiveCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 4) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_UNDERWATER) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
 
 static void HandlerWhirlpoolPower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        GetAdditionalConditionFlag(GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER)), 4)) {
+        GetAdditionalConditionFlag(GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER)),
+                                   BTL_SEMI_INVULN_UNDERWATER)) {
         BattleEventVar_MulValue(BTL_EVAR_RATIO, 0x2000);
     }
 }
@@ -2279,6 +2307,8 @@ static void HandlerSwallow(BattleEventItem *item, BtlServerFlow *flow, u8 monId,
     s32 ratio;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
+        // Swallow heals a quarter, half or all of the mon's HP for the one, two or three times it has stockpiled: a
+        // count, not a value set
         switch (GetConditionCount(GetBattleMon(flow, monId), 0)) {
         default:
         case 1:
@@ -2472,6 +2502,7 @@ static const BattleEventHandlerEntry *EventAddSnore(u32 *priority) {
 }
 
 static void HandlerSnoreCheck1(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
+    // Cause 2 is the one these checks read as asleep, which Snore may be used in (the causes' set is the flow's)
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && BattleEventVar_GetValue(BTL_EVAR_FAIL_CAUSE) == 2) {
         BattleEventVar_RewriteValue(BTL_EVAR_FAIL_FLAG, 1);
     }
@@ -2649,6 +2680,14 @@ static void HandlerFocusEnergy(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     }
 }
 
+// Charge's steps, the item's work[0]: nothing yet, the turn Charge itself was used, and the later move that it
+// doubles
+enum {
+    BTL_CHARGE_STEP_NONE = 0,
+    BTL_CHARGE_STEP_USED = 1,
+    BTL_CHARGE_STEP_BOOST = 2,
+};
+
 static const BattleEventHandlerEntry sHandlersCharge[] = {
     { BTL_EVENT_MOVE_EXECUTE_START, HandlerCharge },
     { BTL_EVENT_MOVE_SEQ_START, HandlerChargeStart },
@@ -2672,12 +2711,12 @@ static void HandlerCharge(BattleEventItem *item, BtlServerFlow *flow, u8 monId, 
         BattleHandler_PopWork(flow, message);
         BattleEventVar_RewriteValue(0x3e, 1);
         work[6] = TRUE;
-        work[0] = 1;
+        work[0] = BTL_CHARGE_STEP_USED;
     }
 }
 
 static void HandlerChargePower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (work[0] == 2 && BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
+    if (work[0] == BTL_CHARGE_STEP_BOOST && BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
         BattleEventVar_GetValue(BTL_EVAR_MOVE_TYPE) == TYPE_ELECTRIC) {
         BattleEventVar_MulValue(BTL_EVAR_POWER_RATIO, 0x2000);
     }
@@ -2686,12 +2725,12 @@ static void HandlerChargePower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 static void HandlerChargeStart(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
         BattleEventVar_GetValue(BTL_EVAR_MOVE) != BattleEventItem_GetSubID(item)) {
-        work[0] = 2;
+        work[0] = BTL_CHARGE_STEP_BOOST;
     }
 }
 
 static void HandlerChargeEnd(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0] == 2) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0] == BTL_CHARGE_STEP_BOOST) {
         BattleEventItem_Remove(item);
     }
 }
@@ -3520,7 +3559,7 @@ static void HandlerTrumpCard(BattleEventItem *item, BtlServerFlow *flow, u8 monI
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId) {
         mon = GetBattleMon(flow, monId);
         slot = BattleMon_FindMoveSlot(mon, BattleEventItem_GetSubID(item));
-        if (slot != 4) {
+        if (slot != MOVE_SLOT_NONE) {
             pp = GetMovePP(mon, slot);
             if (pp >= NELEMS(sTrumpCardPower)) {
                 pp = 4;
@@ -3670,20 +3709,20 @@ static void HandlerWeatherBallType(BattleEventItem *item, BtlServerFlow *flow, u
         type = BattleEventVar_GetValue(BTL_EVAR_MOVE_TYPE);
         effect = 0;
         switch (weather) {
-        case 1:
-            type = 9;
+        case BTL_WEATHER_SUN:
+            type = TYPE_FIRE;
             effect = 1;
             break;
-        case 2:
-            type = 10;
+        case BTL_WEATHER_RAIN:
+            type = TYPE_WATER;
             effect = 4;
             break;
-        case 4:
-            type = 5;
+        case BTL_WEATHER_SANDSTORM:
+            type = TYPE_ROCK;
             effect = 3;
             break;
-        case 3:
-            type = 14;
+        case BTL_WEATHER_HAIL:
+            type = TYPE_ICE;
             effect = 2;
             break;
         }
@@ -3712,14 +3751,15 @@ static const BattleEventHandlerEntry *EventAddTwister(u32 *priority) {
 
 static void HandlerTwisterFlyCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 3) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_AIR) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
 
 static void HandlerTwisterPower(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId) {
-        if (GetAdditionalConditionFlag(GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER)), 3)) {
+        if (GetAdditionalConditionFlag(GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER)),
+                                       BTL_SEMI_INVULN_AIR)) {
             MultiplyBasePower(2);
         }
     }
@@ -3736,7 +3776,7 @@ static const BattleEventHandlerEntry *EventAddSkyUppercut(u32 *priority) {
 
 static void HandlerSkyUppercut(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 3) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_AIR) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
@@ -3754,7 +3794,7 @@ static const BattleEventHandlerEntry *EventAddThunder(u32 *priority) {
 
 static void HandlerThunderFlyCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 3) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_AIR) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
@@ -3798,7 +3838,7 @@ static const BattleEventHandlerEntry *EventAddEarthquake(u32 *priority) {
 
 static void HandlerEarthquakeDigCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 5) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_UNDERGROUND) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
@@ -4295,7 +4335,7 @@ static const BattleEventHandlerEntry *EventAddSurf(u32 *priority) {
 
 static void HandlerSurfDiveCheck(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId &&
-        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == 4) {
+        BattleEventVar_GetValue(BTL_EVAR_SEMI_INVULN_STATE) == BTL_SEMI_INVULN_UNDERWATER) {
         BattleEventVar_RewriteValue(0x42, 0);
     }
 }
@@ -4480,6 +4520,15 @@ static void IncrementProtectCounter(BtlServerFlow *flow, u8 monId, BOOL checkPre
     BattleHandler_PopWork(flow, param);
 }
 
+// Bide's steps, the item's work[0]: the turn it locks the move in and starts storing, a later storing turn, the turn
+// it releases the damage, and its end once it has released it or failed
+enum {
+    BIDE_STEP_START = 0,
+    BIDE_STEP_STORE = 1,
+    BIDE_STEP_RELEASE = 2,
+    BIDE_STEP_END = 3,
+};
+
 static const BattleEventHandlerEntry sHandlersBide[] = {
     { BTL_EVENT_MOVE_EXECUTE_START, HandlerBide },
     { BTL_EVENT_SET_MOVE_MESSAGE, HandlerBideTextSet },
@@ -4500,7 +4549,7 @@ static void HandlerBide(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
         switch (work[0]) {
-        case 0:
+        case BIDE_STEP_START:
             param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_CONDITION, monId);
             param->condition = CONDITION_MOVE_LOCK;
             param->value = MakeConditionParamPermanent(BattleEventItem_GetSubID(item));
@@ -4508,14 +4557,14 @@ static void HandlerBide(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s3
             BattleHandler_PopWork(flow, param);
             BattleEventVar_RewriteValue(0x3e, 2);
             work[6] = 1;
-            work[0] = 1;
+            work[0] = BIDE_STEP_STORE;
             work[1] = 0;
             break;
-        case 1:
+        case BIDE_STEP_STORE:
             BattleEventVar_RewriteValue(0x3e, 2);
-            work[0] = 2;
+            work[0] = BIDE_STEP_RELEASE;
             break;
-        case 2:
+        case BIDE_STEP_RELEASE:
         default:
             SetMoveEffectIndex(flow, 1);
             BideEnd(flow, monId, work);
@@ -4530,12 +4579,12 @@ static void HandlerBideTextSet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
         string = (BattleHandlerString *)BattleEventVar_GetValue(BTL_EVAR_STRING);
         switch (work[0]) {
-        case 1:
+        case BIDE_STEP_STORE:
             BattleHandler_StrSetup(string, 2, 0x2e9);
             BattleHandler_AddArg(string, monId);
             BattleEventVar_RewriteValue(BTL_EVAR_FLAG, 1);
             break;
-        case 2:
+        case BIDE_STEP_RELEASE:
             BattleHandler_StrSetup(string, 2, 0x2ec);
             BattleHandler_AddArg(string, monId);
             BattleEventVar_RewriteValue(BTL_EVAR_FLAG, 1);
@@ -4545,13 +4594,13 @@ static void HandlerBideTextSet(BattleEventItem *item, BtlServerFlow *flow, u8 mo
 }
 
 static void HandlerBideCheckFail(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
-    if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0] >= 2) {
+    if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0] >= BIDE_STEP_RELEASE) {
         if (work[1] == 0) {
             BattleEventVar_RewriteValue(BTL_EVAR_FAIL_CAUSE, 0x1a);
         } else if (work[2] == BTL_MONID_NONE) {
             BattleEventVar_RewriteValue(BTL_EVAR_FAIL_CAUSE, 0x1a);
         }
-        work[0] = 3;
+        work[0] = BIDE_STEP_END;
     }
 }
 
@@ -4572,14 +4621,14 @@ static void HandlerBideDamageRecieved(BattleEventItem *item, BtlServerFlow *flow
 static void HandlerBideCalcDamage(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *work) {
     s32 damage;
 
-    if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId && work[0] >= 2) {
+    if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId && work[0] >= BIDE_STEP_RELEASE) {
         GetBattleMon(flow, monId);
         damage = work[1];
         if (damage != 0) {
             damage *= 2;
         }
         BattleEventVar_RewriteValue(BTL_EVAR_FIXED_DAMAGE, damage);
-        work[0] = 3;
+        work[0] = BIDE_STEP_END;
     }
 }
 
@@ -5379,7 +5428,7 @@ static void HandlerSpite(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s
         target = GetBattleMon(flow, targetId);
         move = GetPreviousMoveUsed(target);
         slot = BattleMon_FindMoveSlot(target, move);
-        if (slot != 4) {
+        if (slot != MOVE_SLOT_NONE) {
             pp = GetMovePP(target, slot);
             if (pp > 4) {
                 pp = 4;
@@ -6589,12 +6638,12 @@ static void HandlerMorningSun(BattleEventItem *item, BtlServerFlow *flow, u8 mon
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
         switch (GetWeather(flow)) {
-        case 1:
+        case BTL_WEATHER_SUN:
             ratio = 0xaac;
             break;
-        case 2:
-        case 3:
-        case 4:
+        case BTL_WEATHER_RAIN:
+        case BTL_WEATHER_HAIL:
+        case BTL_WEATHER_SANDSTORM:
             ratio = FX32_CONST(0.25);
             break;
         default:
@@ -7050,7 +7099,7 @@ static void HandlerGrudgeReducePP(BattleEventItem *item, BtlServerFlow *flow, u8
         attacker = GetBattleMon(flow, attackerId);
         move = BattleEventVar_GetValue(BTL_EVAR_ORIGINAL_MOVE);
         slot = BattleMon_FindMoveSlot(attacker, move);
-        if (slot != 4) {
+        if (slot != MOVE_SLOT_NONE) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_DECREMENT_PP, monId);
             param->monIndex = attackerId;
             param->moveIndex = slot;
@@ -7217,6 +7266,8 @@ static void HandlerNaturePower(BattleEventItem *item, BtlServerFlow *flow, u8 mo
     u8 targetPos;
 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId) {
+        // The battle's terrain, whose values keep their numbers (see the top of the file): the move Nature Power
+        // becomes on each
         switch (GetBattleTerrain(flow)) {
         case 1:
         case 2:
@@ -7587,6 +7638,7 @@ static void HandlerHeavySlam(BattleEventItem *item, BtlServerFlow *flow, u8 monI
         attacker = GetBattleMon(flow, monId);
         target = GetBattleMon(flow, BattleEventVar_GetValue(BTL_EVAR_DEFENDER));
         ratio = BtlServerFlow_GetMonWeight(flow, monId) / BtlServerFlow_GetMonWeight(flow, GetMonID(target));
+        // The attacker's weight against the target's, a measurement and not a value set
         if (ratio >= 5) {
             power = 120;
         } else if (ratio == 4) {
@@ -7663,6 +7715,7 @@ static void HandlerEchoedVoice(BattleEventItem *item, BtlServerFlow *flow, u8 mo
             }
             count++;
         }
+        // The turns Echoed Voice has been used in a row: a count, not a value set
         switch (count) {
         case 0:
             power = 40;
@@ -8412,7 +8465,7 @@ static void HandlerAllySwitch(BattleEventItem *item, BtlServerFlow *flow, u8 mon
     pos = BtlServerFlow_MonIDToPos(flow, monId);
     allyId = monId;
     switch (BtlServerFlow_GetBattleStyle(flow)) {
-    case 1:
+    case BTL_STYLE_DOUBLE:
         if (BtlServerFlow_GetAllyClientID(flow, GetClientIDFromMonID(monId)) == BTL_CLIENT_NONE) {
             allyPos = GetPosOnSameSide(pos, 0);
             if (allyPos == pos) {
@@ -8421,7 +8474,7 @@ static void HandlerAllySwitch(BattleEventItem *item, BtlServerFlow *flow, u8 mon
             allyId = BtlServerFlow_PosToMonID(flow, allyPos);
         }
         break;
-    case 2:
+    case BTL_STYLE_TRIPLE:
         if (!IsTripleCenterPos(pos)) {
             allyPos = GetPosOnSameSide(pos, 0);
             if (allyPos == pos) {
@@ -8718,11 +8771,25 @@ typedef struct PledgeCombo {
     u32 effect;
 } PledgeCombo;
 
+// The three pledge pairs and the side effect each leaves, which GetPledgeComboEffect returns
+enum {
+    PLEDGE_COMBO_NONE = 0,
+    // Water Pledge and Fire Pledge: the rainbow
+    PLEDGE_COMBO_RAINBOW = 1,
+    // Grass Pledge and Fire Pledge: the sea of fire
+    PLEDGE_COMBO_SEA_OF_FIRE = 2,
+    // Water Pledge and Grass Pledge: the swamp
+    PLEDGE_COMBO_SWAMP = 3,
+};
+
+// The side effect of a pledge pair that leaves none, a value that no SIDE_CONDITION_* takes
+#define PLEDGE_SIDE_EFFECT_NONE 0xe
+
 static u32 GetPledgeComboEffect(u16 move, u16 partnerMove) {
     static const PledgeCombo sPledgeCombos[] = {
-        { MOVE_WATER_PLEDGE, MOVE_FIRE_PLEDGE, 1 },
-        { MOVE_GRASS_PLEDGE, MOVE_FIRE_PLEDGE, 2 },
-        { MOVE_WATER_PLEDGE, MOVE_GRASS_PLEDGE, 3 },
+        { MOVE_WATER_PLEDGE, MOVE_FIRE_PLEDGE, PLEDGE_COMBO_RAINBOW },
+        { MOVE_GRASS_PLEDGE, MOVE_FIRE_PLEDGE, PLEDGE_COMBO_SEA_OF_FIRE },
+        { MOVE_WATER_PLEDGE, MOVE_GRASS_PLEDGE, PLEDGE_COMBO_SWAMP },
     };
     u32 i;
 
@@ -8732,7 +8799,7 @@ static u32 GetPledgeComboEffect(u16 move, u16 partnerMove) {
             return sPledgeCombos[i].effect;
         }
     }
-    return 0;
+    return PLEDGE_COMBO_NONE;
 }
 
 static const BattleEventHandlerEntry sWaterPledgeHandlers[] = {
@@ -8759,19 +8826,19 @@ static void HandlerWaterPledgeCheck(BattleEventItem *item, BtlServerFlow *flow, 
         BattleMon_GetComboMove(GetBattleMon(flow, monId), &partnerId, &partnerMove)) {
         combo = GetPledgeComboEffect(BattleEventItem_GetSubID(item), partnerMove);
         type = BattleEventVar_GetValue(BTL_EVAR_MOVE_TYPE);
-        if (combo != 0) {
+        if (combo != PLEDGE_COMBO_NONE) {
             work[1] = combo;
             work[0] = 1;
             work[2] = partnerId;
             switch (combo) {
-            case 1:
-                type = 10;
+            case PLEDGE_COMBO_RAINBOW:
+                type = TYPE_WATER;
                 break;
-            case 2:
-                type = 9;
+            case PLEDGE_COMBO_SEA_OF_FIRE:
+                type = TYPE_FIRE;
                 break;
-            case 3:
-                type = 11;
+            case PLEDGE_COMBO_SWAMP:
+                type = TYPE_GRASS;
                 break;
             }
             BattleEventVar_RewriteValue(BTL_EVAR_MOVE_TYPE, type);
@@ -8807,13 +8874,13 @@ static void HandlerWaterPledgeChangeEffect(BattleEventItem *item, BtlServerFlow 
     if (BattleEventVar_GetValue(BTL_EVAR_MON) == monId && work[0]) {
         move = MOVE_NONE;
         switch (work[1]) {
-        case 1:
+        case PLEDGE_COMBO_RAINBOW:
             move = MOVE_WATER_PLEDGE;
             break;
-        case 2:
+        case PLEDGE_COMBO_SEA_OF_FIRE:
             move = MOVE_FIRE_PLEDGE;
             break;
-        case 3:
+        case PLEDGE_COMBO_SWAMP:
             move = MOVE_GRASS_PLEDGE;
             break;
         }
@@ -8834,36 +8901,36 @@ static void HandlerWaterPledgeFieldEffect(BattleEventItem *item, BtlServerFlow *
     BattleHandlerEffectAtPosParam *posParam;
 
     if (BattleEventVar_GetValue(BTL_EVAR_ATTACKER) == monId && work[0]) {
-        effect = 0xe;
+        effect = PLEDGE_SIDE_EFFECT_NONE;
         side = GetSideFromMonID(monId);
         targetSide = GetSideFromMonID(BattleEventVar_GetValue(BTL_EVAR_TARGET_1));
         posEffect = 0;
         message = 0;
         posMonId = BTL_MONID_NONE;
         switch (work[1]) {
-        case 1:
+        case PLEDGE_COMBO_RAINBOW:
             message = 0xa4;
             effectSide = side;
-            effect = 0xb;
+            effect = SIDE_CONDITION_RAINBOW;
             posMonId = monId;
             posEffect = 0x28d;
             break;
-        case 2:
+        case PLEDGE_COMBO_SEA_OF_FIRE:
             message = 0xa8;
             effectSide = targetSide;
-            effect = 0xc;
+            effect = SIDE_CONDITION_SEA_OF_FIRE;
             posEffect = 0x28e;
             posMonId = BattleEventVar_GetValue(BTL_EVAR_TARGET_1);
             break;
-        case 3:
+        case PLEDGE_COMBO_SWAMP:
             message = 0xac;
             effectSide = targetSide;
-            effect = 0xd;
+            effect = SIDE_CONDITION_SWAMP;
             posEffect = 0x28f;
             posMonId = BattleEventVar_GetValue(BTL_EVAR_TARGET_1);
             break;
         }
-        if (effect != 0xe) {
+        if (effect != PLEDGE_SIDE_EFFECT_NONE) {
             param = BattleHandler_PushWork(flow, BTL_HANDLER_ADD_SIDE_EFFECT, monId);
             param->effect = effect;
             param->side = effectSide;
