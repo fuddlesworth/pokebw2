@@ -152,38 +152,38 @@ DWCProfState DWC_CheckProfanityProcess(void) {
     u32 code;
 
     if (sWords == NULL || sWords->http.thread.id == 0) {
-        return 0;
+        return DWC_PROF_STATE_NOT_INITIALIZED;
     }
     if (OS_IsThreadTerminated(&sWords->http.thread) == TRUE) {
         code = DWC_AC_GetApType();
-        if (code == 0xff || code > 99) {
-            code = 99;
+        if (code == DWC_AC_AP_TYPE_FALSE || code > DWC_AC_AP_TYPE_UNKNOWN) {
+            code = DWC_AC_AP_TYPE_UNKNOWN;
         }
         switch (sWords->http.error) {
         case DWCHTTP_E_FINISH:
             if (!DWCi_Prof_ParseResponse()) {
-                result = 3;
+                result = DWC_PROF_STATE_FAIL;
             } else {
-                result = 2;
+                result = DWC_PROF_STATE_SUCCESS;
             }
             break;
         case DWCHTTP_E_DNSERR:
-            DWCi_SetError(8, -52100 - code);
-            result = 3;
+            DWCi_SetError(DWC_ERROR_DISCONNECTED, -52100 - code);
+            result = DWC_PROF_STATE_FAIL;
             break;
         case DWCHTTP_E_CONERR:
         case 4:
         case DWCHTTP_E_RECVTOUT:
-            DWCi_SetError(0x12, -33010);
-            result = 3;
+            DWCi_SetError(DWC_ERROR_PROF_HTTP, -33010);
+            result = DWC_PROF_STATE_FAIL;
             break;
         default:
-            DWCi_SetError(0x12, -33030);
-            result = 3;
+            DWCi_SetError(DWC_ERROR_PROF_HTTP, -33030);
+            result = DWC_PROF_STATE_FAIL;
             break;
         }
     } else {
-        return 1;
+        return DWC_PROF_STATE_OPERATING;
     }
     DWC_Http_Destroy(&sWords->http);
     DWC_Free(0, sWords, 0);
@@ -218,9 +218,9 @@ static BOOL DWCi_Prof_ParseResponse(void) {
             length = DWC_Http_GetBase64DecodedResult(http, "returncd", returnText, 4);
             if (length > 0) {
                 returnCode = atol(returnText);
-                if (errno != 0x22) {
+                if (errno != ERANGE) {
                     if (returnCode == 1 || (returnCode >= 100 && returnCode != 100)) {
-                        DWCi_SetError(0x11, -33000 - returnCode);
+                        DWCi_SetError(DWC_ERROR_PROF_ANY, -33000 - returnCode);
                         return FALSE;
                     }
                     for (i = 0; i < 7; i++) {
@@ -263,7 +263,7 @@ static BOOL DWCi_Prof_ParseResponse(void) {
         }
     }
 fail:
-    DWCi_SetError(0x11, -33020);
+    DWCi_SetError(DWC_ERROR_PROF_ANY, -33020);
     return FALSE;
 }
 
