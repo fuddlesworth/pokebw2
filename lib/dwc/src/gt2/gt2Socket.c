@@ -71,11 +71,11 @@ GT2Result gti2CreateSocket(GT2Socket *socketOut, const char *localAddress, int o
         outgoingBufferSize = 0x10000;
     }
     if (!gt2StringToAddress(localAddress, &ip, &port)) {
-        return 4;
+        return GT2AddressError;
     }
     socketTemp = gsimalloc(sizeof(GTI2Socket));
     if (socketTemp == NULL) {
-        return 1;
+        return GT2OutOfMemory;
     }
     memset(socketTemp, 0, sizeof(GTI2Socket));
     socketTemp->socket = -1;
@@ -86,13 +86,13 @@ GT2Result gti2CreateSocket(GT2Socket *socketOut, const char *localAddress, int o
         TableNew2(sizeof(GT2Connection), 0x20, 2, gti2ConnectionHash, gti2ConnectionCompare, NULL);
     if (socketTemp->connections == NULL) {
         gsifree(socketTemp);
-        return 1;
+        return GT2OutOfMemory;
     }
     socketTemp->closedConnections = ArrayNew(sizeof(GT2Connection), 4, gti2ConnectionFree);
     if (socketTemp->closedConnections == NULL) {
         TableFree(socketTemp->connections);
         gsifree(socketTemp);
-        return 1;
+        return GT2OutOfMemory;
     }
     socketTemp->socket = socket(2, 2, 0);
     socketTemp->protocolType = protocol;
@@ -105,7 +105,7 @@ GT2Result gti2CreateSocket(GT2Socket *socketOut, const char *localAddress, int o
         TableFree(socketTemp->connections);
         ArrayFree(socketTemp->closedConnections);
         gsifree(socketTemp);
-        return 3;
+        return GT2NetworkError;
     }
     memset(&address, 0, sizeof(address));
     address.family = 2;
@@ -117,7 +117,7 @@ GT2Result gti2CreateSocket(GT2Socket *socketOut, const char *localAddress, int o
             TableFree(socketTemp->connections);
             ArrayFree(socketTemp->closedConnections);
             gsifree(socketTemp);
-            return 3;
+            return GT2NetworkError;
         }
     }
     addressSize = sizeof(address);
@@ -125,7 +125,7 @@ GT2Result gti2CreateSocket(GT2Socket *socketOut, const char *localAddress, int o
     socketTemp->ip = address.addr.addr;
     socketTemp->port = GTI2_SWAP16(address.port);
     *socketOut = socketTemp;
-    return 0;
+    return GT2Success;
 }
 
 void gti2CloseSocket(GT2Socket socket) {
@@ -154,7 +154,7 @@ GT2Result gti2NewSocketConnection(GT2Socket socket, GT2Connection *connectionOut
     GT2Connection connection = NULL;
 
     if (gti2SocketFindConnection(socket, ip, port) != NULL) {
-        return 5;
+        return GT2DuplicateAddress;
     }
     connection = gti2CreateConnectionObject();
     if (connection != NULL) {
@@ -191,7 +191,7 @@ GT2Result gti2NewSocketConnection(GT2Socket socket, GT2Connection *connectionOut
         TableEnter(socket->connections, &connection);
         *connectionOut = gti2SocketFindConnection(socket, ip, port);
         if (*connectionOut != NULL) {
-            return 0;
+            return GT2Success;
         }
     }
 fail:
@@ -212,7 +212,7 @@ fail:
         }
         gsifree(connection);
     }
-    return 1;
+    return GT2OutOfMemory;
 }
 
 void gti2FreeSocketConnection(GT2Connection connection) {
@@ -222,7 +222,7 @@ void gti2FreeSocketConnection(GT2Connection connection) {
     if (connection->freeAtAcceptReject || connection->callbackLevel != 0) {
         return;
     }
-    if (connection->state == 7) {
+    if (connection->state == GTI2Closed) {
         count = ArrayLength(connection->socket->closedConnections);
         for (i = 0; i < count; i++) {
             if (connection == *(GT2Connection *)ArrayNth(connection->socket->closedConnections, i)) {
@@ -280,10 +280,10 @@ static int gti2SocketConnectionsThinkMap(void *element, void *clientData) {
     GT2Connection connection = *(GT2Connection *)element;
     gsi_u32 now = *(gsi_u32 *)clientData;
 
-    if (connection->state != 7 && !gti2ConnectionThink(connection, now)) {
+    if (connection->state != GTI2Closed && !gti2ConnectionThink(connection, now)) {
         return gsi_false;
     }
-    if (connection->state == 7 && !connection->freeAtAcceptReject && connection->callbackLevel == 0) {
+    if (connection->state == GTI2Closed && !connection->freeAtAcceptReject && connection->callbackLevel == 0) {
         gti2FreeSocketConnection(connection);
     }
     return gsi_true;

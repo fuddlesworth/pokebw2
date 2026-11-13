@@ -27,6 +27,16 @@
 #define GTI2_SWAP16(x) ((gsi_u16)((gsi_u8)((x) >> 8) | ((x) << 8 & 0xff00)))
 #define GTI2_SWAP32(x) ((gsi_u8)((x) >> 24) | ((x) >> 8 & 0xff00) | ((x) << 8 & 0xff0000) | ((x) << 24 & 0xff000000))
 
+// The mask of IPv4's class D (multicast) and class E (experimental) ranges, which gt2Connect refuses
+#define GTI2_INVALID_IP_MASK 0xe0000000
+
+// How long the side that listens waits for a handshake, how long a message waits for its ack before the resend, how
+// long an ack waits to be combined, and how long a connection may not send before it sends a keep-alive (milliseconds)
+#define GTI2_SERVER_TIMEOUT (1 * 60 * 1000)
+#define GTI2_RESEND_TIME 1000
+#define GTI2_PENDING_ACK_TIME 100
+#define GTI2_KEEP_ALIVE_TIME (30 * 1000)
+
 // GameSpy's public types of GT2 (gt2.h)
 typedef int GT2Bool;
 #define GT2False 0
