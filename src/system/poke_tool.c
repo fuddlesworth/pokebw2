@@ -28,11 +28,14 @@
 // species data read last. The file's name is the ROM's string; the functions' names are swan's
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0) unless said
 
-// The kind of PML_UtilSetupMetData for a hatched egg
-#define MET_DATA_HATCHED 2
-
 // The species of the personal cache when it holds nothing
 #define PERSONAL_CACHE_NONE 686
+
+// How many abilities a species has to choose from, not counting the hidden one
+enum {
+    PERSONAL_ABILITY_COUNT_1 = 1,
+    PERSONAL_ABILITY_COUNT_2 = 2,
+};
 
 #define NATURE_COUNT 25
 // The stats a nature changes
@@ -381,7 +384,7 @@ static void PML_CreatePkm(BoxPkm *pkm, u16 species, u16 level, u64 trainerId, u3
     }
 
     ability = PERSONAL_ABILITY_1;
-    if (GetPersonalAbilCount(personal) == 2 && (pid & PID_ABILITY_BIT) != 0) {
+    if (GetPersonalAbilCount(personal) == PERSONAL_ABILITY_COUNT_2 && (pid & PID_ABILITY_BIT) != 0) {
         ability = PERSONAL_ABILITY_2;
     }
     PML_PkmSetParam(pkm, PKM_PARAM_ABILITY, PML_PersonalGetParam(personal, ability));
@@ -484,7 +487,7 @@ BOOL PML_PkmChangeRotomForme(PartyPkm *pkm, u32 forme, u32 moveSlot) {
                 break;
             }
         }
-        if (i == 4) {
+        if (i == MOVE_SLOTS) {
             PokeParty_SetMove(pkm, newMove, moveSlot);
         }
     }
@@ -548,7 +551,7 @@ static void setAbilityForForm(BoxPkm *pkm, u16 species, u16 oldSpecies) {
     }
     if (PML_PkmGetParam(pkm, PKM_PARAM_HIDDEN_ABILITY, NULL)) {
         ability = PERSONAL_ABILITY_HIDDEN;
-    } else if (GetPersonalAbilCount(personal) == 2 && (pid & abilityBit) != 0) {
+    } else if (GetPersonalAbilCount(personal) == PERSONAL_ABILITY_COUNT_2 && (pid & abilityBit) != 0) {
         ability = PERSONAL_ABILITY_2;
     }
     PML_PkmSetParam(pkm, PKM_PARAM_ABILITY, PML_PersonalGetParam(personal, ability));
@@ -560,7 +563,7 @@ static void UpdateGenderOnMonsChange(BoxPkm *pkm, u16 species, u16 oldSpecies) {
     u32 sexRatio = PML_PersonalGetParam(PML_PersonalLoadBW2(species, form), PERSONAL_SEX_RATIO);
     u32 oldSexRatio = PML_PersonalGetParam(PML_PersonalLoadBW2(oldSpecies, form), PERSONAL_SEX_RATIO);
 
-    if (isGenderlessOrSetGender(sexRatio) != TRUE || oldSexRatio == 0xff) {
+    if (isGenderlessOrSetGender(sexRatio) != TRUE || oldSexRatio == GENDER_RATIO_GENDERLESS) {
         PML_PkmSetParam(pkm, PKM_PARAM_SEX,
                         PML_UtilDerivePkmSex(species, form, PML_PkmGetParam(pkm, PKM_PARAM_PID, NULL)));
     }
@@ -763,7 +766,7 @@ static u8 getPkmAbilSlotNumber(BoxPkm *pkm) {
     }
     if (PML_PkmGetParam(pkm, PKM_PARAM_HIDDEN_ABILITY, NULL)) {
         slot = ABILITY_SLOT_HIDDEN;
-    } else if (GetPersonalAbilCount(personal) == 2) {
+    } else if (GetPersonalAbilCount(personal) == PERSONAL_ABILITY_COUNT_2) {
         if (pid & mask) {
             slot = ABILITY_SLOT_2;
         }
@@ -1316,7 +1319,7 @@ static void PML_PkmSetHiddenAbil(BoxPkm *pkm, u32 species, u32 form) {
         u32 pid = PML_PkmGetParam(pkm, PKM_PARAM_PID, NULL);
         u32 param = PERSONAL_ABILITY_1;
 
-        if (GetPersonalAbilCount(personal) == 2 && (pid & 0x10000)) {
+        if (GetPersonalAbilCount(personal) == PERSONAL_ABILITY_COUNT_2 && (pid & 0x10000)) {
             param = PERSONAL_ABILITY_2;
         }
         PML_PkmSetParam(pkm, PKM_PARAM_ABILITY, PML_PersonalGetParam(personal, param));
@@ -1833,8 +1836,8 @@ static u32 PML_PkmGetParamCore(BoxPkm *pkm, PkmField field, void *buffer) {
     case PKM_PARAM_OT_GENDER:
         result = blockD->otGender;
         break;
-    case PKM_PARAM_UNK9B:
-        result = blockD->unk1D;
+    case PKM_PARAM_GROUND_TILE:
+        result = blockD->groundTile;
         break;
     case PKM_PARAM_UNK9C:
         result = blockD->unk1E;
@@ -2294,8 +2297,8 @@ static void PML_PkmSetParamCore(BoxPkm *pkm, PkmField field, u32 value) {
     case PKM_PARAM_OT_GENDER:
         blockD->otGender = value;
         break;
-    case PKM_PARAM_UNK9B:
-        blockD->unk1D = value;
+    case PKM_PARAM_GROUND_TILE:
+        blockD->groundTile = value;
         break;
     case PKM_PARAM_UNK9C:
         blockD->unk1E = value;
@@ -2461,11 +2464,11 @@ static u16 adjustStatForNature(u32 nature, u16 value, unsigned int stat) {
         return value;
     }
     switch (natureStat[nature][stat - 1]) {
-    case 1:
+    case NATURE_STAT_RAISED:
         value = value * 110;
         value /= 100;
         break;
-    case -1:
+    case NATURE_STAT_LOWERED:
         value = value * 90;
         value /= 100;
         break;
@@ -2552,9 +2555,9 @@ static PersonalData *PML_PersonalLoadBW2(u16 species, u16 form) {
 // How many abilities a species chooses from, not counting the hidden one
 static u32 GetPersonalAbilCount(PersonalData *personal) {
     if (PML_PersonalGetParam(personal, PERSONAL_ABILITY_2) != 0) {
-        return 2;
+        return PERSONAL_ABILITY_COUNT_2;
     }
-    return 1;
+    return PERSONAL_ABILITY_COUNT_1;
 }
 
 u32 PML_PersonalGetParamSingle(u16 species, u16 form, u32 param) {
