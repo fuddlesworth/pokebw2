@@ -289,13 +289,13 @@ static void Auth_OnResponse(GHTTPResult status, GSXmlStreamWriter unused, GSXmlS
     // As in GameSpy's login callbacks, the certificate is marked invalid before the whole result is cleared
     certificate->mIsValid = gsi_false;
     memset(&result, 0, sizeof(result));
-    if (status == 0) {
+    if (status == GHTTPSuccess) {
         if (!gsXmlMoveToStart(reader) || !gsXmlMoveToNext(reader, "LoginRemoteAuthResult")) {
             result.mLoginResult = WSLogin_ParseError;
         } else if (!gsXmlReadChildAsInt(reader, "responseCode", (int *)&result.mResponseCode)) {
             result.mLoginResult = WSLogin_ParseError;
         } else if (result.mResponseCode != 0) {
-            result.mLoginResult = 7;
+            result.mLoginResult = WSLogin_ServerError;
         } else if (!gsXmlMoveToChild(reader, "certificate") || !Auth_ReadCertificate(certificate, reader) ||
                    !gsXmlMoveToParent(reader) ||
                    !gsXmlReadChildAsLargeInt(reader, "peerkeyprivate", &result.mPrivateData.mPeerPrivateKey.exponent)) {
@@ -311,7 +311,7 @@ static void Auth_OnResponse(GHTTPResult status, GSXmlStreamWriter unused, GSXmlS
                 result.mLoginResult = WSLogin_InvalidCertificate;
             }
         }
-    } else if (status == 0x12) {
+    } else if (status == GHTTPRequestCancelled) {
         result.mLoginResult = WSLogin_Cancelled;
     } else {
         result.mLoginResult = WSLogin_HttpError;

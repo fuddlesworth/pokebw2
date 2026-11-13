@@ -7,6 +7,14 @@
 
 // The library's entry points: starting and stopping it, running it a tick, and sorting what the network gives it.
 
+// What VCTi_HandleData made of a packet: dealt with, an event for the application, or not the library's (libVCT's
+// HandleDataResult, its vct_main.c)
+enum HandleDataResult {
+    HANDLE_DATA_RESULT_NO_CALLBACK = 0,
+    HANDLE_DATA_RESULT_CALLBACK,
+    HANDLE_DATA_RESULT_NOT_VCT_DATA,
+};
+
 struct VCTLibrary {
     u32 tickCount;
     u32 receivedCount;
@@ -26,7 +34,7 @@ BOOL VCT_Init(VCTConfig *config) {
     if (sLibrary.initialized) {
         return TRUE;
     }
-    if (config->mode != 1 && config->mode != 2 && config->mode != 3) {
+    if (config->mode != VCT_MODE_PHONE && config->mode != VCT_MODE_TRANSCEIVER && config->mode != VCT_MODE_CONFERENCE) {
         return FALSE;
     }
     if (config->callback == NULL) {
@@ -89,12 +97,12 @@ BOOL VCT_HandleData(u8 aid, u8 *data, int size) {
     VCTResult result;
 
     switch (VCTi_HandleData(aid, data, size, &result)) {
-    case 0:
+    case HANDLE_DATA_RESULT_NO_CALLBACK:
         break;
-    case 1:
+    case HANDLE_DATA_RESULT_CALLBACK:
         vct.callback(aid, result.event, result.session, vct.userData);
         return TRUE;
-    case 2:
+    case HANDLE_DATA_RESULT_NOT_VCT_DATA:
         return FALSE;
     }
     return TRUE;

@@ -139,7 +139,6 @@ sAudioSequence kind:bss addr:0x02197484
 sAdpcmState kind:bss addr:0x02197494
 sAudioSession kind:bss addr:0x021974b0
 sStream kind:bss addr:0x021974bc
-data_ov029_021975d5 kind:bss addr:0x02197615 ambiguous
 sMixBuffer kind:bss addr:0x02197678
 sSendInfo kind:bss addr:0x02197ac0
 sActiveList kind:bss addr:0x02198398

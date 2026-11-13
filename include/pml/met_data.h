@@ -17,9 +17,23 @@
 #define PLACE_FILE_EXTERNAL 0x6f
 #define PLACE_FILE_SPECIAL 0x70
 
-// Records how and where a party Pokémon was met, by kind: 0 caught or received, as met at placeName with the player
-// as its Trainer; 1 an in-game trade; 2 hatched, an egg of the player's keeping where it was received as its egg's
-// place; 5 an egg received at placeName; 6 a link trade, at placeName; 7 one of N's Pokémon. 3 and 4 change nothing
+// The kind of met data PokeParty_SetupMetData records. Kinds 3 and 4 change nothing
+enum {
+    // Caught or received, met at placeName with the player as its Trainer
+    MET_DATA_CAUGHT,
+    // An in-game trade
+    MET_DATA_IN_GAME_TRADE,
+    // Hatched, an egg of the player's keeping where it was received as its egg's place
+    MET_DATA_HATCHED,
+    // An egg received at placeName
+    MET_DATA_EGG_RECEIVED = 5,
+    // A link trade, at placeName
+    MET_DATA_LINK_TRADE,
+    // One of N's Pokémon
+    MET_DATA_N_POKEMON,
+};
+
+// Records how and where a party Pokémon was met
 void PokeParty_SetupMetData(PartyPkm *pkm, u32 kind, PlayerInfo *playerInfo, u32 placeName, HeapID heapId);
 void PML_UtilSetupMetData(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo, u32 placeName, HeapID heapId);
 // Sets the date the Pokémon was met to today
@@ -28,8 +42,21 @@ void setMetCurrentDateTime(BoxPkm *pkm);
 void setFatefulEncounterPkmData(BoxPkm *pkm, u16 location, u32 year, u32 month, u32 day);
 // Records a Pokémon as met through the Dream Radar
 void setDreamRadarPokeMetInfo(BoxPkm *pkm);
-// Whether the Pokémon came by one of the kinds of special event for the player: 0 to 3 the Celebi and the beasts
-// whose event hasn't run or has, 4 Keldeo, 5 Meloetta, 6 Genesect, 7 Shaymin, 8 Landorus from the Dream Radar
+// The kind of special event Pokémon PokeParty_IsSpecialTransfer checks: the Celebi and the beasts whose event hasn't
+// run or has, Keldeo, Meloetta, Genesect, Shaymin, and Landorus from the Dream Radar
+enum {
+    SPECIAL_TRANSFER_CELEBI,
+    SPECIAL_TRANSFER_CELEBI_USED,
+    SPECIAL_TRANSFER_BEASTS,
+    SPECIAL_TRANSFER_BEASTS_USED,
+    SPECIAL_TRANSFER_KELDEO,
+    SPECIAL_TRANSFER_MELOETTA,
+    SPECIAL_TRANSFER_GENESECT,
+    SPECIAL_TRANSFER_SHAYMIN,
+    SPECIAL_TRANSFER_LANDORUS,
+};
+
+// Whether the Pokémon came by one of the kinds of special event for the player
 BOOL PokeParty_IsSpecialTransfer(PartyPkm *pkm, u32 kind, PlayerInfo *playerInfo);
 BOOL special_transfers(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo);
 // Marks the event of an event Celebi or beast as run
