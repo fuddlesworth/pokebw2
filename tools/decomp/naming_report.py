@@ -25,6 +25,11 @@ each source file it counts, in Black 2:
 The last two are leads, not faults: a sequence counter or a coordinate is a number. Comments and string literals are
 skipped. A header counts toward the module whose sources include it, or toward "shared" when several do.
 
+The `--module` table ends with a `<total>` row: quote it rather than summing rows by hand. The row called `<no file>` is
+the module-level bucket for address-named symbols that no delinks.txt range owns. `data` depends on the last build's map
+(`build/b2_us/arm9.o.xMAP`) existing; run `ninja` first, so the compiler's anonymous string literals and initializers
+are excluded. Any build of this ROM will do, because naming-only commits do not move layout.
+
 Some of `funcs` are not C at all. For a branch the linker cannot reach directly it emits an interworking veneer (a
 Thumb `bx pc`, an ARM `ldr ip,[pc]` then `bx ip`, or an ARM `ldr pc,[pc,#-4]`), and a veneer still gets a `func_`
 symbol. `--veneers` counts them from the first bytes of the module's linked image; the default counts stay exactly as
@@ -133,11 +138,14 @@ def anonymous_objects() -> set[tuple[str, int]]:
     the last build's map: C has no name for them, so their address names are not work left."""
     path = ROOT / "build" / "b2_us" / "arm9.o.xMAP"
     out = set()
-    if path.exists():
-        for line in path.read_text(errors="replace").splitlines():
-            m = re.match(r"\s+([0-9A-F]{8}) [0-9A-F]{8} \.\w+\s+@\d+\t\((\w+)\.o\)", line)
-            if m:
-                out.add((m.group(2), int(m.group(1), 16)))
+    if not path.exists():
+        print("naming_report.py: build/b2_us/arm9.o.xMAP is absent, so data counts include the compiler's anonymous "
+              "objects; run ninja first to build the map and exclude them.", file=sys.stderr)
+        return out
+    for line in path.read_text(errors="replace").splitlines():
+        m = re.match(r"\s+([0-9A-F]{8}) [0-9A-F]{8} \.\w+\s+@\d+\t\((\w+)\.o\)", line)
+        if m:
+            out.add((m.group(2), int(m.group(1), 16)))
     return out
 
 
@@ -264,19 +272,27 @@ def main():
         widths = {"unmeasured": 12}
         print("file".ljust(60) + "".join(k.rjust(widths.get(k, 9)) for k in kinds))
         for path in sorted(files):
-            print(path.ljust(60) + "".join(str(files[path][k]).rjust(widths.get(k, 9)) for k in kinds))
+            label = "<no file>" if "/" not in path else path
+            print(label.ljust(60) + "".join(str(files[path][k]).rjust(widths.get(k, 9)) for k in kinds))
+        totals = total(files)
+        print("<total>".ljust(60) + "".join(str(totals[k]).rjust(widths.get(k, 9)) for k in kinds))
         for path in sorted(files):
             for kind, line, text in items.get(path, []):
                 print(f"{path}:{line}: {kind}: {text}")
     elif args.veneers:
         print("module".ljust(12) + "funcs".rjust(9) + "veneers".rjust(9) + "unmeasured".rjust(12)
               + "with C".rjust(9))
+        sums = collections.Counter()
         for module in sorted(by_module, key=module_key):
             t = total(by_module[module])
             if t["funcs"]:
                 veneer, unmeasured = t["veneers"], t["unmeasured"]
                 print(module.ljust(12) + str(t["funcs"]).rjust(9) + str(veneer).rjust(9)
                       + str(unmeasured).rjust(12) + str(t["funcs"] - veneer - unmeasured).rjust(9))
+                sums.update(t)
+        print("<total>".ljust(12) + str(sums["funcs"]).rjust(9) + str(sums["veneers"]).rjust(9)
+              + str(sums["unmeasured"]).rjust(12)
+              + str(sums["funcs"] - sums["veneers"] - sums["unmeasured"]).rjust(9))
     else:
         print("module".ljust(12) + "".join(k.rjust(9) for k in KINDS))
         for module in sorted(by_module, key=module_key):
