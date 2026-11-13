@@ -51,6 +51,10 @@
 // The most energy a client's Shooter holds
 #define SHOOTER_ENERGY_MAX 14
 
+// The slot BattleMon_FindMoveSlot returns for a move the mon doesn't have, past its four (move_handlers.c names the
+// same sentinel MOVE_SLOT_NONE)
+#define MOVE_SLOT_NONE 4
+
 // What drives a client, which picks its handler of each command
 enum {
     BTL_CLIENT_TYPE_PLAYER,
@@ -364,6 +368,13 @@ enum {
     STUDIO_CHOICE_RESULT_BAD,
 };
 
+// The turns of a movie's ending scenes: the win's and the loss's, which Studio_ShowResult sets from the battle's
+// result and the movie's script marks its ending scenes with
+enum {
+    STUDIO_TURN_WIN = 100,
+    STUDIO_TURN_LOSE = 101,
+};
+
 // A Pokestar Studios movie's score
 typedef struct {
     s16 points[STUDIO_SCORE_MAX];
@@ -386,7 +397,7 @@ typedef struct {
     u8 stagingNextSeq;
     // The step of the scene's messages and states
     u8 msgStep;
-    u8 unk05;
+    u8 unk05; // Cleared in Studio_PlayScene, never read
     // The entry of the movie's script
     s8 scene;
     // The choice picked, or saved, in the scene
@@ -395,7 +406,7 @@ typedef struct {
     s32 newField;
     // The last choice recorded plus 1, which the scenes that follow it check
     s8 recordedChoice;
-    u8 unk11[0xb];
+    u8 unk11[0xb]; // Never read or written; 11 bytes before msgId1, more than its alignment needs
     s32 msgId1;
     s32 msgId2;
     // The move of the player's first action and the species of the last Pokemon that fainted, which start scenes
@@ -460,7 +471,7 @@ struct BtlClient {
     s8 prevActionIdx;
     u8 firstActionIdx;
     u8 forceActionMsg;
-    u8 unk129;
+    u8 unk129; // Written with the client's ID, never read
     BattleAction actions[3];
     u8 shooterCost[3];
     BtlServerCmdQueue *cmdQueue;
@@ -495,7 +506,7 @@ struct BtlClient {
     u8 recTimeUp : 1;
     u8 recCanceled : 1;
     u8 changePokeCount;
-    u8 unk1BC;
+    u8 unk1BC; // Never read or written
     u8 turnCount;
     u8 changePokePos[6];
     BtlClientStudioWork studio;
@@ -1383,25 +1394,25 @@ static u8 BattleClient_PickRotation(u8 dir) {
 
     if (dir == 0) {
         if (rand < 30) {
-            dir = 3;
+            dir = BTLV_EFFECT_ROTATE_THIRD;
         } else if (rand < 60) {
-            dir = 2;
+            dir = BTLV_EFFECT_ROTATE_SECOND;
         } else {
-            dir = 1;
+            dir = BTLV_EFFECT_ROTATE_NONE;
         }
     } else {
-        // A rotation position: 1 stays, 2 and 3 rotate. The overlay keeps battle positions numeric except
-        // BTL_POS_NONE
+        // The rotation picked so far, a BTLV_EFFECT_ROTATE_*: the next pick keeps the front or brings the second or
+        // third up, never the same one
         switch (dir) {
-        case 1:
+        case BTLV_EFFECT_ROTATE_NONE:
         default:
-            dir = rand < 50 ? 2 : 3;
+            dir = rand < 50 ? BTLV_EFFECT_ROTATE_SECOND : BTLV_EFFECT_ROTATE_THIRD;
             break;
-        case 3:
-            dir = rand < 40 ? 2 : 1;
+        case BTLV_EFFECT_ROTATE_THIRD:
+            dir = rand < 40 ? BTLV_EFFECT_ROTATE_SECOND : BTLV_EFFECT_ROTATE_NONE;
             break;
-        case 2:
-            dir = rand < 40 ? 3 : 1;
+        case BTLV_EFFECT_ROTATE_SECOND:
+            dir = rand < 40 ? BTLV_EFFECT_ROTATE_THIRD : BTLV_EFFECT_ROTATE_NONE;
             break;
         }
     }
@@ -1700,7 +1711,8 @@ static s32 Studio_FindScene(const BtlScriptedRules *rules, BtlClientStudioWork *
             found = i;
         }
     }
-    if (turn == 101) {
+    // The loss ending's scene follows the battle's outcome
+    if (turn == STUDIO_TURN_LOSE) {
         for (i = 0; i < 12; i++) {
             if (outcome == rules->scenes[i].trigger) {
                 found = i;
@@ -1795,7 +1807,7 @@ static void Studio_DecideEnding(BtlClient *client, const BtlScriptedRules *rules
 static void Studio_ScoreEndScene(BtlClient *client, const BtlScriptedRules *rules, s32 scene) {
     int type = rules->scenes[scene].turn;
 
-    if (type == 100 || type == 101) {
+    if (type == STUDIO_TURN_WIN || type == STUDIO_TURN_LOSE) {
         StudioScore_AddScenePoints(client, &client->studio.score, scene);
         if (GetStudioMode(client->mainModule) == BTL_STUDIO_MODE_PLAYBACK) {
             BtlSetup *setup;
@@ -1878,7 +1890,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
         } else {
             if ((rules->scenes[client->studio.scene].messages[0][client->studio.msgStep] == -1 &&
                  rules->scenes[client->studio.scene].messages[1][client->studio.msgStep] == -1) ||
-                client->studio.msgStep == 10) {
+                client->studio.msgStep == NELEMS(rules->scenes[client->studio.scene].messages[0])) {
                 client->studio.seq = STUDIO_SCENE_SEQ_CHOICE;
             } else {
                 client->studio.seq = STUDIO_SCENE_SEQ_MSG_1;
@@ -1964,7 +1976,7 @@ static BOOL Studio_PlayScene(BtlClient *client) {
         Studio_SetSeq(&client->studio, STUDIO_SCENE_SEQ_WAIT_MSG, STUDIO_SCENE_SEQ_CHECK_TURN);
         break;
     case STUDIO_SCENE_SEQ_CHECK_TURN:
-        if (client->turnCount >= 100) {
+        if (client->turnCount >= STUDIO_TURN_WIN) {
             client->studio.seq = STUDIO_SCENE_SEQ_END;
             client->studio.stagingState = 0;
         } else {
@@ -2248,9 +2260,9 @@ static BOOL Studio_ShowResult(BtlClient *client) {
         setup = GetBattleSetupParam(client->mainModule);
         rules = GetStudioRules(client->mainModule);
         if (GetBattleResultForClient(client) == BTL_RESULT_VICTORY) {
-            client->turnCount = 100;
+            client->turnCount = STUDIO_TURN_WIN;
         } else {
-            client->turnCount = 101;
+            client->turnCount = STUDIO_TURN_LOSE;
         }
         client->studio.msgId1 = Studio_GetResultMsgId(client, rules, setup);
         client->studio.seq = STUDIO_RESULT_SEQ_RESULT_EFFECT;
@@ -2629,7 +2641,8 @@ static BOOL BattleClient_ActionTrainerHint(BtlClient *client, s32 *seq) {
         BtlvEffect_SetTrainer(GetClientTrainerClass(client->mainModule, clientId), 9, 0, 0, 0);
         BtlvEffect_Start(0x270);
         BtlvCore_StartMsgTrainer(client->viewCore, trainerId, client->hintMsgId);
-        if ((client->hintMsgId == 19 || client->hintMsgId == 20) &&
+        // The last-mon hints, 0x13 and 0x14 of sTrainerHintMsgs, are the ones that start the superior BGM
+        if ((client->hintMsgId == 0x13 || client->hintMsgId == 0x14) &&
             BtlCalc_IsGymLeaderClass(GetClientTrainerClass(client->mainModule, clientId)) &&
             !client->superiorBgmPlayed) {
             BtlvEffect_ReserveBgm(SEQ_BGM_BATTLESUPERIOR);
@@ -2787,7 +2800,7 @@ static BOOL BattleClient_ActionSelectFight(BtlClient *client, s32 *seq) {
                 if (BattleAction_GetMoveInfoFlag(procAction)) {
                     client->moveInfoPos = pos;
                     client->moveInfoIdx = BattleMon_FindMoveSlot(mon, procAction->bits.move);
-                    if (client->moveInfoIdx != 4) {
+                    if (client->moveInfoIdx != MOVE_SLOT_NONE) {
                         BattleClient_SetSelActProc(client, BattleClient_ActionViewMoveInfo);
                         return FALSE;
                     }
@@ -2975,7 +2988,7 @@ static BOOL BattleClient_ActionSelectItem(BtlClient *client, s32 *seq) {
         if (BtlvCore_WaitItemSelect(client->viewCore)) {
             u16 item = BtlvCore_GetSelectedItem(client->viewCore);
             u16 target = BtlvCore_GetSelectedPartyIndex(client->viewCore);
-            if (item != 0 && target != 6) {
+            if (item != 0 && target != BPLIST_PARTY_CANCEL) {
                 u8 cost = BtlvCore_GetItemCost(client->viewCore);
                 u32 param = BtlvCore_GetSelectedMoveSlot(client->viewCore);
                 if (client->shooterEnergy >= cost) {
@@ -2987,7 +3000,7 @@ static BOOL BattleClient_ActionSelectItem(BtlClient *client, s32 *seq) {
                 shooterWork_SetCost(client, client->procActionIdx, cost);
                 BattleAction_SetItemParam(client->procAction, item, target, param);
                 BtlvCore_SaveBagCursor(client->viewCore);
-                if (ItemGetParam(item, ITEM_PARAM_KIND) == 4) {
+                if (ItemGetParam(item, ITEM_PARAM_KIND) == ITEM_KIND_BALL) {
                     client->escapeSelected = TRUE;
                 }
                 selItemWork_Reserve(client, client->procActionIdx, item);
@@ -3440,14 +3453,15 @@ static BOOL IsUnselectableMove(BtlClient *client, BattleMon *mon, u16 move, Btlv
     return FALSE;
 }
 
+// Marks each of the mon's moves selectable, and returns the first selectable slot, or MOVE_SLOT_NONE
 static u8 StoreSelectableMoveFlag(BtlClient *client, BattleMon *mon, u8 *selectable) {
     u8 moveCount = GetBattleMonMoveCount(mon);
-    u8 first = 4;
+    u8 first = MOVE_SLOT_NONE;
     u8 i;
     for (i = 0; i < moveCount; i++) {
         if (GetMovePP(mon, i) != 0) {
             selectable[i] = !IsUnselectableMove(client, mon, MoveGetID(mon, i), NULL);
-            if (first == 4 && selectable[i]) {
+            if (first == MOVE_SLOT_NONE && selectable[i]) {
                 first = i;
             }
         } else {
@@ -3616,7 +3630,8 @@ static void ReserveAISwitch(BtlClient *client, u8 index, u8 slot) {
 }
 
 static BOOL AISwitchChecks(BtlClient *client, BattleMon *mon, u8 index, u8 *slot) {
-    u8 switchTo = 6;
+    // The party slot to switch to, or PARTY_SIZE before a check picks one
+    u8 switchTo = PARTY_SIZE;
     u8 trapMonId;
     u16 trapAbility;
     u8 slots[6];
@@ -3656,7 +3671,7 @@ static BOOL AISwitchChecks(BtlClient *client, BattleMon *mon, u8 index, u8 *slot
     if (!shouldSwitch) {
         return FALSE;
     }
-    if (switchTo == 6) {
+    if (switchTo == PARTY_SIZE) {
         u32 count = GetNumBattleReadyPartyMons(client, slots);
         u32 i;
         PickBestMonToSwitchInto(client, slots, count, target);
@@ -3667,7 +3682,7 @@ static BOOL AISwitchChecks(BtlClient *client, BattleMon *mon, u8 index, u8 *slot
             }
         }
     }
-    if (switchTo == 6) {
+    if (switchTo == PARTY_SIZE) {
         return FALSE;
     }
     ReserveAISwitch(client, index, switchTo);
@@ -4036,7 +4051,7 @@ static BOOL AISelectAction(BtlClient *client, s32 *seq) {
             *seq = AI_SELECT_SEQ_NEXT;
         }
         GetBattleMonMoveCount(client->procMon);
-        if (StoreSelectableMoveFlag(client, client->procMon, usableMoves) != 4) {
+        if (StoreSelectableMoveFlag(client, client->procMon, usableMoves) != MOVE_SLOT_NONE) {
             TrAI_Setup(client->aiVM, usableMoves,
                        MonIDToBattlePos(client->mainModule, client->pokeCon, GetMonID(client->procMon)));
             *seq = AI_SELECT_SEQ_THINK;
@@ -4050,7 +4065,7 @@ static BOOL AISelectAction(BtlClient *client, s32 *seq) {
             break;
         }
         moveIdx = TrAI_GetChosenMove(client->aiVM);
-        if (moveIdx != 4) {
+        if (moveIdx != MOVE_SLOT_NONE) {
             target = TrAI_GetChosenTarget(client->aiVM);
             debug = GetStudioWork(client->mainModule);
             if (debug != NULL && debug->aiMoveIndex >= 0) {
@@ -4661,10 +4676,10 @@ static BOOL BattleClient_ExitTrainerBattle(BtlClient *client, s32 *seq) {
             StudioScore_SetTurnPoints(client, &client->studio.score);
             if (result == BTL_RESULT_VICTORY) {
                 client->studio.seq = 0;
-                client->turnCount = 100;
+                client->turnCount = STUDIO_TURN_WIN;
             } else {
                 client->studio.seq = 0;
-                client->turnCount = 101;
+                client->turnCount = STUDIO_TURN_LOSE;
             }
             *seq = EXIT_TRAINER_SEQ_STUDIO_SCENE;
             Studio_PlayEndingBgm(client->mainModule);
@@ -6204,7 +6219,7 @@ static BOOL BattleClient_ScExpGain(BtlClient *client, s32 *seq, const u32 *args)
     u32 pos = MonIDToViewPos(client->mainModule, client->pokeCon, monId);
     BOOL visible = FALSE;
 
-    if (pos != 0xff && BtlvEffect_CheckGaugeExist(pos)) {
+    if (pos != BTLV_MCSS_POS_NONE && BtlvEffect_CheckGaugeExist(pos)) {
         visible = TRUE;
     }
 
@@ -6433,7 +6448,7 @@ static BOOL BattleClient_LearnMoveSeq(BtlClient *client, s32 *seq, BattleMon *mo
         u8 slot;
 
         if (BtlvCore_WaitForgetMoveSelect(client->viewCore, &slot)) {
-            if (slot == 4) {
+            if (slot == BPLIST_MOVE_SLOT_NONE) {
                 *seq = LEARN_SEQ_ASK_FORGET;
             } else {
                 PartyPkm *pkm = GetSrcData(GetPokeParam(client->pokeCon, monId));
@@ -6633,11 +6648,11 @@ static BOOL BattleClient_ScRotation(BtlClient *client, s32 *seq, const u32 *args
             u8 isNpc;
             u16 message;
 
-            if (result == 1) {
+            if (result == BTLV_EFFECT_ROTATE_NONE) {
                 return TRUE;
             }
             isNpc = IsClientNPCTrainer(client->mainModule, args[0]);
-            if (result == 3) {
+            if (result == BTLV_EFFECT_ROTATE_THIRD) {
                 message = isNpc ? 0x26 : 0x27;
             } else {
                 message = isNpc ? 0x28 : 0x29;
