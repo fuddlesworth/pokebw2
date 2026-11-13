@@ -175,7 +175,7 @@ from:0x021ef5bc kind:thumb_call to:0x0219762c module:overlay(36)
 from:0x021ef5d6 kind:thumb_call_arm to:0x0208d688 module:main
 from:0x021ef5fe kind:thumb_call to:0x02197644 module:overlay(36)
 from:0x021ef61c kind:load to:0x021f0048 module:overlay(92)
-from:0x021ef650 kind:load to:0x02197615 module:overlays(29,36)
+from:0x021ef650 kind:load to:0x02197615 module:overlay(36)
 from:0x021ef668 kind:thumb_call to:0x0203a228 module:main
 from:0x021ef67e kind:thumb_call to:0x021ef1d4 module:overlay(92)
 from:0x021ef68a kind:thumb_call to:0x021ef71c module:overlay(92)
