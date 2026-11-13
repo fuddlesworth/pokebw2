@@ -7,6 +7,15 @@
 #include "dwc/vct_session.h"
 #include "struct_decls.h"
 
+// The results of the library's calls, 0 for none (libVCT's vct.h)
+#define VCT_ERROR_NONE 0
+#define VCT_ERROR_BAD_PARAM -1
+#define VCT_ERROR_BAD_MODE -2
+#define VCT_ERROR_BAD_REQUEST -3
+#define VCT_ERROR_SEND_FAIL -4
+#define VCT_ERROR_TRANSCEIVER_BUSY -5
+#define VCT_ERROR_EXHAUST_CLIENTS -6
+
 // Nintendo's voice chat library libVCT (the ROM carries the version string "[SDK+Nintendo:libVCT 1.4.1]"), which
 // sends the microphone's sound to the machines of a Wi-Fi match and plays what they send. It sits in overlay 29 beside
 // the game's own code for it. The ROM names none of its functions: the names are libVCT's own, as ntrtwl's

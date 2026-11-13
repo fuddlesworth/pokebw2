@@ -374,13 +374,13 @@ void vct_decode_adpcm(u8 *packet, s16 *dst, u32 size, VCTCodec bits) {
     state.prevSample = ((AdpcmState *)packet)->prevSample;
     state.prevIndex = ((AdpcmState *)packet)->prevIndex;
     switch (bits) {
-    case 2:
+    case VCT_CODEC_2BIT_ADPCM:
         vct_decode_adpcm_16(packet + 4, dst, size - 4, &state);
         break;
-    case 3:
+    case VCT_CODEC_3BIT_ADPCM:
         vct_decode_adpcm_24(packet + 4, dst, size - 4, &state);
         break;
-    case 4:
+    case VCT_CODEC_4BIT_ADPCM:
         vct_decode_adpcm_32(packet + 4, dst, size - 4, &state);
         break;
     }
@@ -394,13 +394,13 @@ void vct_encode_adpcm(u8 *packet, s16 *src, u32 count, AdpcmState *state, VCTCod
     header->prevIndex = state->prevIndex;
     header->pad = 0;
     switch (bits) {
-    case 2:
+    case VCT_CODEC_2BIT_ADPCM:
         vct_encode_adpcm_16(packet + 4, src, count, state);
         break;
-    case 3:
+    case VCT_CODEC_3BIT_ADPCM:
         vct_encode_adpcm_24(packet + 4, src, count, state);
         break;
-    case 4:
+    case VCT_CODEC_4BIT_ADPCM:
         vct_encode_adpcm_32(packet + 4, src, count, state);
         break;
     }
