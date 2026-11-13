@@ -479,7 +479,7 @@ static void MusicalEvent_AddLikedPropPoints(MusicalEventWork *work) {
             poke = work->stage->pokes[i];
             for (j = 0; j < 2; j++) {
                 slot = MusComm_GetPlayerEquip(work->comm, i, j);
-                if (slot != 0xff) {
+                if (slot != MUS_COMM_EQUIP_RESULT_NONE) {
                     poke->likedEquips[slot] = TRUE;
                 }
             }
@@ -627,7 +627,7 @@ static void MusicalEvent_RecordShow(MusicalEventWork *work) {
         items = MusItemData_Init(HEAPID_GAMEEVENT);
         poke = work->stage->pokes[work->playerPos];
         for (i = 0; i < 9; i++) {
-            if (poke->equips[i].itemId != 0xff) {
+            if (poke->equips[i].itemId != MUSICAL_ITEM_NONE) {
                 counts[(u8)MusItemData_GetKind(items, poke->equips[i].itemId)]++;
             }
         }
@@ -675,7 +675,7 @@ static void MusicalEvent_DrawAudienceGifts(MusicalEventWork *work) {
     total = 0;
     for (i = 0; i < 10; i++) {
         entry = MusicalSave_GetAudienceGift(work->musicalSave, i);
-        entry->topKind = 4;
+        entry->topKind = MUSICAL_PROP_KIND_NONE;
         entry->hasProp = 0;
         entry->prop = 0;
     }
@@ -736,30 +736,49 @@ static void MusicalEvent_DrawAudienceGifts(MusicalEventWork *work) {
     GFL_HeapFree(props);
 }
 
+// MusicalEvent_ReturnToField's steps: the field's BGM popped back, the field opened, a frame, the BGM's pops waited
+// for, and the end
+enum {
+    MUSICAL_RETURN_STEP_POP_BGM,
+    MUSICAL_RETURN_STEP_OPEN_FIELD,
+    MUSICAL_RETURN_STEP_WAIT,
+    MUSICAL_RETURN_STEP_WAIT_BGM,
+    MUSICAL_RETURN_STEP_END,
+};
+
 // Goes back to the field
 static BOOL MusicalEvent_ReturnToField(GameEvent *event, MusicalEventWork *work) {
     GameData_GetFieldSoundSystem(GSYS_GetGameData(work->gsys));
     switch (work->subState) {
-    case 0:
+    case MUSICAL_RETURN_STEP_POP_BGM:
         GameEvent_ChainNext(event, EventBGMPop_CreateEx(work->gsys, 0, 60));
         work->subState++;
         break;
-    case 1:
+    case MUSICAL_RETURN_STEP_OPEN_FIELD:
         GameEvent_ChainNext(event, EventFieldOpen_CreateHeadless(work->gsys));
         work->subState++;
         break;
-    case 2:
+    case MUSICAL_RETURN_STEP_WAIT:
         work->subState++;
         break;
-    case 3:
+    case MUSICAL_RETURN_STEP_WAIT_BGM:
         GameEvent_ChainNext(event, EventBGMFadeWait_Create(work->gsys));
         work->subState++;
         break;
-    case 4:
+    case MUSICAL_RETURN_STEP_END:
         return TRUE;
     }
     return FALSE;
 }
+
+// MusicalEvent_LeaveField's steps: a frame, the BGM pushed, the field closed, its sound waited for, and the end
+enum {
+    MUSICAL_LEAVE_STEP_START,
+    MUSICAL_LEAVE_STEP_PUSH_BGM,
+    MUSICAL_LEAVE_STEP_CLOSE_FIELD,
+    MUSICAL_LEAVE_STEP_WAIT_SOUND,
+    MUSICAL_LEAVE_STEP_END,
+};
 
 // Leaves the field
 static BOOL MusicalEvent_LeaveField(GameEvent *event, MusicalEventWork *work) {
@@ -768,22 +787,22 @@ static BOOL MusicalEvent_LeaveField(GameEvent *event, MusicalEventWork *work) {
     GameData_GetFieldSoundSystem(GSYS_GetGameData(work->gsys));
     field = GSYS_GetField(work->gsys);
     switch (work->subState) {
-    case 0:
+    case MUSICAL_LEAVE_STEP_START:
         work->subState++;
         break;
-    case 1:
+    case MUSICAL_LEAVE_STEP_PUSH_BGM:
         GameEvent_ChainNext(event, EventBGMPushWait_Create(work->gsys, 30));
         work->subState++;
         break;
-    case 2:
+    case MUSICAL_LEAVE_STEP_CLOSE_FIELD:
         GameEvent_ChainNext(event, CreateFieldCloseEvent(work->gsys, field));
         work->subState++;
         break;
-    case 3:
+    case MUSICAL_LEAVE_STEP_WAIT_SOUND:
         GameEvent_ChainNext(event, EventWaitFieldSound_Create(work->gsys));
         work->subState++;
         break;
-    case 4:
+    case MUSICAL_LEAVE_STEP_END:
         return TRUE;
     }
     return FALSE;
@@ -941,7 +960,7 @@ u8 MusicalEvent_GetBestPropKind(MusicalEventWork *work, u8 pos) {
         i++;
     }
     if (tie == TRUE) {
-        best = 4;
+        best = MUSICAL_PROP_KIND_NONE;
     }
     return best;
 }

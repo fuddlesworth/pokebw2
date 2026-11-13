@@ -11,6 +11,7 @@ typedef struct {
     MusicalStageParam *param;
     // Overlay 209's stage
     StaActing *stage;
+    // No code reads or writes it
     u32 unk8;
 } MusicalStageWork;
 

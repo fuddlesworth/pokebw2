@@ -192,14 +192,14 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         break;
     case MUSICAL_INFO_MOST_PROP_KIND:
         best = 0;
-        mostIndex = 4;
+        mostIndex = MUSICAL_PROP_KIND_NONE;
         for (i = 0; i < 4; i++) {
             value = MusicalSave_GetPropKindCount(save, i);
             if (value > best) {
                 best = value;
                 mostIndex = i;
             } else if (value == best) {
-                mostIndex = 4;
+                mostIndex = MUSICAL_PROP_KIND_NONE;
             }
         }
         *result = mostIndex;
@@ -227,7 +227,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         break;
     case MUSICAL_INFO_LEAST_PROP_KIND:
         best = 0xff;
-        fewestIndex = 4;
+        fewestIndex = MUSICAL_PROP_KIND_NONE;
         for (i = 0; i < 4; i++) {
             value = MusicalSave_GetPropKindCount(save, i);
             if (value <= best) {
@@ -239,7 +239,7 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         break;
     case MUSICAL_INFO_FIRST_MOST_PROP_KIND:
         best = 0;
-        firstIndex = 4;
+        firstIndex = MUSICAL_PROP_KIND_NONE;
         for (i = 0; i < 4; i++) {
             value = MusicalSave_GetPropKindCount(save, i);
             if (value > best) {
@@ -250,15 +250,15 @@ BOOL Scrcmd_Musical_MusicalGetInfo(VM *vm, FieldScriptEnv *env) {
         *result = firstIndex;
         break;
     case MUSICAL_INFO_SECOND_MOST_PROP_KIND:
-        topIndex = 4;
+        topIndex = MUSICAL_PROP_KIND_NONE;
         secondValue = 0;
         most = 0;
-        second = 4;
+        second = MUSICAL_PROP_KIND_NONE;
         for (j = 0; j < 4; j++) {
             value = MusicalSave_GetPropKindCount(save, j);
             if (value > most) {
                 if (secondValue == most) {
-                    second = 4;
+                    second = MUSICAL_PROP_KIND_NONE;
                 } else {
                     secondValue = most;
                     second = topIndex;
@@ -350,20 +350,22 @@ BOOL Scrcmd_Musical_MusicalGetAudienceGift(VM *vm, FieldScriptEnv *env) {
 
     switch (kind) {
     case MUSICAL_GIFT_HAS_GIFT:
+        // The number the gift gives for each top kind of the show, which no list names and the script only tests for
+        // zero
         switch (entry->topKind) {
-        case 0:
+        case MUSICAL_PROP_KIND_COOL:
             *result = 24;
             break;
-        case 1:
+        case MUSICAL_PROP_KIND_CUTE:
             *result = 15;
             break;
-        case 2:
+        case MUSICAL_PROP_KIND_ELEGANT:
             *result = 45;
             break;
-        case 3:
+        case MUSICAL_PROP_KIND_UNIQUE:
             *result = 12;
             break;
-        case 4:
+        case MUSICAL_PROP_KIND_NONE:
             *result = 0;
             break;
         }
