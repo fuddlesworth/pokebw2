@@ -6,6 +6,9 @@
 #include "gfl/net.h"
 #include "struct_decls.h"
 
+// A slot of a player's equips that has no result yet: the prop's use has not been reported, so nothing is scored
+#define MUS_COMM_EQUIP_RESULT_NONE 0xff
+
 // mus_comm_func.c, overlay 211, which the ROM names: the musical's communication between the players of a show
 
 void MusComm_Boot(HeapID heapId, GameSystem *gsys, GameCommSys *comm, u16 value);

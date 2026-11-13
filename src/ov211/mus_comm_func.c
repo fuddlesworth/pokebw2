@@ -94,8 +94,6 @@ enum {
 #define MUS_COMM_EQUIP_NONE 10
 #define MUS_COMM_EQUIP_QUEUE_MAX 8
 #define MUS_COMM_EQUIP_QUEUE_EMPTY 0xffff
-// A slot of a player's equips that has no result yet
-#define MUS_COMM_EQUIP_RESULT_NONE 0xff
 
 // The roles of MusCommWork's role
 #define MUS_COMM_ROLE_PARENT 1

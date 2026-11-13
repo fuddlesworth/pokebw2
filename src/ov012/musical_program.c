@@ -5,6 +5,11 @@
 #include "gfl/heap.h"
 #include "gfl/random.h"
 
+// The item of a prop slot with no prop: the programs' data writes it for an empty slot
+// (tools/data/musical_program_data.py's NO_PROP), and the prop table has 250 entries, so it is no prop. 0x1fe, which
+// the prop loop excludes too, is the other such value, and no program's data in the ROM holds it.
+#define MUSICAL_PROGRAM_PROP_NONE 0x1FF
+
 // A performer of the program, other than the players
 typedef struct {
     u16 species;
@@ -12,17 +17,20 @@ typedef struct {
     u8 trainerClass;
     // The message of the performer's name
     u8 name;
-    u8 unk4;
+    // The third byte of the performer's personality
+    u8 personalityByte2;
     u8 form;
     // When the performer uses a hand prop, MusicalPoke.handPropUse
     u16 handPropUse;
     // The photos the player must have taken before the performer appears
     u16 minShots;
-    u16 unkA;
+    // The two bytes that put the props at 12: the data has them as 0xaa, and no code reads them
+    u16 paddingA;
     struct {
         u16 itemId;
         u8 slot;
-        u8 unk3;
+        // The byte that completes the record's four: the data has it as 0xaa, and no code reads it
+        u8 padding3;
     } equips[8];
 } MusicalNpc;
 
@@ -36,6 +44,7 @@ typedef struct {
     u8 bonus;
     // The program's list of props to give away
     u8 propList;
+    // Bytes 7 to 11 of the data, which no code reads: all four programs have 0xaa, 0, 0, 1, 1
     u8 unk7[5];
     MusicalNpc npcs[6];
 } MusicalProgramData;
@@ -129,7 +138,7 @@ void MusicalProgram_CalcPoints(HeapID heapId, MusicalProgram *program, MusicalSt
         u8 slot;
 
         for (slot = 0; slot < 9; slot++) {
-            if (poke->equips[slot].itemId != 0xff) {
+            if (poke->equips[slot].itemId != MUSICAL_ITEM_NONE) {
                 u8 kind = MusItemData_GetKind(items, poke->equips[slot].itemId);
 
                 counts[i][kind]++;
@@ -199,10 +208,11 @@ void MusicalProgram_PutNpcOnStage(MusicalProgram *program, MusicalStageParam *st
     u8 i;
 
     MusicalStageParam_CreateNpcPoke(stage, pos, npc->species, npc->form,
-                                    npc->trainerClass + (npc->name << 8) + (npc->unk4 << 16) + (npc->form << 24),
+                                    npc->trainerClass + (npc->name << 8) + (npc->personalityByte2 << 16) +
+                                        (npc->form << 24),
                                     npc->handPropUse, heapId);
     for (i = 0; i < 8; i++) {
-        if (npc->equips[i].itemId != 0x1fe && npc->equips[i].itemId != 0x1ff) {
+        if (npc->equips[i].itemId != 0x1fe && npc->equips[i].itemId != MUSICAL_PROGRAM_PROP_NONE) {
             MusicalStageParam_SetEquip(stage, pos, npc->equips[i].slot, npc->equips[i].itemId, 0, i);
         }
     }

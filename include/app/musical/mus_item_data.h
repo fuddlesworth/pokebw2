@@ -45,6 +45,16 @@ enum {
 // The category that shows the props in the order they are kept in
 #define DUP_FITTING_CATEGORY_ORIGINAL 8
 
+// The kinds of prop, which the program gives points for and which each bring their own audience: the four words of
+// musical_info_words.txt that MusicalInfoWords_Text_Cool starts, and none, which a show with no points of a kind has
+enum {
+    MUSICAL_PROP_KIND_COOL,
+    MUSICAL_PROP_KIND_CUTE,
+    MUSICAL_PROP_KIND_ELEGANT,
+    MUSICAL_PROP_KIND_UNIQUE,
+    MUSICAL_PROP_KIND_NONE = 4,
+};
+
 // A prop's entry in the table, 12 bytes
 typedef struct MusicalItemData {
     // The BillboardActor size of its texture
