@@ -17,7 +17,7 @@ typedef struct GHIPostData {
         struct {
             char *value;
             int length;
-            GHTTPBool unk_10;
+            GHTTPBool invalidChars;
             int escapeCount;
         } string;
         struct {
@@ -463,7 +463,7 @@ static GHIPostingResult ghiPostStringStateDoPosting(GHIPostState *state, GHIConn
         return gsi_true;
     }
     post = connection->post;
-    if (!post->hasFiles && !post->hasSoap && item->data.string.unk_10 != 0) {
+    if (!post->hasFiles && !post->hasSoap && item->data.string.invalidChars != 0) {
         char *value = item->data.string.value;
         char escape[4] = "%00";
         GHIBuffer *buffer;

@@ -134,8 +134,8 @@ void ghttpStartup(void) {
     ghiReferenceCount++;
     if (ghiReferenceCount == 1) {
         ghiCreateLock();
-        ghiThrottleBufferSize = 125;
-        ghiThrottleTimeDelay = 250;
+        ghiThrottleBufferSize = GHI_DEFAULT_THROTTLE_BUFFER_SIZE;
+        ghiThrottleTimeDelay = GHI_DEFAULT_THROTTLE_TIME_DELAY;
         return;
     }
     ghiUnlock();
