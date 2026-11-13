@@ -72,7 +72,7 @@ struct BtlvCore {
     u8 subSeq;
     // Set for a mon that chooses after the first one this turn (BtlvScd's slot)
     u8 laterMon;
-    u8 unk1B6[6];
+    u8 unk1B6[6]; // Never read or written; six bytes before tcbManager
     TCBExManager *tcbManager;
     BtlvScu *scu;
     BtlvScd *scd;
@@ -89,7 +89,7 @@ typedef struct BtlvCaptureDemoWork {
 typedef struct BtlvPosEffectWork {
     u16 move;
     u32 type;
-    u16 unk08;
+    u16 unk08; // Cleared by both starters, never read
     u8 pos;
 } BtlvPosEffectWork;
 
@@ -292,11 +292,19 @@ void *BtlvCore_GetWork(BtlvCore *core, u32 size) {
     return core->work;
 }
 
+// The steps of the battle's start: set the effect up, send the mons out, then wait for the send-out and show the
+// recorder's screen in a recording
+enum {
+    BTLV_CORE_BATTLE_START_SEQ_SETUP,
+    BTLV_CORE_BATTLE_START_SEQ_START_ENCOUNT,
+    BTLV_CORE_BATTLE_START_SEQ_WAIT_ENCOUNT,
+};
+
 BOOL BtlvCore_CmdBattleStart(BtlvCore *core, s32 *seq, void *work) {
     void *data;
 
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_BATTLE_START_SEQ_SETUP:
         data = BtlvEffect_CreateSetup(core->mainModule, core->scu, core->heapId);
         BtlvEffect_Init(data, core->font2, core->heapId);
         GFL_HeapFree(data);
@@ -304,11 +312,11 @@ BOOL BtlvCore_CmdBattleStart(BtlvCore *core, s32 *seq, void *work) {
         BtlvScd_CreateInput(core->scd);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_BATTLE_START_SEQ_START_ENCOUNT:
         BtlvScu_StartEncount(core->scu, BattleClient_IsChapterSkipping(core->client));
         (*seq)++;
         break;
-    case 2:
+    case BTLV_CORE_BATTLE_START_SEQ_WAIT_ENCOUNT:
         if (BtlvScu_WaitEncount(core->scu)) {
             if (BattleClient_IsRecPlay(core->client)) {
                 core->recorderParam.chapter = 1;
@@ -326,6 +334,32 @@ BOOL BtlvCore_CmdBattleStart(BtlvCore *core, s32 *seq, void *work) {
     return FALSE;
 }
 
+// The steps of the capture demo: the encounter, Tackle and Growl with the message of each, the hint to use a ball,
+// the command menu and the bag, the throw and the caught message, then the key cursor it saved is put back
+enum {
+    BTLV_CORE_CAPTURE_DEMO_SEQ_SETUP,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_START_ENCOUNT,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_ENCOUNT_MSG,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_START_COMMAND_DEMO,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_WAIT_COMMAND,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_TACKLE,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_EFFECT_TACKLE,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_DAMAGE_TACKLE,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_GROWL,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_EFFECT_GROWL,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_RANK_DOWN,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_RANK_DOWN,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_BALL_HINT,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_START_COMMAND_DEMO_AGAIN,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_START_ITEM_SELECT,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_BIANCA_BALL,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_THROW_BALL,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_CAUGHT,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_PLAY_CAUGHT_BGM,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_WAIT_BGM_END,
+    BTLV_CORE_CAPTURE_DEMO_SEQ_RESTORE_KEY_CURSOR,
+};
+
 BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
     BtlvCaptureDemoWork *wk = work;
     void *data;
@@ -333,7 +367,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
     BattleMon *mon;
 
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_SETUP:
         data = BtlvEffect_CreateSetup(core->mainModule, core->scu, core->heapId);
         BtlvEffect_Init(data, core->font2, core->heapId);
         GFL_HeapFree(data);
@@ -346,11 +380,11 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         wk->wait = 0;
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_START_ENCOUNT:
         BtlvScu_StartEncount(core->scu, 0);
         (*seq)++;
         break;
-    case 2:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_ENCOUNT_MSG:
         if (BtlvScu_WaitEncount(core->scu)) {
             BtlvStringParam param;
 
@@ -362,7 +396,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 3:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_START_COMMAND_DEMO:
         core->mon = BtlvCore_GetMonAtViewPos(core, 0);
         core->monId = GetMonID(core->mon);
         core->action = 0;
@@ -371,26 +405,26 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
         BtlvScd_StartCommandDemo(core->scd, core->mon, core->laterMon, 0);
         (*seq)++;
         break;
-    case 4:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_WAIT_COMMAND:
         if (BtlvScd_GetCommandResult(core->scd)) {
             BtlvScd_StartMoveDemo(core->scd, core->mon, core->action);
             (*seq)++;
         }
         break;
-    case 5:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_TACKLE:
         if (BtlvScd_GetCommandResult(core->scd)) {
             BtlvCore_StartMsgMove(core, GetMonID(BtlvCore_GetMonAtViewPos(core, 0)), 0x21);
             BtlvScd_ResetScreen(core->scd);
             (*seq)++;
         }
         break;
-    case 6:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_EFFECT_TACKLE:
         if (BtlvCore_WaitMsg(core) && BtlvScd_IsIdle(core->scd)) {
             BtlvScu_StartMoveEffect(core->scu, 0, 1, 0x21, PML_MoveGetParam(0x21, MOVE_PARAM_TARGET), 0, 0);
             (*seq)++;
         }
         break;
-    case 7:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_DAMAGE_TACKLE:
         if (BtlvScu_WaitMoveEffect(core->scu)) {
             mon = BtlvCore_GetMonAtViewPos(core, 1);
             BtlvEffect_CalcGaugeHP(1, (s32)GetBattleMonStat(mon, BATTLEMON_MAX_HP) / 6);
@@ -399,25 +433,25 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 8:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_GROWL:
         if (BtlvScu_WaitDamage(core->scu)) {
             BtlvCore_StartMsgMove(core, GetMonID(BtlvCore_GetMonAtViewPos(core, 1)), 0x2d);
             (*seq)++;
         }
         break;
-    case 9:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_EFFECT_GROWL:
         if (BtlvCore_WaitMsg(core)) {
             BtlvScu_StartMoveEffect(core->scu, 1, 0, 0x2d, PML_MoveGetParam(0x2d, MOVE_PARAM_TARGET), 0, 0);
             (*seq)++;
         }
         break;
-    case 10:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_RANK_DOWN:
         if (BtlvScu_WaitMoveEffect(core->scu)) {
             BtlvCore_StartRankDownEffect(core, 0);
             (*seq)++;
         }
         break;
-    case 11:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_RANK_DOWN:
         if (BtlvCore_WaitRankEffect(core, 0)) {
             BtlvStringParam param;
 
@@ -431,7 +465,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 12:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_BALL_HINT:
         if (BtlvCore_WaitMsg(core)) {
             GFL_MsgDataLoadStrbuf(wk->msgData, BattleViewCore_Text_JustHaveUsePoke, core->strbuf);
             BtlvCore_StartMsgStr(core, core->strbuf, 0, NULL);
@@ -439,19 +473,19 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 13:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_START_COMMAND_DEMO_AGAIN:
         if (BtlvCore_WaitMsg(core) && --wk->wait == 0) {
             BtlvScd_StartCommandDemo(core->scd, core->mon, core->laterMon, core->action);
             (*seq)++;
         }
         break;
-    case 14:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_START_ITEM_SELECT:
         if (BtlvScd_GetCommandResult(core->scd)) {
             BattleClientCmd_StartItemSelect(core, BBAG_MODE_CAPTURE_DEMO, 0, 0, 1, 0);
             (*seq)++;
         }
         break;
-    case 15:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_BIANCA_BALL:
         if (BtlvCore_WaitItemSelect(core)) {
             GFL_MsgDataLoadStrbuf(wk->msgData, BattleViewCore_Text_BiancaUsedPokeBall, core->strbuf);
             BtlvCore_StartMsgStr(core, core->strbuf, 0, NULL);
@@ -459,13 +493,13 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 16:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_THROW_BALL:
         if (BtlvCore_WaitMsg(core) && !BtlvEffect_IsBusy()) {
             BtlvEffect_StartBallThrow(1, 4, 3, 1, 0);
             (*seq)++;
         }
         break;
-    case 17:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_MSG_CAUGHT:
         if (!BtlvEffect_IsBusy()) {
             BtlvStringParam param;
 
@@ -476,7 +510,7 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 18:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_PLAY_CAUGHT_BGM:
         if (BtlvCore_IsMsgJustDone(core)) {
             GFL_SndBGMPlay(0x518, 0xffff);
         }
@@ -484,14 +518,14 @@ BOOL BtlvCore_CmdCaptureDemo(BtlvCore *core, s32 *seq, void *work) {
             (*seq)++;
         }
         break;
-    case 19:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_WAIT_BGM_END:
         if (!GFL_SndBGMIsPlaying()) {
             BtlvEffect_Resume();
             GFL_MsgDataFree(wk->msgData);
             (*seq)++;
         }
         break;
-    case 20:
+    case BTLV_CORE_CAPTURE_DEMO_SEQ_RESTORE_KEY_CURSOR:
         *BtlvScd_GetKeyCursorFlag(core->scd) = wk->savedKeys;
         return TRUE;
     }
@@ -502,13 +536,19 @@ BattleMon *BtlvCore_GetMonAtViewPos(BtlvCore *core, u32 index) {
     return PokeCon_GetPosMonInner(core->pokeCon, ViewPosToBattlePos(core->mainModule, index));
 }
 
+// The steps of the command's selection: start it, then wait for its result
+enum {
+    BTLV_CORE_COMMAND_SELECT_SEQ_START,
+    BTLV_CORE_COMMAND_SELECT_SEQ_WAIT,
+};
+
 BOOL BtlvCore_ProcCommandSelect(BtlvCore *core, s32 *seq, void *work) {
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_COMMAND_SELECT_SEQ_START:
         BtlvScd_StartCommandSelect(core->scd, core->mon, core->laterMon, BattleClient_GetShooterEnergy(core->client),
                                    core->action);
         (*seq)++;
-    case 1:
+    case BTLV_CORE_COMMAND_SELECT_SEQ_WAIT:
         core->result = BtlvScd_GetCommandResult(core->scd);
         if (core->result != 0) {
             return TRUE;
@@ -518,13 +558,19 @@ BOOL BtlvCore_ProcCommandSelect(BtlvCore *core, s32 *seq, void *work) {
     return FALSE;
 }
 
+// The steps of the target's selection: start it, then wait for it to be done
+enum {
+    BTLV_CORE_TARGET_SELECT_SEQ_START,
+    BTLV_CORE_TARGET_SELECT_SEQ_WAIT,
+};
+
 BOOL BtlvCore_ProcTargetSelect(BtlvCore *core, s32 *seq, void *work) {
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_TARGET_SELECT_SEQ_START:
         BtlvScd_StartTargetSelect(core->scd, core->mon, core->action);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_TARGET_SELECT_SEQ_WAIT:
         if (BtlvScd_IsTargetSelectDone(core->scd)) {
             return TRUE;
         }
@@ -653,10 +699,11 @@ BOOL BtlvCore_IsScreenIdle(BtlvCore *core) {
     return BtlvScd_IsIdle(core->scd);
 }
 
-// Whether the party list plays its sound effects: in a communication battle, only in multi mode 2
+// Whether the party list plays its sound effects: in a communication battle, only in a net battle against two
+// trainers
 BOOL BtlvCore_CanPlayListSE(BtlvCore *core) {
     if (BtlSetup_GetBattleType(core->mainModule) == BTL_TYPE_COMM) {
-        if (GetMultiMode(core->mainModule) == 2) {
+        if (GetMultiMode(core->mainModule) == BTL_MULTI_MODE_NET_VS_AI) {
             return TRUE;
         }
         return FALSE;
@@ -712,6 +759,15 @@ void BtlvCore_SetupPokeListParam(BtlvCore *core, BPlistParam *param, u8 mode, u8
     param->done = FALSE;
 }
 
+// The steps of the party list: fade out, start the list, take its choice and start the fade in, then wait for it; the
+// default ends it
+enum {
+    BTLV_CORE_POKE_SELECT_SEQ_FADE_OUT,
+    BTLV_CORE_POKE_SELECT_SEQ_START_LIST,
+    BTLV_CORE_POKE_SELECT_SEQ_LIST_DONE,
+    BTLV_CORE_POKE_SELECT_SEQ_FADE_IN_DONE,
+};
+
 void BattleClientCmd_StartPokeList(BtlvCore *core, const BtlvPokeListCmd *cmd, s32 partyIndex, u16 move,
                                    BtlvPokeSelectParam *select) {
     u32 count;
@@ -733,7 +789,7 @@ void BattleClientCmd_StartPokeList(BtlvCore *core, const BtlvPokeListCmd *cmd, s
     }
     select->selecting = TRUE;
     core->selectParam = select;
-    core->subSeq = 0;
+    core->subSeq = BTLV_CORE_POKE_SELECT_SEQ_FADE_OUT;
 }
 
 void BattleClientCmd_QuitPokeSelect(BtlvCore *core) {
@@ -744,7 +800,7 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
     u32 i;
 
     switch (core->subSeq) {
-    case 0:
+    case BTLV_CORE_POKE_SELECT_SEQ_FADE_OUT:
         if (core->ov287.mode == BPLIST_MODE_MID_TURN || core->ov287.mode == BPLIST_MODE_FAINTED) {
             BtlvScd_StartFadeOut(core->scd, 0);
         } else {
@@ -753,7 +809,7 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
         GFL_OvlLoad(OVERLAY_ID(285));
         core->subSeq++;
         break;
-    case 1:
+    case BTLV_CORE_POKE_SELECT_SEQ_START_LIST:
         if (BtlvScd_IsFadeDone(core->scd)) {
             BtlvScd_OnFadeOutDone(core->scd);
             GFL_OvlLoad(OVERLAY_ID(287));
@@ -761,7 +817,7 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
             core->subSeq++;
         }
         break;
-    case 2:
+    case BTLV_CORE_POKE_SELECT_SEQ_LIST_DONE:
         if (core->ov287.done) {
             if (core->ov287.mode != BPLIST_MODE_MOVE_INFO && core->ov287.quit == 0) {
                 for (i = 0; i < 3; i++) {
@@ -778,14 +834,14 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
             core->subSeq++;
         }
         break;
-    case 3:
+    case BTLV_CORE_POKE_SELECT_SEQ_FADE_IN_DONE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             core->subSeq++;
         }
         break;
     default:
         GFL_OvlUnload(OVERLAY_ID(285));
-        core->subSeq = 0;
+        core->subSeq = BTLV_CORE_POKE_SELECT_SEQ_FADE_OUT;
         return TRUE;
     }
     return FALSE;
@@ -794,8 +850,21 @@ BOOL BattleClientCmd_WaitPokeSelect(BtlvCore *core) {
 void BattleClientCmd_StartMoveInfoView(BtlvCore *core, u8 partyIndex, u8 slot) {
     BtlvCore_SetupPokeListParam(core, &core->ov287, BPLIST_MODE_MOVE_INFO, partyIndex, 0);
     core->ov287.slot = slot;
-    core->subSeq = 0;
+    core->subSeq = BTLV_CORE_POKE_SELECT_SEQ_FADE_OUT;
 }
+
+// The steps of the bag: fade out, the bag, the item it returned and the party list when the item is used on a mon,
+// then the fade in; 0 is before the bag has been set up
+enum {
+    BTLV_CORE_ITEM_SELECT_SEQ_IDLE,
+    BTLV_CORE_ITEM_SELECT_SEQ_FADE_OUT,
+    BTLV_CORE_ITEM_SELECT_SEQ_START_BAG,
+    BTLV_CORE_ITEM_SELECT_SEQ_BAG_DONE,
+    BTLV_CORE_ITEM_SELECT_SEQ_ITEM_CHOSEN,
+    BTLV_CORE_ITEM_SELECT_SEQ_PARTY_LIST_DONE,
+    BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN,
+    BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN_DONE,
+};
 
 void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy, u8 shooterSpent, u8 canUseItems,
                                      u8 targetHiding) {
@@ -862,7 +931,7 @@ void BattleClientCmd_StartItemSelect(BtlvCore *core, u32 mode, u8 shooterEnergy,
         for (; i < 6; i++) {
             core->ov287.embargo[i] = 0;
         }
-        core->subSeq = 1;
+        core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_FADE_OUT;
     }
 }
 
@@ -873,56 +942,56 @@ void BtlvCore_QuitItemSelect(BtlvCore *core) {
 
 BOOL BtlvCore_WaitItemSelect(BtlvCore *core) {
     switch (core->subSeq) {
-    case 0:
+    case BTLV_CORE_ITEM_SELECT_SEQ_IDLE:
         break;
-    case 1:
+    case BTLV_CORE_ITEM_SELECT_SEQ_FADE_OUT:
         BtlvScd_StartFadeOut(core->scd, 1);
         GFL_OvlLoad(OVERLAY_ID(285));
-        core->subSeq = 2;
+        core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_START_BAG;
         break;
-    case 2:
+    case BTLV_CORE_ITEM_SELECT_SEQ_START_BAG:
         if (BtlvScd_IsFadeDone(core->scd)) {
             BtlvScd_OnFadeOutDone(core->scd);
             GFL_OvlLoad(OVERLAY_ID(286));
             BBagMain_Start(&core->ov286);
-            core->subSeq = 3;
+            core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_BAG_DONE;
         }
         break;
-    case 3:
+    case BTLV_CORE_ITEM_SELECT_SEQ_BAG_DONE:
         if (core->ov286.done) {
             GFL_OvlUnload(OVERLAY_ID(286));
             if (core->ov286.quit == 0) {
-                core->subSeq = 4;
+                core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_ITEM_CHOSEN;
             } else {
-                core->subSeq = 6;
+                core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN;
             }
         }
         break;
-    case 4:
+    case BTLV_CORE_ITEM_SELECT_SEQ_ITEM_CHOSEN:
         if (core->ov286.item != 0 && core->ov286.pocket != BBAG_POCKET_BALLS && !IsEscapeItem(core->ov286.item)) {
             core->ov287.item = core->ov286.item;
             GFL_OvlLoad(OVERLAY_ID(287));
             BPlistMain_Start(&core->ov287);
-            core->subSeq = 5;
+            core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_PARTY_LIST_DONE;
         } else {
-            core->subSeq = 6;
+            core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN;
         }
         break;
-    case 5:
+    case BTLV_CORE_ITEM_SELECT_SEQ_PARTY_LIST_DONE:
         if (core->ov287.done) {
             GFL_OvlUnload(OVERLAY_ID(287));
-            core->subSeq = 6;
+            core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN;
         }
         break;
-    case 6:
+    case BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN:
         BtlvScd_StartFadeIn(core->scd);
         BtlvScd_OnFadeInStart(core->scd);
-        core->subSeq = 7;
+        core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN_DONE;
         break;
-    case 7:
+    case BTLV_CORE_ITEM_SELECT_SEQ_FADE_IN_DONE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             GFL_OvlUnload(OVERLAY_ID(285));
-            core->subSeq = 0;
+            core->subSeq = BTLV_CORE_ITEM_SELECT_SEQ_IDLE;
             return TRUE;
         }
         break;
@@ -953,11 +1022,22 @@ u8 BtlvCore_GetSelectedMoveSlot(BtlvCore *core) {
 }
 
 void BtlvCore_SaveBagCursor(BtlvCore *core) {
-    if (core->ov286.item != 0 && core->ov287.partyIndex != 6 && core->ov286.mode != BBAG_MODE_SHOOTER) {
+    if (core->ov286.item != 0 && core->ov287.partyIndex != BPLIST_PARTY_CANCEL &&
+        core->ov286.mode != BBAG_MODE_SHOOTER) {
         BagCursor_SetBattlePositions(core->ov286.bagCursor, core->ov286.rows, core->ov286.pages);
         BagCursor_SetBattleLastItem(core->ov286.bagCursor, core->ov286.item, core->ov286.pocket);
     }
 }
+
+// The steps of the studio's scenario: fade out, run it, then fade in; 0 is before it has been set up
+enum {
+    BTLV_CORE_SCENARIO_SEQ_IDLE,
+    BTLV_CORE_SCENARIO_SEQ_FADE_OUT,
+    BTLV_CORE_SCENARIO_SEQ_START_SCENARIO,
+    BTLV_CORE_SCENARIO_SEQ_SCENARIO_DONE,
+    BTLV_CORE_SCENARIO_SEQ_FADE_IN,
+    BTLV_CORE_SCENARIO_SEQ_FADE_IN_DONE,
+};
 
 void BtlvCore_StartScenario(BtlvCore *core, u32 scene) {
     if (core->subSeq == 0) {
@@ -969,7 +1049,7 @@ void BtlvCore_StartScenario(BtlvCore *core, u32 scene) {
         core->ov288.party = GetClientPokeParty(core->mainModule, 1);
         core->ov288.scenario = GetStudioMovieId(core->mainModule);
         core->ov288.scene = scene;
-        core->subSeq = 1;
+        core->subSeq = BTLV_CORE_SCENARIO_SEQ_FADE_OUT;
     }
 }
 
@@ -979,36 +1059,36 @@ void BtlvCore_QuitScenario(BtlvCore *core) {
 
 BOOL BtlvCore_WaitScenario(BtlvCore *core) {
     switch (core->subSeq) {
-    case 0:
+    case BTLV_CORE_SCENARIO_SEQ_IDLE:
         break;
-    case 1:
+    case BTLV_CORE_SCENARIO_SEQ_FADE_OUT:
         BtlvScd_StartFadeOut(core->scd, 1);
         GFL_OvlLoad(OVERLAY_ID(285));
-        core->subSeq = 2;
+        core->subSeq = BTLV_CORE_SCENARIO_SEQ_START_SCENARIO;
         break;
-    case 2:
+    case BTLV_CORE_SCENARIO_SEQ_START_SCENARIO:
         if (BtlvScd_IsFadeDone(core->scd)) {
             BtlvScd_OnFadeOutDone(core->scd);
             GFL_OvlLoad(OVERLAY_ID(288));
             BScenarioMain_Start(&core->ov288);
-            core->subSeq = 3;
+            core->subSeq = BTLV_CORE_SCENARIO_SEQ_SCENARIO_DONE;
         }
         break;
-    case 3:
+    case BTLV_CORE_SCENARIO_SEQ_SCENARIO_DONE:
         if (core->ov288.done) {
             GFL_OvlUnload(OVERLAY_ID(288));
-            core->subSeq = 4;
+            core->subSeq = BTLV_CORE_SCENARIO_SEQ_FADE_IN;
         }
         break;
-    case 4:
+    case BTLV_CORE_SCENARIO_SEQ_FADE_IN:
         BtlvScd_StartFadeIn(core->scd);
         BtlvScd_OnFadeInStart(core->scd);
-        core->subSeq = 5;
+        core->subSeq = BTLV_CORE_SCENARIO_SEQ_FADE_IN_DONE;
         break;
-    case 5:
+    case BTLV_CORE_SCENARIO_SEQ_FADE_IN_DONE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             GFL_OvlUnload(OVERLAY_ID(285));
-            core->subSeq = 0;
+            core->subSeq = BTLV_CORE_SCENARIO_SEQ_IDLE;
             return TRUE;
         }
         break;
@@ -1016,13 +1096,23 @@ BOOL BtlvCore_WaitScenario(BtlvCore *core) {
     return FALSE;
 }
 
+// The steps of the choice: fade out, run it, then fade in; 0 is before it has been set up
+enum {
+    BTLV_CORE_CHOICE_SEQ_IDLE,
+    BTLV_CORE_CHOICE_SEQ_FADE_OUT,
+    BTLV_CORE_CHOICE_SEQ_START_CHOICE,
+    BTLV_CORE_CHOICE_SEQ_CHOICE_DONE,
+    BTLV_CORE_CHOICE_SEQ_FADE_IN,
+    BTLV_CORE_CHOICE_SEQ_FADE_IN_DONE,
+};
+
 void BtlvCore_StartChoice(BtlvCore *core) {
     if (core->subSeq == 0) {
         core->ov289.done = FALSE;
         core->ov289.heapId = core->heapId;
         core->ov289.font = core->font;
         core->ov289.skip = 0;
-        core->subSeq = 1;
+        core->subSeq = BTLV_CORE_CHOICE_SEQ_FADE_OUT;
     }
 }
 
@@ -1037,36 +1127,36 @@ void BtlvCore_SetChoiceStr(BtlvCore *core, u32 index, StrBuf *value) {
 
 BOOL BtlvCore_WaitChoice(BtlvCore *core) {
     switch (core->subSeq) {
-    case 0:
+    case BTLV_CORE_CHOICE_SEQ_IDLE:
         break;
-    case 1:
+    case BTLV_CORE_CHOICE_SEQ_FADE_OUT:
         BtlvScd_StartFadeOut(core->scd, 0);
         GFL_OvlLoad(OVERLAY_ID(285));
-        core->subSeq = 2;
+        core->subSeq = BTLV_CORE_CHOICE_SEQ_START_CHOICE;
         break;
-    case 2:
+    case BTLV_CORE_CHOICE_SEQ_START_CHOICE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             BtlvScd_OnFadeOutDone(core->scd);
             GFL_OvlLoad(OVERLAY_ID(289));
             BChoiceMain_Start(&core->ov289);
-            core->subSeq = 3;
+            core->subSeq = BTLV_CORE_CHOICE_SEQ_CHOICE_DONE;
         }
         break;
-    case 3:
+    case BTLV_CORE_CHOICE_SEQ_CHOICE_DONE:
         if (core->ov289.done) {
             GFL_OvlUnload(OVERLAY_ID(289));
-            core->subSeq = 4;
+            core->subSeq = BTLV_CORE_CHOICE_SEQ_FADE_IN;
         }
         break;
-    case 4:
+    case BTLV_CORE_CHOICE_SEQ_FADE_IN:
         BtlvScd_StartFadeIn(core->scd);
         BtlvScd_OnFadeInStart(core->scd);
-        core->subSeq = 5;
+        core->subSeq = BTLV_CORE_CHOICE_SEQ_FADE_IN_DONE;
         break;
-    case 5:
+    case BTLV_CORE_CHOICE_SEQ_FADE_IN_DONE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             GFL_OvlUnload(OVERLAY_ID(285));
-            core->subSeq = 0;
+            core->subSeq = BTLV_CORE_CHOICE_SEQ_IDLE;
             return TRUE;
         }
         break;
@@ -1107,18 +1197,24 @@ BOOL BtlvCore_WaitDamage(BtlvCore *core) {
     return BtlvCore_RunSubProc(core);
 }
 
+// The steps of the damage: start it, then wait for it
+enum {
+    BTLV_CORE_DAMAGE_SEQ_START,
+    BTLV_CORE_DAMAGE_SEQ_WAIT,
+};
+
 BOOL BtlvCore_ProcDamage(s32 *seq, void *arg) {
     BtlvCore *core = arg;
     BtlvPosEffectWork *work;
 
     work = BtlvCore_GetWork(core, sizeof(BtlvPosEffectWork));
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_DAMAGE_SEQ_START:
         BtlvScu_StartDamage(core->scu, work->pos, work->move, BattleClient_IsChapterSkipping(core->client));
         BtlvCore_PlayDamageSE(core, work->type);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_DAMAGE_SEQ_WAIT:
         if (BtlvScu_WaitDamage(core->scu)) {
             return TRUE;
         }
@@ -1144,18 +1240,24 @@ BOOL BtlvCore_WaitDamageEffect(BtlvCore *core) {
     return BtlvCore_RunSubProc(core);
 }
 
+// The steps of the damage's effect: start it, then wait for it
+enum {
+    BTLV_CORE_DAMAGE_EFFECT_SEQ_START,
+    BTLV_CORE_DAMAGE_EFFECT_SEQ_WAIT,
+};
+
 BOOL BtlvCore_ProcDamageEffect(s32 *seq, void *arg) {
     BtlvCore *core = arg;
     BtlvPosEffectWork *work;
 
     work = BtlvCore_GetWork(core, sizeof(BtlvPosEffectWork));
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_DAMAGE_EFFECT_SEQ_START:
         BtlvScu_StartDamageEffect(core->scu, work->pos, work->move);
         BtlvCore_PlayDamageSE(core, work->type);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_DAMAGE_EFFECT_SEQ_WAIT:
         if (BtlvScu_WaitDamageEffect(core->scu)) {
             return TRUE;
         }
@@ -1178,6 +1280,12 @@ void BtlvCore_StartMultiDamage(BtlvCore *core, u16 count, u32 type, const u8 *mo
     }
 }
 
+// The steps of the damage to several mons: start each one's, then wait for them and their message
+enum {
+    BTLV_CORE_MULTI_DAMAGE_SEQ_START,
+    BTLV_CORE_MULTI_DAMAGE_SEQ_WAIT,
+};
+
 BOOL BtlvCore_WaitMultiDamage(BtlvCore *core) {
     BtlvMultiEffectWork *work;
     BOOL flag;
@@ -1185,7 +1293,7 @@ BOOL BtlvCore_WaitMultiDamage(BtlvCore *core) {
 
     work = BtlvCore_GetWork(core, sizeof(BtlvMultiEffectWork));
     switch (work->seq) {
-    case 0:
+    case BTLV_CORE_MULTI_DAMAGE_SEQ_START:
         flag = BattleClient_IsChapterSkipping(core->client);
         for (i = 0; i < work->count; i++) {
             BtlvScu_StartDamage(core->scu, work->pos[i], work->move, flag);
@@ -1193,7 +1301,7 @@ BOOL BtlvCore_WaitMultiDamage(BtlvCore *core) {
         BtlvCore_PlayDamageSE(core, work->type);
         work->seq++;
         break;
-    case 1:
+    case BTLV_CORE_MULTI_DAMAGE_SEQ_WAIT:
         if (BtlvScu_WaitDamage(core->scu) && BtlvScu_WaitMsg(core->scu)) {
             return TRUE;
         }
@@ -1202,6 +1310,8 @@ BOOL BtlvCore_WaitMultiDamage(BtlvCore *core) {
     return FALSE;
 }
 
+// The damage's sound: the super-effective and not-very-effective ones, and the normal one for everything else. type
+// is BtlCalc_GetEffectivenessCategory's result, whose set has no name yet
 void BtlvCore_PlayDamageSE(BtlvCore *core, u32 type) {
     u32 se;
 
@@ -1305,18 +1415,24 @@ BOOL BtlvCore_WaitSwitchIn(BtlvCore *core) {
     return BtlvCore_RunSubProc(core);
 }
 
+// The steps of a mon's switch-in: start it, then wait for it
+enum {
+    BTLV_CORE_SWITCH_IN_SEQ_START,
+    BTLV_CORE_SWITCH_IN_SEQ_WAIT,
+};
+
 BOOL BtlvCore_ProcSwitchIn(s32 *seq, void *arg) {
     BtlvCore *core = arg;
     BtlvMonEffectWork *work;
 
     work = BtlvCore_GetWork(core, sizeof(BtlvMonEffectWork));
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_SWITCH_IN_SEQ_START:
         BtlvScu_StartMemberIn(core->scu, work->pos, work->clientId, work->slot,
                               BattleClient_IsChapterSkipping(core->client));
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_SWITCH_IN_SEQ_WAIT:
         if (BtlvScu_WaitMemberIn(core->scu)) {
             return TRUE;
         }
@@ -1538,24 +1654,31 @@ BOOL BtlvCore_WaitSwapPokemon(BtlvCore *core) {
     return BtlvCore_RunSubProc(core);
 }
 
+// The steps of the swap of two mons: the effect and its sound, hiding the two gauges, then showing them
+enum {
+    BTLV_CORE_SWAP_POKEMON_SEQ_START,
+    BTLV_CORE_SWAP_POKEMON_SEQ_HIDE_GAUGE,
+    BTLV_CORE_SWAP_POKEMON_SEQ_SHOW_GAUGE,
+};
+
 BOOL BtlvCore_ProcSwapPokemon(s32 *seq, void *arg) {
     BtlvCore *core = arg;
     BtlvSwapWork *work;
 
     work = BtlvCore_GetWork(core, sizeof(BtlvSwapWork));
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_SWAP_POKEMON_SEQ_START:
         BtlvEffect_SwapPokemon(work->viewPos1, work->viewPos2);
         BtlvCore_PlaySE(core, 0x57b);
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_SWAP_POKEMON_SEQ_HIDE_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvScu_HideGaugePair(core->scu, work->pos1, work->pos2);
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_CORE_SWAP_POKEMON_SEQ_SHOW_GAUGE:
         if (BtlvScu_ShowGaugePair(core->scu, work->pos1, work->pos2)) {
             return TRUE;
         }
@@ -1604,6 +1727,13 @@ BOOL BtlvCore_WaitRotation(BtlvCore *core) {
     return BtlvCore_RunSubProc(core);
 }
 
+// The steps of the rotation: the effect, hiding the three gauges, then showing them
+enum {
+    BTLV_CORE_ROTATION_SEQ_START,
+    BTLV_CORE_ROTATION_SEQ_HIDE_GAUGE,
+    BTLV_CORE_ROTATION_SEQ_SHOW_GAUGE,
+};
+
 BOOL BtlvCore_ProcRotation(s32 *seq, void *arg) {
     BtlvCore *core = arg;
     BtlvRotateWork *work;
@@ -1611,11 +1741,11 @@ BOOL BtlvCore_ProcRotation(s32 *seq, void *arg) {
 
     work = BtlvCore_GetWork(core, sizeof(BtlvRotateWork));
     switch (*seq) {
-    case 0:
+    case BTLV_CORE_ROTATION_SEQ_START:
         BtlvEffect_StartRotation(work->dir, work->viewPos[0] & 1, !BattleClient_IsChapterSkipping(core->client));
         (*seq)++;
         break;
-    case 1:
+    case BTLV_CORE_ROTATION_SEQ_HIDE_GAUGE:
         if (!BtlvEffect_IsBusy()) {
             BtlvScu_HideGauge(core->scu, work->pos[0]);
             BtlvScu_HideGauge(core->scu, work->pos[1]);
@@ -1623,7 +1753,7 @@ BOOL BtlvCore_ProcRotation(s32 *seq, void *arg) {
             (*seq)++;
         }
         break;
-    case 2:
+    case BTLV_CORE_ROTATION_SEQ_SHOW_GAUGE:
         done = TRUE;
         if (!BtlvScu_ShowGauge(core->scu, work->pos[0])) {
             done = FALSE;
@@ -1660,19 +1790,28 @@ BOOL BtlvCore_PollYesNo(BtlvCore *core, u32 *answer) {
     return BtlvScd_PollYesNo(core->scd, answer);
 }
 
+// The steps of the move to forget's selection: fade out, the party list, then wait for the fade in; the default takes
+// the slot and ends it
+enum {
+    BTLV_CORE_FORGET_MOVE_SEQ_FADE_OUT,
+    BTLV_CORE_FORGET_MOVE_SEQ_START_LIST,
+    BTLV_CORE_FORGET_MOVE_SEQ_LIST_DONE,
+    BTLV_CORE_FORGET_MOVE_SEQ_FADE_IN_DONE,
+};
+
 void BtlvCore_StartForgetMoveSelect(BtlvCore *core, u8 partyIndex, u16 move) {
     BtlvCore_SetupPokeListParam(core, &core->ov287, BPLIST_MODE_FORGET_MOVE, partyIndex, move);
-    core->subSeq = 0;
+    core->subSeq = BTLV_CORE_FORGET_MOVE_SEQ_FADE_OUT;
 }
 
 BOOL BtlvCore_WaitForgetMoveSelect(BtlvCore *core, u8 *slot) {
     switch (core->subSeq) {
-    case 0:
+    case BTLV_CORE_FORGET_MOVE_SEQ_FADE_OUT:
         BtlvScd_StartFadeOut(core->scd, 0);
         GFL_OvlLoad(OVERLAY_ID(285));
         core->subSeq++;
         break;
-    case 1:
+    case BTLV_CORE_FORGET_MOVE_SEQ_START_LIST:
         if (BtlvScd_IsFadeDone(core->scd)) {
             BtlvScd_OnFadeOutDone(core->scd);
             GFL_OvlLoad(OVERLAY_ID(287));
@@ -1680,7 +1819,7 @@ BOOL BtlvCore_WaitForgetMoveSelect(BtlvCore *core, u8 *slot) {
             core->subSeq++;
         }
         break;
-    case 2:
+    case BTLV_CORE_FORGET_MOVE_SEQ_LIST_DONE:
         if (core->ov287.done) {
             GFL_OvlUnload(OVERLAY_ID(287));
             BtlvScd_StartFadeIn(core->scd);
@@ -1688,7 +1827,7 @@ BOOL BtlvCore_WaitForgetMoveSelect(BtlvCore *core, u8 *slot) {
             core->subSeq++;
         }
         break;
-    case 3:
+    case BTLV_CORE_FORGET_MOVE_SEQ_FADE_IN_DONE:
         if (BtlvScd_IsFadeDone(core->scd)) {
             core->subSeq++;
         }
@@ -1696,7 +1835,7 @@ BOOL BtlvCore_WaitForgetMoveSelect(BtlvCore *core, u8 *slot) {
     default:
         *slot = core->ov287.slot;
         GFL_OvlUnload(OVERLAY_ID(285));
-        core->subSeq = 0;
+        core->subSeq = BTLV_CORE_FORGET_MOVE_SEQ_FADE_OUT;
         return TRUE;
     }
     return FALSE;

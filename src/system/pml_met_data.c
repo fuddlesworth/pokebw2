@@ -43,19 +43,19 @@ void PML_UtilSetupMetData(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo, u32 pla
     BOOL wasEncrypted = PML_PkmDecrypt(pkm);
 
     switch (kind) {
-    case 0:
+    case MET_DATA_CAUGHT:
         PML_PkmClearMetParams(pkm, FALSE);
         PML_PkmSetMetParams(pkm, placeName, TRUE);
         PML_PkmSetOT(pkm, playerInfo, heapId);
         PML_PkmSyncMetLevel(pkm);
         PML_PkmSyncOriginGame(pkm);
         break;
-    case 1:
+    case MET_DATA_IN_GAME_TRADE:
         PML_PkmSetMetParams(pkm, LOCATION_IN_GAME_TRADE, TRUE);
         PML_PkmSyncMetLevel(pkm);
         PML_PkmSyncOriginGame(pkm);
         break;
-    case 2:
+    case MET_DATA_HATCHED:
         if (PML_UtilCheckForeignOT(pkm, playerInfo) == TRUE) {
             PML_PkmSetMetParams(pkm, placeName, TRUE);
             PML_PkmSetOT(pkm, playerInfo, heapId);
@@ -66,15 +66,15 @@ void PML_UtilSetupMetData(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo, u32 pla
         }
         PML_PkmSyncOriginGame(pkm);
         break;
-    case 5:
+    case MET_DATA_EGG_RECEIVED:
         PML_PkmSetMetParams(pkm, placeName, FALSE);
         PML_PkmSetOT(pkm, playerInfo, heapId);
         PML_PkmSyncOriginGame(pkm);
         break;
-    case 6:
+    case MET_DATA_LINK_TRADE:
         PML_PkmSetMetParams(pkm, placeName, TRUE);
         break;
-    case 7:
+    case MET_DATA_N_POKEMON:
         PML_UtilSetNPokemonMetData(pkm, placeName, heapId);
         break;
     }
@@ -206,25 +206,25 @@ BOOL special_transfers(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo) {
     PML_PkmReEncrypt(pkm, wasEncrypted);
 
     switch (kind) {
-    case 0:
+    case SPECIAL_TRANSFER_CELEBI:
         if (species == SPECIES_CELEBI && metLocation == LOCATION_EVENT_CELEBI && fateful == TRUE && hatched == FALSE &&
             isRare == FALSE) {
             return TRUE;
         }
         break;
-    case 1:
+    case SPECIAL_TRANSFER_CELEBI_USED:
         if (species == SPECIES_CELEBI && metLocation == LOCATION_EVENT_CELEBI_USED && fateful == TRUE &&
             hatched == FALSE && isRare == FALSE) {
             return TRUE;
         }
         break;
-    case 2:
+    case SPECIAL_TRANSFER_BEASTS:
         if (species - SPECIES_RAIKOU <= SPECIES_SUICUNE - SPECIES_RAIKOU && metLocation == LOCATION_EVENT_BEASTS &&
             isRare == TRUE && fateful == TRUE && hatched == FALSE) {
             return TRUE;
         }
         break;
-    case 3:
+    case SPECIAL_TRANSFER_BEASTS_USED:
         if (species - SPECIES_RAIKOU <= SPECIES_SUICUNE - SPECIES_RAIKOU && metLocation == LOCATION_EVENT_BEASTS_USED &&
             isRare == TRUE && fateful == TRUE && hatched == FALSE) {
             return TRUE;
@@ -233,27 +233,27 @@ BOOL special_transfers(BoxPkm *pkm, u32 kind, PlayerInfo *playerInfo) {
 #ifdef BUGFIX
         break;
 #endif
-    case 4:
+    case SPECIAL_TRANSFER_KELDEO:
         if (species == SPECIES_KELDEO && fateful == TRUE && hatched == FALSE) {
             return TRUE;
         }
         break;
-    case 5:
+    case SPECIAL_TRANSFER_MELOETTA:
         if (species == SPECIES_MELOETTA && fateful == TRUE && hatched == FALSE) {
             return TRUE;
         }
         break;
-    case 6:
+    case SPECIAL_TRANSFER_GENESECT:
         if (species == SPECIES_GENESECT && fateful == TRUE && hatched == FALSE) {
             return TRUE;
         }
         break;
-    case 7:
+    case SPECIAL_TRANSFER_SHAYMIN:
         if (species == SPECIES_SHAYMIN && fateful == TRUE && hatched == FALSE) {
             return TRUE;
         }
         break;
-    case 8:
+    case SPECIAL_TRANSFER_LANDORUS:
         if (species == SPECIES_LANDORUS && form == 1) {
             if (foreignOT == TRUE && metLocation == LOCATION_DREAM_RADAR && hatched == FALSE) {
                 return TRUE;
@@ -276,10 +276,10 @@ static void PML_PkmSetSpecialTransferUsed(BoxPkm *pkm, u32 kind, PlayerInfo *pla
 
     if (special_transfers(pkm, kind, playerInfo) == TRUE) {
         switch (kind) {
-        case 0:
+        case SPECIAL_TRANSFER_CELEBI:
             PML_PkmSetParam(pkm, PKM_PARAM_MET_LOCATION, LOCATION_EVENT_CELEBI_USED);
             break;
-        case 2:
+        case SPECIAL_TRANSFER_BEASTS:
             PML_PkmSetParam(pkm, PKM_PARAM_MET_LOCATION, LOCATION_EVENT_BEASTS_USED);
             break;
         }

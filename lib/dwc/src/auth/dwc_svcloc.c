@@ -23,12 +23,12 @@ static DWCSvlIntWorkarea *sLocator;
 
 BOOL DWC_Svl_Init(DWCAuthAlloc alloc, DWCAuthFree free) {
     if (sLocator != NULL) {
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     sLocator = alloc(0, sizeof(DWCSvlIntWorkarea));
     if (sLocator == NULL) {
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     MI_CpuFill8(sLocator, 0, sizeof(DWCSvlIntWorkarea));
@@ -68,29 +68,29 @@ BOOL DWC_Svl_GetTokenAsync(char *service, DWCSvlResult *result) {
     }
     config.timeout = 20000;
     if (DWC_Http_Create(&locator->http, &config) != 0) {
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     if (!DWC_Auth_GetCalInfoFromNVRAM(&info) || !DWC_Auth_SetCalInfoToHttp(&sLocator->http, &info, 0)) {
         DWC_Http_Destroy(&sLocator->http);
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     if (DWC_Http_Add_PostBase64Item(&sLocator->http, "action", "SVCLOC", 6) != 0 ||
         DWC_Http_Add_PostBase64Item(&sLocator->http, "svc", service, 4) != 0) {
         DWC_Http_Destroy(&sLocator->http);
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     if (DWC_Http_FinishHeader(&sLocator->http) != 0) {
         DWC_Http_Destroy(&sLocator->http);
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     DWC_Http_StartThread(&sLocator->http, OS_GetThreadPriority(OSi_ThreadInfo.current) - 1);
     if (sLocator->http.thread.id == 0) {
         DWC_Http_Destroy(&sLocator->http);
-        DWCi_SetError(9, -24100);
+        DWCi_SetError(DWC_ERROR_FATAL, -24100);
         return FALSE;
     }
     return TRUE;
@@ -98,30 +98,30 @@ BOOL DWC_Svl_GetTokenAsync(char *service, DWCSvlResult *result) {
 
 DWCSvlState DWC_Svl_Process(void) {
     if (sLocator == NULL) {
-        return 0;
+        return DWC_SVL_STATE_DIRTY;
     }
     if (sLocator->http.thread.id == 0) {
-        return 1;
+        return DWC_SVL_STATE_IDLE;
     }
     if (OS_IsThreadTerminated(&sLocator->http.thread) == 1) {
         switch (sLocator->http.error) {
-        case 8:
+        case DWCHTTP_E_FINISH:
             if (DWCi_Svl_ParseHttp() == 0) {
                 DWC_Http_Destroy(&sLocator->http);
-                return 4;
+                return DWC_SVL_STATE_ERROR;
             }
             DWC_Http_Destroy(&sLocator->http);
-            return 3;
-        case 7:
+            return DWC_SVL_STATE_SUCCESS;
+        case DWCHTTP_E_ABORT:
             DWC_Http_Destroy(&sLocator->http);
-            return 5;
+            return DWC_SVL_STATE_CANCELED;
         default:
             DWC_Http_Destroy(&sLocator->http);
-            DWCi_SetError(0x10, -24101);
-            return 4;
+            DWCi_SetError(DWC_ERROR_SVL_HTTP, -24101);
+            return DWC_SVL_STATE_ERROR;
         }
     }
-    return 2;
+    return DWC_SVL_STATE_HTTP;
 }
 
 static BOOL DWCi_Svl_ParseHttp(void) {
@@ -133,7 +133,7 @@ static BOOL DWCi_Svl_ParseHttp(void) {
     int returnCode;
 
     if (DWC_Http_ParseResult(http, 0) == 0) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     date = DWC_Http_GetResult(http, "Date");
@@ -142,35 +142,35 @@ static BOOL DWCi_Svl_ParseHttp(void) {
     }
     httpResult = DWC_Http_GetResult(http, "httpresult");
     if (httpResult == NULL) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     status = atol(httpResult);
     if (errno == ERANGE) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     if (status != 200) {
-        DWCi_SetError(0xf, -25000 - status);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25000 - status);
         return FALSE;
     }
     if (DWC_Http_GetBase64DecodedResult(http, "returncd", text, 4) <= 0) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     returnCode = atol(text);
     if (errno == ERANGE) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     if (returnCode >= 100) {
-        DWCi_SetError(0xf, -24000 - returnCode);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -24000 - returnCode);
         return FALSE;
     }
     if (DWC_Http_GetBase64DecodedResult(http, "svchost", sLocator->result->svlhost, 0x40) < 0 ||
         DWC_Http_GetBase64DecodedResult(http, "servicetoken", sLocator->result->svltoken, 0x12c) < 0 ||
         DWC_Http_GetBase64DecodedResult(http, "statusdata", text, 1) < 0) {
-        DWCi_SetError(0xf, -25101);
+        DWCi_SetError(DWC_ERROR_SVL_ANY, -25101);
         return FALSE;
     }
     sLocator->result->status = text[0] == 'Y' ? 1 : 0;

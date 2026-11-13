@@ -19,6 +19,18 @@ struct SSPHeader {
     u32 aidBitmap;
 };
 
+// The info of a notify packet: whether the machine that sent it is free or busy (libVCT's VCTNotify, its ssp.c)
+typedef enum VCTNotify {
+    VCT_NOTIFY_FREE = 0,
+    VCT_NOTIFY_BUSY,
+} VCTNotify;
+
+// The transition tables' results besides a state: no change, a state error, and a contact that failed (libVCT's
+// ssp.c)
+#define VCT_NO_CHANGE -1
+#define VCT_STATE_ERROR -2
+#define VCT_CONTACT_FAIL -3
+
 // What a control packet gave the application: an event, and the session it is for
 struct VCTResult {
     int event;

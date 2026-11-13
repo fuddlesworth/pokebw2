@@ -122,7 +122,7 @@ typedef struct {
     u8 ball;
     u8 metLevel : 7;
     u8 otGender : 1;
-    u8 unk1D;
+    u8 groundTile;
     u8 unk1E;
     u8 pokestarFame;
 } PkmBlockD;

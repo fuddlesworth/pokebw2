@@ -87,11 +87,11 @@ DWCAuthError DWC_Auth_Create(DWCAuthParam *init, void *http) {
     DWCAuthAlloc alloc = init->alloc;
 
     if (sNas.work != NULL) {
-        return 2;
+        return DWCAUTH_E_MEMERR;
     }
     sNas.work = alloc(0, sizeof(DWCAuth));
     if (sNas.work == NULL) {
-        return 2;
+        return DWCAUTH_E_MEMERR;
     }
     MI_CpuFill8(sNas.work, 0, sizeof(DWCAuth));
     sNas.work->http = http;
@@ -157,7 +157,7 @@ DWCAuthError DWC_Auth_GetError(void) {
     int step;
 
     if (sNas.work == NULL) {
-        return 0x16;
+        return DWCAUTH_E_NOTINITIALIZED;
     }
     OS_LockMutex(&sNas.work->mutex);
     step = sNas.work->error;
@@ -189,17 +189,17 @@ static int DWCi_Auth_Start(int mode) {
     DWCauthhttpparam.alloc = sNas.work->param.alloc;
     DWCauthhttpparam.free = sNas.work->param.free;
     if (DWC_Http_Create(sNas.work->http, &DWCauthhttpparam) != 0) {
-        return 4;
+        return DWCAUTH_E_HTTPINITERR;
     }
     if (mode == 1) {
         DWCi_BM_GetWiFiInfo(&sNas.userInfo);
     }
     sNas.work->error = DWCi_Auth_Prepare_FirstPost(sNas.work->http, sNas.work->param.gsbrcd, sNas.work->param.ingamesn);
     if (sNas.work->error != 0) {
-        return 4;
+        return DWCAUTH_E_HTTPINITERR;
     }
     if (DWC_Http_FinishHeader(sNas.work->http) != 0) {
-        return 4;
+        return DWCAUTH_E_HTTPINITERR;
     }
     DWC_Http_StartThread(sNas.work->http, OS_GetThreadPriority(OSi_ThreadInfo.current) - 1);
     return 0;
@@ -215,19 +215,19 @@ static void DWCi_Auth_Thread(void *arg) {
         if (sNas.work->http->thread.id != 0 && !OS_IsThreadTerminated(&sNas.work->http->thread)) {
             OS_JoinThread(&sNas.work->http->thread);
         }
-        if (sNas.work->http->error != 8) {
+        if (sNas.work->http->error != DWCHTTP_E_FINISH) {
             sNas.work->result.returncode = 20100;
-            if (sNas.work->http->error == 7) {
-                DWCi_Auth_SetError(0x14);
+            if (sNas.work->http->error == DWCHTTP_E_ABORT) {
+                DWCi_Auth_SetError(DWCAUTH_E_ABORT);
                 return;
             }
             if (retries > 2) {
-                if (sNas.work->http->error == 2) {
-                    DWCi_Auth_SetError(9);
-                } else if (sNas.work->http->error == 3) {
-                    DWCi_Auth_SetError(0xb);
+                if (sNas.work->http->error == DWCHTTP_E_DNSERR) {
+                    DWCi_Auth_SetError(DWCAUTH_E_DNSERR);
+                } else if (sNas.work->http->error == DWCHTTP_E_CONERR) {
+                    DWCi_Auth_SetError(DWCAUTH_E_HTTPCONERR);
                 } else {
-                    DWCi_Auth_SetError(0xd);
+                    DWCi_Auth_SetError(DWCAUTH_E_HTTPERR);
                 }
                 return;
             }
@@ -236,18 +236,18 @@ static void DWCi_Auth_Thread(void *arg) {
         } else {
             result = DWCi_Auth_ParseHttp();
             switch (result) {
-            case 0x15:
-                DWCi_Auth_SetError(0x15);
+            case DWCAUTH_E_FINISH:
+                DWCi_Auth_SetError(DWCAUTH_E_FINISH);
                 return;
-            case 0x10:
+            case DWCAUTH_E_NASALREADYEXIST:
                 if (retries > 2) {
-                    DWCi_Auth_SetError(0x10);
+                    DWCi_Auth_SetError(DWCAUTH_E_NASALREADYEXIST);
                     return;
                 }
                 retries++;
                 mode = 0;
                 break;
-            case 0x11:
+            case DWCAUTH_E_NASACCTEXPIRE:
                 DWCi_Auth_SetError(result);
                 return;
             default:
@@ -266,7 +266,7 @@ static void DWCi_Auth_Thread(void *arg) {
             if (sNas.work->abort == 1) {
                 sNas.work->result.returncode = 20100;
                 OS_UnlockMutex(&sNas.work->mutex);
-                DWCi_Auth_SetError(0x14);
+                DWCi_Auth_SetError(DWCAUTH_E_ABORT);
                 return;
             }
             OS_UnlockMutex(&sNas.work->mutex);
@@ -291,44 +291,44 @@ static int DWCi_Auth_ParseHttp(void) {
 
     if (DWC_Http_ParseResult(sNas.work->http, 0) != 1) {
         sNas.work->result.returncode = 20100;
-        return 0xe;
+        return DWCAUTH_E_NASPARSEERR;
     }
     if (DWCi_Auth_FillResult() != 0) {
-        return 0xe;
+        return DWCAUTH_E_NASPARSEERR;
     }
     if (sNas.work->result.returncode < 20100) {
         if (sNas.work->result.returncode == 20002) {
             buffer = alloc(0, 0x101f);
             if (buffer == NULL) {
                 sNas.work->result.returncode = 20100;
-                return 2;
+                return DWCAUTH_E_MEMERR;
             }
             if (DWCi_AUTH_UpDateWiFiID(&sNas.userInfo, (void *)(((u32)buffer + 0x1f) & ~0x1f)) != 1) {
                 free(0, buffer, 0);
                 sNas.work->result.returncode = 20100;
-                return 0xf;
+                return DWCAUTH_E_BMERR;
             }
             free(0, buffer, 0);
         }
-        return 0x15;
+        return DWCAUTH_E_FINISH;
     }
     switch (sNas.work->result.returncode) {
     case 20104:
         DWCi_AUTH_RemakeWiFiID(&sNas.userInfo);
         sNas.work->result.returncode = 20104;
-        return 0x10;
+        return DWCAUTH_E_NASALREADYEXIST;
     case 20108:
         buffer = alloc(0, 0x1000);
         if (buffer == NULL) {
             sNas.work->result.returncode = 20108;
-            return 0x11;
+            return DWCAUTH_E_NASACCTEXPIRE;
         }
         DWCi_AUTH_MakeWiFiID((void *)(((u32)buffer + 0x1f) & ~0x1f));
         free(0, buffer, 0);
         sNas.work->result.returncode = 20108;
-        return 0x11;
+        return DWCAUTH_E_NASACCTEXPIRE;
     }
-    return 0x12;
+    return DWCAUTH_E_NASERR;
 }
 
 static int DWCi_Auth_FillResult(void) {
@@ -345,20 +345,20 @@ static int DWCi_Auth_FillResult(void) {
     httpResult = atol(DWC_Http_GetResult(sNas.work->http, "httpresult"));
     if (errno == ERANGE) {
         sNas.work->result.returncode = 20101;
-        return 0xc;
+        return DWCAUTH_E_HTTPPARSEERR;
     }
     if (httpResult != 200) {
         sNas.work->result.returncode = httpResult + 23000;
-        return 0x12;
+        return DWCAUTH_E_NASERR;
     }
     if (DWC_Http_GetBase64DecodedResult(sNas.work->http, "returncd", sNas.work->result.retcode, 4) <= 0) {
         sNas.work->result.returncode = 20101;
-        return 0xe;
+        return DWCAUTH_E_NASPARSEERR;
     }
     returnCode = strtol(sNas.work->result.retcode, &end, 10);
     if (end != sNas.work->result.retcode + strlen(sNas.work->result.retcode)) {
         sNas.work->result.returncode = 20101;
-        return 0xc;
+        return DWCAUTH_E_HTTPPARSEERR;
     }
     sNas.work->result.returncode = returnCode + 20000;
     if (returnCode < 100) {
@@ -387,30 +387,30 @@ static int DWCi_Auth_Prepare_FirstPost(DWCHttp *http, const char *gameCode, cons
 
     if (sNas.userInfo.attestedUserId == 0) {
         if (DWC_Http_Add_PostBase64Item(http, "action", "acctcreate", strlen("acctcreate")) != 0) {
-            return 8;
+            return DWCAUTH_E_CANTADDPOSTITEM;
         }
     } else {
         if (DWC_Http_Add_PostBase64Item(http, "action", "login", strlen("login")) != 0) {
-            return 8;
+            return DWCAUTH_E_CANTADDPOSTITEM;
         }
         if (DWC_Http_Add_PostBase64Item(http, "gsbrcd", gameCode, strlen(gameCode)) != 0) {
-            return 8;
+            return DWCAUTH_E_CANTADDPOSTITEM;
         }
     }
     if (!DWC_Auth_GetCalInfoFromWiFiInfo(&info, &sNas.userInfo)) {
-        return 5;
+        return DWCAUTH_E_CALERR;
     }
     if (!DWC_Auth_SetCalInfoToHttp(http, &info, DWCishotspot)) {
-        return 8;
+        return DWCAUTH_E_CANTADDPOSTITEM;
     }
     if (sNas.testMode == 1) {
         if (DWC_Http_Add_PostBase64Item(http, "iswfc", "Y", strlen("Y")) != 0) {
-            return 8;
+            return DWCAUTH_E_CANTADDPOSTITEM;
         }
     }
     if (wcslen(name) != 0) {
         if (DWC_Http_Add_PostBase64Item(http, "ingamesn", (const char *)name, wcslen(name) * 2) != 0) {
-            return 8;
+            return DWCAUTH_E_CANTADDPOSTITEM;
         }
     }
     return 0;
@@ -469,7 +469,7 @@ void DWCi_Auth_ProcessAuthentication(void) {
     int step = DWC_Auth_GetError();
     int code;
 
-    if (step == 0x15) {
+    if (step == DWCAUTH_E_FINISH) {
         DWC_Auth_GetResult(&done);
         if (done.returncode == 20002) {
             DWC_Auth_Destroy();
@@ -600,8 +600,8 @@ static BOOL DWC_Auth_GetCalInfoFromWiFiInfo(DWCCalInfo *info, const DWCWiFiInfo 
         OS_SPrintf(&info->bssid[i * 2], "%02x", apMac[i]);
     }
     level = DWC_AC_GetApType();
-    if (level == 0xff || level > 99) {
-        level = 99;
+    if (level == DWC_AC_AP_TYPE_FALSE || level > DWC_AC_AP_TYPE_UNKNOWN) {
+        level = DWC_AC_AP_TYPE_UNKNOWN;
     }
     OS_SNPrintf(info->apinfo, 0xe, "%02d:0000000-00", level);
     ssid = WCM_GetApEssid(&channel);
