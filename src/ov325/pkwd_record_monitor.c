@@ -6,6 +6,7 @@
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "constants/species.h"
 #include "constants/text_banks.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -57,6 +58,7 @@
 #define LIST_ROW_HEIGHT 24
 
 #define MOVIE_NONE (-1)
+#define ENTRY_MOVIE_NONE 0xff
 #define MODE_END (-1)
 
 #define SCORE_MAX 9999
@@ -157,6 +159,63 @@ enum {
     MOVIE_MESSAGE_COUNT,
 };
 
+// The entries of the label-message table, distinct from the windows they are printed in
+enum {
+    LABEL_HEADING = 0,
+    LABEL_GROSS = 1,
+    LABEL_CAST = 2,
+};
+
+// The list input's update: unchanged, new details, or a move still in progress
+enum {
+    REDRAW_NONE = 0,
+    REDRAW_DETAILS = 1,
+    REDRAW_MOVE = 2,
+};
+
+// The rectangle of the return button, distinct from the actor's button index
+enum {
+    TOUCH_RETURN = 0,
+};
+
+// The coordinate axis accepted by ClActor_SetFlip, distinct from ACTOR_FLIP_* flag bits
+enum {
+    FLIP_AXIS_HORIZONTAL = 0,
+    FLIP_AXIS_VERTICAL = 1,
+};
+
+// The shared touch-bar animations selected for each button and its input state
+enum {
+    BUTTON_ANIM_RETURN = 1,
+    BUTTON_ANIM_UP = 4,
+    BUTTON_ANIM_DOWN = 5,
+    BUTTON_ANIM_RETURN_PRESS = 9,
+    BUTTON_ANIM_UP_PRESS = 12,
+    BUTTON_ANIM_DOWN_PRESS = 13,
+    BUTTON_ANIM_UP_DISABLED = 18,
+    BUTTON_ANIM_DOWN_DISABLED = 19,
+};
+
+// The record-list bar and marks in the Pokestar animation resource
+enum {
+    LIST_ANIM_BAR = 0,
+    LIST_ANIM_NEW = 1,
+    LIST_ANIM_NEW_RECORD = 3,
+};
+
+// The details' marks, covers and ending stars in the Pokestar animation resource
+enum {
+    MARK_ANIM_BEST_FIRST = 4,
+    MARK_ANIM_BEST_SECOND = 5,
+    MARK_ANIM_CAST = 6,
+    MARK_ANIM_COVER_FIRST = 7,
+    MARK_ANIM_COVER_SECOND = 8,
+    MARK_ANIM_COVER_THIRD = 9,
+    MARK_ANIM_HIT_ENDING = 10,
+    MARK_ANIM_FLOP_ENDING = 11,
+    MARK_ANIM_STRANGE_ENDING = 12,
+};
+
 // The states of the screen
 enum {
     STATE_START = 0,
@@ -210,7 +269,10 @@ enum {
 #define FLAG_DETAILS_OPEN 0x20000
 #define FLAG_SHOW_DETAILS 0x40000
 
-// What the list holds of a movie, after a bit for each of its stars
+// What the list holds of a movie: a bit for each ending star, followed by its record flags
+#define ENTRY_HIT_ENDING 0x1
+#define ENTRY_FLOP_ENDING 0x2
+#define ENTRY_STRANGE_ENDING 0x4
 #define ENTRY_NEW 0x8
 #define ENTRY_NEW_RECORD 0x10
 #define ENTRY_SEEN 0x20
@@ -467,18 +529,18 @@ static const PkwdRecordMonitorBGPos sPkwdRecordMonitorBGPos[] = {
 static const PkwdRecordMonitorLoad sPkwdRecordMonitorChars[] = {
     { 1, 22, 0, 0 },
     { 7, 24, 0, 0 },
-    { 0xff, 0, 0, 0 },
+    { LOAD_END, 0, 0, 0 },
 };
 
 static const PkwdRecordMonitorLoad sPkwdRecordMonitorPalettes[] = {
     { 0, 3, 0, 0 },
     { 4, 5, 6, 2 },
-    { 0xff, 0, 0, 0 },
+    { LOAD_END, 0, 0, 0 },
 };
 
 static const PkwdRecordMonitorWindowSetup sPkwdRecordMonitorSubWindows[] = {
     { 4, 2, 1, 28, 4, 10 },
-    { 0xff, 0, 0, 0, 0, 0 },
+    { WINDOW_END, 0, 0, 0, 0, 0 },
 };
 
 // The windows of the upper screen's pages
@@ -493,10 +555,10 @@ static const FrameListCallbacks sPkwdRecordMonitorListCallbacks = {
 };
 
 static const PkwdRecordMonitorLabel sPkwdRecordMonitorLabels[] = {
-    { 0, WINDOW_HEADING },
-    { 1, WINDOW_GROSS_LABEL },
-    { 2, WINDOW_CAST_LABEL },
-    { 0xffff, 0 },
+    { LABEL_HEADING, WINDOW_HEADING },
+    { LABEL_GROSS, WINDOW_GROSS_LABEL },
+    { LABEL_CAST, WINDOW_CAST_LABEL },
+    { LABEL_END, 0 },
 };
 
 static const PkwdRecordMonitorLabel *sPkwdRecordMonitorLabelPages[] = { sPkwdRecordMonitorLabels };
@@ -508,13 +570,13 @@ static PkwdRecordMonitorModeFunc sPkwdRecordMonitorModes[MODE_COUNT] = {
 };
 
 static const PkwdRecordMonitorLoad sPkwdRecordMonitorScreens[] = {
-    { 1, 33, 0, 0 }, { 2, 34, 0, 0 }, { 3, 35, 0, 0 }, { 7, 37, 0, 0 }, { 0xff, 0, 0, 0 },
+    { 1, 33, 0, 0 }, { 2, 34, 0, 0 }, { 3, 35, 0, 0 }, { 7, 37, 0, 0 }, { LOAD_END, 0, 0, 0 },
 };
 
 static const PkwdRecordMonitorActorSetup sPkwdRecordMonitorButtonActors[] = {
-    { 1, 48, 1, 1, 0, ACTOR_ANIMATE, 3, RES_COMMON_CHARS },
-    { 4, 48, 1, 1, 0, ACTOR_ANIMATE, 0, RES_COMMON_CHARS },
-    { 5, 48, 1, 1, 0, ACTOR_ANIMATE, 1, RES_COMMON_CHARS },
+    { BUTTON_ANIM_RETURN, 48, 1, 1, 0, ACTOR_ANIMATE, 3, RES_COMMON_CHARS },
+    { BUTTON_ANIM_UP, 48, 1, 1, 0, ACTOR_ANIMATE, 0, RES_COMMON_CHARS },
+    { BUTTON_ANIM_DOWN, 48, 1, 1, 0, ACTOR_ANIMATE, 1, RES_COMMON_CHARS },
     { ACTOR_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -532,7 +594,7 @@ static const u8 sPkwdRecordMonitorSeries[MOVIE_COUNT] = {
 
 static const PkwdRecordMonitorWindowSetup sPkwdRecordMonitorWindows[] = {
     { 0, 2, 1, 27, 2, 1 },  { 0, 2, 11, 28, 2, 2 },  { 0, 2, 17, 18, 2, 3 },   { 0, 3, 4, 27, 2, 10 },
-    { 0, 3, 6, 27, 4, 10 }, { 0, 9, 14, 21, 2, 10 }, { 0, 20, 17, 10, 2, 10 }, { 0xff, 0, 0, 0, 0, 0 },
+    { 0, 3, 6, 27, 4, 10 }, { 0, 9, 14, 21, 2, 10 }, { 0, 20, 17, 10, 2, 10 }, { WINDOW_END, 0, 0, 0, 0, 0 },
 };
 
 static const PkwdRecordMonitorActorSetup sPkwdRecordMonitorIconActors[] = {
@@ -585,34 +647,34 @@ static const FrameListSetup sPkwdRecordMonitorListSetup = {
 };
 
 static const PkwdRecordMonitorActorSetup sPkwdRecordMonitorListActors[] = {
-    { 0, 48, 1, 0, 0, ACTOR_ANIMATE, 16, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 17, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 18, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 19, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 20, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 21, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 22, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 23, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 24, RES_MARK_CHARS },
-    { 1, 48, 2, 0, 0, ACTOR_ANIMATE, 25, RES_MARK_CHARS },
+    { LIST_ANIM_BAR, 48, 1, 0, 0, ACTOR_ANIMATE, 16, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 17, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 18, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 19, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 20, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 21, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 22, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 23, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 24, RES_MARK_CHARS },
+    { LIST_ANIM_NEW, 48, 2, 0, 0, ACTOR_ANIMATE, 25, RES_MARK_CHARS },
     { ACTOR_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
 static const PkwdRecordMonitorActorSetup sPkwdRecordMonitorMarkActors[] = {
-    { 4, 48, 1, 0, 0, ACTOR_ANIMATE, 26, RES_MARK_CHARS },
-    { 5, 48, 0, 0, 0, ACTOR_ANIMATE, 26, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 10, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 11, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 12, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 13, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 14, RES_MARK_CHARS },
-    { 6, 48, 0, 0, 0, ACTOR_ANIMATE, 15, RES_MARK_CHARS },
-    { 7, 48, 2, 0, 0, 0, 27, RES_MARK_CHARS },
-    { 8, 48, 2, 0, 0, 0, 28, RES_MARK_CHARS },
-    { 9, 48, 2, 0, 0, 0, 29, RES_MARK_CHARS },
-    { 10, 48, 0, 0, 0, ACTOR_ANIMATE, 30, RES_MARK_CHARS },
-    { 11, 48, 0, 0, 0, ACTOR_ANIMATE, 31, RES_MARK_CHARS },
-    { 12, 48, 0, 0, 0, ACTOR_ANIMATE, 32, RES_MARK_CHARS },
+    { MARK_ANIM_BEST_FIRST, 48, 1, 0, 0, ACTOR_ANIMATE, 26, RES_MARK_CHARS },
+    { MARK_ANIM_BEST_SECOND, 48, 0, 0, 0, ACTOR_ANIMATE, 26, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 10, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 11, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 12, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 13, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 14, RES_MARK_CHARS },
+    { MARK_ANIM_CAST, 48, 0, 0, 0, ACTOR_ANIMATE, 15, RES_MARK_CHARS },
+    { MARK_ANIM_COVER_FIRST, 48, 2, 0, 0, 0, 27, RES_MARK_CHARS },
+    { MARK_ANIM_COVER_SECOND, 48, 2, 0, 0, 0, 28, RES_MARK_CHARS },
+    { MARK_ANIM_COVER_THIRD, 48, 2, 0, 0, 0, 29, RES_MARK_CHARS },
+    { MARK_ANIM_HIT_ENDING, 48, 0, 0, 0, ACTOR_ANIMATE, 30, RES_MARK_CHARS },
+    { MARK_ANIM_FLOP_ENDING, 48, 0, 0, 0, ACTOR_ANIMATE, 31, RES_MARK_CHARS },
+    { MARK_ANIM_STRANGE_ENDING, 48, 0, 0, 0, ACTOR_ANIMATE, 32, RES_MARK_CHARS },
     { ACTOR_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -625,7 +687,7 @@ static BOOL PkwdRecordMonitor_Init(GameProc *proc, u32 *state, void *param, void
     MI_CpuFill8(wk, 0, sizeof(PkwdRecordMonitorWork));
     wk->heapId = HEAPID_PKWD_RECORD_MONITOR;
     wk->param = param;
-    wk->graphic = PkwdRecordMonitorGraphic_Create(1, wk->heapId);
+    wk->graphic = PkwdRecordMonitorGraphic_Create(GX_DISP_SELECT_MAIN_SUB, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
     wk->wordSet = GFL_WordSetSystemCreateDefault(wk->heapId);
@@ -704,7 +766,7 @@ static void PkwdRecordMonitor_Setup(PkwdRecordMonitorWork *wk) {
     wk->list = NULL;
     wk->keyMode = FALSE;
     for (i = 0; i < POKEWOOD_MOVIE_COUNT; i++) {
-        wk->entries[i].movie = 0xff;
+        wk->entries[i].movie = ENTRY_MOVIE_NONE;
         wk->entries[i].series = 0;
         wk->entries[i].flags = 0;
         wk->best[i] = FALSE;
@@ -882,8 +944,8 @@ static void PkwdRecordMonitor_LoadIconRes(PkwdRecordMonitorWork *wk) {
     wk->res.of.iconCell =
         ClActSys_LoadCellAnims(arc, PokeIcon_GetCellFile_Sub(), getOBJTileMapping_SubEng(), wk->heapId);
     for (i = 0; i < CAST_COUNT; i++) {
-        wk->res.of.iconChars[i] =
-            ClActSys_LoadChars(arc, PokeParty_GetIconIndex(0, 0, 0, FALSE), FALSE, CLACT_VRAM_MAIN, wk->heapId);
+        wk->res.of.iconChars[i] = ClActSys_LoadChars(arc, PokeParty_GetIconIndex(SPECIES_NONE, 0, 0, FALSE), FALSE,
+                                                     CLACT_VRAM_MAIN, wk->heapId);
     }
     GFL_ArcToolFree(arc);
 }
@@ -969,10 +1031,10 @@ static void PkwdRecordMonitor_CreateActors(PkwdRecordMonitorWork *wk, u32 surfac
         }
         ClActor_SetAutoAnim(actors[i], flag);
         if (setup->flags & ACTOR_FLIP_V) {
-            ClActor_SetFlip(actors[i], 1, TRUE);
+            ClActor_SetFlip(actors[i], FLIP_AXIS_VERTICAL, TRUE);
         }
         if (setup->flags & ACTOR_FLIP_H) {
-            ClActor_SetFlip(actors[i], 0, TRUE);
+            ClActor_SetFlip(actors[i], FLIP_AXIS_HORIZONTAL, TRUE);
         }
         setup++;
     }
@@ -983,14 +1045,15 @@ static void PkwdRecordMonitor_InitActors(PkwdRecordMonitorWork *wk) {
     PkwdRecordMonitor_LoadCommonRes(wk, CLACT_VRAM_SUB);
     PkwdRecordMonitor_LoadIconRes(wk);
     PkwdRecordMonitor_LoadRes(wk, CLACT_VRAM_BOTH, &sPkwdRecordMonitorMarkRes);
-    PkwdRecordMonitor_CreateActors(wk, 1, sPkwdRecordMonitorButtonActors, &sPkwdRecordMonitorButtonGroup);
-    PkwdRecordMonitor_CreateActors(wk, 0, sPkwdRecordMonitorIconActors, &sPkwdRecordMonitorIconGroup);
-    PkwdRecordMonitor_CreateActors(wk, 1, sPkwdRecordMonitorListActors, &sPkwdRecordMonitorListGroup);
-    PkwdRecordMonitor_CreateActors(wk, 0, sPkwdRecordMonitorMarkActors, &sPkwdRecordMonitorMarkGroup);
+    PkwdRecordMonitor_CreateActors(wk, CLACT_SURFACE_SUB, sPkwdRecordMonitorButtonActors,
+                                   &sPkwdRecordMonitorButtonGroup);
+    PkwdRecordMonitor_CreateActors(wk, CLACT_SURFACE_MAIN, sPkwdRecordMonitorIconActors, &sPkwdRecordMonitorIconGroup);
+    PkwdRecordMonitor_CreateActors(wk, CLACT_SURFACE_SUB, sPkwdRecordMonitorListActors, &sPkwdRecordMonitorListGroup);
+    PkwdRecordMonitor_CreateActors(wk, CLACT_SURFACE_MAIN, sPkwdRecordMonitorMarkActors, &sPkwdRecordMonitorMarkGroup);
     GFL_NetSetIconScreen(TRUE, wk->heapId);
-    ClActor_SetObjMode(wk->marks[MARK_COVER + 0], 1);
-    ClActor_SetObjMode(wk->marks[MARK_COVER + 1], 1);
-    ClActor_SetObjMode(wk->marks[MARK_COVER + 2], 1);
+    ClActor_SetObjMode(wk->marks[MARK_COVER + 0], GX_OAM_MODE_XLU);
+    ClActor_SetObjMode(wk->marks[MARK_COVER + 1], GX_OAM_MODE_XLU);
+    ClActor_SetObjMode(wk->marks[MARK_COVER + 2], GX_OAM_MODE_XLU);
     G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG3,
                        GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2 |
                            GX_BLEND_PLANEMASK_OBJ | GX_BLEND_PLANEMASK_BD,
@@ -1261,7 +1324,7 @@ static void PkwdRecordMonitor_PrintLabels(PkwdRecordMonitorWork *wk, u32 screen,
         message = labels[i].message;
         window = labels[i].window;
         strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, sPkwdRecordMonitorLabelMessages[message]);
-        if (message == 0) {
+        if (message == LABEL_HEADING) {
             PkwdRecordMonitor_Print(wk, screen, window, 0, 0, strbuf, PRINT_ALIGN_CENTER, PRINT_COLOR(1, 2, 0));
         } else {
             PkwdRecordMonitor_Print(wk, screen, window, 0, 0, strbuf, PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0));
@@ -1317,9 +1380,9 @@ static void PkwdRecordMonitor_MainMode(PkwdRecordMonitorWork *wk) {
         PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_MARK, MARK_COVER + 0, TRUE);
         PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_MARK, MARK_COVER + 1, TRUE);
         PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_MARK, MARK_COVER + 2, TRUE);
-        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 0, 7);
-        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 1, 8);
-        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 2, 9);
+        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 0, MARK_ANIM_COVER_FIRST);
+        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 1, MARK_ANIM_COVER_SECOND);
+        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_COVER + 2, MARK_ANIM_COVER_THIRD);
         wk->listState = LIST_STATE_WAIT_COVER;
         break;
     case LIST_STATE_WAIT_COVER:
@@ -1404,7 +1467,7 @@ static void PkwdRecordMonitor_ExitMode(PkwdRecordMonitorWork *wk) {
 
 // Runs the list and the return button
 static void PkwdRecordMonitor_Input(PkwdRecordMonitorWork *wk) {
-    u32 redraw = 0;
+    u32 redraw = REDRAW_NONE;
     BOOL cancel = FALSE;
     u32 input = INPUT_NONE;
     u32 action;
@@ -1415,19 +1478,19 @@ static void PkwdRecordMonitor_Input(PkwdRecordMonitorWork *wk) {
     }
     action = PkwdRecordMonitor_HandleListResult(wk, PkwdRecordMonitor_UpdateList(wk));
     if (action == ACTION_MOVE) {
-        redraw = 2;
+        redraw = REDRAW_MOVE;
         input = INPUT_MOVE;
     } else if (action == ACTION_DECIDE || action == ACTION_DECIDE_TOUCH) {
-        redraw = 1;
+        redraw = REDRAW_DETAILS;
         input = INPUT_DECIDE;
     }
     if (wk->flags & FLAG_CURSOR_MOVED) {
-        redraw = 1;
+        redraw = REDRAW_DETAILS;
         wk->flags &= ~FLAG_CURSOR_MOVED;
     }
-    if (redraw == 0) {
+    if (redraw == REDRAW_NONE) {
         touch = PkwdRecordMonitor_ReadTouch(wk, wk->page);
-        if (touch == 0) {
+        if (touch == TOUCH_RETURN) {
             cancel = TRUE;
         }
         if (cancel == FALSE) {
@@ -1436,17 +1499,17 @@ static void PkwdRecordMonitor_Input(PkwdRecordMonitorWork *wk) {
             }
         }
         if (cancel == TRUE) {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_RETURN, 9);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_RETURN, BUTTON_ANIM_RETURN_PRESS);
             wk->listState = LIST_STATE_WAIT_RETURN;
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
-            if (touch == 0) {
+            if (touch == TOUCH_RETURN) {
                 GCTX_HIDSetUsingTouch(TRUE);
             } else {
                 GCTX_HIDSetUsingTouch(FALSE);
             }
         }
     }
-    if (redraw == 1) {
+    if (redraw == REDRAW_DETAILS) {
         wk->flags |= FLAG_REDRAW;
     }
     if (!wk->keyMode) {
@@ -1510,7 +1573,7 @@ static void PkwdRecordMonitor_PrintMovie(PkwdRecordMonitorWork *wk, BOOL movieOn
     strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData, movie + sPkwdRecordMonitorMovieMessages[MOVIE_MESSAGE_TITLE]);
     PkwdRecordMonitor_Print(wk, SCREEN_MAIN, WINDOW_TITLE, 0, 0, strbuf, PRINT_ALIGN_LEFT, PRINT_COLOR(13, 10, 11));
     GFL_StrBufFree(strbuf);
-    if (getTrainerGender(wk->param->playerInfo) == 0) {
+    if (getTrainerGender(wk->param->playerInfo) == GENDER_MALE) {
         message = movie + sPkwdRecordMonitorMovieMessages[MOVIE_MESSAGE_TAGLINE_BOY];
     } else {
         message = movie + sPkwdRecordMonitorMovieMessages[MOVIE_MESSAGE_TAGLINE_GIRL];
@@ -1551,14 +1614,14 @@ static void PkwdRecordMonitor_PrintMovie(PkwdRecordMonitorWork *wk, BOOL movieOn
 static void PkwdRecordMonitor_SetArrows(PkwdRecordMonitorWork *wk, s32 first, s32 last, s32 selected) {
     if (last >= 0) {
         if (first >= selected) {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, 18);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, BUTTON_ANIM_UP_DISABLED);
         } else {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, 4);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, BUTTON_ANIM_UP);
         }
         if (selected >= last) {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, 19);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, BUTTON_ANIM_DOWN_DISABLED);
         } else {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, 5);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, BUTTON_ANIM_DOWN);
         }
     }
 }
@@ -1574,7 +1637,7 @@ static void PkwdRecordMonitor_ShowMovie(PkwdRecordMonitorWork *wk) {
 
     for (i = 0; i < CAST_COUNT; i++) {
         PokeIcon_UnpackSpecies(record->cast[i], &species, &form, &sex);
-        if (species != 0) {
+        if (species != SPECIES_NONE) {
             PkwdRecordMonitor_SetIcon(wk, i, species, sex, form);
             PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_ICON, i, TRUE);
             if (record->famousCast & (1 << i)) {
@@ -1673,13 +1736,13 @@ static void PkwdRecordMonitor_LoadMovies(PkwdRecordMonitorWork *wk) {
                 bestCount++;
             }
             if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_HIT_ENDING, movie) == TRUE) {
-                wk->entries[count].flags |= 1 << 0;
+                wk->entries[count].flags |= ENTRY_HIT_ENDING;
             }
             if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_FLOP_ENDING, movie) == TRUE) {
-                wk->entries[count].flags |= 1 << 1;
+                wk->entries[count].flags |= ENTRY_FLOP_ENDING;
             }
             if (PokewoodSave_CheckFlag(wk->param->save, POKEWOOD_FLAG_LIST_STRANGE_ENDING, movie) == TRUE) {
-                wk->entries[count].flags |= 1 << 2;
+                wk->entries[count].flags |= ENTRY_STRANGE_ENDING;
             }
             wk->entries[count].series = sPkwdRecordMonitorSeries[movie] & 3;
             count++;
@@ -1827,9 +1890,9 @@ static u32 PkwdRecordMonitor_HandleListResult(PkwdRecordMonitorWork *wk, u32 res
     if (action == ACTION_MOVE) {
         wk->listState = LIST_STATE_WAIT_LIST;
         if (wk->flags & FLAG_PAGE_UP) {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, 12);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_UP, BUTTON_ANIM_UP_PRESS);
         } else if (wk->flags & FLAG_PAGE_DOWN) {
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, 13);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_BUTTON, BUTTON_DOWN, BUTTON_ANIM_DOWN_PRESS);
         }
         if (jumped == TRUE) {
             FrameList_SetCursor(wk->list, FrameList_GetCursor(wk->list));
@@ -1930,14 +1993,14 @@ static void PkwdRecordMonitor_UpdateScrollBar(PkwdRecordMonitorWork *wk) {
     ClActorPos pos;
 
     if (wk->count > LIST_ROWS) {
-        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_BAR], &pos, 1);
+        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_BAR], &pos, CLACT_SURFACE_SUB);
         pos.y = FrameList_ClampBarPos(wk->list, pos.y);
         if (pos.y < 8) {
             pos.y = 8;
         } else if (pos.y > 160) {
             pos.y = 160;
         }
-        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_BAR], &pos, 1);
+        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_BAR], &pos, CLACT_SURFACE_SUB);
     }
 }
 
@@ -2000,22 +2063,22 @@ static void PkwdRecordMonitor_UpdateListMarks(PkwdRecordMonitorWork *wk, BOOL re
         visible = FALSE;
         if (newBits & (1 << i)) {
             visible = TRUE;
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_LIST, LIST_ACTOR_MARK + i, 1);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_LIST, LIST_ACTOR_MARK + i, LIST_ANIM_NEW);
         } else if (recordBits & (1 << i)) {
             visible = TRUE;
-            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_LIST, LIST_ACTOR_MARK + i, 3);
+            PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_LIST, LIST_ACTOR_MARK + i, LIST_ANIM_NEW_RECORD);
         }
         PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_LIST, LIST_ACTOR_MARK + i, visible);
     }
     for (i = 0; i < LIST_MARK_COUNT; i++) {
         ClActorPos pos;
 
-        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, 1);
+        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, CLACT_SURFACE_SUB);
         pos.x = PkwdRecordMonitor_GetPosition(wk, (POSITION_LIST_MARK + i) * 2);
         // The two indexes differ in signedness: the original computes the product twice
         pos.y = PkwdRecordMonitor_GetPosition(wk, (u32)(POSITION_LIST_MARK + i) * 2 + 1);
         pos.y += (s16)(direction * LIST_ROW_HEIGHT);
-        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, 1);
+        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, CLACT_SURFACE_SUB);
     }
     wk->markScroll = scroll;
 }
@@ -2026,9 +2089,9 @@ static void PkwdRecordMonitor_MoveListMarks(PkwdRecordMonitorWork *wk, s16 delta
     for (i = 0; i < LIST_MARK_COUNT; i++) {
         ClActorPos pos;
 
-        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, 1);
+        ClActor_GetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, CLACT_SURFACE_SUB);
         pos.y -= delta;
-        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, 1);
+        ClActor_SetSurfacePos(wk->listActors[LIST_ACTOR_MARK + i], &pos, CLACT_SURFACE_SUB);
     }
 }
 
@@ -2036,7 +2099,7 @@ static void PkwdRecordMonitor_MoveListMarks(PkwdRecordMonitorWork *wk, s16 delta
 static void PkwdRecordMonitor_SetStar(PkwdRecordMonitorWork *wk, BOOL visible, s32 sequence, s32 star) {
     PkwdRecordMonitor_SetActorVisible(wk, ACTOR_GROUP_MARK, MARK_STAR + star, visible);
     if (visible == TRUE) {
-        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_STAR + star, sequence + 10);
+        PkwdRecordMonitor_SetActorSequence(wk, ACTOR_GROUP_MARK, MARK_STAR + star, sequence + MARK_ANIM_HIT_ENDING);
     }
 }
 
