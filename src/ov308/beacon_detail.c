@@ -112,7 +112,7 @@ static BOOL BeaconDetail_Init(GameProc *proc, u32 *state, void *param, void *dat
     work->param = param;
     work->heapId = HEAPID_BEACON_DETAIL;
     work->tailHeapId = HEAPID_TAIL(HEAPID_BEACON_DETAIL);
-    work->graphic = BeaconDetailGraphic_Create(0, work->heapId);
+    work->graphic = BeaconDetailGraphic_Create(GX_DISP_SELECT_SUB_MAIN, work->heapId);
     BeaconDetail_InitData(work);
     BeaconDetail_InitSystems(work);
     BeaconDetail_LoadBGs(work, work->heapId);
@@ -332,8 +332,8 @@ static void BeaconDetail_FreeSystems(BeaconDetailWork *work) {
 static void BeaconDetail_LoadBGs(BeaconDetailWork *work, HeapID heapId) {
     ArcTool *townMapArc = GFL_ArcSysCreateFileHandle(ARCID_TOWNMAP_GRA, heapId);
 
-    GFL_G2DIOLoadArcNCLRDefault(townMapArc, 0, 0, 0, 0x200, heapId);
-    GFL_G2DIOLoadArcNCLRDefault(work->arc, 28, 4, 0, 0x200, heapId);
+    GFL_G2DIOLoadArcNCLRDefault(townMapArc, 0, PALTYPE_MAIN_BG, 0, 0x200, heapId);
+    GFL_G2DIOLoadArcNCLRDefault(work->arc, 28, PALTYPE_SUB_BG, 0, 0x200, heapId);
     GFL_BGSysLoadArcNCGRStatic(work->arc, 30, 4, 0, 0, TRUE, heapId);
     GFL_BGSysLoadArcNCGRStatic(work->arc, 30, 5, 0, 0, TRUE, heapId);
     GFL_BGSysLoadArcNCGRStatic(work->arc, 30, 7, 0, 0, TRUE, heapId);

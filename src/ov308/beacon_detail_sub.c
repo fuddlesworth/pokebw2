@@ -188,11 +188,11 @@ static const u8 sBeaconDetailUnionPalettes[BEACON_DETAIL_UNION_VIEW_COUNT] = {
 };
 
 static const BeaconDetailRecent sBeaconDetailRecents[] = {
-    { 0, BeaconDetail_Text_BattlingWild, 1 },
-    { 1, BeaconDetail_Text_BattlingSpecialPokemon, 1 },
-    { 2, BeaconDetail_Text_Battling, 2 },
-    { 3, BeaconDetail_Text_BattlingGymLeader, 2 },
-    { 4, BeaconDetail_Text_BattlingSpecialTrainer, 2 },
+    { GAME_BEACON_RECENT_WILD_SPECIES, BeaconDetail_Text_BattlingWild, 1 },
+    { GAME_BEACON_RECENT_SPECIAL_SPECIES, BeaconDetail_Text_BattlingSpecialPokemon, 1 },
+    { GAME_BEACON_RECENT_TRAINER, BeaconDetail_Text_Battling, 2 },
+    { GAME_BEACON_RECENT_LEADER, BeaconDetail_Text_BattlingGymLeader, 2 },
+    { GAME_BEACON_RECENT_SPECIAL_TRAINER, BeaconDetail_Text_BattlingSpecialTrainer, 2 },
     { GAME_BEACON_RECENT_NONE, BeaconDetail_Text_MovingThrough, 0 },
 };
 
@@ -320,19 +320,19 @@ static const BeaconDetailRecent *BeaconDetailSub_FindRecent(u32 kind) {
 // The words of the message of the beacon's recent event
 static void BeaconDetailSub_SetRecentWords(const GameBeacon *beacon, WordSet *wordSet) {
     switch (GameBeacon_GetRecentKind(beacon)) {
-    case 0:
-    case 1:
+    case GAME_BEACON_RECENT_WILD_SPECIES:
+    case GAME_BEACON_RECENT_SPECIAL_SPECIES:
         WordSet_LoadSpeciesName(wordSet, 0, GameBeacon_GetRecentSpecies(beacon));
         break;
-    case 2: {
+    case GAME_BEACON_RECENT_TRAINER: {
         u16 trainer = GameBeacon_GetRecentTrainer(beacon);
 
         loadTrainerTypeToStrbuf(wordSet, 0, trainer);
         loadTrainerNamesToStrbuf(wordSet, 1, trainer);
         break;
     }
-    case 3:
-    case 4:
+    case GAME_BEACON_RECENT_LEADER:
+    case GAME_BEACON_RECENT_SPECIAL_TRAINER:
         break;
     default: {
         u16 version = GameBeacon_GetVersion(beacon);
