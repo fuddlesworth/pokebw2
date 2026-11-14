@@ -5,9 +5,12 @@
 #include "app/ui/print_msg.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
+#include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
+#include "constants/species.h"
 #include "constants/text_banks.h"
+#include "constants/types.h"
 #include "field/event_pokewood.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -210,6 +213,66 @@ enum {
     MENU_QUIT,
 };
 
+// The label and text-format table slots are separate domains.
+enum {
+    LABEL_TITLE = 0,
+    LABEL_PLOT = 1,
+    LABEL_MISSION = 2,
+    LABEL_CAST = 3,
+    LABEL_HELD_ITEMS = 4,
+    LABEL_ABILITY = 5,
+    LABEL_ROLE = 6,
+    LABEL_EMPTY = 7,
+    LABEL_COUNT = 8,
+};
+
+enum {
+    POKEMON_TEXT_NAME = 0,
+    POKEMON_TEXT_MALE = 1,
+    POKEMON_TEXT_FEMALE = 2,
+    POKEMON_TEXT_LEVEL = 3,
+    POKEMON_TEXT_ITEM = 4,
+    POKEMON_TEXT_ABILITY = 5,
+    POKEMON_TEXT_MOVE_1 = 6,
+    POKEMON_TEXT_MOVE_2 = 7,
+    POKEMON_TEXT_MOVE_3 = 8,
+    POKEMON_TEXT_MOVE_4 = 9,
+    POKEMON_TEXT_PAGE_SLASH = 10,
+    POKEMON_TEXT_COUNT = 11,
+};
+
+// What the list input handler needs to update this frame.
+enum {
+    LIST_INPUT_NONE = 0,
+    LIST_INPUT_SHOW_MOVIE = 1,
+    LIST_INPUT_MOVED = 2,
+};
+
+// Touch-bar sequence IDs, named for their callers rather than their appearance.
+enum {
+    BAR_ANIM_RETURN = 1,
+    BAR_ANIM_LEFT = 4,
+    BAR_ANIM_RIGHT = 5,
+    BAR_ANIM_RETURN_SELECTED = 9,
+    BAR_ANIM_LEFT_SELECTED = 12,
+    BAR_ANIM_RIGHT_SELECTED = 13,
+    BAR_ANIM_LEFT_AT_START = 18,
+    BAR_ANIM_RIGHT_AT_END = 19,
+};
+
+// Movie-file trainer columns: filming and watching, separate from cast-party sides.
+enum {
+    MOVIE_TRAINER_CLASS_FILM = 0,
+    MOVIE_TRAINER_CLASS_WATCH = 1,
+    MOVIE_TRAINER_CLASS_KIND_COUNT = 2,
+};
+
+#define ACTOR_ENTRY_FLAG_AUTO_ANIM 0x1
+#define ACTOR_ENTRY_FLAG_FLIP_H 0x2
+#define ACTOR_ENTRY_FLAG_FLIP_V 0x4
+// The menu has not produced a selection yet, separate from PKWD_BOOK_CANCEL.
+#define MENU_RESULT_PENDING (-1)
+
 // A file to load to a palette or BG: where, which file, the offset and, for the palettes, the size
 typedef struct {
     u8 target;
@@ -286,7 +349,7 @@ typedef struct {
 // one that watches, for each sex of the player
 typedef struct {
     u8 unk0[0x18];
-    s16 trainerClass[2][2];
+    s16 trainerClass[2][MOVIE_TRAINER_CLASS_KIND_COUNT];
 } PkwdBookMovieFile;
 
 // A movie of the list
@@ -585,12 +648,12 @@ static const FrameListCallbacks sPkwdBookListCallbacks = {
 static const s16 sPkwdBookSeriesPalettes[SERIES_COUNT][2] = { { 6, 16 }, { 7, 17 }, { 8, 18 }, { 9, 19 } };
 
 static const PkwdBookLabel sPkwdBookListLabels[2] = {
-    { 7, 0, FALSE, MSG_LINES },
+    { LABEL_EMPTY, 0, FALSE, MSG_LINES },
     { LABEL_END, 0, 0, 0 },
 };
 
 static const PkwdBookActorEntry sPkwdBookTrainerActors[2] = {
-    { 0, 0x30, 1, 0, 0, 1, 17, RES_TRAINER_CHARS },
+    { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 17, RES_TRAINER_CHARS },
     { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -608,7 +671,7 @@ static const TouchRect sPkwdBookPokemonTouchRects[4] = {
     { TOUCH_RECT_END, 0, 0, 0 },
 };
 
-static const s16 sPkwdBookLabelMessages[8] = {
+static const s16 sPkwdBookLabelMessages[LABEL_COUNT] = {
     PokewoodLines_Text_Title,     PokewoodLines_Text_Plot,    PokewoodLines_Text_Mission, PokewoodLines_Text_Cast,
     PokewoodLines_Text_HeldItems, PokewoodLines_Text_Ability, PokewoodLines_Text_Role,    PokewoodLines_Text_Empty_3,
 };
@@ -622,15 +685,15 @@ static const PkwdBookLoad sPkwdBookPaletteLoads[4] = {
 
 // The messages of a Pokémon's page: its name, the marks of its sex, its level, its item, its Ability, its moves and
 // the slash of the page number
-static const s16 sPkwdBookPokemonMessages[11] = {
+static const s16 sPkwdBookPokemonMessages[POKEMON_TEXT_COUNT] = {
     PokewoodLines_Text_Empty_3,  PokewoodLines_Text_Empty_4,  PokewoodLines_Text_Empty_5,  PokewoodLines_Text_Lv,
     PokewoodLines_Text_Empty_6,  PokewoodLines_Text_Empty_7,  PokewoodLines_Text_Empty_8,  PokewoodLines_Text_Empty_9,
     PokewoodLines_Text_Empty_10, PokewoodLines_Text_Empty_11, PokewoodLines_Text_Empty_12,
 };
 
 static const PkwdBookLabel sPkwdBookCastLabels[3] = {
-    { 3, 0, FALSE, MSG_LINES },
-    { 6, 1, TRUE, MSG_LINES },
+    { LABEL_CAST, 0, FALSE, MSG_LINES },
+    { LABEL_ROLE, 1, TRUE, MSG_LINES },
     { LABEL_END, 0, 0, 0 },
 };
 
@@ -640,23 +703,23 @@ static const PkwdBookWindowSetup sPkwdBookCastWindows[5] = {
 };
 
 static const PkwdBookLabel sPkwdBookMovieLabels[4] = {
-    { 0, 0, FALSE, MSG_LINES },
-    { 1, 1, FALSE, MSG_LINES },
-    { 2, 2, FALSE, MSG_LINES },
+    { LABEL_TITLE, 0, FALSE, MSG_LINES },
+    { LABEL_PLOT, 1, FALSE, MSG_LINES },
+    { LABEL_MISSION, 2, FALSE, MSG_LINES },
     { LABEL_END, 0, 0, 0 },
 };
 
 static const PkwdBookLabel sPkwdBookPokemonLabels[4] = {
-    { 3, 0, FALSE, MSG_LINES },
-    { 4, 3, TRUE, MSG_LINES },
-    { 5, 9, TRUE, MSG_LINES },
+    { LABEL_CAST, 0, FALSE, MSG_LINES },
+    { LABEL_HELD_ITEMS, 3, TRUE, MSG_LINES },
+    { LABEL_ABILITY, 9, TRUE, MSG_LINES },
     { LABEL_END, 0, 0, 0 },
 };
 
 static const PkwdBookActorEntry sPkwdBookBarActors[4] = {
-    { 1, 0x30, 1, 1, 0, 1, 3, RES_BAR_CHARS },
-    { 4, 0x30, 1, 1, 0, 1, 0, RES_BAR_CHARS },
-    { 5, 0x30, 1, 1, 0, 1, 1, RES_BAR_CHARS },
+    { BAR_ANIM_RETURN, 0x30, 1, TRUE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 3, RES_BAR_CHARS },
+    { BAR_ANIM_LEFT, 0x30, 1, TRUE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 0, RES_BAR_CHARS },
+    { BAR_ANIM_RIGHT, 0x30, 1, TRUE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 1, RES_BAR_CHARS },
     { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -668,9 +731,9 @@ static const PkwdBookActorRes sPkwdBookMarkRes = {
 };
 
 static const PkwdBookTextActorEntry sPkwdBookTextActors[TEXT_ACTOR_COUNT + 1] = {
-    { 2, 2, 0x38, 1, 1, 0, 20, 0 },
-    { 2, 2, 0x38, 1, 1, 0, 21, 0 },
-    { 2, 2, 0x38, 1, 1, 0, 22, 0 },
+    { 2, 2, 0x38, 1, TRUE, 0, 20, 0 },
+    { 2, 2, 0x38, 1, TRUE, 0, 21, 0 },
+    { 2, 2, 0x38, 1, TRUE, 0, 22, 0 },
     { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -688,8 +751,10 @@ static const FrameListSetup sPkwdBookListSetup = {
 
 // The series of each movie, which gives the color of its row and of the upper screen
 static const u8 sPkwdBookSeries[MOVIE_COUNT] = {
-    0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
-    2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0,
+    SERIES_0, SERIES_0, SERIES_0, SERIES_0, SERIES_0, SERIES_0, SERIES_0, SERIES_1, SERIES_1, SERIES_1, SERIES_1,
+    SERIES_1, SERIES_1, SERIES_1, SERIES_1, SERIES_1, SERIES_1, SERIES_1, SERIES_2, SERIES_2, SERIES_2, SERIES_2,
+    SERIES_2, SERIES_2, SERIES_2, SERIES_2, SERIES_2, SERIES_2, SERIES_3, SERIES_3, SERIES_3, SERIES_3, SERIES_3,
+    SERIES_3, SERIES_3, SERIES_3, SERIES_3, SERIES_3, SERIES_3, SERIES_0, SERIES_0,
 };
 
 // The graphics of each movie's poster
@@ -717,9 +782,9 @@ static const PkwdBookLoad sPkwdBookPosterScreens[14] = {
 
 // clang-format off
 static const PkwdBookActorEntry sPkwdBookTypeIconActors[TYPE_ICON_COUNT + 1] = {
-    { 0, 0x30, 1, 0, 0, 1, 11, RES_TYPE_ICON_CHARS },     { 0, 0x30, 1, 0, 0, 1, 12, RES_TYPE_ICON_CHARS + 1 },
-    { 0, 0x30, 1, 0, 0, 1, 13, RES_TYPE_ICON_CHARS + 2 }, { 0, 0x30, 1, 0, 0, 1, 14, RES_TYPE_ICON_CHARS + 3 },
-    { 0, 0x30, 1, 0, 0, 1, 15, RES_TYPE_ICON_CHARS + 4 }, { 0, 0x30, 1, 0, 0, 1, 16, RES_TYPE_ICON_CHARS + 5 },
+    { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 11, RES_TYPE_ICON_CHARS },     { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 12, RES_TYPE_ICON_CHARS + 1 },
+    { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 13, RES_TYPE_ICON_CHARS + 2 }, { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 14, RES_TYPE_ICON_CHARS + 3 },
+    { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 15, RES_TYPE_ICON_CHARS + 4 }, { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 16, RES_TYPE_ICON_CHARS + 5 },
     { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
@@ -728,10 +793,10 @@ static const PkwdBookActorEntry sPkwdBookTypeIconActors[TYPE_ICON_COUNT + 1] = {
 const GameProcFunctions PKWD_BOOK_PROC_FUNCTIONS = { PkwdBook_Init, PkwdBook_Main, PkwdBook_Exit };
 
 static const PkwdBookActorEntry sPkwdBookPokeIconActors[POKE_ICON_COUNT + 1] = {
-    { 1, 0x28, 1, 0, 0, 0, 4, RES_POKE_ICON_CHARS },      { 1, 0x28, 1, 0, 0, 0, 5, RES_POKE_ICON_CHARS + 1 },
-    { 1, 0x28, 1, 0, 0, 0, 6, RES_POKE_ICON_CHARS + 2 },  { 1, 0x28, 1, 0, 0, 0, 7, RES_POKE_ICON_CHARS + 3 },
-    { 1, 0x28, 1, 0, 0, 0, 8, RES_POKE_ICON_CHARS + 4 },  { 1, 0x28, 1, 0, 0, 0, 9, RES_POKE_ICON_CHARS + 5 },
-    { 1, 0x28, 1, 0, 0, 0, 10, RES_POKE_ICON_CHARS + 6 }, { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
+    { 1, 0x28, 1, FALSE, 0, 0, 4, RES_POKE_ICON_CHARS },      { 1, 0x28, 1, FALSE, 0, 0, 5, RES_POKE_ICON_CHARS + 1 },
+    { 1, 0x28, 1, FALSE, 0, 0, 6, RES_POKE_ICON_CHARS + 2 },  { 1, 0x28, 1, FALSE, 0, 0, 7, RES_POKE_ICON_CHARS + 3 },
+    { 1, 0x28, 1, FALSE, 0, 0, 8, RES_POKE_ICON_CHARS + 4 },  { 1, 0x28, 1, FALSE, 0, 0, 9, RES_POKE_ICON_CHARS + 5 },
+    { 1, 0x28, 1, FALSE, 0, 0, 10, RES_POKE_ICON_CHARS + 6 }, { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
 // clang-format off
@@ -775,12 +840,18 @@ static const FrameListTouch sPkwdBookListTouch[11] = {
 };
 
 static const PkwdBookActorEntry sPkwdBookMarkActors[MARK_ACTOR_COUNT + 1] = {
-    { 2, 0x30, 1, 0, 0, 1, 23, RES_MARK_CHARS }, { 0, 0x30, 1, 0, 0, 1, 24, RES_MARK_CHARS },
-    { 1, 0x30, 2, 0, 0, 1, 25, RES_MARK_CHARS }, { 1, 0x30, 2, 0, 0, 1, 26, RES_MARK_CHARS },
-    { 1, 0x30, 2, 0, 0, 1, 27, RES_MARK_CHARS }, { 1, 0x30, 2, 0, 0, 1, 28, RES_MARK_CHARS },
-    { 1, 0x30, 2, 0, 0, 1, 29, RES_MARK_CHARS }, { 1, 0x30, 2, 0, 0, 1, 30, RES_MARK_CHARS },
-    { 1, 0x30, 2, 0, 0, 1, 31, RES_MARK_CHARS }, { 1, 0x30, 2, 0, 0, 1, 32, RES_MARK_CHARS },
-    { 1, 0x30, 2, 0, 0, 1, 33, RES_MARK_CHARS }, { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
+    { 2, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 23, RES_MARK_CHARS },
+    { 0, 0x30, 1, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 24, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 25, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 26, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 27, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 28, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 29, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 30, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 31, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 32, RES_MARK_CHARS },
+    { 1, 0x30, 2, FALSE, 0, ACTOR_ENTRY_FLAG_AUTO_ANIM, 33, RES_MARK_CHARS },
+    { TABLE_END, 0, 0, 0, 0, 0, 0, 0 },
 };
 
 // The scripts of each movie, for a boy and then for a girl
@@ -869,7 +940,7 @@ static BOOL PkwdBook_Init(GameProc *proc, u32 *state, void *param, void *work) {
     MI_CpuFill8(wk, 0, sizeof(PkwdBookWork));
     wk->heapId = HEAPID_PKWD_BOOK;
     wk->param = param;
-    wk->graphic = PkwdBookGraphic_Create(1, wk->heapId);
+    wk->graphic = PkwdBookGraphic_Create(GX_DISP_SELECT_MAIN_SUB, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->smallFont = GFL_FontCreate(ARCID_FONT, 3, 0, FALSE, wk->heapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->heapId);
@@ -953,7 +1024,7 @@ static void PkwdBook_InitScreen(PkwdBookWork *wk) {
     wk->pageState = PAGE_STATE_ENTER_LIST;
     wk->pageStep = PAGE_STEP_START;
     wk->page = PAGE_LIST;
-    wk->nextPageState = 0;
+    wk->nextPageState = PAGE_STATE_ENTER_LIST;
     wk->flags = 0;
     wk->subShown = 0;
     wk->mainShown = 0;
@@ -1014,10 +1085,15 @@ static void PkwdBook_InitScreen(PkwdBookWork *wk) {
     PkwdBook_SetArrows(wk, 0, wk->movieCount - 1, wk->selected);
     PkwdBook_ScrollBG(wk, PAGE_LIST);
     PkwdBook_ShowMovie(wk, FALSE);
-    G2x_SetBlendAlpha_(REG_DB_BLDCNT_ADDR, 0, 0x3f, 8, 3);
+    G2x_SetBlendAlpha_(REG_DB_BLDCNT_ADDR, GX_BLEND_PLANEMASK_NONE,
+                       GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG2 |
+                           GX_BLEND_PLANEMASK_BG3 | GX_BLEND_PLANEMASK_OBJ | GX_BLEND_PLANEMASK_BD,
+                       8, 3);
     wk->blendAlpha1 = 3;
     wk->blendAlpha2 = 15;
-    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG2, 0x3a, wk->blendAlpha1, wk->blendAlpha2);
+    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG2,
+                       GX_BLEND_PLANEMASK_BG1 | GX_BLEND_PLANEMASK_BG3 | GX_BLEND_PLANEMASK_OBJ | GX_BLEND_PLANEMASK_BD,
+                       wk->blendAlpha1, wk->blendAlpha2);
 }
 
 static void PkwdBook_Step(PkwdBookWork *wk) {
@@ -1218,8 +1294,8 @@ static void PkwdBook_LoadPokeIconRes(PkwdBookWork *wk) {
     wk->resources.named.pokeIconCells =
         ClActSys_LoadCellAnims(arc, PokeIcon_GetCellFile_Sub(), getOBJTileMapping_SubEng(), wk->heapId);
     for (i = 0; i < POKE_ICON_COUNT; i++) {
-        wk->resources.named.pokeIconChars[i] =
-            ClActSys_LoadChars(arc, PokeParty_GetIconIndex(0, 0, 0, FALSE), FALSE, CLACT_VRAM_SUB, wk->heapId);
+        wk->resources.named.pokeIconChars[i] = ClActSys_LoadChars(
+            arc, PokeParty_GetIconIndex(SPECIES_NONE, 0, GENDER_MALE, FALSE), FALSE, CLACT_VRAM_SUB, wk->heapId);
     }
     GFL_ArcToolFree(arc);
 }
@@ -1246,7 +1322,7 @@ static void PkwdBook_LoadTypeIconRes(PkwdBookWork *wk) {
     wk->resources.named.typeIconCells = ClActSys_LoadCellAnims(arc, 61, 64, wk->heapId);
     for (i = 0; i < TYPE_ICON_COUNT; i++) {
         wk->resources.named.typeIconChars[i] =
-            ClActSys_LoadChars(arc, AppMenuCommon_GetTypeIconCharFile(0), FALSE, CLACT_VRAM_SUB, wk->heapId);
+            ClActSys_LoadChars(arc, AppMenuCommon_GetTypeIconCharFile(TYPE_NORMAL), FALSE, CLACT_VRAM_SUB, wk->heapId);
     }
     GFL_ArcToolFree(arc);
 }
@@ -1342,19 +1418,19 @@ static void PkwdBook_CreateActors(PkwdBookWork *wk, u32 surface, const PkwdBookA
         actors[i] = ClActor_Create(unit, wk->resources.slots[entries->charsSlot], wk->resources.slots[paletteSlot],
                                    wk->resources.slots[cellSlot], &setup, surface, wk->heapId);
         visible = FALSE;
-        if (entries->visible == 1) {
+        if (entries->visible == TRUE) {
             visible = TRUE;
         }
         ClActor_SetVisible(actors[i], visible);
         animated = FALSE;
-        if (entries->flags & 1) {
+        if (entries->flags & ACTOR_ENTRY_FLAG_AUTO_ANIM) {
             animated = TRUE;
         }
         ClActor_SetAutoAnim(actors[i], animated);
-        if (entries->flags & 2) {
+        if (entries->flags & ACTOR_ENTRY_FLAG_FLIP_H) {
             ClActor_SetFlip(actors[i], 1, TRUE);
         }
-        if (entries->flags & 4) {
+        if (entries->flags & ACTOR_ENTRY_FLAG_FLIP_V) {
             ClActor_SetFlip(actors[i], 0, TRUE);
         }
     }
@@ -1377,7 +1453,7 @@ static void PkwdBook_InitActors(PkwdBookWork *wk) {
     GFL_NetSetIconScreen(TRUE, wk->heapId);
     wk->bmpOam = BmpOam_Init(wk->heapId, unit);
     PkwdBook_CreateTextActors(wk, CLACT_SURFACE_SUB, sPkwdBookTextActors, RES_FONT_PALETTE);
-    ClActor_SetObjMode(wk->markActors[MARK_PAGE], 1);
+    ClActor_SetObjMode(wk->markActors[MARK_PAGE], GX_OAM_MODE_XLU);
 }
 
 static void PkwdBook_FreeActors(PkwdBookWork *wk) {
@@ -1549,7 +1625,7 @@ static void PkwdBook_CreateTextActors(PkwdBookWork *wk, u32 surface, const PkwdB
         setup.surface = surface;
         setup.vramType = surface;
         wk->textActors[i] = BmpOam_ActorAdd(wk->bmpOam, &setup);
-        if (entries->visible == 0) {
+        if (entries->visible == FALSE) {
             BmpOam_ActorSetDrawEnable(wk->textActors[i], FALSE);
         }
 #ifdef BUGFIX
@@ -1743,7 +1819,7 @@ static void PkwdBook_PrintLabels(PkwdBookWork *wk, BOOL isSub, u32 page) {
                 x = 112;
             }
         }
-        if (message == 6) {
+        if (message == LABEL_ROLE) {
             x = 1;
         }
         strbuf = GFL_MsgDataLoadStrbufNew(wk->msgData[msgData], sPkwdBookLabelMessages[message]);
@@ -1868,7 +1944,7 @@ static void PkwdBook_RunList(PkwdBookWork *wk) {
     case PAGE_STEP_LIST_MENU: {
         s32 result = PkwdBook_UpdateMenu(wk);
 
-        if (result != -1) {
+        if (result != MENU_RESULT_PENDING) {
             if (result == MENU_FILM) {
                 wk->pageState++;
                 wk->nextPageState = PAGE_STATE_NONE;
@@ -1932,7 +2008,7 @@ enum {
 };
 
 static void PkwdBook_ListInput(PkwdBookWork *wk) {
-    s32 action = 0;
+    s32 action = LIST_INPUT_NONE;
     BOOL cancel = FALSE;
     s32 result;
 
@@ -1941,15 +2017,15 @@ static void PkwdBook_ListInput(PkwdBookWork *wk) {
     }
     result = PkwdBook_HandleListResult(wk, PkwdBook_UpdateList(wk));
     if (result == LIST_RESULT_MOVED) {
-        action = 2;
+        action = LIST_INPUT_MOVED;
     } else if (result == LIST_RESULT_PICKED) {
-        action = 1;
+        action = LIST_INPUT_SHOW_MOVIE;
     }
     if (wk->flags & FLAG_MOVIE_CHANGED) {
-        action = 1;
+        action = LIST_INPUT_SHOW_MOVIE;
         wk->flags &= ~FLAG_MOVIE_CHANGED;
     }
-    if (action == 0) {
+    if (action == LIST_INPUT_NONE) {
         s32 touch = PkwdBook_ReadTouch(wk, wk->page);
 
         if (touch == LIST_TOUCH_RETURN) {
@@ -1961,7 +2037,7 @@ static void PkwdBook_ListInput(PkwdBookWork *wk) {
             }
         }
         if (cancel == TRUE) {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, 9);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, BAR_ANIM_RETURN_SELECTED);
             wk->pageStep = PAGE_STEP_WAIT_RETURN;
             GFL_SndSEPlay(SEQ_SE_CANCEL1);
             if (touch == LIST_TOUCH_RETURN) {
@@ -1971,7 +2047,7 @@ static void PkwdBook_ListInput(PkwdBookWork *wk) {
             }
         }
     }
-    if (action == 1) {
+    if (action == LIST_INPUT_SHOW_MOVIE) {
         PkwdBookSeries series;
 
         PkwdBook_PrintLabels(wk, FALSE, PAGE_LIST);
@@ -2019,14 +2095,14 @@ static void PkwdBook_PrintMovie(PkwdBookWork *wk, BOOL keepLabels) {
 static void PkwdBook_SetArrows(PkwdBookWork *wk, s32 first, s32 last, s32 current) {
     if (last >= 0) {
         if (first >= current) {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 18);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT_AT_START);
         } else {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 4);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT);
         }
         if (current >= last) {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 19);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT_AT_END);
         } else {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 5);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT);
         }
     }
 }
@@ -2040,8 +2116,8 @@ static void PkwdBook_EnterCast(PkwdBookWork *wk) {
     PkwdBook_HideActors(wk, TRUE);
     PkwdBook_ShowCast(wk, 0);
     PkwdBook_PlaceArrows(wk, PAGE_CAST);
-    PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 4);
-    PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 5);
+    PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT);
+    PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT);
     wk->flags |= FLAG_SCROLL_PENDING;
 }
 
@@ -2109,17 +2185,17 @@ static void PkwdBook_CastInput(PkwdBookWork *wk) {
     }
     if (action == PAGE_ACTION_LEFT) {
         wk->nextPageState = PAGE_STATE_ENTER_POKEMON;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 12);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_LEFT;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
     } else if (action == PAGE_ACTION_RIGHT) {
         wk->nextPageState = PAGE_STATE_ENTER_POKEMON;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 13);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_RIGHT;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
     } else if (action == PAGE_ACTION_RETURN) {
         wk->nextPageState = PAGE_STATE_ENTER_LIST;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, 9);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, BAR_ANIM_RETURN_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_RETURN;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         if (touch == PAGE_TOUCH_RETURN) {
@@ -2142,7 +2218,7 @@ static void PkwdBook_PrintCast(PkwdBookWork *wk, BOOL keepLabels) {
         PkwdBook_PrintLabels(wk, TRUE, PAGE_CAST);
         movie = PkwdBook_GetMovie(wk, wk->selected);
         PkwdBook_PrintText(wk, TRUE, 2, 1, 0, wk->roleNames[movie], PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
-        if (gender == 0) {
+        if (gender == GENDER_MALE) {
             costar = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + PokewoodCastNames_Text_BrycenMan);
         } else {
             costar = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_COSTARS], movie + PokewoodCastNames_Text_BrycenMan_5);
@@ -2257,17 +2333,17 @@ static void PkwdBook_PokemonInput(PkwdBookWork *wk) {
     }
     if (action == PAGE_ACTION_LEFT) {
         wk->nextPageState = PAGE_STATE_ENTER_CAST;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 12);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_LEFT;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
     } else if (action == PAGE_ACTION_RIGHT) {
         wk->nextPageState = PAGE_STATE_ENTER_CAST;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 13);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_RIGHT;
         GFL_SndSEPlay(SEQ_SE_SELECT1);
     } else if (action == PAGE_ACTION_RETURN) {
         wk->nextPageState = PAGE_STATE_ENTER_LIST;
-        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, 9);
+        PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RETURN, BAR_ANIM_RETURN_SELECTED);
         wk->pageStep = PAGE_STEP_WAIT_RETURN;
         GFL_SndSEPlay(SEQ_SE_CANCEL1);
         if (touch == PAGE_TOUCH_RETURN) {
@@ -2296,15 +2372,15 @@ static void PkwdBook_PrintPokemon(PkwdBookWork *wk, BOOL keepLabels) {
     PokeParty_GetPkm(wk->party, wk->castIdx);
     buf = GFL_StrBufCreate(0x80, wk->heapId);
     value = wk->cast[wk->castIdx].species;
-    nameFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[0]);
+    nameFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_NAME]);
     WordSet_LoadSpeciesName(wk->wordSet, 0, (u16)value);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, nameFormat);
     PkwdBook_PrintText(wk, TRUE, 1, 0, 0, buf, PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
     GFL_StrBufFree(nameFormat);
-    sexMessage = 1;
+    sexMessage = POKEMON_TEXT_MALE;
     color = PRINT_COLOR(6, 5, 0);
     if (wk->cast[wk->castIdx].sex == GENDER_FEMALE) {
-        sexMessage = 2;
+        sexMessage = POKEMON_TEXT_FEMALE;
         color = PRINT_COLOR(4, 3, 0);
     }
     if (wk->cast[wk->castIdx].sex != GENDER_UNKNOWN) {
@@ -2314,13 +2390,13 @@ static void PkwdBook_PrintPokemon(PkwdBookWork *wk, BOOL keepLabels) {
         GFL_StrBufFree(mark);
     }
     value = wk->cast[wk->castIdx].level;
-    levelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[3]);
+    levelFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_LEVEL]);
     WordSetNumber(wk->wordSet, 0, value, 3, 0, TRUE);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, levelFormat);
     PkwdBook_PrintText(wk, TRUE, 2, 0, 0, buf, PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
     GFL_StrBufFree(levelFormat);
     value = wk->cast[wk->castIdx].item;
-    itemFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[4]);
+    itemFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_ITEM]);
     loadItemNameToStrbuf(wk->wordSet, 0, value);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, itemFormat);
     PkwdBook_PrintText(wk, TRUE, 4, 0, 0, buf, PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
@@ -2328,8 +2404,9 @@ static void PkwdBook_PrintPokemon(PkwdBookWork *wk, BOOL keepLabels) {
     for (i = 0; i < MOVE_COUNT; i++) {
         u32 move = wk->cast[wk->castIdx].moves[i];
 
-        if (move != 0) {
-            StrBuf *moveFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[6 + i]);
+        if (move != MOVE_NONE) {
+            StrBuf *moveFormat =
+                GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_MOVE_1 + i]);
 
             loadMoveNameToStrbuf(wk->wordSet, 0, move);
             GFL_WordSetFormatStrbuf(wk->wordSet, buf, moveFormat);
@@ -2340,7 +2417,7 @@ static void PkwdBook_PrintPokemon(PkwdBookWork *wk, BOOL keepLabels) {
         }
     }
     value = wk->cast[wk->castIdx].ability;
-    abilityFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[5]);
+    abilityFormat = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_ABILITY]);
     loadAbilityNameToStrbuf(wk->wordSet, 0, value);
     GFL_WordSetFormatStrbuf(wk->wordSet, buf, abilityFormat);
     PkwdBook_PrintText(wk, TRUE, 10, 0, 0, buf, PRINT_ALIGN_LEFT, PRINT_COLOR(1, 2, 0), FALSE);
@@ -2371,7 +2448,7 @@ static void PkwdBook_ShowPokemon(PkwdBookWork *wk, u32 unused) {
     }
     PkwdBook_SetActorVisible(wk, GROUP_TYPE_ICON, 1, visible);
     for (i = 0; i < MOVE_COUNT; i++) {
-        if (wk->cast[wk->castIdx].moves[i] != 0) {
+        if (wk->cast[wk->castIdx].moves[i] != MOVE_NONE) {
             PkwdBook_SetTypeIcon(wk, i + 2, 1, wk->cast[wk->castIdx].moveTypes[i]);
             visible = TRUE;
         } else {
@@ -2454,7 +2531,7 @@ static void PkwdBook_PrintPageNumber(PkwdBookWork *wk) {
     GFL_WordSetFormatNumber(buf, wk->castCount + 1, 1, 2, TRUE);
     PkwdBook_PrintTextActor(wk, 2, buf, 0, 0);
     GFL_StrBufFree(buf);
-    slash = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[10]);
+    slash = GFL_MsgDataLoadStrbufNew(wk->msgData[MSG_LINES], sPkwdBookPokemonMessages[POKEMON_TEXT_PAGE_SLASH]);
     PkwdBook_PrintTextActor(wk, 1, slash, 0, 0);
     GFL_StrBufFree(slash);
 }
@@ -2527,7 +2604,7 @@ static void PkwdBook_ReadCast(PkwdBookWork *wk) {
         wk->cast[i].type2 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE2, NULL);
         for (j = 0; j < MOVE_COUNT; j++) {
             wk->cast[i].moves[j] = PokeParty_GetParam(pkm, PKM_PARAM_MOVE1 + j, NULL);
-            if (wk->cast[i].moves[j] != 0) {
+            if (wk->cast[i].moves[j] != MOVE_NONE) {
                 wk->cast[i].moveTypes[j] = PML_MoveGetParam(wk->cast[i].moves[j], MOVE_PARAM_TYPE);
             }
         }
@@ -2698,9 +2775,9 @@ static s32 PkwdBook_HandleListResult(PkwdBookWork *wk, u32 result) {
     if (action == LIST_RESULT_MOVED) {
         wk->pageStep = PAGE_STEP_LIST_SCROLL;
         if (wk->flags & FLAG_PAGE_UP) {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, 12);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_LEFT, BAR_ANIM_LEFT_SELECTED);
         } else if (wk->flags & FLAG_PAGE_DOWN) {
-            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, 13);
+            PkwdBook_PlayAnim(wk, GROUP_BAR, BAR_RIGHT, BAR_ANIM_RIGHT_SELECTED);
         }
         if (moved == TRUE) {
             FrameList_SetCursor(wk->list, FrameList_GetCursor(wk->list));
@@ -2852,25 +2929,25 @@ static void PkwdBook_FreeMenu(PkwdBookWork *wk) {
 // The item of the menu that was picked, once it has flashed, or -1
 static s32 PkwdBook_UpdateMenu(PkwdBookWork *wk) {
     if (wk->menu == NULL) {
-        return -1;
+        return MENU_RESULT_PENDING;
     }
     AppTaskMenu_Update(wk->menu);
     if (AppTaskMenu_IsFlashFinished(wk->menu)) {
         return AppTaskMenu_GetCursorPos(wk->menu);
     }
-    return -1;
+    return MENU_RESULT_PENDING;
 }
 
 // Reads the trainer class of a movie's costar for the player's sex
 static void PkwdBook_LoadTrainerClass(PkwdBookWork *wk, u32 movie) {
-    s32 gender = 0;
+    s32 gender = GENDER_MALE;
     PkwdBookMovieFile *file;
 
-    if (getTrainerGender(wk->param->playerInfo) == 1) {
-        gender = 1;
+    if (getTrainerGender(wk->param->playerInfo) == GENDER_FEMALE) {
+        gender = GENDER_FEMALE;
     }
     file = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, movie, wk->heapId);
-    wk->trainerClass = file->trainerClass[gender][0];
+    wk->trainerClass = file->trainerClass[gender][MOVIE_TRAINER_CLASS_FILM];
     GFL_HeapFree(file);
 }
 
@@ -2965,11 +3042,11 @@ static void PkwdBook_ScrollNewMarks(PkwdBookWork *wk, s16 delta) {
 
 // Reads the name of the player's role from each movie's script
 static void PkwdBook_LoadRoleNames(PkwdBookWork *wk) {
-    s32 gender = 0;
+    s32 gender = GENDER_MALE;
     int i;
 
-    if (getTrainerGender(wk->param->playerInfo) == 1) {
-        gender = 1;
+    if (getTrainerGender(wk->param->playerInfo) == GENDER_FEMALE) {
+        gender = GENDER_FEMALE;
     }
     for (i = 0; i < LIST_MOVIE_COUNT; i++) {
         wk->msgData[MSG_SCRIPT] =
