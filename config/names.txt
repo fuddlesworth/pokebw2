@@ -36152,7 +36152,7 @@ overlays/ov294 0x021a26f0 IntroCmd_Talk
 overlays/ov294 0x021a2778 IntroCmd_SaveStart
 overlays/ov294 0x021a2788 IntroCmd_SavePause
 overlays/ov294 0x021a27bc IntroCmd_SaveResume
-overlays/ov294 0x021a27cc IntroCmd_Save43
+overlays/ov294 0x021a27cc IntroCmd_SaveNop
 overlays/ov294 0x021a27dc IntroCmd_SaveWait
 overlays/ov294 0x021a2844 IntroCmd_SetMsgLanguage
 overlays/ov294 0x021a2860 IntroCmd_SetGender

@@ -18,7 +18,7 @@ enum {
     INTRO_CMD_GOTO,
     // Jumps to the script numbered after the intro's mode
     INTRO_CMD_GOTO_MODE_SCRIPT,
-    // yesMessage, noMessage, a2: asks yes or no, then runs the next command for yes or the one after for no
+    // yesMessage, noMessage, cancelable: asks yes or no, then runs the next command for yes or the one after for no
     INTRO_CMD_YES_NO,
     // condition: runs the next command if the condition holds, or the one after if not
     INTRO_CMD_IF,
@@ -44,7 +44,7 @@ enum {
     INTRO_CMD_BGM_FADE_IN,
     // Waits until GFL_SndBGMIsPlaying
     INTRO_CMD_WAIT_BGM_PLAYING,
-    // sequence, volume, a2: volume and a2 are only set when not 0
+    // sequence, volume, pan: volume and pan are only set when not 0
     INTRO_CMD_SE_PLAY,
     // sequence
     INTRO_CMD_SE_STOP,
@@ -94,7 +94,7 @@ enum {
     INTRO_CMD_SAVE_START,
     INTRO_CMD_SAVE_PAUSE,
     INTRO_CMD_SAVE_RESUME,
-    INTRO_CMD_SAVE_43,
+    INTRO_CMD_SAVE_NOP,
     // Shows "Creating save data" until it is done
     INTRO_CMD_SAVE_WAIT,
     // Opens and closes a band across the top screen, from its middle
