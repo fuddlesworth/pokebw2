@@ -6,7 +6,9 @@
 #include "battle/b_app_tool.h"
 #include "battle/b_plist_main.h"
 #include "constants/arc.h"
+#include "constants/battle.h"
 #include "constants/items.h"
+#include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/species.h"
@@ -33,6 +35,7 @@
 #include "gfl/tcbl.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
+#include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "pml/mail.h"
 #include "pml/poke_party.h"
@@ -51,14 +54,15 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
+#include "text/system/evolution_demo.h"
+#include "text/system/move_learning.h"
+#include "text/system/yes_no.h"
 
 // The evolution process: its steps, the music, the messages, learning the new form's moves and making a Shedinja
 
 #define ACTOR_COUNT 6
 
-// What PokeParty_LearnNextLevelMove returns while there is nothing to learn yet, and the slot that is picked when no
-// move is forgotten
-#define LEARN_MOVE_PENDING 0xfffe
+// The move slot picked when no move is forgotten
 #define FORGET_SLOT_NONE 4
 
 // The events of the message that says a move was forgotten
@@ -283,7 +287,7 @@ static BOOL EvolutionDemo_Init(GameProc *proc, u32 *state, void *param, void *wo
     wk->paletteFade = NULL;
     wk->usingKeys = FALSE;
     wk->pstatusParam = GFL_HeapAllocate(wk->heapId, sizeof(PStatusParam), TRUE, "shinka_demo.c", 578);
-    GFL_FadeSet(3, 16, 16, -16);
+    GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 16, -16);
     EvolutionDemo_InitBGM(param, wk);
     wk->vblankTask = GFL_VBlankTCBAdd(EvolutionDemo_VBlank, wk, 1);
     wk->soundTimerOn = FALSE;
@@ -331,7 +335,7 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
     case EVOLUTION_DEMO_WAIT:
         if (wk->wait == 0) {
             wk->state = EVOLUTION_DEMO_FADE_IN;
-            GFL_FadeSet(3, 16, 0, -16);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, -16);
         } else {
             wk->wait--;
         }
@@ -357,7 +361,8 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_PRINT_EVOLVING;
         break;
     case EVOLUTION_DEMO_PRINT_EVOLVING:
-        EvolutionDemo_Print(wk, wk->msgData, 0, NULL, WORD_NICKNAME, wk->pkm, WORD_NONE, NULL);
+        EvolutionDemo_Print(wk, wk->msgData, EvolutionDemo_Text_WhatEvolving, NULL, WORD_NICKNAME, wk->pkm, WORD_NONE,
+                            NULL);
         wk->state = EVOLUTION_DEMO_WAIT_EVOLVING;
         break;
     case EVOLUTION_DEMO_WAIT_EVOLVING:
@@ -435,7 +440,7 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         if (demoParam->canCancel && EvolutionDemo_IsTradePlaying(param, wk) && wk->cancelled == FALSE &&
             (keys & PAD_BUTTON_B) && EvolutionDemoView_Cancel(wk->view)) {
             wk->cancelled = TRUE;
-            GCTX_HIDSetUsingTouch(0);
+            GCTX_HIDSetUsingTouch(FALSE);
             EvolutionDemoEffect_Cancel(wk->effect);
         }
         break;
@@ -460,7 +465,8 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_PRINT_EVOLVED;
         break;
     case EVOLUTION_DEMO_PRINT_EVOLVED:
-        EvolutionDemo_Print(wk, wk->msgData, 2, NULL, WORD_STRBUF, wk->nickname, WORD_SPECIES, wk->pkm);
+        EvolutionDemo_Print(wk, wk->msgData, EvolutionDemo_Text_CongratulationsEvolvedInto, NULL, WORD_STRBUF,
+                            wk->nickname, WORD_SPECIES, wk->pkm);
         wk->state = EVOLUTION_DEMO_WAIT_EVOLVED;
         break;
     case EVOLUTION_DEMO_WAIT_EVOLVED:
@@ -490,7 +496,8 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_PRINT_CANCELLED;
         break;
     case EVOLUTION_DEMO_PRINT_CANCELLED:
-        EvolutionDemo_Print(wk, wk->msgData, 1, NULL, WORD_NICKNAME, wk->pkm, WORD_NONE, NULL);
+        EvolutionDemo_Print(wk, wk->msgData, EvolutionDemo_Text_HuhStoppedEvolving, NULL, WORD_NICKNAME, wk->pkm,
+                            WORD_NONE, NULL);
         wk->state = EVOLUTION_DEMO_WAIT_CANCELLED;
         break;
     case EVOLUTION_DEMO_WAIT_CANCELLED:
@@ -514,15 +521,16 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         break;
     case EVOLUTION_DEMO_LEARN_MOVE:
         wk->move = PokeParty_LearnNextLevelMove(wk->pkm, &wk->learnIndex, wk->heapId);
-        if (wk->move == 0) {
+        if (wk->move == MOVE_NONE) {
             wk->state = EVOLUTION_DEMO_END;
-        } else if (wk->move != LEARN_MOVE_PENDING) {
-            if (wk->move & 0x8000) {
+        } else if (wk->move != LEARN_MOVE_KNOWN) {
+            if (wk->move & LEARN_MOVE_NO_SLOT) {
                 wk->move &= 0x7fff;
                 wk->state = EVOLUTION_DEMO_PRINT_WANTS_MOVE;
             } else {
                 wk->state = EVOLUTION_DEMO_WAIT_LEARNED;
-                EvolutionDemo_Print(wk, wk->moveMsgData, 3, NULL, WORD_NICKNAME, wk->pkm, WORD_MOVE, &wk->move);
+                EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_Learned, NULL, WORD_NICKNAME, wk->pkm,
+                                    WORD_MOVE, &wk->move);
                 EvolutionDemo_PlayLevelUp(param, wk);
             }
         }
@@ -534,13 +542,14 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         break;
     case EVOLUTION_DEMO_PRINT_WANTS_MOVE:
         wk->state = EVOLUTION_DEMO_WAIT_WANTS_MOVE;
-        EvolutionDemo_Print(wk, wk->moveMsgData, 4, NULL, WORD_NICKNAME, wk->pkm, WORD_MOVE, &wk->move);
+        EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_WantsLearnMoveHowever, NULL, WORD_NICKNAME, wk->pkm,
+                            WORD_MOVE, &wk->move);
         break;
     case EVOLUTION_DEMO_WAIT_WANTS_MOVE:
         if (EvolutionDemo_IsPrintDone(wk)) {
             wk->state = EVOLUTION_DEMO_WAIT_FORGET_ANSWER;
-            EvolutionDemo_SetMenuChoices(wk, wk->menuMsgData, 2, WORD_NONE, NULL, WORD_NONE, NULL, wk->menuMsgData, 3,
-                                         WORD_NONE, NULL, WORD_NONE, NULL);
+            EvolutionDemo_SetMenuChoices(wk, wk->menuMsgData, YesNo_Text_Forget, WORD_NONE, NULL, WORD_NONE, NULL,
+                                         wk->menuMsgData, YesNo_Text_KeepOldMoves, WORD_NONE, NULL, WORD_NONE, NULL);
             TwoChoiceMenu_Open(wk->menu, wk->choices[0], wk->choices[1]);
         }
         break;
@@ -552,10 +561,10 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         if (result == TWO_CHOICE_MENU_FIRST) {
             if (demoParam->fromField) {
                 wk->state = EVOLUTION_DEMO_WAIT_FADE_OV207;
-                GFL_FadeSet(3, 0, 16, 0);
+                GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 0);
             } else {
                 wk->state = EVOLUTION_DEMO_WAIT_FADE_OV287;
-                GFL_FadeSet(2, 0, 16, 0);
+                GFL_FadeSet(FADE_ENGINE_B_BLACK, 0, 16, 0);
             }
         } else if (result == TWO_CHOICE_MENU_SECOND) {
             wk->state = EVOLUTION_DEMO_GIVE_UP;
@@ -593,18 +602,18 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_WAIT_FADE_OV207_END;
         EvolutionDemo_InitGraphics(param, wk);
         GFL_NetSetIconScreen(0, wk->heapId);
-        GFL_FadeSet(3, 16, 0, 0);
+        GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 16, 0, 0);
         break;
     case EVOLUTION_DEMO_WAIT_FADE_OV207_END:
         if (GFL_FadeIsRunning() == FALSE) {
             switch (wk->pstatusParam->result) {
-            case 0:
+            case PSTATUS_RESULT_FORGET:
                 wk->slot = wk->pstatusParam->slot;
                 wk->forgetMove = PokeParty_GetParam(wk->pkm, PKM_PARAM_MOVE1 + wk->slot, NULL);
                 wk->state = EVOLUTION_DEMO_FORGET;
                 break;
-            case 1:
-            case 2:
+            case PSTATUS_RESULT_BACK:
+            case PSTATUS_RESULT_CLOSE:
             default:
                 wk->state = EVOLUTION_DEMO_GIVE_UP;
                 break;
@@ -633,22 +642,22 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
             wk->ov287Param.done = FALSE;
             wk->ov287Param.partyIndex = demoParam->partyIndex;
             wk->ov287Param.move = wk->move;
-            wk->ov287Param.battleStyle = 0;
+            wk->ov287Param.battleStyle = BTL_STYLE_SINGLE;
             wk->ov287Param.usingKeys = &wk->usingKeys;
             wk->ov287Param.tcbManager = wk->tcbManager;
             wk->ov287Param.paletteFade = wk->paletteFade;
-            wk->ov287Param.playSound = 1;
+            wk->ov287Param.playSound = TRUE;
             GFL_OvlLoad(OVERLAY_OV285);
             GFL_OvlLoad(OVERLAY_OV287);
             BPlistMain_Start(&wk->ov287Param);
-            GFL_FadeSet(2, 16, 0, 0);
+            GFL_FadeSet(FADE_ENGINE_B_BLACK, 16, 0, 0);
         }
         break;
     case EVOLUTION_DEMO_OV287:
         GFL_TCBMgrUpdate(wk->tcbManager);
         if (wk->ov287Param.done) {
             wk->state = EVOLUTION_DEMO_WAIT_FADE_OV287_END;
-            GFL_FadeSet(2, 0, 16, 0);
+            GFL_FadeSet(FADE_ENGINE_B_BLACK, 0, 16, 0);
         }
         break;
     case EVOLUTION_DEMO_WAIT_FADE_OV287_END:
@@ -668,7 +677,7 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
             wk->menu = TwoChoiceMenu_Create(wk->heapId, 5, 0, 1, 0, EvolutionDemoGraphic_GetClActUnit(wk->graphic),
                                             wk->font, wk->printQueue, 0);
             GFL_NetSetIconScreen(0, wk->heapId);
-            GFL_FadeSet(2, 16, 0, 0);
+            GFL_FadeSet(FADE_ENGINE_B_BLACK, 16, 0, 0);
         }
         break;
     case EVOLUTION_DEMO_OV287_END:
@@ -696,15 +705,16 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_PRINT_FORGOT;
         break;
     case EVOLUTION_DEMO_PRINT_FORGOT:
-        EvolutionDemo_Print(wk, wk->moveMsgData, 5, EvolutionDemo_OnPrintEvent, WORD_NICKNAME, wk->pkm, WORD_MOVE,
-                            &wk->forgetMove);
+        EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_12TaDa, EvolutionDemo_OnPrintEvent, WORD_NICKNAME,
+                            wk->pkm, WORD_MOVE, &wk->forgetMove);
         wk->state = EVOLUTION_DEMO_WAIT_FORGOT;
         break;
     case EVOLUTION_DEMO_WAIT_FORGOT:
         if (EvolutionDemo_IsPrintDone(wk)) {
             PokeParty_SetMove(wk->pkm, wk->move, wk->slot);
             wk->state = EVOLUTION_DEMO_WAIT_LEARNED_NEW;
-            EvolutionDemo_Print(wk, wk->moveMsgData, 6, NULL, WORD_NICKNAME, wk->pkm, WORD_MOVE, &wk->move);
+            EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_LearnedHowUse, NULL, WORD_NICKNAME, wk->pkm,
+                                WORD_MOVE, &wk->move);
             EvolutionDemo_PlayLevelUp(param, wk);
         }
         break;
@@ -726,14 +736,15 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         wk->state = EVOLUTION_DEMO_PRINT_GIVE_UP;
         break;
     case EVOLUTION_DEMO_PRINT_GIVE_UP:
-        EvolutionDemo_Print(wk, wk->moveMsgData, 7, NULL, WORD_NONE, NULL, WORD_MOVE, &wk->move);
+        EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_GiveUpLearningMove, NULL, WORD_NONE, NULL, WORD_MOVE,
+                            &wk->move);
         wk->state = EVOLUTION_DEMO_WAIT_GIVE_UP;
         break;
     case EVOLUTION_DEMO_WAIT_GIVE_UP:
         if (EvolutionDemo_IsPrintDone(wk)) {
             wk->state = EVOLUTION_DEMO_WAIT_GIVE_UP_ANSWER;
-            EvolutionDemo_SetMenuChoices(wk, wk->menuMsgData, 4, WORD_MOVE, &wk->move, WORD_NONE, NULL, wk->menuMsgData,
-                                         5, WORD_MOVE, &wk->move, WORD_NONE, NULL);
+            EvolutionDemo_SetMenuChoices(wk, wk->menuMsgData, YesNo_Text_GiveUp, WORD_MOVE, &wk->move, WORD_NONE, NULL,
+                                         wk->menuMsgData, YesNo_Text_DontGiveUp, WORD_MOVE, &wk->move, WORD_NONE, NULL);
             TwoChoiceMenu_Open(wk->menu, wk->choices[0], wk->choices[1]);
         }
         break;
@@ -744,7 +755,8 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         }
         if (result == TWO_CHOICE_MENU_FIRST) {
             wk->state = EVOLUTION_DEMO_WAIT_NOT_LEARNED;
-            EvolutionDemo_Print(wk, wk->moveMsgData, 8, NULL, WORD_NICKNAME, wk->pkm, WORD_MOVE, &wk->move);
+            EvolutionDemo_Print(wk, wk->moveMsgData, MoveLearning_Text_DidNotLearn, NULL, WORD_NICKNAME, wk->pkm,
+                                WORD_MOVE, &wk->move);
         } else if (result == TWO_CHOICE_MENU_SECOND) {
             wk->state = EVOLUTION_DEMO_PRINT_WANTS_MOVE;
         }
@@ -757,11 +769,11 @@ static BOOL EvolutionDemo_Main(GameProc *proc, u32 *state, void *param, void *wo
         break;
     case EVOLUTION_DEMO_END:
         if (wk->cancelled) {
-            GFL_FadeSet(3, 0, 16, 2);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 2);
             wk->state = EVOLUTION_DEMO_WAIT_BGM_END;
         } else if (EvolutionDemo_IsTradePlaying(param, wk)) {
             EvolutionDemo_FadeOutBGM(param, wk);
-            GFL_FadeSet(3, 0, 16, 2);
+            GFL_FadeSet(FADE_ENGINE_A_BLACK | FADE_ENGINE_B_BLACK, 0, 16, 2);
             wk->state = EVOLUTION_DEMO_WAIT_BGM_END;
         }
         break;
@@ -807,7 +819,7 @@ static void EvolutionDemo_InitGraphics(EvolutionDemoParam *param, EvolutionDemoW
     for (i = 0; i <= 7; i++) {
         GFL_BGSysSetBGEnabled(i, FALSE);
     }
-    wk->graphic = EvolutionDemoGraphic_Create(1, wk->graphicHeapId);
+    wk->graphic = EvolutionDemoGraphic_Create(GX_DISP_SELECT_MAIN_SUB, wk->graphicHeapId);
     EvolutionDemoGraphic_InitSubBG(wk->graphic);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, wk->graphicHeapId);
     wk->printQueue = PrintQueue_CreateDefault(wk->graphicHeapId);
@@ -1018,7 +1030,7 @@ static void EvolutionDemo_DiscardBGM(EvolutionDemoParam *param, EvolutionDemoWor
 static void EvolutionDemo_InitBG(EvolutionDemoParam *param, EvolutionDemoWork *wk) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_EVOLUTION_DEMO, wk->graphicHeapId);
 
-    GFL_G2DIOLoadArcNCLRDefault(arc, 3, 0, 0, 0x20, wk->graphicHeapId);
+    GFL_G2DIOLoadArcNCLRDefault(arc, 3, PALTYPE_MAIN_BG, 0, 0x20, wk->graphicHeapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 5, 2, 0, 0, FALSE, wk->graphicHeapId);
     loadBGScrToVramByFileNoReserveNegAlign(arc, 4, 2, 0, 0, FALSE, wk->graphicHeapId);
     GFL_ArcToolFree(arc);
@@ -1032,13 +1044,13 @@ static void EvolutionDemo_InitActors(EvolutionDemoParam *param, EvolutionDemoWor
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_EVOLUTION_DEMO, wk->graphicHeapId);
     u8 i;
 
-    wk->palette = ClActSys_LoadPlttRange(arc, 3, 0, 0, 0, 1, wk->graphicHeapId);
-    wk->chars = ClActSys_LoadChars(arc, 2, 0, 0, wk->graphicHeapId);
+    wk->palette = ClActSys_LoadPlttRange(arc, 3, CLACT_VRAM_MAIN, 0, 0, 1, wk->graphicHeapId);
+    wk->chars = ClActSys_LoadChars(arc, 2, FALSE, CLACT_VRAM_MAIN, wk->graphicHeapId);
     wk->cellAnims = ClActSys_LoadCellAnims(arc, 1, 0, wk->graphicHeapId);
     GFL_ArcToolFree(arc);
     for (i = 0; i < ACTOR_COUNT; i++) {
         wk->actors[i] = ClActor_Create(EvolutionDemoGraphic_GetClActUnit(wk->graphic), wk->chars, wk->palette,
-                                       wk->cellAnims, &sActorSetups[i], 0, wk->graphicHeapId);
+                                       wk->cellAnims, &sActorSetups[i], CLACT_SURFACE_MAIN, wk->graphicHeapId);
         ClActor_SetAutoAnim(wk->actors[i], FALSE);
     }
     wk->actorsCreated = TRUE;
@@ -1113,7 +1125,7 @@ static void EvolutionDemo_VBlank(TCB *tcb, void *data) {
 static void EvolutionDemo_InitMsg(EvolutionDemoParam *param, EvolutionDemoWork *wk) {
     BmpWin *window;
 
-    GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, 0, 0x20, 0x20, wk->graphicHeapId);
+    GFL_BGSysLoadNCLRDefault(ARCID_FONT, 5, PALTYPE_MAIN_BG, 0x20, 0x20, wk->graphicHeapId);
     wk->blankWindow = BmpWin_CreateDynamic(1, 0, 0, 1, 1, 1, 0);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->blankWindow), 0);
     BmpWin_FlushChar(wk->blankWindow);
@@ -1368,7 +1380,7 @@ static void EvolutionDemo_MakeShedinja(EvolutionDemoParam *param, EvolutionDemoW
         mail = CreateMailData(wk->heapId);
         PokeParty_SetParam(shedinja, PKM_PARAM_MAIL, (u32)mail);
         GFL_HeapFree(mail);
-        PokeParty_SetParam(shedinja, 0x9f, 0);
+        PokeParty_SetParam(shedinja, PKM_PARAM_UNK9F, 0);
         PokeParty_SetParam(shedinja, PKM_PARAM_POKESTAR_FAME, 0);
         PokeParty_AddPkm(param->party, shedinja);
         BagSave_SubItem(bag, ITEM_POKE_BALL, 1, wk->heapId);
