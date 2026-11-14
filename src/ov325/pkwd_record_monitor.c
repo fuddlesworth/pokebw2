@@ -180,8 +180,8 @@ enum {
 
 // The coordinate axis accepted by ClActor_SetFlip, distinct from ACTOR_FLIP_* flag bits
 enum {
-    FLIP_AXIS_HORIZONTAL = 0,
-    FLIP_AXIS_VERTICAL = 1,
+    FLIP_AXIS_VERTICAL = 0,
+    FLIP_AXIS_HORIZONTAL = 1,
 };
 
 // The shared touch-bar animations selected for each button and its input state
@@ -385,8 +385,8 @@ typedef struct {
 } PkwdRecordMonitorResSetup;
 
 #define ACTOR_ANIMATE 0x1
-#define ACTOR_FLIP_V 0x2
-#define ACTOR_FLIP_H 0x4
+#define ACTOR_FLIP_H 0x2
+#define ACTOR_FLIP_V 0x4
 
 #define ACTOR_END 0xff
 
@@ -1030,11 +1030,11 @@ static void PkwdRecordMonitor_CreateActors(PkwdRecordMonitorWork *wk, u32 surfac
             flag = TRUE;
         }
         ClActor_SetAutoAnim(actors[i], flag);
-        if (setup->flags & ACTOR_FLIP_V) {
-            ClActor_SetFlip(actors[i], FLIP_AXIS_VERTICAL, TRUE);
-        }
         if (setup->flags & ACTOR_FLIP_H) {
             ClActor_SetFlip(actors[i], FLIP_AXIS_HORIZONTAL, TRUE);
+        }
+        if (setup->flags & ACTOR_FLIP_V) {
+            ClActor_SetFlip(actors[i], FLIP_AXIS_VERTICAL, TRUE);
         }
         setup++;
     }
