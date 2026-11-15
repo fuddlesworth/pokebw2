@@ -24,6 +24,21 @@ enum {
     EFFECT_PLAYED,
 };
 
+// The resource slots of the one model scene
+enum {
+    MODEL_RESOURCE = 0,
+    TEXSRT_RESOURCE = 1,
+    JOINT_RESOURCE = 2,
+    MATERIAL_RESOURCE = 3,
+};
+
+// The model's animation slots, distinct from their resource slots
+enum {
+    MODEL_ANIM_TEXSRT = 0,
+    MODEL_ANIM_JOINT = 1,
+    MODEL_ANIM_MATERIAL = 2,
+};
+
 // What the 3D model's animations are doing
 enum {
     EFFECT_3D_IDLE,
@@ -80,10 +95,12 @@ static const G3DSceneResourceSetup sModelResources[] = {
     { ARCID_EVOLUTION_DEMO, 7, 0 },
 };
 
-static const G3DSceneAnimationSetup sModelAnimations[] = { { 1, 0 }, { 2, 0 }, { 3, 0 } };
+static const G3DSceneAnimationSetup sModelAnimations[] = { { TEXSRT_RESOURCE, 0 },
+                                                           { JOINT_RESOURCE, 0 },
+                                                           { MATERIAL_RESOURCE, 0 } };
 
 static const G3DSceneActorSetup sModelActors[] = {
-    { 0, 0, 0, 0, sModelAnimations, NELEMS(sModelAnimations) },
+    { MODEL_RESOURCE, 0, MODEL_RESOURCE, 0, sModelAnimations, NELEMS(sModelAnimations) },
 };
 
 static const G3DSceneSetup sModelScene = { sModelResources, NELEMS(sModelResources), sModelActors,
@@ -341,16 +358,16 @@ static void EvolutionDemoEffect_AddScene(EvolutionDemoEffect *effect) {
     actor->srt.translation.z = 0;
     actor->visible = TRUE;
     for (i = 0; i < effect->actorCount; i++) {
-        GFL_G3DActorBindAnm(GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[i].actor), 0);
+        GFL_G3DActorBindAnm(GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[i].actor), MODEL_ANIM_TEXSRT);
     }
     effect->frame3D = 0;
     model = GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[effect->modelActor].actor);
     frame = 0;
     effect->state3D = EFFECT_3D_IDLE;
-    GFL_G3DActorBindAnm(model, 1);
-    GFL_G3DActorBindAnm(model, 2);
-    GFL_G3DActorSetAnmFrame(model, 1, &frame);
-    GFL_G3DActorSetAnmFrame(model, 2, &frame);
+    GFL_G3DActorBindAnm(model, MODEL_ANIM_JOINT);
+    GFL_G3DActorBindAnm(model, MODEL_ANIM_MATERIAL);
+    GFL_G3DActorSetAnmFrame(model, MODEL_ANIM_JOINT, &frame);
+    GFL_G3DActorSetAnmFrame(model, MODEL_ANIM_MATERIAL, &frame);
 }
 
 static void EvolutionDemoEffect_DeleteScene(EvolutionDemoEffect *effect) {
@@ -366,19 +383,20 @@ static void EvolutionDemoEffect_Update3D(EvolutionDemoEffect *effect) {
     BOOL running2;
 
     for (i = 0; i < effect->actorCount; i++) {
-        GFL_G3DActorStepAnmFrameLoop(GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[i].actor), 0, FX32_ONE);
+        GFL_G3DActorStepAnmFrameLoop(GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[i].actor), MODEL_ANIM_TEXSRT,
+                                     FX32_ONE);
     }
     effect->frame3D++;
     model = GFL_G3DMgrGetActor(effect->g3dManager, effect->actors[effect->modelActor].actor);
     if (effect->state3D == EFFECT_3D_FORWARD) {
-        running1 = GFL_G3DActorStepAnmFrame(model, 1, FX32_CONST(5));
-        running2 = GFL_G3DActorStepAnmFrame(model, 2, FX32_CONST(5));
+        running1 = GFL_G3DActorStepAnmFrame(model, MODEL_ANIM_JOINT, FX32_CONST(5));
+        running2 = GFL_G3DActorStepAnmFrame(model, MODEL_ANIM_MATERIAL, FX32_CONST(5));
         if (running1 == FALSE && running2 == FALSE) {
             effect->state3D = EFFECT_3D_END;
         }
     } else if (effect->state3D == EFFECT_3D_REVERSE) {
-        running1 = GFL_G3DActorStepAnmFrame(model, 1, -FX32_CONST(2));
-        running2 = GFL_G3DActorStepAnmFrame(model, 2, -FX32_CONST(2));
+        running1 = GFL_G3DActorStepAnmFrame(model, MODEL_ANIM_JOINT, -FX32_CONST(2));
+        running2 = GFL_G3DActorStepAnmFrame(model, MODEL_ANIM_MATERIAL, -FX32_CONST(2));
         if (running1 == FALSE && running2 == FALSE) {
             effect->state3D = EFFECT_3D_IDLE;
         }

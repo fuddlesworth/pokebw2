@@ -62,6 +62,12 @@ enum {
     VIEW_PLAYED,
 };
 
+// The before- and after-evolution MCSS sprites; played views create only the after sprite
+enum {
+    SPRITE_BEFORE = 0,
+    SPRITE_AFTER = 1,
+};
+
 // What the pieces of a sprite are doing, as far as the view is concerned
 enum {
     PIECES_IDLE,
@@ -300,9 +306,9 @@ EvolutionDemoView *EvolutionDemoView_Create(HeapID heapId, BOOL played, PartyPkm
     view->cancelled = FALSE;
     view->scale = 16.0f;
     if (view->played == FALSE) {
-        view->current = 0;
+        view->current = SPRITE_BEFORE;
     } else {
-        view->current = 1;
+        view->current = SPRITE_AFTER;
     }
     EvolutionDemoView_InitMcss(view);
     EvolutionDemoView_AddMcss(view);
@@ -573,27 +579,27 @@ static void EvolutionDemoView_AddMcss(EvolutionDemoView *view) {
     scale.z = FX32_ONE;
     if (view->played == FALSE) {
         for (i = 0; i < NELEMS(view->mcss); i++) {
-            if (i == 0) {
-                view->mcss[i] =
-                    MCSSSys_AddPartyPkm(view->mcssSystem, view->pkm, 0, 0, EvolutionDemoView_GetSpriteY(view->pkm), 0);
+            if (i == SPRITE_BEFORE) {
+                view->mcss[i] = MCSSSys_AddPartyPkm(view->mcssSystem, view->pkm, POKEGRA_DIR_FRONT, 0,
+                                                    EvolutionDemoView_GetSpriteY(view->pkm), 0);
             } else {
-                view->mcss[i] = MCSSSys_AddPartyPkm(view->mcssSystem, view->evolved, 0, 0,
+                view->mcss[i] = MCSSSys_AddPartyPkm(view->mcssSystem, view->evolved, POKEGRA_DIR_FRONT, 0,
                                                     EvolutionDemoView_GetSpriteY(view->evolved), 0);
             }
             MCSS_SetNoShadow(view->mcss[i], 1);
             MCSS_SetLoopAnimation(view->mcss[i]);
             MCSS_SetScale(view->mcss[i], &scale);
-            if (i != 0) {
+            if (i != SPRITE_BEFORE) {
                 MCSS_Hide(view->mcss[i]);
                 MCSS_PauseAnimation(view->mcss[i]);
             }
         }
     } else {
-        view->mcss[1] =
-            MCSSSys_AddPartyPkm(view->mcssSystem, view->pkm, 0, 0, EvolutionDemoView_GetSpriteY(view->pkm), 0);
-        MCSS_SetNoShadow(view->mcss[1], 1);
-        MCSS_SetLoopAnimation(view->mcss[1]);
-        MCSS_SetScale(view->mcss[1], &scale);
+        view->mcss[SPRITE_AFTER] = MCSSSys_AddPartyPkm(view->mcssSystem, view->pkm, POKEGRA_DIR_FRONT, 0,
+                                                       EvolutionDemoView_GetSpriteY(view->pkm), 0);
+        MCSS_SetNoShadow(view->mcss[SPRITE_AFTER], 1);
+        MCSS_SetLoopAnimation(view->mcss[SPRITE_AFTER]);
+        MCSS_SetScale(view->mcss[SPRITE_AFTER], &scale);
     }
     EvolutionDemoView_SetMcssOffsets(view);
 }
@@ -610,7 +616,7 @@ static void EvolutionDemoView_RemoveMcss(EvolutionDemoView *view) {
 }
 
 static u8 EvolutionDemoView_OtherMcss(u8 index) {
-    return index == 0 ? 1 : 0;
+    return index == SPRITE_BEFORE ? SPRITE_AFTER : SPRITE_BEFORE;
 }
 
 static void EvolutionDemoView_SetMcssOffsets(EvolutionDemoView *view) {
@@ -677,7 +683,7 @@ static void EvolutionDemoView_InitPieces(EvolutionDemoView *view) {
     sex = PokeParty_GetSex(view->pkm);
     rare = PokeParty_IsRare(view->pkm);
     pieces = manager->pieces[0] =
-        EvolutionDemoPieces_Create(species, form, sex, rare, 0, 0, 0x26000, 0x960, view->heapId);
+        EvolutionDemoPieces_Create(species, form, sex, rare, POKEGRA_DIR_FRONT, FALSE, 0x26000, 0x960, view->heapId);
     if (view->played == FALSE) {
         EvolutionDemoPieces_Init(pieces, view->heapId);
         pieces->state = PIECES_WHITE;
@@ -690,8 +696,8 @@ static void EvolutionDemoView_InitPieces(EvolutionDemoView *view) {
         form = PokeParty_GetParam(view->evolved, PKM_PARAM_FORM, NULL);
         sex = PokeParty_GetSex(view->evolved);
         rare = PokeParty_IsRare(view->evolved);
-        pieces = manager->pieces[1] =
-            EvolutionDemoPieces_Create(species, form, sex, rare, 0, 0, 0x28000, 0x980, view->heapId);
+        pieces = manager->pieces[1] = EvolutionDemoPieces_Create(species, form, sex, rare, POKEGRA_DIR_FRONT, FALSE,
+                                                                 0x28000, 0x980, view->heapId);
         EvolutionDemoPieces_Init(pieces, view->heapId);
         pieces->state = PIECES_WHITE;
         EvolutionDemoPieces_SetFade(pieces, view->heapId, GX_RGB(31, 31, 31), 31, 31, 0, 31);
