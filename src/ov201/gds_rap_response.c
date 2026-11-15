@@ -11,11 +11,15 @@
 
 // Each answer's result is 0 for a success; the others are the server's errors of the request
 
+enum {
+    GDS_RAP_RESPONSE_SUCCESS = 0,
+};
+
 BOOL GdsRapResponse_MusicalShotUpload(GdsRapWork *gdsrap, POKE_NET_RESPONSE *res) {
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
@@ -33,7 +37,7 @@ BOOL GdsRapResponse_MusicalShotDownload(GdsRapWork *gdsrap, POKE_NET_RESPONSE *r
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
@@ -68,7 +72,7 @@ BOOL GdsRapResponse_BattleVideoUpload(GdsRapWork *gdsrap, POKE_NET_RESPONSE *res
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
@@ -94,7 +98,7 @@ BOOL GdsRapResponse_BattleVideoSearch(GdsRapWork *gdsrap, POKE_NET_RESPONSE *res
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
@@ -135,7 +139,7 @@ BOOL GdsRapResponse_BattleVideoDownload(GdsRapWork *gdsrap, POKE_NET_RESPONSE *r
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
@@ -164,7 +168,7 @@ BOOL GdsRapResponse_BattleVideoFavorite(GdsRapWork *gdsrap, POKE_NET_RESPONSE *r
     BOOL ret = FALSE;
 
     switch (res->Result) {
-    case 0:
+    case GDS_RAP_RESPONSE_SUCCESS:
         ret = TRUE;
         break;
     case 1:
