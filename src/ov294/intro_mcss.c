@@ -113,7 +113,8 @@ void IntroMcss_ClearAnimationEnded(IntroMcss *mcss, u8 index) {
 }
 
 void IntroMcss_SetAlpha(IntroMcss *mcss, u8 index, u32 alpha) {
-    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 1, 9, 0, 0);
+    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG0, (GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG3), 0,
+                       0);
     if (alpha > 31) {
         alpha = 31;
     }
@@ -164,7 +165,7 @@ BOOL IntroMcss_DecreaseY(IntroMcss *mcss, fx32 step, fx32 min) {
     VecFx32 position;
     BOOL reached;
 
-    MCSS_GetPosition(mcss->sprites[1].mcss, &position);
+    MCSS_GetPosition(mcss->sprites[INTRO_SPRITE_POKEMON].mcss, &position);
     position.y -= step;
     if (position.y <= min) {
         position.y = min;
@@ -172,18 +173,18 @@ BOOL IntroMcss_DecreaseY(IntroMcss *mcss, fx32 step, fx32 min) {
     } else {
         reached = FALSE;
     }
-    MCSS_SetPosition(mcss->sprites[1].mcss, &position);
+    MCSS_SetPosition(mcss->sprites[INTRO_SPRITE_POKEMON].mcss, &position);
     return reached;
 }
 
 // Plays the animation of sprite 1 again every 200 to 280 frames, keeping it still in between
 void IntroMcss_Update(IntroMcss *mcss) {
-    if (mcss->sprites[1].animationEnded) {
+    if (mcss->sprites[INTRO_SPRITE_POKEMON].animationEnded) {
         if (mcss->idleTimer == 0) {
             mcss->idleTimer = GFL_RandomMTRange(5) * 20 + 200;
             IntroMcss_SetAnimation(mcss, INTRO_SPRITE_POKEMON, 0, TRUE);
         } else {
-            MCSS_PauseAnimation(mcss->sprites[1].mcss);
+            MCSS_PauseAnimation(mcss->sprites[INTRO_SPRITE_POKEMON].mcss);
             mcss->idleTimer--;
         }
     }

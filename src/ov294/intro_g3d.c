@@ -30,6 +30,24 @@ static const VecFx32 sPosition = { 0, 0, FX32_ONE };
 static const VecFx32 sUpVector = { 0, FX32_ONE, 0 };
 static const VecFx32 sTarget = { 0, 0, -FX32_ONE };
 
+// Resource-table slots and actor animation slots are separate domains.
+enum {
+    INTRO_G3D_RESOURCE_MODEL = 0,
+    INTRO_G3D_RESOURCE_GENDER_JOINT,
+    INTRO_G3D_RESOURCE_GENDER_MATERIAL,
+    INTRO_G3D_RESOURCE_GENDER_TEXTURE_PATTERN,
+    INTRO_G3D_RESOURCE_OPEN_JOINT,
+    INTRO_G3D_RESOURCE_OPEN_MATERIAL,
+};
+
+enum {
+    INTRO_G3D_ANIM_GENDER_JOINT = 0,
+    INTRO_G3D_ANIM_GENDER_MATERIAL,
+    INTRO_G3D_ANIM_GENDER_TEXTURE_PATTERN,
+    INTRO_G3D_ANIM_OPEN_JOINT,
+    INTRO_G3D_ANIM_OPEN_MATERIAL,
+};
+
 // The model and its animations, which differ by version
 // clang-format off
 static const G3DSceneResourceSetup sResources[] = {
@@ -43,11 +61,13 @@ static const G3DSceneResourceSetup sResources[] = {
 // clang-format on
 
 static const G3DSceneAnimationSetup sAnimations[] = {
-    { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 },
+    { INTRO_G3D_RESOURCE_GENDER_JOINT, 0 },           { INTRO_G3D_RESOURCE_GENDER_MATERIAL, 0 },
+    { INTRO_G3D_RESOURCE_GENDER_TEXTURE_PATTERN, 0 }, { INTRO_G3D_RESOURCE_OPEN_JOINT, 0 },
+    { INTRO_G3D_RESOURCE_OPEN_MATERIAL, 0 },
 };
 
 static const G3DSceneActorSetup sActors[] = {
-    { 0, 0, 0, 0, sAnimations, NELEMS(sAnimations) },
+    { INTRO_G3D_RESOURCE_MODEL, 0, INTRO_G3D_RESOURCE_MODEL, 0, sAnimations, NELEMS(sAnimations) },
 };
 
 static const G3DSceneSetup sSceneSetup = { sResources, NELEMS(sResources), sActors, NELEMS(sActors) };
@@ -71,11 +91,11 @@ IntroG3d *IntroG3d_Create(IntroGraphic *graphic, u32 mode, HeapID heapId) {
     if (mode != INTRO_MODE_PLAYER_NAMED && mode != INTRO_MODE_RIVAL_NAMED) {
         g3d->scene = GFL_G3DMgrNewScene(g3d->manager, &sSceneSetup);
         actor = GFL_G3DMgrGetActor(g3d->manager, g3d->scene);
-        GFL_G3DActorBindAnm(actor, 3);
-        GFL_G3DActorBindAnm(actor, 4);
-        GFL_G3DActorUnbindAnm(actor, 0);
-        GFL_G3DActorUnbindAnm(actor, 1);
-        GFL_G3DActorUnbindAnm(actor, 2);
+        GFL_G3DActorBindAnm(actor, INTRO_G3D_ANIM_OPEN_JOINT);
+        GFL_G3DActorBindAnm(actor, INTRO_G3D_ANIM_OPEN_MATERIAL);
+        GFL_G3DActorUnbindAnm(actor, INTRO_G3D_ANIM_GENDER_JOINT);
+        GFL_G3DActorUnbindAnm(actor, INTRO_G3D_ANIM_GENDER_MATERIAL);
+        GFL_G3DActorUnbindAnm(actor, INTRO_G3D_ANIM_GENDER_TEXTURE_PATTERN);
     } else {
         g3d->scene = SCENE_NONE;
     }
@@ -116,24 +136,25 @@ enum {
 
 BOOL IntroG3d_Open(IntroG3d *g3d) {
     G3DActor *actor;
-    BOOL playing3;
-    BOOL playing4;
+    BOOL playingOpenJoint;
+    BOOL playingOpenMaterial;
 
     switch (g3d->state) {
     case STEP_G3D_OPEN_START:
-        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 1, 9, 0, 0);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG0, (GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG3),
+                           0, 0);
         GFL_SndSEPlay(SEQ_SE_OPEN2);
         g3d->state++;
     case STEP_G3D_OPEN_ANIM:
         actor = GFL_G3DMgrGetActor(g3d->manager, g3d->scene);
-        playing3 = GFL_G3DActorStepAnmFrame(actor, 3, FX32_ONE);
-        playing4 = GFL_G3DActorStepAnmFrame(actor, 4, FX32_ONE);
-        if (!playing3 && !playing4) {
-            GFL_G3DActorUnbindAnm(actor, 3);
-            GFL_G3DActorUnbindAnm(actor, 4);
-            GFL_G3DActorBindAnm(actor, 0);
-            GFL_G3DActorBindAnm(actor, 1);
-            GFL_G3DActorBindAnm(actor, 2);
+        playingOpenJoint = GFL_G3DActorStepAnmFrame(actor, INTRO_G3D_ANIM_OPEN_JOINT, FX32_ONE);
+        playingOpenMaterial = GFL_G3DActorStepAnmFrame(actor, INTRO_G3D_ANIM_OPEN_MATERIAL, FX32_ONE);
+        if (!playingOpenJoint && !playingOpenMaterial) {
+            GFL_G3DActorUnbindAnm(actor, INTRO_G3D_ANIM_OPEN_JOINT);
+            GFL_G3DActorUnbindAnm(actor, INTRO_G3D_ANIM_OPEN_MATERIAL);
+            GFL_G3DActorBindAnm(actor, INTRO_G3D_ANIM_GENDER_JOINT);
+            GFL_G3DActorBindAnm(actor, INTRO_G3D_ANIM_GENDER_MATERIAL);
+            GFL_G3DActorBindAnm(actor, INTRO_G3D_ANIM_GENDER_TEXTURE_PATTERN);
             IntroG3d_SetFrame(g3d, 60);
             g3d->state++;
         }
@@ -152,20 +173,20 @@ void IntroG3d_SetMode(IntroG3d *g3d, u32 mode) {
     g3d->mode = mode;
     g3d->unk20 = 0;
     switch (mode) {
-    case 0:
+    case INTRO_G3D_MODE_INITIAL:
         g3d->frame = 60;
-        g3d->mode = 1;
+        g3d->mode = INTRO_G3D_MODE_PREVIEW_MALE;
         break;
-    case 1:
+    case INTRO_G3D_MODE_PREVIEW_MALE:
         g3d->frame = 70;
         break;
-    case 2:
+    case INTRO_G3D_MODE_PREVIEW_FEMALE:
         g3d->frame = 50;
         break;
-    case 3:
+    case INTRO_G3D_MODE_CONFIRM_MALE:
         g3d->frame = 50;
         break;
-    case 4:
+    case INTRO_G3D_MODE_CONFIRM_FEMALE:
         g3d->frame = 70;
         break;
     }
@@ -173,30 +194,30 @@ void IntroG3d_SetMode(IntroG3d *g3d, u32 mode) {
 
 BOOL IntroG3d_Animate(IntroG3d *g3d) {
     switch (g3d->mode) {
-    case 0:
+    case INTRO_G3D_MODE_INITIAL:
         break;
-    case 1:
+    case INTRO_G3D_MODE_PREVIEW_MALE:
         g3d->frame--;
         IntroG3d_SetFrame(g3d, g3d->frame);
         if (g3d->frame == 50) {
             return TRUE;
         }
         break;
-    case 2:
+    case INTRO_G3D_MODE_PREVIEW_FEMALE:
         g3d->frame++;
         IntroG3d_SetFrame(g3d, g3d->frame);
         if (g3d->frame == 70) {
             return TRUE;
         }
         break;
-    case 3:
+    case INTRO_G3D_MODE_CONFIRM_MALE:
         g3d->frame--;
         IntroG3d_SetFrame(g3d, g3d->frame);
         if (g3d->frame == 0) {
             return TRUE;
         }
         break;
-    case 4:
+    case INTRO_G3D_MODE_CONFIRM_FEMALE:
         g3d->frame++;
         IntroG3d_SetFrame(g3d, g3d->frame);
         if (g3d->frame == 120) {
@@ -208,7 +229,7 @@ BOOL IntroG3d_Animate(IntroG3d *g3d) {
 }
 
 BOOL IntroG3d_AnimateBack(IntroG3d *g3d) {
-    if (g3d->mode == 3) {
+    if (g3d->mode == INTRO_G3D_MODE_CONFIRM_MALE) {
         IntroG3d_SetFrame(g3d, ++g3d->frame);
     } else {
         IntroG3d_SetFrame(g3d, --g3d->frame);
@@ -223,7 +244,7 @@ void IntroG3d_SetFrame(IntroG3d *g3d, u32 frame) {
     G3DActor *actor = GFL_G3DMgrGetActor(g3d->manager, g3d->scene);
     fx32 value = FX32_CONST(frame);
 
-    GFL_G3DActorSetAnmFrame(actor, 0, &value);
-    GFL_G3DActorSetAnmFrame(actor, 1, &value);
-    GFL_G3DActorSetAnmFrame(actor, 2, &value);
+    GFL_G3DActorSetAnmFrame(actor, INTRO_G3D_ANIM_GENDER_JOINT, &value);
+    GFL_G3DActorSetAnmFrame(actor, INTRO_G3D_ANIM_GENDER_MATERIAL, &value);
+    GFL_G3DActorSetAnmFrame(actor, INTRO_G3D_ANIM_GENDER_TEXTURE_PATTERN, &value);
 }

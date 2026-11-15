@@ -2,6 +2,7 @@
 #include "constants/arc.h"
 #include "constants/narc_intro.h"
 #include "constants/sound.h"
+#include "constants/species.h"
 #include "demo/intro.h"
 #include "demo/intro_script.h"
 #include "gfl/arc.h"
@@ -24,11 +25,17 @@
 #include "system/mcss.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "text/system/game_start.h"
 
 // Runs the intro's scripts (intro_script.c)
 
 // Up to this many commands run at once
 #define RUNNING_MAX 8
+
+enum {
+    INTRO_YES_NO_YES = 0,
+    INTRO_YES_NO_NO,
+};
 
 typedef struct {
     u32 state;
@@ -108,7 +115,7 @@ static BOOL IntroCmd_Talk(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SaveStart(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SavePause(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SaveResume(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
-static BOOL IntroCmd_Save43(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
+static BOOL IntroCmd_SaveNop(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SaveWait(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SetMsgLanguage(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
 static BOOL IntroCmd_SetGender(IntroCmd *cmd, IntroCmdWork *work, s32 *args);
@@ -200,7 +207,7 @@ static IntroCmdFunc sCommands[] = {
     [INTRO_CMD_SAVE_START] = IntroCmd_SaveStart,
     [INTRO_CMD_SAVE_PAUSE] = IntroCmd_SavePause,
     [INTRO_CMD_SAVE_RESUME] = IntroCmd_SaveResume,
-    [INTRO_CMD_SAVE_43] = IntroCmd_Save43,
+    [INTRO_CMD_SAVE_NOP] = IntroCmd_SaveNop,
     [INTRO_CMD_SAVE_WAIT] = IntroCmd_SaveWait,
     [INTRO_CMD_OPEN_BAND] = IntroCmd_OpenBand,
     [INTRO_CMD_CLOSE_BAND] = IntroCmd_CloseBand,
@@ -238,7 +245,7 @@ static void IntroCmd_FinishYesNo(IntroCmd *cmd, s32 choice) {
     const IntroCmdEntry *entry = &IntroScript_Get(cmd->script)[cmd->pc];
 
     IntroMsg_CloseMenu(cmd->msg);
-    if (choice == 0) {
+    if (choice == INTRO_YES_NO_YES) {
         if (entry != NULL) {
             IntroCmd_Start(cmd, entry);
         }
@@ -261,9 +268,9 @@ static BOOL IntroCmd_YesNo(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
     switch (work->state) {
     case STEP_YESNO_SETUP:
         items[0].message = args[0];
-        items[0].value = 0;
+        items[0].value = INTRO_YES_NO_YES;
         items[1].message = args[1];
-        items[1].value = 1;
+        items[1].value = INTRO_YES_NO_NO;
         IntroMsg_OpenMenu(cmd->msg, items, 2, args[2]);
         work->state++;
         break;
@@ -274,7 +281,7 @@ static BOOL IntroCmd_YesNo(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
             IntroCmd_FinishYesNo(cmd, choice);
             return TRUE;
         } else if (result == INTRO_MENU_CANCELLED) {
-            IntroCmd_FinishYesNo(cmd, 1);
+            IntroCmd_FinishYesNo(cmd, INTRO_YES_NO_NO);
             return TRUE;
         }
         break;
@@ -450,7 +457,7 @@ static BOOL IntroCmd_ClearMessage(IntroCmd *cmd, IntroCmdWork *work, s32 *args) 
 }
 
 static BOOL IntroCmd_AddSprite(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
-    if (args[1] == 0) {
+    if (args[1] == SPECIES_NONE) {
         IntroMcss_Add(cmd->mcss, args[2], args[3], 0, &sProfessorLoadInfo, args[0]);
     } else {
         IntroMcss_AddPokemon(cmd->mcss, args[2], args[3], FX32_ONE, args[1], args[0]);
@@ -581,7 +588,7 @@ static BOOL IntroCmd_SaveResume(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
     return TRUE;
 }
 
-static BOOL IntroCmd_Save43(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
+static BOOL IntroCmd_SaveNop(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
     SaveControlIntr_Nop(cmd->saveTask);
     return TRUE;
 }
@@ -599,7 +606,7 @@ static BOOL IntroCmd_SaveWait(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
             return TRUE;
         }
         // Creating save data. Please wait...
-        IntroMsg_Print(cmd->msg, 5, FALSE);
+        IntroMsg_Print(cmd->msg, GameStart_Text_CreatingSaveDataPlease, FALSE);
         work->state++;
         break;
     case STEP_SAVE_SHOW_ICON:
@@ -632,7 +639,7 @@ static BOOL IntroCmd_SetMsgLanguage(IntroCmd *cmd, IntroCmdWork *work, s32 *args
 static BOOL IntroCmd_SetGender(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
     PlayerInfo *info = cmd->param->playerInfo;
 
-    if (args[0] == 0) {
+    if (args[0] == GENDER_MALE) {
         setTrainerGender(info, GENDER_MALE);
     } else {
         setTrainerGender(info, GENDER_FEMALE);
@@ -682,7 +689,8 @@ static BOOL IntroCmd_PokemonAppear(IntroCmd *cmd, IntroCmdWork *work, s32 *args)
 }
 
 static BOOL IntroCmd_Particles(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
-    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 1, 9, 0, 0);
+    G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_BG0, (GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BG3), 0,
+                       0);
     IntroParticle_SetPos(cmd->particle, args[0], args[1], 0);
     return TRUE;
 }
@@ -716,25 +724,25 @@ enum {
 static BOOL IntroCmd_ChooseGender(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
     switch (work->state) {
     case STEP_GENDER_SETUP:
-        IntroG3d_SetMode(cmd->g3d, 0);
+        IntroG3d_SetMode(cmd->g3d, INTRO_G3D_MODE_INITIAL);
         work->state = STEP_GENDER_ANIM_BACK;
         break;
     case STEP_GENDER_WAIT_KEY:
         if (GCTX_HIDGetPressedKeys() & PAD_KEY_RIGHT) {
-            if (work->counter == 1) {
+            if (work->counter == GENDER_FEMALE) {
                 break;
             }
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            IntroG3d_SetMode(cmd->g3d, 2);
-            work->counter = 1;
+            IntroG3d_SetMode(cmd->g3d, INTRO_G3D_MODE_PREVIEW_FEMALE);
+            work->counter = GENDER_FEMALE;
             work->state = STEP_GENDER_ANIM_BACK;
         } else if (GCTX_HIDGetPressedKeys() & PAD_KEY_LEFT) {
-            if (work->counter == 0) {
+            if (work->counter == GENDER_MALE) {
                 break;
             }
             GFL_SndSEPlay(SEQ_SE_SELECT1);
-            IntroG3d_SetMode(cmd->g3d, 1);
-            work->counter = 0;
+            IntroG3d_SetMode(cmd->g3d, INTRO_G3D_MODE_PREVIEW_MALE);
+            work->counter = GENDER_MALE;
             work->state = STEP_GENDER_ANIM_BACK;
         } else if (GCTX_HIDGetPressedKeys() & PAD_BUTTON_A) {
             GFL_SndSEPlay(SEQ_SE_DECIDE2);
@@ -744,12 +752,12 @@ static BOOL IntroCmd_ChooseGender(IntroCmd *cmd, IntroCmdWork *work, s32 *args) 
     case STEP_GENDER_SET: {
         PlayerInfo *info = cmd->param->playerInfo;
 
-        if (work->counter == 0) {
+        if (work->counter == GENDER_MALE) {
             setTrainerGender(info, GENDER_MALE);
-            IntroG3d_SetMode(cmd->g3d, 3);
+            IntroG3d_SetMode(cmd->g3d, INTRO_G3D_MODE_CONFIRM_MALE);
         } else {
             setTrainerGender(info, GENDER_FEMALE);
-            IntroG3d_SetMode(cmd->g3d, 4);
+            IntroG3d_SetMode(cmd->g3d, INTRO_G3D_MODE_CONFIRM_FEMALE);
         }
         work->state++;
         break;
@@ -881,7 +889,8 @@ static BOOL IntroCmd_ObjFadeIn(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
 
     switch (work->state) {
     case STEP_OBJ_IN_START:
-        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 0, 12, 0, 16);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_NONE, (GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_BG3),
+                           0, 16);
         ClActor_SetObjMode(cmd->obj, GX_OAM_MODE_XLU);
         ClActor_SetVisible(cmd->obj, TRUE);
         work->state++;
@@ -912,7 +921,8 @@ static BOOL IntroCmd_ObjFadeOut(IntroCmd *cmd, IntroCmdWork *work, s32 *args) {
 
     switch (work->state) {
     case STEP_OBJ_OUT_START:
-        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, 0, 12, 16, 0);
+        G2x_SetBlendAlpha_(REG_BLDCNT_ADDR, GX_BLEND_PLANEMASK_NONE, (GX_BLEND_PLANEMASK_BG2 | GX_BLEND_PLANEMASK_BG3),
+                           16, 0);
         for (i = 0; i < 3; i++) {
             ClActor_SetObjMode(cmd->obj, GX_OAM_MODE_XLU);
         }

@@ -5,6 +5,7 @@
 #include "demo/intro.h"
 #include "gfl/msg.h"
 #include "gfl/std.h"
+#include "nitro/gx.h"
 #include "system/gf_font.h"
 
 // The intro's process. ov294 has no file name for this file, which is named after the others (intro_cmd.c and so on)
@@ -42,7 +43,7 @@ BOOL IntroProc_Init(GameProc *proc, u32 *state, void *param, void *work) {
     MI_CpuFill8(wk, 0, sizeof(IntroWork));
     wk->heapId = HEAPID_INTRO;
     wk->param = param;
-    wk->graphic = IntroGraphic_Create(1, wk->param->mode, wk->heapId);
+    wk->graphic = IntroGraphic_Create(GX_DISP_SELECT_MAIN_SUB, wk->param->mode, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, 0, wk->heapId);
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_MIC_TEST, wk->heapId);
     wk->mcss = IntroMcss_Create(wk->heapId, wk->param->mode);

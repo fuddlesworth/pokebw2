@@ -118,6 +118,16 @@ BOOL IntroMcss_DecreaseY(IntroMcss *mcss, fx32 step, fx32 min);
 void IntroMcss_Update(IntroMcss *mcss);
 
 // intro_g3d.c
+// The gender model's animation modes. Stored INITIAL is idle; SetMode(INITIAL)
+// starts from frame 60 and changes the stored mode to PREVIEW_MALE.
+enum {
+    INTRO_G3D_MODE_INITIAL = 0,
+    INTRO_G3D_MODE_PREVIEW_MALE,
+    INTRO_G3D_MODE_PREVIEW_FEMALE,
+    INTRO_G3D_MODE_CONFIRM_MALE,
+    INTRO_G3D_MODE_CONFIRM_FEMALE,
+};
+
 IntroG3d *IntroG3d_Create(IntroGraphic *graphic, u32 mode, HeapID heapId);
 void IntroG3d_Free(IntroG3d *g3d);
 void IntroG3d_Draw(IntroG3d *g3d);
