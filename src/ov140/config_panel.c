@@ -75,6 +75,27 @@ enum {
 #define ACTOR_COUNT 14
 #define ACTOR_ITEM 2
 
+// The knob actor; slots0 and13 are not created here
+enum {
+    ACTOR_KNOB = 1,
+};
+
+// Value-frame animation roles, separate from palette slots
+enum {
+    FRAME_ANIM_SET = 0,
+    FRAME_ANIM_UNSET = 1,
+    FRAME_ANIM_UNSET_CURSOR = 2,
+    FRAME_ANIM_SET_CURSOR = 3,
+};
+
+// Palette roles selected by the text and cursor branches; no color names are inferred
+enum {
+    PALETTE_TEXT_NORMAL = 0,
+    PALETTE_VALUE_UNSET = 3,
+    PALETTE_CURSOR = 7,
+    PALETTE_VALUE_UNSET_CURSOR = 12,
+};
+
 // The options and all their values
 enum {
     OPTION_TEXT_SPEED,
@@ -144,6 +165,15 @@ enum {
     ITEM_TEXT_SPEED_0,
     ITEM_TEXT_SPEED_1,
     ITEM_TEXT_SPEED_2,
+    // The remaining option values, in the same order as their labels
+    ITEM_BATTLE_SCENE_ON = 3,
+    ITEM_BATTLE_SCENE_OFF = 4,
+    ITEM_BATTLE_STYLE_SHIFT = 5,
+    ITEM_BATTLE_STYLE_SET = 6,
+    ITEM_SOUND_STEREO = 7,
+    ITEM_SOUND_MONO = 8,
+    ITEM_SAVE_BEFORE_IR_SAVE = 9,
+    ITEM_SAVE_BEFORE_IR_NO_SAVE = 10,
 };
 
 // The steps of the fades
@@ -469,27 +499,27 @@ static const BGSysLCDConfig sConfigPanelLCDConfig = { GX_DISPMODE_GRAPHICS, GX_B
 static const ConfigPanelBgSetup sConfigPanelBgSetups[BG_COUNT] = {
     { 0,
       { 0, 0, 0x800, 0, BGRES_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x0000), GX_BG_CHARBASE(0x4000), 0x8000,
-        GX_BG_EXTPLTT_01, 1, 0, 0 },
+        GX_BG_EXTPLTT_01, 1, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
     { 1,
       { 0, 0, 0x1000, 0, BGRES_256x512, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x0800), GX_BG_CHARBASE(0x8000), 0x8000,
-        GX_BG_EXTPLTT_01, 2, 0, 0 },
+        GX_BG_EXTPLTT_01, 2, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
     { 2,
       { 0, 0, 0x1000, 0, BGRES_256x512, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x1800), GX_BG_CHARBASE(0x10000), 0x8000,
-        GX_BG_EXTPLTT_01, 3, 0, 0 },
+        GX_BG_EXTPLTT_01, 3, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
     { 3,
       { 0, 0, 0x800, 0, BGRES_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x2800), GX_BG_CHARBASE(0x14000), 0x8000,
-        GX_BG_EXTPLTT_01, 0, 0, 0 },
+        GX_BG_EXTPLTT_01, 0, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
     { 4,
       { 0, 0, 0x800, 0, BGRES_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x0000), GX_BG_CHARBASE(0x4000), 0x8000,
-        GX_BG_EXTPLTT_01, 0, 0, 0 },
+        GX_BG_EXTPLTT_01, 0, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
     { 5,
       { 0, 0, 0x800, 0, BGRES_256x256, GX_BG_COLORMODE_16, GX_BG_SCRBASE(0x0800), GX_BG_CHARBASE(0x8000), 0x8000,
-        GX_BG_EXTPLTT_01, 0, 0, 0 },
+        GX_BG_EXTPLTT_01, 0, GX_BG_AREAOVER_XLU, 0 },
       BGMODE_TEXT },
 };
 
@@ -506,12 +536,17 @@ static ConfigPanelLabel sConfigPanelLabels[LABEL_COUNT] = {
 };
 
 static const ConfigPanelItem sConfigPanelItems[ITEM_COUNT] = {
-    { OPTION_TEXT_SPEED, 0, 120, 0, 112, 0, 48, 24 },       { OPTION_TEXT_SPEED, 1, 165, 0, 160, 0, 48, 24 },
-    { OPTION_TEXT_SPEED, 2, 211, 0, 208, 0, 48, 24 },       { OPTION_BATTLE_SCENE, 0, 120, 24, 112, 24, 72, 24 },
-    { OPTION_BATTLE_SCENE, 1, 192, 24, 184, 24, 72, 24 },   { OPTION_BATTLE_STYLE, 0, 120, 48, 112, 48, 72, 24 },
-    { OPTION_BATTLE_STYLE, 1, 192, 48, 184, 48, 72, 24 },   { OPTION_SOUND, 0, 120, 72, 112, 72, 72, 24 },
-    { OPTION_SOUND, 1, 192, 72, 184, 72, 72, 24 },          { OPTION_SAVE_BEFORE_IR, 1, 120, 96, 112, 96, 72, 24 },
-    { OPTION_SAVE_BEFORE_IR, 0, 192, 96, 184, 96, 72, 24 },
+    { OPTION_TEXT_SPEED, CONFIG_TEXT_SPEED_SLOW, 120, 0, 112, 0, 48, 24 },
+    { OPTION_TEXT_SPEED, CONFIG_TEXT_SPEED_MID, 165, 0, 160, 0, 48, 24 },
+    { OPTION_TEXT_SPEED, CONFIG_TEXT_SPEED_FAST, 211, 0, 208, 0, 48, 24 },
+    { OPTION_BATTLE_SCENE, CONFIG_BATTLE_SCENE_ON, 120, 24, 112, 24, 72, 24 },
+    { OPTION_BATTLE_SCENE, CONFIG_BATTLE_SCENE_OFF, 192, 24, 184, 24, 72, 24 },
+    { OPTION_BATTLE_STYLE, CONFIG_BATTLE_STYLE_SHIFT, 120, 48, 112, 48, 72, 24 },
+    { OPTION_BATTLE_STYLE, CONFIG_BATTLE_STYLE_SET, 192, 48, 184, 48, 72, 24 },
+    { OPTION_SOUND, CONFIG_SOUND_STEREO, 120, 72, 112, 72, 72, 24 },
+    { OPTION_SOUND, CONFIG_SOUND_MONO, 192, 72, 184, 72, 72, 24 },
+    { OPTION_SAVE_BEFORE_IR, CONFIG_SAVE_BEFORE_IR_SAVE, 120, 96, 112, 96, 72, 24 },
+    { OPTION_SAVE_BEFORE_IR, CONFIG_SAVE_BEFORE_IR_NO_SAVE, 192, 96, 184, 96, 72, 24 },
 };
 
 // The buttons' areas of the touch screen
@@ -519,9 +554,11 @@ static const ConfigPanelRect sConfigPanelConfirmRect = { 112, 168, 184, 192 };
 static const ConfigPanelRect sConfigPanelQuitRect = { 184, 168, 256, 192 };
 
 static const ConfigPanelOption sConfigPanelOptions[OPTION_COUNT] = {
-    { ConfigPanel_Text_CanChooseFromThree, 3, { 0, 1, 2 } },  { ConfigPanel_Text_CanChooseWhetherView, 2, { 3, 4 } },
-    { ConfigPanel_Text_CanChooseSwitchPokemon, 2, { 5, 6 } }, { ConfigPanel_Text_CanChooseWayGame, 2, { 7, 8 } },
-    { ConfigPanel_Text_CanChooseSaveGame, 2, { 9, 10 } },
+    { ConfigPanel_Text_CanChooseFromThree, 3, { ITEM_TEXT_SPEED_0, ITEM_TEXT_SPEED_1, ITEM_TEXT_SPEED_2 } },
+    { ConfigPanel_Text_CanChooseWhetherView, 2, { ITEM_BATTLE_SCENE_ON, ITEM_BATTLE_SCENE_OFF } },
+    { ConfigPanel_Text_CanChooseSwitchPokemon, 2, { ITEM_BATTLE_STYLE_SHIFT, ITEM_BATTLE_STYLE_SET } },
+    { ConfigPanel_Text_CanChooseWayGame, 2, { ITEM_SOUND_STEREO, ITEM_SOUND_MONO } },
+    { ConfigPanel_Text_CanChooseSaveGame, 2, { ITEM_SAVE_BEFORE_IR_SAVE, ITEM_SAVE_BEFORE_IR_NO_SAVE } },
 };
 
 // The palettes of the rows on the screen, from the top
@@ -602,9 +639,9 @@ static void ConfigPanelGraphic_Init(ConfigPanelGraphic *graphic, HeapID heapId) 
     G2S_BlendNone();
     GX_SetVisibleWnd(GX_WNDMASK_NONE);
     GXS_SetVisibleWnd(GX_WNDMASK_NONE);
-    GFL_BGSysInitVRAM(0);
+    GFL_BGSysInitVRAM(GX_VRAM_NONE);
     GFL_BGSysSetVRAMBanks(&sConfigPanelVRAMConfig);
-    GFL_BGSysSetDisplayLayout(0);
+    GFL_BGSysSetDisplayLayout(GX_DISP_SELECT_SUB_MAIN);
     GFL_BGSysEnableEngines();
     GFL_BGSysDisableAllA();
     GFL_BGSysDisableAllB();
@@ -677,22 +714,22 @@ static void ConfigPanelBg_Init(ConfigPanelBg *bg, HeapID heapId) {
     GFL_BGSysFillChar(BG_CONFIRM, 0, 1, 0);
 
     arc = GFL_ArcSysCreateFileHandle(ARCID_CONFIG_PANEL, heapId);
-    GFL_G2DIOLoadArcNCLRDefault(arc, 1, 0, 0, 0, heapId);
+    GFL_G2DIOLoadArcNCLRDefault(arc, 1, PALTYPE_MAIN_BG, 0, 0, heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 13, BG_BAR, 0, 0, FALSE, heapId);
     loadBGScrToVramByFileNoReserveNegAlign(arc, 14, BG_BAR, 0, 0, FALSE, heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 0, BG_ROWS, 0, 0, FALSE, heapId);
     loadBGScrToVramByFileNoReserveNegAlign(arc, 2, BG_ROWS, 0, 0, FALSE, heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 16, BG_CONFIRM, 1, 0, FALSE, heapId);
-    GFL_G2DIOLoadArcNCLR(arc, 8, 0, 4 * 0x20, 15 * 0x20, 0x20, heapId);
+    GFL_G2DIOLoadArcNCLR(arc, 8, PALTYPE_MAIN_BG, 4 * 0x20, 15 * 0x20, 0x20, heapId);
     bg->titleCharBuf = GFL_G2DIOReadBGNCGRArc(arc, 15, FALSE, &bg->titleChars, heapId);
-    GFL_G2DIOLoadArcNCLRDefault(arc, 8, 4, 0, 0, heapId);
+    GFL_G2DIOLoadArcNCLRDefault(arc, 8, PALTYPE_SUB_BG, 0, 0, heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 7, 5, 0, 0, FALSE, heapId);
     loadBGScrToVramByFileNoReserveNegAlign(arc, 9, 5, 0, 0, FALSE, heapId);
     GFL_BGSysLoadArcNCGRStatic(arc, 16, BG_MESSAGE, 1, 0, FALSE, heapId);
     GFL_ArcToolFree(arc);
 
     buf = GFL_G2DIOReadNCLR(ARCID_CONFIG_PANEL, 1, &palette, heapId);
-    MI_CpuCopy8((u16 *)palette->pRawData + 7 * 16, bg->cursorPalette, sizeof(bg->cursorPalette));
+    MI_CpuCopy8((u16 *)palette->pRawData + PALETTE_CURSOR * 16, bg->cursorPalette, sizeof(bg->cursorPalette));
     GFL_HeapFree(buf);
 
     bg->windows[WINDOW_MESSAGE] = BmpWin_CreateDynamic(BG_MESSAGE, 1, 19, 30, 4, 4, TRUE);
@@ -723,7 +760,8 @@ static void ConfigPanelBg_Exit(ConfigPanelBg *bg) {
 
 // Pulses the cursor's color
 static void ConfigPanelBg_Main(ConfigPanelBg *bg) {
-    ConfigPanel_PulseColor(&bg->pulseColor, &bg->pulseAngle, 0x400, 7, 1, bg->cursorPalette[11], bg->cursorPalette[12]);
+    ConfigPanel_PulseColor(&bg->pulseColor, &bg->pulseAngle, 0x400, PALETTE_CURSOR, 1, bg->cursorPalette[11],
+                           bg->cursorPalette[12]);
 }
 
 static BmpWin *ConfigPanelBg_GetWindow(ConfigPanelBg *bg, u32 index) {
@@ -744,13 +782,13 @@ static void ConfigPanelBg_PrintLabels(ConfigPanelBg *bg) {
 
         x = 0;
         switch (i) {
-        case 0:
+        case ITEM_TEXT_SPEED_0:
             x = 7;
             break;
-        case 1:
+        case ITEM_TEXT_SPEED_1:
             x = 4;
             break;
-        case 2:
+        case ITEM_TEXT_SPEED_2:
             x = 2;
             break;
         }
@@ -758,7 +796,8 @@ static void ConfigPanelBg_PrintLabels(ConfigPanelBg *bg) {
         str = GFL_MsgDataLoadStrbufNew(msgData, sConfigPanelLabels[i].msgId);
         width = (x + GFL_FontGetBlockWidth(str, font, 0) + 7) / 8;
         label->width = width;
-        bg->windows[i] = BmpWin_CreateDynamic(BG_TEXT, label->x, label->y, width, label->height, 0, TRUE);
+        bg->windows[i] =
+            BmpWin_CreateDynamic(BG_TEXT, label->x, label->y, width, label->height, PALETTE_TEXT_NORMAL, TRUE);
         GFL_BitmapFill(BmpWin_GetBitmap(bg->windows[i]), 0);
         GFL_TextRendererDrawToBitmap(BmpWin_GetBitmap(bg->windows[i]), x, 0, str, font);
         BmpWin_Transfer(bg->windows[i]);
@@ -837,7 +876,8 @@ static void ConfigPanelObj_Init(ConfigPanelObj *obj, const BGSysVRAMConfig *vram
     for (i = ACTOR_ITEM; i < ACTOR_ITEM + ITEM_COUNT; i++) {
         setup.x = sConfigPanelItems[i - ACTOR_ITEM].x;
         setup.y = sConfigPanelItems[i - ACTOR_ITEM].y;
-        obj->actors[i] = ClActor_Create(obj->unit, obj->chars, obj->palette, obj->cellAnims, &setup, 0, heapId);
+        obj->actors[i] =
+            ClActor_Create(obj->unit, obj->chars, obj->palette, obj->cellAnims, &setup, CLACT_SURFACE_MAIN, heapId);
         ClActor_SetAutoAnim(obj->actors[i], FALSE);
     }
 
@@ -846,8 +886,9 @@ static void ConfigPanelObj_Init(ConfigPanelObj *obj, const BGSysVRAMConfig *vram
     setup.y = 96;
     setup.bgPriority = 2;
     setup.priority = 1;
-    obj->actors[1] = ClActor_Create(obj->unit, obj->knobChars, obj->palette, obj->knobCellAnims, &setup, 0, heapId);
-    ClActor_SetPalette(obj->actors[1], 6, 1);
+    obj->actors[ACTOR_KNOB] =
+        ClActor_Create(obj->unit, obj->knobChars, obj->palette, obj->knobCellAnims, &setup, CLACT_SURFACE_MAIN, heapId);
+    ClActor_SetPalette(obj->actors[ACTOR_KNOB], 6, CLACT_PALETTE_REPLACE);
 
     if (GFL_NetIsInitialized()) {
         GFL_NetSetIconScreen(TRUE, heapId);
@@ -1304,7 +1345,7 @@ static void ConfigPanelScroll_Init(ConfigPanelScroll *scroll, u16 textBg, u16 ro
         ConfigPanelScroll_Draw(scroll, FALSE);
         scroll->update = FALSE;
     } else {
-        scroll->cursor = 0;
+        scroll->cursor = OPTION_TEXT_SPEED;
         ConfigPanelScroll_Draw(scroll, TRUE);
         scroll->update = TRUE;
     }
@@ -1333,7 +1374,7 @@ static void ConfigPanelScroll_Main(ConfigPanelScroll *scroll, ConfigPanelUi *ui,
         // fallthrough
     case INPUT_UP:
         scroll->repeat = 0;
-        if (scroll->cursor == 0) {
+        if (scroll->cursor == OPTION_TEXT_SPEED) {
             scroll->cursor = CURSOR_MAX;
         } else {
             scroll->cursor--;
@@ -1351,7 +1392,7 @@ static void ConfigPanelScroll_Main(ConfigPanelScroll *scroll, ConfigPanelUi *ui,
     case INPUT_DOWN:
         scroll->repeat = 0;
         if (scroll->cursor == CURSOR_MAX) {
-            scroll->cursor = 0;
+            scroll->cursor = OPTION_TEXT_SPEED;
         } else {
             scroll->cursor++;
         }
@@ -1486,32 +1527,35 @@ static void ConfigPanelScroll_Draw(ConfigPanelScroll *scroll, BOOL cursorVisible
         if (scroll->cursor == sConfigPanelItems[i].option && cursorVisible) {
             if (ConfigPanelOptions_IsSet(&scroll->options, i)) {
                 GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 7);
+                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, PALETTE_CURSOR);
             } else {
                 GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 12);
+                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height,
+                                         PALETTE_VALUE_UNSET_CURSOR);
             }
         } else {
             if (ConfigPanelOptions_IsSet(&scroll->options, i)) {
                 GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 0);
+                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height,
+                                         PALETTE_TEXT_NORMAL);
             } else {
                 GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 3);
+                                         sConfigPanelLabels[i].width, sConfigPanelLabels[i].height,
+                                         PALETTE_VALUE_UNSET);
             }
         }
     }
     for (i = WINDOW_OPTION; i < LABEL_COUNT; i++) {
         if (i - WINDOW_OPTION == scroll->cursor && cursorVisible) {
             GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                     sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 7);
+                                     sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, PALETTE_CURSOR);
         } else {
             GFL_BGSysSetScrPaletteNo(scroll->textBg, sConfigPanelLabels[i].x, sConfigPanelLabels[i].y,
-                                     sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, 0);
+                                     sConfigPanelLabels[i].width, sConfigPanelLabels[i].height, PALETTE_TEXT_NORMAL);
         }
     }
     if (cursorVisible) {
-        GFL_BGSysSetScrPaletteNo(scroll->rowsBg, 0, scroll->cursor * 3 + 2, 32, 3, 7);
+        GFL_BGSysSetScrPaletteNo(scroll->rowsBg, 0, scroll->cursor * 3 + 2, 32, 3, PALETTE_CURSOR);
     }
     GFL_BGSysQueueScrLoad(scroll->rowsBg);
     GFL_BGSysQueueScrLoad(scroll->textBg);
@@ -1519,15 +1563,15 @@ static void ConfigPanelScroll_Draw(ConfigPanelScroll *scroll, BOOL cursorVisible
     for (i = 0; i < ITEM_COUNT; i++) {
         if (scroll->cursor == sConfigPanelItems[i].option && cursorVisible) {
             if (ConfigPanelOptions_IsSet(&scroll->options, i)) {
-                ClActor_ChangeSequence(scroll->actors[i], 3);
+                ClActor_ChangeSequence(scroll->actors[i], FRAME_ANIM_SET_CURSOR);
             } else {
-                ClActor_ChangeSequence(scroll->actors[i], 2);
+                ClActor_ChangeSequence(scroll->actors[i], FRAME_ANIM_UNSET_CURSOR);
             }
         } else {
             if (ConfigPanelOptions_IsSet(&scroll->options, i)) {
-                ClActor_ChangeSequence(scroll->actors[i], 0);
+                ClActor_ChangeSequence(scroll->actors[i], FRAME_ANIM_SET);
             } else {
-                ClActor_ChangeSequence(scroll->actors[i], 1);
+                ClActor_ChangeSequence(scroll->actors[i], FRAME_ANIM_UNSET);
             }
         }
     }
@@ -1549,7 +1593,7 @@ static void ConfigPanelScroll_Move(ConfigPanelScroll *scroll, int dy, int min, i
     for (i = 0; i < ITEM_COUNT; i++) {
         pos.x = sConfigPanelItems[i].x;
         pos.y = scroll->y + sConfigPanelItems[i].y;
-        ClActor_SetSurfacePos(scroll->actors[i], &pos, 0);
+        ClActor_SetSurfacePos(scroll->actors[i], &pos, CLACT_SURFACE_MAIN);
     }
 }
 
@@ -1576,7 +1620,7 @@ static void ConfigPanelScroll_TouchItems(ConfigPanelScroll *scroll, const Config
 // Switches the sound output while the cursor is on the option, so the change is heard, or always when forced
 static void ConfigPanelScroll_ApplySound(ConfigPanelScroll *scroll, s8 sound, BOOL force) {
     if (scroll->cursor == OPTION_SOUND || force == TRUE) {
-        if (sound == 0) {
+        if (sound == CONFIG_SOUND_STEREO) {
             GFL_SndSetStereo(TRUE);
         } else {
             GFL_SndSetStereo(FALSE);
@@ -1910,7 +1954,7 @@ static void ConfigPanelSeq_Input(ConfigPanelSeq *seq, u32 *state, void *data) {
             ConfigPanelOptions options;
 
             ConfigPanelScroll_GetOptions(&wk->scroll, &options);
-            if (options.values[OPTION_SAVE_BEFORE_IR] == 0 && otherSave) {
+            if (options.values[OPTION_SAVE_BEFORE_IR] == CONFIG_SAVE_BEFORE_IR_NO_SAVE && otherSave) {
                 *state = INPUT_STEP_PRINT_HAVE_SAVED;
             }
         }
@@ -1921,7 +1965,7 @@ static void ConfigPanelSeq_Input(ConfigPanelSeq *seq, u32 *state, void *data) {
         ConfigPanelScroll_GetOptions(&wk->scroll, &options);
         ConfigPanelConfirm_PrintMsg(&wk->confirm, ConfigPanel_Text_HaveSavedDataAlready,
                                     ConfigPanelOptions_GetTextWait(&options));
-        ConfigPanelScroll_SetSaveBeforeIr(&wk->scroll, 1);
+        ConfigPanelScroll_SetSaveBeforeIr(&wk->scroll, CONFIG_SAVE_BEFORE_IR_SAVE);
         *state = INPUT_STEP_WAIT_MSG;
         break;
     }
