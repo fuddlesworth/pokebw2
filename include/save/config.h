@@ -5,6 +5,37 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
+// Observed saved text speed values; other stored values remain unchanged
+enum {
+    CONFIG_TEXT_SPEED_SLOW = 0,
+    CONFIG_TEXT_SPEED_MID = 1,
+    CONFIG_TEXT_SPEED_FAST = 2,
+};
+
+// Observed saved battle scene values; other stored values remain unchanged
+enum {
+    CONFIG_BATTLE_SCENE_ON = 0,
+    CONFIG_BATTLE_SCENE_OFF = 1,
+};
+
+// Observed saved battle style values; other stored values remain unchanged
+enum {
+    CONFIG_BATTLE_STYLE_SHIFT = 0,
+    CONFIG_BATTLE_STYLE_SET = 1,
+};
+
+// Observed saved sound values; other stored values remain unchanged
+enum {
+    CONFIG_SOUND_STEREO = 0,
+    CONFIG_SOUND_MONO = 1,
+};
+
+// Observed saved save before ir values; other stored values remain unchanged
+enum {
+    CONFIG_SAVE_BEFORE_IR_NO_SAVE = 0,
+    CONFIG_SAVE_BEFORE_IR_SAVE = 1,
+};
+
 // The options, which a save keeps at the start of the block that getTrainerDataBlkAddress returns, so a pointer to one
 // is that block's. The fields are named after their accessors; kanji and cgearOn after what the code does with them
 struct Config {

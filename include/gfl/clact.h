@@ -318,6 +318,12 @@ BOOL ClActor_GetFlip(ClActor *actor, u32 axis);
 // The actor's OBJ mode, GX_OAM_MODE_*
 void ClActor_SetObjMode(ClActor *actor, u32 mode);
 u32 ClActor_GetObjMode(ClActor *actor);
+// How ClActor_SetPalette combines the actor palette with each OAM palette index
+enum {
+    CLACT_PALETTE_ADD = 0,
+    CLACT_PALETTE_REPLACE = 1,
+};
+
 void ClActor_SetPalette(ClActor *actor, u32 palette, u32 a2);
 u8 ClActor_GetPalette(ClActor *actor);
 void ClActor_SetPlttProxy(ClActor *actor, const NNSG2dImagePaletteProxy *proxy);
