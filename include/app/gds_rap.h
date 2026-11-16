@@ -158,7 +158,7 @@ BOOL GdsRap_SendMusicalShotDownload(GdsRapWork *gdsrap, u16 species);
 // Upload the loaded battle video, with the player's profile
 BOOL GdsRap_SendBattleVideoUpload(GdsRapWork *gdsrap, GdsProfile *profile);
 // Download a list of the battle videos with a species, of a battle mode (an index of the client's table of modes)
-BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 searchModeNo, u8 a3, u8 a4);
+BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 searchModeNo, u8 country, u8 area);
 // Download one of the server's three lists of battle videos
 BOOL GdsRap_SendBattleVideoList1(GdsRapWork *gdsrap);
 BOOL GdsRap_SendBattleVideoList2(GdsRapWork *gdsrap);
@@ -169,7 +169,7 @@ BOOL GdsRap_SendBattleVideoFavorite(GdsRapWork *gdsrap, u64 dataNumber);
 // Runs the requests, every frame
 BOOL GdsRap_Main(GdsRapWork *gdsrap);
 // Takes an event of the Wi-Fi connection: an error ends the check of a video's Pokémon
-void GdsRap_OnNetEvent(GdsRapWork *gdsrap, int a1, int event, int a3);
+void GdsRap_OnNetEvent(GdsRapWork *gdsrap, int code, int errorType, int error);
 // Gives the result of the last request in result, and whether there is one
 BOOL GdsRap_GetResult(GdsRapWork *gdsrap, GdsRapResult **result);
 // Clears the result

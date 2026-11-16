@@ -11,6 +11,7 @@
 #include "constants/language.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
+#include "dwc/error.h"
 #include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -183,7 +184,7 @@ BOOL GdsRap_SendBattleVideoUpload(GdsRapWork *gdsrap, GdsProfile *profile) {
     return TRUE;
 }
 
-BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 search_mode_no, u8 a3, u8 a4) {
+BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 search_mode_no, u8 country, u8 area) {
     if (GdsRap_IsIdle(gdsrap) == FALSE) {
         return FALSE;
     }
@@ -193,8 +194,8 @@ BOOL GdsRap_SendBattleVideoSearch(GdsRapWork *gdsrap, u16 species, u32 search_mo
     gdsrap->send.condition.MonsNo = species;
     gdsrap->send.condition.BattleMode = BattleModeBitTbl[search_mode_no].mode;
     gdsrap->send.condition.BattleModeMask = BattleModeBitTbl[search_mode_no].mask;
-    gdsrap->send.condition.Country = a3;
-    gdsrap->send.condition.Area = a4;
+    gdsrap->send.condition.Country = country;
+    gdsrap->send.condition.Area = area;
     gdsrap->send.condition.ServerVersion = BATTLE_REC_VERSION;
     gdsrap->searchType = POKE_NET_GDS_BATTLEDATA_SEARCHTYPE_CONDITION;
     gdsrap->sendReq = POKE_NET_GDS_REQCODE_BATTLEDATA_SEARCH;
@@ -262,7 +263,7 @@ BOOL GdsRap_Main(GdsRapWork *gdsrap) {
                 case POKE_NET_GDS_STATUS_ERROR:
                     if (GdsRap_MainSend(gdsrap, &checkError) == TRUE) {
                         gdsrap->sendReq = POKE_NET_GDS_REQCODE_LAST;
-                        gdsrap->uploadSeq = 0;
+                        gdsrap->uploadSeq = GDS_RAP_UPLOAD_SEQ_CHECK_START;
                         if (checkError == TRUE) {
                             gdsrap->result.type = GDS_RAP_RESULT_TYPE_SERVER_ERROR;
                             gdsrap->result.code = POKE_NET_GDS_REQCODE_BATTLEDATA_REGIST;
@@ -556,8 +557,8 @@ static BOOL GdsRap_SubProcError(GdsRapWork *gdsrap, GdsRapSubProc *sub) {
     return TRUE;
 }
 
-void GdsRap_OnNetEvent(GdsRapWork *gdsrap, int a1, int event, int a3) {
-    if (event == 3 || event == 6) {
+void GdsRap_OnNetEvent(GdsRapWork *gdsrap, int code, int errorType, int error) {
+    if (errorType == DWC_ETYPE_SHUTDOWN_FM || errorType == DWC_ETYPE_DISCONNECT) {
         if (gdsrap->p_nhttp != NULL) {
             NHttpRap_FreePostData(gdsrap->p_nhttp);
             NHttpRap_EndRequest(gdsrap->p_nhttp);
