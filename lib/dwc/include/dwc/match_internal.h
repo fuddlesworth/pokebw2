@@ -252,7 +252,7 @@ void DWCi_SetupGameServer(int type, u8 numEntry, DWCMatchedSCCallback matched, v
 void DWCi_ConnectToGameServerAsync(int type, s32 profileId, DWCMatchedSCCallback matched, void *matchedParam,
                                    DWCNewClientCallback newClient, void *newClientParam, DWCAttemptFunc attempt,
                                    int *attemptParam, void *param);
-void DWCi_MatchProcess(int a0);
+void DWCi_MatchProcess(int full);
 GT2Bool DWCi_GT2UnrecognizedMessageCallback(GT2Socket socket, unsigned int ip, unsigned short port, GT2Byte *message,
                                             int length);
 void DWCi_GT2ConnectAttemptCallback(GT2Socket socket, GT2Connection connection, unsigned int ip, unsigned short port,

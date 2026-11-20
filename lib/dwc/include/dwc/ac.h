@@ -125,8 +125,8 @@ typedef struct ACHOLD {
     u8 proxyAuthType;   // 0x25
     u16 proxyPort;      // 0x26
     u8 proxyHost[0x64]; // 0x28
-    u8 proxyId[0x20];   // 0x8c; the setting's first 32-byte identifier (base.ap.unk0)
-    u8 proxyPass[0x20]; // 0xac; and its second (base.ap.unk20)
+    u8 proxyId[0x20];   // 0x8c; the setting's first 32-byte identifier (base.ap.ispId)
+    u8 proxyPass[0x20]; // 0xac; and its second (base.ap.ispPass)
 } ACHOLD;
 
 // What a search looks for, one entry per kind of access point: the SSID to look for and the id that an access point

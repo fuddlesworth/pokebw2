@@ -82,8 +82,8 @@ struct SCInterface {
 
 // The buffer of a report: its size and where the next byte goes
 typedef struct SCIReportBuffer {
-    int unk_00;
-    int unk_04;
+    int mIsStatic;
+    int mLen;
     int mCapacity;
     int mPos;
     gsi_u8 *mData;
@@ -96,7 +96,7 @@ struct SCIReport {
     int mReportState;
     int mCurEntityStartPos;
     gsi_u16 mCurEntityKeyCount;
-    int unk_0c;
+    int mNumResultsReported;
     gsi_u32 keyNum;
     int mTeamIds[0x40];
     SCIReportBuffer mBuffer;

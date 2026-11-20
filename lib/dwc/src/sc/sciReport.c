@@ -28,7 +28,7 @@ int sciCreateReport(const char *csid, int version, int playerNum, int teamNum, S
         return 5;
     }
     memset(header, 0, 0x10000);
-    created->mBuffer.unk_00 = 0;
+    created->mBuffer.mIsStatic = 0;
     created->mBuffer.mCapacity = 0x10000;
     memset(header, 0, sizeof(SCIReportHeader));
     header->mProtocolVersion = 0x2000000;
@@ -51,11 +51,11 @@ int sciDestroyReport(SCIReport *report) {
     report->mCurEntityKeyCount = 0;
     report->mCurEntityStartPos = 0;
     report->keyNum = 0;
-    report->unk_0c = 0;
+    report->mNumResultsReported = 0;
     gsifree(report->mBuffer.mData);
     report->mBuffer.mData = NULL;
     report->mBuffer.mCapacity = 0;
-    report->mBuffer.unk_04 = 0;
+    report->mBuffer.mLen = 0;
     report->mBuffer.mPos = 0;
     gsifree(report);
     return 0;

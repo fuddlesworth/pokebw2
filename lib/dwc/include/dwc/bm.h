@@ -41,8 +41,8 @@ enum {
 #define DWC_WEP_KEY_HEX_LENGTH_104 26
 #define DWC_WEP_KEY_HEX_LENGTH_128 32
 typedef struct DWCBMApInfo {
-    u8 unk0[0x20];
-    u8 unk20[0x20];
+    u8 ispId[0x20];   // the ISP's login id; the DSi setting's proxy id (ac.h's ACHOLD.proxyId takes it)
+    u8 ispPass[0x20]; // the ISP's password; the DSi setting's proxy password (ACHOLD.proxyPass takes it)
     u8 ssid[0x20];
     u8 aossSsid[0x20]; // the SSID of the 40-bit WEP key of an AOSS setup, which has an SSID for each kind of key
     u8 wepKey[4][0x10];
@@ -51,13 +51,13 @@ typedef struct DWCBMApInfo {
     u8 dns[2][4];  // the first is all 0 when the DNS servers come from DHCP
     u8 netmask;    // how many of the mask's high bits are set, 0x20 at most
     u8 wep2[4][5]; // the 40-bit WEP keys of an AOSS setup
-    u8 unkE5;
+    u8 authType;        // NitroDWC's authType: how the connection authenticates
     u8 wepMode : 2;     // DWC_WEPMODE_NONE, or a key of 40, 104 or 128 bits
     u8 wepNotation : 6; // 1 when the key was entered as characters, 0 when as hex digits
     u8 setType;         // DWC_SETTYPE_NONE, DWC_SETTYPE_AOSS, DWC_SETTYPE_RAKU, or another kind
-    u8 unkE8[2];
-    u16 mtu; // 0 for the default
-    u8 unkEC[3];
+    u8 rsv[2];          // reserved; NitroDWC's rsv[7], with the TWL's mtu in the middle
+    u16 mtu;            // 0 for the default
+    u8 rsvEx[3];        // reserved; the rest of NitroDWC's rsv[7]
     u8 state;
 } DWCBMApInfo;
 

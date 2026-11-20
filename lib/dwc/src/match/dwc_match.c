@@ -551,8 +551,8 @@ static void DWCi_SendStateChanged(qr2_t server) {
     }
 }
 
-// The state machine of the match, run every frame (a0 is 0 when it only has to serve the sockets)
-void DWCi_MatchProcess(int a0) {
+// The state machine of the match, run every frame (full is 0 when it only has to serve the sockets)
+void DWCi_MatchProcess(int full) {
     int i;
     int j;
     u32 limit;
@@ -562,7 +562,7 @@ void DWCi_MatchProcess(int a0) {
     if (DWCi_GetMatchCnt() == NULL || DWCi_IsError() != 0) {
         return;
     }
-    if (a0 == 0) {
+    if (full == 0) {
         if (DWCi_GetMatchCnt()->qr2Obj != NULL) {
             qr2_think(DWCi_GetMatchCnt()->qr2Obj);
         }

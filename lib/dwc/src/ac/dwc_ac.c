@@ -465,8 +465,8 @@ void DWCAc_NoteKeyMode(u8 id) {
         main->proxyAuthType = work->dsiSettings[type].proxyAuthType;
         main->proxyPort = work->dsiSettings[type].proxyPort;
         MI_CpuCopy8(work->dsiSettings[type].proxyHost, main->proxyHost, sizeof(main->proxyHost));
-        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk0, main->proxyId, sizeof(main->proxyId));
-        MI_CpuCopy8(work->dsiSettings[type].base.ap.unk20, main->proxyPass, sizeof(main->proxyPass));
+        MI_CpuCopy8(work->dsiSettings[type].base.ap.ispId, main->proxyId, sizeof(main->proxyId));
+        MI_CpuCopy8(work->dsiSettings[type].base.ap.ispPass, main->proxyPass, sizeof(main->proxyPass));
         if (work->dsiSettings[type].base.ap.setType == 0x10 || work->dsiSettings[type].base.ap.setType == 0x11 ||
             work->dsiSettings[type].base.ap.setType == 0x12 || work->dsiSettings[type].base.ap.setType == 0x13) {
             main->keyMode = work->dsiSettings[type].wpaMode;
