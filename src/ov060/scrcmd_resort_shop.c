@@ -163,7 +163,7 @@ typedef BOOL (*ResortShopFadeFunc)(ResortShop *shop, Field *field, int *seq);
 struct ResortShopWork {
     u8 state;
     u8 nextState;
-    u16 unk2;
+    u16 padding2;
     HeapID heapId;
     Font *font;
     TrainerCardSave *trainerCard;
@@ -250,7 +250,7 @@ typedef struct {
     u8 width;
     u8 height;
     u16 palette;
-    u16 unkA;
+    u16 baseTile;
 } ResortShopWindowSetup;
 
 // An area of the avenue in grid coordinates, and the camera setup for it
