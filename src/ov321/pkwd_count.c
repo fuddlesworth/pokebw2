@@ -95,16 +95,16 @@ typedef struct {
     s16 paletteCount;
     s16 charsFile;
     s16 charsSlot;
-    s16 unk6;
-    s16 unk7;
+    s16 paddingC;
+    s16 paddingE;
     s16 cellFile;
     s16 cellSlot;
-    s16 unk10;
-    s16 unk11;
+    s16 padding14;
+    s16 padding16;
     s16 animFile;
-    s16 unk13;
-    s16 unk14;
-    s16 unk15;
+    s16 padding1A;
+    s16 padding1C;
+    s16 padding1E;
 } PkwdCountActorRes;
 
 // The resources that a group of cell actors share, and the list that holds them
@@ -121,10 +121,10 @@ typedef struct {
     u8 priority;
     u8 bgPriority;
     u8 visible;
-    u8 unk4;
+    u8 padding4;
     u8 flags;
     u8 positionIdx;
-    u8 unk7;
+    u8 padding7;
 } PkwdCountActorEntry;
 
 typedef struct {

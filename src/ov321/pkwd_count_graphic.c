@@ -18,7 +18,7 @@
 #define BG_COUNT 8
 
 typedef struct {
-    u32 unk0;
+    u32 padding0;
 } PkwdCountBG;
 
 typedef struct {
@@ -28,7 +28,7 @@ typedef struct {
 struct PkwdCountGraphic {
     PkwdCountBG bg;
     PkwdCountClAct clact;
-    u32 unk8;
+    u32 padding8;
     TCB *vblankTask;
     PaletteFade *paletteFade;
 };
