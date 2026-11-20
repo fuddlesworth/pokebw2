@@ -331,9 +331,8 @@ static void MBi_CommParentRecvDataPerChild(const WMMpRecvData *recv, u16 aid) {
             }
         }
         break;
-    // A frame type that the parent's side takes and ignores: the switch's table runs to it. The library's frame types
-    // stop at MB_COMM_TYPE_CHILD_STOPREQ (10), so what the eleventh is called is not known
-    case 11:
+    // A frame type the parent's side takes and ignores: the child's answer to its boot request
+    case MB_COMM_TYPE_CHILD_BOOTREQ_ACCEPTED:
         break;
     }
 }

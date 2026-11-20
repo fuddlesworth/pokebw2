@@ -55,6 +55,7 @@ enum {
     MB_COMM_TYPE_CHILD_ACCEPT_FILEINFO,
     MB_COMM_TYPE_CHILD_CONTINUE,
     MB_COMM_TYPE_CHILD_STOPREQ,
+    MB_COMM_TYPE_CHILD_BOOTREQ_ACCEPTED,
 };
 
 // What MBComm_Send* gives when nothing was sent
