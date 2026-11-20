@@ -106,18 +106,18 @@ typedef struct {
     u8 seasonal;     // 0x01  the season picks the variant
     u8 fieldIds[20]; // 0x02
     u8 stageIds[20]; // 0x16
-    u8 unk2A[2];
+    u8 padding2A[2]; // 0x2a  never read; two constant 0x30 bytes (see BattleBgData in ov166)
 } BtlvEffectBgData;
 
 // The colors FieldLightStatus_Get fills in. The frame of BtlvEffect_Init gives them 4 more bytes, which nothing reads
 typedef struct {
     GXRgb colors[8];
-    u32 unk10;
+    u32 padding10; // 0x10  the frame gives it 4 more bytes, which nothing reads
 } BtlvEffectLightColors;
 
 // An effect started while another one runs, which waits in a task for its turn
 typedef struct {
-    u32 unk00;
+    u32 padding0; // 0x00  never accessed
     u32 atkPos;
     u32 defPos;
     u32 effNo;

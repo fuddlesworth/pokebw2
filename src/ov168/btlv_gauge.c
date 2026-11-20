@@ -66,8 +66,8 @@ typedef struct {
     s32 hpDelta;    // 0x28  the HP to take away
     u8 level;       // 0x2c
     u8 sex;         // 0x2d  2 for no sex mark
-    u8 unk2e;
-    u8 caught; // 0x2f
+    u8 unused2e;    // 0x2e  cleared when a mon is set, never read (aletheia's unused6e)
+    u8 caught;      // 0x2f
     // 0x30
     u32 hpMoving : 1;     // bit 0
     u32 expMoving : 1;    // bit 1
@@ -83,11 +83,11 @@ typedef struct {
     u32 expSe : 1;        // bit 28: the EXP sound plays
     u32 visible : 1;      // bit 29
     u32 statusHidden : 1; // bit 30
-    u32 unk30_31 : 1;
-    u32 hpSpeed;    // 0x34  0 to change at once
-    s32 hpDots;     // 0x38  the HP bar's pixels
-    u32 status;     // 0x3c  the status icon's sequence, BTLV_GAUGE_STATUS_*, in a movie's playback
-    TCB *slideTask; // 0x40
+    u32 padding30_31 : 1; // bit 31  never used
+    u32 hpSpeed;          // 0x34  0 to change at once
+    s32 hpDots;           // 0x38  the HP bar's pixels
+    u32 status;           // 0x3c  the status icon's sequence, BTLV_GAUGE_STATUS_*, in a movie's playback
+    TCB *slideTask;       // 0x40
 } BtlvGaugeMon;
 
 // A battler's gauge, 0x84 bytes
@@ -126,7 +126,7 @@ struct BtlvGauge {
     u32 statusPaletteDark;     // 0x03c  for the rotation's back mons
     BtlvGaugeEntry entries[8]; // 0x040  by view position
     // 0x460
-    u32 unk460_0 : 1;
+    u32 padding460_0 : 1;  // bit 0  never used
     u32 bgmFading : 1;     // bit 1
     u32 pinch : 1;         // bit 2: the pinch music plays
     u32 bgmReplayed : 1;   // bit 3
@@ -136,9 +136,9 @@ struct BtlvGauge {
     u32 toggleRequest : 1; // bit 22
     u32 loaded : 1;        // bit 23
     u32 studioMode : 2;    // bits 24-25: BTL_STUDIO_MODE_*
-    u32 unk460_26 : 6;
-    u32 bgm;       // 0x464  the battle's music
-    HeapID heapId; // 0x468
+    u32 padding460_26 : 6; // bits 26-31  never used
+    u32 bgm;               // 0x464  the battle's music
+    HeapID heapId;         // 0x468
 }; // 0x46c
 
 // The red flash of the gauges losing HP
@@ -338,7 +338,7 @@ void BtlvGauge_SetBattleMon(BtlvGauge *gauge, BtlMainModule *mainModule, BattleM
     }
     gauge->entries[index].mon.expAnim = GAUGE_ANIM_START;
     gauge->entries[index].mon.expDelta = 0;
-    gauge->entries[index].mon.unk2e = 0;
+    gauge->entries[index].mon.unused2e = 0;
     gauge->entries[index].mon.caught = IsMonCaught(mainModule, mon);
     if (PokeParty_GetParam(BattleMon_GetViewSrcData(mon), PKM_PARAM_SHOW_SEX, NULL) == 0) {
         gauge->entries[index].mon.sex = GENDER_UNKNOWN;
@@ -384,7 +384,7 @@ void BtlvGauge_SetPartyPkm(BtlvGauge *gauge, PokeDexSave *pokedex, PartyPkm *pkm
     }
     gauge->entries[index].mon.expAnim = GAUGE_ANIM_START;
     gauge->entries[index].mon.expDelta = 0;
-    gauge->entries[index].mon.unk2e = 0;
+    gauge->entries[index].mon.unused2e = 0;
     species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
     gauge->entries[index].mon.caught = PokeDex_IsCaught(pokedex, species);
     if (species != SPECIES_NIDORAN_M && species != SPECIES_NIDORAN_F) {

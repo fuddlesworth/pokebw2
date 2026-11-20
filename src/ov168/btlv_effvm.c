@@ -51,16 +51,16 @@ struct BtlvEffvm {
     u32 cryDelayed : 1;         // bit 11
     u32 sePlayed : 1;           // bit 12  the end stops the sounds
     u32 mcssScaled : 1;         // bit 13
-    u32 unk0_14 : 1;            // bit 14  never used
+    u32 padding0_14 : 1;        // bit 14  never used
     u32 cameraLocked : 1;       // bit 15  the camera commands do nothing
     u32 particleLoading : 1;    // bit 16  a particle resource uploads in the V-blank
     u32 substituteRestore : 1;  // bit 17
     u32 skipReverseRestore : 1; // bit 18  set for effect 0x27e, cleared for 0x291; suppresses the automatic
                                 // SetPokemonReverse(TRUE) at script end
     u32 paletteAnim : 1;        // bit 19
-    u32 unk0_20 : 12;
-    s32 value;                                          // 0x004  the scripts' value register, variable 16
-    TCBManager *tcbManager;                             // 0x008
+    u32 padding0_20 : 12;       // bits 20-31  never used
+    s32 value;                  // 0x004  the scripts' value register, variable 16
+    TCBManager *tcbManager;     // 0x008
     ParticleSystem *particles[EFFVM_PARTICLE_CAPACITY]; // 0x00c
     s32 particleIds[EFFVM_PARTICLE_CAPACITY];           // 0x04c  each particle system's file, -1 for none
     u32 emitterCounts[EFFVM_PARTICLE_CAPACITY];         // 0x08c  each particle resource's count of emitters
@@ -105,7 +105,7 @@ typedef struct {
     u32 from;           // 0x04  where the emitter starts: a position code, 8 for fromPos
     u32 to;             // 0x08  where it aims: a position code, 8 for toPos
     VecFx32 offset;     // 0x0c  added to both, turned toward the side
-    u32 unk18;          // 0x18  written only
+    u32 arcAngle;       // 0x18  written only (aletheia's arcAngle)
     fx32 motionHeight;  // 0x1c  of the arc of motion types other than 1 and 4
     u32 motionType;     // 0x20  0 for none, else the emitter moves from to to (BtlvEffvm_MoveEmitterArc)
     fx32 motionFrames;  // 0x24
@@ -189,7 +189,7 @@ typedef struct {
     int framesReset; // 0x24
     int wait;        // 0x28
     int waitReset;   // 0x2c
-    u32 unk30;       // 0x30
+    u32 scriptArg12; // 0x30  written only, never read by the callbacks (aletheia's scriptArg12)
     int delay;       // 0x34
     int delayReset;  // 0x38
     BOOL ortho;      // 0x3c
@@ -1220,7 +1220,7 @@ static BOOL BtlvEffvm_CmdEmitterAdd(VM *vm, void *env) {
     param->offset.x = 0;
     param->offset.y = VM_Read32(vm);
     param->offset.z = 0;
-    param->unk18 = VM_Read32(vm);
+    param->arcAngle = VM_Read32(vm);
     VM_Read32(vm);
     param->radiusScale = VM_Read32(vm);
     param->lifeTimeScale = VM_Read32(vm);
@@ -1255,7 +1255,7 @@ static BOOL BtlvEffvm_CmdEmitterAddAt(VM *vm, void *env) {
     param->offset.x = 0;
     param->offset.y = VM_Read32(vm);
     param->offset.z = 0;
-    param->unk18 = VM_Read32(vm);
+    param->arcAngle = VM_Read32(vm);
     VM_Read32(vm);
     param->radiusScale = VM_Read32(vm);
     param->lifeTimeScale = VM_Read32(vm);
@@ -1336,7 +1336,7 @@ static BOOL BtlvEffvm_CmdEmitterAddAll(VM *vm, void *env) {
     param->offset.x = 0;
     param->offset.y = VM_Read32(vm);
     param->offset.z = 0;
-    param->unk18 = VM_Read32(vm);
+    param->arcAngle = VM_Read32(vm);
     ortho = VM_Read32(vm);
     param->radiusScale = VM_Read32(vm);
     param->lifeTimeScale = VM_Read32(vm);
@@ -4063,7 +4063,7 @@ static BOOL BtlvEffvm_AddCircleEmitter(VM *vm, BtlvEffvm *wk, BOOL ortho) {
     work->framesReset = work->frames;
     work->wait = 0;
     work->waitReset = VM_Read32(vm);
-    work->unk30 = VM_Read32(vm);
+    work->scriptArg12 = VM_Read32(vm);
     work->delay = 0;
     work->delayReset = VM_Read32(vm);
     work->angleStep = 0x10000 / work->frames;

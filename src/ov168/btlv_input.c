@@ -54,7 +54,7 @@
 // An actor slot; the second word is never touched
 typedef struct {
     ClActor *actor;
-    u32 unk4;
+    u32 padding4; // 0x04  never touched
 } BtlvInputActor;
 
 // The lower screen's work, 0x36c bytes
@@ -80,19 +80,19 @@ struct BtlvInput {
     u32 cursorRefresh : 1; // bit 13
     u32 secondRow : 1;     // bit 14
     u32 fadeMode : 2;      // bits 15-16
-    u32 unk68_17 : 2;      // bits 17-18
+    u32 unused68_17 : 2;   // bits 17-18: cleared with pokeSlot, never read
     u32 pokeSlot : 2;      // bits 19-20: index into mons[] and moveUsable[]
-    u32 unk68_21 : 2;      // bits 21-22: never touched
+    u32 padding68_21 : 2;  // bits 21-22: never touched
     u32 fingerSeq : 4;     // bits 23-26: the finger cursor demonstration's step
     u32 fingerCount : 4;   // bits 27-30
     u32 inputLocked : 1;   // bit 31
     // 0x06c
-    u32 canCancel : 1;       // bit 0
-    u32 selectionLocked : 1; // bit 1
-    u32 targetRange : 8;     // bits 2-9: the move's range, the column of ov169's target tables
-    u32 unk6c_10 : 8;        // never touched
-    u32 noCancel : 1;        // bit 18: no cancel sound
-    u32 unk6c_19 : 13;
+    u32 canCancel : 1;                    // bit 0
+    u32 selectionLocked : 1;              // bit 1
+    u32 targetRange : 8;                  // bits 2-9: the move's range, the column of ov169's target tables
+    u32 padding6c_10 : 8;                 // bits 10-17: never touched
+    u32 noCancel : 1;                     // bit 18: no cancel sound
+    u32 padding6c_19 : 13;                // bits 19-31: never touched
     s32 pressedButton;                    // 0x070  -1 none; | 0x8000 when L is held
     BtlvInputPokeEntry pokeEntries[2][6]; // 0x074
     u32 chars;                            // 0x104
@@ -1153,7 +1153,7 @@ void BtlvInput_SetScreen(BtlvInput *work, u32 screen, void *param) {
 
         task = GFL_HeapAllocate(HEAPID_TAIL(work->heapId), sizeof(BtlvInputScreenTask), TRUE, "btlv_input.c", 0x6a8);
         if (work->screen != BTLV_INPUT_SCREEN_STANDBY) {
-            work->unk68_17 = 0;
+            work->unused68_17 = 0;
             work->pokeSlot = 0;
         }
         for (i = 0; i < 3; i++) {
