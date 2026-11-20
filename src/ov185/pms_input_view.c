@@ -49,7 +49,8 @@ struct PMSInputView {
     PMSIVEdit *edit;
     PMSIVCategory *category;
     PMSIVWordWin *wordWin;
-    void *unk60;
+    // Never read or written
+    void *padding60;
     PMSIVMenu *menu;
     // The two colors of the edit area's text
     GXRgb colors[2];

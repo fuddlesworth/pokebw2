@@ -48,9 +48,11 @@ struct PMSIVCategory {
     PMSInputView *vwk;
     const PMSInputWork *mwk;
     const PMSInputData *dwk;
-    u32 unkC;
+    // Zeroed in Create, never read
+    u32 paddingC;
     int seq;
-    u32 unk14;
+    // Zeroed in Create, never read
+    u32 padding14;
     PMSIVToolBlendWork blend;
     PMSIVToolScrollWork scroll;
     ClActor *cursor;
@@ -83,8 +85,8 @@ PMSIVCategory *PMSIVCategory_Create(PMSInputView *vwk, const PMSInputWork *mwk, 
     wk->vwk = vwk;
     wk->mwk = mwk;
     wk->dwk = dwk;
-    wk->unkC = 0;
-    wk->unk14 = 0;
+    wk->paddingC = 0;
+    wk->padding14 = 0;
     wk->cursor = NULL;
     wk->cursorVisible = FALSE;
     wk->keyMode = PMSInput_GetKeyModePtr(mwk);

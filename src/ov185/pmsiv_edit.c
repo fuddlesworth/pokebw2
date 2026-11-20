@@ -75,8 +75,9 @@ struct PMSIVEdit {
     u8 scrollUp;
     int *keyMode;
     TCB *hblankTask;
-    u32 unk1A8;
-    u32 unk1AC;
+    // Zeroed, never read
+    u32 padding1A8;
+    u32 padding1AC;
     TCB *vblankTask;
     BGWinFrame *frames;
     BOOL framesDirty;
@@ -115,8 +116,8 @@ PMSIVEdit *PMSIVEdit_Create(PMSInputView *vwk, const PMSInputWork *mwk, const PM
     wk->bmpCursor = BmpCursor_Create(HEAPID_PMS_INPUT);
     wk->frameY = 0;
     wk->scrollY = 0;
-    wk->unk1A8 = 0;
-    wk->unk1AC = 0;
+    wk->padding1A8 = 0;
+    wk->padding1AC = 0;
     wk->vblankTask = NULL;
     wk->frames = BGWinFrame_Create(1, 1, HEAPID_PMS_INPUT);
     return wk;
@@ -181,8 +182,8 @@ static void PMSIVEdit_HBlankTask(TCB *tcb, void *data) {
 static void PMSIVEdit_VBlankTask(TCB *tcb, void *data) {
     PMSIVEdit *wk = data;
 
-    wk->unk1A8 = 0;
-    wk->unk1AC = 0;
+    wk->padding1A8 = 0;
+    wk->padding1AC = 0;
     if (wk->framesDirty) {
         GFL_BGSysFillScrArea(0, 0, 0, 0, 32, 6, BGSYS_FILL_TILE_PALETTE);
         BGWinFrame_Put(wk->frames, 0, 0, -wk->frameY / 8);
@@ -198,8 +199,8 @@ void PMSIVEdit_ScrollSet(PMSIVEdit *wk, BOOL up) {
         GFL_TCBRemove(wk->hblankTask);
     }
     wk->hblankTask = GFL_HBlankTCBAdd(PMSIVEdit_HBlankTask, wk, 1);
-    wk->unk1A8 = 0;
-    wk->unk1AC = 0;
+    wk->padding1A8 = 0;
+    wk->padding1AC = 0;
     if (wk->vblankTask) {
         GFL_TCBRemove(wk->vblankTask);
     }

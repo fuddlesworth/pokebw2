@@ -100,7 +100,8 @@ struct PMSInputWork {
     u16 keyRepeat;
     // The mode button's state: 0 while it is touched
     u32 modeButton;
-    u32 unk40;
+    // Never read or written
+    u32 padding40;
     ButtonMan *bmn;
     u16 buttonPos;
     u16 editPos;
