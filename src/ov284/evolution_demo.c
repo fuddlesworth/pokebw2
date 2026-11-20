@@ -1380,7 +1380,7 @@ static void EvolutionDemo_MakeShedinja(EvolutionDemoParam *param, EvolutionDemoW
         mail = CreateMailData(wk->heapId);
         PokeParty_SetParam(shedinja, PKM_PARAM_MAIL, (u32)mail);
         GFL_HeapFree(mail);
-        PokeParty_SetParam(shedinja, PKM_PARAM_UNK9F, 0);
+        PokeParty_SetParam(shedinja, PKM_PARAM_CAPSULE_INDEX, 0);
         PokeParty_SetParam(shedinja, PKM_PARAM_POKESTAR_FAME, 0);
         PokeParty_AddPkm(param->party, shedinja);
         BagSave_SubItem(bag, ITEM_POKE_BALL, 1, wk->heapId);

@@ -75,14 +75,16 @@
 #define PKM_PARAM_NATURE 0x70
 // Whether the Pokémon has its hidden ability
 #define PKM_PARAM_HIDDEN_ABILITY 0x71
-#define PKM_PARAM_UNK72 0x72
+// The spare word of the data, which Gen 5 leaves unused
+#define PKM_PARAM_SPARE_WORD 0x72
 // The nickname, copied to or from a StrBuf
 #define PKM_PARAM_NICKNAME 0x73
 // The nickname, copied to or from a u16 array
 #define PKM_PARAM_NICKNAME_RAW 0x74
 // Not from swan
 #define PKM_PARAM_IS_NICKNAMED 0x75
-#define PKM_PARAM_UNK76 0x76
+// The spare byte of the data, which Gen 5 leaves unused
+#define PKM_PARAM_SPARE_BYTE 0x76
 // The game the Pokémon was caught in
 #define PKM_PARAM_ORIGIN_GAME 0x77
 #define PKM_PARAM_RIBBON_G4_COOL 0x78
@@ -109,7 +111,8 @@
 #define PKM_PARAM_POKEBALL 0x98
 #define PKM_PARAM_STATUS 0x9d
 #define PKM_PARAM_LEVEL 0x9e
-#define PKM_PARAM_UNK9F 0x9f
+// The Gen 4 ball capsule's index, which Gen 5 always keeps 0
+#define PKM_PARAM_CAPSULE_INDEX 0x9f
 #define PKM_PARAM_HP 0xa0
 #define PKM_PARAM_MAX_HP 0xa1
 #define PKM_PARAM_ATTACK 0xa2
