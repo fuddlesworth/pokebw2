@@ -26618,7 +26618,7 @@ overlays/ov190 0x021b4554 WifiLoginDisp_UpdateWave
 overlays/ov190 0x021b4594 WifiLoginDisp_FreeClAct
 overlays/ov190 0x021b45fc WifiLoginDisp_HBlank
 overlays/ov190 0x021b4648 WifiLoginDisp_VBlank
-overlays/ov190 0x021b4674 WifiLoginDisp_SetUnk9C4
+overlays/ov190 0x021b4674 WifiLoginDisp_SetPaletteFlag
 overlays/ov190 0x021b4680 WifiLoginDisp_ResetBlend
 overlays/ov190 0x021b46cc WifiLoginMessage_Create
 overlays/ov190 0x021b47d0 WifiLoginMessage_Update

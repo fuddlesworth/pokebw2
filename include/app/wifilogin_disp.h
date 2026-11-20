@@ -19,7 +19,7 @@ typedef struct WifiLoginDisp WifiLoginDisp;
 WifiLoginDisp *WifiLoginDisp_Create(HeapID heapId, u32 style, u32 unused);
 void WifiLoginDisp_Main(WifiLoginDisp *disp);
 void WifiLoginDisp_Free(WifiLoginDisp *disp);
-void WifiLoginDisp_SetUnk9C4(WifiLoginDisp *disp);
+void WifiLoginDisp_SetPaletteFlag(WifiLoginDisp *disp);
 void WifiLoginDisp_ResetBlend(WifiLoginDisp *disp);
 
 #endif // POKEBW2_APP_WIFILOGIN_DISP_H

@@ -40,7 +40,7 @@ struct WifiLogoutWork {
     HeapID heapId;
     // Set by the network library's callback once the connection is closed
     BOOL disconnected;
-    u8 unk1C[4];
+    u8 padding1C[4];
 };
 
 static void WifiLogout_SetState(WifiLogoutWork *work, WifiLogoutStateFunc state);

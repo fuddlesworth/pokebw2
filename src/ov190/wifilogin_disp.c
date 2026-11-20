@@ -36,11 +36,11 @@ typedef struct {
     u16 palettes[WIFILOGIN_PALETTE_COUNT][16];
     u16 blended[WIFILOGIN_PALETTE_COUNT * WIFILOGIN_BLEND_STEPS][16];
     s16 frame;
-    u8 unk96A;
+    u8 padding96A;
     u8 skip;
     // The BG that scrolls with the cycle
     u8 scrollBg;
-    u8 unk96D[3];
+    u8 padding96D[3];
 } WifiLoginPaletteCycle;
 
 struct WifiLoginDisp {
@@ -56,15 +56,16 @@ struct WifiLoginDisp {
     u32 palette;
     u32 chars;
     u32 cellAnims;
-    u32 unk998;
+    u32 padding998;
     ClActor *actors[WIFILOGIN_DISP_ACTOR_COUNT];
-    u8 unk9B0[0x14];
-    u32 unk9C4;
+    u8 padding9B0[0x14];
+    // The palette fade-in flag, set once the net session starts
+    u32 paletteFlag;
     s16 waveOffset;
     s16 wave[WIFILOGIN_WAVE_COUNT];
     // The Game Sync style's scroll of BGs 7 and 2, 0 for none
     s16 scrollX;
-    u8 unkB4C[0x970];
+    u8 paddingB4C[0x970];
 };
 
 static void WifiLoginDisp_CreatePdwAccMainBGs(WifiLoginDisp *disp, u32 bg);
@@ -692,8 +693,8 @@ static void WifiLoginDisp_VBlank(TCB *task, void *work) {
     ClActSys_VBlank();
 }
 
-void WifiLoginDisp_SetUnk9C4(WifiLoginDisp *disp) {
-    disp->unk9C4 = TRUE;
+void WifiLoginDisp_SetPaletteFlag(WifiLoginDisp *disp) {
+    disp->paletteFlag = TRUE;
 }
 
 void WifiLoginDisp_ResetBlend(WifiLoginDisp *disp) {

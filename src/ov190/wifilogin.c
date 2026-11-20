@@ -40,16 +40,16 @@ typedef void (*WifiLoginStateFunc)(WifiLoginWork *work);
 
 struct WifiLoginWork {
     WifiLoginStateFunc state;
-    u8 unk4[8];
+    u8 padding4[8];
     HeapID heapId;
-    u8 unkE[14];
-    // Set by the network command when another machine sends it
-    u32 unk1C;
+    u8 paddingE[14];
+    // Set by the network command when the console's aid is not the one the handle reports
+    u32 aidMismatch;
     // Whether the DWC user data is not valid
     BOOL userDataInvalid;
     // Whether the user data was saved
     BOOL saved;
-    u8 unk28[4];
+    u8 padding28[4];
     SaveControl *save;
     WifiLoginMessageMenu *menu;
     WifiLoginDisp *disp;
@@ -177,7 +177,7 @@ static void WifiLogin_OnNetCommand(int netId, int size, const void *data, void *
 
     if (handle == NetHandle_GetOwn()) {
         if (netId != NetSystem_GetNetId()) {
-            wk->unk1C = 1;
+            wk->aidMismatch = 1;
         }
     }
 }
@@ -317,7 +317,7 @@ static void WifiLogin_StateStartNet(WifiLoginWork *work) {
         GFL_NetSetIconScreen(TRUE, work->heapId);
     }
     WifiLoginMessage_PrintWaiting(work->msg, WifiError_Text_ConnectingNintendoWiFi);
-    WifiLoginDisp_SetUnk9C4(work->disp);
+    WifiLoginDisp_SetPaletteFlag(work->disp);
     WifiLogin_SetState(work, WifiLogin_StateWaitMessageThenSave);
 }
 
