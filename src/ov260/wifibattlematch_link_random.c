@@ -329,7 +329,7 @@ typedef struct {
     u32 timer;
     u32 cancelSeq;
     u32 idleTimer;
-    u32 unkEC;
+    u32 paddingEC;
     BOOL recordChanged;
     u32 exchangeResult;
     BOOL hadExchangeResult;

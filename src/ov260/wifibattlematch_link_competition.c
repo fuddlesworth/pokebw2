@@ -391,7 +391,7 @@ enum {
 
 // What a request to the server's account takes
 typedef struct {
-    u8 unk0;
+    u8 clearRegistered;
     u8 registrationState;
     u32 profileId;
 } WifiBattleMatchLinkRequest;
@@ -742,7 +742,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
 
         MI_CpuFill8(&request, 0, sizeof(request));
         request.registrationState = WBM_REGISTRATION_NONE;
-        request.unk0 = link->param->account->clearRegistered;
+        request.clearRegistered = link->param->account->clearRegistered;
         request.profileId = WifiBattleMatchNet_GetGSID(link->net);
         link->param->account->registrationState = WBM_REGISTRATION_NONE;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);
@@ -1099,7 +1099,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
         WifiBattleMatchLinkRequest request;
 
         MI_CpuFill8(&request, 0, sizeof(request));
-        request.unk0 = 0;
+        request.clearRegistered = 0;
         request.registrationState = WBM_REGISTRATION_TEAM_REQUIRED;
         request.profileId = WifiBattleMatchNet_GetGSID(link->net);
         link->param->account->registrationState = WBM_REGISTRATION_TEAM_REQUIRED;

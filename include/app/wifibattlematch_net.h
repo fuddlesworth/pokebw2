@@ -99,7 +99,7 @@ typedef struct {
     u8 sessionId[0x28];
     u8 connectionId[0x28];
     // Sc_SetPlayer accepts this buffer, but its retained implementation never reads it.
-    u8 unk58[0x10];
+    u8 authHash[0x10];
 } WifiBattleMatchNetInfo;
 
 // What overlay 290 shares with this file: the player's ID in the Sake database, the player's side and the other

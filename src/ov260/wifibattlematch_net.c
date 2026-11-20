@@ -329,7 +329,7 @@ typedef struct {
     s32 gdbCode;
     s32 gdbSubCode1;
     s32 gdbSubCode2;
-    u32 unk10;
+    u32 padding10;
     s32 httpCode;
     s32 timeoutCode;
     u32 kind;
@@ -339,7 +339,7 @@ typedef struct {
 typedef struct {
     s32 value;
     u8 keyId;
-    u8 unk5;
+    u8 padding5;
     char name[6];
 } WifiBattleMatchNetKey;
 
@@ -364,7 +364,7 @@ typedef struct {
 // What an NHTTP answer starts with: its result, and the two values at its end
 typedef struct {
     u32 result;
-    u8 unk4[0x7c];
+    u8 padding4[0x7c];
     WifiBattleMatchNetValues values;
 } WifiBattleMatchNetAnswer;
 
@@ -438,13 +438,13 @@ struct WifiBattleMatchNet {
     GdbField *record;
     const char **tableNames;
     s32 table_name_num;
-    u32 unk1a0;
+    u32 initWord;
     u32 timer;
     u32 matchTimer;
     u32 authoritativeReport;
     u32 mode;
     s32 recordIdArg;
-    u8 unk1b8[0x10];
+    u8 padding1B4[0x10];
     WifiBattleMatchNetRecordData recordData;
     u8 recvBuffer[0x1000];
     DWCEvalPlayerCallback evalFunc;
@@ -458,13 +458,13 @@ struct WifiBattleMatchNet {
     u32 downloadSize;
     char downloadAttr[0xc];
     u32 downloading;
-    u32 unk1460;
-    u32 unk1464;
+    u32 padding145C;
+    u32 padding1460;
     WifiBattleMatchNetData *p_data;
     WifiBattleMatchNetNameCheck nameCheck;
     PlayerInfo *namePlayerInfo;
-    u32 unk1498;
-    u32 unk149c;
+    u32 reportFlag;
+    u32 padding1498;
     JoinAvenuePerson person;
     u32 opponentNameRejected;
 };
@@ -580,7 +580,7 @@ WifiBattleMatchNet *WifiBattleMatchNet_Create(WifiBattleMatchNetData *data, Game
     p_wk->gameData = gameData;
     p_wk->loginBuffer = loginBuffer;
     p_wk->p_data = data;
-    p_wk->unk1a0 = 0x573;
+    p_wk->initWord = 0x573;
     p_wk->record =
         GFL_HeapAllocate(heapId, sizeof(GdbField) * WBM_GDB_FIELD_TABLE_MAX, FALSE, "wifibattlematch_net.c", 716);
     MI_CpuFill8(p_wk->record, 0, sizeof(GdbField) * WBM_GDB_FIELD_TABLE_MAX);
@@ -1041,7 +1041,7 @@ static int WifiBattleMatchNet_Eval(int index, void *work) {
 
 void WifiBattleMatchNet_StartReport(WifiBattleMatchNet *p_wk, u32 mode, u32 kind, u32 rule,
                                     const WifiBattleMatchBattleResult *battleResult, u32 partialReport) {
-    p_wk->unk1498 = 0;
+    p_wk->reportFlag = 0;
     p_wk->state = WBM_REPORT_SEQ_SYNC;
     p_wk->authoritativeReport = 1;
     p_wk->commandCheckErrorReceived = 0;
@@ -1484,7 +1484,7 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
         }
     }
     err = Sc_SetPlayer(info->connection, WBM_REPORT_PLAYER_OWN, info->connectionId, 0, resultMode, info->certificate,
-                       info->unk58);
+                       info->authHash);
     if (err != 0) {
         return err;
     }
@@ -1524,7 +1524,7 @@ static int WifiBattleMatchNet_SendBattleResult(WifiBattleMatchNetInfo *info, Wif
             }
         }
         err = Sc_SetPlayer(info->connection, WBM_REPORT_PLAYER_OTHER, theirs->connectionId, 0, theirsMode,
-                           theirs->certificate, theirs->unk58);
+                           theirs->certificate, theirs->authHash);
         if (err != 0) {
             return err;
         }
