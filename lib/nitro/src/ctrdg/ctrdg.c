@@ -18,13 +18,20 @@
 // code
 #define CTRDG_IS_ROM_CODE 0x96
 
-// The header of a GBA cartridge's ROM, of which the library reads a few fields
+// The header of a GBA cartridge's ROM, of which the library reads a few fields (NitroSDK's ctrdg_common.h)
 typedef struct {
-    u8 unk_00[0xac];
+    u32 startAddress;
+    u8 nintendoLogo[0x9c];
+    char titleName[12];
     u32 gameCode;
-    u8 makerCode[2];
+    u16 makerCode;
     u8 isRomCode; // CTRDG_IS_ROM_CODE
-    u8 unk_b3[0xb];
+    u8 machineCode;
+    u8 deviceType;
+    u8 exLsiID[3];
+    u8 reserved_A[4];
+    u8 softVersion;
+    u8 complement;
     u16 moduleID; // What the start noted in CTRDGModuleInfo.moduleID
 } CTRDGHeader;
 
