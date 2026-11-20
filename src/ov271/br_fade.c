@@ -36,8 +36,9 @@ struct BrFade {
     BrFadeFunc fade_func;
     PaletteFade *pfd;
     u16 fade_color;
-    u8 unk26[0x16];
-    u32 unk3C;
+    u8 padding26[0x16];
+    // Set to 0xffff and never read
+    u32 unused3C;
 };
 
 static BOOL BrFade_Fade_MasterBright_Black(BrFade *p_wk, u32 *p_seq);
@@ -51,7 +52,7 @@ BrFade *BrFade_Init(HeapID heapId) {
     BrFade *p_wk = GFL_HeapAllocate(heapId, sizeof(BrFade), FALSE, "br_fade.c", 98);
 
     MI_CpuFill8(p_wk, 0, sizeof(BrFade));
-    p_wk->unk3C = 0xffff;
+    p_wk->unused3C = 0xffff;
     p_wk->pfd = PaletteFade_Create(heapId);
     PaletteFade_AllocBuffer(p_wk->pfd, PALFADE_BUFFER_MAIN_BG, 0x200, heapId);
     PaletteFade_AllocBuffer(p_wk->pfd, PALFADE_BUFFER_MAIN_OBJ, 0x1c0, heapId);

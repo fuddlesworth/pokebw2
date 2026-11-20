@@ -25,7 +25,7 @@ struct BrNetSeq {
     BrNetSeqFunc func;
     u32 seq;
     BrNet *net;
-    u32 unkC;
+    u32 unusedC;
 };
 
 struct BrNet {
@@ -41,9 +41,10 @@ struct BrNet {
     BOOL uploadVideoEnd;
     BOOL downloadVideoEnd;
     BOOL downloadVideoListEnd;
-    u32 unk5cc;
-    u32 unk5d0;
-    u32 unk5d4;
+    // Cleared with the result flags above, never touched
+    u32 unused5cc;
+    u32 unused5d0;
+    u32 unused5d4;
     BOOL favoriteVideoEnd;
     BOOL isFailed;
     GameData *gameData;

@@ -34,8 +34,8 @@ typedef struct {
 struct BrGraphic {
     BrGraphicBG bg;
     BrGraphicOBJ obj;
-    // Unused here; the slot of a 3D system in the other apps' graphics works
-    u32 unk8;
+    // The slot of a 3D system in the other apps' graphics works; unused here
+    u32 unused8;
     TCB *vblankTask;
 };
 

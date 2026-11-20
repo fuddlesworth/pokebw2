@@ -46,7 +46,8 @@ struct BrList {
     // The scroll arrows, then the sidebar's arrows
     ClActor *clwk[4];
     BmpWin *bmpwin;
-    u16 unk3C;
+    // Set to 0 and never read
+    u16 unused3C;
     u16 list_max;
     u16 cursor;
     u16 list;
@@ -92,7 +93,7 @@ struct BrSeq {
     BrSeqFunc seq_function;
     u32 seq;
     void *p_wk_adrs;
-    u32 unkC;
+    u32 unusedC;
 };
 
 // The motions of a ball: around a circle as its radius changes, around a circle, along a line, or after another
@@ -151,7 +152,8 @@ struct BrBallEffect {
     ClActor *clwk[BR_BALL_NUM];
     s32 cnt;
     BOOL is_end;
-    u32 unk230;
+    // Never read or written
+    u32 unused230;
     BOOL is_move_end[BR_BALL_NUM];
 };
 
@@ -312,7 +314,7 @@ BrList *BrList_Init(const BrListParam *cp_param, HeapID heapId) {
     p_wk = GFL_HeapAllocate(heapId, size, FALSE, "br_util.c", 417);
     MI_CpuFill8(p_wk, 0, size);
     p_wk->param = *cp_param;
-    p_wk->unk3C = 0;
+    p_wk->unused3C = 0;
     p_wk->list_max = cp_param->list_max;
     p_wk->line_max = cp_param->h / cp_param->str_line;
     p_wk->line_max = MATH_IMin(p_wk->line_max, cp_param->list_max);
