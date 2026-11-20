@@ -59,7 +59,7 @@ void UnionNet_RecvPlayerInfo(int netId, int size, const void *data, void *work, 
 void UnionNet_RecvCard(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvColosseumMember(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvColosseumEntryResult(int netId, int size, const void *data, void *work, NetHandle *handle);
-void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *work, NetHandle *handle);
+void UnionNet_RecvColosseumEntryCancel(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvEntryRequest(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvEntryReply2(int netId, int size, const void *data, void *work, NetHandle *handle);
 void UnionNet_RecvEntryReply1(int netId, int size, const void *data, void *work, NetHandle *handle);
@@ -83,7 +83,7 @@ BOOL UnionMain_SendPlayerInfo(UnionSystem *sys);
 // The group's card, in two sizes
 BOOL UnionMain_SendCard(UnionSystem *sys);
 BOOL UnionMain_SendCardHead(UnionSystem *sys);
-BOOL UnionMain_SendColosseumUnkCA(void);
+BOOL UnionMain_SendColosseumEntryCancel(void);
 BOOL UnionMain_SendEntryRequest(UnionSystem *sys);
 // The reply to an entry request: refused, and accepted
 BOOL UnionMain_SendEntryReply2(u8 sendTo);

@@ -2285,7 +2285,7 @@ static BOOL UnionOneself_StepColosseumRun(UnionSystem *unisys, UnionSelf *situ, 
         if (UnionMsg_GetActivityPlayerCount(situ->mycomm.chosenActivity) == 2) {
             clsys->entryResult = COLOSSEUM_ENTRY_DONE;
             if (GFL_NetIsParent() == TRUE) {
-                if (UnionMain_SendColosseumUnkCA() == TRUE) {
+                if (UnionMain_SendColosseumEntryCancel() == TRUE) {
                     *seq = UNION_ONESELF_COLOSSEUM_SEQ_ENTRY_DONE;
                 }
             } else {

@@ -54,7 +54,7 @@ enum {
     UNION_NET_CMD_CARD_A,
     UNION_NET_CMD_COLOSSEUM_MEMBER,
     UNION_NET_CMD_COLOSSEUM_ENTRY_RESULT,
-    UNION_NET_CMD_UNK9,
+    UNION_NET_CMD_COLOSSEUM_ENTRY_CANCEL,
     UNION_NET_CMD_ENTRY_REQUEST,
     UNION_NET_CMD_ENTRY_REPLY_2,
     UNION_NET_CMD_ENTRY_REPLY_1,
@@ -208,7 +208,7 @@ void UnionNet_RecvColosseumEntryResult(int netId, int size, const void *data, vo
     colosseum->entryResult = *value;
 }
 
-void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *work, NetHandle *handle) {
+void UnionNet_RecvColosseumEntryCancel(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionColosseum *colosseum = unisys->colosseum_sys;
 
@@ -219,8 +219,8 @@ void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *wo
     colosseum->entryCancelled = 1;
 }
 
-BOOL UnionMain_SendColosseumUnkCA(void) {
-    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_UNK9, 0, NULL);
+BOOL UnionMain_SendColosseumEntryCancel(void) {
+    return GFL_NetSendCommand(NetHandle_GetOwn(), UNION_NET_CMD_COLOSSEUM_ENTRY_CANCEL, 0, NULL);
 }
 
 void UnionNet_RecvEntryRequest(int netId, int size, const void *data, void *work, NetHandle *handle) {

@@ -97,7 +97,7 @@ static const NetCommand sUnionNetCommands[22] = {
     { UnionNet_RecvCard, UnionNet_GetRecvBuffer },
     { UnionNet_RecvColosseumMember, UnionNet_GetRecvBuffer },
     { UnionNet_RecvColosseumEntryResult, UnionNet_GetRecvBuffer },
-    { UnionNet_RecvColosseumUnkCA, NULL },
+    { UnionNet_RecvColosseumEntryCancel, NULL },
     { UnionNet_RecvEntryRequest, NULL },
     { UnionNet_RecvEntryReply2, NULL },
     { UnionNet_RecvEntryReply1, NULL },

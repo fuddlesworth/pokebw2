@@ -9460,8 +9460,8 @@ overlays/ov028 0x02171340 UnionMain_SendCard
 overlays/ov028 0x02171390 UnionMain_SendCardHead
 overlays/ov028 0x021713e0 UnionNet_RecvColosseumMember
 overlays/ov028 0x0217144c UnionNet_RecvColosseumEntryResult
-overlays/ov028 0x02171478 UnionNet_RecvColosseumUnkCA
-overlays/ov028 0x021714a4 UnionMain_SendColosseumUnkCA
+overlays/ov028 0x02171478 UnionNet_RecvColosseumEntryCancel
+overlays/ov028 0x021714a4 UnionMain_SendColosseumEntryCancel
 overlays/ov028 0x021714bc UnionNet_RecvEntryRequest
 overlays/ov028 0x0217152c UnionMain_SendEntryRequest
 overlays/ov028 0x02171570 UnionNet_RecvEntryReply2
@@ -9525,7 +9525,7 @@ overlays/ov028 0x0217276c Colosseum_RecvCancelAck
 overlays/ov028 0x02172780 Colosseum_SendCancelAck
 overlays/ov028 0x021727a8 Colosseum_RecvAllReady
 overlays/ov028 0x021727bc Colosseum_SendAllReady
-overlays/ov028 0x021727e0 Colosseum_RecvUnkC
+overlays/ov028 0x021727e0 Colosseum_RecvConfirm
 overlays/ov028 0x021727fc Colosseum_RecvLeave
 overlays/ov028 0x02172818 Colosseum_SendLeave
 overlays/ov028 0x02172830 Colosseum_Create

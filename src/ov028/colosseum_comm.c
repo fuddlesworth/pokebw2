@@ -31,6 +31,7 @@ enum {
     COLOSSEUM_CMD_READY_CANCEL,
     COLOSSEUM_CMD_CANCEL_ACK,
     COLOSSEUM_CMD_ALL_READY,
+    COLOSSEUM_CMD_CONFIRM,
     COLOSSEUM_CMD_LEAVE = COLOSSEUM_CMD_BASE + 13,
 };
 
@@ -47,7 +48,7 @@ static void Colosseum_RecvReady(int netId, int size, const void *data, void *wor
 static void Colosseum_RecvReadyCancel(int netId, int size, const void *data, void *work, NetHandle *handle);
 static void Colosseum_RecvCancelAck(int netId, int size, const void *data, void *work, NetHandle *handle);
 static void Colosseum_RecvAllReady(int netId, int size, const void *data, void *work, NetHandle *handle);
-static void Colosseum_RecvUnkC(int netId, int size, const void *data, void *work, NetHandle *handle);
+static void Colosseum_RecvConfirm(int netId, int size, const void *data, void *work, NetHandle *handle);
 static void Colosseum_RecvLeave(int netId, int size, const void *data, void *work, NetHandle *handle);
 
 // clang-format off
@@ -64,7 +65,7 @@ static const NetCommand sColosseumCommands[] = {
     {Colosseum_RecvReadyCancel, NULL},
     {Colosseum_RecvCancelAck, NULL},
     {Colosseum_RecvAllReady, NULL},
-    {Colosseum_RecvUnkC, NULL},
+    {Colosseum_RecvConfirm, NULL},
     {Colosseum_RecvLeave, NULL},
 };
 
@@ -254,7 +255,7 @@ BOOL Colosseum_SendAllReady(void) {
                                        FALSE, FALSE);
 }
 
-static void Colosseum_RecvUnkC(int netId, int size, const void *data, void *work, NetHandle *handle) {
+static void Colosseum_RecvConfirm(int netId, int size, const void *data, void *work, NetHandle *handle) {
     UnionSystem *unisys = work;
     UnionColosseum *colosseum = unisys->colosseum_sys;
 
