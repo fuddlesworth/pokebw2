@@ -180,7 +180,7 @@ static void SpinTradeComm_RecvJoin(int netId, int size, const void *data, void *
 
     SpinTradeReceipt_SetSeqOnJoin(g2c->g2p->g2r, SPIN_TRADE_RECEIPT_SEQ_JOINED, *id);
     if (NetSystem_GetNetId() == 0) {
-        g2c->unk34 = 0;
+        g2c->memberCountAck = 0;
     }
 }
 

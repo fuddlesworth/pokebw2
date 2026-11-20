@@ -112,63 +112,63 @@ typedef struct {
 
 struct SpinTradeReceiptWork {
     int procSeq;
-    u8 unk04[4];
+    u8 padding4[4];
     BOOL receiptDone;
     SpinTradeProcWork *g2p;
     SpinTradeCommWork *g2c;
-    u8 unk14[4];
+    u8 padding14[4];
     SpinTradeReceiptPalAnim palAnim;
-    u8 unk2C[4];
+    u8 padding2C[4];
     TCB *vblankTcb;
     ArcTool *trainerArc;
     Font *font;
     WordSet *wordSet;
     MsgData *msgData;
     StrBuf *names[SPIN_TRADE_MEMBER_MAX];
-    u8 unk58[4];
+    u8 padding58[4];
     StrBuf *msgBuf;
     StrBuf *titleBuf;
-    u8 unk64[4];
+    u8 padding64[4];
     ClActUnit *actorUnit;
     u32 resources[SPIN_TRADE_RECEIPT_RES_COUNT];
-    u8 unk98[4];
+    u8 padding98[4];
     ClActor *actors[SPIN_TRADE_MEMBER_MAX];
-    u8 unkB0[0x20];
+    u8 paddingB0[0x20];
     BmpWin *nameWindow;
     BmpWin *msgWindow;
     BmpWin *subWindow;
     BmpWin *titleWindow;
-    u8 unkE0[8];
+    u8 paddingE0[8];
     BmpMenu *yesNo;
     PrintQueue *printQueue;
     PrintStream *stream;
     TCBExManager *tcbManager;
-    BmpWin *unkF8;
-    u8 unkFC;
-    u8 unkFD[0x13];
+    BmpWin *activeWindow; // The title window, stored as the active window
+    u8 printPending;      // Whether a print is pending
+    u8 paddingFD[0x13];
     void *trainerPaletteFile;
     NNSG2dPaletteData *trainerPalette;
     int seq;
     // The sequence after SPIN_TRADE_RECEIPT_SEQ_MSG_WAIT
     int nextSeq;
-    u8 unk120[4];
+    u8 padding120[4];
     int wait;
-    u8 unk128[0x10];
+    u8 padding128[0x10];
     SpinTradeReceiptMember members[SPIN_TRADE_MEMBER_MAX];
     int actorStates[SPIN_TRADE_MEMBER_MAX];
-    u8 unk174[0x4690];
+    u8 padding174[0x4690];
     int memberCount;
     BOOL entryClosed;
-    u32 unk480C;
+    u32 syncKey; // Key XORed with the joined bits to form the cancel sync token
     u8 cancelSent;
-    u8 unk4811;
+    u8 padding4811;
     u8 startCount;
-    u8 unk4813;
+    u8 startRequestBlocked; // Set while the start request is blocked
     u32 syncBits;
     int leftTimer;
     int leftCount;
     s16 signalTimer;
-    u8 unk4822[2];
+    u8 padding4822[2];
     SpinTradeReceiptMemberId ids[SPIN_TRADE_MEMBER_MAX];
 };
 
@@ -736,8 +736,8 @@ static void SpinTradeReceipt_CreateWindows(SpinTradeReceiptWork *wk) {
     wk->nameWindow = BmpWin_CreateDynamic(0, 2, 6, 16, 11, 15, TRUE);
     GFL_BitmapFill(BmpWin_GetBitmap(wk->nameWindow), 0);
     SpinTradeReceipt_DrawNames(wk->nameWindow, 0, SPIN_TRADE_RECEIPT_COLOR_NAME, wk);
-    wk->unkF8 = wk->titleWindow;
-    wk->unkFC = 0;
+    wk->activeWindow = wk->titleWindow;
+    wk->printPending = 0;
 }
 
 static void SpinTradeReceipt_DrawTitle(BmpWin *window, StrBuf *title, Font *font) {
@@ -995,7 +995,7 @@ static int SpinTradeReceiptSeq_StartYesNo(SpinTradeReceiptWork *wk, int procSeq)
 }
 
 static int SpinTradeReceiptSeq_StartSend(SpinTradeReceiptWork *wk, int procSeq) {
-    if (wk->unk4813 == 0) {
+    if (wk->startRequestBlocked == 0) {
         if (SpinTradeComm_Send(wk->g2c, SPIN_TRADE_NET_CMD_START, NULL, 0) == TRUE) {
             wk->seq = SPIN_TRADE_RECEIPT_SEQ_START;
             GFL_NetSetDisconnectError(TRUE);
@@ -1089,7 +1089,7 @@ static int SpinTradeReceiptSeq_ParentCancelWait(SpinTradeReceiptWork *wk, int pr
 
 static int SpinTradeReceiptSeq_ParentCancelSync(SpinTradeReceiptWork *wk, int procSeq) {
     NetHandle_GetOwn();
-    wk->syncBits = wk->unk480C ^ SpinTradeReceipt_GetJoined(wk);
+    wk->syncBits = wk->syncKey ^ SpinTradeReceipt_GetJoined(wk);
     NetHandle_SendTimingPairToMachines(NetHandle_GetOwn(), 0xcf, 40, (u16)wk->syncBits);
     wk->seq = SPIN_TRADE_RECEIPT_SEQ_PARENT_CANCEL_SYNC_WAIT;
     SpinTradeReceipt_SeqEnd(wk);
@@ -1098,7 +1098,7 @@ static int SpinTradeReceiptSeq_ParentCancelSync(SpinTradeReceiptWork *wk, int pr
 
 static int SpinTradeReceiptSeq_ParentCancelSyncWait(SpinTradeReceiptWork *wk, int procSeq) {
     if (NetHandle_IsTimingPairRecv(NetHandle_GetOwn(), 0xcf, 40) ||
-        wk->syncBits != (SpinTradeReceipt_GetJoined(wk) ^ wk->unk480C)) {
+        wk->syncBits != (SpinTradeReceipt_GetJoined(wk) ^ wk->syncKey)) {
         GflNet_SetAutoExit(FALSE);
         GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_OUT, WIPE_TYPE_FADE_OUT, WIPE_COLOR_BLACK, 16, 1, HEAPID_SPIN_TRADE);
         procSeq = SPIN_TRADE_RECEIPT_PROC_FADE_OUT;

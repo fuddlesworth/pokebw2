@@ -23,7 +23,7 @@ struct SpinTradeCallWork {
     SpinTradeParam *param;
     SpinTradeProcWork *g2p;
     GameData *gameData;
-    u32 unk14;
+    u32 padding14;
     PokeListParam *pokeList;
     PStatusParam *pokeStatus;
     GameProcManager *procManager;

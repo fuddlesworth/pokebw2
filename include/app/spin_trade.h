@@ -132,7 +132,8 @@ struct SpinTradeCommWork {
     // How many members the parent counts, and those it has let leave and that are still there (net ID bits)
     int joinCount;
     u32 leavingBits;
-    u32 unk34;
+    // The parent's acknowledgement of the member count, cleared when it sends it
+    u32 memberCountAck;
     // The count of the parent's answer to this machine's request to leave
     u16 signalCount;
     u8 padding3A[2];

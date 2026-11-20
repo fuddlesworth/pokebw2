@@ -249,7 +249,7 @@ typedef struct {
     VecFx32 pos;
     VecFx32 offset;
     fx32 jumpY;
-    u8 unk60[0x54];
+    u8 padding60[0x54];
 } SpinTradeEgg;
 
 typedef struct {
@@ -259,7 +259,7 @@ typedef struct {
     u16 rotZ;
     VecFx32 scale;
     VecFx32 pos;
-    u8 unk24[0x54];
+    u8 padding24[0x54];
     SpinTradeEgg *egg;
 } SpinTradeEggShadow;
 
@@ -267,12 +267,12 @@ typedef struct {
 typedef struct {
     BOOL active;
     VecFx32 pos;
-    u8 unk10[0x54];
+    u8 padding10[0x54];
     SpinTradeEgg *egg;
 } SpinTradeEggCursor;
 
 typedef struct {
-    u8 unk0[0x140];
+    u8 padding0[0x140];
     SpinTradeEgg eggs[SPIN_TRADE_MEMBER_MAX];
     SpinTradeEggShadow shadows[SPIN_TRADE_MEMBER_MAX];
     SpinTradeEggCursor cursors[SPIN_TRADE_MEMBER_MAX];
@@ -296,7 +296,7 @@ typedef struct {
     u16 rotX;
     s16 rotY;
     u16 rotZ;
-    u8 unk52[0x6a];
+    u8 padding52[0x6a];
     u32 scene;
 } SpinTradeDisc;
 
@@ -304,14 +304,14 @@ typedef struct {
 typedef struct {
     int count;
     int angle;
-    u8 unk8[8];
+    u8 padding8[8];
     int position;
     int playerCount;
 } SpinTradeEggFallSeqWork;
 
 typedef struct {
     int seq;
-    u32 unk4;
+    u32 padding4;
     BOOL sePlayed;
     fx32 speed;
     SpinTradeEgg *egg;
@@ -325,14 +325,14 @@ typedef struct {
     int count;
     fx32 speed;
     fx32 accel;
-    u32 unk18;
+    u32 padding18;
     SpinTradeEgg *egg;
 } SpinTradeEggJumpTask;
 
 typedef struct {
     BOOL active;
     int seq;
-    u32 unk8;
+    u32 padding8;
     fx32 speed;
     SpinTradeEgg *egg;
 } SpinTradeEggSpinTask;
@@ -373,7 +373,7 @@ typedef struct {
 typedef struct {
     int seq;
     int wait;
-    u32 unk8;
+    u32 padding8;
     int count;
     SpinTradeMainWork *g2m;
     ClActor *actor;
@@ -399,16 +399,16 @@ typedef struct {
 } SpinTradeMsgWork;
 
 typedef struct {
-    u8 unk0[0x14];
+    u8 padding0[0x14];
     G3DCamera *camera;
 } SpinTradeCameraWork;
 
 struct SpinTradeMainWork {
     int seq;
-    u32 unk04;
+    u32 padding4;
     int gameFrame;
     int wait;
-    u32 unk10;
+    u32 waitCount;
     int sendCount;
     BOOL error;
     // The net IDs whose Egg stopped on a bonus area
@@ -1118,7 +1118,7 @@ static int SpinTradeMainSeq_ParentSendStartSignal(SpinTradeMainWork *g2m) {
 static int SpinTradeMainSeq_ChildSendJoin(SpinTradeMainWork *g2m) {
     if (SpinTradeComm_Send(g2m->g2c, SPIN_TRADE_NET_CMD_MAIN_JOIN, NULL, 0) == TRUE) {
         g2m->seq = SEQ_CHILD_WAIT_START_SIGNAL;
-        g2m->unk10 = 0;
+        g2m->waitCount = 0;
         return SEQ_RESULT_WAIT;
     }
     return SEQ_RESULT_WAIT;
