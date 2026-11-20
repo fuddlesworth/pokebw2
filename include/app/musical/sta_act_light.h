@@ -17,8 +17,8 @@ struct StaActLight {
     GXRgb color;
     u8 alpha;
     VecFx32 pos;
-    u32 unk14;
-    u32 unk18;
+    u32 paramA;
+    u32 paramB;
     ClActor *actor;
 };
 
@@ -46,6 +46,6 @@ void StaActLight_DelLight(StaActLightSys *sys, StaActLight *light);
 void StaActLight_SetPosition(StaActLightSys *sys, StaActLight *light, VecFx32 *pos);
 void StaActLight_GetPosition(StaActLightSys *sys, StaActLight *light, VecFx32 *pos);
 void StaActLight_SetColor(StaActLightSys *sys, StaActLight *light, GXRgb color, u8 alpha);
-void StaActLight_SetElemB(StaActLightSys *sys, StaActLight *light, u32 a2, u32 a3);
+void StaActLight_SetElemB(StaActLightSys *sys, StaActLight *light, u32 paramA, u32 paramB);
 
 #endif // POKEBW2_APP_MUSICAL_STA_ACT_LIGHT_H

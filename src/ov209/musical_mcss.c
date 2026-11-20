@@ -43,7 +43,8 @@ typedef struct {
 } MusicalMcssCell;
 
 typedef struct {
-    u32 unk0;
+    // Reserved, never read
+    u32 reserved;
     u32 kind;
     fx32 x;
     fx32 y;
@@ -97,7 +98,8 @@ struct MusicalMcss {
     // The center of rotation, which marker cell 5 sets, and how far rotating moves it
     VecFx32 center;
     VecFx32 centerOffset;
-    VecFx32 unk118;
+    // Trailing padding to the sprite's fixed size
+    VecFx32 padding118;
 };
 
 // A sprite's characters and palette, loaded into VRAM at once or at the next V-blank

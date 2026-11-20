@@ -160,8 +160,8 @@ void StaActLight_SetColor(StaActLightSys *sys, StaActLight *light, GXRgb color, 
     light->alpha = alpha;
 }
 
-void StaActLight_SetElemB(StaActLightSys *sys, StaActLight *light, u32 a2, u32 a3) {
+void StaActLight_SetElemB(StaActLightSys *sys, StaActLight *light, u32 paramA, u32 paramB) {
     // The script supplies these values, but the current light implementation has no reader for them.
-    light->unk14 = a2;
-    light->unk18 = a3;
+    light->paramA = paramA;
+    light->paramB = paramB;
 }

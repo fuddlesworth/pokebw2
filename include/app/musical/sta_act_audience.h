@@ -21,7 +21,8 @@ typedef struct {
     u8 timer;
     // Which Pokémon's fan it is, which picks its look
     u8 type;
-    u16 unk4;
+    // Set to STA_ACT_AUDIENCE_NONE once the member is hidden
+    u16 hidden;
     // Where it sits, in 4 by 4 tile blocks
     u8 x;
     u8 y;

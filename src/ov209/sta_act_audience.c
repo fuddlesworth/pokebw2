@@ -166,7 +166,7 @@ static void StaActAudience_UpdateMember(StaActAudience *sys, StaActAudienceMembe
     }
     if (member->timer == 0) {
         if (member->target == STA_ACT_AUDIENCE_NONE && sys->lookTarget == STA_ACT_AUDIENCE_NONE) {
-            member->unk4 = 0xffff;
+            member->hidden = 0xffff;
             if (member->x < 2) {
                 StaActAudience_DrawMember(sys, member, STA_ACT_AUDIENCE_LOOK_RIGHT);
             } else if (member->x < 4) {

@@ -122,7 +122,8 @@ struct StaActing {
     u32 *script;
     StaActAudience *audience;
     StaActEffect *appealEffect;
-    u32 unkC0[3];
+    // Removed fields, never read
+    u32 paddingC0[3];
     TCBExManager *tcbExMgr;
     BmpWin *msgWin;
     Font *font;
@@ -156,7 +157,8 @@ struct StaActing {
     // The player's prop to send over the connection
     BOOL commSendPending;
     u32 commSendEquip;
-    u32 unk164;
+    // Skips the scripts and goes straight to the show's end when set
+    u32 abortRequested;
     // The shimmer of the sub screen's palette, between its colors and those of the next palette
     u16 paletteAnimPhase;
     u16 paletteBase[16];
@@ -335,7 +337,7 @@ StaActing *StaActing_Init(MusicalStageParam *param, HeapID heapId) {
     stage->curtainOffset = 0;
     stage->script = NULL;
     stage->seq = STA_ACTING_SEQ_FADE_IN;
-    stage->unk164 = 0;
+    stage->abortRequested = 0;
     stage->curtainClosed = TRUE;
     stage->scriptScroll = FALSE;
     stage->scrollFixed = FALSE;
@@ -484,7 +486,7 @@ BOOL StaActing_Main(StaActing *stage) {
         }
         break;
     case STA_ACTING_SEQ_START:
-        if (stage->unk164 == 0) {
+        if (stage->abortRequested == 0) {
             stage->script = stage->param->ov210->script;
             StaActing_StartScripts(stage);
             stage->seq = STA_ACTING_SEQ_PLAY;
@@ -493,7 +495,7 @@ BOOL StaActing_Main(StaActing *stage) {
     case STA_ACTING_SEQ_PLAY:
         if (StaActScript_GetScriptNum(stage->scriptSys) == 0) {
             stage->script = NULL;
-            if (stage->unk164 == 0) {
+            if (stage->abortRequested == 0) {
                 stage->seq = STA_ACTING_SEQ_FADE_OUT;
             } else {
                 stage->seq = STA_ACTING_SEQ_END;

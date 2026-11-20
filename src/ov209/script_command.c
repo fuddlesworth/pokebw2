@@ -1115,12 +1115,12 @@ static BOOL StaScriptCmd_LightAdd(VM *vm, void *work) {
     StaActScript *script = work;
     StaActScriptSys *sys = script->sys;
     u32 index = VM_Read32(script->vm);
-    u32 unk = VM_Read32(script->vm);
+    u32 paramA = VM_Read32(script->vm);
     StaActLightSys *lightSys = StaActing_GetLightSys(sys->stage);
     StaActLight *light = StaActLight_AddLight(lightSys, 1);
 
     StaActLight_SetColor(lightSys, light, GX_RGB(31, 31, 0), 16);
-    StaActLight_SetElemB(lightSys, light, unk, 0);
+    StaActLight_SetElemB(lightSys, light, paramA, 0);
     StaActing_SetLight(sys->stage, light, index);
     StaActing_RefreshAudience(sys->stage);
     return FALSE;
