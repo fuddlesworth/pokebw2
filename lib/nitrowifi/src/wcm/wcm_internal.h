@@ -52,14 +52,14 @@ struct WCMWork {
             WMScanExParam scanRequest; // 0x22a0, including the 16-byte SSID match mask
             u32 scanCount;             // 0x22e4
             u16 associationId; // 0x22e8, from the successful connection callback; cleared on disconnect or reset
-            u16 connectionFailureReason; // 0x22ea, retained across reset for retry and notification
+            u16 connectionFailureReason;             // 0x22ea, retained across reset for retry and notification
             u8 padding_22ec[WCM_WORK_SIZE - 0x22ec]; // tail of the DS work area
         };
         // The DSi's, with the same fields for NWM
         struct {
-            u8 nwmSystemBuffer[0x3000];    // 0x13a0, passed to NWM_Init
-            NWMScanExParam nwmScanRequest; // 0x43a0
-            u8 padding_43d8[8];            // 0x43d8, aligns nwmScanCount
+            u8 nwmSystemBuffer[0x3000];     // 0x13a0, passed to NWM_Init
+            NWMScanExParam nwmScanRequest;  // 0x43a0
+            u8 padding_43d8[8];             // 0x43d8, aligns nwmScanCount
             u32 nwmScanCount;               // 0x43e0
             u16 nwmAssociationId;           // 0x43e4
             u16 nwmConnectionFailureReason; // 0x43e6

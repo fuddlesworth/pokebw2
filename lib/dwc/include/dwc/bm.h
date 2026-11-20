@@ -48,9 +48,9 @@ typedef struct DWCBMApInfo {
     u8 wepKey[4][0x10];
     u8 ip[4]; // all 0 when the address comes from DHCP
     u8 gateway[4];
-    u8 dns[2][4];  // the first is all 0 when the DNS servers come from DHCP
-    u8 netmask;    // how many of the mask's high bits are set, 0x20 at most
-    u8 wep2[4][5]; // the 40-bit WEP keys of an AOSS setup
+    u8 dns[2][4];       // the first is all 0 when the DNS servers come from DHCP
+    u8 netmask;         // how many of the mask's high bits are set, 0x20 at most
+    u8 wep2[4][5];      // the 40-bit WEP keys of an AOSS setup
     u8 authType;        // NitroDWC's authType: how the connection authenticates
     u8 wepMode : 2;     // DWC_WEPMODE_NONE, or a key of 40, 104 or 128 bits
     u8 wepNotation : 6; // 1 when the key was entered as characters, 0 when as hex digits

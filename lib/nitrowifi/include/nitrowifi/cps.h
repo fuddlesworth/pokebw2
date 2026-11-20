@@ -78,15 +78,15 @@ typedef struct CPSSslConnection {
     } key_storage; // Descriptive reconstruction: 0x74..0xc3, not an established SDK type.
     u8 send_iv[4]; // The SDK's send_iv: the send IV pointer, never set because RC4 has no IV
     CPSRc4Ctx write_rc4;
-    u8 pad_1ca[2]; // The two slack bytes that round write_rc4 up to the SDK's 0x104-byte cipher context
+    u8 pad_1ca[2];       // The two slack bytes that round write_rc4 up to the SDK's 0x104-byte cipher context
     u8 write_seq_num[8]; // The 8-byte big-endian sequence number make_ciphertext folds into an outgoing record's MAC
     u8 *read_mac_secret;
     u8 *read_key;
     u8 rcv_iv[4]; // The SDK's rcv_iv: the receive IV pointer, never set because RC4 has no IV
     CPSRc4Ctx read_rc4;
-    u8 pad_2e2[2]; // The two slack bytes that round read_rc4 up to the SDK's 0x104-byte cipher context
-    u8 read_seq_num[8];                 // Same, for a received record's MAC; both start at 0 and add1_be8 advances them
-    CPSSha1Ctx handshake_sha1;          // The running hash of every handshake message so far
+    u8 pad_2e2[2];             // The two slack bytes that round read_rc4 up to the SDK's 0x104-byte cipher context
+    u8 read_seq_num[8];        // Same, for a received record's MAC; both start at 0 and add1_be8 advances them
+    CPSSha1Ctx handshake_sha1; // The running hash of every handshake message so far
     CPSSha1Ctx handshake_sha1_snapshot; // Copied for Finished; the snapshot contexts also serve as certificate-hash
                                         // scratch storage
     CPSMd5Ctx handshake_md5;
@@ -125,7 +125,7 @@ typedef struct CPSSslConnection {
     u32 named_param_count;
     void *key_param; // Private key consumed by rcv_client_key_exchange; its writer is not recovered
     u8 pad_820[4];   // The SDK's my_certificate slot, unused: CPS_SetMyCert's writer is not recovered
-    u8 *read_buf; // Owned incomplete record, or a dispatched application record awaiting consumption
+    u8 *read_buf;    // Owned incomplete record, or a dispatched application record awaiting consumption
     u32 read_buf_len;
     u32 read_buf_pos;
 } CPSSslConnection;

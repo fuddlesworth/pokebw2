@@ -581,7 +581,8 @@ static BOOL StatusRcv_CanChangeFriendship(PartyPkm *pkm, ItemData *data) {
         return FALSE;
     }
     if (friendship >= 200 && friendship < 255) {
-        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_4) != 0 && PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3) > 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_4) != 0 &&
+            PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3) > 0) {
             return TRUE;
         }
         return FALSE;
