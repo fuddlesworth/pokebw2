@@ -13,7 +13,7 @@
 struct TrialHouseWork {
     BSubwayTrainer trainer;
     u16 heapId;
-    u8 unk122[2];
+    u8 padding122[2];
     u32 capacity;
     PokeParty *party;
     u32 battleType;

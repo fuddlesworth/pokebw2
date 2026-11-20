@@ -12,7 +12,8 @@ typedef struct {
     u8 type;
     // Whether Mr. Medal hints at the medal while it is unknown
     u8 hintable;
-    u8 unk0B;
+    // The rank the medal counts toward, as MedalDef.rank names it
+    u8 rank;
 } MedalData;
 
 void DiscoverInitialMedalsCore(MedalBox *box, HeapID heapId);

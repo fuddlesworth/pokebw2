@@ -46,7 +46,7 @@ typedef struct {
 static GameEventReturnCode EventBtlInstPokeSelect_Callback(GameEvent *event, u32 *state, void *data);
 static GameEventReturnCode EventBtlInstTrainerMsg_Callback(GameEvent *event, u32 *state, void *data);
 
-GameEvent *EventBtlInstPokeSelect_Create(GameSystem *gsys, u32 a1, u32 mode, u32 regulationId, PokeParty *party,
+GameEvent *EventBtlInstPokeSelect_Create(GameSystem *gsys, u32 battleType, u32 mode, u32 regulationId, PokeParty *party,
                                          u8 *picked, u32 *choice, u32 *result, PokeParty *entered) {
     Field *field = GSYS_GetField(gsys);
     GameEvent *event = GameEvent_Create(gsys, NULL, EventBtlInstPokeSelect_Callback, sizeof(BtlInstPokeSelectWork));
@@ -67,7 +67,7 @@ GameEvent *EventBtlInstPokeSelect_Create(GameSystem *gsys, u32 a1, u32 mode, u32
     PokeListParam_Setup(partyParam, GSYS_GetGameData(gsys), mode, party);
     PokeRegulation_Load(regulationId, &work->regulation);
     partyParam->regulation = &work->regulation;
-    partyParam->unk48 = a1;
+    partyParam->unk48 = battleType;
     summaryParam = &work->summaryParam;
     gameData = GSYS_GetGameData(gsys);
     pokedex = GameData_GetPokedex(gameData);

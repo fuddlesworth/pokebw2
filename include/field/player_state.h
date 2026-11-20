@@ -18,14 +18,14 @@ typedef enum {
 
 struct PlayerState {
     u16 zoneId;
-    u16 unk2;
+    u16 padding2;
     VecFx32 position;
     RailPosition railPos;
     u16 rotation;
     u8 unk1A;
     u8 isRail;
     u16 objCode;
-    u8 unk1E[2];
+    u8 padding1E[2];
     PlayerInfo playerInfo;
     u32 exState;
 };

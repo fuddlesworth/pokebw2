@@ -52,7 +52,8 @@ typedef struct MailEdit {
     u8 selected;
     u8 cursor;
     u32 trainerId;
-    u8 unk08;
+    // The mail's author's gender, a MailData field this copy of the mail does not read back
+    u8 trainerGender;
     u8 region;
     u8 gameVersion;
     u8 design;
@@ -61,7 +62,7 @@ typedef struct MailEdit {
     PMSData words[MAIL_WORD_COUNT];
     // Whether the design gives the sentence a preset one to start from
     u8 hasPreset[MAIL_WORD_COUNT];
-    u8 unk31;
+    u8 padding31;
     // The mail's easy word
     u16 word;
 } MailEdit;

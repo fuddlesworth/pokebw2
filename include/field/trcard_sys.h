@@ -36,7 +36,7 @@ typedef struct {
     u8 unk05;
     // The player's Union Room appearance (PlayerInfo_GetUnionView)
     u8 unionView;
-    u8 unk07;
+    u8 padding7;
     // One bit for each badge
     u16 badges;
     u16 name[8];
@@ -56,7 +56,7 @@ typedef struct {
     u8 clearMonth;
     u8 clearDay;
     u8 clearMinute;
-    u8 unk36[2];
+    u8 padding36[2];
     // The counts on the back, named after its labels. timesLinked to linkBattleLosses, linkTrades to trainersBattled,
     // feelingChecks and musicalPerformances are sums of records, from the rows of TrainerCardData_SumRecords's table
     u32 timesLinked;
@@ -96,7 +96,7 @@ typedef struct {
     u8 medalYear;
     u8 medalMonth;
     u8 medalDay;
-    u8 unk682[2];
+    u8 padding682[2];
     // The cleared Funfest Missions, the movie shoots, and the customers recommended to Join Avenue
     u32 funfestMissions;
     u16 movieShoots;
@@ -109,7 +109,7 @@ typedef struct {
     u32 showPwtWins : 1;
     u32 showAvenue : 1;
     u32 unk690_4 : 28;
-    u8 unk694[2];
+    u8 padding694[2];
     // Join Avenue's name
     u16 avenueName[23];
 } TrainerCardData;
