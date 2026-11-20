@@ -107,7 +107,7 @@ typedef struct {
 // A received Union Room beacon, kept until its timer expires
 typedef struct {
     u8 mac[6];
-    u8 unk6[2];
+    u8 padding6[2];
     // The frames until the call is forgotten
     u16 timer;
     // The childCount value advertised by that beacon
@@ -142,27 +142,30 @@ struct CommTvtFieldWork {
     u32 shownPeerResult;
     u16 palettes[PALETTE_COUNT][16];
     u16 adjustedPalettes[PALETTE_COUNT][16];
-    u8 unk2EC[0x20];
+    u8 padding2EC[0x20];
     ClActUnit *unit;
     TCB *vblankTask;
-    BmpWin *unk314;
+    // A window freed on exit, never created here
+    BmpWin *bmpWin;
     PrintStream *stream;
     TCBExManager *tcbManager;
     PrintQueue *queue;
     AppTaskMenu *taskMenu;
     StrBuf *unusedMessage;
-    u16 unk32C;
-    int unk330;
-    u8 unk334[0xc];
+    // The status text's color, set but never read
+    u16 statusColor;
+    // The status text's flags, set but never read
+    int statusFlags;
+    u8 padding334[0xc];
     AppTaskMenuRes *taskMenuRes;
     CommTvtFieldParam *param;
     int windowCount;
-    u8 unk34C[4];
+    u8 padding34C[4];
     GameData *gameData;
     GameSystem *gsys;
     int scroll;
     int selected;
-    u8 unk360[4];
+    u8 padding360[4];
     u32 wifiState;
     u32 prevWifiState;
     u32 roomPlayerCount;
@@ -171,7 +174,7 @@ struct CommTvtFieldWork {
     u32 palette;
     u32 chars;
     u32 cellAnims;
-    u8 unk384[8];
+    u8 padding384[8];
     BOOL leaving;
     ClActor *actors[ACTOR_COUNT];
 };
@@ -812,8 +815,8 @@ static void CommTvtField_Run(CommTvtFieldWork *wk) {
 static void CommTvtField_InitMessage(CommTvtFieldWork *wk) {
     wk->unusedMessage = GFL_StrBufCreate(100, wk->heapId);
     GFL_MsgDataLoadStrbuf(wk->msgData, Bank0026_Text_Empty_3, wk->unusedMessage);
-    wk->unk32C = TEXT_COLOR;
-    wk->unk330 = 1;
+    wk->statusColor = TEXT_COLOR;
+    wk->statusFlags = 1;
     GFL_StrBufFree(wk->unusedMessage);
 }
 
@@ -1087,8 +1090,8 @@ static BOOL CommTvtFieldApp_Exit(GameProc *proc, u32 *state, void *param, void *
         AppTaskMenu_Free(wk->taskMenu);
         wk->taskMenu = NULL;
     }
-    if (wk->unk314 != NULL) {
-        BmpWin_Free(wk->unk314);
+    if (wk->bmpWin != NULL) {
+        BmpWin_Free(wk->bmpWin);
     }
     AppTaskMenuRes_Free(wk->taskMenuRes);
     BmpWin_FreeAllocator();
