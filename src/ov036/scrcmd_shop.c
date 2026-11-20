@@ -202,7 +202,7 @@ typedef struct {
     u8 state;
     // The state after a message
     u8 nextState;
-    u16 unk2;
+    u16 pad2;
     HeapID heapId;
     Font *font;
     TrainerCardSave *trainerCard;

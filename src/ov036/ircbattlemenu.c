@@ -113,7 +113,7 @@ struct IrcMenuWork {
     u16 *objPalettes;
     u16 *bgPalettes;
     u32 buttonCount;
-    u32 unk2F8;
+    u32 saved;
     u32 unk2FC;
     // The button touched
     u32 selected;
@@ -542,7 +542,7 @@ static void IrcMenu_LoadGraphics(IrcMenuWork *wk) {
     void *file;
     NNSG2dPaletteData *palette;
 
-    wk->unk2F8 = 0;
+    wk->saved = 0;
     wk->strBuf = GFL_StrBufCreate(300, wk->heapId);
     wk->font = GFL_FontCreate(ARCID_FONT, 0, 0, FALSE, wk->heapId);
     wk->msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_IR_BATTLE_MENU, wk->heapId);
@@ -1224,7 +1224,7 @@ static void IrcMenu_WaitSave(IrcMenuWork *wk) {
         } else {
             IrcMenu_SetStateAtLine(wk, IrcMenu_StartExit, 0x782);
         }
-        wk->unk2F8 = 1;
+        wk->saved = 1;
     }
 }
 

@@ -17,7 +17,7 @@ typedef struct {
     u16 objCode;
     u16 mat;
     u16 flags;
-    u16 unk6;
+    u16 pad6;
 } MatCacheEntry;
 
 typedef struct {

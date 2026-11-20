@@ -368,7 +368,7 @@ struct CommEntryMenu {
     u8 readyMask;
     u8 showWaitMsg;
     u16 lastMsg;
-    u8 unk57C[4];
+    u8 pad57C[4];
 };
 
 static const u8 sNoMac[6] = { 0 };

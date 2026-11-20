@@ -104,7 +104,7 @@ typedef struct {
     u8 dirTable;
     u8 reverse;
     u8 wait;
-    u8 unk7;
+    u8 pad7;
     ActorFaceMemory face;
 } ActorPatrolWork;
 
@@ -116,7 +116,7 @@ typedef struct {
     u8 axis;
     u8 dirTable;
     u8 wait;
-    u8 unk6[2];
+    u8 pad6[2];
     ActorFaceMemory face;
 } ActorRoundWork;
 

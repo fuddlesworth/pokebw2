@@ -109,7 +109,7 @@ void FieldPalaceSys_InitPostFX(FieldPalaceSys *sys, u16 zoneId, HeapID heapId) {
 typedef struct {
     u8 area;
     u8 season;
-    u16 unk2;
+    u16 pad2;
     u8 table[0x20];
 } PalaceLuminanceEntry;
 

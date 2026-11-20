@@ -54,8 +54,10 @@ typedef struct {
 // What the billboard actors of rail objects keep in their work area
 typedef struct {
     u16 index;
-    u8 unk2;
-    u8 unk3;
+    // 0 uses a camera-relative billboard offset; nonzero a fixed one (9 for a fixed-state actor, 1 for a blocked surf
+    // actor)
+    u8 fixed;
+    u8 pad3;
     RailActorAnim anim;
 } RailActorWork;
 
@@ -511,7 +513,7 @@ const FieldActorSceneNodeVTable FIELD_ACTOR_VTABLE_THREE_FRAME = {
 void RailActorAnim_SetState(FieldActor *actor, BOOL value) {
     RailActorWork *work = FldAct_GetBillboardActorWorkPtr(actor);
 
-    work->unk2 = value;
+    work->fixed = value;
 }
 
 static void TransformVecByCamera(G3DCamera *camera, VecFx32 *vec, VecFx32 *dest) {
@@ -563,7 +565,7 @@ static void RailActorAnim_DrawBillboardOffset(FieldActor *actor) {
         pos.x += offset.x;
         pos.y += offset.y;
         pos.z += offset.z;
-        if (work->unk2 == 0) {
+        if (work->fixed == 0) {
             VecFx32 shift = { 0, -0xd000, 0 };
 
             TransformVecByCamera(
@@ -680,7 +682,7 @@ const FieldActorSceneNodeVTable FIELD_ACTOR_VTABLE_POSITION_ONLY = {
 static void RailActorAnim_InitFixedState(FieldActor *actor) {
     RailActorWork *work = FldAct_ResetBillboardActorWork(actor, 8);
 
-    work->unk2 = 9;
+    work->fixed = 9;
     FldBillboardActor_AddFieldActorOrReserve(actor, &work->index);
 }
 

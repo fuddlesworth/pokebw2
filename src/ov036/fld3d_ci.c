@@ -194,7 +194,7 @@ struct Fld3DCi {
     u16 frame;
     u16 soundIndex;
     u16 fadeIndex;
-    u8 unk13e[2];
+    u8 pad13e[2];
     u32 dimDone;
     Fld3DCiFade *fade;
 };
