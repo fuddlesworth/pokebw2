@@ -17,7 +17,7 @@
 // differently
 
 typedef struct {
-    u32 unk0;
+    u32 bg;
 } IntroBG;
 
 typedef struct {

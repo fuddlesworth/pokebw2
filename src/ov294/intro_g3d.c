@@ -18,12 +18,12 @@ struct IntroG3d {
     G3DCamera *camera;
     u16 scene;
     BOOL visible;
-    BOOL unk18;
+    BOOL active;
     u32 mode;
-    u32 unk20;
+    u32 animFinished;
     u32 state;
     u32 frame;
-    u32 unk2C;
+    u32 padding2C;
 };
 
 static const VecFx32 sPosition = { 0, 0, FX32_ONE };
@@ -99,7 +99,7 @@ IntroG3d *IntroG3d_Create(IntroGraphic *graphic, u32 mode, HeapID heapId) {
     } else {
         g3d->scene = SCENE_NONE;
     }
-    g3d->unk18 = TRUE;
+    g3d->active = TRUE;
     return g3d;
 }
 
@@ -116,7 +116,7 @@ void IntroG3d_Draw(IntroG3d *g3d) {
     SRTMatrix transform;
 
     GFL_G3DCameraFlush(g3d->camera);
-    if (g3d->visible && g3d->unk18) {
+    if (g3d->visible && g3d->active) {
         transform.translation.x = 0;
         transform.translation.y = 0;
         transform.translation.z = 0;
@@ -171,7 +171,7 @@ void IntroG3d_SetVisible(IntroG3d *g3d, BOOL visible) {
 
 void IntroG3d_SetMode(IntroG3d *g3d, u32 mode) {
     g3d->mode = mode;
-    g3d->unk20 = 0;
+    g3d->animFinished = 0;
     switch (mode) {
     case INTRO_G3D_MODE_INITIAL:
         g3d->frame = 60;
