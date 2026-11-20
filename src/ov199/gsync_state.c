@@ -101,7 +101,7 @@ typedef struct {
     u8 language;
     u8 gameVersion;
     u8 gender;
-    u8 unk1D;
+    u8 padding1D;
     u16 species;
 } GSyncResultPerson;
 
@@ -110,16 +110,16 @@ typedef struct {
     u32 id;
     GSyncResultPokemon pokemon[10];
     u16 levels;
-    u8 unk56;
+    u8 padding56;
     u8 musical;
     u8 cgear;
     u8 dex;
     u8 dreamWorldMode;
-    u8 unk5B;
+    u8 skipUpdate;
     u16 items[20];
     u8 itemCounts[20];
     u8 entries[5][26];
-    u8 unk11A[2];
+    u8 padding11A[2];
     GSyncResultPerson people[12];
     u8 unk29C[4];
 } GSyncResult;
@@ -127,7 +127,7 @@ typedef struct {
 // The server's answer: its status, and after the header the body of the request's answer
 typedef struct {
     u32 status;
-    u8 unk4[0x7c];
+    u8 padding4[0x7c];
     union {
         GSyncResult result;
         GSyncAccountInfo accountInfo;
@@ -153,11 +153,11 @@ struct GSyncWork {
     GSyncResult *result;
     void *pokedexSkin;
     void *cgearSkin;
-    void *unk44;
+    void *auxBuffer;
     int boxTray;
     int boxPos;
     GSyncStateFunc state;
-    u8 unk54[0xc];
+    u8 padding54[0xc];
     int timer;
     int seTimer;
     int idleProgress;
@@ -167,7 +167,7 @@ struct GSyncWork {
     int wait;
     u32 resultId;
     int error;
-    u8 unk84[0x20];
+    u8 padding84[0x20];
     u8 getMusical;
     u8 getCGear;
     u8 getPokedex;
@@ -1022,7 +1022,7 @@ static void GSync_ReadResult(GSyncWork *wk, DreamWorldSave *dreamWorld, GSyncRes
         GSync_ChangeState(wk, GSync_StateError, 1323);
         return;
     }
-    if (!result->unk5B && result->id != DreamWorldSave_GetLastResultID(dreamWorld)) {
+    if (!result->skipUpdate && result->id != DreamWorldSave_GetLastResultID(dreamWorld)) {
         wk->resultId = result->id;
         wk->getMusical = result->musical;
         wk->getCGear = result->cgear;
@@ -1490,9 +1490,9 @@ static void GSync_StateWaitSentText(GSyncWork *wk) {
 }
 
 static void GSync_StateSent(GSyncWork *wk) {
-    if (wk->unk44 != NULL) {
-        GFL_HeapFree(wk->unk44);
-        wk->unk44 = NULL;
+    if (wk->auxBuffer != NULL) {
+        GFL_HeapFree(wk->auxBuffer);
+        wk->auxBuffer = NULL;
     }
     wk->progress = 100;
     GSyncDisp_SetProgress(wk->disp, 100);
@@ -1890,8 +1890,8 @@ static BOOL GSync_ProcExit(GameProc *proc, u32 *state, void *param, void *work) 
     if (wk->pkm != NULL) {
         GFL_HeapFree(wk->pkm);
     }
-    if (wk->unk44 != NULL) {
-        GFL_HeapFree(wk->unk44);
+    if (wk->auxBuffer != NULL) {
+        GFL_HeapFree(wk->auxBuffer);
     }
     if (GFL_NetIsInitialized()) {
         DWCRap_SetEventFunc(NULL, NULL);
