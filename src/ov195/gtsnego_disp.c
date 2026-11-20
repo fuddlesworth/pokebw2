@@ -97,7 +97,7 @@ struct GtsNegoDisp {
     ClActor *searchActors[2];
     ClActor *cursor;
     ClActor *listFooter;
-    u32 unk13C;
+    u32 padding13C; // Never read or written
     ClActor *listActors[GTSNEGO_LIST_ACTOR_COUNT];
     ClActor *friendIcons[GTSNEGO_LIST_ROWS];
 };

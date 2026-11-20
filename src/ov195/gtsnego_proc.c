@@ -115,7 +115,7 @@ typedef void (*GtsNegoStateFunc)(GtsNegoWork *wk);
 typedef struct {
     int value;
     u8 keyId;
-    u8 unk5;
+    u8 padding5; // Never read or written; before the key's name
     char key[6];
 } GtsNegoMatchKey;
 
@@ -138,13 +138,13 @@ struct GtsNegoWork {
     GtsNegoStateFunc state;
     // What a touched button of the lower screen does
     BOOL (*buttonCallback)(int button, GtsNegoWork *wk);
-    u32 unk8;
+    u32 padding8; // Never read or written
     HeapID heapId;
-    u32 unk10;
+    u32 padding10; // Never read or written
     int timer;
     // The person to meet
     u32 friendId;
-    u8 unk1C[0x10];
+    u8 padding1C[0x10]; // Never read or written
     GameData *gameData;
     SaveControl *save;
     AppTaskMenuWin *button;
@@ -153,7 +153,7 @@ struct GtsNegoWork {
     GtsNegoMessage *msg;
     WifiList *wifiList;
     GtsNegoParam *param;
-    u8 unk4C[0xc];
+    u8 padding4C[0xc]; // Never read or written
     GtsNegoMatchKey keys[GTSNEGO_KEY_COUNT];
     char query[0x80];
     int mode;
@@ -171,7 +171,7 @@ struct GtsNegoWork {
     int friendCursor;
     GtsNegoGreeting send;
     GtsNegoGreeting recv;
-    u32 unk180;
+    u32 padding180; // Never read or written
     // With fewer than two Pokémon there is no trading
     BOOL notEnoughPokemon;
     GtsNegoNameCheck nameCheck;
