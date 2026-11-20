@@ -106,7 +106,7 @@ enum {
 };
 
 typedef struct {
-    s32 unk0;
+    s32 life;
     // The texture's left, right, top and bottom
     fx32 s0;
     fx32 s1;
@@ -1092,7 +1092,7 @@ static void EvolutionDemoPieces_Layout(SpritePieces *pieces, HeapID heapId) {
         col = i % PIECE_COLUMNS;
         row = i / PIECE_COLUMNS;
         piece = &pieces->pieces[row][col];
-        piece->unk0 = 60;
+        piece->life = 60;
         piece->alpha = 31;
         piece->vertices[0].x = FX32_CONST((0.0f - size) / 2.0f - marginX);
         piece->vertices[0].y = FX32_CONST(size / 2.0f + marginY);

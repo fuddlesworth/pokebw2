@@ -22,7 +22,7 @@
 #define BG_SUB_FIRST 4
 
 typedef struct {
-    u32 unk0;
+    u32 mainBg;
 } EvolutionDemoBG;
 
 typedef struct {
