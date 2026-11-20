@@ -136,31 +136,31 @@ struct IrcBattleMatch {
     HeapID heapId;
     BmpWin *messageWindow;
     BmpWin *countWindow;
-    u32 unk284;
+    u32 padding284;
     MsgData *msgData;
     WordSet *wordSet;
     Font *font;
     StrBuf *strbuf;
     StrBuf *strbufFormatted;
-    u32 unk29C[5];
+    u32 padding29C[5];
     TCB *vblankTcb;
     ClActUnit *actUnit;
     u32 actorPalette;
     u32 actorChars;
     u32 actorCells;
-    u32 unk2C4;
+    u32 padding2C4;
     ClActor *actors[IRCMATCH_ACTOR_COUNT];
     // The players that the network accepted
     u32 acceptedPlayers;
     BOOL enoughPlayers;
-    u32 unk2F0[3];
+    u32 padding2F0[3];
     u32 bgChars;
-    u32 unk300;
+    u32 padding300;
     u32 windowFrameChars;
     u32 menuBgChars;
-    TCB *unk30C;
-    u32 unk310;
-    u8 unk314[0xc7c - 0x314];
+    TCB *extraTask;
+    u32 extraTaskArg;
+    u8 padding314[0xc7c - 0x314];
     // Whether the link is up, as the network's callback says
     BOOL linked;
     BOOL messagePending;
@@ -173,7 +173,7 @@ struct IrcBattleMatch {
     s32 scrollY;
     BOOL connectDone;
     ButtonMan *buttonMan;
-    u32 unkCA8;
+    u32 paddingCA8;
     s32 counter;
     u32 currentMsgId;
     void *paletteBackup;
@@ -1782,10 +1782,10 @@ static BOOL IrcBattleMatch_Exit(GameProc *proc, u32 *state, void *param, void *w
     ClActSys_Delete();
     PrintQueue_Clear(work->printQueue);
     PrintQueue_Free(work->printQueue);
-    if (work->unk30C != NULL) {
-        GFL_TCBRemove(work->unk30C);
-        work->unk30C = NULL;
-        work->unk310 = 0;
+    if (work->extraTask != NULL) {
+        GFL_TCBRemove(work->extraTask);
+        work->extraTask = NULL;
+        work->extraTaskArg = 0;
     }
     GFL_ProcReleaseSubsystem(proc);
     GFL_HeapDelete(HEAPID_IRC_BATTLE_MENU);
