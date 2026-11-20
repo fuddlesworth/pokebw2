@@ -13,7 +13,7 @@
 typedef struct DWCUtilMove {
     DownloadPlaySysContext context;
     // The rest of the 0x1e280 bytes that the flow takes, which DownloadPlaySysContext doesn't lay out
-    u8 unk_context[0x1e280 - sizeof(DownloadPlaySysContext)];
+    u8 contextRest[0x1e280 - sizeof(DownloadPlaySysContext)];
     MBUserInfo user;
     DWCUtilMoveCallback callback;
     DWCUtilTask *task;

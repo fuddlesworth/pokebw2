@@ -40,7 +40,7 @@ typedef struct DWCUtilUsbScan {
     u8 pending;
     // Whether the first scan has given its result
     u8 listed;
-    u8 unk_1b97[9];
+    u8 padding[9];
 } DWCUtilUsbScan;
 
 // An unused BSSID, the start of the connector's SSID, and the scan's parameters: every channel, any BSSID, the SSIDs
