@@ -6716,7 +6716,7 @@
      "args": []
     },
     "1008": {
-     "handler": "func_ov061_021e5a90",
+     "handler": "Scrcmd_BlackTower_GetAreaTrainerCode",
      "overlay": 61,
      "args": [
       "var"
@@ -6732,7 +6732,7 @@
      "area": "Keys"
     },
     "1010": {
-     "handler": "func_ov061_021e5bac",
+     "handler": "Scrcmd_BlackTower_GetAreaValue",
      "overlay": 61,
      "args": [
       "var"
@@ -6756,7 +6756,7 @@
      "area": "Keys"
     },
     "1013": {
-     "handler": "func_ov061_021e5bc4",
+     "handler": "Scrcmd_BlackTower_GetNpcKind",
      "overlay": 61,
      "args": [
       "var"

@@ -684,7 +684,7 @@ L_0B05:
     EvCameraWait
     EvCameraRebind
     EvCameraEnd
-    Plugin9_Cmd1010 EVENT_WORK_0x4020
+    GetAreaValue EVENT_WORK_0x4020
     RTReserveScript 10743
     WorkSetConst EVENT_WORK_0x4191, 0
     PedometerStart
@@ -1261,7 +1261,7 @@ Script_11:
     VMCall L_2A2E
 
 L_1482:
-    Plugin9_Cmd1013 0x8010
+    GetNpcKind 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -1283,7 +1283,7 @@ L_14B9:
     VMJump L_14E8
 
 L_14BF:
-    Plugin9_Cmd1013 0x8010
+    GetNpcKind 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -1410,7 +1410,7 @@ Script_10:
     VMCall L_2A2E
 
 L_169E:
-    Plugin9_Cmd1013 0x8010
+    GetNpcKind 0x8010
     VMStackPush 0x8010
     VMStackPushConst 0
     VMStackCmp CMP_EQ
@@ -1448,7 +1448,7 @@ Script_12:
     KeyInfoGetMyCityProgress 0x8024
     GetArea 0x8021
     GetVersion 0x8020
-    Plugin9_Cmd1008 0x8046
+    GetAreaTrainerCode 0x8046
     VMStackPush 0x8020
     VMStackPushConst 23
     VMStackCmp CMP_EQ

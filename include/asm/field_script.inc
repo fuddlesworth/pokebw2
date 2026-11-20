@@ -4598,8 +4598,7 @@
     FieldCommand 1007
     .endm
 
-    // func_ov061_021e5a90
-    .macro Plugin9_Cmd1008 a0
+    .macro GetAreaTrainerCode a0
     FieldCommand 1008
     .2byte \a0
     .endm
@@ -4610,8 +4609,7 @@
     .2byte \a1
     .endm
 
-    // func_ov061_021e5bac
-    .macro Plugin9_Cmd1010 a0
+    .macro GetAreaValue a0
     FieldCommand 1010
     .2byte \a0
     .endm
@@ -4627,8 +4625,7 @@
     .2byte \a0
     .endm
 
-    // func_ov061_021e5bc4
-    .macro Plugin9_Cmd1013 a0
+    .macro GetNpcKind a0
     FieldCommand 1013
     .2byte \a0
     .endm
