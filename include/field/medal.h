@@ -7,7 +7,10 @@
 
 // A medal's entry in archive 0xeb
 typedef struct {
-    u8 unk00[9];
+    // The same first three fields as MedalDef (scrcmd_pokemon_center.c)
+    u32 threshold;
+    int check;
+    u8 unk8;
     // An index into MEDAL_TYPE_TO_CATEGORY, and the medal's field effect after 0x4e
     u8 type;
     // Whether Mr. Medal hints at the medal while it is unknown
