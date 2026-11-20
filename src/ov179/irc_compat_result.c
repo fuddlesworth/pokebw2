@@ -42,7 +42,8 @@
 
 // The compatibility result of the infrared link: its graphics, its windows, the three digits of the score, the flash of
 // the background and the steps of the screen. The ROM has no string for the file, so the name is a guess. Names are
-// ours
+// ours, except the digits' animation fields, the flash's id and the reserved fields, which are aletheia's
+// (github.com/Project-Holon/aletheia, src/game/ov105/irc_result.c)
 
 #define BG_COUNT 8
 #define DIGIT_COUNT 3
@@ -115,20 +116,22 @@ typedef struct {
 // The score in three digit sprites, which appear one after the other
 typedef struct {
     ClActor *actors[DIGIT_COUNT];
-    u16 unkC[DIGIT_COUNT];
-    u16 unk12[DIGIT_COUNT];
-    int unk18[DIGIT_COUNT];
-    u8 unk24[12];
+    // The frame, length and step of each digit's count-up animation, which the result no longer runs
+    u16 animFrame[DIGIT_COUNT];
+    u16 animLength[DIGIT_COUNT];
+    int animStep[DIGIT_COUNT];
+    u8 reserved[12];
     u8 digits[DIGIT_COUNT];
-    u8 unk33;
+    u8 padding33;
     // Whether each digit has appeared
     int shown[DIGIT_COUNT];
 } IrcCompatDigits;
 
 // The flash of colors of palette 8 of BG 3, a tier at a time, and how it fades back
 typedef struct {
-    u16 unk0;
-    u8 unk2[6];
+    // The BG layer the flash lights, which nothing reads
+    u16 id;
+    u8 reserved2[6];
     u16 target[FLASH_COLOR_COUNT];
     u16 colors[FLASH_COLOR_COUNT];
     u32 frame;
@@ -220,7 +223,7 @@ static void IrcCompatDigits_Show(IrcCompatDigits *digits, int index);
 static BOOL IrcCompatDigits_Update(IrcCompatDigits *digits);
 static int IrcCompatDigits_IsShown(IrcCompatDigits *digits, int index);
 static void IrcCompatDigits_SetValue(IrcCompatDigits *digits, u32 value);
-static void IrcCompatFlash_Init(IrcCompatFlash *flash, u16 unk0, u8 score, HeapID heapId);
+static void IrcCompatFlash_Init(IrcCompatFlash *flash, u16 id, u8 score, HeapID heapId);
 static void IrcCompatFlash_Free(IrcCompatFlash *flash);
 static void IrcCompatFlash_Update(IrcCompatFlash *flash);
 static void IrcCompatFlash_Start(IrcCompatFlash *flash);
@@ -871,9 +874,9 @@ static void IrcCompatDigits_Init(IrcCompatDigits *digits, IrcCompatGraphic *grap
         pos.y = 84;
         ClActor_SetSurfacePos(digits->actors[i], &pos, 0);
         ClActor_SetVisible(digits->actors[i], FALSE);
-        digits->unkC[i] = 0;
-        digits->unk12[i] = 60;
-        digits->unk18[i] = 0xfef / digits->unk12[i];
+        digits->animFrame[i] = 0;
+        digits->animLength[i] = 60;
+        digits->animStep[i] = 0xfef / digits->animLength[i];
     }
     IrcCompatDigits_SetValue(digits, score);
 }
@@ -923,7 +926,7 @@ static void IrcCompatDigits_SetValue(IrcCompatDigits *digits, u32 value) {
     }
 }
 
-static void IrcCompatFlash_Init(IrcCompatFlash *flash, u16 unk0, u8 score, HeapID heapId) {
+static void IrcCompatFlash_Init(IrcCompatFlash *flash, u16 id, u8 score, HeapID heapId) {
     ArcTool *arc;
     NNSG2dPaletteData *palette;
     void *file;
@@ -931,7 +934,7 @@ static void IrcCompatFlash_Init(IrcCompatFlash *flash, u16 unk0, u8 score, HeapI
     int i;
 
     MI_CpuFill8(flash, 0, sizeof(IrcCompatFlash));
-    flash->unk0 = unk0;
+    flash->id = id;
     flash->lastStep = IrcCompat_GetTier(score, &flash->carry);
     if (flash->carry) {
         flash->lastStep++;
