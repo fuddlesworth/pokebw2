@@ -16,7 +16,7 @@
 // Unova Link's BGs, cell actors and 3D system, which it turns on for the key animations
 
 typedef struct {
-    u32 unk0;
+    u32 padding0;
 } KeySystemGraphicBG;
 
 typedef struct {

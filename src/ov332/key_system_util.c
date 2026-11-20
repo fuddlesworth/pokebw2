@@ -47,7 +47,7 @@ enum {
 
 // A window that prints messages, all at once or a character at a time
 struct KeySystemMsgWin {
-    u32 unk00;
+    u32 padding00;
     Font *font;
     PrintStream *stream;
     TCBExManager *tcbManager;
@@ -104,7 +104,7 @@ struct KeySystemList {
 typedef struct {
     KeySystemSeqFunc func;
     int state;
-    u32 unk8;
+    u32 padding8;
 } KeySystemSeqEntry;
 
 struct KeySystemSeq {
@@ -154,7 +154,7 @@ struct KeySystemScrollList {
 
 struct KeySystemParticle {
     ParticleSystem *system;
-    u32 unk4;
+    u32 padding4;
     void *work;
 };
 

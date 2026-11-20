@@ -244,13 +244,13 @@ struct CygnusAppear {
     u32 fade;
     u32 state;
     u16 blend;
-    u16 unk2A[64];
+    u16 padding2A[64];
     u16 blendedPalette[16];
     u16 whitePalette[16];
     u16 spritePalette[16];
     // How far the sprite's lowest pixels are below the usual
     s16 offset;
-    u16 unk10C;
+    u16 padding10C;
     KeySystemParticle *particle;
     void (*func)(CygnusAppear *appear);
 };
@@ -918,7 +918,7 @@ static CygnusAppear *CygnusAppear_Create(KeySystemParticle *particle, KeySystemG
     appear->particle = particle;
     appear->heapId = heapId;
     appear->offset = 0;
-    appear->unk10C = 0;
+    appear->padding10C = 0;
     appear->unit = KeySystemGraphic_GetClActUnit(graphic);
     return appear;
 }
