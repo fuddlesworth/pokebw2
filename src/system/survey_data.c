@@ -11,7 +11,7 @@
 typedef struct {
     // Whether the question is new in Black 2 and White 2, so that Black and White's beacons have no answer to it
     u8 newInB2W2 : 1;
-    u8 unk00_1 : 7;
+    u8 padding00_1 : 7;
     // How many bits the answer takes
     u8 bits;
     // The index of the first answer in the save's answer counts

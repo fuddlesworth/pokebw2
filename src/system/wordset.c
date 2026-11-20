@@ -27,9 +27,9 @@
 // and moves, and numbers. Each buffer has a few attributes besides its string, one of which adds a layout command
 
 typedef struct {
-    u8 unk0;
-    u8 unk1;
-    u8 unk2;
+    u8 padding0;
+    u8 padding1;
+    u8 padding2;
     // The grammatical gender of the word, and whether it is plural
     u8 gender : 7;
     u8 plural : 1;

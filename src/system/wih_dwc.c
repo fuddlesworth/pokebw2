@@ -33,11 +33,11 @@ enum { AP_TIMER_KNOWN, AP_TIMER_HOTSPOT, AP_TIMER_OPEN, AP_TIMER_LOCKED, AP_TIME
 
 // One of the console's Wi-Fi connection settings
 typedef struct {
-    u8 unk0[0x40];
+    u8 padding0[0x40];
     char ssid[WIFI_SLOT_SSID_COUNT][0x20];
-    u8 unk80[0x67];
+    u8 padding80[0x67];
     u8 type;
-    u8 unkE8[0x18];
+    u8 paddingE8[0x18];
 } WifiSlot;
 
 // One of the DSi's own settings, of two parts
@@ -49,14 +49,14 @@ typedef struct {
 typedef struct {
     WifiSlotEx slotsEx[WIFI_SLOT_COUNT];
     WifiSlot slots[WIFI_SLOT_COUNT];
-    u8 unk900[0x100];
+    u8 padding900[0x100];
 } WifiConfig;
 
 struct WihDwcWork {
     WMBssDesc bss[_ALLBEACON_MAX];
     void *parseWork;
     WifiConfig *config;
-    u32 unk308;
+    u32 padding308;
     u16 paused;
     // Frames until the link level may change again
     u16 linkLevelWait;

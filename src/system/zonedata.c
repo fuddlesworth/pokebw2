@@ -44,7 +44,7 @@ typedef struct {
     u16 areaId;
     u16 matrixId;
     u16 scriptDatId;
-    u16 unk08;
+    u16 padding08;
     u16 textDatId;
     u16 bgmSpring;
     u16 bgmSummer;
@@ -62,7 +62,7 @@ typedef struct {
     u16 mapTransitionEffectType : 5;
     u16 battleBGId : 5;
     u16 enableCycling : 1;
-    u16 unk1E_11 : 1;
+    u16 padding1E_11 : 1;
     u16 enableEscapeRope : 1;
     u16 enableFlyFrom : 1;
     u16 enableCycleSurfBGM : 1;

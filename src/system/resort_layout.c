@@ -20,7 +20,8 @@ typedef struct {
 // Zone 0 and the avenue's two zones
 static const u16 sZones[RESORT_ZONE_COUNT] = { 0, 490, 491 };
 
-static const u32 sUnk[4] = { 1, 1, 1, 2 };
+// The grid row of each of the avenue's shop kinds
+static const u32 sSlotRows[4] = { 1, 1, 1, 2 };
 
 static const ResortPlace sPlaces2[4] = {
     { 13, 5, 1 },
@@ -79,5 +80,5 @@ void ResortLayout_GetRecordPlace(u16 index, u16 *x, u16 *z, u16 *dir) {
 }
 
 u32 ResortLayout_GetSlotRow(u32 index) {
-    return sUnk[index];
+    return sSlotRows[index];
 }
