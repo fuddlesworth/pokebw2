@@ -105,10 +105,10 @@ typedef struct {
 typedef struct {
     u8 page;
     u8 frames;
-    u16 unk2;
+    u16 padding2; // Never read or written; two bytes before y
     s16 y;
     s16 speed;
-    u32 unk8;
+    u32 padding8; // Never read or written; four bytes before panel
     BeaconDetailPanel *panel;
     BeaconDetailWork *work;
     int *taskCount;
@@ -116,13 +116,13 @@ typedef struct {
 
 typedef struct {
     u8 seq;
-    u8 unk1;
-    u8 unk2;
+    u8 padding1; // Never read or written
+    u8 padding2; // Never read or written
     u8 index;
     u8 direction;
     u8 decided;
     int taskCount;
-    u32 unkC;
+    u32 paddingC; // Never read or written; four bytes before work
     BeaconDetailWork *work;
     int *parentTaskCount;
 } BeaconDetailPageTask;
