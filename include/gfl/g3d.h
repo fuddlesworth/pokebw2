@@ -99,7 +99,7 @@ typedef struct {
     // The archive, or for the G3D_SCENE_RES_FS types its path
     u32 arcId;
     u16 fileId;
-    u16 unk6;
+    u16 padding6;
     u32 type;
 } G3DSceneResourceSetup;
 
@@ -113,7 +113,7 @@ typedef struct {
     u16 modelResource;
     u16 modelIndex;
     u16 texResource;
-    u16 unk6;
+    u16 padding6;
     const G3DSceneAnimationSetup *animations;
     u16 animationCount;
 } G3DSceneActorSetup;

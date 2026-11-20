@@ -52,7 +52,7 @@ typedef struct {
     u16 charCount;
     u16 plttCount;
     u16 cellAnimCount;
-    u16 unk6;
+    u16 spareCount;
     // Where in OBJ VRAM the resources go, in 32-byte units
     u16 offsetMain;
     u16 offsetSub;
@@ -377,7 +377,7 @@ void ClActSys_Create(const ClActSysSetup *setup, const BGSysVRAMConfig *vramConf
     resSetup.charCount = setup->charCount;
     resSetup.plttCount = setup->plttCount;
     resSetup.cellAnimCount = setup->cellAnimCount;
-    resSetup.unk6 = setup->unk16;
+    resSetup.spareCount = setup->spareCount;
     resSetup.offsetMain = setup->charOffsetMain;
     resSetup.offsetSub = setup->charOffsetSub;
     ClActVRAMManager_Init(&g_ClActSys->res, heapId, vramConfig, &resSetup);
@@ -906,9 +906,9 @@ u32 ClActor_GetObjMode(ClActor *actor) {
     return actor->objMode;
 }
 
-void ClActor_SetPalette(ClActor *actor, u32 palette, u32 a2) {
+void ClActor_SetPalette(ClActor *actor, u32 palette, u32 paletteMode) {
     actor->palette = palette;
-    actor->paletteMode = a2;
+    actor->paletteMode = paletteMode;
 }
 
 u8 ClActor_GetPalette(ClActor *actor) {
@@ -1003,16 +1003,16 @@ u16 ClActor_GetAnimFrame(ClActor *actor) {
     return NNS_G2dGetAnimCtrlCurrentFrame(ClActAnim_GetCtrl2(&actor->anim));
 }
 
-void ClActor_SetAutoAnim(ClActor *actor, BOOL a1) {
-    actor->autoAnim = a1;
+void ClActor_SetAutoAnim(ClActor *actor, BOOL autoAnim) {
+    actor->autoAnim = autoAnim;
 }
 
 BOOL ClActor_IsAutoAnim(ClActor *actor) {
     return actor->autoAnim;
 }
 
-void ClActor_SetAutoAnimSpeed(ClActor *actor, fx32 a1) {
-    actor->autoAnimSpeed = a1;
+void ClActor_SetAutoAnimSpeed(ClActor *actor, fx32 speed) {
+    actor->autoAnimSpeed = speed;
 }
 
 void ClActor_StartAnim(ClActor *actor) {
@@ -1053,8 +1053,8 @@ void ClActor_ClearAnimCallback(ClActor *actor) {
     ClActAnim_ClearCallback(&actor->anim);
 }
 
-void ClActor_SetDrawAnim(ClActor *actor, BOOL a1) {
-    if (a1) {
+void ClActor_SetDrawAnim(ClActor *actor, BOOL drawAnim) {
+    if (drawAnim) {
         actor->cellOnly = 0;
     } else {
         actor->cellOnly = 1;
@@ -1956,7 +1956,7 @@ static void ClActVRAMManager_Init(ClActResMan *man, HeapID heapId, const BGSysVR
     man->charCount = setup->charCount;
     man->plttCount = setup->plttCount;
     man->cellAnimCount = setup->cellAnimCount;
-    man->unk1A = setup->unk6;
+    man->spareCount = setup->spareCount;
     man->offsetMain = setup->offsetMain;
     man->offsetSub = setup->offsetSub;
 }

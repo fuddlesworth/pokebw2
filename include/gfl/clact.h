@@ -42,7 +42,8 @@ typedef struct {
     u16 charCount;
     u16 plttCount;
     u16 cellAnimCount;
-    u16 unk16;
+    // A fourth, spare count the system keeps but does not use
+    u16 spareCount;
     // Where the resources start in OBJ VRAM, in 32-byte units
     u16 charOffsetMain;
     u16 charOffsetSub;
@@ -129,7 +130,8 @@ typedef struct {
     u16 charCount;
     u16 plttCount;
     u16 cellAnimCount;
-    u16 unk1A;
+    // A fourth, spare count the system keeps but does not use
+    u16 spareCount;
     u16 offsetMain;
     u16 offsetSub;
 } ClActResMan;
@@ -324,7 +326,7 @@ enum {
     CLACT_PALETTE_REPLACE = 1,
 };
 
-void ClActor_SetPalette(ClActor *actor, u32 palette, u32 a2);
+void ClActor_SetPalette(ClActor *actor, u32 palette, u32 paletteMode);
 u8 ClActor_GetPalette(ClActor *actor);
 void ClActor_SetPlttProxy(ClActor *actor, const NNSG2dImagePaletteProxy *proxy);
 void ClActor_GetPlttProxy(ClActor *actor, NNSG2dImagePaletteProxy *proxy);
@@ -348,9 +350,9 @@ void ClActor_SetAnimSpeed(ClActor *actor, fx32 speed);
 fx32 ClActor_GetAnimTime(ClActor *actor);
 void ClActor_SetAnimFrame(ClActor *actor, u16 frame);
 u16 ClActor_GetAnimFrame(ClActor *actor);
-void ClActor_SetAutoAnim(ClActor *actor, BOOL a1);
+void ClActor_SetAutoAnim(ClActor *actor, BOOL autoAnim);
 BOOL ClActor_IsAutoAnim(ClActor *actor);
-void ClActor_SetAutoAnimSpeed(ClActor *actor, fx32 a1);
+void ClActor_SetAutoAnimSpeed(ClActor *actor, fx32 speed);
 void ClActor_StartAnim(ClActor *actor);
 void ClActor_StopAnim(ClActor *actor);
 BOOL ClActor_IsAnimActive(ClActor *actor);
@@ -358,7 +360,7 @@ void ClActor_RestartAnim(ClActor *actor);
 void ClActor_SetPlayMode(ClActor *actor, u32 playMode);
 void ClActor_SetAnimCallback(ClActor *actor, const ClActorCallback *callback);
 void ClActor_ClearAnimCallback(ClActor *actor);
-void ClActor_SetDrawAnim(ClActor *actor, BOOL a1);
+void ClActor_SetDrawAnim(ClActor *actor, BOOL drawAnim);
 // The actor system, which the renderers of clact_itcm.c read
 extern ClActSys *g_ClActSys;
 
