@@ -108,7 +108,7 @@ typedef struct BScenarioWork {
     int flashStep;                                 // 0x15c
     int flashButton;                               // 0x160
     u32 shownWindows;                              // 0x164  a bit per window whose screen was copied
-    u32 unk168;                                    // 0x168  never accessed
+    u32 padding168;                                // 0x168  never accessed
     int scenario;                                  // 0x16c
     int summaryCursor;                             // 0x170
     int scriptPage;                                // 0x174

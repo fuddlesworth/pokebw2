@@ -31,7 +31,7 @@ struct EventIRCWork {
     u32 unk88;
     BtlSetup *btlSetup;
     BattlePlayers players;
-    u8 unkE0[4];
+    u8 paddinge0[4];
     GameRecords *records;
     u32 counter;
 };

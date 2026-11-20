@@ -78,10 +78,10 @@ typedef struct {
     // A WILD_SHINY_ value
     u8 shinyLock;
     u8 hiddenAbility;
-    u8 unk08[8];
+    u8 padding8[8];
     // A WILD_SEX_ value
     u8 sex;
-    u8 unk11[3];
+    u8 padding11[3];
 } WildPkmParam;
 
 // Whether a wild Pokémon is shiny: by chance, always or never

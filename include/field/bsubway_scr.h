@@ -44,7 +44,7 @@ struct BSubwayPokemon {
     u8 happiness;
     u16 nickname[11];
     u8 nature;
-    u8 unk39[3];
+    u8 padding39[3];
 };
 
 // The first two Pokémon picked for a trainer, to make them again: the ID they were made with, their files of the
@@ -61,7 +61,7 @@ struct BSubwayTrainer {
     // The number of the trainer's file plus 1, which a Wi-Fi player's trainer leaves 0xffff as it has no file
     u32 fileNo;
     u16 trainerId;
-    u8 unk06[2];
+    u8 padding6[2];
     u16 name[8];
     // What the Trainer says before the battle, or a sentence type of 0xffff and a message of file 0x178
     PMSData message;
@@ -127,7 +127,7 @@ struct BSubwayScrWork {
     u16 videoCounter;
     // The BSUBWAY_COMM_* command to send
     u16 sendCommand;
-    u8 unk14[4];
+    u8 padding14[4];
     // The wireless partner's stage number, the least the trainers are drawn at
     u16 partnerStageNo;
     u16 partnerSpecies[2];
@@ -164,7 +164,7 @@ struct BSubwayScrWork {
     u8 recvCount;
     // 1 when only this machine's command is awaited
     u8 recvMode;
-    u8 unk726;
+    u8 padding726;
     // The timing that the script waits for both machines to reach
     u8 timing;
     // What the partner's command answered

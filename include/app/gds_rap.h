@@ -109,9 +109,9 @@ struct GdsRapWork {
     };
     // The buffer for the library's answer
     void *response;
-    BOOL unk3B0;
+    BOOL initialized;
     BOOL isActive;
-    u8 unk3B8[0x20];
+    u8 padding3b8[0x20];
     // The request to send, and the one whose answer is waited for; POKE_NET_GDS_REQCODE_LAST for none. The second
     // name and p_nhttp are the original ones, which the assertions' strings give
     int sendReq;

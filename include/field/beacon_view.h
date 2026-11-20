@@ -247,14 +247,14 @@ typedef struct BeaconViewWork {
     BeaconViewPanel *newPanel;
     u8 newOffset;
     u8 newIndex;
-    u8 unk62;
+    u8 padding62;
     u8 oldCount;
     // How many of the log are of the other gender, and of another version
     u8 otherGenderCount;
     u8 otherVersionCount;
     BOOL isNew;
     BOOL active;
-    u32 unk70;
+    u32 padding70;
     int seq;
     int subSeq;
     // The sequence to go back to once the bar is let go of
@@ -265,14 +265,14 @@ typedef struct BeaconViewWork {
     u8 unk88;
     // Set while the screen is first drawn: text is printed at once, not through the queue
     u8 printNow;
-    u8 unk8A[2];
+    u8 padding8a[2];
     u8 logCount;
     u8 top;
     u8 viewCount;
     u8 selected;
     u8 selectedPanel;
     u8 barDragging;
-    u8 unk92[2];
+    u8 padding92[2];
     u8 barTarget;
     u8 barDistance;
     u8 barUp;
@@ -287,7 +287,7 @@ typedef struct BeaconViewWork {
     u8 scrollReturnSeq;
     int scrollDir;
     int scrollFrames;
-    u32 unkD8[2];
+    u32 paddingd8[2];
     u16 resHeapId;
     u16 tmpHeapId;
     u16 heapId;
@@ -299,7 +299,7 @@ typedef struct BeaconViewWork {
     PaletteFade *paletteFade;
     Font *font;
     PrintQueue *printQueue;
-    u32 unk104;
+    u32 padding104;
     KeyCursor *keyCursor;
     BeaconViewMenu *menu;
     WordSet *wordSet;
@@ -310,7 +310,7 @@ typedef struct BeaconViewWork {
     BmpOamSys *bmpOam;
     ClActUnit *clUnit;
     ClActRenderer *renderer;
-    u32 unk130;
+    u32 padding130;
     BeaconViewRes res[BEACON_VIEW_RES_COUNT];
     BeaconViewWinSlot wins[BEACON_VIEW_WIN_COUNT];
     BeaconViewOam countOam;

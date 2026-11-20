@@ -160,13 +160,13 @@ struct BBagWork {
     BOOL streamAdvanced;                                   // 0x020
     BmpWin *msgWin;                                        // 0x024
     PrintWindow windows[BBAG_WINDOW_MAX];                  // 0x028
-    u8 unk140;                                             // 0x140  never accessed
+    u8 padding140;                                         // 0x140  never accessed
     u8 listBuf;                                            // 0x141  0: list windows 5-16, 1: 17-28; flipped per draw
     CursorMove *cursorMove;                                // 0x144
     BAppCursor *cursor;                                    // 0x148
     BtlvFingerCursor *fingerCursor;                        // 0x14c  the catching demo's
     BagItem items[BBAG_POCKET_MAX][BBAG_ITEMS_PER_POCKET]; // 0x150  by battle pocket
-    u8 unk390[0x90];                                       // 0x390  never accessed, the size of one more pocket
+    u8 padding390[0x90];                                   // 0x390  never accessed, the size of one more pocket
     ClActUnit *actorUnit;                                  // 0x420
     ClActor *actors[BBAG_ACTOR_MAX];                       // 0x424
     BGWinFrame *buttons;                                   // 0x520
@@ -174,7 +174,7 @@ struct BBagWork {
     u8 animCount;                                          // 0x525
     u8 animButton;                                         // 0x526
     u8 animActive;                                         // 0x527
-    u8 unk528[8];                                          // 0x528  never accessed
+    u8 padding528[8];                                      // 0x528  never accessed
     u8 seq;                                                // 0x530  a BBAG_STATE_*
     u8 nextSeq;                                            // 0x531  taken after the button animation or the message
     u8 page;                                               // 0x532  a BBAG_PAGE_*
@@ -183,7 +183,7 @@ struct BBagWork {
     u8 itemCount[BBAG_POCKET_MAX];                         // 0x535
     u8 lastPage[BBAG_POCKET_MAX];                          // 0x539
     u8 demoSeq;                                            // 0x53d
-    u8 unk53E[2];                                          // 0x53e  never accessed
+    u8 padding53e[2];                                      // 0x53e  never accessed
     u16 lastItem;                                          // 0x540
     u8 lastPocket;                                         // 0x542
     u32 charRes[9];                                        // 0x544

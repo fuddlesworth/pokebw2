@@ -46,7 +46,7 @@ struct GameClearWork {
     GameData *gameData;
     // Whether the Champion was beaten before, as GameClearSaveParam has it
     u32 repeat;
-    u8 unk0C[4];
+    u8 padding0c[4];
     PlayerInfo *playerInfo;
     // The parameters of the procs that the event runs
     GameClearSaveParam ov295Param;

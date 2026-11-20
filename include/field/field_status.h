@@ -24,7 +24,7 @@ struct FieldStatus {
     u8 isContinue;
     u8 flashUsed;
     u16 flashPerms;
-    u8 unk0A[7];
+    u8 padding0a[7];
     u8 busyFlag;
     // The script to run on the next map, 0 for none
     u16 reservedScript;

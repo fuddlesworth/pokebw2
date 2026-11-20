@@ -11,7 +11,7 @@
 
 typedef struct {
     GameSystem *gsys;
-    u8 unk04[0x28];
+    u8 padding4[0x28];
     // The special pass powers' flags, the two bytes of HighLinkSave_GetSpecialFlags, then byte 2 set
     u8 powerFlags[4];
     // The net ID passed to GameCommSys_LogPassPowerReceived once a pass power is received

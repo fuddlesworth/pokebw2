@@ -195,7 +195,7 @@ struct WbtSystem {
     PokeParty *initialParty;
     u8 picks[4];
     WbtPartyList *partyList;
-    u8 unk13D0[4];
+    u8 padding13d0[4];
     // The opponent's lines when it loses and when it wins, which the battle shows
     StrBuf *trainerLoseMsg;
     StrBuf *trainerWinMsg;

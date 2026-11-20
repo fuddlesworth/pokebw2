@@ -13,14 +13,14 @@
 // A cell of the screen, 0x40 bytes
 struct EncEffCell {
     VecFx32 pos;
-    u8 unk0C[0xc];
+    u8 padding0c[0xc];
     u32 unk18;
     s32 offset;
     // The turn around the z axis
     u32 angleZ;
     // Added to pos.x each frame
     fx32 speed;
-    u8 unk28[0x8];
+    u8 padding28[0x8];
     s32 frame;
     BOOL visible;
     BOOL done;

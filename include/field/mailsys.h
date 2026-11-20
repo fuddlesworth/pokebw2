@@ -58,7 +58,7 @@ typedef struct MailEdit {
     u8 gameVersion;
     u8 design;
     StrBuf *name;
-    u8 unk10[6];
+    u8 padding10[6];
     PMSData words[MAIL_WORD_COUNT];
     // Whether the design gives the sentence a preset one to start from
     u8 hasPreset[MAIL_WORD_COUNT];
@@ -92,7 +92,7 @@ struct MailSysWork {
     u8 phase;
     u8 initialPhase;
     u32 confirming;
-    u8 unk14;
+    u8 padding14;
     s8 textSpeed;
     u8 cursor;
     u8 savedCursor;
@@ -111,11 +111,11 @@ struct MailSysWork {
     MailSysModeFunc onTouchMode;
     BmpWin *windows[7];
     MailSysBmpWin entries[6];
-    u8 unk90[8];
+    u8 padding90[8];
     PrintQueue *printQueue;
     PrintStream *printStream;
     ClActUnit *clUnit;
-    u8 unkA4[0x50];
+    u8 paddinga4[0x50];
     void *tcbBuffer;
     TCBManager *tcbMgr;
     TCB *blinkTask;

@@ -10,7 +10,7 @@
 #include "struct_decls.h"
 
 struct EventData {
-    u8 unk0[4];
+    u8 padding0[4];
     ArcTool *entityArc;
     ArcTool *encArc;
     ArcTool *otherArc;

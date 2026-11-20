@@ -114,7 +114,7 @@ BOOL GdsRap_Init(GdsRapWork *gdsrap, const GdsRapInit *init) {
     ret = POKE_NET_GDS_Initialize(&gdsrap->auth, GDS_RAP_SERVER_URL, GDS_RAP_SERVER_PORT);
     GFL_ASSERT(ret == TRUE);
     gdsrap->isActive = TRUE;
-    gdsrap->unk3B0 = TRUE;
+    gdsrap->initialized = TRUE;
     return TRUE;
 }
 

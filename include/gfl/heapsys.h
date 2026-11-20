@@ -30,7 +30,7 @@ typedef struct {
     HeapID heapId;
     u16 magic;
     HeapDebugInfo debug;
-    u8 unk18[4];
+    u8 padding18[4];
 } HeapBlockHeader;
 
 NNSFndHeapHandle GFL_HeapGetBase(HeapID heapId);

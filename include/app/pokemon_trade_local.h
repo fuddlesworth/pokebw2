@@ -241,7 +241,7 @@ struct PokemonTradeWork {
     // The icon that shows while the machines wait on each other
     WaitIcon *waitIcon;
     HeapID heapId;
-    u8 unk5F6[0x16];
+    u8 padding5f6[0x16];
     TradeBackup backup;
     // The number of boxes; the party is the box after the last
     int boxCount;
@@ -277,7 +277,7 @@ struct PokemonTradeWork {
     KeyCursor *keyCursor;
     // The windows of the letters to search the boxes by initial
     BmpWin *initialWindows[26];
-    u8 unk7B8[0x48];
+    u8 padding7b8[0x48];
     // The initial searched for in the list of letters, plus one, or 0
     u32 searchInitial;
     u8 padding804[0xc];
@@ -345,7 +345,7 @@ struct PokemonTradeWork {
     u8 paddingF30[0x4];
     // Whether the screen was touched last frame
     BOOL touchHeld;
-    u8 unkF38[0x1c];
+    u8 paddingf38[0x1c];
     int touchX;
     int touchY;
     // Whether the held icon has moved from where it was picked up

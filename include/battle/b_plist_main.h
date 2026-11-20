@@ -335,7 +335,7 @@ struct BPlistWork {
     u8 page7Pos;             // 0x2192
     u8 msgWinOpen;           // 0x2193
     BGWinFrame *plateFrames; // 0x2194
-    u8 unk2198[0x300];       // 0x2198  never accessed
+    u8 padding2198[0x300];   // 0x2198  never accessed
     u8 swapPos;              // 0x2498
     u8 swapAnimPos[2];       // 0x2499
     u16 swaps[2][2];         // 0x249c  swapped position pairs, 0xff when empty

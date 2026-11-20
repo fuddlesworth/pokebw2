@@ -14,8 +14,8 @@
 // medals, the Pokémon World Tournament and Join Avenue
 typedef struct {
     u8 version;
-    u8 unk01;
-    u8 unk02;
+    u8 padding1;
+    u8 padding2;
     // Up to five, from TrainerCard_CountStars
     u8 stars;
     // Set when the card is the player's own, whose play time keeps running
@@ -33,7 +33,7 @@ typedef struct {
     u8 canEdit : 1;
     // Set on a card that TRCARD_SYS_VIEW_PROC_FUNCTIONS shows, with the Union Room appearance and the other buttons
     u8 isOtherCard : 1;
-    u8 unk05;
+    u8 padding5;
     // The player's Union Room appearance (PlayerInfo_GetUnionView)
     u8 unionView;
     u8 padding7;
@@ -88,7 +88,7 @@ typedef struct {
     PMSData greeting;
     // The signature, as TimeSigSave_GetSignature keeps it
     u8 signature[0x600];
-    u32 unk674;
+    u32 padding674;
     // The medal obtained last, or 0xff
     u32 lastMedal;
     u16 medalCount;

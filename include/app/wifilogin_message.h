@@ -43,7 +43,7 @@ typedef struct WifiLoginMessage {
     // The frame characters, loaded at the end of the BGs of the message window and of the other one
     u32 frameChars;
     u32 frameCharsOther;
-    u8 unk8[0x14];
+    u8 padding8[0x14];
     MsgData *msgData;
     WordSet *wordSet;
     Font *font;

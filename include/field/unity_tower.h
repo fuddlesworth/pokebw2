@@ -71,7 +71,7 @@ struct UnityTowerSurveySave {
     UnityTowerVisitor visitors[UNITY_TOWER_VISITOR_MAX];
     // A bit per country a visitor has come from
     u8 countriesMet[32];
-    u8 unk340[4];
+    u8 padding340[4];
     // Set once a region outside Japan is recorded
     u8 foreignRegionMet;
     u8 countryCount;

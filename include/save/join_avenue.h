@@ -188,7 +188,7 @@ enum {
 // The state of the shop a person runs
 typedef struct {
     // Never accessed: the accessors reach id, level, experience and flags only
-    u8 unk0;
+    u8 padding0;
     // Column 2 of the shop
     u8 level;
     // The points toward its next level, which the shop's sales add

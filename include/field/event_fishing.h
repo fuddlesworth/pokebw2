@@ -23,7 +23,7 @@ struct FishingEventWork {
     FieldEffectTask *line;
     VecFx32 playerPos;
     VecFx32 fishingPos;
-    u8 unk4C[12];
+    u8 padding4c[12];
     u8 faceDirection;
     u8 isPhenomenon;
     u8 noFishing;

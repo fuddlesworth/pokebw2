@@ -18,7 +18,7 @@
 // The argument of the commands that run the activity's own proc: it starts with the app
 typedef struct {
     UnionApp *app;
-    u8 unk04[0x10];
+    u8 padding4[0x10];
     // SpinTradeParam.started: the Spin Trade main screen ran and changed the music.
     u32 spinTradeStarted;
 } UnionProcParam;

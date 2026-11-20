@@ -61,7 +61,7 @@ extern const GameProcFunctions POKEMONTRADE_UNION_PROC_FUNCTIONS;
 
 // The trade demo's parameter for the Global Trade Station
 typedef struct {
-    u8 unk0[0x30];
+    u8 padding0[0x30];
     GameData *gameData;
     PartyPkm *sendPkm;
     PartyPkm *recvPkm;
