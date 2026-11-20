@@ -76,9 +76,9 @@ enum {
 // The work of the screen's proc
 typedef struct {
     u32 heapId;
-    u32 unk04;
+    u32 padding4;
     PMSIParam *pmsiParam;
-    u32 unk0C;
+    u32 paddingC;
     MailEdit *edit;
     PMSData sentence;
     GameProcManager *procMgr;

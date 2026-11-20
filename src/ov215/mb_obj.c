@@ -13,19 +13,19 @@
 typedef struct {
     s16 x;
     s16 y;
-    s16 unk4;
+    s16 padding4;
     u16 sequence;
-    u32 unk8;
-    u32 unkC;
+    u32 padding8;
+    u32 paddingC;
     u32 surface;
     u32 charIndex;
     u32 paletteIndex;
     u32 cellAnimIndex;
-    u32 unk20;
-    u32 unk24;
-    u32 unk28;
+    u32 padding20;
+    u32 padding24;
+    u32 padding28;
     u32 bgPriority;
-    u32 unk30;
+    u32 padding30;
 } MailBoxActorTemplate;
 
 static void MailBox_InitClAct(MailBoxView *view);
