@@ -9,7 +9,8 @@
 // A beacon of the data
 typedef struct {
     u16 crc;
-    u16 unk2;
+    // The two bytes that align seed to its word boundary
+    u16 padding2;
     // The seed of the data's encryption
     u32 seed;
     u8 data[DELIVERY_BEACON_ONCE_NUM];

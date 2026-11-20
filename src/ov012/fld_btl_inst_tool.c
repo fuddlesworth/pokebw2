@@ -172,7 +172,7 @@ static inline void SetTrialHouseTrainer(BtlSetup *setup, SetupClient client, con
 
 // A Trial House battle against one trainer, of levels between minLevel and maxLevel
 BtlSetup *SetupInfinityDungeonBattle(GameSystem *gsys, PokeParty *party, int partyCount, int mode, int count,
-                                     BSubwayTrainer *trainer, u32 a6, u32 trainerIdBase, u16 maxLevel, u16 minLevel,
+                                     BSubwayTrainer *trainer, u32 unused, u32 trainerIdBase, u16 maxLevel, u16 minLevel,
                                      u32 a10, u8 version, u32 bgType, Field *field, MATHRandContext32 *rand) {
     GameData *gameData = GSYS_GetGameData(gsys);
     BtlFieldStatus status;

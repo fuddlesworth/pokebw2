@@ -55,7 +55,8 @@ struct BeaconSearchWork {
     int state;
     // Set by the network's error callback
     u8 netError;
-    u16 unkE;
+    // The player's zone ID cached from the last scan (Black 1's lastZoneId); set once and never read
+    u16 lastZoneId;
     // While nonzero, beacons of type 0x35 are not taken
     u32 timer;
     BeaconSearchBeacon beacon;
@@ -125,7 +126,7 @@ void *GameBeaconSearch_Init(u32 *seq, void *param) {
 
     work->gameData = gameData;
     work->commSys = commSys;
-    work->unkE = 0x267;
+    work->lastZoneId = 0x267;
     if (GameCommSys_GetLastCommNo(commSys) == GAME_COMM_NO_INTRUDE && GameCommSys_GetCounter(commSys) == 5) {
         GameBeaconSearch_StartType35Wait(work);
     }
