@@ -65,7 +65,7 @@ typedef struct {
     } header;
     u8 data[0xfc];
     DWCFriendData *friendList;
-    void *unk104;
+    void *padding104;
     DWCUserData *userData;
     DWCInetControl inetControl;
     void *recvBuf[2];
@@ -108,24 +108,29 @@ typedef struct {
     // Whether the peer's voice chat is on, from the bit 8 of its packets' headers, and this side's, sent there
     int peerVctReady;
     u16 vctReady;
-    u16 unk796;
+    // The third voice chat condition, set when the session starts
+    u16 vctGateOpen;
     u32 connectBits;
     u8 sendSeq;
     u8 recvSeq;
-    u8 unk79E;
+    // Report the error as the fatal result when set
+    u8 forceFatalError;
     u8 micOn;
-    u8 unk7A0;
-    u8 unk7A1;
+    // Close the connection of every peer that joins
+    u8 kickNewPeers;
+    // A connect was armed, so a lone host closes the session
+    u8 connectArmed;
     u8 userDataDirty;
     u8 reportError;
-    u8 unk7A4;
+    // Reject a peer that is not in the friend list
+    u8 rejectStrangers;
     // What the match's connection attempts are answered (FALSE refuses them)
     u8 acceptConnect;
     u8 sendReady;
     u8 ackPending;
     u8 connected;
     u8 friendsMatchActive;
-    u8 unk7AA[2];
+    u8 padding7AA[2];
 } DWCRapWork;
 
 static DWCRapWork *_dWork;
@@ -197,13 +202,13 @@ int DWCRap_Init(DWCUserData *userData, DWCFriendData *friendList) {
     _dWork->maxPlayers = netInit->maxConnectNum;
     _dWork->lastNetId = -1;
     _dWork->vctEnabled = 0;
-    _dWork->unk79E = 0;
+    _dWork->forceFatalError = 0;
     _dWork->vctReady = 1;
     _dWork->peerVctReady = 1;
-    _dWork->unk796 = 1;
+    _dWork->vctGateOpen = 1;
     _dWork->userData = userData;
     _dWork->friendList = friendList;
-    _dWork->unk7A1 = 1;
+    _dWork->connectArmed = 1;
     for (i = 0; i < DWCRAP_FRIEND_MAX; i++) {
         _dWork->friendStatus[i] = 0;
     }
@@ -352,7 +357,7 @@ BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL useQuery, int unused)
     DWC_SetConnectionClosedCallback(DWCRap_ClosedCallback, 0);
     DWC_SetUserRecvTimeoutCallback(DWCRap_TimeoutCallback, 0);
     _dWork->sending = 0;
-    _dWork->unk7A1 = 1;
+    _dWork->connectArmed = 1;
     return TRUE;
 }
 
@@ -379,7 +384,7 @@ BOOL DWCRap_StartMatchQuery(const char *query, int numEntry, DWCEvalPlayerCallba
     DWC_SetConnectionClosedCallback(DWCRap_ClosedCallback, 0);
     DWC_SetUserRecvTimeoutCallback(DWCRap_TimeoutCallback, 0);
     _dWork->sending = 0;
-    _dWork->unk7A1 = 1;
+    _dWork->connectArmed = 1;
     _dWork->errorCode = 0x3ef;
     return TRUE;
 }
@@ -666,7 +671,7 @@ static void DWCRap_ClosedCallback(DWCError error, BOOL isLocal, BOOL isServer, u
         _dWork->retryCount = 0;
         _dWork->matchingBusy = 0;
         if (error == 0) {
-            if (_dWork->unk7A1 == 1 && DWC_GetNumConnectionHost() == 1) {
+            if (_dWork->connectArmed == 1 && DWC_GetNumConnectionHost() == 1) {
                 if (_dWork->state != DWCRAP_STATE_MATCH_CANCEL) {
                     DWCRap_SetState(DWCRAP_STATE_CLOSED);
                 }
@@ -784,7 +789,7 @@ static u32 DWCRap_HandleError(void) {
         }
         break;
     }
-    if (_dWork->unk79E != 0) {
+    if (_dWork->forceFatalError != 0) {
         result = 0x3ee;
         NetState_RecordError(code, type, error, result);
     } else if (_dWork->state == DWCRAP_STATE_ENDED) {
@@ -829,7 +834,7 @@ static u32 DWCRap_Update(void) {
     DWC_ProcessFriendsMatch();
     DWCRap_UpdateFriendStatus();
     if (_dWork->vctActive != 0) {
-        if (_dWork->vctReady == 1 && _dWork->peerVctReady == 1 && _dWork->unk796 == 1) {
+        if (_dWork->vctReady == 1 && _dWork->peerVctReady == 1 && _dWork->vctGateOpen == 1) {
             DWCRapVChat_Update(FALSE);
         } else {
             DWCRapVChat_Update(TRUE);
@@ -891,7 +896,7 @@ static void DWCRap_StartVct(HeapID heapId) {
 
     _dWork->vctReady = 1;
     _dWork->peerVctReady = 1;
-    _dWork->unk796 = 1;
+    _dWork->vctGateOpen = 1;
     if (_dWork->vctActive == 0) {
         switch (_dWork->vctMode) {
         case DWCRAP_VCT_MODE_G711_ULAW:
@@ -1182,7 +1187,7 @@ int DWCRap_Connect(int friendIndex, int numEntry, BOOL twoEntries) {
     }
     DWCRap_FreeRecvBuffers();
     _dWork->connectBits = 0;
-    _dWork->unk7A1 = 1;
+    _dWork->connectArmed = 1;
     _dWork->friendIndex = friendIndex;
     _dWork->maxPlayers = numEntry;
     _dWork->lastIndex = -1;
@@ -1234,7 +1239,7 @@ static void DWCRap_AnybodyMatchedCallback(DWCError error, BOOL cancel, BOOL self
     _dWork->matchingBusy = 0;
     if (error == 0) {
         if (cancel == 0) {
-            if (_dWork->unk7A4 != 0 && index == -1) {
+            if (_dWork->rejectStrangers != 0 && index == -1) {
                 failed = TRUE;
             }
             if (_dWork->requestFunc != NULL) {
@@ -1242,7 +1247,7 @@ static void DWCRap_AnybodyMatchedCallback(DWCError error, BOOL cancel, BOOL self
                     failed = TRUE;
                 }
             }
-            if (_dWork->unk7A0 != 0 || failed) {
+            if (_dWork->kickNewPeers != 0 || failed) {
                 if (index != -1) {
                     DWC_CloseConnectionHard(index);
                 }

@@ -15,7 +15,7 @@
 
 typedef struct {
     GFLNetInitData *pNetInit;
-    u32 unk4;
+    u32 padding4;
 } NetDevWifiWork;
 
 static NetDevWifiWork *sNetDevWifiWork;
