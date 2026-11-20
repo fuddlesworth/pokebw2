@@ -166,7 +166,7 @@ typedef struct {
 
 typedef struct {
     u16 heapId;
-    u32 unk4;
+    u32 bg;
     u32 objRes[OBJ_RES_COUNT - 1];
     ClActor *actors[ACTOR_COUNT];
     WbtListGraphic *graphic;
@@ -275,7 +275,7 @@ typedef struct {
 static BOOL WbtListProc_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WbtListProc_Exit(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WbtListProc_Main(GameProc *proc, u32 *state, void *param, void *work);
-static void WbtList_LoadBG(u32 *unk, HeapID heapId);
+static void WbtList_LoadBG(u32 *bg, HeapID heapId);
 static void WbtList_CreateTrainerActors(WbtList *work, const WbtListTrainerSetup *setups);
 static void WbtList_FreeTrainerActors(WbtList *work);
 static void WbtList_InitView(WbtList *work);
@@ -453,7 +453,7 @@ static BOOL WbtListProc_Init(GameProc *proc, u32 *state, void *param, void *work
     list->tcbManager = GFL_TCBExMgrCreate(list->heapId, list->heapId, 32, 32);
     list->stream = NULL;
     list->strbuf = NULL;
-    WbtList_LoadBG(&list->unk4, list->heapId);
+    WbtList_LoadBG(&list->bg, list->heapId);
     WbtList_InitView(list);
     GFL_WipeSet(WIPE_MODE_BOTH, WIPE_TYPE_FADE_IN, WIPE_TYPE_FADE_IN, WIPE_COLOR_BLACK, 6, 1, list->heapId);
     return TRUE;
@@ -515,7 +515,7 @@ static BOOL WbtListProc_Main(GameProc *proc, u32 *state, void *param, void *work
     return FALSE;
 }
 
-static void WbtList_LoadBG(u32 *unk, HeapID heapId) {
+static void WbtList_LoadBG(u32 *bg, HeapID heapId) {
     ArcTool *arc = GFL_ArcSysCreateFileHandle(ARCID_WBT_SUBSCREEN, heapId);
 
     GFL_G2DIOLoadArcNCLRDefault(arc, 1, PALTYPE_MAIN_BG, 0, 0xa0, heapId);
