@@ -27,9 +27,9 @@ void DWCRapCommon_Delete(void);
 // Clears the user data and creates it if it is not valid
 void DWCRapCommon_ResetUserData(DWCUserData *userData);
 // How DWCRapCommon_CheckError found the connection, which WifiBattleMatchNetResult follows: no error, or one it
-// cleared; DWC shut down and the error screen shown (an error with a0 FALSE); the error recorded for the caller to
-// end on; the Wi-Fi error screen shown; and, with a1 TRUE, the connection to the other player lost (error types
-// 0x3f0 and 0x3f1), Wi-Fi disconnected and the error screen shown
+// cleared; DWC shut down and the error screen shown (an error with hasSession FALSE); the error recorded for the
+// caller to end on; the Wi-Fi error screen shown; and, with keepError TRUE, the connection to the other player lost
+// (error types 0x3f0 and 0x3f1), Wi-Fi disconnected and the error screen shown
 enum {
     DWCRAP_RESULT_OK,
     DWCRAP_RESULT_DISCONNECTED,
@@ -38,7 +38,8 @@ enum {
     DWCRAP_RESULT_TIMEOUT,
 };
 
-// Checks the network's error and handles it, returning a DWCRAP_RESULT_*
-int DWCRapCommon_CheckError(u32 a0, u32 a1);
+// Checks the network's error and handles it, returning a DWCRAP_RESULT_*; hasSession defers the error screen to the
+// caller's session end, and keepError records the timeout and returns it rather than clearing it
+int DWCRapCommon_CheckError(u32 hasSession, u32 keepError);
 
 #endif // POKEBW2_GFL_DWC_RAPCOMMON_H

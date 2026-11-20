@@ -159,7 +159,7 @@ typedef struct {
     BOOL (*startScan)(int clearBeacons, int a1);
     int (*startChild)(BOOL allocBuffers, const u8 *mac, int index, int unused, void (*callback)(void));
     // Start a Wi-Fi match, and connect to a Wi-Fi friend by index (anybody when negative)
-    BOOL (*startMatch)(int a0, int a1, int a2, int a3);
+    BOOL (*startMatch)(int key, int numEntry, int useQuery, int unused);
     BOOL (*connectFriend)(int a0, int a1, int a2);
     // Closes the connection, FALSE until it is closed
     BOOL (*close)(BOOL a0, int a1);

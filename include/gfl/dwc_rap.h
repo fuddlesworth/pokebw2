@@ -36,8 +36,9 @@ int DWCRap_Init(DWCUserData *userData, DWCFriendData *friendList);
 void DWCRap_SetRecvFuncs(GFLNetRecvFunc parentFunc, GFLNetRecvFunc childFunc);
 // Sets the function asked whether to take a machine in
 void DWCRap_SetRequestFunc(DWCRapRequestFunc func);
-// Starts matching with whoever has the same key, as numEntry machines
-BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL a2, int a3);
+// Starts matching with whoever has the same key, as numEntry machines; useQuery also adds the "key = 'value'"
+// query string as a second match key, and unused is not used
+BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL useQuery, int unused);
 // Starts a match of numEntry machines on a query, with a function that rates the candidates
 BOOL DWCRap_StartMatchQuery(const char *query, int numEntry, DWCEvalPlayerCallback evalFunc, void *evalWork);
 // Runs the connection for a frame; cancelMatch nonzero cancels a match that is being made

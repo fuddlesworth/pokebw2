@@ -26,7 +26,7 @@ static BOOL NetDevWifi_Start(void (*callback)(BOOL ok));
 static int NetDevWifi_Update(u16 connectBits);
 static BOOL NetDevWifi_Disconnect(int a0, int a1);
 static BOOL NetDevWifi_Exit(void (*callback)(BOOL ok));
-static BOOL NetDevWifi_StartMatch(int key, int numEntry, int a2, int a3);
+static BOOL NetDevWifi_StartMatch(int key, int numEntry, int useQuery, int unused);
 static BOOL NetDevWifi_ConnectFriend(int friendIndex, int numEntry, int twoEntries);
 static BOOL NetDevWifi_Close(BOOL a0, int a1);
 static BOOL NetDevWifi_Send(u8 *data, int size, int a2, GFLNetSendDoneFunc callback);
@@ -126,8 +126,8 @@ static BOOL NetDevWifi_Exit(void (*callback)(BOOL ok)) {
     return TRUE;
 }
 
-static BOOL NetDevWifi_StartMatch(int key, int numEntry, int a2, int a3) {
-    return DWCRap_StartMatch((const char *)key, numEntry, a2, a3);
+static BOOL NetDevWifi_StartMatch(int key, int numEntry, int useQuery, int unused) {
+    return DWCRap_StartMatch((const char *)key, numEntry, useQuery, unused);
 }
 
 static BOOL NetDevWifi_ConnectFriend(int friendIndex, int numEntry, int twoEntries) {

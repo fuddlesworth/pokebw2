@@ -181,7 +181,7 @@ static void DWCRapCommon_ShutdownLibrary(void) {
     DWC_ClearError();
 }
 
-int DWCRapCommon_CheckError(u32 a0, u32 a1) {
+int DWCRapCommon_CheckError(u32 hasSession, u32 keepError) {
     GFLNetErrorInfo *error;
     int type;
 
@@ -191,7 +191,7 @@ int DWCRapCommon_CheckError(u32 a0, u32 a1) {
             switch (error->errorType) {
             case DWC_ETYPE_LIGHT:
             case DWC_ETYPE_SHOW_ERROR:
-                if (a0 == 0) {
+                if (hasSession == 0) {
                     DWCRapCommon_ShutdownLibrary();
                     GFL_NetErrShowScreen();
                     GFL_NetErrClear();
@@ -216,7 +216,7 @@ int DWCRapCommon_CheckError(u32 a0, u32 a1) {
 
         type = error->type;
         if (type == 0x3f0 || type == 0x3f1) {
-            if (a1 != 0) {
+            if (keepError != 0) {
                 GFL_NetErrRecord();
                 DWCRapCommon_ShutdownLibrary();
                 NetState_WifiDisconnect(TRUE);
@@ -231,7 +231,7 @@ int DWCRapCommon_CheckError(u32 a0, u32 a1) {
             return DWCRAP_RESULT_OK;
         }
         if (type == 0x3f2 || type == 0x3f3 || type == 0x3f4 || type == 0x3f6) {
-            if (a0 == 0) {
+            if (hasSession == 0) {
                 DWCRapCommon_ShutdownLibrary();
                 GFL_NetErrShowScreen();
                 GFL_NetErrClear();

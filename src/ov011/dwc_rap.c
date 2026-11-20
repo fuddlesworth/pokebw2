@@ -319,7 +319,7 @@ static BOOL DWCRap_AttemptCallback(void *param) {
 }
 
 // clang-format off
-BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL a2, int a3) {
+BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL useQuery, int unused) {
     int i;
     int ret;
 
@@ -333,7 +333,7 @@ BOOL DWCRap_StartMatch(const char *key, int numEntry, BOOL a2, int a3) {
     MI_CpuFill8(_dWork->randommatch_query, 0, _MATCHSTRINGNUM);
     sprintf(_dWork->randommatch_query, sQueryFormat, "a", key);
     GFL_ASSERT(GFL_STD_StrLen((const char*)_dWork->randommatch_query) < _MATCHSTRINGNUM);
-    if (a2) {
+    if (useQuery) {
         DWC_AddMatchKeyString(1, _dWork->randommatch_query, _dWork->randommatch_query);
     }
     for (i = 0; i < numEntry; i++) {
