@@ -2112,8 +2112,8 @@ BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
     return FALSE;
 }
 
-// Starts the effect of a move. effectParam2 goes to the effect parameter's unk0D, the effect VM's unk2 (its second
-// script parameter); no caller sets it
+// Starts the effect of a move. effectParam2 goes to the effect parameter's effectParam2, the effect VM's param2 (its
+// second script parameter); no caller sets it
 void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
                              u8 effectParam2) {
     BtlvMoveEffectParam *param = (BtlvMoveEffectParam *)scu->work;
@@ -2122,7 +2122,7 @@ void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 mov
     param->attackerPos = attackerPos;
     param->targetPos = targetPos;
     param->variant = variant;
-    param->unk0D = effectParam2;
+    param->effectParam2 = effectParam2;
     param->target = moveTarget;
     BtlvScu_SetSubProc(scu, BtlvScu_MoveEffectProc);
 }

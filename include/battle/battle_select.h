@@ -17,7 +17,7 @@ typedef struct {
     u8 otherGender;
     PokeParty *otherParty;
     GameData *gameData;
-    u8 unk18;
+    u8 padding18;
     // Gets the Pokémon picked
     PokeParty *pickedParty;
     // Where each player's team picked arrives, by net ID

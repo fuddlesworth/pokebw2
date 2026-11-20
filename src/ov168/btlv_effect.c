@@ -469,7 +469,7 @@ void BtlvEffect_StartMove(const BtlvMoveEffectParam *param) {
         BtlvEffvmParam_Clear(&vmParam);
         vmParam.target = param->target;
         vmParam.variant = param->variant;
-        vmParam.unk2 = param->unk0D;
+        vmParam.param2 = param->effectParam2;
         BtlvEffvm_Start(sBtlvEffect->effvm, param->attackerPos, param->targetPos, param->move, &vmParam);
         sBtlvEffect->executing = TRUE;
     } else {
@@ -482,7 +482,7 @@ void BtlvEffect_StartMove(const BtlvMoveEffectParam *param) {
         queued->effNo = param->move;
         queued->param->target = param->target;
         queued->param->variant = param->variant;
-        queued->param->unk2 = param->unk0D;
+        queued->param->param2 = param->effectParam2;
         BtlvEffect_AddTask(GFL_TCBMgrAddTask(sBtlvEffect->tcbManager, BtlvEffect_DelayedMoveTask, queued, 0),
                            BtlvEffect_DelayedMoveTaskEnd, BTLV_EFFECT_TASK_PERSISTENT);
     }

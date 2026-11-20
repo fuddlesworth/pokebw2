@@ -15,7 +15,7 @@
 typedef struct {
     u8 target;    // 0x0  the move's MOVE_TARGET_*
     u8 variant;   // 0x1  which of the script's variants runs, the turn of a two-turn move
-    u8 unk2;      // 0x2
+    u8 param2;    // 0x2  the effect VM's second script parameter
     u8 shakes;    // 0x3  a thrown ball's, from SC_BALL_THROW
     u32 caught;   // 0x4  the same
     u32 critical; // 0x8  the same: a critical capture

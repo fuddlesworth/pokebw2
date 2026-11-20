@@ -109,7 +109,7 @@ typedef struct {
     // Whether each hit checks its accuracy again
     u8 checkEachHit;
     u8 multiHit;
-    u8 unk04;
+    u8 padding04;
     // The effectiveness the message after the hits gives: the first hit's other than normal
     u8 effectiveness;
 } BtlFlowHitWork;
@@ -126,7 +126,7 @@ typedef struct {
     u8 speed;
     u8 spAttack;
     u8 spDefense;
-    u8 unk0B;
+    u8 padding0B;
 } BtlFlowExpEntry;
 
 typedef struct {
@@ -149,7 +149,7 @@ typedef struct {
 typedef struct {
     u8 count;
     u8 clientIds[4];
-    u8 unk05;
+    u8 padding05;
 } BtlFlowClientList;
 
 // One level of the flow's work, kept for each level of nested handler calls; the flow's pointers point into the
@@ -195,7 +195,7 @@ struct BtlServerFlow {
     u32 serial;
     // Set once a turn's or a switch's run has set up, which its next calls go on from
     u8 runStarted;
-    u8 unk77D;
+    u8 unusedFlag;
     u8 turnCheckSeq;
     // The position of the move's one target, BTL_POS_NONE when it has several or none
     u8 targetPos;
@@ -208,7 +208,7 @@ struct BtlServerFlow {
     u8 revivedCount;
     // The player's failed escapes, which raise the chance of the next
     u8 escapeAttempts;
-    u8 unk787;
+    u8 unusedByte;
     // The mons that strike a mon switching out, such as with Pursuit
     u8 interruptCount;
     // The target of the multi-hit move being used, whose faint message waits for the hits' end; 0x1f for none
@@ -221,8 +221,8 @@ struct BtlServerFlow {
     u8 onceFlag : 1;
     u8 failMessageShown : 1;
     u8 healBlockMessageShown : 1;
-    u8 unk78A_6 : 1;
-    u8 unk78A_7 : 1;
+    u8 reservedFlag6 : 1;
+    u8 reservedFlag7 : 1;
     u8 interruptMonIds[6];
     u8 revivedMonIds[0x18];
     // Per mon ID, cleared when the mon is revived
@@ -260,7 +260,7 @@ struct BtlServerFlow {
     BtlFlowExpEntry expEntries[6];
     BtlFlowUnk1B54 eventParamBuf;
     BtlActionState actionState;
-    u8 unk1F70[8];
+    u8 padding1F70[8];
     u16 lastUsedMove;
     u8 padding1F7A[2];
     // What ServerControl_CheckObedience returned for the fight being run
@@ -285,7 +285,7 @@ struct BattleHandlerAbilityChangeParam {
     u16 ability;
     u8 targetIndex;
     u8 force;
-    u8 unk08;
+    u8 announce;
     u8 padding09[3];
     BattleHandlerString string;
 };

@@ -104,7 +104,7 @@ BtlServer *BattleServer_Create(BtlMainModule *mainModule, const MATHRandContext3
     server->state = 0;
     server->flow = NULL;
     server->count = 0;
-    server->unkCBF = 0;
+    server->changeLock = 0;
     server->commCompetitor = commCompetitor;
     server->rand = *rand;
     server->strBuf = GFL_StrBufCreate(0x20, heapId);
@@ -964,7 +964,7 @@ void BattleServer_SetDoublePrizeMoney(BtlServer *server) {
 
 void BattleServer_ClearChangeRequests(BtlServer *server) {
     server->count = 0;
-    server->unkCBF = 0;
+    server->changeLock = 0;
 }
 
 // Function name from swan.

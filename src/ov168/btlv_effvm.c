@@ -707,7 +707,7 @@ s32 BtlvEffvm_GetScriptKind(VM *vm) {
 void BtlvEffvmParam_Clear(BtlvEffvmParam *param) {
     param->target = 0;
     param->variant = 0;
-    param->unk2 = 0;
+    param->param2 = 0;
     param->shakes = 0;
     param->caught = 0;
     param->critical = 0;
@@ -2442,7 +2442,7 @@ static BOOL BtlvEffvm_CmdSetVar(VM *vm, void *env) {
         wk->param.variant = value;
         break;
     case EFFVM_VAR_PARAM_2:
-        wk->param.unk2 = value;
+        wk->param.param2 = value;
         break;
     case EFFVM_VAR_SHAKES:
         wk->param.shakes = value;
@@ -3857,7 +3857,7 @@ static u32 BtlvEffvm_GetVariable(BtlvEffvm *wk, int id) {
     case EFFVM_VAR_VARIANT:
         return wk->param.variant;
     case EFFVM_VAR_PARAM_2:
-        return wk->param.unk2;
+        return wk->param.param2;
     case EFFVM_VAR_SHAKES:
         return wk->param.shakes;
     case EFFVM_VAR_CAUGHT:

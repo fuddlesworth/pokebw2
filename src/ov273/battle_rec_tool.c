@@ -452,7 +452,7 @@ static BOOL BattleRecTool_StoreSetupParams(const BtlSetup *setup, BattleRecSetup
     rec->battleType = setup->battleType;
     rec->battleStyle = setup->battleStyle;
     rec->multiMode = setup->fieldSituation.multiMode;
-    rec->unk30 = setup->unkA2;
+    rec->unk30 = setup->resultCount;
     rec->playerClientId = setup->fieldSituation.playerClientId;
     rec->launcherEnabled = setup->shooterSettings.launcher ? TRUE : FALSE;
     initConfig(setup->config, (Config *)rec->config);
@@ -467,7 +467,7 @@ static BOOL BattleRecTool_LoadSetupParams(BtlSetup *setup, const BattleRecSetup 
     setup->battleType = rec->battleType;
     setup->battleStyle = rec->battleStyle;
     setup->fieldSituation.multiMode = rec->multiMode;
-    setup->unkA2 = rec->unk30;
+    setup->resultCount = rec->unk30;
     setup->fieldSituation.playerClientId = rec->playerClientId;
     setup->shooterSettings.launcher = rec->launcherEnabled;
     return TRUE;

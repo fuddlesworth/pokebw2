@@ -48,7 +48,7 @@ enum {
 
 struct Regulation {
     u8 name;
-    u8 unk1;
+    u8 ruleNo;
     // How many Pokémon may be entered
     u8 minCount;
     u8 maxCount;
@@ -79,7 +79,7 @@ struct Regulation {
     // them while a message waits (BTL_SETUP_FLAG_SHORT_IDLE_WAIT, BTL_SETUP_FLAG_MSG_IDLE_EFFECTS), and moves a
     // Wi-Fi tournament to the stage that the World Championships use (wifibattlematch_sys.c)
     u8 idleEffects;
-    u8 unkB7;
+    u8 unused;
     // Whether the partners' teams are shown in the selection, and its time limit
     u8 showPartners;
     u8 timeLimit;

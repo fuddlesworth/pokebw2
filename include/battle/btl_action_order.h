@@ -14,7 +14,7 @@ struct ActionOrderEntry {
     u8 done;
     // Set while a Pursuit waits to strike a mon that is switching out
     u8 interrupting;
-    u8 unk0F;
+    u8 padding0F;
 };
 
 ActionOrderEntry *ActionOrder_SearchByMonID(BtlServerFlow *flow, u8 monId);

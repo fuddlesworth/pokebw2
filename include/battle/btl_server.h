@@ -42,7 +42,7 @@ typedef BOOL (*BtlServerProc)(BtlServer *server, int *seq);
 struct BtlServer {
     BtlServerProc proc;
     int seq;
-    u32 unk08;
+    u32 padding08;
     BtlMainModule *mainModule;
     BtlPokeCon *pokeCon;
     BtlServerClient clients[4];
@@ -61,18 +61,18 @@ struct BtlServer {
     StrBuf *strBuf;
     BtlClientIDList *clientIdList;
     BtlClientActions clientActions;
-    u8 unkE8[4];
+    u8 paddingE8[4];
     u8 switchModeMonId;
     u8 state;
-    u8 unkEE[2];
+    u8 paddingEE[2];
     BtlServerCmdQueue queue;
     BtlServerCmdQueue *queuePtr;
     u8 posList[6];
     u8 count;
-    u8 unkCBB[4];
-    u8 unkCBF;
+    u8 paddingCBB[4];
+    u8 changeLock;
     u16 heapId;
-    u8 unkCC2[2];
+    u8 paddingCC2[2];
 };
 
 BtlServer *BattleServer_Create(BtlMainModule *mainModule, const MATHRandContext32 *rand, BtlPokeCon *pokeCon,

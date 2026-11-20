@@ -356,7 +356,7 @@ void UnionApp_LimitEntry(UnionApp *app, u8 limit) {
 }
 
 static void UnionApp_SetReady(UnionApp *app) {
-    app->unk14 = TRUE;
+    app->ready = TRUE;
 }
 
 void UnionApp_RequestStart(UnionApp *app) {

@@ -58,7 +58,7 @@ u32 Regulation_GetParam(Regulation *regulation, u32 param) {
         value = regulation->name;
         break;
     case REGULATION_PARAM_1:
-        value = regulation->unk1;
+        value = regulation->ruleNo;
         break;
     case REGULATION_PARAM_MIN_COUNT:
         value = regulation->minCount;
@@ -127,7 +127,7 @@ void Regulation_SetParam(Regulation *regulation, u32 param, int value) {
         break;
     case REGULATION_PARAM_1:
         if (value < 6) {
-            regulation->unk1 = value;
+            regulation->ruleNo = value;
         }
         break;
     case REGULATION_PARAM_MIN_COUNT:

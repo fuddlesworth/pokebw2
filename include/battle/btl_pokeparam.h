@@ -101,7 +101,7 @@ typedef struct {
     u8 type;
     u8 attackerId;
     u8 attackerPos;
-    u8 unk7;
+    u8 padding07;
 } BattleMonDamageRecord;
 
 static inline void BattleMonDamageRecord_Init(BattleMonDamageRecord *record, u8 attackerId, u8 attackerPos, u16 move,

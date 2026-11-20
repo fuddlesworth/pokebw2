@@ -176,7 +176,7 @@ struct BtlSetup {
     u32 flags;
     // The clients BtlNet_Init links in a battle over the network (BtlSetup_SetNetImpl sets 0xff)
     u16 netClientMask;
-    u16 unkA2;
+    u16 resultCount;
     // The money the player wins, or negative loses
     u32 moneyChange;
     // How the battle ended, a BTL_RESULT_*

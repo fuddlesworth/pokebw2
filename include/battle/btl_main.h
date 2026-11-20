@@ -59,7 +59,7 @@ typedef struct {
 // What the clients of a link battle exchange before it starts
 struct BtlMainSyncData {
     MATHRandContext32 rand;
-    u16 unk18;
+    u16 resultCount;
     u16 gameTimeLimit;
     u16 commandTimeLimit;
     u8 textSpeed;
@@ -191,7 +191,7 @@ struct BtlMainModule {
     s32 subSeq;
     BOOL (*mainFunc)(BtlMainModule *mainModule);
     u16 heapId;
-    u8 unk46A;
+    u8 padding46A;
     u8 clientCount;
     u8 playerClientId;
     u8 playerPos;

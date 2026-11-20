@@ -159,7 +159,7 @@ typedef struct {
     u16 bgm;
     // The music that plays when the battle is won
     u16 winBgm;
-    // The still-opaque BtlSetup.unkA2 value, separate from the trainer's win words. The recorder copies it to
+    // The still-opaque BtlSetup.resultCount value, separate from the trainer's win words. The recorder copies it to
     // and from that field, and a link battle's sync data carries it, but no code gives either a value.
     u16 unk30;
     u8 battleType : 5;

@@ -66,7 +66,7 @@ struct UnionApp {
     // A child: the parent has told it that its turn has come
     u8 turnReceived;
     u8 unk13;
-    u32 unk14;
+    u32 ready;
     u8 unk18[8];
     BOOL startRequested;
     BOOL starting;

@@ -51,7 +51,7 @@ typedef struct {
     u8 endsAtTarget;
     u8 unk01;
     u8 extraSecondsIndex;
-    u8 unk03;
+    u8 bonusMode;
     u8 rewardItem2Count;
     // What the mission's target counts, which picks the unit of its score (FestMissionInfo's targetKind)
     u8 targetKind;

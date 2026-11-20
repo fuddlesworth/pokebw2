@@ -114,7 +114,7 @@ void BtlServerFlow_InitWork(BtlServerFlow *flow) {
     ServerControl_ClearPendingCounter(&flow->eventParamBuf);
     SideEffectsInit();
     flow->escapeAttempts = 0;
-    flow->unk787 = 0;
+    flow->unusedByte = 0;
     flow->monSwitchingOut = 0;
     flow->winBgmPlayed = 0;
     flow->escapeMessageShown = 0;
@@ -125,7 +125,7 @@ void BtlServerFlow_InitWork(BtlServerFlow *flow) {
     flow->simulationDepth = 0;
     flow->turnCheckSeq = BTL_TURN_CHECK_SEQ_START;
     flow->serial = 0;
-    flow->unk78A_6 = 0;
+    flow->reservedFlag6 = 0;
 }
 
 void BtlServerFlow_Delete(BtlServerFlow *flow) {
@@ -224,7 +224,7 @@ u32 BtlServerFlow_RunMidTurnSwitch(BtlServerFlow *flow, BtlClientActions *client
     if (flow->runStarted == 0) {
         BattleServer_ClearChangeRequests(flow->server);
         BattleEventVar_CheckReset();
-        flow->unk77D = 0;
+        flow->unusedFlag = 0;
         flow->runStarted = 1;
         if (ServerControl_MidTurnSwitchIn(flow, clientActions)) {
             flow->result = BTL_FLOW_RESULT_CONTINUE;

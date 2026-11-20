@@ -1011,7 +1011,7 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
         break;
     case BTL_COMM_SYNC_SEQ_WAIT_SERVER:
         if (BtlNet_IsServerDecided()) {
-            mainModule->unk46A = 0;
+            mainModule->padding46A = 0;
             mainModule->isServer = BtlNet_IsServer();
             mainModule->setup->commonVersion = BtlNet_GetCommonVersion();
             if (BtlNet_IsServer()) {
@@ -1023,7 +1023,7 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
         break;
     case BTL_COMM_SYNC_SEQ_SEND_DATA:
         mainModule->syncData.rand = mainModule->rand;
-        mainModule->syncData.unk18 = mainModule->setup->unkA2;
+        mainModule->syncData.resultCount = mainModule->setup->resultCount;
         mainModule->syncData.gameTimeLimit = mainModule->setup->gameTimeLimit;
         mainModule->syncData.commandTimeLimit = mainModule->setup->commandTimeLimit;
         if (BtlSetup_IsBattleType(mainModule, BTL_SETUP_FLAG_PLAYER_CONFIG)) {
@@ -1040,7 +1040,7 @@ BOOL BtlMain_CommExchangeSyncData(BtlMainModule *mainModule, s32 *state) {
     case BTL_COMM_SYNC_SEQ_RECV_DATA:
         if (BtlNet_GetSyncData(&mainModule->syncData)) {
             BtlSetup *setup = mainModule->setup;
-            setup->unkA2 = mainModule->syncData.unk18;
+            setup->resultCount = mainModule->syncData.resultCount;
             setup->rand = mainModule->syncData.rand;
             mainModule->rand = mainModule->syncData.rand;
             mainModule->battleSceneOff = mainModule->syncData.battleSceneOff;

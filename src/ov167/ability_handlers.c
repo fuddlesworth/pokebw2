@@ -2326,7 +2326,7 @@ void HandlerTrace(BattleEventItem *item, BtlServerFlow *flow, u8 monId, s32 *wor
         param = BattleHandler_PushWork(flow, BTL_HANDLER_ABILITY_CHANGE, monId);
         param->targetIndex = monId;
         param->ability = ability;
-        param->unk08 = 1;
+        param->announce = 1;
         param->popup = 1;
         BattleHandler_StrSetup(&param->string, 2, 0x17d);
         BattleHandler_AddArg(&param->string, targetId);
