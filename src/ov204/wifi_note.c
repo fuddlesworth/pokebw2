@@ -280,7 +280,7 @@ typedef struct {
     StrBuf *titleTemp;
     StrBuf *str;
     StrBuf *temp;
-    u32 unk24;
+    u32 padding24;
     TCBExManager *tcbManager;
     PrintStream *stream;
     BOOL streamPaused;
@@ -307,7 +307,7 @@ typedef struct {
 
 typedef struct {
     u32 cursor;
-    u32 unk4;
+    u32 padding4;
     // The flash of a picked button
     u16 buttonSeq;
     u16 buttonCount;
@@ -315,7 +315,7 @@ typedef struct {
     void *screenBuffer;
     NNSG2dScreenData *screen;
     PrintWindow msgWindow;
-    u32 unk24[2];
+    u32 padding24[2];
     StrBuf *msgStr;
     AppTaskMenuItem yesNoItems[2];
     AppTaskMenuRes *menuRes;
@@ -354,7 +354,7 @@ typedef struct {
     WF_2DCSYS *charSys;
     PrintWindow msgWindow;
     StrBuf *msgStr;
-    u32 unk114;
+    u32 padding114;
     // The menus of a friend met, and of one only registered by code
     AppTaskMenuItem menuItems[2][4];
     AppTaskMenuItem yesNoItems[2];
@@ -378,7 +378,7 @@ typedef struct {
     PrintWindow codeWindow;
     void *screenBuffer;
     NNSG2dScreenData *screen;
-    u32 unk18;
+    u32 padding18;
 } WifiNoteMyCode;
 
 // A window's place in tiles
