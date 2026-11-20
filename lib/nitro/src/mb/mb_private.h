@@ -395,7 +395,7 @@ typedef struct {
 struct MBCommFile {
     u32 arm9Entry;
     u32 arm7Entry;
-    u8 unk_08[4];
+    u8 padding[4];
     MbSegmentInfo segment[MB_DL_SEGMENT_NUM];
     u8 romHeaderExtra[0x88];
     u8 userParam[MB_DOWNLOAD_PARAMETER_SIZE];
@@ -480,7 +480,8 @@ enum {
 // The memory the library gets with MB_Init, from its first part on: what the wireless manager is told
 typedef struct {
     WMParentParam parentParam;
-    u8 unk_38[8];
+    // WMParentParam's rsv[4], which it leaves to the structs that embed it (see WMStatus.rsv)
+    u8 rsv[8];
     u16 sendBuf[(0x500 - 0x40) / sizeof(u16)];
     u16 p_sendlen;
     u16 p_recvlen;

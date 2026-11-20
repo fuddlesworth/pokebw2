@@ -159,7 +159,7 @@ typedef void (*WMCallbackFunc)(void *arg);
 #define WM_SIZE_MP_DATA_MAX 0x200
 
 // What a parent gives out in its beacon: the game's ID and the user's data. Its size is 0x38; NitroSDK's ends with
-// rsv[4], which the structs that embed it keep (MBiParam.unk_38 and WMStatus.rsv)
+// rsv[4], which the structs that embed it keep (MBiParam.rsv and WMStatus.rsv)
 typedef struct {
     u16 *userGameInfo;
     u16 userGameInfoLength;
