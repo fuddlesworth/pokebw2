@@ -190,7 +190,14 @@ typedef struct CARDAccessControl {
 // two images, and the keyed hashes of the ranges that the boot code verifies before it loads them. Only the fields that
 // the boot code and TwlSDK's card_hash.c read are named, and each hash's name says which range it verifies
 typedef struct CARDTwlRomHeader {
-    u8 unk_000[0x1c];
+    // The DS header's own fields, as CARDRomHeader names them
+    char game_name[12];
+    u32 game_code;
+    u16 maker_code;
+    u8 product_id;
+    u8 device_type;
+    u8 device_size;
+    u8 reserved_A[7];
     // 0x1c: the card's security flag; bit 0 says the boot code checks the images against the hashes. The card library
     // reads the same byte as its CARD_TWL_BOOT_FLAGS
     u8 bootFlags;
