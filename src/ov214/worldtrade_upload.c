@@ -565,7 +565,7 @@ static int Upload_SubSeqNameCheckStart(WorldTradeWork *wk) {
 
     GFL_StrBufLoadFixedString(name, wk->uploadPokemonData.name, 8);
     MI_CpuFill8(&wk->nameCheck, 0, sizeof(WorldTradeNameCheck));
-    wk->nameCheck.unk24 = HEAPID_WORLDTRADE;
+    wk->nameCheck.heapId = HEAPID_WORLDTRADE;
     str = GFL_StrBufGetStringPtr(name);
     for (i = 0; i < GFL_StrBufGetCharCount(name) + 1; i++) {
         u16 c = str[i];

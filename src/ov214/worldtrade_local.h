@@ -188,7 +188,7 @@ typedef struct {
     const u16 *words;
     char result[4];
     int badWordCount;
-    u16 unk24;
+    u16 heapId;
 } WorldTradeNameCheck;
 
 // The deposit and search screens' work
@@ -280,19 +280,19 @@ struct WorldTradeWork {
     u16 openingFlag;
     // Set while the player has a Pokémon deposited on the server
     u16 depositFlag;
-    u16 unk34;
+    u16 padding34;
     // Counts down the frames before the server may be checked again
     u16 serverWaitTime;
     // The server's or the library's error, which the error screens show
     int connectErrorNo;
-    u8 unk3C[0x7c];
+    u8 padding3C[0x7c];
     // Set while the status screen or the trade demo runs, which takes the cell actors
     int subprocFlag;
     // The cursor of the list being shown, to play a sound when it moves
     u16 listpos;
-    u16 unkBE;
+    u16 paddingBE;
     u16 titleCursorPos;
-    u16 unkC2;
+    u16 paddingC2;
     u16 boxTrayNo;
     u16 boxCursorPos;
     // How many boxes the player has
@@ -315,7 +315,7 @@ struct WorldTradeWork {
     Dpw_Tr_PokemonSearchData search;
     // The last search, which can't be made again
     Dpw_Tr_PokemonSearchData searchBackup;
-    u8 unkB62[0x2];
+    u8 paddingB62[0x2];
     int searchBackupCountryCode;
     WordSet *wordSet;
     MsgData *msgManager;
@@ -329,7 +329,7 @@ struct WorldTradeWork {
     StrBuf *talkString;
     StrBuf *titleString;
     StrBuf *infoString[10];
-    u8 unkBB8[0x8];
+    u8 paddingBB8[0x8];
     ClActUnit *clactUnit;
     u32 clactRes[WT_CLACT_RES_SETS][WT_CLACT_RES_KINDS];
     ClActor *cursorAct;
@@ -351,7 +351,7 @@ struct WorldTradeWork {
     // How far the screens slide, between the search and partner screens
     int drawOffset;
     BmpWin *msgWin;
-    u8 unkD44[0x4];
+    u8 paddingD44[0x4];
     // The title of the screen, on the main screen's top
     BmpWin *titleWin;
     BmpWin *subWin;
@@ -367,7 +367,7 @@ struct WorldTradeWork {
     // worldtrade_input.c's input of a search or of the wanted Pokémon
     WorldTradeInputWork *inputWork;
     ListMenuOption *menuList;
-    u8 unkDEC[0x8];
+    u8 paddingDEC[0x8];
     BmpMenuList *bmpListWork;
     WaitIcon *timeWaitWork;
     int wait;
