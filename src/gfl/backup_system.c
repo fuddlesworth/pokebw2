@@ -45,7 +45,7 @@ typedef struct {
     u32 count;
     u32 size;
     u32 magic;
-    u16 unkC;
+    u16 paddingC;
     // Of the blocks' CRCs
     u16 crc;
 } SaveFooter;
@@ -67,13 +67,13 @@ struct SaveData {
     u8 state;
     // 1 while writing the backup
     u8 pass;
-    u8 unk1A[2];
+    u8 padding1A[2];
     u8 dataExists;
     u8 ownsData;
     u8 dualState;
     u8 dualResult;
     u32 *dualCount;
-    u32 unk24;
+    u32 reserved;
     // How many times the save has been saved
     u32 count;
     SaveDataTable *table;
@@ -167,7 +167,7 @@ static SaveData *SaveData_Init(const SaveDataParams *params, u32 heapId, void *b
     }
     sv->dataExists = FALSE;
     sv->count = 0;
-    sv->unk24 = 0;
+    sv->reserved = 0;
     if (init == TRUE) {
         initSaveBlkCallbacks(sv);
     } else {

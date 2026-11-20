@@ -41,7 +41,8 @@ typedef struct {
     fx32 wPosY;
     // The actor's rail position and the word after it
     u8 railPos[0x10];
-    u8 unk40[0x10];
+    // The actor's move sub-proc work, as FieldActor.moveSubProcWork
+    u8 moveSubProcWork[0x10];
 } FieldActorSaveEntry;
 
 typedef struct FieldActorSave {
