@@ -27,7 +27,7 @@ typedef struct {
 
 struct KeypadManager {
     const KeyRemap *remaps;
-    u32 unk4;
+    u32 padding4;
     u32 remapIndex;
     u32 prevHeld;
     u32 pressedRaw;
@@ -46,7 +46,7 @@ struct KeypadManager {
     // The frames between repeats of a held key, and before the first
     u32 repeatWait;
     u32 repeatStart;
-    u32 unk48;
+    u32 padding48;
 };
 
 static void GFL_HIDUpdateKeypad(SystemUI *ui);

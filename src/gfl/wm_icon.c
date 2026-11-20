@@ -19,7 +19,7 @@ typedef struct {
     int level;
     u16 x;
     u16 y;
-    u8 unk8[4];
+    u8 padding8[4];
     u8 type;
     u8 screen;
     // Whether the icon may be in the sub engine's OAM

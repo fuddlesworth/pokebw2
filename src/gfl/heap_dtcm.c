@@ -7,9 +7,9 @@
 #define DTCM_HEAP_MAX_SIZE 0x2f80
 
 typedef struct {
-    u32 unk0;
+    u32 padding0;
     int handle;
-    u32 unk8;
+    u32 padding8;
 } DTCMHeap;
 
 static DTCMHeap sDTCMHeap;

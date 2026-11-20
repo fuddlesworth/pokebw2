@@ -85,11 +85,12 @@ typedef struct {
     NNSG2dCharacterData *transferChar;
 } ClActResSetup;
 
-// What the renderers pass the culling callback of a surface for each OAM, which sets skip when it is out of view
+// What the renderers pass the OAM-draw callback of a surface for each OAM; the first fields alias the start of the
+// renderer core (NNSG2dRndCoreInstance), so skip is its draw-enable flag and oam the OAM being drawn
 typedef struct {
     u8 unk0[0x30];
     BOOL skip;
-    u32 unk34;
+    fx32 zFor3DSoftwareSprite;
     GXOamAttr oam;
 } ClActDrawState;
 
@@ -123,7 +124,7 @@ static u16 ClActAffine_EntryMain(const MtxFx22 *mtx);
 static u16 ClActAffine_EntrySub(const MtxFx22 *mtx);
 static BOOL ClAct_IsCellInViewTransformed(const NNSG2dCellData *cell, const MtxFx32 *mtx, const NNSG2dViewRect *view);
 static BOOL ClAct_IsCellInView(const NNSG2dCellData *cell, const MtxFx32 *mtx, const NNSG2dViewRect *view);
-static void ClAct_CullOam(ClActDrawState *state, const NNSG2dViewRect *view, u32 a2, u32 a3, const MtxFx32 *mtx);
+static void ClAct_CullOam(ClActDrawState *state, const NNSG2dViewRect *view, u32 cell, u32 oamIdx, const MtxFx32 *mtx);
 static BOOL ClAct_IsRectInView(fx32 posX, fx32 posY, fx32 left, fx32 right, fx32 top, fx32 bottom, const MtxFx32 *mtx,
                                const NNSG2dViewRect *view);
 static void ClActTransfer_Init(ClActTransfer *transfer, u8 count, HeapID heapId);
@@ -1389,7 +1390,7 @@ static inline s16 ClAct_WrapOamY(s16 y) {
 }
 
 // Called by the renderers before each OAM: skips one that is out of view
-static void ClAct_CullOam(ClActDrawState *state, const NNSG2dViewRect *view, u32 a2, u32 a3, const MtxFx32 *mtx) {
+static void ClAct_CullOam(ClActDrawState *state, const NNSG2dViewRect *view, u32 cell, u32 oamIdx, const MtxFx32 *mtx) {
     GXOamAttr *oam = &state->oam;
     GXOamShape shape = oam->attr01 & GX_OAM_ATTR01_SHAPE_MASK;
     fx32 left = ClAct_WrapOamX(oam->x) << FX32_SHIFT;

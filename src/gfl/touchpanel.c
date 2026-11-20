@@ -20,9 +20,9 @@ typedef struct {
 } TouchCircle;
 
 struct TouchpadManager {
-    u8 unk0[0xc];
+    u8 padding0[0xc];
     TPData samples[AUTO_SAMPLES];
-    u8 unk54[4];
+    u8 padding54[4];
     u16 autoSampling;
     // Whether auto sampling is stopped while the system sleeps
     u16 stopped;
@@ -41,8 +41,8 @@ struct TouchpadManager {
     u16 heldNext;
     u8 autoMode;
     u8 frequency;
-    u8 unk76;
-    u8 unk77[5];
+    u8 padding76;
+    u8 padding77[5];
 };
 
 static TouchpadManager *getTouchpadBlock(void);
@@ -126,7 +126,7 @@ TouchpadManager *initTouchpad(HeapID heapId) {
         TP_SetCalibrateParam(&calibrate);
     }
     tp->frequency = 4;
-    tp->unk76 = 0;
+    tp->padding76 = 0;
     sTouchpad = tp;
     return tp;
 }

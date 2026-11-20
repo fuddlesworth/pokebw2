@@ -22,10 +22,10 @@ enum {
 };
 
 struct NetState {
-    u8 unk0[8];
+    u8 padding0[8];
     NetStateFunc func;
     MATHRandContext32 rand;
-    u8 unk24[4];
+    u8 padding24[4];
     // Called when the network has ended
     void (*endCallback)(void *work);
     // Called when the network is ready
@@ -36,7 +36,7 @@ struct NetState {
     u16 timer;
     // The Wi-Fi friend to connect to, -1 for anybody and -2 for a match the caller started
     s8 friendIndex;
-    u8 unk49;
+    u8 padding49;
     // Set when the other machine asked to disconnect (base command 11)
     u8 disconnectReceived;
     // Set when a Wi-Fi disconnect was asked for on a machine other than the server, which then only checks for the
@@ -51,13 +51,13 @@ struct NetState {
     u8 disconnectError;
     // Whether ending the network has been requested
     u8 ending;
-    u8 unk52;
+    u8 padding52;
     // Whether the changeover connects as a child to parentMac rather than scanning
     u8 useParentMac;
-    u8 unk54[2];
+    u8 padding54[2];
     u8 mode;
     u8 parentMac[6];
-    u8 unk5D[7];
+    u8 padding5D[7];
 };
 
 static void NetState_SetFunc(NetState *state, NetStateFunc func, int timer);

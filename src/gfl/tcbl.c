@@ -19,7 +19,7 @@ struct TCBExManager {
     // The data each task holds
     u32 dataSize;
     HeapID dataHeapId;
-    u32 unkC;
+    u32 paddingC;
     BOOL removeRequested;
     TCBEx *tasks;
     // The head of the circular list of running tasks
@@ -110,7 +110,7 @@ TCBExManager *GFL_TCBExMgrCreate(HeapID heapId, HeapID dataHeapId, u32 count, u3
     manager->count = count;
     manager->dataSize = dataSize;
     manager->dataHeapId = dataHeapId;
-    manager->unkC = 0;
+    manager->paddingC = 0;
     manager->removeRequested = FALSE;
     dataSize = (dataSize + 3) & ~3;
     manager->tasks = GFL_HeapAllocate(heapId, (dataSize + sizeof(TCBEx)) * count, FALSE, "tcbl.c", 207);

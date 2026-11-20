@@ -11,14 +11,14 @@ typedef struct {
     u16 langCount;
     u16 lineCount;
     u32 maxBlockSize;
-    u32 unk8;
+    u32 reserved;
     u32 langOffsets[0];
 } MsgFileHeader;
 
 typedef struct {
     u32 offset;
     u16 length;
-    u16 unk6;
+    u16 reserved;
 } MsgEntry;
 
 struct MsgData {

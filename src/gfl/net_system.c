@@ -66,16 +66,17 @@ typedef struct {
     u8 recvSeq[GFL_NET_MACHINE_MAX];
     int recvSize;
     u16 connectBits;
-    u8 unk1E6;
+    u8 padding1E6;
     // Set while the Wi-Fi is connected
     u8 wifiConnected;
-    u8 unk1E8;
+    u8 padding1E8;
     u8 error;
     // Set by an error, which stops the sending and receiving
     u8 stopped;
     // Whether the last step of the data sharing went through
     u8 dataShareOk;
-    u8 unk1EC;
+    // Set when the net system is to be freed once the connection ends (NetSystem_FreeWhenDone); never set in this build
+    u8 freeWhenDone;
     // Set while a Wi-Fi packet is written and not yet sent
     u8 wifiPacketReady;
 } NetSystem;
@@ -233,7 +234,7 @@ static void NetSystem_ResetBuffers(void) {
     sState.recvState = NET_SYSTEM_PACKET_IDLE;
     NetQueue_Clear(&sNetSys->sendQueue);
     NetQueue_Clear(&sNetSys->mpQueue);
-    sNetSys->unk1E8 = 0;
+    sNetSys->padding1E8 = 0;
     sNetSys->dataShareOk = 1;
     sNetSys->stopped = 0;
     sNetSys->wifiPacketReady = 0;
@@ -387,7 +388,7 @@ void NetSystem_Free(void) {
 }
 
 static void NetSystem_FreeWhenDone(void) {
-    if (sNetSys->unk1EC) {
+    if (sNetSys->freeWhenDone) {
         if (NetSystem_GetNetId() == 0) {
             if (NetSystem_GetChildBits() == 0) {
                 NetSystem_Free();
