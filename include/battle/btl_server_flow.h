@@ -202,7 +202,7 @@ BOOL ServerControl_MidTurnSwitchIn(BtlServerFlow *flow, BtlClientActions *client
 u8 ActionOrder_Build(BtlServerFlow *flow, BtlClientActions *clientActions, ActionOrderEntry *order, u8 max);
 void BtlFlowMonIter_Init(BtlFlowMonIter *iter, BtlServerFlow *flow);
 BOOL BtlFlowMonIter_Next(BtlFlowMonIter *iter, BtlServerFlow *flow, BattleMon **mon);
-void ServerControl_ClearPendingCounter(BtlFlowUnk1B54 *work);
+void ServerControl_ClearPendingCounter(BtlFlowEventParamBuf *work);
 void BtlServerFlow_ClearEffectivenessCounts(u16 *counts);
 void BtlServerFlow_ClearRevivedMons(BtlServerFlow *flow);
 void BtlServerFlow_ResetFrames(BtlServerFlow *flow);

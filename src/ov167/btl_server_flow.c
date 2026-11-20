@@ -5682,7 +5682,7 @@ BOOL ServerControl_HideTurnCancel(BtlServerFlow *flow, BattleMon *mon, u32 flag)
     return FALSE;
 }
 
-void ServerControl_ClearPendingCounter(BtlFlowUnk1B54 *work) {
+void ServerControl_ClearPendingCounter(BtlFlowEventParamBuf *work) {
     work->pendingCounter = 0;
 }
 

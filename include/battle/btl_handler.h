@@ -134,7 +134,7 @@ typedef struct {
     u8 work[0x220];
     // Cleared before the side table is initialized (ServerControl_ClearPendingCounter)
     u32 pendingCounter;
-} BtlFlowUnk1B54;
+} BtlFlowEventParamBuf;
 
 // Mons that react to a move, with their targets
 typedef struct {
@@ -258,7 +258,7 @@ struct BtlServerFlow {
     u8 padding1AD0[0x14];
     BattleHandlerString message;
     BtlFlowExpEntry expEntries[6];
-    BtlFlowUnk1B54 eventParamBuf;
+    BtlFlowEventParamBuf eventParamBuf;
     BtlActionState actionState;
     u8 padding1F70[8];
     u16 lastUsedMove;
