@@ -20,16 +20,16 @@ typedef struct {
 
 static NetDevWifiWork *sNetDevWifiWork;
 
-static void NetDevWifi_Prepare(int heapId, int a1);
+static void NetDevWifi_Prepare(int heapId, int unused);
 static BOOL NetDevWifi_Init(HeapID heapId, GFLNetSys *sys, BOOL (*callback)(BOOL success), void *work);
 static BOOL NetDevWifi_Start(void (*callback)(BOOL ok));
 static int NetDevWifi_Update(u16 connectBits);
-static BOOL NetDevWifi_Disconnect(int a0, int a1);
+static BOOL NetDevWifi_Disconnect(int requestClose, int unused);
 static BOOL NetDevWifi_Exit(void (*callback)(BOOL ok));
 static BOOL NetDevWifi_StartMatch(int key, int numEntry, int useQuery, int unused);
 static BOOL NetDevWifi_ConnectFriend(int friendIndex, int numEntry, int twoEntries);
-static BOOL NetDevWifi_Close(BOOL a0, int a1);
-static BOOL NetDevWifi_Send(u8 *data, int size, int a2, GFLNetSendDoneFunc callback);
+static BOOL NetDevWifi_Close(BOOL requestClose, int unused);
+static BOOL NetDevWifi_Send(u8 *data, int size, int unused, GFLNetSendDoneFunc callback);
 static BOOL NetDevWifi_SetRecvCallback(GFLNetRecvFunc callback);
 static BOOL NetDevWifi_IsRunning(void);
 static BOOL NetDevWifi_IsConnected(void);
@@ -74,7 +74,7 @@ static GFLNetDevTable sNetDevWifiTable = {
     .setAcceptConnect = NetDevWifi_SetAcceptConnect,
 };
 
-static void NetDevWifi_Prepare(int heapId, int a1) {
+static void NetDevWifi_Prepare(int heapId, int unused) {
     DWCRapCommon_StartLibrary(heapId);
 }
 
@@ -104,12 +104,12 @@ static int NetDevWifi_Update(u16 connectBits) {
     return DWCRap_Process(connectBits);
 }
 
-static BOOL NetDevWifi_Disconnect(int a0, int a1) {
-    if (DWCRap_RequestClose(a0 == 0)) {
+static BOOL NetDevWifi_Disconnect(int requestClose, int unused) {
+    if (DWCRap_RequestClose(requestClose == 0)) {
         DWCRap_ResetToReady();
         return TRUE;
     }
-    DWCRap_Process(a0);
+    DWCRap_Process(requestClose);
     return TRUE;
 }
 
@@ -134,15 +134,15 @@ static BOOL NetDevWifi_ConnectFriend(int friendIndex, int numEntry, int twoEntri
     return DWCRap_Connect(friendIndex, numEntry, twoEntries);
 }
 
-static BOOL NetDevWifi_Close(BOOL a0, int a1) {
-    if (DWCRap_RequestClose(a0 == 0)) {
+static BOOL NetDevWifi_Close(BOOL requestClose, int unused) {
+    if (DWCRap_RequestClose(requestClose == 0)) {
         DWCRap_ResetToReady();
         return TRUE;
     }
     return FALSE;
 }
 
-static BOOL NetDevWifi_Send(u8 *data, int size, int a2, GFLNetSendDoneFunc callback) {
+static BOOL NetDevWifi_Send(u8 *data, int size, int unused, GFLNetSendDoneFunc callback) {
     if (DWCRap_Send(data, size)) {
         if (callback != NULL) {
             callback(TRUE);

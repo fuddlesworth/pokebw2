@@ -140,7 +140,8 @@ typedef struct {
     BOOL (*start)(void (*callback)(BOOL ok));
     // Runs the device each frame with the connected machines, returning a negative error or a status
     int (*update)(u16 connectBits);
-    BOOL (*disconnect)(int a0, int a1);
+    // Requests the connection close, FALSE until it is closed; requestClose nonzero closes it and zero only checks
+    BOOL (*disconnect)(int requestClose, int unused);
     BOOL (*end)(void (*callback)(BOOL ok));
     BOOL (*clearBeacons)(void);
     BOOL (*unk1C)(void);
@@ -152,22 +153,22 @@ typedef struct {
     BOOL (*unk30)(void);
     BOOL (*unk34)(void);
     // Whether beacons were found
-    BOOL (*hasBeacons)(int a0);
+    BOOL (*hasBeacons)(int unused);
     BOOL (*setDisconnectCallback)(void (*callback)(int netId));
     // Start the wireless parent, the scan for parents and the child of a parent
-    int (*startParent)(int a0, BOOL (*callback)(void));
-    BOOL (*startScan)(int clearBeacons, int a1);
+    int (*startParent)(int anyChannel, BOOL (*callback)(void));
+    BOOL (*startScan)(int clearBeacons, int unused);
     int (*startChild)(BOOL allocBuffers, const u8 *mac, int index, int unused, void (*callback)(void));
     // Start a Wi-Fi match, and connect to a Wi-Fi friend by index (anybody when negative)
     BOOL (*startMatch)(int key, int numEntry, int useQuery, int unused);
-    BOOL (*connectFriend)(int a0, int a1, int a2);
-    // Closes the connection, FALSE until it is closed
-    BOOL (*close)(BOOL a0, int a1);
+    BOOL (*connectFriend)(int friendIndex, int numEntry, int twoEntries);
+    // Closes the connection, FALSE until it is closed; requestClose nonzero closes it and zero only checks
+    BOOL (*close)(BOOL requestClose, int unused);
     // Whether the wireless device shares data, and its step of the data sharing
     BOOL (*isDataSharing)(void);
     BOOL (*stepDataSharing)(u8 *data);
     u8 *(*getRecvData)(int netId);
-    BOOL (*send)(u8 *data, int size, int a2, GFLNetSendDoneFunc callback);
+    BOOL (*send)(u8 *data, int size, int unused, GFLNetSendDoneFunc callback);
     BOOL (*setRecvCallback)(GFLNetRecvFunc callback);
     BOOL (*isRunning)(void);
     BOOL (*isConnected)(void);
@@ -181,7 +182,7 @@ typedef struct {
     // Whether a machine leaving is an error
     void (*setDisconnectError)(int isError);
     // Whether the Wi-Fi friend of an index can be connected to
-    int (*canConnectFriend)(int a0);
+    int (*canConnectFriend)(int index);
     int (*isVoiceChatEnabled)(void);
     int (*getLastNetId)(void);
     // The infrared device's work each frame, whether it can send, whether it is its turn, whether the other machine
