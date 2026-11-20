@@ -70,8 +70,8 @@ enum {
     MUS_COMM_STATE_SEND_ALL_DATA,
     MUS_COMM_STATE_WAIT_REQUEST,
     MUS_COMM_STATE_DATA_TIMING,
-    MUS_COMM_STATE_SEND_UNK144,
-    MUS_COMM_STATE_SEND_UNK148,
+    MUS_COMM_STATE_SEND_PROGRAM_POINTS,
+    MUS_COMM_STATE_SEND_PROGRAM_NPCS,
     MUS_COMM_STATE_SEND_PROGRAM_SIZE,
     MUS_COMM_STATE_SEND_PROGRAM,
     MUS_COMM_STATE_WAIT_PROGRAM,
@@ -143,7 +143,7 @@ typedef struct {
     u8 pos;
     // The results of its props
     u8 equips[2];
-    u32 unk18;
+    u32 value;
     // The Pokémon and the data it comes with, which is the id of the musical, the trainer data and the Pokémon
     MusicalPoke *poke;
     u16 *musicalId;
@@ -444,7 +444,7 @@ void MusComm_SetUp(MusCommWork *comm, PlayerInfo *info, BoxPkm *pkm, GameCommSys
     for (i = 0; i < MUS_COMM_PLAYER_MAX; i++) {
         comm->players[i].joined = FALSE;
         comm->players[i].pos = i;
-        comm->players[i].unk18 = 0;
+        comm->players[i].value = 0;
         comm->players[i].hasPoke = FALSE;
         comm->players[i].hasInfo = FALSE;
         comm->players[i].equipRequested = FALSE;
@@ -588,18 +588,18 @@ static void MusComm_Main(MusCommWork *work) {
     case MUS_COMM_STATE_DATA_TIMING:
         if (MusComm_IsTimingReached(work, MUS_COMM_TIMING_DATA) == 1) {
             if (work->role == MUS_COMM_ROLE_PARENT) {
-                work->state = MUS_COMM_STATE_SEND_UNK144;
+                work->state = MUS_COMM_STATE_SEND_PROGRAM_POINTS;
             } else {
                 work->state = MUS_COMM_STATE_WAIT_PROGRAM;
             }
         }
         break;
-    case MUS_COMM_STATE_SEND_UNK144:
+    case MUS_COMM_STATE_SEND_PROGRAM_POINTS:
         if (MusComm_SendMsg(work, MUS_MSG_PROGRAM_POINTS, work->programPoints, 0xff) == 1) {
-            work->state = MUS_COMM_STATE_SEND_UNK148;
+            work->state = MUS_COMM_STATE_SEND_PROGRAM_NPCS;
         }
         break;
-    case MUS_COMM_STATE_SEND_UNK148:
+    case MUS_COMM_STATE_SEND_PROGRAM_NPCS:
         if (MusComm_SendMsg(work, MUS_MSG_PROGRAM_NPCS, work->programNpcs, 0xff) == 1) {
             work->state = MUS_COMM_STATE_SEND_PROGRAM_SIZE;
         }
@@ -679,10 +679,10 @@ static void MusComm_Main(MusCommWork *work) {
     if (work->sendPlayerValues == 1) {
         u32 values = 0;
 
-        values += work->players[0].unk18;
-        values += work->players[1].unk18 << 4;
-        values += work->players[2].unk18 << 8;
-        values += work->players[3].unk18 << 12;
+        values += work->players[0].value;
+        values += work->players[1].value << 4;
+        values += work->players[2].value << 8;
+        values += work->players[3].value << 12;
         if (MusComm_SendMsg(work, MUS_MSG_ALL_PLAYER_VALUES, values, 0xff) == 1) {
             work->sendPlayerValues = FALSE;
         }
@@ -813,17 +813,17 @@ static void MusComm_RecvMsg(int netId, int size, const void *data, void *work_, 
         }
         break;
     case MUS_MSG_PLAYER_VALUE:
-        work->players[netId].unk18 = msg->value;
+        work->players[netId].value = msg->value;
         if (work->role == MUS_COMM_ROLE_PARENT) {
             work->sendPlayerValues = TRUE;
         }
         break;
     case MUS_MSG_ALL_PLAYER_VALUES:
         if (work->role != MUS_COMM_ROLE_PARENT) {
-            work->players[0].unk18 = msg->value & 0xf;
-            work->players[1].unk18 = (msg->value & 0xf0) >> 4;
-            work->players[2].unk18 = (msg->value & 0xf00) >> 8;
-            work->players[3].unk18 = (msg->value & 0xf000) >> 12;
+            work->players[0].value = msg->value & 0xf;
+            work->players[1].value = (msg->value & 0xf0) >> 4;
+            work->players[2].value = (msg->value & 0xf00) >> 8;
+            work->players[3].value = (msg->value & 0xf000) >> 12;
         }
         break;
     case MUS_MSG_PROGRAM_SIZE:
