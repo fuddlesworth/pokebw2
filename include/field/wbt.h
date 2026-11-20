@@ -98,7 +98,7 @@ typedef struct {
     u8 inTournament14 : 1;
     u8 inTournament13 : 1;
     u8 inTournament15 : 1;
-    u8 unk5_7 : 1;
+    u8 : 1;
     // The tournament that only has this Trainer, for tournaments 1 and 5 to 9
     u8 tournament;
     // The type the Type Expert Tournament picks the Trainer for, where TYPE_NULL is any

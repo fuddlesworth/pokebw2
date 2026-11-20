@@ -84,7 +84,7 @@ typedef struct {
     u32 day : 5;
     u32 hour : 5;
     u32 minute : 6;
-    u32 unk : 4;
+    u32 : 4;
     u32 launcher : 1;
     u32 cupId;
     u8 result;

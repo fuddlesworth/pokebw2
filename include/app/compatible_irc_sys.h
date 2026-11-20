@@ -24,7 +24,7 @@ typedef struct {
     u8 sex;
     u8 isEgg;
     u8 isFourteenth : 4;
-    u8 unkB_4 : 4;
+    u8 : 4;
     PlayerInfo trainer;
 } CompatibleIrcProfile;
 

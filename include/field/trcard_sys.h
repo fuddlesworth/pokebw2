@@ -83,7 +83,7 @@ typedef struct {
     u32 showMusicals : 1;
     u32 showPalPark : 1;
     u32 showBattleTest : 1;
-    u32 unk68_5 : 27;
+    u32 : 27;
     // The phrase the player greets with, which is also the C-Gear's
     PMSData greeting;
     // The signature, as TimeSigSave_GetSignature keeps it
@@ -108,7 +108,7 @@ typedef struct {
     u32 showMovieShoots : 1;
     u32 showPwtWins : 1;
     u32 showAvenue : 1;
-    u32 unk690_4 : 28;
+    u32 : 28;
     u8 padding694[2];
     // Join Avenue's name
     u16 avenueName[23];

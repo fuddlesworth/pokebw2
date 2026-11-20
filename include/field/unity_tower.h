@@ -36,7 +36,7 @@ typedef struct {
     u8 scriptFlag : 1;
     // Whether the entry of the survey's list is used
     u8 valid : 1;
-    u8 unk26_5 : 3;
+    u8 : 3;
     u8 unk27;
 } UnityTowerVisitor;
 

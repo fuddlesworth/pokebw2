@@ -323,7 +323,7 @@ struct BattleEventItem {
     u32 active : 1;
     // Set while its mon is rotated out
     u32 sleeping : 1;
-    u32 unk31 : 1;
+    u32 : 1;
     u32 work[7];
     u16 subId;
     u8 monId;

@@ -223,7 +223,7 @@ struct BtlSetup {
     u8 studioSkipDisabled : 1;
     // Whether the battle doesn't register the foes in the Pokédex (RegisterDexMon)
     u8 noPokedexRegistration : 1;
-    u8 unkDE_1 : 7;
+    u8 : 7;
     // The Pokéstar Studios movie (GetStudioMovieId)
     u8 studioMovie;
     // Pokéstar Studios: 1 when the studio gives the cast, 0 when the player's own Pokémon act
