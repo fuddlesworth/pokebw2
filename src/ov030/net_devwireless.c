@@ -16,7 +16,7 @@ typedef struct {
 static BOOL NetDevWireless_Init(HeapID heapId, GFLNetSys *sys, WHCallback callback, void *work);
 static BOOL NetDevWireless_Begin(void (*callback)(BOOL ok));
 static int NetDevWireless_Update(u16 connectBits);
-static BOOL NetDevWireless_Unk10(int a0, int a1);
+static BOOL NetDevWireless_Disconnect(int requestClose, int unused);
 static BOOL NetDevWireless_End(void (*endCallback)(BOOL ok));
 static BOOL NetDevWireless_ResetPipe(void);
 static BOOL NetDevWireless_ReturnTrue1C(void);
@@ -26,30 +26,30 @@ static void *NetDevWireless_GetBeaconData(int index);
 static u8 *NetDevWireless_GetBeaconMac(int index);
 static BOOL NetDevWireless_ReturnTrue30(void);
 static BOOL NetDevWireless_ReturnTrue34(void);
-static BOOL NetDevWireless_Unk38(int a0);
+static BOOL NetDevWireless_HasBeacons(int unused);
 static BOOL NetDevWireless_SetDisconnectCallback(void (*callback)(int netId));
-static int NetDevWireless_Unk40(int a0, BOOL (*callback)(void));
-static BOOL NetDevWireless_Unk44(int a0, int a1);
-static int NetDevWireless_Unk48(BOOL a0, const u8 *mac, int index, int a3, void (*callback)(void));
-static BOOL NetDevWireless_Unk4C(int a0, int a1, int a2, int a3);
-static BOOL NetDevWireless_Unk54(BOOL a0, int a1);
+static int NetDevWireless_StartParent(int anyChannel, BOOL (*callback)(void));
+static BOOL NetDevWireless_StartScan(int clearBeacons, int unused);
+static int NetDevWireless_StartChild(BOOL allocBuffers, const u8 *mac, int index, int unused, void (*callback)(void));
+static BOOL NetDevWireless_StartMatch(int key, int numEntry, int useQuery, int unused);
+static BOOL NetDevWireless_Close(BOOL requestClose, int unused);
 static BOOL NetDevWireless_IsDataSharing(void);
-static BOOL NetDevWireless_Unk5C(u8 *data);
+static BOOL NetDevWireless_StepDataSharing(u8 *data);
 static u8 *NetDevWireless_GetRecvData(int netId);
-static BOOL NetDevWireless_Send(u8 *data, int size, int a2, GFLNetSendDoneFunc callback);
+static BOOL NetDevWireless_Send(u8 *data, int size, int unused, GFLNetSendDoneFunc callback);
 static BOOL NetDevWireless_SetRecvCallback(GFLNetRecvFunc callback);
 static BOOL NetDevWireless_IsRunning(void);
 static BOOL NetDevWireless_IsConnected(void);
-static BOOL NetDevWireless_Unk74(void);
+static BOOL NetDevWireless_IsEnded(void);
 static BOOL NetDevWireless_IsIdle(void);
 static int NetDevWireless_GetConnectBits(void);
 static int NetDevWireless_GetNetId(void);
 static int NetDevWireless_GetSignalLevel(void);
 static int NetDevWireless_GetError(void);
-static void NetDevWireless_Unk8C(int a0);
-static void NetDevWireless_UnkB8(int a0);
-static BOOL NetDevWireless_UnkBC(void);
-static void NetDevWireless_UnkC0(int a0);
+static void NetDevWireless_SetDisconnectError(int isError);
+static void NetDevWireless_SetAcceptConnect(int accept);
+static BOOL NetDevWireless_StartSearch(void);
+static void NetDevWireless_HoldScan(int unused);
 
 static NetDevWireless *sDevWireless;
 
@@ -57,7 +57,7 @@ static GFLNetDevTable sNetDevWirelessTable = {
     .init = NetDevWireless_Init,
     .start = NetDevWireless_Begin,
     .update = NetDevWireless_Update,
-    .disconnect = NetDevWireless_Unk10,
+    .disconnect = NetDevWireless_Disconnect,
     .end = NetDevWireless_End,
     .clearBeacons = NetDevWireless_ResetPipe,
     .unk1C = NetDevWireless_ReturnTrue1C,
@@ -67,30 +67,30 @@ static GFLNetDevTable sNetDevWirelessTable = {
     .getBeaconMac = NetDevWireless_GetBeaconMac,
     .unk30 = NetDevWireless_ReturnTrue30,
     .unk34 = NetDevWireless_ReturnTrue34,
-    .hasBeacons = NetDevWireless_Unk38,
+    .hasBeacons = NetDevWireless_HasBeacons,
     .setDisconnectCallback = NetDevWireless_SetDisconnectCallback,
-    .startParent = NetDevWireless_Unk40,
-    .startScan = NetDevWireless_Unk44,
-    .startChild = NetDevWireless_Unk48,
-    .startMatch = NetDevWireless_Unk4C,
-    .close = NetDevWireless_Unk54,
+    .startParent = NetDevWireless_StartParent,
+    .startScan = NetDevWireless_StartScan,
+    .startChild = NetDevWireless_StartChild,
+    .startMatch = NetDevWireless_StartMatch,
+    .close = NetDevWireless_Close,
     .isDataSharing = NetDevWireless_IsDataSharing,
-    .stepDataSharing = NetDevWireless_Unk5C,
+    .stepDataSharing = NetDevWireless_StepDataSharing,
     .getRecvData = NetDevWireless_GetRecvData,
     .send = NetDevWireless_Send,
     .setRecvCallback = NetDevWireless_SetRecvCallback,
     .isRunning = NetDevWireless_IsRunning,
     .isConnected = NetDevWireless_IsConnected,
-    .isEnded = NetDevWireless_Unk74,
+    .isEnded = NetDevWireless_IsEnded,
     .isIdle = NetDevWireless_IsIdle,
     .getConnectBits = NetDevWireless_GetConnectBits,
     .getNetId = NetDevWireless_GetNetId,
     .getSignalLevel = NetDevWireless_GetSignalLevel,
     .isError = NetDevWireless_GetError,
-    .setDisconnectError = NetDevWireless_Unk8C,
-    .setAcceptConnect = NetDevWireless_UnkB8,
-    .startSearch = NetDevWireless_UnkBC,
-    .holdScan = NetDevWireless_UnkC0,
+    .setDisconnectError = NetDevWireless_SetDisconnectError,
+    .setAcceptConnect = NetDevWireless_SetAcceptConnect,
+    .startSearch = NetDevWireless_StartSearch,
+    .holdScan = NetDevWireless_HoldScan,
 };
 
 const GFLNetDevTable *NetDevWireless_GetTable(void) {
@@ -124,7 +124,7 @@ static int NetDevWireless_Update(u16 connectBits) {
     return TRUE;
 }
 
-static BOOL NetDevWireless_Unk10(int a0, int a1) {
+static BOOL NetDevWireless_Disconnect(int requestClose, int unused) {
     return NetWhpipe_Finalize();
 }
 
@@ -184,7 +184,7 @@ static BOOL NetDevWireless_ReturnTrue34(void) {
     return TRUE;
 }
 
-static BOOL NetDevWireless_Unk38(int a0) {
+static BOOL NetDevWireless_HasBeacons(int unused) {
     return NetWhpipe_HasBeacons();
 }
 
@@ -193,23 +193,23 @@ static BOOL NetDevWireless_SetDisconnectCallback(void (*callback)(int netId)) {
     return TRUE;
 }
 
-static int NetDevWireless_Unk40(int a0, BOOL (*callback)(void)) {
-    return NetWhpipe_StartParent(a0);
+static int NetDevWireless_StartParent(int anyChannel, BOOL (*callback)(void)) {
+    return NetWhpipe_StartParent(anyChannel);
 }
 
-static BOOL NetDevWireless_Unk44(int a0, int a1) {
-    return NetWhpipe_StartScan(a0);
+static BOOL NetDevWireless_StartScan(int clearBeacons, int unused) {
+    return NetWhpipe_StartScan(clearBeacons);
 }
 
-static int NetDevWireless_Unk48(BOOL a0, const u8 *mac, int index, int a3, void (*callback)(void)) {
-    return NetWhpipe_StartChild(a0, mac, index, callback);
+static int NetDevWireless_StartChild(BOOL allocBuffers, const u8 *mac, int index, int unused, void (*callback)(void)) {
+    return NetWhpipe_StartChild(allocBuffers, mac, index, callback);
 }
 
-static BOOL NetDevWireless_Unk4C(int a0, int a1, int a2, int a3) {
+static BOOL NetDevWireless_StartMatch(int key, int numEntry, int useQuery, int unused) {
     return FALSE;
 }
 
-static BOOL NetDevWireless_Unk54(BOOL a0, int a1) {
+static BOOL NetDevWireless_Close(BOOL requestClose, int unused) {
     return NetWhpipe_Finalize();
 }
 
@@ -217,7 +217,7 @@ static BOOL NetDevWireless_IsDataSharing(void) {
     return WH_GetSystemState() == WH_SYSSTATE_DATASHARING;
 }
 
-static BOOL NetDevWireless_Unk5C(u8 *data) {
+static BOOL NetDevWireless_StepDataSharing(u8 *data) {
     return WH_StepDS(data);
 }
 
@@ -225,7 +225,7 @@ static u8 *NetDevWireless_GetRecvData(int netId) {
     return WH_GetSharedDataAdr(netId);
 }
 
-static BOOL NetDevWireless_Send(u8 *data, int size, int a2, GFLNetSendDoneFunc callback) {
+static BOOL NetDevWireless_Send(u8 *data, int size, int unused, GFLNetSendDoneFunc callback) {
     return NetWhpipe_SendData(data, size, callback);
 }
 
@@ -255,7 +255,7 @@ static BOOL NetDevWireless_IsConnected(void) {
     return NetWhpipe_IsConnected();
 }
 
-static BOOL NetDevWireless_Unk74(void) {
+static BOOL NetDevWireless_IsEnded(void) {
     return !NetWhpipe_IsInitialized();
 }
 
@@ -290,18 +290,18 @@ static int NetDevWireless_GetError(void) {
     return error;
 }
 
-static void NetDevWireless_Unk8C(int a0) {
-    NetWhpipe_SetLockEnabled(a0);
+static void NetDevWireless_SetDisconnectError(int isError) {
+    NetWhpipe_SetLockEnabled(isError);
 }
 
-static void NetDevWireless_UnkB8(int a0) {
-    NetWhpipe_SetScanAcceptAll(a0);
+static void NetDevWireless_SetAcceptConnect(int accept) {
+    NetWhpipe_SetScanAcceptAll(accept);
 }
 
-static BOOL NetDevWireless_UnkBC(void) {
+static BOOL NetDevWireless_StartSearch(void) {
     return NetWhpipe_StartSearch();
 }
 
-static void NetDevWireless_UnkC0(int a0) {
-    NetWhpipe_HoldScan(a0);
+static void NetDevWireless_HoldScan(int unused) {
+    NetWhpipe_HoldScan(unused);
 }
