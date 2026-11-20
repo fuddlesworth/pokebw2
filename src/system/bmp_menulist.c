@@ -22,7 +22,7 @@ struct BmpMenuList {
         u8 bgColor : 4;
         u8 shadowColor : 4;
         u8 letterSpacing : 6;
-        u8 unk37 : 6;
+        u8 padding37 : 6;
         u8 fontId : 7;
         u8 enabled : 1;
     } override;
@@ -30,16 +30,16 @@ struct BmpMenuList {
     // The option in the first row shown, and the cursor's row in the window
     u16 listTop;
     u16 cursorRow;
-    u8 unk44;
-    u8 unk45;
-    u8 unk46;
+    u8 padding44;
+    u8 padding45;
+    u8 padding46;
     // The direction the cursor last moved, 1 to 4 for up, down, a page up and a page down, or 0
     u8 moveDir;
     HeapID heapId;
     u8 cancelDisabled;
     // Frames until the cursor is drawn
     u8 wait;
-    u32 unk4C;
+    u32 padding4C;
 };
 
 static void BmpMenuList_PrintOption(BmpMenuList *list, const StrBuf *text, u8 x, u8 y, BOOL useQueue);
@@ -74,9 +74,9 @@ BmpMenuList *BmpMenuList_Create(const BmpMenuListHeader *header, u16 listTop, u1
     list->cursor = BmpCursor_Create(heapId);
     list->listTop = listTop;
     list->cursorRow = cursorRow;
-    list->unk44 = 0;
-    list->unk45 = 0;
-    list->unk46 = 0xff;
+    list->padding44 = 0;
+    list->padding45 = 0;
+    list->padding46 = 0xff;
     list->moveDir = 0;
     list->heapId = heapId;
     if (list->header.wait == 0) {

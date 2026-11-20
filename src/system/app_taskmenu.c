@@ -59,7 +59,7 @@ struct AppTaskMenuRes {
     u16 palette;
     NNSG2dCharacterData *character;
     void *characterFile;
-    u32 unkC;
+    u32 paddingC;
     Font *font;
     PrintQueue *queue;
 };
@@ -81,7 +81,7 @@ struct AppTaskMenu {
 
 struct AppTaskMenuWin {
     BmpWin *window;
-    u32 unk4;
+    u32 padding4;
     BOOL isFlashing;
     BOOL isUpdatingText;
     u16 flashCount;

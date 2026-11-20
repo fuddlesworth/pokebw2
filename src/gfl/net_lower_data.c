@@ -28,7 +28,7 @@ typedef struct {
     u8 done : 1;
     // Whether buffer is freed with this
     u8 allocated : 1;
-    u8 unk11[0x37];
+    u8 padding11[0x37];
 } NetLdataPost;
 
 typedef struct {

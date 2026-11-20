@@ -73,7 +73,7 @@ struct TextRenderer {
     s32 startY : 10;
     s32 colorState : 4;
     s32 : 8;
-    u32 unk8;
+    u32 padding8;
     // The color before the string's color commands, and the color they set
     u16 color;
     u16 defaultColor;

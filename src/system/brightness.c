@@ -13,7 +13,7 @@ typedef struct {
     // The frames the transition takes
     u16 steps;
     s16 target;
-    u8 unkC[4];
+    u8 paddingC[4];
     // Toward the target, 1 or -1
     s8 direction;
     // The distance to the target, and how much of it each frame moves: quotient, plus 1 whenever the remainders add up

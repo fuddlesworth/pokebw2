@@ -10,7 +10,7 @@
 #define PAL_SLOT_FREE 0xff
 
 struct ActorPalSlots {
-    u32 unk0;
+    u32 padding0;
     // How many slots of each engine it hands out
     u8 count[2];
     // The first slot of the run each slot belongs to, or PAL_SLOT_FREE

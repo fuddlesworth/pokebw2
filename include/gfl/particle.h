@@ -51,7 +51,7 @@ typedef struct {
         NNSGfdPlttKey plttKeys[PARTICLE_VRAM_KEY_MAX];
     };
     u8 vramRelease;
-    u8 unk259;
+    u8 padding259;
     u8 id;
     u8 cameraProjection;
     u16 texKeyCount;

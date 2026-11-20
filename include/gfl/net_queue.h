@@ -36,7 +36,7 @@ typedef struct {
     NetRingBuff *ring;
     NetQueueEntry *entries;
     int count;
-    u32 unk20;
+    u32 padding20;
     // Whether the last packet left commands to send, which net_system.c marks in the next packet
     BOOL pending;
 } NetQueue;

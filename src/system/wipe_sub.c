@@ -388,7 +388,7 @@ static void WipeLineWnd_CopyTask(TCB *tcb, void *data);
 static void WipeLineWnd_HBlank(void *data);
 static void WipeRect_Init(WipeScreen *screen, const WipeRectParam *param);
 static BOOL WipeRect_Main(WipeScreen *screen);
-static void WipeRectPair_Init(WipeScreen *screen, const WipeRectParam *param0, const WipeRectParam *param1);
+static void WipeRectPair_Init(WipeScreen *screen, const WipeRectParam *rect0, const WipeRectParam *rect1);
 static BOOL WipeRectPair_Main(WipeScreen *screen);
 static void WipeRectWork_Init(WipeRectWork *work, const WipeRectParam *param, s32 division, s32 sync, s32 screen,
                               WipeWnd *wnd);
@@ -729,15 +729,15 @@ BOOL WipeFunc_GrowMiddleIn(WipeScreen *screen) {
 // Dead-stripped: Platinum's type 14
 BOOL WipeFunc_GrowMiddleOut(WipeScreen *screen) {
     if (screen->seq == WIPE_SEQ_INIT) {
-        static const WipeRectParam param0 = {
+        static const WipeRectParam rect0 = {
             { 0x80, 0x00, 0x80, 0xc0 }, { 0x00, 0x00, 0x80, 0xc0 }, 0, 0x20, 0x3f, TRUE
         };
-        static const WipeRectParam param1 = {
+        static const WipeRectParam rect1 = {
             { 0x80, 0x00, 0x80, 0xc0 }, { 0x80, 0x00, 0xff, 0xc0 }, 1, 0x20, 0x3f, TRUE
         };
 
         Wipe_SetBackdropColor(screen->color);
-        WipeRectPair_Init(screen, &param0, &param1);
+        WipeRectPair_Init(screen, &rect0, &rect1);
         screen->endCovered = TRUE;
         screen->useBrightness = FALSE;
         return FALSE;
@@ -748,15 +748,15 @@ BOOL WipeFunc_GrowMiddleOut(WipeScreen *screen) {
 // Dead-stripped: Platinum's type 15
 BOOL WipeFunc_ShrinkMiddleIn(WipeScreen *screen) {
     if (screen->seq == WIPE_SEQ_INIT) {
-        static const WipeRectParam param0 = {
+        static const WipeRectParam rect0 = {
             { 0x00, 0x00, 0x80, 0xc0 }, { 0x80, 0x00, 0x80, 0xc0 }, 0, 0x20, 0x3f, FALSE
         };
-        static const WipeRectParam param1 = {
+        static const WipeRectParam rect1 = {
             { 0x80, 0x00, 0xff, 0xc0 }, { 0x80, 0x00, 0x80, 0xc0 }, 1, 0x20, 0x3f, FALSE
         };
 
         Wipe_SetBackdropColor(screen->color);
-        WipeRectPair_Init(screen, &param0, &param1);
+        WipeRectPair_Init(screen, &rect0, &rect1);
         screen->endCovered = FALSE;
         screen->useBrightness = FALSE;
         return FALSE;
@@ -1656,12 +1656,12 @@ static BOOL WipeRect_Main(WipeScreen *screen) {
 }
 
 // Dead-stripped, to WipeRectPair_Main: two window rectangles moving together, for types 14 and 15
-static void WipeRectPair_Init(WipeScreen *screen, const WipeRectParam *param0, const WipeRectParam *param1) {
+static void WipeRectPair_Init(WipeScreen *screen, const WipeRectParam *rect0, const WipeRectParam *rect1) {
     WipeRectPairWork *work = GFL_HeapAllocate(screen->heapId, sizeof(WipeRectPairWork), FALSE, "wipe_sub.c", 3266);
 
     screen->work = work;
-    WipeRectWork_Init(&work->rects[0], param0, screen->division, screen->sync, screen->screen, screen->wnd);
-    WipeRectWork_Init(&work->rects[1], param1, screen->division, screen->sync, screen->screen, screen->wnd);
+    WipeRectWork_Init(&work->rects[0], rect0, screen->division, screen->sync, screen->screen, screen->wnd);
+    WipeRectWork_Init(&work->rects[1], rect1, screen->division, screen->sync, screen->screen, screen->wnd);
     WipeSub_SetWndVisible(screen->wnd, GX_WNDMASK_W0 | GX_WNDMASK_W1, screen->screen, work->rects[0].isOut);
     screen->seq++;
 }

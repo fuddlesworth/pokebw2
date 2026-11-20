@@ -25,7 +25,7 @@ struct PMSWordBank {
 
 struct PMSWordSave {
     u32 languageFlags;
-    u32 unk4;
+    u32 padding4;
     PMSData sentences[PMS_SAVE_SENTENCE_COUNT];
 };
 
@@ -184,7 +184,7 @@ void PMSWordSave_Init(PMSWordSave *save) {
     int j;
 
     save->languageFlags = 0;
-    save->unk4 = 0;
+    save->padding4 = 0;
     for (i = 0; i < PMS_SAVE_SENTENCE_COUNT; i++) {
         for (j = 0; j < PMS_SENTENCE_WORD_MAX; j++) {
             save->sentences[i].words[j] = PMS_WORD_NULL;

@@ -26,7 +26,7 @@ typedef struct {
     GameSystem *gsys;
     Field *field;
     GameData *gameData;
-    u32 unk0C;
+    u32 paddingC;
 } EventFieldOpenWork;
 
 typedef struct {

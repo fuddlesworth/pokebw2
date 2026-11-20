@@ -20,14 +20,14 @@ typedef struct {
     // The day period whose first hour the setting ends in, and the minutes after it
     u16 period;
     s16 minute;
-    u8 unk04[4];
+    u8 padding4[4];
     GXRgb lightColors[4];
     VecFx16 lightDirs[4];
     GXRgb diffuse;
     GXRgb ambient;
     GXRgb specular;
     GXRgb emission;
-    u8 unk30[4];
+    u8 padding30[4];
 } FieldLightData;
 
 static FieldLightData *FieldLightStatus_LoadData(u32 arcId, u32 fileId, u32 *count, HeapID heapId);

@@ -13,7 +13,7 @@
 typedef struct {
     // The size of the archive
     u32 size;
-    u8 unk4[0xc];
+    u8 padding4[0xc];
 } MusicalDistHeader;
 
 // The work that reads the block, or that writes a downloaded musical to it

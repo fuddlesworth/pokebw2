@@ -39,7 +39,7 @@ typedef struct {
 struct WipeWnd {
     WipeWndDisp disp[2];
     WipeWndIn in[2][2];
-    u8 unk50[0x18];
+    u8 padding50[0x18];
     WipeWndOut out[2];
     WipeWndPos pos[2][2];
 };

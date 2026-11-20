@@ -21,13 +21,13 @@ struct PMSIParam {
     u8 flag1 : 1;
     u8 hasStartSentence : 1;
     u8 hasNumbers : 1;
-    u32 unk4;
+    u32 padding4;
     // Save block 0x36, the Pokédex
     PokeDexSave *pokedex;
     PMSWordSave *wordSave;
     PMSData sentence;
     u16 words[PMS_SENTENCE_WORD_MAX];
-    u32 unk1C;
+    u32 padding1C;
 };
 
 static BOOL IsSameAsStart(const PMSIParam *param, const u16 *words, const PMSData *sentence);

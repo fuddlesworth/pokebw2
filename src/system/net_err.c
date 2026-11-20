@@ -157,7 +157,7 @@ typedef struct {
     u32 subBgBanks;
     // A NET_ERR_STATE_*
     int state;
-    u32 unk30;
+    u32 padding30;
     u16 blend;
     u16 subBlend;
     u32 subEnabledBGs;
@@ -526,7 +526,7 @@ static BOOL GFL_NetErrShowCore(u32 fatal) {
         }
         GFL_NetErrRestore(FALSE);
         GFL_NetErrClear();
-        work->unk30 = 0;
+        work->padding30 = 0;
         return TRUE;
     }
     return FALSE;

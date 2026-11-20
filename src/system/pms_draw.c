@@ -56,7 +56,7 @@ typedef struct {
     u32 drawn : 1;
     u32 visible : 1;
     u32 showIcons : 1;
-    u32 unk1C;
+    u32 padding1C;
     BOOL isIcon[PMS_SENTENCE_WORD_MAX];
 } PMSDrawSlot;
 

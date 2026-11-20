@@ -17,9 +17,9 @@ typedef union {
     struct {
         u32 index : 7;
     } header;
-    // A mission the player has seen: its config's unk00[0] and seed
+    // A mission the player has seen: its config's first info word and seed
     struct {
-        u32 unk0;
+        u32 word0;
         u32 seed;
     } mission;
     // Another player in the current mission
