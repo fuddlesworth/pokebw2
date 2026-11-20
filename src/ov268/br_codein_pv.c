@@ -131,7 +131,7 @@ void BrCodeIn_InitParam(BrCodeInWork *wk) {
 
 static void BrCodeIn_SetState(BrCodeInWork *wk, int state) {
     wk->state = state;
-    wk->unk230 = 0;
+    wk->reserved230 = 0;
     wk->seq = 0;
     wk->count = 0;
 }

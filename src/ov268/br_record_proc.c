@@ -61,10 +61,10 @@ typedef struct {
     BrSeq *seq;
     // For the main and the sub screen
     BrBallEffect *ballEff[2];
-    u32 unk14;
+    u32 padding14;
     BrMsgWin *text;
     BrBtn *btn[BTN_MAX];
-    u32 unk24;
+    u32 padding24;
     BrMsgWin *title[BR_RECORD_TITLE_MAX];
     BrMsgWin *msgWin[MSGWIN_MAX];
     BrProfile *profileWin;

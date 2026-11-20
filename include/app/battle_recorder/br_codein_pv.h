@@ -108,9 +108,9 @@ struct BrCodeInWork {
     // Where the code starts for each focus, none and the three groups
     s16 focusX[BR_CODEIN_BLOCK_COUNT + 1];
     BrCodeInRange range[BR_CODEIN_BLOCK_COUNT];
-    u32 unk228;
+    u32 padding228;
     int state;
-    int unk230;
+    int reserved230;
     int seq;
     int count;
     int codeMax;
@@ -126,16 +126,16 @@ struct BrCodeInWork {
     ClActUnit *unit;
     u32 plttRes[BR_CODEIN_RES_COUNT];
     u32 charRes[BR_CODEIN_RES_COUNT];
-    u32 unk278[BR_CODEIN_RES_COUNT];
+    u32 padding278[BR_CODEIN_RES_COUNT];
     u32 cellAnimRes[BR_CODEIN_RES_COUNT];
-    u32 unk290;
+    u32 padding290;
     ButtonMan *buttons;
     TouchRect rects[BR_CODEIN_RECT_COUNT + 1];
     // Set at the start and never cleared: there is no input by keys
     BOOL touchMode;
     BmpOamSys *bmpOam;
     BmpOamActor *btnText[BR_CODEIN_BUTTON_COUNT];
-    u32 unk30C;
+    u32 padding30C;
     Font *font;
     TCB *vblankTask;
     // BR_CODEIN_NEXT_*, its group or digit, and whether the cursor goes to the group's last digit

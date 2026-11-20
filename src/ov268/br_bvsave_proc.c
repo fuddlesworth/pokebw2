@@ -65,7 +65,7 @@ struct BrBvSaveWork {
     // The slot button chosen. Its slot is one more, since the first slot is for the player's own video
     u32 select;
     BrBtn *btn[BTN_MAX];
-    u32 unk24;
+    u32 padding24;
     BrMsgWin *msgWin[MSGWIN_MAX];
     // For the main and the sub screen
     BrBallEffect *ballEff[2];
