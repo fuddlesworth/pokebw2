@@ -264,7 +264,7 @@ static void CommTvt_Init(CommTvtWork *sys) {
     sys->call = CtvtCall_Create(sys, sys->heapId);
     sys->game = CtvtGame_Create(sys, sys->heapId);
     drawParam.heapId = sys->heapId;
-    drawParam.unk2 = 2;
+    drawParam.kind = 2;
     drawParam.numCommands = 100;
     drawParam.clipLeft = 0;
     drawParam.clipRight = 256;

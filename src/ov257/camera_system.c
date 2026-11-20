@@ -50,7 +50,7 @@ struct CameraSystem {
     u8 numBuffers;
     BOOL buffersAllocated;
     BOOL capturing;
-    BOOL unk14;
+    BOOL transferOffset;
     u8 bufferIndex;
     BOOL startCapture;
     BOOL switchCamera;
@@ -100,7 +100,7 @@ CameraSystem *CameraSystem_Create(HeapID heapId) {
     sys->numBuffers = 0;
     sys->buffersAllocated = FALSE;
     sys->capturing = FALSE;
-    sys->unk14 = FALSE;
+    sys->transferOffset = FALSE;
     sys->camera = CAMERA_SELECT_IN;
     sys->size = CAMERA_SIZE_DS_LCD;
     sys->startCapture = FALSE;
@@ -404,7 +404,7 @@ static void CameraSystem_SetupCapture(CameraSystem *sys) {
         height = CameraSystem_GetHeight(sys);
         lines = CAMERA_GetMaxLinesRound(width, height);
         CAMERA_SetTransferLines(lines);
-        sys->unk14 = FALSE;
+        sys->transferOffset = FALSE;
     }
 }
 

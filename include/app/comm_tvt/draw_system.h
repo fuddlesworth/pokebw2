@@ -30,7 +30,7 @@ struct DrawCommand {
 
 struct DrawSystemParam {
     HeapID heapId;
-    u8 unk2;
+    u8 kind;
     u16 numCommands;
     u16 clipLeft;
     u16 clipRight;

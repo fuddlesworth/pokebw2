@@ -101,7 +101,7 @@ typedef struct {
 } CtvtCommScanInfo;
 
 struct CtvtComm {
-    u32 unk0;
+    u32 state;
     u8 memberCount;
     int netState;
     CtvtCommBeacon beacon;
@@ -287,7 +287,7 @@ CtvtComm *CtvtComm_Create(CommTvtWork *sys, HeapID heapId) {
     PlayerInfo_Copy(GetGameDataPlayerInfo(CommTvt_GetParam(sys)->gameData), (PlayerInfo *)comm->selfInfo.playerInfo);
     comm->selfInfo.cameraEnabled = CommTvt_IsCameraEnabled();
     comm->selfInfo.canExchangePhotos = canPlayerExchangePhotos();
-    comm->unk0 = 1;
+    comm->state = 1;
     NetLdata_Init(heapId, FALSE);
     return comm;
 }

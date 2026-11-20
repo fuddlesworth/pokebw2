@@ -170,7 +170,7 @@ struct CtvtCall {
     u16 ringTimer;
     // Whether to show the top screen's message once it is printed
     BOOL showInfo;
-    u32 unk3C;
+    u32 padding3C;
     CtvtCallRow rows[CTVT_CALL_ROWS];
     CtvtCallEntry entries[CTVT_CALL_ENTRIES];
     ClActor *returnButton;

@@ -23,7 +23,7 @@
 #define DRAW_SCREEN_WIDTH 256
 
 struct DrawSystem {
-    u8 unk0;
+    u8 kind;
     u16 numCommands;
     u16 writeIndex;
     u16 drawIndex;
@@ -219,7 +219,7 @@ DrawSystem *DrawSystem_Create(const DrawSystemParam *param) {
 
     sys->commands =
         allocConfigDSSoftwareFeature(param->heapId, param->numCommands * sizeof(DrawCommand), "draw_system.c", 65);
-    sys->unk0 = param->unk2;
+    sys->kind = param->kind;
     sys->numCommands = param->numCommands;
     sys->clipLeft = param->clipLeft;
     sys->clipRight = param->clipRight;
