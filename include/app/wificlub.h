@@ -64,7 +64,7 @@ typedef struct {
     u8 launcher;
     // WIFICLUB_CONNECTION_*
     u8 connectionResult;
-    u8 unk4A[2];
+    u8 padding4A[2];
 } WifiClubData;
 
 extern const GameProcFunctions WIFICLUB_PROC_FUNCTIONS;

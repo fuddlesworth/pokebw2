@@ -40,7 +40,7 @@ struct EncountState {
     u32 rateStepCounter;
     u32 terrain;
     u16 encountRate;
-    u8 unk12[2];
+    u8 pad12[2];
     // The steps since the last phenomenon
     u32 phenomenonSteps;
     RareEncountSpot rareSpot;

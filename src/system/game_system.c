@@ -190,12 +190,12 @@ static BOOL GameSystem_End(GameProc *proc, u32 *state, void *param, void *work) 
     return TRUE;
 }
 
-GameSystemProcData *GameSystem_CreateProcData(GameEntryPoint entryPoint, u16 zoneId, VecFx32 *spawnPos, s16 unk12) {
+GameSystemProcData *GameSystem_CreateProcData(GameEntryPoint entryPoint, u16 zoneId, VecFx32 *spawnPos, s16 rotation) {
     MI_CpuFill8(&g_GameSysProcData, 0, sizeof(g_GameSysProcData));
     g_GameSysProcData.entryPoint = entryPoint;
     g_GameSysProcData.zoneId = zoneId;
     g_GameSysProcData.spawnPos = *spawnPos;
-    g_GameSysProcData.unk12 = unk12;
+    g_GameSysProcData.rotation = rotation;
     return &g_GameSysProcData;
 }
 
@@ -214,7 +214,7 @@ static void GSYS_Create(GameSystem *gsys, HeapID heapId, GameSystemProcData *pro
     gsys->gameData = GameData_Create(gsys->heapId);
     gsys->field = NULL;
     gsys->comm = GameCommSys_Create(gsys->heapId, gsys->gameData);
-    gsys->unk28 = 0;
+    gsys->padding28 = 0;
     gsys->iss = ISS_Create(gsys->gameData, heapId);
     gsys->festival = CreateLinkFestival(heapId, gsys);
     gsys->gameCommPaused = 0;

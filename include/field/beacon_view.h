@@ -231,7 +231,8 @@ typedef struct BeaconViewWork {
     u32 passPower;
     u32 trainerId;
     u8 gender;
-    u8 unk3D;
+    // The player's Union Room appearance (PlayerInfo_GetUnionView)
+    u8 unionView;
     u8 version;
     BeaconStatus *status;
     // The beacons received since the last frame

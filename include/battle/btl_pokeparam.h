@@ -149,7 +149,7 @@ typedef struct {
 // A Pokémon in battle, 0x1f8 bytes from BattleMon_Create. Offsets are from btl_pokeparam.c's accessors.
 struct BattleMon {
     BattleMonCore core;
-    u16 unkEC;
+    u16 paddingEC;
     u16 attack;
     u16 defense;
     u16 spAttack;
@@ -158,9 +158,9 @@ struct BattleMon {
     u8 type1;
     u8 type2;
     u8 sex;
-    u8 unkFB;
+    u8 paddingFB;
     BattleMonStatStages statStages;
-    u8 unk103;
+    u8 padding103;
     BattleMoveWork moves[4];
     u16 ability;
     u16 weight;
@@ -172,7 +172,7 @@ struct BattleMon {
     u8 usedMoveKindCount;
     // The type of the last move it used, TYPE_NULL for none
     u8 prevMoveType;
-    u8 unk145;
+    u8 padding145;
     // The turns since it came out, up to 9999
     u16 turnsOnField;
     // The turn it came out on, 10000 before it has
@@ -180,7 +180,7 @@ struct BattleMon {
     u16 prevMoveUsed;
     u16 prevMoveId;
     u16 consecutiveMoveCount;
-    u8 unk150[2];
+    u8 padding150[2];
     u8 prevTargetPos;
     u8 turnFlags[2];
     u8 conditionFlags[2];
@@ -189,12 +189,13 @@ struct BattleMon {
     BattleMonDamageRecord damageRecords[3][6];
     u8 damageRecordCounts[3];
     u8 damageRecordTurn;
-    u8 unk1f0;
-    u8 unk1f1;
+    // A spare byte of the damage records, cleared with them (aletheia's hitHistorySpare)
+    u8 damageRecordSpare;
+    u8 padding1F1;
     u16 substituteHP;
     u16 comboMove;
     u8 comboMonId;
-    u8 unk1f7;
+    u8 padding1F7;
 };
 
 // What BattleMon_AddExp reports of a level-up: the new level and the stats gained

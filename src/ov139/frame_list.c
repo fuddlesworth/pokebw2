@@ -1406,14 +1406,14 @@ void FrameList_SetShownRows(FrameList *list, int shownRows) {
     }
 }
 
-void FrameList_SetKeyMask(FrameList *list, u32 a1) {
-    list->keyMask = a1;
+void FrameList_SetKeyMask(FrameList *list, u32 keyMask) {
+    list->keyMask = keyMask;
 }
 
-void FrameList_ScrollBlocking(FrameList *list, int a1) {
-    if (a1 > 0) {
+void FrameList_ScrollBlocking(FrameList *list, int count) {
+    if (count > 0) {
         list->waiting = TRUE;
-        StartScroll(list, list->setup.layout.speed[0], a1, LIST_STATE_CURSOR_WAIT, FALSE);
+        StartScroll(list, list->setup.layout.speed[0], count, LIST_STATE_CURSOR_WAIT, FALSE);
         while (FrameList_Main(list) == FRAMELIST_SCROLL) {
         }
         list->waiting = FALSE;

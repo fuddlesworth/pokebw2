@@ -12,7 +12,7 @@ typedef struct {
     u8 month;
     u8 day;
     // Never read or written; it is copied only as part of the date. Aletheia's BadgeDate calls it reserved
-    u8 unk3;
+    u8 padding3;
 } TimeSigBadgeDate;
 
 // The save block 0x21 (timesig_savedata.c, a guessed name): the trainer card's signature, when each badge was
@@ -33,10 +33,10 @@ struct TimeSigSave {
         };
     };
     // Never accessed: the block is cleared and saved whole. Aletheia's block keeps these 12 bytes reserved
-    u8 unk62C[0xc];
+    u8 padding62C[0xc];
     u16 badgePolish[TIMESIG_BADGE_COUNT];
     // Never accessed: aletheia's block has 16 badge timers here, and B2W2 uses the first eight as badgePolish
-    u8 unk648[0x10];
+    u8 padding648[0x10];
 };
 
 u32 TimeSigSave_GetSize(void);

@@ -307,7 +307,7 @@ BOOL FestMission_IsBeaconInvalid(LinkFestival *festival, const GameBeacon *beaco
     if (!GameBeacon_HasMissionInfo(beacon)) {
         return FALSE;
     }
-    if (info->seconds > FEST_MISSION_SECONDS_MAX || info->count > FEST_MISSION_SCORE_MAX || info->unk8_30 >= 3 ||
+    if (info->seconds > FEST_MISSION_SECONDS_MAX || info->count > FEST_MISSION_SCORE_MAX || info->bonusMode >= 3 ||
         info->extraSecondsIndex >= 4 || info->rewardItemCount > 100 || info->rewardItem2Count > 50) {
         return TRUE;
     }
@@ -326,22 +326,22 @@ BOOL FestMission_IsBeaconInvalid(LinkFestival *festival, const GameBeacon *beaco
     }
     switch (FestMission_GetLogCategory(kind)) {
     case FEST_MISSION_LOG_CATEGORY_ITEM:
-        if (PML_ItemIsDummy(info->unkC_0)) {
+        if (PML_ItemIsDummy(info->logValue)) {
             return TRUE;
         }
         break;
     case FEST_MISSION_LOG_CATEGORY_MOVE:
-        if (info->unkC_0 == MOVE_NONE || info->unkC_0 >= MOVE_COUNT) {
+        if (info->logValue == MOVE_NONE || info->logValue >= MOVE_COUNT) {
             return TRUE;
         }
         break;
     case FEST_MISSION_LOG_CATEGORY_PASS_POWER:
-        if (!PassPower_IsIDValid(info->unkC_0)) {
+        if (!PassPower_IsIDValid(info->logValue)) {
             return TRUE;
         }
         break;
     case FEST_MISSION_LOG_CATEGORY_SPECIES:
-        if (info->unkC_0 == SPECIES_NONE || info->unkC_0 > SPECIES_GENESECT) {
+        if (info->logValue == SPECIES_NONE || info->logValue > SPECIES_GENESECT) {
             return TRUE;
         }
         break;
@@ -448,7 +448,7 @@ static BOOL FestMissionLogEntry_FromBeacon(LinkFestival *festival, FestMissionLo
         entry->value = beacon->parentZoneId;
         break;
     default:
-        entry->value = ((const FestMissionInfo *)&beacon->payload)->unkC_0;
+        entry->value = ((const FestMissionInfo *)&beacon->payload)->logValue;
         // What counts for the player's own mission is logged when the score is given
         if (!own && mode == FEST_MISSION_LOG_MODE_TARGET &&
             FestMissionConfig_IsTarget(&festival->config, kind, entry->value)) {

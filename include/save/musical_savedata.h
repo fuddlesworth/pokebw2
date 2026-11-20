@@ -20,7 +20,7 @@ typedef struct {
     // The position it is worn at, 10 for none
     u8 pos;
     // The three bytes that complete the record's eight-byte slot; no code reads or writes them
-    u8 unk5[3];
+    u8 padding5[3];
 } MusicalShotEquip;
 
 typedef struct {
@@ -64,7 +64,7 @@ typedef struct {
 typedef struct {
     u8 pos;
     // The byte that aligns itemId; no code reads or writes it
-    u8 unk1;
+    u8 padding1;
     u16 itemId;
     s16 rotation;
 } MusicalSaveEquip;

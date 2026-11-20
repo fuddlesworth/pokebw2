@@ -76,9 +76,10 @@ struct FieldActor {
     u16 motionDir;
     u16 lastFaceDir;
     u16 lastMotionDir;
-    u16 param0;
-    u16 param1;
-    u16 param2;
+    // The actor's user parameters 0 to 2
+    u16 userParam0;
+    u16 userParam1;
+    u16 userParam2;
     u16 nextAcmd;
     u16 acmdState;
     u16 drawStatus;
@@ -88,7 +89,7 @@ struct FieldActor {
     // The position before the last move
     GPosXYZ initGPos;
     GPosXYZ gPos;
-    s16 unk42;
+    s16 pad42;
     VecFx32 wPos;
     VecFx32 wPosOffset;
     VecFx32 outerDrawOffset;
@@ -122,7 +123,7 @@ struct MMSys {
     HeapID fieldHeapId;
     // The priority of the actors' tasks
     u16 taskPriority;
-    u16 unkE;
+    u16 pad0E;
     // The lights of the reflections' billboard actors: 1, or 8 in the Infinity dungeon
     u32 reflectLights;
     ArcTool *dataArc;

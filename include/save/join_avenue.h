@@ -247,7 +247,7 @@ struct JoinAvenuePerson {
     JoinAvenueData data[JOIN_AVE_DATA_COUNT];
     u16 raffled;
     // Never accessed: a person is otherwise cleared, copied whole and saved as it is
-    u8 unkA2;
+    u8 paddingA2;
     u8 year;
     u8 month;
     u8 day;
@@ -294,7 +294,7 @@ struct JoinAvenueRecord {
     u8 slot;
     u8 shopKind;
     // Never accessed: a record is cleared and copied whole
-    u8 unk2F;
+    u8 padding2F;
     u8 year;
     u8 month;
     u8 day;
@@ -310,7 +310,7 @@ struct JoinAvenueEntry {
     JoinAvenueMessage message1;
     JoinAvenueMessage message2;
     // Never accessed: an entry is cleared and copied whole
-    u8 unk4C[2];
+    u8 padding4C[2];
     // The kind of shop the person will run (JOIN_AVE_PARAM_SHOP_KIND): 0 or 1 by the type it was made with, or a later
     // kind
     u8 shopKind;
@@ -416,7 +416,7 @@ struct JoinAvenueSave {
     JoinAvenueOccupants occupants;
     JoinAvenueInfo info;
     // The rest of the block, which JoinAvenueSave_Init leaves as it is: nothing reads or writes it
-    u8 unk13E0[0x2c8];
+    u8 padding13E0[0x2c8];
 };
 
 // What a person is added from, the kind that JoinAvenueOccupants_Merge takes

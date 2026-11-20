@@ -17,7 +17,7 @@ typedef struct {
     Font *font;       // 0x00
     HeapID heapId;    // 0x04
     u8 done;          // 0x06
-    u8 unk07;         // 0x07
+    u8 padding07;     // 0x07
     PokeParty *party; // 0x08  the cast
     u32 scenario;     // 0x0c  the film, 0 to 40
     int scene;        // 0x10  the turn being filmed, from 1, which the script page marks

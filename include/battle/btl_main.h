@@ -24,7 +24,7 @@ struct AdjacentOpponentData {
 struct BattleParty {
     BattleMon *mons[6];
     u8 count;
-    u8 unk19[3];
+    u8 padding19[3];
 };
 
 // The parties of the four clients and every BattleMon by mon ID, 0xe8 bytes as the main module holds two
@@ -176,7 +176,7 @@ struct BtlMainModule {
     // What the clients of a link battle agree on before it starts
     BtlMainSyncData syncData;
     u8 posClientIds[6];
-    u8 unk42e[2];
+    u8 padding42E[2];
     // The prize money, which FixPrizeMoney doubles and finalizes
     u32 prizeMoney;
     u32 money;
@@ -197,7 +197,8 @@ struct BtlMainModule {
     u8 playerPos;
     // Whether this machine runs the battle's server
     u8 isServer;
-    u8 unk46F;
+    // The player's battle style is "Set" (Config_GetBattleStyle), else "Switch"
+    u8 isSetStyle;
     // The link battle's server sends the parties and trainers of npcCount NPC partners, one at a time
     u8 npcIndex;
     u8 npcCount;

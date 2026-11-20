@@ -14,7 +14,7 @@ typedef struct {
     Font *font;      // 0x00
     HeapID heapId;   // 0x04
     u8 done;         // 0x06
-    u8 unk07;        // 0x07
+    u8 padding07;    // 0x07
     int count;       // 0x08  the number of choices, 2 to 4
     StrBuf *strs[4]; // 0x0c  the text of each choice, or NULL
     u32 *result;     // 0x1c  out, the choice made, or NULL

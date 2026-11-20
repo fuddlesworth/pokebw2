@@ -9539,7 +9539,7 @@ overlays/ov028 0x02172a1c Colosseum_SendVoteReplies
 overlays/ov028 0x02172a50 Colosseum_UpdateReadySync
 overlays/ov028 0x02172ac0 Colosseum_StoreChoice
 overlays/ov028 0x02172ae8 Colosseum_TakeChoice
-overlays/ov028 0x02172b14 Colosseum_ResetUnk171
+overlays/ov028 0x02172b14 Colosseum_ResetConfirmCount
 overlays/ov028 0x02172b20 Colosseum_AreAllPartiesReceived
 overlays/ov028 0x02172b4c Colosseum_ClearParties
 overlays/ov028 0x02172b8c Colosseum_BuildBattlePlayers

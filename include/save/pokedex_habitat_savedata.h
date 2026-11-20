@@ -26,7 +26,8 @@ typedef struct {
 } PokedexHabitatProgress;
 
 struct PokedexHabitatSave {
-    u8 unk0[0x4a];
+    // Never accessed: the list is cleared as part of the medal box's block
+    u8 padding0[0x4a];
     PokedexHabitatProgress habitats[POKEDEX_HABITAT_SAVE_COUNT];
     // What the list shows: the zone, the season and the kind of habitat
     u16 zone;

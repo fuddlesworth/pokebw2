@@ -1948,9 +1948,9 @@ void Btlv_StringParam_SetWait(BtlvStringParam *param, u8 mode) {
     param->mode = mode;
 }
 
-void BtlvCore_SetClactGauge(BtlvCore *core, u32 arg1, u32 arg2) {
+void BtlvCore_SetClactGauge(BtlvCore *core, u32 count, u32 pos) {
     if (GetStudioMode(core->mainModule) == BTL_STUDIO_MODE_FILM) {
-        BtlvClact_SetGauge(BtlvEffect_GetClact(), arg1, arg2);
+        BtlvClact_SetGauge(BtlvEffect_GetClact(), count, pos);
     }
 }
 

@@ -44,7 +44,7 @@ typedef struct BagCursor {
     // The pocket the bag opens on
     u16 pocket;         // 0x18
     u8 freeSpaceFilter; // 0x1a
-    u16 unk1C;
+    u16 padding1C;
     s16 battlePages[BATTLE_BAG_POCKET_COUNT]; // 0x1e
     s16 battleRows[BATTLE_BAG_POCKET_COUNT];  // 0x26
     u16 battleLastItem;                       // 0x2e

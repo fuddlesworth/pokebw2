@@ -19,7 +19,7 @@ typedef struct {
     // Set when the screen closed for the low battery that turns the C-Gear off: the field then returns to the
     // default subscreen
     u8 lowBatteryExit;
-    u8 unk0B;
+    u8 padding0B;
 } BeaconDetailParam;
 
 extern const GameProcFunctions BeaconDetail_ProcFunctions;

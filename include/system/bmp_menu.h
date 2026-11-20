@@ -35,7 +35,7 @@ typedef struct {
     u8 loop : 2;
     u16 fontSizeX;
     u16 fontSizeY;
-    u32 unkC;
+    u32 paddingC;
     PrintWindow *printWindow;
     PrintQueue *queue;
     Font *font;
@@ -62,7 +62,7 @@ struct BmpMenu {
     BmpCursor *cursor;
     // The keys that cancel the menu
     u32 cancelKeys;
-    u8 unk28;
+    u8 padding28;
     u8 cursorPos;
     // The width of the widest option
     u8 maxWidth;

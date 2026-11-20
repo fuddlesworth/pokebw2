@@ -794,7 +794,7 @@ u32 FieldAppCall_GetTownMapResult(FieldAppCallWork *work, void *data) {
             work->input->eventValue = param->zoneId;
             work->input->warpX = param->warpX;
             work->input->warpZ = param->warpZ;
-            work->input->unk40 = 0;
+            work->input->warpY = 0;
             RecordAddOne(GameData_GetRecords(GSYS_GetGameData(param->gsys)), 0x2a);
             return FIELD_APP_RESULT_HM_EVENT;
         default:

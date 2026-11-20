@@ -42,7 +42,7 @@ struct FieldAppCallInput {
     // Fly's warp position on the town map
     u32 warpX;
     u32 warpZ;
-    u32 unk40;
+    u32 warpY;
 };
 
 // The apps of FIELD_PROC_LINK_LIST, by index

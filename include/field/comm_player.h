@@ -45,11 +45,12 @@ struct CommPlayerSys {
     FldCommActSys *act_ctrl;
     CommPlayer players[COMM_PLAYER_MAX];
     CommPlayerSent last;
-    u32 unk88;
+    u32 pad88;
     u16 heapId;
     // FldCommActSys_Create's count and allowRun
     u8 count;
-    u8 unk8F;
+    // Set while the player's own status is not to be sent
+    u8 updateStopped;
     u8 allowRun;
 };
 

@@ -36,7 +36,7 @@ struct GdsProfile {
         PMSData pms;
         u16 text[GDS_PROFILE_INTRODUCTION_LENGTH];
     } introduction;
-    u8 unk70[0xc];
+    u8 padding70[0xc];
     // The checksum of everything before it
     u16 crc;
     u16 padding7E;

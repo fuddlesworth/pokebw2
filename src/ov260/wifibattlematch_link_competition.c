@@ -731,7 +731,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
 
     switch (*seq) {
     case COMPETITION_ENTRY_CHECK_RESET_REQUEST:
-        if (param->account->unk4 == 1) {
+        if (param->account->clearRegistered == 1) {
             *seq = COMPETITION_ENTRY_RESET_ACCOUNT_ENTRY;
         } else {
             *seq = COMPETITION_ENTRY_CHECK_LOCAL_REGISTRATION;
@@ -742,7 +742,7 @@ static void WifiBattleMatchLink_CompetitionTaskEntry(WifiBattleMatchTask *task, 
 
         MI_CpuFill8(&request, 0, sizeof(request));
         request.registrationState = WBM_REGISTRATION_NONE;
-        request.unk0 = link->param->account->unk4;
+        request.unk0 = link->param->account->clearRegistered;
         request.profileId = WifiBattleMatchNet_GetGSID(link->net);
         link->param->account->registrationState = WBM_REGISTRATION_NONE;
         WifiBattleMatchNet_StartPostRequest(link->net, &request, HEAPID_WIFIBATTLEMATCH_LINK);

@@ -685,10 +685,10 @@ void MCSS_GetScaleOffset(MCSS *mcss, VecFx32 *out) {
     out->z = mcss->scaleOffset.z;
 }
 
-void MCSS_SetScaleOffset(MCSS *mcss, VecFx32 *a1) {
-    mcss->scaleOffset.x = a1->x;
-    mcss->scaleOffset.y = a1->y;
-    mcss->scaleOffset.z = a1->z;
+void MCSS_SetScaleOffset(MCSS *mcss, VecFx32 *offset) {
+    mcss->scaleOffset.x = offset->x;
+    mcss->scaleOffset.y = offset->y;
+    mcss->scaleOffset.z = offset->z;
 }
 
 void MCSS_GetRotation(MCSS *mcss, VecFx32 *out) {
@@ -703,10 +703,10 @@ void MCSS_SetRotation(MCSS *mcss, const VecFx32 *in) {
     mcss->rotation.z = in->z;
 }
 
-void MCSS_SetShadowScale(MCSS *mcss, VecFx32 *a1) {
-    mcss->shadowScale.x = a1->x;
-    mcss->shadowScale.y = a1->y;
-    mcss->shadowScale.z = a1->z;
+void MCSS_SetShadowScale(MCSS *mcss, VecFx32 *scale) {
+    mcss->shadowScale.x = scale->x;
+    mcss->shadowScale.y = scale->y;
+    mcss->shadowScale.z = scale->z;
 }
 
 void MCSS_GetShadowScaleOffset(MCSS *mcss, VecFx32 *out) {
@@ -721,18 +721,18 @@ void MCSS_SetShadowScaleOffset(MCSS *mcss, VecFx32 *in) {
     mcss->shadowScaleOffset.z = in->z;
 }
 
-void MCSS_SetShadowRotX(MCSS *mcss, u16 a1) {
-    mcss->shadowRotX = a1;
+void MCSS_SetShadowRotX(MCSS *mcss, u16 rotation) {
+    mcss->shadowRotX = rotation;
 }
 
 void MCSS_SetShadowRotZ(MCSS *mcss, u16 value) {
     mcss->shadowRotZ = value;
 }
 
-void MCSS_SetShadowOffset(MCSS *mcss, VecFx32 *a1) {
-    mcss->shadowOffset.x = a1->x;
-    mcss->shadowOffset.y = a1->y;
-    mcss->shadowOffset.z = a1->z;
+void MCSS_SetShadowOffset(MCSS *mcss, VecFx32 *offset) {
+    mcss->shadowOffset.x = offset->x;
+    mcss->shadowOffset.y = offset->y;
+    mcss->shadowOffset.z = offset->z;
 }
 
 void MCSS_EnableFlipV(MCSS *mcss) {
@@ -855,12 +855,12 @@ void MCSS_SetAlpha(MCSS *mcss, u8 alpha) {
     mcss->alpha = alpha;
 }
 
-void MCSS_SetShadowAlpha(MCSS *mcss, u32 a1) {
-    mcss->shadowAlpha = a1;
+void MCSS_SetShadowAlpha(MCSS *mcss, u32 alpha) {
+    mcss->shadowAlpha = alpha;
 }
 
-void MCSS_SetNoShadow(MCSS *mcss, u32 a1) {
-    mcss->noShadow = a1;
+void MCSS_SetNoShadow(MCSS *mcss, u32 noShadow) {
+    mcss->noShadow = noShadow;
 }
 
 BOOL MCSS_IsFading(MCSS *mcss) {

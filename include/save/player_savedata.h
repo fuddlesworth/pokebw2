@@ -20,7 +20,7 @@ typedef struct {
 struct PlayerSave {
     ZoneSpawnInfo nowSpawn;
     // Never accessed: GameData points its outbound warp spawn at nowSpawn instead
-    ZoneSpawnInfo unk1C;
+    ZoneSpawnInfo padding1C;
     ZoneSpawnInfo nextSpawn;
     ZoneSpawnInfo escapeRopeSpawn;
     u16 returnZoneId;
@@ -28,7 +28,7 @@ struct PlayerSave {
     u8 season;
     u8 weather;
     // Never accessed: the block is cleared and saved whole. Aletheia's PlayerLocationData calls it reserved75
-    u8 unk75;
+    u8 padding75;
     u16 placeNameZoneId;
     u32 eggCycleSubsteps;
     u16 happinessStepCounter;
@@ -44,7 +44,7 @@ struct PlayerSave {
     // 0xffff when no step counter is running
     u16 stepCounter;
     // Never accessed: the block is cleared and saved whole
-    u16 unkA6;
+    u16 paddingA6;
 };
 
 u32 PlayerSave_GetBlockSize(void);

@@ -37,9 +37,10 @@ typedef struct {
     u32 stagePatterns : 18;
     // An event flag that must be set to join the mission, or 0
     u32 requiredFlag : 12;
-    u32 unk8_30 : 2;
+    // How the mission's bonus points are counted, 0 to 2
+    u32 bonusMode : 2;
     // What a log entry of the mission's beacon is about: an item, a move, a Pass Power or a species
-    u32 unkC_0 : 10;
+    u32 logValue : 10;
     // The mission's seconds left
     u32 seconds : 12;
     // A second item, or 0
@@ -49,7 +50,7 @@ typedef struct {
     u16 targetKind : 3;
     // Which of FestMission_ExtraSeconds a gain of time counts
     u16 extraSecondsIndex : 2;
-    u16 unk10_11 : 5;
+    u16 padding10_11 : 5;
     u8 messageId;
     u8 resultMessageId;
 } FestMissionInfo;
@@ -58,16 +59,17 @@ typedef struct {
 // config that the festival keeps of the mission it runs (GetFestMissionCfg). A mission's beacons send its first 0x14
 // bytes
 struct FestMissionConfig {
-    // unk00[0] and seed together tell one mission from another
+    // words[0] and seed together tell one mission from another
     union {
         FestMissionInfo info;
-        u32 unk00[5];
+        u32 words[5];
     };
     // header.kind is the kind of mission, which picks the overlay that runs it on the field
     FestMissionHeader header;
     // The player's score in the mission, at most FEST_MISSION_SCORE_MAX
     u16 missionId;
-    u8 unk1A;
+    // The phrase's preset index, from the mission beacon's argument
+    u8 presetIndex;
     // The seed of the mission's random choices, drawn when it starts, which its beacons send
     u32 seed;
     // The mission's seconds left when it ended

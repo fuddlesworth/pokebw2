@@ -130,8 +130,10 @@ typedef struct {
 } BtlFlowExpEntry;
 
 typedef struct {
-    u8 unk000[0x220];
-    u32 unk220;
+    // The event work area, not read by the flow (aletheia's EventParamBuf.work)
+    u8 work[0x220];
+    // Cleared before the side table is initialized (ServerControl_ClearPendingCounter)
+    u32 pendingCounter;
 } BtlFlowUnk1B54;
 
 // Mons that react to a move, with their targets
@@ -186,7 +188,8 @@ struct BtlServerFlow {
     BtlClientIDList clientIdList;
     BattleMonLevelUp levelUp;
     BtlFlowClientList switchInClients;
-    u8 unk4D4[0x2a0];
+    // The action order's scratch, cleared at init (aletheia's actOrderScratch)
+    u8 actionOrderScratch[0x2a0];
     // Above 0 while the AI's damage calculations run the flow (BtlServerFlow_IsSimulating)
     u32 simulationDepth;
     u32 serial;
@@ -227,7 +230,7 @@ struct BtlServerFlow {
     // Per mon ID, set when the mon switches in until ServerControl_AfterSwitchIn runs its switch-in events
     u8 switchInPending[24];
     u8 switchCounts[4];
-    u8 unk7DD[3];
+    u8 padding7DD[3];
     ActionOrderEntry actionOrder[6];
     // Where an entry is kept while the order is reshuffled
     ActionOrderEntry tempEntry;
@@ -252,10 +255,10 @@ struct BtlServerFlow {
     BtlFlowMoveParam *moveParam;
     BtlFlowMoveParam *selectedMoveParam;
     BtlPosPoke posPoke;
-    u8 unk1AD0[0x14];
+    u8 padding1AD0[0x14];
     BattleHandlerString message;
     BtlFlowExpEntry expEntries[6];
-    BtlFlowUnk1B54 unk1B54;
+    BtlFlowUnk1B54 eventParamBuf;
     BtlActionState actionState;
     u8 unk1F70[8];
     u16 lastUsedMove;
@@ -265,7 +268,9 @@ struct BtlServerFlow {
     // How often the player's mons and their opponents hit each other for no effect, super or not very effectively
     u16 effectivenessCounts[6];
     u32 effectivenessTable[24];
-    u8 unk1FEC[4];
+    // Once-per-turn flags: [0] guards ServerControl_BeforeFirstFight, [1] is reset when the hits run (aletheia's
+    // turnOnceFlags)
+    u8 turnOnceFlags[4];
     u8 handlerWork[0x140];
     // CheckScriptedBattleRules's result, negated
     u32 scriptedRulesOutcome;
@@ -281,7 +286,7 @@ struct BattleHandlerAbilityChangeParam {
     u8 targetIndex;
     u8 force;
     u8 unk08;
-    u8 unk09[3];
+    u8 padding09[3];
     BattleHandlerString string;
 };
 
@@ -427,7 +432,7 @@ struct BattleHandlerAddFieldEffectParam {
     u32 effect;
     BattleCondition value;
     u8 duration;
-    u8 unk0d[3];
+    u8 padding0D[3];
     BattleHandlerString string;
 };
 
@@ -443,7 +448,7 @@ struct BattleHandlerChangeFormParam {
     u32 unk18 : 8;
     u8 monIndex;
     u8 form;
-    u8 unk06[2];
+    u8 padding06[2];
     BattleHandlerString string;
 };
 
@@ -472,14 +477,14 @@ struct BattleHandlerChangeWeatherParam {
     u8 weather;
     u8 duration;
     u8 notifyAirLock;
-    u8 unk07;
+    u8 padding07;
     BattleHandlerString string;
 };
 
 struct BattleHandlerCheckHeldItemParam {
     BattleHandlerHeader header;
     u8 monIndex;
-    u8 unk05[3];
+    u8 padding05[3];
     u32 reaction;
 };
 
@@ -503,7 +508,7 @@ struct BattleHandlerCureConditionParam {
     u8 monIds[12];
     u8 count;
     u8 useString;
-    u8 unk16[2];
+    u8 padding16[2];
     BattleHandlerString string;
 };
 
@@ -562,7 +567,7 @@ struct BattleHandlerFaintParam {
     u32 unk00;
     u8 monIndex;
     u8 force;
-    u8 unk06[2];
+    u8 padding06[2];
     BattleHandlerString string;
 };
 
@@ -585,7 +590,7 @@ struct BattleHandlerForceUseItemParam {
     u32 checkPrevResult : 1;
     u32 unk25 : 7;
     u8 monIndex;
-    u8 unk05;
+    u8 padding05;
     u16 item;
 };
 
@@ -598,7 +603,7 @@ struct BattleHandlerGravityCheckParam {
 struct BattleHandlerHideTurnParam {
     u32 unk00;
     u8 monIndex;
-    u8 unk05[3];
+    u8 padding05[3];
     u32 flag;
     BattleHandlerString string;
 };
@@ -606,7 +611,7 @@ struct BattleHandlerHideTurnParam {
 struct BattleHandlerIllusionBreakParam {
     u32 unk00;
     u8 monIndex;
-    u8 unk05[3];
+    u8 padding05[3];
     BattleHandlerString string;
 };
 
@@ -616,7 +621,7 @@ struct BattleHandlerInterruptParam {
         u8 monId;
         u16 moveId;
     };
-    u16 unk06;
+    u16 padding06;
     BattleHandlerString string;
 };
 
@@ -660,7 +665,7 @@ struct BattleHandlerResetStatStageParam {
 struct BattleHandlerReviveParam {
     u32 unk00;
     u8 monIndex;
-    u8 unk05;
+    u8 padding05;
     u16 amount;
     BattleHandlerString string;
 };
@@ -683,14 +688,14 @@ struct BattleHandlerSetItemParam {
     u8 clearConsumed;
     u8 clearOtherConsumed;
     u8 otherIndex;
-    u8 unk0a[2];
+    u8 padding0A[2];
     BattleHandlerString string;
 };
 
 struct BattleHandlerSetWeightParam {
     u32 unk00;
     u8 monIndex;
-    u8 unk05;
+    u8 padding05;
     u16 weight;
     BattleHandlerString string;
 };
@@ -719,7 +724,7 @@ struct BattleHandlerSwapItemParam {
     u32 popup : 1;
     u32 unk24 : 8;
     u8 otherIndex;
-    u8 unk05[3];
+    u8 padding05[3];
     BattleHandlerString firstString;
     BattleHandlerString secondString;
     BattleHandlerString thirdString;
@@ -729,7 +734,7 @@ struct BattleHandlerSwapPokeParam {
     u32 unk00;
     u8 firstMonIndex;
     u8 secondMonIndex;
-    u8 unk06[2];
+    u8 padding06[2];
     BattleHandlerString string;
 };
 
@@ -748,7 +753,7 @@ struct BattleHandlerTransformParam {
     u32 popup : 1;
     u32 unk24 : 8;
     u8 targetIndex;
-    u8 unk05[3];
+    u8 padding05[3];
     BattleHandlerString string;
 };
 

@@ -49,7 +49,8 @@ struct Config {
     // Whether the C-Gear is on, which a continue sets from the answer to the start menu's question
     u16 cgearOn : 1;
     u16 : 5;
-    u16 unk2;
+    // Never accessed: the second half of the config word
+    u16 padding2;
 };
 
 // Points the key remaps at the game's table

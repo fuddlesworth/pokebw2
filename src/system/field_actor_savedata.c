@@ -63,9 +63,9 @@ static void ActorSave_SaveActor(FieldActor *actor, FieldActorSaveEntry *entry) {
     entry->defaultDir = actor->defaultDir;
     entry->faceDir = actor->faceDir;
     entry->motionDir = actor->motionDir;
-    entry->param0 = actor->param0;
-    entry->param1 = actor->param1;
-    entry->param2 = actor->param2;
+    entry->userParam0 = actor->userParam0;
+    entry->userParam1 = actor->userParam1;
+    entry->userParam2 = actor->userParam2;
     entry->areaW = actor->areaW;
     entry->areaH = actor->areaH;
     entry->defaultGPosX = actor->defaultGPos.x;
@@ -109,9 +109,9 @@ static void ActorSave_LoadActor(FieldActor *actor, const FieldActorSaveEntry *en
     actor->defaultDir = entry->defaultDir;
     actor->faceDir = entry->faceDir;
     actor->motionDir = entry->motionDir;
-    actor->param0 = entry->param0;
-    actor->param1 = entry->param1;
-    actor->param2 = entry->param2;
+    actor->userParam0 = entry->userParam0;
+    actor->userParam1 = entry->userParam1;
+    actor->userParam2 = entry->userParam2;
     actor->areaW = entry->areaW;
     actor->areaH = entry->areaH;
     actor->defaultGPos.x = entry->defaultGPosX;

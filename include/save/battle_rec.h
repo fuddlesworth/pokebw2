@@ -193,7 +193,7 @@ struct BattleRecHeader {
     u8 version;
     // Never accessed: the header is cleared, copied and CRC'd whole. Aletheia's BattleRecHeader calls these
     // bytes unusedBytes
-    u8 unk2C[0xc];
+    u8 padding2C[0xc];
     // The video's number, which the server gives it and the CRC leaves out
     u64 dataNumber;
     // getCRC16 of everything before dataNumber

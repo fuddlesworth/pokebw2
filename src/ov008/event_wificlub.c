@@ -177,7 +177,7 @@ void EventWifiClub_SetupBattle(EventWifiClub *wk, u32 mode) {
         break;
     }
     wk->battle.rule = rule;
-    wk->battle.unk10 = 0;
+    wk->battle.counter = 0;
 
     switch (mode) {
     case WIFICLUB_BATTLE_SINGLE:
@@ -323,8 +323,8 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         wk->logout.displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
         wk->logout.keepBgm = 1;
         wk->logout.wipeFlags = 0;
-        wk->logout.unk14 = 0;
-        wk->logout.unk18 = 0;
+        wk->logout.callback = 0;
+        wk->logout.callbackData = 0;
         wk->procManager = CreateGameProcManager(HEAPID_GAMEEVENT);
         QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, &wk->logout);
         (*state)++;

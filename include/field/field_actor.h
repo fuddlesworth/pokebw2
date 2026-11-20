@@ -22,7 +22,7 @@ typedef struct {
     s16 x;
     s16 y;
     s16 z;
-    s16 unk6;
+    s16 pad06;
 } GridPos;
 
 // The resources of an object code's model
@@ -93,9 +93,10 @@ struct ZoneNPC {
     u16 spawnFlag;
     u16 scrId;
     u16 direction;
-    u16 param0;
-    u16 param1;
-    u16 param2;
+    // The actor's user parameters 0 to 2
+    u16 userParam0;
+    u16 userParam1;
+    u16 userParam2;
     u16 areaW;
     u16 areaH;
     BOOL isRail;

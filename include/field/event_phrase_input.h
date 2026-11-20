@@ -18,7 +18,7 @@ struct EventPhraseInputData {
     u16 *result;
     NameEntryParam nameEntry;
     u16 heapId;
-    u16 unk5A;
+    u16 pad5A;
     u32 mode;
 };
 

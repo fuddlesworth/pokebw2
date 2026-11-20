@@ -26,7 +26,7 @@ struct TrainerLogEntry {
     u32 birthDay : 4;
     // Never accessed: TrainerLogEntry_Init clears it, and entries are copied whole. Aletheia calls these five
     // bits padding
-    u32 unk10_26 : 5;
+    u32 padding10_26 : 5;
     u32 used : 1;
     u32 id;
     // The trainer's Pokémon
@@ -43,7 +43,7 @@ struct TrainerLogSave {
     // The slot the last trainer went into, TRAINER_LOG_NONE at first
     u32 lastSlot : 8;
     // Never accessed: the block is cleared, copied and saved whole. Aletheia calls these 24 bits reserved
-    u32 unk348_8 : 24;
+    u32 padding348_8 : 24;
 }; // size: 0x34c
 
 TrainerLogSave *TrainerLogSave_Get(SaveControl *save);

@@ -24,14 +24,15 @@ typedef struct {
 struct ScriptWork {
     u32 magic;
     u16 scriptId;
-    u16 unk06;
+    u16 pad06;
     FieldActor *parentActor;
     HeapID heapId;
-    u16 unk0E;
+    u16 pad0E;
     GameSystem *gsys;
     GameEvent *event;
     ScriptFieldWork fieldWork;
-    u32 unk20;
+    // The parameter the script was created with
+    u32 param;
     u32 reducedFeatureLevel;
     u32 featureLevel;
     WordSet *wordSet;
@@ -42,7 +43,7 @@ struct ScriptWork {
     void *userHeap;
     // A bit per sound effect player that the script waits on
     u8 seBitMask;
-    u8 unk41[3];
+    u8 pad41[3];
     TrainerClashSlot trainerState[2];
     u16 localWork[0x62];
     FieldActorAnmProc *actorAnmProc;
@@ -110,12 +111,12 @@ struct FieldScriptEnvArgs {
 
 struct FieldScriptEnv {
     HeapID heapId;
-    u16 unk02;
+    u16 pad02;
     FieldScriptEnvArgs args;
     MsgData *msgData;
     u16 msgFileNo;
     u8 vmIndex;
-    u8 unk1B;
+    u8 pad1B;
     void *ownedHeap;
     ScriptSubwork *subwork;
 };

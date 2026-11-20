@@ -319,7 +319,7 @@ void BtlvCore_ShowRecorderSkipping(BtlvCore *core, u16 chapter);
 void BtlvCore_ShowRecorderMessage(BtlvCore *core, u32 chapter, u32 mode);
 void BtlvCore_PlaySE(BtlvCore *core, u32 se);
 void Btlv_StringParam_SetWait(BtlvStringParam *param, u8 mode);
-void BtlvCore_SetClactGauge(BtlvCore *core, u32 arg1, u32 arg2);
+void BtlvCore_SetClactGauge(BtlvCore *core, u32 count, u32 pos);
 void BtlvCore_ShowClactPopup(BtlvCore *core, u32 number);
 BOOL BtlvCore_IsClactPopupShowing(BtlvCore *core);
 void BtlvCore_SetTypeIconVisible(BtlvCore *core, u32 visible, u32 index, u32 sequence);

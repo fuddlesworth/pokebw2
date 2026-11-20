@@ -146,7 +146,7 @@ struct BSubwayScrWork {
     // The party screen's last index and result
     u16 pokeSelectIndex;
     u16 pokeSelectResult;
-    u8 unk86[2];
+    u8 pad86[2];
     BSubwayTrainer trainers[2];
     // The partners to pick from on a multi train, their teams, and whether each team was made with rental items
     BSubwayTrainer partners[3];
@@ -172,7 +172,8 @@ struct BSubwayScrWork {
     // The script variable that a wait for a timing or a command gets its result in
     u16 resultVarId;
     PlayerInfo partner;
-    u8 unk74C[0x58];
+    // Opaque work the wireless-battle proc ignores (BsubwayScr_GetNameInputEncounterWork)
+    u8 nameInputEncounterWork[0x58];
     IrcBattleMatchParam ircMatchParam;
     PokeParty *allocatedBuffer;
     BtlSetup *btlSetup;

@@ -35,7 +35,7 @@ struct ChatotEventWork {
     u8 animFrame;
     s8 animOffset;
     u8 partyIndex;
-    u8 unk4F;
+    u8 pad4F;
     u32 voice;
     // Set by the microphone's callback once the recording is done
     u32 recorded;

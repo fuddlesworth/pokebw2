@@ -68,7 +68,7 @@ typedef struct {
     u16 timeLeft;
     // The state and error of overlay 164's sync (net_sync.c), which takes the parameters as its NetSyncWork, and
     // the list ends once forceExit is 1
-    u8 unk72;
+    u8 syncState;
     u8 forceExit;
     u32 partnerLayout;
     PokeListPartnerParam partners[3];
@@ -77,7 +77,7 @@ typedef struct {
     u8 battleMsg;
     // Whether key item 0x1e is registered to Y, and whether it is to be, once the screen is done
     u8 keyItemRegistered;
-    u8 unkA6[2];
+    u8 paddingA6[2];
 } PokeListParam;
 
 // The party-icon and held-item resource sequences shared with the partner teams

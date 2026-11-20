@@ -73,7 +73,7 @@ typedef struct {
     u8 speed[6]; // pixels a step scrolls by, from the fastest
     u8 palette;  // of the cursor
     u8 barSize;
-    u8 unk13;
+    u8 padding13;
 } FrameListLayout;
 
 typedef struct {
@@ -185,8 +185,8 @@ BOOL FrameList_CanScrollDown(FrameList *list);
 void FrameList_SetCursor(FrameList *list, int pos);
 void FrameList_ShowCursor(FrameList *list);
 void FrameList_SetShownRows(FrameList *list, int shownRows);
-void FrameList_SetKeyMask(FrameList *list, u32 a1);
-void FrameList_ScrollBlocking(FrameList *list, int a1);
+void FrameList_SetKeyMask(FrameList *list, u32 keyMask);
+void FrameList_ScrollBlocking(FrameList *list, int count);
 u32 FrameList_GetScrollFrames(FrameList *list);
 BlinkPalAnm *FrameList_GetBlinkAnm(FrameList *list);
 

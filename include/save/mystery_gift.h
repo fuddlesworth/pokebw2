@@ -12,10 +12,10 @@ struct MysteryGift {
     u32 value;
     // A Pokémon gift's MysteryGiftPokemon view has the rest of its fields from here. Never accessed by name: the
     // card is cleared, copied and encrypted whole
-    u8 unk04[0x5c];
+    u8 padding04[0x5c];
     u16 title[37];
     // Never accessed: the card is cleared, copied and encrypted whole
-    u8 unkAA[2];
+    u8 paddingAA[2];
     // The date the card was received, as year << 16 | month << 8 | day
     s32 date;
     u16 id;
@@ -28,9 +28,9 @@ struct MysteryGift {
     // Picked up from the delivery man; only such cards can be thrown away
     u8 delivered : 1;
     // Never accessed: the card is cleared, copied and encrypted whole
-    u8 unkB4_2 : 6;
+    u8 paddingB4_2 : 6;
     // Never accessed: the card is cleared, copied and encrypted whole
-    u8 unkB5[0x17];
+    u8 paddingB5[0x17];
 };
 
 // What a gift gives, a MysteryGift's kind
@@ -58,8 +58,8 @@ typedef struct {
     // Shown with the special effect, with particles
     u8 special;
     // Never accessed: the packet is received and checked as one buffer
-    u8 unk2CB;
-    u16 unk2CC;
+    u8 padding2CB;
+    u16 padding2CC;
     // getCRC16 of everything before it
     u16 crc;
 } MysteryGiftRecvData;
@@ -94,8 +94,8 @@ typedef struct {
     u8 otGender;
     u8 level;
     u8 isEgg;
-    // Never accessed: the tail of a Pokémon gift's view, which a card's title and unkAA overlap
-    u8 unk5D[0x4f];
+    // Never accessed: the tail of a Pokémon gift's view, which a card's title and paddingAA overlap
+    u8 padding5D[0x4f];
     // The date the gift was made, as year << 16 | month << 8 | day
     s32 date;
 } MysteryGiftPokemon;

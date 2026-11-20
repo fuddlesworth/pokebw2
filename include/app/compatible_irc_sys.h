@@ -29,7 +29,7 @@ typedef struct {
 } CompatibleIrcProfile;
 
 // Creates the link, and frees it. A link made with disabled set does nothing and always reports it is done
-CompatibleIrcSys *CompatibleIrcSys_Create(int unk40, GameData *gameData, HeapID heapId, BOOL disabled);
+CompatibleIrcSys *CompatibleIrcSys_Create(int irTimeoutFrames, GameData *gameData, HeapID heapId, BOOL disabled);
 void CompatibleIrcSys_Free(CompatibleIrcSys *sys);
 
 // Each of these runs a step and returns whether it is done, and also returns TRUE at once if the link is off
@@ -46,7 +46,7 @@ void CompatibleIrcSys_SetCount(CompatibleIrcSys *sys, int count);
 BOOL CompatibleIrcSys_Update(CompatibleIrcSys *sys);
 BOOL CompatibleIrcSys_SendCount(CompatibleIrcSys *sys);
 int CompatibleIrcSys_GetPendingCount(CompatibleIrcSys *sys);
-BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 a5, BOOL a6,
+BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 unused, BOOL noDuplicate,
                              BOOL noCopy);
 void CompatibleIrcSys_AddCommands(CompatibleIrcSys *sys, int base, const NetCommand *list, int count, void *work);
 void CompatibleIrcSys_RemoveCommands(CompatibleIrcSys *sys, int base);

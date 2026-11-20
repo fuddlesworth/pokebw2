@@ -79,8 +79,8 @@ void FestMission_Load(ArcTool *arc, u8 index, u32 level, FestMissionConfig *miss
     mission->info.endsAtTarget = params->endsAtTarget;
     mission->info.stagePatterns = params->stagePatterns;
     mission->info.requiredFlag = params->requiredFlag;
-    mission->info.unk8_30 = params->unk03;
-    mission->info.unkC_0 = 0;
+    mission->info.bonusMode = params->unk03;
+    mission->info.logValue = 0;
     mission->info.seconds = params->levels[level].seconds;
     mission->info.rewardItem2 = params->rewardItem2;
     mission->info.rewardItem2Count = params->rewardItem2Count;

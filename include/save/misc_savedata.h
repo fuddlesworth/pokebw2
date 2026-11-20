@@ -35,7 +35,8 @@ struct RivalDataSave {
     HiddenHollow hollows[HIDDEN_HOLLOW_COUNT];
     u8 hollowNum;
     u8 paddingF5[3];
-    u32 unkF8;
+    // Never accessed: the block is cleared and saved whole
+    u32 paddingF8;
 };
 
 // The block's size and its initial state

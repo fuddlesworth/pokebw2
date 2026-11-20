@@ -180,7 +180,7 @@ u32 FestMissionConfig_AddSeconds(FestMissionConfig *config, u16 gain) {
 }
 
 BOOL FestMissionConfig_IsSame(const FestMissionConfig *config, const FestMissionConfig *other) {
-    if (config->seed != other->seed || config->unk00[0] != other->unk00[0]) {
+    if (config->seed != other->seed || config->words[0] != other->words[0]) {
         return FALSE;
     }
     return TRUE;
@@ -208,7 +208,7 @@ BOOL FestMissionConfig_FromBeacon(FestMissionConfig *config, const GameBeacon *b
     if (GameBeacon_IsMissionType(beacon)) {
         config->info = beacon->payload.missionInfo;
         config->missionId = beacon->arg.mission.missionId;
-        config->unk1A = beacon->arg.mission.presetIndex;
+        config->presetIndex = beacon->arg.mission.presetIndex;
         config->seed = beacon->missionWord;
         return TRUE;
     }

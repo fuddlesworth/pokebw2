@@ -108,7 +108,7 @@ struct BSubwayScoreData {
     u16 stages[BSUBWAY_SCORE_MODE_MAX];
     u16 wifiScore;
     // Never accessed: the block is cleared and copied whole
-    u8 unk40[4];
+    u8 padding40[4];
     // Two teams of three BSubwayPokemon
     u8 team1[0xb4];
     u8 team0[0xb4];

@@ -54,7 +54,7 @@ typedef struct {
     u8 present[POKEDEX_SEASON_COUNT][POKEDEX_HABITAT_TYPE_COUNT];
     // The same, for the other half of the data
     u8 other[POKEDEX_SEASON_COUNT][POKEDEX_HABITAT_TYPE_COUNT];
-    u16 unk1a;
+    u16 padding1A;
 } PokedexHabitatFileEntry;
 
 // An area's file, from archive 296 and 0x352 bytes
@@ -75,7 +75,7 @@ typedef struct {
     u8 other[POKEDEX_SEASON_COUNT][POKEDEX_HABITAT_TYPE_COUNT];
     // 1 if the species is not seen, 2 if it is only seen, 3 if it is caught
     u8 status;
-    u8 unk1b;
+    u8 padding1B;
 } PokedexHabitatSpecies;
 
 // An area in the list that the habitat screen shows, 0x364 bytes
@@ -103,7 +103,7 @@ typedef struct {
 typedef struct {
     u16 zone;
     u8 conditions[3];
-    u8 unk5;
+    u8 padding5;
     u32 states[3];
     // 4 for a condition that does not apply, else 1 to 3
     u32 display[3];

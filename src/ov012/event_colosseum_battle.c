@@ -161,7 +161,7 @@ GameEvent *EventColosseumBattle_Create(GameSystem *gsys, Field *field, u32 categ
     // The battle's music, as above
     setup->fieldSituation.bgm = param->bgm;
     work->players->rule = rule;
-    work->players->unk4C = 0;
+    work->players->counter = 0;
     BtlSetup_AllocRecBuffer(setup, 1);
     return event;
 }

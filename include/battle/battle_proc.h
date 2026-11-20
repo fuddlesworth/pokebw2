@@ -16,7 +16,9 @@
 typedef struct {
     PokeParty *party;
     PlayerInfo *info;
-    u8 unk08[2];
+    u8 padding08;
+    // BATTLE_REC_VERSION, which the other player's game must share to record the battle
+    u8 battleRecordVersion;
     // Selected party slots; reused by overlay 305 for its COMM_BTL_DEMO_POKE_* health states
     u8 order[6];
 } BattlePlayer;
@@ -28,7 +30,8 @@ typedef struct {
     // What overlay 305's screen before and after the battle shows, COMM_BTL_DEMO_TYPE_*
     u32 demoType;
     u32 rule;
-    u32 unk4C;
+    // The battle video's counter, which overlay 306's screen passes on (BattleRecHeader.counter)
+    u32 counter;
 } BattlePlayers;
 
 // What overlay 10's battle proc runs: the party select, the battle and overlay 306's screen after it
@@ -37,7 +40,8 @@ typedef struct {
     BtlSetup *setup;
     BattlePlayers *players;
     u32 rule;
-    u32 unk10;
+    // The battle video's counter, passed to overlay 306's screen (BattleRecHeader.counter)
+    u32 counter;
     // Set, a network error is marked shown when the proc ends
     u32 markNetErrShown;
     Ov306Param ov306Param;

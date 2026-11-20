@@ -37,7 +37,7 @@ enum {
 struct WifiListFriend {
     u16 name[8];
     // The rest of the 0x1c bytes that aletheia's WifiFriendInfo keeps as its opaque nameData; never read or written
-    u8 unk10[0xc];
+    u8 padding10[0xc];
     s32 profileId;
     u32 id;
     u16 wins;
@@ -66,7 +66,7 @@ struct WifiList {
 struct PalPadFriendList {
     PlayerInfo players[PAL_PAD_PLAYER_MAX];
     // Never read or written; the block is cleared, saved whole and copied to a backup
-    u8 unkC80[0xd0];
+    u8 paddingC80[0xd0];
     u32 tradeCount;
 }; // size: 0xd54
 

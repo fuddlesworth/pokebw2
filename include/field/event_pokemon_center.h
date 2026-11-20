@@ -9,7 +9,7 @@
 // Partial layout for the healing machine's animation state.
 struct EventPokeCenHealData {
     u16 heapId;
-    u16 unk02;
+    u16 pad02;
     Field *field;
     VecFx32 basePosition;
     u8 ballCount;

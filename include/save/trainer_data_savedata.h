@@ -17,7 +17,8 @@ struct TrainerDataSave {
     PlayTime playTime;
     // Set by the intro's save of a new game, which a load then treats as no save
     u8 isIntroSave;
-    u8 unk2D[3];
+    // Never accessed: the block is cleared and saved whole
+    u8 padding2D[3];
     // Each is TRAINER_DATA_MARKER_SET once something has happened
     u16 markers[TRAINER_DATA_MARKER_COUNT];
     // The save count of each extra save block

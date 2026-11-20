@@ -44,7 +44,7 @@ typedef struct {
     u8 unk1B_5 : 3;
     // How many times the player has set a voice chat partner
     u8 callCounter;
-    u8 unk1D[3];
+    u8 padding1D[3];
 } WIFI_STATUS;
 
 u32 WIFI_STATUS_GetWifiStatus(const WIFI_STATUS *status);

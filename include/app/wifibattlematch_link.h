@@ -94,7 +94,7 @@ typedef struct {
 typedef struct {
     s32 profileId;
     // Forwarded unchanged in the registration request; 1 clears registered.
-    u8 unk4;
+    u8 clearRegistered;
     u8 registrationState;
     u8 registered;
     u8 unk7;

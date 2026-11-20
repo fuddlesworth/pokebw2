@@ -575,11 +575,11 @@ static void *WifiBattleMatchSys_CreateBattleParam(WifiBattleMatchChain *chain, H
     player = &param->players->base.players[0];
     player->info = &sys->player->info;
     player->party = sys->party;
-    player->unk08[1] = sys->player->battleRecordVersion;
+    player->battleRecordVersion = sys->player->battleRecordVersion;
     player = &param->players->base.players[1];
     player->info = &sys->otherPlayer->info;
     player->party = sys->otherParty;
-    player->unk08[1] = sys->otherPlayer->battleRecordVersion;
+    player->battleRecordVersion = sys->otherPlayer->battleRecordVersion;
     param->setup = BtlSetup_Create(heapId);
     GFL_OvlLoad(OVERLAY_ID(167));
     if (sys->mode - MATCH_MODE_RATING <= 1) {

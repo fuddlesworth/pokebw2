@@ -25,7 +25,8 @@ typedef struct {
 
 struct FunfestSave {
     FunfestMissionRecord missions[FUNFEST_MISSION_COUNT];
-    u8 unkDC[0x14];
+    // Never accessed: the block is cleared and saved whole
+    u8 paddingDC[0x14];
     // Missions hosted, joined and completed
     u16 hosted;
     u16 joined;

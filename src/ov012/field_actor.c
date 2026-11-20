@@ -375,9 +375,9 @@ static void LoadZoneNPCParamsToActor(FieldActor *actor, const ZoneNPC *npc) {
     SetActorSCRID(actor, npc->scrId);
     actor->defaultDir = npc->direction;
     actor->motionDir = npc->direction;
-    SetActorUserParam(actor, npc->param0, 0);
-    SetActorUserParam(actor, npc->param1, 1);
-    SetActorUserParam(actor, npc->param2, 2);
+    SetActorUserParam(actor, npc->userParam0, 0);
+    SetActorUserParam(actor, npc->userParam1, 1);
+    SetActorUserParam(actor, npc->userParam2, 2);
     SetActorAreaW(actor, npc->areaW);
     SetActorAreaH(actor, npc->areaH);
 }
@@ -400,8 +400,8 @@ static void LoadActorParamsByZoneNPC(FieldActor *actor, const ZoneNPC *npc, Even
     LoadInfoForNewActorModelID(system, objCode, actor);
     config = &actor->config;
     if (objCode == OBJ_CODE_185) {
-        actor->collisionWidth = npc->param0;
-        actor->collisionHeight = npc->param1;
+        actor->collisionWidth = npc->userParam0;
+        actor->collisionHeight = npc->userParam1;
         if (actor->collisionWidth == 0) {
             actor->collisionWidth++;
         }
@@ -829,13 +829,13 @@ void ChangeActorDirection(FieldActor *actor, u16 dir) {
 void SetActorUserParam(FieldActor *actor, u16 value, u32 index) {
     switch (index) {
     case 0:
-        actor->param0 = value;
+        actor->userParam0 = value;
         break;
     case 1:
-        actor->param1 = value;
+        actor->userParam1 = value;
         break;
     case 2:
-        actor->param2 = value;
+        actor->userParam2 = value;
         break;
     }
 }
@@ -843,11 +843,11 @@ void SetActorUserParam(FieldActor *actor, u16 value, u32 index) {
 u16 GetActorUserParam(FieldActor *actor, u32 index) {
     switch (index) {
     case 0:
-        return actor->param0;
+        return actor->userParam0;
     case 1:
-        return actor->param1;
+        return actor->userParam1;
     case 2:
-        return actor->param2;
+        return actor->userParam2;
     }
     return 0;
 }

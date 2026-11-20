@@ -33,7 +33,7 @@ typedef struct {
     u16 cellRes;
     // The animations of the icon at rest, inactive, pressed and, for an icon that toggles, toggled
     u16 anims[4];
-    u16 unk16;
+    u16 padding16;
     u32 key;
     u32 se;
 } TouchBarItem;

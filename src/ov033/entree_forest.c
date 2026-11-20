@@ -75,9 +75,9 @@ FieldActor *EntreeForest_SpawnPkmActor(const EntreeForestSpawnContext *context, 
     npc.moveCode = appearance->moveCode;
     npc.areaW = appearance->areaW;
     npc.areaH = appearance->areaH;
-    npc.param0 = context->actorIdBase + index;
-    npc.param1 = pokemon->raw;
-    npc.param2 = pokemon->raw >> 16;
+    npc.userParam0 = context->actorIdBase + index;
+    npc.userParam1 = pokemon->raw;
+    npc.userParam2 = pokemon->raw >> 16;
     grid = &npc.pos.grid;
     grid->x = x;
     grid->z = z;

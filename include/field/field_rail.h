@@ -75,7 +75,7 @@ struct RailCamera {
 struct RailCurve {
     u32 handlerId;
     VecFx32 center;
-    u8 unk10[0x14];
+    u8 pad10[0x14];
 };
 
 typedef void (*RailCameraFunc)(FieldRailSystem *rail);
@@ -92,7 +92,7 @@ struct RailDataHandle {
     u16 camFuncCount;
     u16 railToWorldCount;
     u16 worldToRailCount;
-    u16 unkE;
+    u16 pad0E;
     RailPoint *points;
     RailLine *lines;
     RailCamera *cameras;

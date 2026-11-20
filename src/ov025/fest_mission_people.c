@@ -305,9 +305,9 @@ static void FesMissionPeople_PlaceActors(GameSystem *gsys, FesMissionWork *work,
                 npc.moveCode = MOVE_CODE_RAIL_TURN_RANDOM;
             }
             npc.uid = 236 + i;
-            npc.param0 = work->params[i][0];
-            npc.param1 = work->params[i][1];
-            npc.param2 = work->params[i][2];
+            npc.userParam0 = work->params[i][0];
+            npc.userParam1 = work->params[i][1];
+            npc.userParam2 = work->params[i][2];
             work->actors[i] = CreateNewActorByEntityNoWKOBJCODE(mmSys, &npc, zoneId);
             SetActorMovementFlag(work->actors[i], 0x100000);
         }

@@ -30,7 +30,8 @@ struct BoxPkm {
     u16 partyDecrypted : 1;
     u16 boxDecrypted : 1;
     u16 badEgg : 1;
-    u16 unk4_3 : 13;
+    // The spare flags of the sanity word; never read or written individually
+    u16 spareFlags : 13;
     u16 checksum;
     PkmBuffer contentBuffer;
 };
@@ -39,7 +40,8 @@ struct PartyPkm {
     BoxPkm base;
     u32 statusCond;
     u8 level;
-    u8 unk8D;
+    // The ball capsule of Gen 4; Gen 5 always keeps it 0
+    u8 capsuleIndex;
     u16 nowHP;
     u16 maxHP;
     u16 atk;
@@ -48,8 +50,8 @@ struct PartyPkm {
     u16 spa;
     u16 spd;
     MailData mail;
-    u32 unkD4;
-    u32 unkD8;
+    u32 paddingD4;
+    u32 paddingD8;
 };
 
 // The party: its Pokémon, and a flag of each slot
@@ -101,13 +103,13 @@ typedef struct {
     u8 nature;
     u16 hiddenAbility : 1;
     u16 nPoke : 1;
-    u16 unk1A_2 : 14;
-    u32 unk1C;
+    u16 spareBits : 14;
+    u32 spareWord;
 } PkmBlockB;
 
 typedef struct {
     u16 nickname[11];
-    u8 unk16;
+    u8 spareByte;
     u8 originGame;
     u64 ribbons;
 } PkmBlockC;

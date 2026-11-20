@@ -59,7 +59,8 @@ typedef struct {
     u8 friendshipUp1 : 1;
     u8 friendshipUp2 : 1;
     u8 friendshipUp3 : 1;
-    u8 unk6_4 : 1;
+    // The fourth friendship flag: whether the item raises friendship of a Pokémon with 200 or more (status_rcv.c)
+    u8 friendshipUp4 : 1;
     s8 hpEV;
     s8 attackEV;
     s8 defenseEV;
@@ -164,7 +165,7 @@ enum {
     ITEM_PARAM_FRIENDSHIP_UP_1,
     ITEM_PARAM_FRIENDSHIP_UP_2,
     ITEM_PARAM_FRIENDSHIP_UP_3,
-    ITEM_PARAM_UNK_51,
+    ITEM_PARAM_FRIENDSHIP_UP_4,
     ITEM_PARAM_HP_EV,
     ITEM_PARAM_ATTACK_EV,
     ITEM_PARAM_DEFENSE_EV,

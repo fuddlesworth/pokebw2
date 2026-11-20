@@ -381,8 +381,8 @@ static int Enter_WifiConnectionLogout(WorldTradeWork *wk) {
     param->displayStyle = WIFILOGIN_DISP_STYLE_PDWACC;
     param->messageStyle = WIFILOGIN_MESSAGE_STYLE_GSYNC;
     // The header's types for the callback and its data
-    param->unk14 = (u32)Enter_LogoutCallback;
-    param->unk18 = (u32)wk;
+    param->callback = (u32)Enter_LogoutCallback;
+    param->callbackData = (u32)wk;
     QueueGameProc(wk->procManager, OVERLAY_WIFILOGIN, &WIFILOGOUT_PROC_FUNCTIONS, wk->subProcParam);
     wk->subprocessSeq = ENTER_WIFI_LOGOUT_WAIT;
     GFL_NetErrShow(0);

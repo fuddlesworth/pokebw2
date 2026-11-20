@@ -84,8 +84,9 @@ typedef struct {
     u32 keepBgm;
     // The wipes' colors: bit 3 for white when fading in and bit 4 when fading out. 6 when 0
     u32 wipeFlags;
-    u32 unk14;
-    u32 unk18;
+    // A callback and its data, kept as the login's; the callers cast the pointer types
+    u32 callback;
+    u32 callbackData;
 } WifiLogoutParam;
 
 extern const GameProcFunctions WIFILOGIN_PROC_FUNCTIONS;

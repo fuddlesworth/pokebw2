@@ -106,12 +106,12 @@ void BtlServerFlow_InitWork(BtlServerFlow *flow) {
     MI_CpuFill8(flow->faintRecorded, 0, sizeof(flow->faintRecorded));
     MI_CpuFill8(flow->switchInPending, 0, sizeof(flow->switchInPending));
     MI_CpuFill8(flow->switchCounts, 0, sizeof(flow->switchCounts));
-    MI_CpuFill8(flow->unk4D4, 0, sizeof(flow->unk4D4));
+    MI_CpuFill8(flow->actionOrderScratch, 0, sizeof(flow->actionOrderScratch));
     BtlServerFlow_ClearEffectivenessCounts(flow->effectivenessCounts);
     BtlServerFlow_ResetFrames(flow);
     BtlClientIDList_Init(&flow->clientIdList);
     InitState(&flow->actionState);
-    ServerControl_ClearPendingCounter(&flow->unk1B54);
+    ServerControl_ClearPendingCounter(&flow->eventParamBuf);
     SideEffectsInit();
     flow->escapeAttempts = 0;
     flow->unk787 = 0;
@@ -189,7 +189,7 @@ u32 BtlServerFlow_RunTurn(BtlServerFlow *flow, BtlClientActions *clientActions) 
         BtlServerFlow_ClearRevivedMons(flow);
         BtlFaintRec_NextTurn(&flow->faintRec);
         for (i = 0; i < 4; i++) {
-            flow->unk1FEC[i] = 0;
+            flow->turnOnceFlags[i] = 0;
         }
         BattleEvent_ClearTurnPause();
         BattleServer_ClearChangeRequests(flow->server);
@@ -895,9 +895,9 @@ u32 ActionOrder_Proc(BtlServerFlow *flow, ActionOrderEntry *entry) {
                     }
                     break;
                 case BATTLE_ACTION_FIGHT:
-                    if (!flow->unk1FEC[0]) {
+                    if (!flow->turnOnceFlags[0]) {
                         ServerControl_BeforeFirstFight(flow);
-                        flow->unk1FEC[0] = TRUE;
+                        flow->turnOnceFlags[0] = TRUE;
                     }
                     flow->obedience = ServerControl_CheckObedience(flow, mon);
                     ServerControl_Fight(flow, mon, &action, entry->key & 0x3fffff);
@@ -3039,7 +3039,7 @@ void ServerControl_DamageMove(BtlServerFlow *flow, BtlFlowMoveParam *param, Batt
     u32 damage = 0;
     BOOL showEffect = FALSE;
 
-    flow->unk1FEC[1] = damage;
+    flow->turnOnceFlags[1] = damage;
     ServerControl_DamageProcessStart(flow, mon, param);
     BtlMonSet_Clear(flow->damagedMons);
     ServerEvent_CheckMultihitHits(flow, mon, param->move, flow->hitWork);
@@ -5683,7 +5683,7 @@ BOOL ServerControl_HideTurnCancel(BtlServerFlow *flow, BattleMon *mon, u32 flag)
 }
 
 void ServerControl_ClearPendingCounter(BtlFlowUnk1B54 *work) {
-    work->unk220 = 0;
+    work->pendingCounter = 0;
 }
 
 void ServerDisplay_AddEffectAtPosition(BtlServerFlow *flow, BattleMon *mon, u32 effect) {

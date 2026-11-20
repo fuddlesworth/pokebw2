@@ -1465,7 +1465,7 @@ static u32 PokeParty_GetParamCore(PartyPkm *pkm, PkmField field, void *buffer) {
     case PKM_PARAM_LEVEL:
         return pkm->level;
     case PKM_PARAM_UNK9F:
-        return pkm->unk8D;
+        return pkm->capsuleIndex;
     case PKM_PARAM_HP:
         return pkm->nowHP;
     case PKM_PARAM_MAX_HP:
@@ -1749,7 +1749,7 @@ static u32 PML_PkmGetParamCore(BoxPkm *pkm, PkmField field, void *buffer) {
         result = blockB->nPoke;
         break;
     case PKM_PARAM_UNK72:
-        result = blockB->unk1C;
+        result = blockB->spareWord;
         break;
     case PKM_PARAM_NICKNAME:
         if (pkm->badEgg) {
@@ -1766,7 +1766,7 @@ static u32 PML_PkmGetParamCore(BoxPkm *pkm, PkmField field, void *buffer) {
         }
         break;
     case PKM_PARAM_UNK76:
-        result = blockC->unk16;
+        result = blockC->spareByte;
         break;
     case PKM_PARAM_ORIGIN_GAME:
         result = blockC->originGame;
@@ -1879,7 +1879,7 @@ static void PokeParty_SetParamCore(PartyPkm *pkm, PkmField field, u32 value) {
         pkm->level = value;
         break;
     case PKM_PARAM_UNK9F:
-        pkm->unk8D = value;
+        pkm->capsuleIndex = value;
         break;
     case PKM_PARAM_HP:
         pkm->nowHP = value;
@@ -2205,7 +2205,7 @@ static void PML_PkmSetParamCore(BoxPkm *pkm, PkmField field, u32 value) {
         blockB->nPoke = value;
         break;
     case PKM_PARAM_UNK72:
-        blockB->unk1C = value;
+        blockB->spareWord = value;
         break;
     case PKM_PARAM_NICKNAME:
         GFL_StrBufStoreString((const StrBuf *)value, blockC->nickname, 11);
@@ -2222,7 +2222,7 @@ static void PML_PkmSetParamCore(BoxPkm *pkm, PkmField field, u32 value) {
         wcharsncpy((const u16 *)value, blockC->nickname, 11);
         break;
     case PKM_PARAM_UNK76:
-        blockC->unk16 = value;
+        blockC->spareByte = value;
         break;
     case PKM_PARAM_ORIGIN_GAME:
         blockC->originGame = value;

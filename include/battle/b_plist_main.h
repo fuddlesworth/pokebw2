@@ -196,7 +196,7 @@ typedef struct {
     u8 switchOutPos;
     // How many positions are in battle (GetClientBattlerCount, 3 in a rotation battle)
     u8 battlePosCount;
-    u8 unk23;
+    u8 padding23;
     u16 item;
     // The new move in forget mode; a nonzero switch-block flag in the battle party menu.
     u16 move;
@@ -208,7 +208,7 @@ typedef struct {
     u32 abort;
     // Whether each party slot's Pokémon is under Embargo, so no item can be used on it
     u8 embargo[6];
-    u8 unk3E[2];
+    u8 padding3E[2];
     // 1 plays the sound effects
     u32 playSound;
     u8 *usingKeys;

@@ -216,7 +216,7 @@ void UnionNet_RecvColosseumUnkCA(int netId, int size, const void *data, void *wo
         GFL_ASSERT(0);
         return;
     }
-    colosseum->unkCA = 1;
+    colosseum->entryCancelled = 1;
 }
 
 BOOL UnionMain_SendColosseumUnkCA(void) {

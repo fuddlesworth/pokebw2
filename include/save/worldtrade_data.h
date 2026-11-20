@@ -10,7 +10,8 @@
 struct WorldTradeData {
     // The deposited Pokémon
     PartyPkm pkm;
-    u8 unkDC[0x10];
+    // Never accessed: the block is cleared and saved whole
+    u8 paddingDC[0x10];
     u16 flag;
     // The box the deposited Pokémon returns to
     u16 returnBox;

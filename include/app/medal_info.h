@@ -49,7 +49,7 @@ typedef struct {
     u8 returnToField;
     // The row of the log that the beacon was in; the log is scrolled to keep that beacon in view
     u8 logRow;
-    u8 unk0B;
+    u8 padding0B;
 } MedalInfoBeaconParam;
 
 // The beacon log's screen, suggested name MedalInfoBeacon_ProcFunctions

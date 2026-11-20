@@ -185,7 +185,7 @@ static void PokemonTradeDemoCommon_StartBgmTimer(PokemonTradeWork *wk) {
 
 static void PokemonTradeDemoCommon_StateWaitDemo(PokemonTradeWork *wk) {
     Poketrade3D_FadeTexturePalette(wk);
-    if (wk->unk854 == 1) {
+    if (wk->demoAnimDone == 1) {
         PokemonTradeDemoCommon_InitSide(wk, &wk->sentPkmReturns, &wk->sentPkmNoBounce, wk->partnerInfo, TRUE);
         PokemonTradeDemoCommon_InitSide(wk, &wk->recvPkmReturns, &wk->recvPkmNoBounce[0], wk->myInfo, FALSE);
         Poketrade3D_RemoveCurrentUnit(wk);
@@ -389,7 +389,7 @@ void PokemonTradeDemoCommon_Start(PokemonTradeWork *wk) {
     VecFx32 pos;
 
     PokemonTradeDemoCommon_StartBgmTimer(wk);
-    wk->unk854 = 1;
+    wk->demoAnimDone = 1;
     MCSS_SetAnimation(wk->mcss[0], 0);
     if (wk->type == TRADE_TYPE_GTS_DEPOSIT) {
         pos = sTradeDemoCommonPosEnd;

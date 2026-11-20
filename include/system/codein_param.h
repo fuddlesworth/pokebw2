@@ -24,7 +24,7 @@ struct CodeInParam {
     // How many digits the code has
     u32 length;
     int blocks[CODEIN_BLOCK_COUNT + 1];
-    u32 unk18;
+    u32 padding18;
     // The largest number accepted, in the modes other than the Friend Code's
     int max;
     // The code typed, length characters

@@ -22,13 +22,15 @@ typedef struct {
 
 struct HighLinkSave {
     PassPowerLevel levels;
-    u8 unk10[0x190];
+    // Never accessed: the block is cleared and saved whole
+    u8 padding10[0x190];
     // The pass power in each of the three slots, or HIGH_LINK_POWER_NONE
     u8 powers[HIGH_LINK_POWER_MAX];
     u8 padding1A3;
     // A bit for each special pass power received, numbered by PassPower_GetSPowerBaseID
     u8 specialFlags[2];
-    u8 unk1A6[6];
+    // Never accessed: the block is cleared and saved whole
+    u8 padding1A6[6];
     // The play time counted by HighLinkSave_CountPlaySeconds
     u64 seconds;
 };

@@ -54,7 +54,7 @@ struct CompatibleIrcSys {
     CompatibleIrcSync sync;
     int sentCount;
     int receivedCount;
-    int unk40;
+    int irTimeoutFrames;
     int state;
     u8 unk48[4];
     u32 negotiatedBits;
@@ -192,11 +192,11 @@ enum {
     PROFILE_WAIT,
 };
 
-CompatibleIrcSys *CompatibleIrcSys_Create(int unk40, GameData *gameData, HeapID heapId, BOOL disabled) {
+CompatibleIrcSys *CompatibleIrcSys_Create(int irTimeoutFrames, GameData *gameData, HeapID heapId, BOOL disabled) {
     CompatibleIrcSys *sys = GFL_HeapAllocate(heapId, sizeof(CompatibleIrcSys), FALSE, "compatible_irc_sys.c", 275);
 
     MI_CpuFill8(sys, 0, sizeof(CompatibleIrcSys));
-    sys->unk40 = unk40;
+    sys->irTimeoutFrames = irTimeoutFrames;
     sys->heapId = heapId;
     sys->syncStarted = FALSE;
     sys->disabled = disabled;
@@ -221,7 +221,7 @@ BOOL CompatibleIrcSys_StartNet(CompatibleIrcSys *sys) {
             sys->state = START_SYNC_INIT;
         } else {
             init = sCompatibleIrcSysNetInit;
-            init.irTimeout.frames = sys->unk40;
+            init.irTimeout.frames = sys->irTimeoutFrames;
             GFL_NetInit(&init, CompatibleIrcSys_NetInitDone, sys);
         }
         sys->state = START_WAIT;
@@ -431,12 +431,12 @@ static BOOL CompatibleIrcSys_Send(CompatibleIrcSys *sys, int command, u16 size, 
     return GFL_NetSendCommand(NetHandle_GetOwn(), command, size, data);
 }
 
-BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 a5, BOOL a6,
-                             BOOL noCopy) {
+BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 unused,
+                             BOOL noDuplicate, BOOL noCopy) {
     if (sys->disabled) {
         return TRUE;
     }
-    return GFL_NetSendCommandToMachine(NetHandle_GetOwn(), sendId, command, size, data, a5, a6, noCopy);
+    return GFL_NetSendCommandToMachine(NetHandle_GetOwn(), sendId, command, size, data, unused, noDuplicate, noCopy);
 }
 
 void CompatibleIrcSys_AddCommands(CompatibleIrcSys *sys, int base, const NetCommand *list, int count, void *work) {

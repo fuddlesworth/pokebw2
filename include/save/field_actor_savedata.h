@@ -29,9 +29,9 @@ typedef struct {
     u16 evType;
     u16 spawnFlag;
     u16 scrId;
-    u16 param0;
-    u16 param1;
-    u16 param2;
+    u16 userParam0;
+    u16 userParam1;
+    u16 userParam2;
     s16 defaultGPosX;
     s16 defaultGPosY;
     s16 defaultGPosZ;

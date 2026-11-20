@@ -87,7 +87,7 @@ ArcTool *LinkFestival_GetArchive(LinkFestival *festival) {
 
 void LinkFestival_FillMissionInfo(LinkFestival *festival, FestMissionInfo *info, u16 value) {
     *info = *festival->info;
-    info->unkC_0 = value;
+    info->logValue = value;
     info->seconds = LinkFestival_GetSecondsLeft(festival);
 }
 
@@ -490,11 +490,11 @@ static BOOL LinkFestival_HasRecord(LinkFestival *festival, FestMissionConfig *co
 
 static void FestMissionRecord_Set(FestMissionRecord *record, const FestMissionConfig *config) {
     record->mission.seed = config->seed;
-    record->mission.unk0 = config->unk00[0];
+    record->mission.unk0 = config->words[0];
 }
 
 static BOOL FestMissionRecord_Matches(const FestMissionRecord *record, const FestMissionConfig *config) {
-    if (record->mission.seed != config->seed || record->mission.unk0 != config->unk00[0]) {
+    if (record->mission.seed != config->seed || record->mission.unk0 != config->words[0]) {
         return FALSE;
     }
     return TRUE;

@@ -54,7 +54,7 @@ u32 JoinAvenueSave_GetSize(void) {
 }
 
 void JoinAvenueSave_Init(JoinAvenueSave *joinAvenue) {
-    MI_CpuFill8(joinAvenue, 0, offsetof(JoinAvenueSave, unk13E0));
+    MI_CpuFill8(joinAvenue, 0, offsetof(JoinAvenueSave, padding13E0));
     JoinAvenuePersonList_Init(JoinAvenue_GetPersonList(joinAvenue), JOIN_AVE_PERSON_COUNT);
     JoinAvenueEntryList_Init(JoinAvenue_GetEntryList(joinAvenue), JOIN_AVE_ENTRY_COUNT);
     JoinAvenueOccupants_Init(getAddressOfBeginningOfOccupants(joinAvenue));

@@ -19,7 +19,7 @@ typedef struct {
 // Layout from swan
 struct Field {
     u16 heapId;
-    u16 unk2;
+    u16 pad02;
     GameSystem *gameSystem;
     GameData *gameData;
     AreaData *areaData;
@@ -61,10 +61,10 @@ struct Field {
     u32 routineID;
     u8 subroutinePhase;
     u8 routineAlternator;
-    u16 unkDA;
+    u16 padDA;
     u32 framesSinceStart;
     u16 zoneId;
-    u16 unkE2;
+    u16 padE2;
     ZoneSpawnInfo playerZoneState;
     VecFx32 *playerPosPtr;
     VecFx32 playerPos;

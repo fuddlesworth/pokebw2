@@ -22,7 +22,8 @@ struct PlayerInfo {
     // The look of the player in the Union Room and on the Wi-Fi, 0 to 7 for a male player and 8 to 15 for a female
     u8 unionView;
     u8 gender;
-    u8 unk1E[2];
+    // Never accessed: copied as part of the player's info
+    u8 padding1E[2];
 };
 
 u16 *GetPlayerName(PlayerInfo *info);

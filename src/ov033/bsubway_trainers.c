@@ -44,7 +44,7 @@ BtlSetup *BsubwayScr_CreateBtlSetup(BSubwayScrWork *bsw, GameSystem *gsys) {
 
 // The legacy getter forwards opaque storage to the wireless-battle proc, which currently ignores it.
 void *BsubwayScr_GetNameInputEncounterWork(BSubwayScrWork *bsw) {
-    return bsw->unk74C;
+    return bsw->nameInputEncounterWork;
 }
 
 // The trainers of the super trains from the fifth streak on

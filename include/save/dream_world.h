@@ -26,7 +26,7 @@ struct DreamWorldSave {
     u8 itemCounts[DREAM_WORLD_ITEM_MAX];
     // The entries of the Dream World's result: a word that is 0x7e until a result comes, then a fixed string
     u16 results[DREAM_WORLD_RESULT_MAX][DREAM_WORLD_RESULT_WORDS];
-    u8 unk1A2;
+    u8 padding1A2;
     u8 asleep;
     // From the Dream World's result (DreamWorldSave_SetMode)
     u8 mode;
@@ -36,9 +36,9 @@ struct DreamWorldSave {
     // from the Dream World, which the Wi-Fi list's phrase-input script checks and clears
     u8 resultIndex : 7;
     u8 resultReceived : 1;
-    u8 unk1A7;
-    u8 unk1A8;
-    u8 unk1A9;
+    u8 padding1A7;
+    u8 padding1A8;
+    u8 padding1A9;
     u8 padding1AA[2];
 }; // size: 0x1ac
 

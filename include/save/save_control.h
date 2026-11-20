@@ -109,7 +109,7 @@ struct SaveControl {
     // The card holds a save
     u8 dataExists;
     // Cleared when both copies of the save loaded right
-    u8 unk2;
+    u8 loadNotClean;
     // TrainerDataSave_IsIntroSave at the start of a save, which canceling restores
     u8 wasIntroSave;
     // What SaveOutside told of the data outside the save

@@ -33,7 +33,7 @@ ScriptWork *ScriptWork_Create(HeapID heapId, GameSystem *gsys, GameEvent *event,
     work->event = event;
     work->scriptId = scriptId;
     work->parentActor = NULL;
-    work->unk20 = param;
+    work->param = param;
     work->featureLevel = featureLevel;
     reduced = FieldScript_IsVMFeatureSetReduced(featureLevel);
     work->reducedFeatureLevel = reduced;

@@ -67,7 +67,8 @@ typedef struct {
     // A bit for each Pokémon: whether it holds an item, and its gender
     u8 hasItem;
     u8 gender;
-    u8 unk14[0xa];
+    // Never accessed: a team is cleared and copied whole
+    u8 padding14[0xa];
 } TournamentTeam; // size: 0x1e
 
 struct TournamentBlock {

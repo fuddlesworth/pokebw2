@@ -185,14 +185,14 @@ typedef union {
         u16 species;
         u16 item;
         u16 passPower;
-        u16 unk06;
+        u16 padding06;
         u32 key;
     } gift;
     // Types 0x3c to 0x67: the Funfest mission's data (LinkFestival_FillMissionInfo)
     FestMissionInfo missionInfo;
     // Type 0x67's text, written over the mission's data after its first word
     struct {
-        u32 unk00;
+        u32 padding00;
         u16 text[8];
     } mission;
     // A Join Avenue visitor's shop choice and extra data, of the type's argument (JoinAvenueVisitor_StoreInBeacon)

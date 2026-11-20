@@ -237,7 +237,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
         if (flag) {
             isSet = TRUE;
         }
-        mainModule->unk46F = isSet;
+        mainModule->isSetStyle = isSet;
         BtlNet_Init(setup->fieldSituation.netHandle, setup->netClientMask, 0x14);
         BtlCalc_SetHeapID(HEAPID_BATTLE);
         if (setup->studioMode) {

@@ -2895,7 +2895,7 @@ static BOOL UnionOneself_StepPartySendRun(UnionSystem *unisys, UnionSelf *situ, 
     case UNION_ONESELF_PARTY_SEND_SEQ_RESET:
         Colosseum_ClearParties(clsys, TRUE);
         UnionEff_ClearColosseumPositionsReceived(clsys);
-        Colosseum_ResetUnk171(clsys);
+        Colosseum_ResetConfirmCount(clsys);
         NetHandle_SendTimingPair(NetHandle_GetOwn(), 0x14, 0x14);
         (*seq)++;
         break;

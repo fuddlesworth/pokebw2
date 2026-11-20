@@ -30,7 +30,7 @@ struct FieldLensFlare {
     GameSystem *gameSystem;
     // A lens flare, or LENS_FLARE_NONE
     u16 effectId;
-    u16 unk1e;
+    u16 pad1e;
     GameData *gameData;
 };
 

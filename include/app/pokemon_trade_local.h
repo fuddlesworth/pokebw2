@@ -298,7 +298,8 @@ struct PokemonTradeWork {
     G3DCamera *sceneCamera;
     MCSSSystem *mcssSys;
     MCSS *mcss[4];
-    u32 unk854;
+    // Set once the demo's first sprite has finished its animation, which the wait-demo states wait for
+    u32 demoAnimDone;
     u32 unk858;
     // The moves of the demo's sprites
     TradeMcssMove *mcssMoves[4];

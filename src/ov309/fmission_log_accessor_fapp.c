@@ -149,7 +149,7 @@ void FMissionLogFApp_EndMission(LinkFestival *festival, FMissionAppResult *resul
         result->item = festival->info->rewardItem;
         result->itemCount = festival->info->rewardItemCount;
         info = festival->info;
-        switch (info->unk8_30) {
+        switch (info->bonusMode) {
         case 1: {
             fx32 perLevel = FX_Div(FX32_CONST(result->seconds), FX32_CONST(15));
 

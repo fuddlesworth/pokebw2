@@ -156,7 +156,7 @@ void TradeMcssMove_Update(TradeMcssMove *move, PokemonTradeWork *wk) {
 
 void TradeMcssMove_StopAnimation(PokemonTradeWork *wk) {
     MCSS_PauseAnimation(wk->mcss[0]);
-    wk->unk854 = 1;
+    wk->demoAnimDone = 1;
 }
 
 void TradeMcssMove_Free(TradeMcssMove *move) {

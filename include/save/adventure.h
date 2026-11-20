@@ -33,7 +33,8 @@ struct AdventureSave {
     u8 birthdayMonth;
     u8 birthdayDay;
     AdventureTime time;
-    u8 unk48[0x14];
+    // Never accessed: the block is cleared and saved whole
+    u8 padding48[0x14];
 };
 
 u32 getSizeofAdventureDataBlk(void);

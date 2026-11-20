@@ -19,7 +19,8 @@ struct GameSystemProcData {
     GameEntryPoint entryPoint;
     VecFx32 spawnPos;
     u16 zoneId;
-    u16 unk12;
+    // The player's facing direction when continuing the game
+    u16 rotation;
 };
 
 // The game itself, from the title screen's choice to the reset: the process that owns the game data, the field map,
@@ -38,7 +39,7 @@ struct GameSystem {
     // NULL while the field map is down
     Field *field;
     GameCommSys *comm;
-    u32 unk28;
+    u32 padding28;
     ISS *iss;
     LinkFestival *festival;
     // Set when a communication error is found, so that the field shows it, and cleared with the error
@@ -54,7 +55,7 @@ struct GameSystem {
 extern const GameProcFunctions GAMESYSTEM_PROC_FUNCTIONS;
 extern GameSystem *g_GameSystem;
 
-GameSystemProcData *GameSystem_CreateProcData(GameEntryPoint entryPoint, u16 zoneId, VecFx32 *spawnPos, s16 unk12);
+GameSystemProcData *GameSystem_CreateProcData(GameEntryPoint entryPoint, u16 zoneId, VecFx32 *spawnPos, s16 rotation);
 Field *GSYS_GetField(GameSystem *gsys);
 // A VBlank task that draws from the random generator, which the anti-piracy checks add when they fail, and how many
 // they added

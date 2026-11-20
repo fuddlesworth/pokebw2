@@ -14,7 +14,7 @@ struct MapMatrix {
     u16 width;
     u16 height;
     u16 format;
-    u16 unk0E;
+    u16 pad0E;
     u32 chunkIdCount;
     u16 zoneIds[900];
     u32 chunkIds[900];

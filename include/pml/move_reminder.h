@@ -33,7 +33,8 @@ struct MoveReminderProcessData {
     // The cursor's row in the list and the list's first row, kept while the summary screen is shown
     u16 cursorPos;
     u16 scroll;
-    u8 unk18;
+    // Never accessed: the struct is cleared on create
+    u8 padding18;
     u8 mode;
     u8 status;
     // The slot of the move that the new one replaces, 4 if none was picked

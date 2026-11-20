@@ -288,7 +288,7 @@ GameEventReturnCode EventIRC_Callback(GameEvent *event, u32 *state, void *data) 
     case IRC_STEP_SETUP_BATTLE:
         work->btlSetup = BtlSetup_Create(HEAPID_GAMEEVENT);
         work->records = GameData_GetRecords(work->gameData);
-        work->players.unk4C = 0;
+        work->players.counter = 0;
         switch (work->mode) {
         case IRCBATTLEMATCH_MODE_SINGLE:
             work->players.demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;

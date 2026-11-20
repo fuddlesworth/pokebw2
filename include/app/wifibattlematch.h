@@ -27,7 +27,7 @@ struct WifiBattleMatchPlayer {
     PlayerInfo info;
     // The console's address, which the live competition keeps of the players it met
     u8 mac[6];
-    u8 unk26[2];
+    u8 padding26[2];
     // The wins, losses and battles played of the record: the live competition's LIVEMATCH_COUNT_WON,
     // LIVEMATCH_COUNT_LOST and LIVEMATCH_COUNT_PLAYED, or the random matches' RNDMATCH_FIELD_WIN and
     // RNDMATCH_FIELD_LOSE

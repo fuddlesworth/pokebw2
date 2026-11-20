@@ -24,7 +24,7 @@ typedef struct {
     u8 isNewRecord;
     // A bit for each Pokémon of the cast whose Pokéstar fame is at level 2 or more
     u8 famousCast;
-    u8 unk13;
+    u8 padding13;
 } PokewoodRecord;
 
 // BtlSetup fields that only Pokéstar Studios' block keeps

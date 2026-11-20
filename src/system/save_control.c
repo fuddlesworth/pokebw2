@@ -46,7 +46,7 @@ SaveControl *SaveControl_Create(HeapID heapId) {
     ctrl = GFL_HeapAllocate(heapId, sizeof(SaveControl), TRUE, "save_control.c", 81);
     SaveControlWork = ctrl;
     ctrl->newGame = TRUE;
-    ctrl->unk2 = TRUE;
+    ctrl->loadNotClean = TRUE;
     ctrl->dataExists = FALSE;
     ctrl->sv = SaveData_InitMain(&save_block_data, heapId);
     ctrl->memoryLink = GFL_HeapAllocate(heapId, sizeof(MemoryLinkSave), TRUE, "save_control.c", 87);
@@ -60,7 +60,7 @@ SaveControl *SaveControl_Create(HeapID heapId) {
     ctrl->errors = 0;
     switch (result) {
     case SAVE_LOAD_RESULT_OK:
-        ctrl->unk2 = FALSE;
+        ctrl->loadNotClean = FALSE;
         // fallthrough
     case SAVE_LOAD_RESULT_OK_PARTIAL:
         ctrl->newGame = FALSE;
@@ -270,7 +270,7 @@ void SaveControl_SetGiftsBroken(SaveControl *save, u32 value) {
 
 void SaveControl_InitNewGame(SaveControl *save) {
     save->newGame = TRUE;
-    save->unk2 = TRUE;
+    save->loadNotClean = TRUE;
     initSaveBlkCallbacks(save->sv);
 }
 

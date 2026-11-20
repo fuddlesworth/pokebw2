@@ -187,7 +187,7 @@ static void PokemonTradeIrcDemo_StartBgmTimer(PokemonTradeWork *wk) {
 
 static void PokemonTradeIrcDemo_StateWaitDemo(PokemonTradeWork *wk) {
     Poketrade3D_FadeTexturePalette(wk);
-    if (wk->unk854 == 1) {
+    if (wk->demoAnimDone == 1) {
         PokemonTradeIrcDemo_InitSide(wk, &wk->sentPkmReturns, &wk->sentPkmNoBounce, wk->partnerInfo, TRUE);
         PokemonTradeIrcDemo_InitSide(wk, &wk->recvPkmReturns, &wk->recvPkmNoBounce[0], wk->myInfo, FALSE);
         Poketrade3D_RemoveCurrentUnit(wk);
@@ -396,7 +396,7 @@ void PokemonTradeIrcDemo_StartMove(PokemonTradeWork *wk, int index) {
 
 void PokemonTradeIrcDemo_Start(PokemonTradeWork *wk) {
     PokemonTradeIrcDemo_StartBgmTimer(wk);
-    wk->unk854 = TRUE;
+    wk->demoAnimDone = TRUE;
     MCSS_SetAnimation(wk->mcss[0], 0);
     MCSS_PauseAnimation(wk->mcss[0]);
     if (wk->type == TRADE_TYPE_IRCDEMO) {

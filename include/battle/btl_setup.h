@@ -76,7 +76,8 @@ typedef struct {
     u32 trainerClass;
     u32 aiFlags;
     u16 items[4];
-    u8 unk14[4];
+    // The trainer's name pointer, unused in the packet: the name is sent as characters (name)
+    u8 namePtrUnused[4];
     PMSData winWords;
     PMSData loseWords;
     u16 name[0x20];
@@ -170,7 +171,7 @@ struct BtlSetup {
     RegulationShooterSettings shooterSettings;
     // The player's badges
     u8 badgeCount;
-    u8 unk99[3];
+    u8 padding99[3];
     // BtlSetup_SetFlag sets these
     u32 flags;
     // The clients BtlNet_Init links in a battle over the network (BtlSetup_SetNetImpl sets 0xff)
@@ -183,8 +184,8 @@ struct BtlSetup {
     // The slot of the caught Pokémon in the second party, or 6 if none was caught
     u8 capturedSlot;
     u8 commonVersion;
-    u8 unkAE;
-    u8 unkAF;
+    u8 paddingAE;
+    u8 paddingAF;
     void *recBuffer;
     u32 recSize;
     // The battle's random state, which the main module copies back
@@ -231,7 +232,7 @@ struct BtlSetup {
     u8 appeared[6];
     // The state of each client's Pokémon at the end, by party slot: 0 well, 1 with a status condition, 2 fainted
     u8 monStatus[4][6];
-    u8 unkFF;
+    u8 paddingFF;
     // Each client's remaining HP, in percent of its party's total
     u32 hpPercent[4];
     // The choice made in each scene of a Pokéstar Studios movie, which its playback shows again

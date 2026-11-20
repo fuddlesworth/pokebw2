@@ -21,9 +21,9 @@ void DreamWorldSave_Init(DreamWorldSave *dreamWorld) {
     MI_CpuFill8(dreamWorld, 0, DreamWorldSave_GetSize());
     DreamWorldSave_SetSyncDate(dreamWorld, DREAM_WORLD_SYNC_DATE_NONE);
     dreamWorld->lastResultId = -1;
-    dreamWorld->unk1A7 = 0;
-    dreamWorld->unk1A8 = 0;
-    dreamWorld->unk1A9 = 0;
+    dreamWorld->padding1A7 = 0;
+    dreamWorld->padding1A8 = 0;
+    dreamWorld->padding1A9 = 0;
     dreamWorld->resultIndex = DREAM_WORLD_RESULT_INDEX_NONE;
     for (i = 0; i < DREAM_WORLD_RESULT_MAX; i++) {
         dreamWorld->results[i][0] = DREAM_WORLD_RESULT_NONE;

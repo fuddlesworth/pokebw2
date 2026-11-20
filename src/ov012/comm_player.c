@@ -139,7 +139,7 @@ BOOL CommPlayer_GetMyStatus(CommPlayerSys *cps, CommPlayerStatus *status) {
     FieldPlayer *player;
     FieldActor *actor;
 
-    if (cps->unk8F == TRUE) {
+    if (cps->updateStopped == TRUE) {
         return FALSE;
     }
     state = GameData_GetPlayerState(gameData);

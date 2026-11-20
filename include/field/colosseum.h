@@ -18,9 +18,9 @@
 #define COLOSSEUM_VOTE_NONE 0xff
 #define COLOSSEUM_VOTE_REPLY_NONE 0xff
 
-// What a player sends the others (0x14 bytes, command 0x1503)
+// What a player sends the others (0x14 bytes, command 0x1503): the player's own status, as CommPlayerStatus
 typedef struct {
-    u32 unk00[5];
+    u32 status[5];
 } ColosseumChoice;
 
 // A player of the colosseum
@@ -30,7 +30,7 @@ typedef struct {
     u8 present; // TRUE once the player's info is here
     // Whether the parent's entry menu takes the player in without asking: FALSE for one who joined a recruit
     u8 autoAccept;
-    // Copied to BattlePlayer.unk08[1], also filled from WifiBattleMatchPlayer.battleRecordVersion.
+    // Copied to BattlePlayer.battleRecordVersion, also filled from WifiBattleMatchPlayer.battleRecordVersion.
     u8 battleRecordVersion;
 } ColosseumMember;
 
@@ -51,7 +51,8 @@ struct UnionColosseum {
     u8 relinkRequested : 1;
     u8 unkC8_2 : 6;
     u8 exiting; // set when the player leaves: the colosseum is freed once the field closes
-    u8 unkCA;
+    // The parent cancelled the player's entry (command 0x1409)
+    u8 entryCancelled;
     u8 allReady; // the parent's COLOSSEUM_CMD_ALL_READY arrived
     // Each player's vote for an entry spot (UnionEff_GetEntrySpot's index), which the parent holds, 0xff for none
     u8 vote[4];
@@ -75,9 +76,10 @@ struct UnionColosseum {
     // Each player's entry spot, which the parent sends from the votes; bit 0 of a spot is its team
     u8 positions[4];
     u8 positionsReceived;
-    u8 unk171;
+    // The confirm commands received, which the party-send sequence clears
+    u8 confirmCount;
     u8 leaving[4]; // the players who sent COLOSSEUM_CMD_LEAVE
-    u8 unk176[2];
+    u8 pad176[2];
     CommEntryMenu *entryMenu; // the menu that gathers the players for a multi battle
     u8 talkTarget;            // the player spoken to, by net ID
     u8 partySource;           // 0 for the party, 1 for the Battle Box
@@ -109,7 +111,7 @@ u8 Colosseum_GetMyVoteReply(const UnionColosseum *colosseum);
 void Colosseum_SendVoteReplies(UnionColosseum *colosseum);
 void Colosseum_UpdateReadySync(UnionColosseum *colosseum);
 u8 Colosseum_TakeChoice(UnionColosseum *colosseum, u32 netId, ColosseumChoice *choice);
-void Colosseum_ResetUnk171(UnionColosseum *colosseum);
+void Colosseum_ResetConfirmCount(UnionColosseum *colosseum);
 BOOL Colosseum_AreAllPartiesReceived(const UnionColosseum *colosseum);
 void Colosseum_ClearParties(UnionColosseum *colosseum, BOOL keepOwn);
 void Colosseum_BuildBattlePlayers(UnionColosseum *colosseum, GameSystem *gsys, ColosseumPlayers *players, u32 unused);

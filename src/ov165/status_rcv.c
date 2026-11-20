@@ -474,7 +474,7 @@ BOOL StatusRcv_UseItem(PartyPkm *pkm, u16 item, u16 pos, u16 zoneId, u32 heapId)
             return changed;
         }
     } else if (friendship >= 200 && friendship <= 255) {
-        if (PML_ItemGetParam(data, ITEM_PARAM_UNK_51) != 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_4) != 0) {
             StatusRcv_ChangeFriendship(pkm, friendship, PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3), item, zoneId,
                                        heapId);
             GFL_HeapFree(data);
@@ -581,7 +581,7 @@ static BOOL StatusRcv_CanChangeFriendship(PartyPkm *pkm, ItemData *data) {
         return FALSE;
     }
     if (friendship >= 200 && friendship < 255) {
-        if (PML_ItemGetParam(data, ITEM_PARAM_UNK_51) != 0 && PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3) > 0) {
+        if (PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_UP_4) != 0 && PML_ItemGetParam(data, ITEM_PARAM_FRIENDSHIP_3) > 0) {
             return TRUE;
         }
         return FALSE;

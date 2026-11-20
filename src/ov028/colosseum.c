@@ -170,8 +170,8 @@ u8 Colosseum_TakeChoice(UnionColosseum *colosseum, u32 netId, ColosseumChoice *c
     return ready;
 }
 
-void Colosseum_ResetUnk171(UnionColosseum *colosseum) {
-    colosseum->unk171 = 0;
+void Colosseum_ResetConfirmCount(UnionColosseum *colosseum) {
+    colosseum->confirmCount = 0;
 }
 
 BOOL Colosseum_AreAllPartiesReceived(const UnionColosseum *colosseum) {
@@ -245,5 +245,5 @@ void Colosseum_ClearPlayers(ColosseumPlayers *players) {
 static void Colosseum_SetPlayer(UnionColosseum *colosseum, BattlePlayer *player, u8 index, u32 unused) {
     player->party = colosseum->party[index];
     player->info = &colosseum->members[index].info;
-    player->unk08[1] = colosseum->members[index].battleRecordVersion;
+    player->battleRecordVersion = colosseum->members[index].battleRecordVersion;
 }

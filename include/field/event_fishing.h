@@ -16,7 +16,7 @@ struct FishingEventWork {
     s16 gridX;
     s16 gridY;
     s16 gridZ;
-    u16 unk26;
+    u16 pad26;
     u32 playerExState;
     // The emotion bubble of a bite, and the line in the water
     FieldEffectTask *bubble;

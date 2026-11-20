@@ -259,7 +259,7 @@ static void Colosseum_RecvUnkC(int netId, int size, const void *data, void *work
     UnionColosseum *colosseum = unisys->colosseum_sys;
 
     if (colosseum != NULL) {
-        colosseum->unk171++;
+        colosseum->confirmCount++;
     }
 }
 

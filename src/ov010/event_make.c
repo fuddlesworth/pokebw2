@@ -265,7 +265,7 @@ BOOL BattleProc_Main(GameProc *proc, u32 *state, void *param, void *work) {
         battle->ov306Param.comm = 1;
         battle->ov306Param.recorded = 1;
         battle->ov306Param.mode = battle->rule;
-        battle->ov306Param.counter = battle->unk10;
+        battle->ov306Param.counter = battle->counter;
         QueueGameProc(procWork->manager, OVERLAY_ID(306), &BtlRecSelProcFunctions, &battle->ov306Param);
         *state = PROC_STEP_SAVE_SELECT_WAIT;
         break;
@@ -312,7 +312,7 @@ GameEventReturnCode EventMake_Callback(GameEvent *event, u32 *state, void *data)
         param->setup = work->setup;
         param->players = work->players;
         param->rule = work->players->rule;
-        param->unk10 = work->players->unk4C;
+        param->counter = work->players->counter;
         param->markNetErrShown = work->markNetErrShown;
         GSYS_QueueProc(gsys, -1, &data_ov010_0215039c, param);
         (*state)++;

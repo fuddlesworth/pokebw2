@@ -311,7 +311,7 @@ static void PokemonTradeDemoDown_AttachEmitterPath1(SPLEmitter *emitter) {
 
 void PokemonTradeDemoDown_Start(PokemonTradeWork *wk) {
     PokemonTradeDemoDown_StartBgmTimer(wk);
-    wk->unk854 = TRUE;
+    wk->demoAnimDone = TRUE;
     MCSS_SetAnimation(wk->mcss[0], 0);
     MCSS_Hide(wk->mcss[0]);
     MCSS_Hide(wk->mcss[1]);

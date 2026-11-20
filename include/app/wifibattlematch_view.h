@@ -45,14 +45,14 @@ enum {
 typedef struct {
     // The entry's data, which starts with the player's name
     u8 data[0x92];
-    u8 unk92[2];
+    u8 padding92[2];
     // Dates, as the year since 2000, the month and the day in the bytes from the top
     u32 startDate;
     u32 endDate;
     // The player's appearance (PlayerInfo_GetUnionView)
     u32 look;
     u16 rating;
-    u8 unkA2[2];
+    u8 paddingA2[2];
     u32 matchCount;
     u16 unkA8;
     // Field 11 of the entry, which picks the card's colors
@@ -61,7 +61,7 @@ typedef struct {
 
 typedef struct {
     u8 data[0x92];
-    u8 unk92[2];
+    u8 padding92[2];
     u32 startDate;
     u32 endDate;
     u32 look;
@@ -71,7 +71,7 @@ typedef struct {
     u16 maxBattles;
     // Field 11 of the entry, which picks the card's colors
     u16 variant;
-    u8 unkAA[2];
+    u8 paddingAA[2];
 } WifiBattleMatchLiveCardInfo;
 
 // What the rank card shows
@@ -79,7 +79,7 @@ typedef struct {
     // The message of the title is this plus 2
     u32 titleMsg;
     u16 rating;
-    u8 unk6[2];
+    u8 padding6[2];
     // The player's appearance
     u32 look;
     u32 matchCount;

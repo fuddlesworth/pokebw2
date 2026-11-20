@@ -112,7 +112,7 @@ struct FieldG3DMapper {
     s32 maxConcurrentDrawChunkByteSize;
     u8 chunkSizeCapPassingChunkEndIdx;
     u8 nowDrawScanline;
-    u16 unk4E;
+    u16 pad4E;
     // The VBlank count at the chunks' last loader update (our name)
     u32 loaderUpdateVBlank;
     VecFx32 chunkBasePos;

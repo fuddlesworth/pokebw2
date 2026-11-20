@@ -1513,7 +1513,7 @@ void BattleMon_ClearDamageRecords(BattleMon *mon) {
     MI_CpuFill8(mon->damageRecords, 0, sizeof(mon->damageRecords));
     MI_CpuFill8(mon->damageRecordCounts, 0, sizeof(mon->damageRecordCounts));
     mon->damageRecordTurn = 0;
-    mon->unk1f0 = 0;
+    mon->damageRecordSpare = 0;
 }
 
 void BattleMon_AdvanceDamageRecordTurn(BattleMon *mon) {

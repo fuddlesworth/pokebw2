@@ -1009,8 +1009,8 @@ static s32 PML_ItemGetBattleStat(ItemParams *params, u32 param) {
         return params->friendshipUp2;
     case ITEM_PARAM_FRIENDSHIP_UP_3:
         return params->friendshipUp3;
-    case ITEM_PARAM_UNK_51:
-        return params->unk6_4;
+    case ITEM_PARAM_FRIENDSHIP_UP_4:
+        return params->friendshipUp4;
     case ITEM_PARAM_HP_EV:
         return params->hpEV;
     case ITEM_PARAM_ATTACK_EV:
