@@ -182,7 +182,7 @@ typedef struct {
 
 // What SEQ_DECIDE_WAIT waits for: an actor's animation or a button's flash, and the sequence that follows
 typedef struct {
-    u8 unk00[6];
+    u8 padding00[6]; // Never read or written; six bytes before index
     u16 index;
     u16 seq;
     u16 type;
@@ -197,7 +197,7 @@ typedef struct {
     StrBuf *ppLabel;
     StrBuf *ppFormat;
     ListMenuOption *moveList;
-    u32 unk5C;
+    u32 padding5C; // Never read or written
     Font *font;
     TCBExManager *tcbManager;
     TCB *vblankTcb;
@@ -205,21 +205,21 @@ typedef struct {
     u32 chars[RESOURCE_COUNT];
     u32 palettes[RESOURCE_COUNT];
     u32 cellAnims[RESOURCE_COUNT];
-    u32 unkDC[RESOURCE_COUNT];
+    u32 paddingDC[RESOURCE_COUNT]; // Never read or written; a fourth resource array, which nothing loads
     ClActUnit *unit;
     ClActor *actors[ACTOR_COUNT];
     ArcTool *commonArc;
     // The type icons whose characters the next VBlank loads
     MoveTutorTypeIcon typeIcons[TYPE_ICON_COUNT];
     PStatusParam status;
-    u8 unk1A8[8];
+    u8 padding1A8[8]; // Never read or written; eight bytes before nextSeq
     u32 nextSeq;
-    u32 unk1B4;
+    u32 padding1B4; // Never read or written
     u8 moveCount;
-    u8 unk1B9;
+    u8 padding1B9; // Never read or written
     u8 yesNo;
-    u8 unk1BB;
-    u8 unk1BC;
+    u8 unk1BB; // Cleared in MoveTutor_InitList, never read
+    u8 unk1BC; // Set to the cursor's row in MoveTutor_InitList, never read
     void *screenBuffer;
     NNSG2dScreenData *screen;
     CursorMove *cursor;
@@ -230,7 +230,7 @@ typedef struct {
     AppTaskMenu *menu;
     AppTaskMenuItem buttonItems[2];
     AppTaskMenuItem yesNoItems[2];
-    u32 unk214;
+    u32 padding214; // Never read or written
     PrintQueue *printQueue;
     KeyCursor *keyCursor;
     AppTaskMenuWin *buttons[2];
@@ -261,18 +261,18 @@ typedef struct {
 typedef struct {
     s16 x;
     s16 y;
-    u16 unk04;
+    u16 padding04; // No code reads it
     u16 sequence;
     u32 priority;
-    u32 unk0C;
+    u32 padding0C; // No code reads it
     u32 surface;
     // Indices of the work's resources
     u32 chars;
     u32 palette;
     u32 cellAnims;
-    u32 unk20;
+    u32 padding20; // No code reads it
     u32 bgPriority;
-    u32 unk28;
+    u32 padding28; // No code reads it
 } MoveTutorActorData;
 
 static BOOL MoveTutorProc_Init(GameProc *proc, u32 *state, void *param, void *work);
