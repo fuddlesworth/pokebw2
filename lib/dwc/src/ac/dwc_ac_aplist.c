@@ -157,7 +157,7 @@ static u8 MakeUserList(ACWORK *work) {
                     count++;
                     target++;
                 }
-                if (ds->ap.setType == 1) {
+                if (ds->ap.setType == DWC_SETTYPE_AOSS) {
                     if (AddTarget(target, ds->ap.aossSsid, i + 3)) {
                         count++;
                         target++;
@@ -175,7 +175,7 @@ static u8 MakeUserList(ACWORK *work) {
                         count++;
                         target++;
                     }
-                    if (dsi->base.ap.setType == 1 || dsi->base.ap.setType == 0x11) {
+                    if (dsi->base.ap.setType == DWC_SETTYPE_AOSS || dsi->base.ap.setType == 0x11) {
                         if (AddTarget(target, dsi->base.ap.aossSsid, i + 9)) {
                             count++;
                             target++;

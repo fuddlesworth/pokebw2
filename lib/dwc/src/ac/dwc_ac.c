@@ -280,7 +280,10 @@ static void DWC_AC_SetSpecifyAp(const u8 *ssid, const u8 *key, u32 wepMode) {
         work->userInfo[0].ap.wepMode = 0;
         return;
     }
-    MI_CpuCopy8(key, work->userInfo[0].ap.wepKey[0], wepMode == 1 ? 5 : wepMode == 2 ? 13 : 16);
+    MI_CpuCopy8(key, work->userInfo[0].ap.wepKey[0],
+                wepMode == DWC_WEPMODE_40    ? 5
+                : wepMode == DWC_WEPMODE_104 ? 13
+                                             : 16);
     work->userInfo[0].ap.wepMode = wepMode;
 }
 

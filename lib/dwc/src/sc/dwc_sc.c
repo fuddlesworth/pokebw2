@@ -280,23 +280,23 @@ static void Sc_OnLogin(GHTTPResult status, WSLoginResponse *result, void *userDa
 
 static int Sc_GetErrorType(int error) {
     switch (error) {
-    case 0:
+    case SCResult_NO_ERROR:
         return 0;
-    case 5:
+    case SCResult_OUT_OF_MEMORY:
         return 9;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
+    case SCResult_NO_AVAILABILITY_CHECK:
+    case SCResult_INVALID_PARAMETERS:
+    case SCResult_NOT_INITIALIZED:
+    case SCResult_CORE_NOT_INITIALIZED:
+    case SCResult_CALLBACK_PENDING:
+    case SCResult_HTTP_ERROR:
+    case SCResult_UNKNOWN_RESPONSE:
+    case SCResult_RESPONSE_INVALID:
+    case SCResult_REPORT_INCOMPLETE:
+    case SCResult_REPORT_INVALID:
+    case SCResult_SUBMISSION_FAILED:
+    case SCResult_UNKNOWN_ERROR:
+    case SCResultMax:
     default:
         return 0x14;
     }
@@ -314,24 +314,24 @@ static int Sc_SetAuthError(int error) {
         return 0;
     }
     switch (error) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 0x64:
-    case 0x65:
-    case 0x66:
-    case 0x67:
-    case 0x69:
-    case 0x6a:
-    case 0x6b:
-    case 0x6c:
+    case WSLogin_ServerInitFailed:
+    case WSLogin_UserNotFound:
+    case WSLogin_InvalidPassword:
+    case WSLogin_InvalidProfile:
+    case WSLogin_UniqueNickExpired:
+    case WSLogin_DBError:
+    case WSLogin_ServerError:
+    case WSLogin_HttpError:
+    case WSLogin_ParseError:
+    case WSLogin_InvalidCertificate:
+    case WSLogin_LoginFailed:
+    case WSLogin_InvalidParameters:
+    case WSLogin_NoAvailabilityCheck:
+    case WSLogin_Cancelled:
+    case WSLogin_UnknownError:
         code -= 8;
         break;
-    case 0x68:
+    case WSLogin_OutOfMemory:
         type = 9;
         code -= 6;
         break;

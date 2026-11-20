@@ -107,7 +107,7 @@ static void sciWsCreateSessionCallback(GHTTPResult status, GSXmlStreamWriter unu
             if (!gsXmlReadChildAsInt(reader, "result", &result)) {
                 error = 9;
             } else {
-                if (error != 9) {
+                if (error != SCResult_RESPONSE_INVALID) {
                     if (result == 0) {
                         if (!gsXmlReadChildAsStringNT(reader, "csid", csid, sizeof(csid)) ||
                             !gsXmlReadChildAsStringNT(reader, "ccid", ccid, sizeof(ccid))) {

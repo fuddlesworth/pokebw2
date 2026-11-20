@@ -455,7 +455,7 @@ static BOOL DWCi_Ndi_getApInfo(char *dest) {
         } else if (sNdApInfo.aptype >= 10 && sNdApInfo.aptype < 100) {
             DWCi_Ndi_intToStr(info, sNdApInfo.aptype);
         }
-        if (sNdApInfo.aptype == 4 || sNdApInfo.aptype == 8) {
+        if (sNdApInfo.aptype == DWC_APINFO_TYPE_SHOP || sNdApInfo.aptype == DWC_APINFO_TYPE_NINTENDOSPOT) {
             if (sNdApInfo.area >= 0 && sNdApInfo.area < 10) {
                 info[3] = '0' + sNdApInfo.area;
             }
