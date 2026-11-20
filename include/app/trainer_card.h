@@ -120,11 +120,11 @@ typedef struct {
     NNSG2dCharacterData *charData;
     // 0 the front, 1 the back
     int side;
-    u8 unk303C[4];
+    u8 padding303C[4];
     // The card's affine BGs: the scale while it flips or zooms, and its center
     fx32 scaleX;
     fx32 scaleY;
-    u8 unk3048[4];
+    u8 padding3048[4];
     s32 flipAngle;
     int centerX;
     int centerY;
@@ -134,14 +134,14 @@ typedef struct {
     u16 zoomSide;
     u16 zoomed;
     BOOL touchMode;
-    u8 unk3068[0xc];
+    u8 padding3068[0xc];
     TrainerCardObjWork obj;
     u8 unk315C[0x84];
     u32 unk31E0;
-    u8 unk31E4[0x10];
+    u8 padding31E4[0x10];
     void *scrRes;
     NNSG2dScreenData *scrData;
-    u8 unk31FC[8];
+    u8 padding31FC[8];
     void *palRes;
     NNSG2dPaletteData *palData;
     int palFrame;
@@ -160,27 +160,27 @@ typedef struct {
     StrBuf *formats[5];
     // What the Hall of Fame row shows before the first entry
     StrBuf *noClearBuf;
-    u8 unk32CC[8];
+    u8 padding32CC[8];
     PMSDraw *pmsDraw;
     u8 badges[16];
     u8 unk32E8;
-    u8 unk32E9;
+    u8 padding32E9;
     u8 subSeq;
     // The eraser button's blinking while the eraser is chosen
     u8 blinkCount;
     u8 blinkMode;
-    u8 unk32ED;
+    u8 padding32ED;
     u8 isCleared : 1;
     u8 isOnline : 1;
     u8 affineDirty : 1;
     PrintQueue *printQueue;
-    u8 unk32F4[4];
+    u8 padding32F4[4];
     u8 frameType;
     u8 msgSpeed;
     u8 frame;
     u32 touchX;
     u32 touchY;
-    u8 unk3304[2];
+    u8 padding3304[2];
     // The back's list: how far it is scrolled (0 or less), where it was last frame, and where the touch that drags it
     // started
     s16 scroll;

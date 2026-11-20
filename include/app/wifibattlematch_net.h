@@ -190,9 +190,9 @@ typedef struct {
     s32 eloRatingShooter;
     s32 eloRatingSingle;
     s32 eloRatingTriple;
-    s32 unk14;
+    s32 padding14;
     s32 cheatsCounter;
-    s32 unk1C;
+    s32 padding1C;
     s32 disconnectsCounter;
     s32 numDoubleLose;
     s32 numDoubleWin;

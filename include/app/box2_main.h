@@ -310,7 +310,7 @@ struct Box2SysWork {
     u8 closeButtonState;
     u8 summaryButtonState;
     u8 searchButtonState;
-    u8 unk23;
+    u8 padding23;
     u32 curRcvPos;
     int nextSeq;
     Box2AppWork *app;
@@ -489,7 +489,7 @@ struct Box2AppWork {
     WordSet *wordSet;
     StrBuf *expandBuf;
     PrintQueue *printQueue;
-    u32 unk98;
+    u32 padding98;
     PrintWindow windows[BOX2_WIN_MAX];
     u8 flushChar[4];
     u32 cursorChars;
@@ -513,7 +513,7 @@ struct Box2AppWork {
     u32 palRes[BOX2_PAL_RES_MAX];
     u32 cellRes[BOX2_CELL_RES_MAX];
     u16 pokegraSwap;
-    u16 unkA546;
+    u16 paddingA546;
     u32 oldCurPos;
     u16 getItem;
     u16 getItemInitPos;
@@ -534,7 +534,7 @@ struct Box2AppWork {
     u8 wallpaperPos;
     // A BOX2_WALLPAPER_* category, or BOX2_WALLPAPER_THEME_MENU
     u8 wallpaperTheme;
-    u8 unkA55D;
+    u8 paddingA55D;
     // Where the hand puts a Pokémon or an item
     u8 pokePutKey;
     // The box picked in the box list or the box jump

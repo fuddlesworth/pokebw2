@@ -52,7 +52,7 @@ typedef struct {
     // The battle the players chose: its mode (single, double, triple, rotation) and its rule (no restrictions, flat)
     u8 battleMode;
     u8 battleRule;
-    u8 unk23;
+    u8 padding23;
     // Each friend's call counter (WIFI_STATUS_GetCallCounter) when the player last answered a call of that friend
     u8 callCounter[0x20];
     // Whether each machine of the connection uses voice chat, by net ID

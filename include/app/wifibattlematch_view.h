@@ -54,7 +54,9 @@ typedef struct {
     u16 rating;
     u8 paddingA2[2];
     u32 matchCount;
-    u16 unkA8;
+    // The competition's maximum battles, which the Wi-Fi card never fills (always 0), parallel to
+    // WifiBattleMatchLiveCardInfo.maxBattles
+    u16 maxBattles;
     // Field 11 of the entry, which picks the card's colors
     u16 variant;
 } WifiBattleMatchWifiCardInfo;

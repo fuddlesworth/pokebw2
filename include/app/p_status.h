@@ -67,7 +67,7 @@ typedef struct {
     u8 result;
     u16 move;
     BOOL isNationalDex;
-    u8 unk1C[4];
+    u8 padding1C[4];
     // X closes the menu and Y registers a page to the shortcut menu
     BOOL fromFieldMenu;
     // Leave the screen at once

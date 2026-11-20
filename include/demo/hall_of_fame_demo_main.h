@@ -125,7 +125,7 @@ typedef struct {
     u32 scene;
     u32 seHandle;
     G3DManager *g3dMgr;
-    u32 unk14;
+    u32 padding14;
     MCSSSystem *mcssSys;
     MCSS *mcss;
     G3DCamera *camera;

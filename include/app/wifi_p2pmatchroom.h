@@ -131,7 +131,7 @@ typedef struct {
 struct WIFI_MATCHROOM {
     BOOL init;
     u32 heapId;
-    u32 unk8;
+    u32 padding8;
     // Whether the player's keys are ignored
     BOOL playerPause;
     // Never set

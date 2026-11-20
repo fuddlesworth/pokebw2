@@ -23,7 +23,7 @@ typedef struct {
     u32 pos;
     StaActEffect *effect;
     fx32 speed;
-    u32 unk10;
+    u32 padding10;
 } StaActPokeItemWork;
 
 struct StaActPoke {

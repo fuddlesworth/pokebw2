@@ -199,7 +199,7 @@ typedef struct {
 } DrawingMember;
 
 typedef struct DrawingWork {
-    u32 unk0;
+    u32 padding0;
     DrawingParam *param;
     TCB *vblankTcb;
     Font *font;
@@ -208,7 +208,7 @@ typedef struct DrawingWork {
     StrBuf *nameBufs[DRAWING_MEMBER_MAX];
     StrBuf *endBuf;
     StrBuf *msgBuf;
-    u32 unk34;
+    u32 padding34;
     ClActUnit *actorUnit;
     DrawingResource resources[DRAWING_RES_COUNT];
     // Each member's pen
@@ -222,9 +222,9 @@ typedef struct DrawingWork {
     BmpWin *nameWindows[DRAWING_MEMBER_MAX];
     BmpWin *drawWindow;
     BmpWin *msgWindow;
-    u8 unk120[0xc];
+    u8 padding120[0xc];
     PrintWindow namePrint[DRAWING_MEMBER_MAX];
-    u8 unk154[8];
+    u8 padding154[8];
     PrintWindow msgPrint;
     PrintQueue *nameQueue;
     PrintQueue *printQueue;
@@ -238,7 +238,7 @@ typedef struct DrawingWork {
     // DRAWING_SEQ_*: the sequence, and the one that the next frame changes to
     int seq;
     int nextSeq;
-    u32 unk1A0;
+    u32 padding1A0;
     int wait;
     // How many members there were the frame before
     int memberCount;
@@ -246,7 +246,7 @@ typedef struct DrawingWork {
     int shareNum;
     u32 shareBit;
     int newcomerId;
-    u8 unk1B8[0x10];
+    u8 padding1B8[0x10];
     DrawingMember members[DRAWING_MEMBER_MAX];
     u8 unk1F0[0x4018];
     // The angle of the sine that pulses a color of the actors' palette
@@ -268,7 +268,7 @@ typedef struct DrawingWork {
     // A command that waits to be sent, or 0, with what it carries
     int sendCommand;
     u8 sendArg;
-    u8 unk9275[3];
+    u8 padding9275[3];
     DrawingSignal signal;
     // The parent's: how many members there were when one left, until those left have settled
     int leftCount;

@@ -118,7 +118,7 @@ enum {
 
 // Temporary send storage: SpinTradeComm_Send starts at data and sends the payload size plus four bytes
 typedef struct {
-    u32 unk0;
+    u32 padding0;
     u8 data[0x18];
 } SpinTradeCommSendBuffer;
 
@@ -135,14 +135,14 @@ struct SpinTradeCommWork {
     u32 unk34;
     // The count of the parent's answer to this machine's request to leave
     u16 signalCount;
-    u8 unk3A[2];
+    u8 padding3A[2];
     // Tested by the main screen when it ends after an error
     u32 unk3C;
     // SPIN_TRADE_MAIN_SIGNAL_* flags received by the main screen
     u16 mainSignals;
     // The net IDs that announced joining the main screen
     u16 mainJoinedBits;
-    u8 unk44[2];
+    u8 padding44[2];
     // The members whose block has arrived
     s16 blockBits;
     // The net IDs reporting a bad Egg in any party, or that all parties passed the check
@@ -151,7 +151,7 @@ struct SpinTradeCommWork {
     // SPIN_TRADE_COMM_BLOCK_SIZE bytes per member: where the chunks arrive, and the blocks that have arrived whole
     u8 *blockRecvBuffer;
     u8 *blocks;
-    u8 unk54[4];
+    u8 padding54[4];
 };
 
 // The receipt screen's sequences, which the net commands set

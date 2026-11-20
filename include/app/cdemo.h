@@ -83,8 +83,8 @@ struct CDemoWork {
     const u32 *scriptStart;
     const u32 *scriptCursor;
     u32 waitCounter;
-    u32 unk6024[4];
-    u32 unk6034[2];
+    u32 backgroundSettings[4];
+    u32 transitionSettings[2];
     u16 nextFrame;
     u8 currentBuffer;
     u8 frameState;

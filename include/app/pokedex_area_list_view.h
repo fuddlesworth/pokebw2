@@ -82,7 +82,7 @@ typedef struct {
 
 // 0x6f4 bytes
 typedef struct {
-    u32 unk0;
+    u32 padding0;
     PaletteFade *paletteFade;
     BlinkPalAnm *blinkAnm;
     BOOL blinkPaused;

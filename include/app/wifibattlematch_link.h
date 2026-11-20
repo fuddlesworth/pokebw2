@@ -97,7 +97,7 @@ typedef struct {
     u8 clearRegistered;
     u8 registrationState;
     u8 registered;
-    u8 unk7;
+    u8 padding7;
 } WifiBattleMatchLinkAccount;
 
 // What the server says of the ratings, as 5 ratings, 5 pairs of results in the order that the server has the battle
@@ -147,7 +147,7 @@ typedef struct {
     WifiBattleMatchLinkRatings *ratings;
     WifiBattleMatchNetData *netData;
     BOOL *opponentNameRejected;
-    u32 unk44;
+    u32 padding44;
 } WifiBattleMatchLinkParam;
 
 // The proc of the link, which overlay 290 chains

@@ -144,7 +144,7 @@ struct ItemMenuWork {
     u32 selIconChr;
     u32 selIconCel;
     u32 listCursorPlt;
-    u32 unk560;
+    u32 padding560;
     u32 buttonPlt;
     u32 listCursorChr;
     u32 buttonChr;
@@ -198,7 +198,7 @@ struct ItemMenuWork {
     AppTaskMenu *taskMenu;
     AppTaskMenuItem menuItems[APP_TASKMENU_ITEM_MAX];
     AppTaskMenuRes *taskMenuRes;
-    u8 unk804[8];
+    u8 padding804[8];
     u32 quantityMode;
     s32 quantityRepeat;
     s32 quantity;
@@ -215,7 +215,7 @@ struct ItemMenuWork {
     s32 drawnScroll;
     // Whether the list shows the copy in items, while items are moved around
     BOOL movingItem;
-    u8 unk840[8];
+    u8 padding840[8];
     u32 itemMenuActions[5];
     u32 sortMenuActions[5];
     u32 freeSpaceMenuActions[7];

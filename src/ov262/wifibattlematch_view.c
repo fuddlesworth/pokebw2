@@ -982,8 +982,8 @@ static void WifiBattleMatchView_WifiCardWindows(WifiBattleMatchCard *card, u32 r
             break;
         case WIFI_CARD_WINDOW_MATCH_COUNT:
             if (ratio != 0) {
-                WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount, info->unkA8,
-                                                heapId);
+                WifiBattleMatchView_PrintCounts(&card->printWindows[j], printQueue, font, info->matchCount,
+                                                info->maxBattles, heapId);
                 draw = FALSE;
             } else {
                 GFL_MsgDataLoadStrbuf(msgData, 11, format);

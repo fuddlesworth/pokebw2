@@ -35,7 +35,7 @@ typedef struct {
     MsgData *msgData;
     Font *font;
     BmpWin *window2;
-    u8 unk0C;
+    u8 paddingC;
     PrintQueue *printQueue;
     BmpWin *window;
     WordSet *wordSet;

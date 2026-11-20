@@ -19,7 +19,7 @@ enum {
 typedef struct {
     // A MYSTERY_CARD_VIEW_MODE_*
     u32 mode;
-    u32 unk4;
+    u32 padding4;
     ClActUnit *unit;
     MysteryGiftSave *giftSave;
     Font *font;

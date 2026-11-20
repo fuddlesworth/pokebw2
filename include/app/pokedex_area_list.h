@@ -36,7 +36,7 @@ typedef struct {
     TCB *hblankTask;
     BOOL nationalObtained;
     WordSet *wordSet;
-    u32 unk718;
+    u32 padding718;
     PokedexHabitatSave *habitatSave;
     // 9 for a button whose animation the next state does not wait for, else 8
     u32 stateParam;

@@ -77,7 +77,7 @@ typedef struct {
 
 // What the screens hand to each other
 typedef struct {
-    u8 unk0;
+    u8 padding0;
     // The pass power or mission that the cursor is on, or HIGH_LINK_POWER_NONE
     u8 focusPower;
     // MONOLITH_POWER_RECEIVABLE or MONOLITH_POWER_UNAVAILABLE
@@ -89,7 +89,7 @@ typedef struct {
     u8 missionLevel;
     // Where the menu's cursor returns
     s8 menuCursor;
-    u8 unk7;
+    u8 padding7;
     // The equipped pass powers, as in the high link save
     u8 equipped[4];
 } MonolithState;

@@ -104,7 +104,7 @@ typedef struct {
     HeapID tailHeapId;
     // The step of the sequence
     int seq;
-    u32 unk8;
+    u32 padding8;
     // How many tasks are running
     int taskCount;
     // Set when the log holds no beacon to show, which ends the screen at once

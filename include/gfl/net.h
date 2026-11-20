@@ -71,7 +71,7 @@ typedef struct {
     // A general count, not one meaning: GflNet_GetFriendListNum returns it as the Wi-Fi friend list's size,
     // and wih_dwc.c loops over the beacons by it. The games set 2, 4, 8, 10 or 16, so no single name fits
     u8 unk62;
-    u8 unk63;
+    u8 padding63;
     // Whether the parent relays every machine's data (MP mode)
     u8 bMPMode;
     // A GFL_NET_TYPE_*
@@ -209,14 +209,14 @@ struct GFLNetSys {
     GFLNetInitData aNetInit;
     NetHandle handles[GFL_NET_HANDLE_MAX];
     const GFLNetDevTable *pDevTable;
-    u8 unk344[4];
+    u8 padding344[4];
     // Called when the network has ended
     void (*exitCallback)(void *work);
     void *devWork;
-    u8 unk350[2];
+    u8 padding350[2];
     // Whether a handle already negotiated may still be rejected
     u8 rejectNegotiated;
-    u8 unk353;
+    u8 padding353;
 };
 
 // The network error, which NetState_RecordError records

@@ -32,7 +32,7 @@ struct CommTvtFieldParam {
     SaveControl *save;
     // The parameter of the video chat (overlay 257): the screen sets unk4 to 1 to call or 2 to answer, and parentMac
     CommTvtParam commParam;
-    u32 unk1C;
+    u32 padding1C;
     // COMM_TVT_FIELD_MODE_*
     u32 mode;
     u32 bgm;

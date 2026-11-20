@@ -39,7 +39,7 @@ struct BrBtn {
     ClActor *clwk;
     BmpOamActor *oam;
     GFLBitmap *bmp;
-    u32 unkC;
+    u32 paddingC;
     u32 display;
     u32 width;
 };

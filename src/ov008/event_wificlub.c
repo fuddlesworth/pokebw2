@@ -217,7 +217,7 @@ void EventWifiClub_SetupBattleSelect(EventWifiClub *wk, GameData *gameData, u32 
     select->otherGender = getTrainerGender(other);
     select->otherParty = wk->club->parties[otherNetId];
     select->gameData = gameData;
-    select->unk18 = 0;
+    select->padding18 = 0;
     PokeParty_Init(wk->party);
     select->pickedParty = wk->party;
     select->parties[0] = wk->club->parties[0];

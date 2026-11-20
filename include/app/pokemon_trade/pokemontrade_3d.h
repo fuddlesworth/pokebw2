@@ -29,7 +29,7 @@ struct PokemonTrade3DWork {
     // The sprite of the demo's scenes
     ClActor *actor;
     void *resource;
-    u8 unkB8[2];
+    u8 paddingB8[2];
     HeapID heapId;
 };
 

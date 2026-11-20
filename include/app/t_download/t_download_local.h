@@ -219,7 +219,7 @@ struct TDownloadWork {
     int mode;
     u32 flags;
     u32 objFlags;
-    u32 unk154;
+    u32 padding154;
     // The screen to go back to from the details, or -1 to end
     int returnMode;
     int tab;

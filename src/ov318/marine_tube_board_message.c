@@ -35,7 +35,7 @@ void MarineTubeBoardMsgWin_Init(MarineTubeBoardMsgWin *win, Font *font, MsgData 
     win->window = BmpWin_CreateDynamic(BG_MESSAGE, 1, 1, 30, 6, BACKGROUND_COLOR, TRUE);
     BmpWin_DrawFrame(win->window, WINFRAME_TRANSFER_NONE, FRAME_CHAR, FRAME_PALETTE);
     win->window2 = win->window;
-    win->unk0C = 0;
+    win->paddingC = 0;
     GFL_BitmapFill(BmpWin_GetBitmap(win->window), win->color);
     window = win->window;
     BmpWin_FlushChar(window);

@@ -26,7 +26,7 @@ typedef struct {
     u8 otherGender;
     PokeParty *otherParty;
     GameData *gameData;
-    u32 unk18;
+    u32 padding18;
     // Gets the Pokémon picked
     PokeParty *selected;
     // 0 once the team is picked, 1 or 3 if the Wi-Fi connection was lost, 2 if the network failed

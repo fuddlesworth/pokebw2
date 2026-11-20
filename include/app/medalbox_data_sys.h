@@ -54,7 +54,7 @@ typedef struct {
     // The medal the player registered as the favorite, or 0xff
     u16 favoriteMedal;
     MedalBoxEntry *entries;
-    u8 unk408;
+    u8 padding408;
     u8 count;
     u8 columnCount;
 } MedalBoxDataSys;

@@ -53,13 +53,13 @@ typedef struct {
 
 typedef struct {
     HallOfFamePCParam *param;
-    u32 unk4[2];
+    u32 padding4[2];
     HallOfFamePCTeam teams[HALL_OF_FAME_TEAMS];
     // Where each Pokémon is on the ring, in degrees, and where the turn takes it
     s16 angle[HALL_OF_FAME_TEAM_SIZE];
     s16 angleNext[HALL_OF_FAME_TEAM_SIZE];
     TCB *vblankTask;
-    u32 unkB2C;
+    u32 paddingB2C;
     PaletteFade *palFade;
     // How dark each Pokémon is by its place on the ring, now, and after the turn
     u8 fade[HALL_OF_FAME_TEAM_SIZE];

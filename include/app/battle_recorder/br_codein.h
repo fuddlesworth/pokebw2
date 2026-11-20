@@ -27,7 +27,7 @@ typedef struct {
     // How many digits the code has
     u32 length;
     int blocks[BR_CODEIN_BLOCK_COUNT + 1];
-    u32 unk14;
+    u32 padding14;
     // The code typed, length characters. The original's name, from BrCodeInParam_Free's assertions
     StrBuf *strbuf;
     ClActUnit *unit;

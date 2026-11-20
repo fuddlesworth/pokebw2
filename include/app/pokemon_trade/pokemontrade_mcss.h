@@ -13,10 +13,10 @@ struct TradeMcssMove {
     int duration;
     int frame;
     u32 unkC;
-    u8 unk10[4];
+    u8 padding10[4];
     u16 angle;
     u16 bounce;
-    u8 unk18[4];
+    u8 padding18[4];
     VecFx32 start;
     VecFx32 end;
     const VecFx32 *path;

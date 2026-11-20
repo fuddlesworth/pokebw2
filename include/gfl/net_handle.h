@@ -38,20 +38,20 @@ struct NetHandle {
         u8 netId;
         u8 pending;
     } replies[8];
-    u8 unk3C[2];
+    u8 padding3C[2];
     // The machines whose negotiations have been sent
     u16 negotiationsSent;
     u16 serverNegotiationsSent;
-    u8 unk42[2];
+    u8 padding42[2];
     u16 timingRecv;
     u16 timingSend;
     // The machines that the timing is sent to, which command 7 sends with it
     u8 timingNetIds;
     u8 timingSendPending;
     u8 state;
-    u8 unk4B[3];
+    u8 padding4B[3];
     u8 infoPending;
-    u8 unk4F;
+    u8 padding4F;
 };
 
 // The machine with a handle, or GFL_NET_NETID_SERVER

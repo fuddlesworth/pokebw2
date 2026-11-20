@@ -80,7 +80,7 @@ struct GdsRapSubProc {
     u16 seq;
     // The step of the save of the video
     u16 saveSeq;
-    u32 unk8;
+    u32 padding8;
     GdsRapSubProcFunc func;
 };
 
@@ -122,7 +122,7 @@ struct GdsRapWork {
     WordSet *wordSet;
     StrBuf *strBuf;
     GdsRapSubProc sub;
-    u8 unk400;
+    u8 padding400;
     // Frames to wait before the request is sent
     u8 sendWait;
     // The step of a video's upload
@@ -131,12 +131,12 @@ struct GdsRapWork {
     u8 checkCount;
     // The check of the video's Pokémon
     NHttpRap *p_nhttp;
-    u8 unk408[2];
+    u8 padding408[2];
     u8 signature[GDS_RAP_SIGNATURE_SIZE];
     u32 checkResult;
     // The Pokémon in the video
     u8 pkmCount;
-    u8 unk491;
+    u8 padding491;
     // Set once the Pokémon failed the check a second time
     u8 checkFailed;
     // GDS_RAP_HTTP_ERROR_*

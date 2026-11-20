@@ -133,7 +133,7 @@ typedef struct {
     MailData *mails;
     MailboxProcessData *param;
     MailBoxView *view;
-    u32 unk0C;
+    u32 paddingC;
     void *childParam;
     u32 childProc;
     Font *font;
@@ -184,11 +184,11 @@ struct MailBoxView {
     MsgData *msgData;
     WordSet *wordSet;
     StrBuf *strbuf;
-    u8 unk1DC;
+    u8 padding1DC;
     u8 waitForInput;
     u32 yesNoIndex;
-    u32 unk1E4;
-    u32 unk1E8;
+    u32 padding1E4;
+    u32 padding1E8;
     ClActUnit *clActUnit;
     ClActor *actors[MAILBOX_ACTOR_COUNT];
     u32 chars[8];

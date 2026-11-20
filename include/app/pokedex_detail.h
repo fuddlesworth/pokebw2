@@ -43,7 +43,7 @@ typedef struct {
     // A POKEDEX_DETAIL_RESULT_*
     int result;
     u32 mode;
-    u16 unk18;
+    u16 padding18;
     // With POKEDEX_DETAIL_RESULT_PLACE
     u16 place;
 } PokedexDetailParam;

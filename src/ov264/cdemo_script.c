@@ -102,27 +102,27 @@ static u32 CDemoCmd_SetBackgroundPriority(CDemoWork *work, const u32 *command) {
 }
 static u32 CDemoCmd_SetBackgroundSettings(CDemoWork *work, const u32 *command) {
     if (command[1] == 0) {
-        work->unk6024[0] = command[2];
-        work->unk6024[1] = command[3];
+        work->backgroundSettings[0] = command[2];
+        work->backgroundSettings[1] = command[3];
     } else {
-        work->unk6024[2] = command[2];
-        work->unk6024[3] = command[3];
+        work->backgroundSettings[2] = command[2];
+        work->backgroundSettings[3] = command[3];
     }
     return CDEMO_CMD_RESULT_NEXT;
 }
 static u32 CDemoCmd_SetTransitionSettings(CDemoWork *work, const u32 *command) {
-    work->unk6034[0] = command[1];
-    work->unk6034[1] = command[2];
+    work->transitionSettings[0] = command[1];
+    work->transitionSettings[1] = command[2];
     work->state = CDEMO_STATE_TRANSITION;
     work->resumeState = CDEMO_STATE_SCRIPT;
     return CDEMO_CMD_RESULT_YIELD;
 }
 static u32 CDemoCmd_ResetBackgroundSettings(CDemoWork *work, const u32 *command) {
     reg_G2_BLDCNT = 0;
-    work->unk6024[0] = 0;
-    work->unk6024[1] = 0;
-    work->unk6024[2] = 0;
-    work->unk6024[3] = 0;
+    work->backgroundSettings[0] = 0;
+    work->backgroundSettings[1] = 0;
+    work->backgroundSettings[2] = 0;
+    work->backgroundSettings[3] = 0;
     return CDEMO_CMD_RESULT_NEXT;
 }
 static u32 CDemoCmd_Unused12(CDemoWork *work, const u32 *command) {

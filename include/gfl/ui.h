@@ -46,7 +46,7 @@ struct SystemUI {
     // Sleep and the soft reset are blocked while any flag is set
     u8 sleepBlock;
     u8 softResetBlock;
-    u8 unk3A;
+    u8 padding3A;
     u8 backlight;
     u8 usingTouch;
     // 60, or 30 to report the input of two frames together
@@ -56,7 +56,7 @@ struct SystemUI {
     u8 batteryLevel;
     u8 mode;
     u8 lidCloseCalled;
-    u8 unk42;
+    u8 padding42;
     // Whether the lid is closed while sleep is blocked, with the backlight off
     u8 lidClosed;
 };

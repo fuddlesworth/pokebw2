@@ -15,8 +15,8 @@
 #define TRADE_NEXT_NEGOTIATE 2
 
 typedef struct {
-    u32 unk0;
-    u32 unk4;
+    u32 padding0;
+    u32 padding4;
     u32 next;
     // After TRADE_NEXT_EVOLVE, the species the Pokémon evolves into and how, which the events pass to the evolution
     // demo

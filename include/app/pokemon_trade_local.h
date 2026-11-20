@@ -218,7 +218,7 @@ struct PokemonTradeWork {
     // The HTTP connection of a trade over Wi-Fi
     NHttpRap *http;
     u8 unk4[2];
-    u8 unk6[0x2];
+    u8 padding6[0x2];
     PokemonTradeParam *param;
     // The 3D effects of the trade demo, which overlays 192 and 193 allocate
     PokemonTrade3DWork *work3D;
@@ -249,7 +249,7 @@ struct PokemonTradeWork {
     int columnCount;
     int stripTileWidth;
     int stripWidth;
-    u8 unk640[0x4];
+    u8 padding640[0x4];
     // The message cursor's place in the BG's characters
     u32 cursorImage;
     AppTaskMenuWin *menuWin;
@@ -273,22 +273,22 @@ struct PokemonTradeWork {
     StrBuf *strbufTemplate;
     PrintQueue *printQueue;
     TCBExManager *tcbEx;
-    u8 unk748[0x4];
+    u8 padding748[0x4];
     KeyCursor *keyCursor;
     // The windows of the letters to search the boxes by initial
     BmpWin *initialWindows[26];
     u8 unk7B8[0x48];
     // The initial searched for in the list of letters, plus one, or 0
     u32 searchInitial;
-    u8 unk804[0xc];
+    u8 padding804[0xc];
     G3DCamera *camera;
-    u8 unk814[0x4];
+    u8 padding814[0x4];
     TradeFade *fade;
-    u8 unk81C[0x4];
+    u8 padding81C[0x4];
     // The 3D scene in front of the sprites, and its index in the manager
     G3DManager *sceneMgr;
     u16 scene;
-    u8 unk826[0x2];
+    u8 padding826[0x2];
     BoxSaveAccessor *boxes;
     GameData *gameData;
     PlayerInfo *myInfo;
@@ -307,7 +307,7 @@ struct PokemonTradeWork {
     u32 bg2Chars;
     u32 bg5Chars;
     u32 bg7Chars;
-    u8 unk878[0x4];
+    u8 padding878[0x4];
     // The OBJ resources, indexed by TRADE_OBJRES_*
     u32 objRes[18];
     // The Poké Ball icons of the summary and of the two sides
@@ -324,7 +324,7 @@ struct PokemonTradeWork {
     // The Pokémon icons of the twelve columns of the strip that are set up, five to a column: their characters, their
     // sprites and the cursors under them
     u32 iconChars[12][5];
-    u8 unkABC[0x4];
+    u8 paddingABC[0x4];
     ClActor *icons[12][5];
     ClActor *iconCursors[12][5];
     // What each icon shows, to redraw it only when that changes, and the column of the strip it is in, or 0xff
@@ -340,9 +340,9 @@ struct PokemonTradeWork {
     ClActor *actors[10];
     // The cursor over a box of the box list, and whether its animation has ended
     ClActor *boxCursor;
-    u8 unkF28[0x4];
+    u8 paddingF28[0x4];
     int timer;
-    u8 unkF30[0x4];
+    u8 paddingF30[0x4];
     // Whether the screen was touched last frame
     BOOL touchHeld;
     u8 unkF38[0x1c];
@@ -366,7 +366,7 @@ struct PokemonTradeWork {
     int heldBox;
     int selectSlot;
     int selectBox;
-    u8 unkF8C[0x8];
+    u8 paddingF8C[0x8];
     // The Pokémon the player picked, whose summary shows or which is taken out of the offers
     int targetSlot;
     int targetBox;
@@ -390,12 +390,12 @@ struct PokemonTradeWork {
     // In a GTS Negotiation, the kind of Pokémon each player wants and the level of the first's, or -1
     u32 wantedKind[2];
     u32 wantedLevel[2];
-    u8 unk1058[0x8];
+    u8 padding1058[0x8];
     // Whether the other machine sent TRADE_NET_CMD_READY
     u32 partnerReady;
     // Where each machine's Pokémon arrives
     PartyPkm *recvPkm[3];
-    u8 unk1070[0x4];
+    u8 padding1070[0x4];
     u32 unk1074;
     // The stylus's x on the scroll bar last frame, and the speed of the scroll
     s16 scrollTouchX;
@@ -404,7 +404,7 @@ struct PokemonTradeWork {
     // Where the other machine's strip is scrolled to
     s16 partnerScrollX;
     s16 firstColumn;
-    u8 unk1082[0x2];
+    u8 padding1082[0x2];
     // Whether the V-blank sets the strip's BGs to bgScrollX, and whether the stylus was on the strip last frame
     u32 bgScrollPending;
     u32 browseTouchHeld;
@@ -438,7 +438,7 @@ struct PokemonTradeWork {
     u16 *stripScreens[4];
     // The characters of every Pokémon's icon in the boxes, 0x200 bytes each
     u8 *iconCharData;
-    u8 unk1188[0x4];
+    u8 padding1188[0x4];
     // The kind of trade, a TRADE_TYPE_*
     int type;
     // The curve the carried icon flies along when it is let go, and the frames left of its flight

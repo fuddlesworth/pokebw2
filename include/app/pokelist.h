@@ -452,7 +452,7 @@ struct PokeListWork {
     u8 enteredCount;
     AppTaskMenuWin *buttons[2];
     u16 unk114;
-    u16 unk116;
+    u16 padding116;
     u8 waitTimer;
     BOOL decided;
     u16 prevHp;
@@ -509,7 +509,7 @@ struct PokeListWork {
     u32 voice;
     // Whether PokeList_TimeUp waits for network sync before exit; this overlay leaves it FALSE.
     BOOL syncOnTimeUp;
-    u32 unk288;
+    u32 padding288;
     PokeListParam *param;
 };
 

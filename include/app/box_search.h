@@ -22,7 +22,7 @@
 // box_search.c is named after its box_search_graphic.c
 
 typedef struct {
-    u32 unk0;
+    u32 padding0;
     Box2SysWork *syswk;
     Box2Param *param;
 } BoxSearchParam;

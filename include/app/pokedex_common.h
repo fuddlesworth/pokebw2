@@ -136,7 +136,7 @@ typedef struct {
     u32 chars;
     u32 palette;
     u32 cells;
-    u16 unk14;
+    u16 padding14;
     u16 surface;
 } PokedexActorTemplate;
 

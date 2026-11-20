@@ -14,7 +14,7 @@
 
 // The parameters of the title card
 typedef struct {
-    u32 unk0;
+    u32 padding0;
     u32 movie;
     StrBuf *title;
     u32 gender;
