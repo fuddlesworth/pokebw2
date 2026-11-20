@@ -19,7 +19,7 @@ enum {
 
 struct LocalTvtRival {
     int step;
-    u32 unk4;
+    u32 timer;
     GameData *gameData;
     u16 heapId;
 };

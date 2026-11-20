@@ -26,7 +26,7 @@ enum {
 
 struct LocalTvtMother {
     int step;
-    u32 unk4;
+    u32 timer;
     GameData *gameData;
     // The bank of what she says about each place, by the message of the place's name
     MsgData *placeMsgData;
