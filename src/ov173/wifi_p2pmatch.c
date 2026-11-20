@@ -404,7 +404,7 @@ typedef struct {
     NNSG2dScreenData *buttonScrn;
     void *backScrnBuf;
     NNSG2dScreenData *backScrn;
-    u32 unk14;
+    u32 padding14;
     // NULL while the view does not exist
     ButtonMan *buttonMan;
     // What is known of each friend, by friend number - 1: 0 nothing, 1 registered, 2 in the room
@@ -415,7 +415,7 @@ typedef struct {
     u8 buttonFrame;
     // 0 for the list, 1 when a friend's details were asked for, 2 and 3 while they are shown
     u8 detailMode;
-    u8 unk40;
+    u8 padding40;
     u8 redrawButtons;
     u8 buttonAnimCount;
     u8 lastTouchFriendNo;
@@ -423,7 +423,7 @@ typedef struct {
     BmpWin *nameWin[WIFIP2PMATCH_VIEW_FRIEND_NUM];
     BmpWin *statusWin[WIFIP2PMATCH_VIEW_FRIEND_NUM][2];
     BmpWin *detailWin[2];
-    u8 unkB0[0x44];
+    u8 paddingB0[0x44];
 } WIFIP2PMATCH_VIEW;
 
 typedef struct {
@@ -431,7 +431,7 @@ typedef struct {
     WifiList *wifiList;
     // The player's status, which event_wificlub.c keeps (WifiClubData.buffer)
     WIFI_STATUS *myStatus;
-    u8 unk00C[4];
+    u8 paddingC[4];
     // The friend numbers (index + 1) of the friends who are in the room, packed from the start and ended by 0, and
     // what it was a frame ago
     u8 index2No[WIFIP2PMATCH_MEMBER_MAX];
@@ -450,7 +450,7 @@ typedef struct {
     PokeParty *party;
     // The Battle Box as a party, NULL if it is empty
     PokeParty *battleBoxParty;
-    u8 unk0D0[8];
+    u8 paddingD0[8];
     TrainerDataSave *trainerData;
     WordSet *wordSet;
     MsgData *msgData;
@@ -462,11 +462,11 @@ typedef struct {
     StrBuf *expStrBuf;
     StrBuf *talkString;
     StrBuf *titleString;
-    StrBuf *unk0FC;
+    StrBuf *extraText;
     WaitIcon *waitIcon;
-    u32 unk104;
+    u32 padding104;
     BmpMenu *yesNoMenu;
-    u32 unk10C;
+    u32 padding10C;
     ClActUnit *clActUnit;
     ClActRenderer *clActRenderer;
     // The icons of the party's Pokémon, then of the Battle Box's
@@ -487,7 +487,7 @@ typedef struct {
     BmpWin *sysMsgWin;
     BmpWin *subWin;
     BmpWin *listWin;
-    BmpWin *unk1A8;
+    BmpWin *extraWin;
     PrintWindow listPrintWindow;
     PrintQueue *listPrintQueue;
     PrintQueue *printQueue;
@@ -501,13 +501,13 @@ typedef struct {
     int seq;
     // What the proc returns to event_wificlub.c (WifiClubData.mode)
     u32 endSeq;
-    u32 unk1D4;
+    u32 padding1D4;
     u32 initMode;
-    s32 unk1DC;
+    s32 padding1DC;
     s32 timer;
-    u32 unk1E4;
+    u32 padding1E4;
     u32 userInfoNoticePending;
-    u32 unk1EC;
+    u32 padding1EC;
     // The net ID of the friend who is connecting, -1 if none
     s32 preConnect;
     // The game mode each machine sent on connecting, by net ID
@@ -528,24 +528,24 @@ typedef struct {
     MCR_MOVEOBJ *moveObj[WIFIP2PMATCH_OBJ_MAX];
     WIFIP2PMATCH_ICON icon;
     WIFIP2PMATCH_VIEW view;
-    u32 unk9A4;
+    u32 padding9A4;
     u32 viewBgChars;
     TouchBar *touchBar;
     KeyCursor *keyCursor;
     // Whether the player's character is kept from moving
     BOOL roomPaused;
     // Nothing in this file reaches these bytes
-    u8 unk9B8[0x970];
-    u16 unk1328;
+    u8 padding9B8[0x970];
+    u16 ready;
     // How many friends the friend list has
     u16 friendNum;
     // Which of the three states that ask for a game mode ran
     u16 modeSeq;
-    u16 unk132E;
+    u16 padding132E;
     u32 listFrameChars;
     u32 talkFrameChars;
     u32 subFrameChars;
-    u32 unk133C;
+    u32 padding133C;
     // The fade of the music's volume
     u8 bgmVolume;
     u8 bgmVolumeStart;
@@ -556,7 +556,7 @@ typedef struct {
     // The battle chosen: single, double, triple or rotation, and no restrictions or flat
     u16 battleMode;
     u16 battleRule;
-    u8 unk1350;
+    u8 lastPicked;
     u8 calledFriendNo;
     u8 vchatChangeGameMode;
     // The state both sides go to next, which state 0x8b sends, and the one the partner sent
@@ -565,11 +565,11 @@ typedef struct {
     u8 cancelReceived;
     u8 vchatOverridePlusOne;
     u8 recvSeq;
-    u8 unk1358;
-    u8 unk1359;
+    u8 closeFlag;
+    u8 padding1359;
     // Set after the player selects a friend, and cleared when returning to the room
     u8 friendSelected;
-    u8 unk135B[5];
+    u8 padding135B[5];
     // How the connection was made: 3 and 4 for the two sides of a pair that chooses what to play
     u32 result;
 } WIFIP2PMATCH_WORK;
@@ -1327,9 +1327,9 @@ static void WifiP2PMatch_FreeWindows(WIFIP2PMATCH_WORK *wk) {
         BmpWin_Free(wk->msgWin);
         wk->msgWin = NULL;
     }
-    if (wk->unk1A8 != NULL) {
-        BmpWin_Free(wk->unk1A8);
-        wk->unk1A8 = NULL;
+    if (wk->extraWin != NULL) {
+        BmpWin_Free(wk->extraWin);
+        wk->extraWin = NULL;
     }
     if (wk->myInfoWin != NULL) {
         BmpWin_Free(wk->myInfoWin);
@@ -1362,7 +1362,7 @@ static void WifiP2PMatch_FreeWindows(WIFIP2PMATCH_WORK *wk) {
 // The strings, print queues and cursor of the messages
 static void WifiP2PMatch_InitMessages(WIFIP2PMATCH_WORK *wk) {
     wk->talkString = GFL_StrBufCreate(380, WIFIP2PMATCH_HEAP);
-    wk->unk0FC = GFL_StrBufCreate(380, WIFIP2PMATCH_HEAP);
+    wk->extraText = GFL_StrBufCreate(380, WIFIP2PMATCH_HEAP);
     wk->expStrBuf = GFL_StrBufCreate(380, WIFIP2PMATCH_HEAP);
     wk->titleString = GFL_StrBufCreate(180, WIFIP2PMATCH_HEAP);
     wk->printQueue = PrintQueue_CreateDefault(WIFIP2PMATCH_HEAP);
@@ -1377,7 +1377,7 @@ static void WifiP2PMatch_ExitMessages(WIFIP2PMATCH_WORK *wk) {
     KeyCursor_Free(wk->keyCursor);
     GFL_StrBufFree(wk->titleString);
     GFL_StrBufFree(wk->talkString);
-    GFL_StrBufFree(wk->unk0FC);
+    GFL_StrBufFree(wk->extraText);
     if (wk->printStream != NULL) {
         PrintStream_Delete(wk->printStream);
         wk->printStream = NULL;
@@ -4187,7 +4187,7 @@ static int WifiP2PMatch_StateConnectStart(WIFIP2PMATCH_WORK *wk, int seq) {
         arc = GFL_ArcSysCreateFileHandle(ARCID_WIFIP2PMATCH, WIFIP2PMATCH_HEAP);
         WifiP2PMatch_BGGraphicLoad(wk, arc);
         GFL_ArcToolFree(arc);
-        wk->unk1328 = 1;
+        wk->ready = 1;
         if (wk->subMenuOptions != NULL) {
             BmpWin_Free(wk->subWin);
             BmpMenuList_Free(wk->subList, NULL, NULL);
@@ -4851,7 +4851,7 @@ static int WifiP2PMatch_StateVChatCallStart(WIFIP2PMATCH_WORK *wk, int seq) {
         WifiP2PMatch_PrintMessageNow(wk, WifiClub_Text_HasContacted, FALSE);
         WifiP2PMatch_StartWaitIcon(wk);
         wk->seq = WIFIP2PMATCH_SEQ_JOIN_WAIT;
-        wk->unk1350 = wk->friendNo;
+        wk->lastPicked = wk->friendNo;
         return seq;
     }
     wk->seq = WIFIP2PMATCH_SEQ_ROOM;
@@ -6187,7 +6187,7 @@ static int WifiP2PMatch_StateConnectEnd(WIFIP2PMATCH_WORK *wk, int seq) {
 // State 0x19
 static int WifiP2PMatch_StateReturnToRoom(WIFIP2PMATCH_WORK *wk, int seq) {
     GFL_BGSysClearBG(3);
-    wk->unk1358 = 0;
+    wk->closeFlag = 0;
     wk->seq = WifiP2PMatch_LeaveConnection(wk, FALSE);
     return seq;
 }

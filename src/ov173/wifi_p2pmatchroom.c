@@ -61,9 +61,9 @@ static void WifiMcr_ClactResLoad(MCR_CLACT *clact, u32 heapId, ArcTool *arc);
 static void WifiMcr_ClactResFree(MCR_CLACT *clact);
 static void WifiMcr_ClactActorAdd(MCR_CLACT *clact, u32 heapId);
 static void WifiMcr_ClactActorDel(MCR_CLACT *clact);
-static void WifiMcr_BgInit(void *unk, u32 heapId);
-static void WifiMcr_BgExit(void *unk);
-static void WifiMcr_BgLoad(void *unk, u32 heapId, ArcTool *arc, u32 arcId);
+static void WifiMcr_BgInit(void *unused, u32 heapId);
+static void WifiMcr_BgExit(void *unused);
+static void WifiMcr_BgLoad(void *unused, u32 heapId, ArcTool *arc, u32 arcId);
 static void WifiMcr_ClactResLoadCore(MCR_CLACT *clact, u32 heapId, ArcTool *arc);
 static void WifiMcr_ClactResFreeCore(MCR_CLACT *clact);
 static void WifiMcr_ClactActorAddCore(MCR_CLACT *clact, u32 heapId);
@@ -532,13 +532,13 @@ static void WifiMcr_ClactActorDel(MCR_CLACT *clact) {
     WifiMcr_ClactActorDelCore(clact);
 }
 
-static void WifiMcr_BgInit(void *unk, u32 heapId) {
+static void WifiMcr_BgInit(void *unused, u32 heapId) {
 }
 
-static void WifiMcr_BgExit(void *unk) {
+static void WifiMcr_BgExit(void *unused) {
 }
 
-static void WifiMcr_BgLoad(void *unk, u32 heapId, ArcTool *arc, u32 arcId) {
+static void WifiMcr_BgLoad(void *unused, u32 heapId, ArcTool *arc, u32 arcId) {
     GFL_BGSysLoadNCLRDefault(arcId, 7, 0, 0, 0x100, heapId);
     GFL_BGSysResetStdPalette(0, 0);
     GFL_BGSysLoadNCGRStatic(arcId, 16, 0, 0, 0, FALSE, heapId);
