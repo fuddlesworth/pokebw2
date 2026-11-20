@@ -16,7 +16,7 @@
 // The detail screen's BGs, cell actors and 3D system. The 3D system is only created for the pages that use it
 
 typedef struct {
-    u32 unk0;
+    u32 padding0;
 } PokedexDetailBG;
 
 typedef struct {
