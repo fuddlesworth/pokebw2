@@ -167,7 +167,7 @@ typedef struct {
     BmpWin *win;
     PrintWindow printWin;
     PrintQueue *queue;
-    u8 unk18[8];
+    u8 padding18[8];
     MsgData *msgData;
     WordSet *wordSet;
     StrBuf *expandBuf;
@@ -178,7 +178,7 @@ typedef struct {
     BadgeViewLeaderRes leaderRes[BADGE_COUNT];
     TCB *vblankTask;
     G3DManager *g3dMgr;
-    u8 unk17C[4];
+    u8 padding17C[4];
     G3DLight *lights;
     G3DCamera *camera;
     TrainerCardParam *param;
@@ -189,9 +189,9 @@ typedef struct {
     u16 pageMax;
     int badgeCount;
     int frame;
-    u8 unk1A0[0x24];
-    int unk1C4;
-    u8 unk1C8[4];
+    u8 padding1A0[0x24];
+    int snap;
+    u8 padding1C8[4];
     u32 mode;
     int moveSeq;
     u32 flags;
@@ -209,8 +209,8 @@ typedef struct {
     void *buffer;
     SRTMatrix srt;
     int angle;
-    int unk27C;
-    int unk280;
+    int spin;
+    int snapAngle;
     u16 scenes[BADGE_COUNT];
     int palAngle;
     u16 palette[2][16];
@@ -218,9 +218,9 @@ typedef struct {
     u8 hasBadge[BADGE_COUNT];
     TimeSigSave *timeSig;
     int polish[BADGE_COUNT];
-    u8 unk324[8];
-    u8 unk32C[BADGE_COUNT];
-    u8 unk334[0x10];
+    u8 padding324[8];
+    u8 lastPaletteIndex[BADGE_COUNT];
+    u8 padding334[0x10];
 } BadgeViewWork;
 
 // An actor: its position, its animation, its resources as indices into the work's, and its surface
@@ -459,7 +459,7 @@ static void BadgeView_InitWork(BadgeViewWork *wk, TrainerCardParam *param) {
     MI_CpuFill8(wk->buffer, 0, 0x600);
     wk->vblankTask = GFL_VBlankTCBAdd(BadgeView_VBlank, wk, 0);
     wk->badgeCount = BADGE_COUNT;
-    wk->unk1C4 = -1;
+    wk->snap = -1;
     BadgeView_InitPages(wk);
     wk->timeSig = getTimeSigSaveBlock(wk->param->gameData);
     BadgeView_LoadPolish(wk);
@@ -481,8 +481,8 @@ static void BadgeView_InitWork(BadgeViewWork *wk, TrainerCardParam *param) {
         wk->values[i].flags = 0;
     }
     wk->angle = 0;
-    wk->unk27C = 0;
-    wk->unk280 = 0;
+    wk->spin = 0;
+    wk->snapAngle = 0;
     wk->srt.translation.x = -FX32_ONE;
     wk->srt.translation.y = 0;
     wk->srt.translation.z = 0;
@@ -745,7 +745,7 @@ static void BadgeView_InitScenes(BadgeViewWork *wk) {
 static struct {
     int step;
     int count;
-    int unk8[6];
+    int padding8[6];
 } sBadgeViewCounter;
 
 static BadgeViewSeqFunc sBadgeViewSeqFuncs[] = {
@@ -1244,7 +1244,7 @@ static void BadgeView_LoadPolish(BadgeViewWork *wk) {
         }
     }
     for (i = 0; i < BADGE_COUNT; i++) {
-        wk->unk32C[i] = 0xff;
+        wk->lastPaletteIndex[i] = 0xff;
     }
 }
 

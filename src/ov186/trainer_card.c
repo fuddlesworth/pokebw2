@@ -310,8 +310,8 @@ BOOL TrainerCard_Init(GameProc *proc, u32 *state, void *param, void *work) {
         wk->side = TRCARD_SIDE_FRONT;
     }
     wk->param->next = TRCARD_NEXT_END;
-    wk->unk32E8 = 0;
-    wk->unk31E0 = 0;
+    wk->keyRepeat = 0;
+    wk->counter = 0;
     if (wk->data->signBlinks) {
         wk->blinkMode = TRCARD_SIGN_FRAME_LEFT;
     } else {
@@ -487,10 +487,10 @@ static void TrainerCard_LoadMessages(TrainerCardWork *wk) {
     GFL_MsgDataLoadStrbuf(wk->msgData, 27, wk->colonBuf);
     GFL_MsgDataLoadStrbuf(wk->msgData, 28, wk->noClearBuf);
     for (i = 0; i < 3; i++) {
-        wk->unk3234[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 30);
+        wk->headerText[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 30);
     }
     for (i = 0; i < 2; i++) {
-        wk->unk3240[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 33);
+        wk->footerText[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i + 33);
     }
     for (i = 0; i < 27; i++) {
         wk->labels[i] = GFL_MsgDataLoadStrbufNew(wk->msgData, i);
@@ -511,11 +511,11 @@ static void TrainerCard_FreeMessages(TrainerCardWork *wk) {
     for (i = 0; i < 27; i++) {
         GFL_StrBufFree(wk->labels[i]);
     }
-    GFL_StrBufFree(wk->unk3240[1]);
-    GFL_StrBufFree(wk->unk3240[0]);
-    GFL_StrBufFree(wk->unk3234[2]);
-    GFL_StrBufFree(wk->unk3234[1]);
-    GFL_StrBufFree(wk->unk3234[0]);
+    GFL_StrBufFree(wk->footerText[1]);
+    GFL_StrBufFree(wk->footerText[0]);
+    GFL_StrBufFree(wk->headerText[2]);
+    GFL_StrBufFree(wk->headerText[1]);
+    GFL_StrBufFree(wk->headerText[0]);
     GFL_StrBufFree(wk->noClearBuf);
     GFL_StrBufFree(wk->colonBuf);
     GFL_StrBufFree(wk->tmpBuf);

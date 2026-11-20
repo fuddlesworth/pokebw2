@@ -136,8 +136,8 @@ typedef struct {
     BOOL touchMode;
     u8 padding3068[0xc];
     TrainerCardObjWork obj;
-    u8 unk315C[0x84];
-    u32 unk31E0;
+    u8 padding315C[0x84];
+    u32 counter;
     u8 padding31E4[0x10];
     void *scrRes;
     NNSG2dScreenData *scrData;
@@ -154,8 +154,8 @@ typedef struct {
     StrBuf *colonBuf;
     StrBuf *nameBuf;
     StrBuf *tmpBuf;
-    StrBuf *unk3234[3];
-    StrBuf *unk3240[2];
+    StrBuf *headerText[3];
+    StrBuf *footerText[2];
     StrBuf *labels[27];
     StrBuf *formats[5];
     // What the Hall of Fame row shows before the first entry
@@ -163,7 +163,7 @@ typedef struct {
     u8 padding32CC[8];
     PMSDraw *pmsDraw;
     u8 badges[16];
-    u8 unk32E8;
+    u8 keyRepeat;
     u8 padding32E9;
     u8 subSeq;
     // The eraser button's blinking while the eraser is chosen
