@@ -169,7 +169,10 @@ typedef struct {
 // The parts of a program that are in memory, and the archive the rest is read from
 typedef struct {
     u32 lifetime;
-    u8 unk_04[0xc];
+    // NitroSDK's recent, p_list and size, which the game never reads
+    u32 recent;
+    MBiCacheInfo *p_list;
+    u32 size;
     char arc_name[4];
     u32 arc_name_len;
     FSArchive *arc_pointer;
