@@ -125,7 +125,8 @@ typedef struct {
     u8 metLevel : 7;
     u8 otGender : 1;
     u8 groundTile;
-    u8 unk1E;
+    // How the Pokémon was met, which Gen 5 leaves 0
+    u8 encounterType;
     u8 pokestarFame;
 } PkmBlockD;
 

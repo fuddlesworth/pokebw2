@@ -106,7 +106,8 @@
 #define PKM_PARAM_OT_GENDER 0x9a
 // The ground tile it was caught on (swan's PF_GroundTile)
 #define PKM_PARAM_GROUND_TILE 0x9b
-#define PKM_PARAM_UNK9C 0x9c
+// How the Pokémon was met, which Gen 5 leaves 0
+#define PKM_PARAM_ENCOUNTER_TYPE 0x9c
 #define PKM_PARAM_POKERUS 0x97
 #define PKM_PARAM_POKEBALL 0x98
 #define PKM_PARAM_STATUS 0x9d

@@ -1839,8 +1839,8 @@ static u32 PML_PkmGetParamCore(BoxPkm *pkm, PkmField field, void *buffer) {
     case PKM_PARAM_GROUND_TILE:
         result = blockD->groundTile;
         break;
-    case PKM_PARAM_UNK9C:
-        result = blockD->unk1E;
+    case PKM_PARAM_ENCOUNTER_TYPE:
+        result = blockD->encounterType;
         break;
     case PKM_PARAM_IVS_ALL:
         result = blockB->hpIV | (blockB->atkIV << 5) | (blockB->defIV << 10) | (blockB->speIV << 15) |
@@ -2300,8 +2300,8 @@ static void PML_PkmSetParamCore(BoxPkm *pkm, PkmField field, u32 value) {
     case PKM_PARAM_GROUND_TILE:
         blockD->groundTile = value;
         break;
-    case PKM_PARAM_UNK9C:
-        blockD->unk1E = value;
+    case PKM_PARAM_ENCOUNTER_TYPE:
+        blockD->encounterType = value;
         break;
     case PKM_PARAM_POKESTAR_FAME:
         blockD->pokestarFame = value;
