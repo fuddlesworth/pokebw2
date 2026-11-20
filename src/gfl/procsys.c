@@ -26,7 +26,7 @@ struct GameProc {
 
 struct GameProcManager {
     HeapID heapId;
-    s32 unk4;
+    s32 overlayId;
     GameProc *proc;
     // A process to run next, after the current one or in place of it
     BOOL queued;
@@ -86,7 +86,7 @@ static GameProcManager *GFL_ProcMgrCreate(HeapID heapId) {
     GameProcManager *manager = GFL_HeapAllocate(heapId, sizeof(GameProcManager), FALSE, "procsys.c", 197);
 
     manager->heapId = heapId;
-    manager->unk4 = OVERLAY_NONE;
+    manager->overlayId = OVERLAY_NONE;
     manager->proc = NULL;
     manager->queued = FALSE;
     manager->replace = FALSE;

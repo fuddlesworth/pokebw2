@@ -48,7 +48,7 @@ typedef struct {
 typedef struct {
     // How many cells keep animating while the idle animation stops the others, listed in idleNodes (0xff: no idle)
     u8 idleNodeCount;
-    u8 unk1;
+    u8 stopCellFlags;
     u8 idleNodes[];
 } MCSSBinTail;
 
@@ -816,7 +816,7 @@ s16 MCSS_GetOffsetY(MCSS *mcss) {
 }
 
 u8 MCSSSys_GetStopCellFlags(MCSS *mcss) {
-    return mcss->binTail->unk1;
+    return mcss->binTail->stopCellFlags;
 }
 
 void MCSS_SetAnimationEndCallback(MCSS *mcss, u32 param, MCSSAnimationCallback callback, u32 unused) {

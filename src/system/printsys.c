@@ -88,7 +88,7 @@ struct PrintQueue {
     u16 readPos;
     u16 size;
     u8 frames;
-    u8 unk7 : 4;
+    u8 padding : 4;
     // Queues all text, not only while connected
     u8 queueAlways : 4;
     // The time a frame may spend printing
@@ -207,7 +207,7 @@ PrintQueue *PrintQueue_Create(u16 size, HeapID heapId) {
     queue->timeLimit = 0x1130;
     queue->job = NULL;
     queue->cursor = NULL;
-    queue->unk7 = 0;
+    queue->padding = 0;
     queue->queueAlways = 0;
     queue->frames = 0;
     queue->writePos = 0;
@@ -297,7 +297,7 @@ BOOL PrintQueue_Main(PrintQueue *queue) {
     }
     queue->writePos = 0;
     queue->readPos = queue->size;
-    queue->unk7 = 0;
+    queue->padding = 0;
     return TRUE;
 }
 
