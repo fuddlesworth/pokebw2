@@ -64,7 +64,7 @@ struct BtlMainSyncData {
     u16 commandTimeLimit;
     u8 textSpeed;
     u8 battleSceneOff : 4;
-    u8 : 4;
+    u8 padding : 4;
 };
 
 // A client's trainer, 0x28 bytes

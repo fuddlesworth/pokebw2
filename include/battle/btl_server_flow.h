@@ -72,7 +72,7 @@ typedef struct {
     u32 multipleTargets : 1;
     // The damage of a delayed move (BattleHandler_DelayMoveDamage)
     u32 delayed : 1;
-    u32 : 30;
+    u32 padding : 30;
 } BtlFlowDamageFlags;
 
 BtlServerFlow *BtlServerFlow_Create(BtlServer *server, BtlMainModule *mainModule, BtlPokeCon *pokeCon,

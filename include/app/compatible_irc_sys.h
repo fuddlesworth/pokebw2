@@ -24,7 +24,7 @@ typedef struct {
     u8 sex;
     u8 isEgg;
     u8 isFourteenth : 4;
-    u8 : 4;
+    u8 padding : 4;
     PlayerInfo trainer;
 } CompatibleIrcProfile;
 
@@ -46,8 +46,8 @@ void CompatibleIrcSys_SetCount(CompatibleIrcSys *sys, int count);
 BOOL CompatibleIrcSys_Update(CompatibleIrcSys *sys);
 BOOL CompatibleIrcSys_SendCount(CompatibleIrcSys *sys);
 int CompatibleIrcSys_GetPendingCount(CompatibleIrcSys *sys);
-BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 unused, BOOL noDuplicate,
-                             BOOL noCopy);
+BOOL CompatibleIrcSys_SendEx(CompatibleIrcSys *sys, u16 command, u32 size, const void *data, u8 sendId, u32 unused,
+                             BOOL noDuplicate, BOOL noCopy);
 void CompatibleIrcSys_AddCommands(CompatibleIrcSys *sys, int base, const NetCommand *list, int count, void *work);
 void CompatibleIrcSys_RemoveCommands(CompatibleIrcSys *sys, int base);
 BOOL CompatibleIrcSys_SendSelection(CompatibleIrcSys *sys, u32 a, u32 b);

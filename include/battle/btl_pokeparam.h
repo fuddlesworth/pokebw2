@@ -30,26 +30,26 @@ struct BattleCondition {
         struct {
             u32 type : 3;
             u32 turns : 6;
-            u32 : 23;
+            u32 padding : 23;
         } common;
         struct {
             u32 type : 3;
             u32 turns : 6;
             u32 param : 16;
-            u32 : 7;
+            u32 padding : 7;
         } timed;
         struct {
-            u32 : 9;
+            u32 padding00 : 9;
             u32 monId : 6;
-            u32 : 17;
+            u32 padding15 : 17;
         } mon;
         struct {
-            u32 : 25;
+            u32 padding00 : 25;
             u32 flag : 1;
-            u32 : 6;
+            u32 padding26 : 6;
         } one;
         struct {
-            u32 : 31;
+            u32 padding : 31;
             u32 flag : 1;
         } four;
     };

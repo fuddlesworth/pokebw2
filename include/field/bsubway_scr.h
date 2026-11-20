@@ -109,7 +109,7 @@ struct BSubwayScrWork {
     u16 fixedReward : 2;
     // Whether this player chose to retire, as sent to the partner: either's retiring retires both
     u16 retired : 1;
-    u16 : 1;
+    u16 paddingC_4 : 1;
     // The partners entry of a multi train's partner, or 5 plus the gender of a wireless partner
     u16 partnerIndex : 3;
     // Whether the scripts synchronize the wireless partners before returning to Nimbasa
@@ -121,7 +121,7 @@ struct BSubwayScrWork {
     u16 videoState : 2;
     // Disables the save-video choice after the save sequence or for an incompatible partner
     u16 videoSaveDisabled : 1;
-    u16 : 3;
+    u16 paddingC_13 : 3;
     u16 winCount;
     // The header's counter, for BattleRec_FinishAndSaveSlot
     u16 videoCounter;

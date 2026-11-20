@@ -29,7 +29,7 @@ typedef struct {
     u8 shadowColor : 4;
     u16 letterSpacing : 3;
     u16 lineSpacing : 4;
-    u16 unk0A_7 : 9;
+    u16 padding : 9;
     s32 pageSkip : 2;
     u16 fontSizeX;
     // The height of a row, in pixels
