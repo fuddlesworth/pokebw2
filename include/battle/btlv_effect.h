@@ -20,7 +20,7 @@ typedef struct BtlvMoveEffectParam {
     u32 attackerPos;   // 0x04
     u32 targetPos;     // 0x08
     u8 variant;        // 0x0C which of the script's variants runs, the turn of a two-turn move
-    u8 unk0D;          // 0x0D arg6 of BtlvScu_StartMoveEffect
+    u8 unk0D;          // 0x0D effectParam2 of BtlvScu_StartMoveEffect, the effect VM's second script parameter
     s32 target;        // 0x10 the move's MOVE_TARGET_* (MOVE_PARAM_TARGET); BtlvEffect_StartMove keeps a byte of it
 } BtlvMoveEffectParam; // size 0x14
 

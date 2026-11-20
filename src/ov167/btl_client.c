@@ -406,7 +406,7 @@ typedef struct {
     s32 newField;
     // The last choice recorded plus 1, which the scenes that follow it check
     s8 recordedChoice;
-    u8 unk11[0xb]; // Never read or written; 11 bytes before msgId1, more than its alignment needs
+    u8 padding11[0xb]; // Never read or written; 11 bytes before msgId1, more than its alignment needs
     s32 msgId1;
     s32 msgId2;
     // The move of the player's first action and the species of the last Pokemon that fainted, which start scenes
@@ -506,7 +506,7 @@ struct BtlClient {
     u8 recTimeUp : 1;
     u8 recCanceled : 1;
     u8 changePokeCount;
-    u8 unk1BC; // Never read or written
+    u8 padding1BC; // Never read or written
     u8 turnCount;
     u8 changePokePos[6];
     BtlClientStudioWork studio;

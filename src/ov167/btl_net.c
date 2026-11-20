@@ -72,7 +72,7 @@ typedef struct {
     u16 clientMask;
     u8 syncDataReceived;
     u8 numClients;
-    u8 unkC;
+    u8 padding0C;
     u8 serverCmdReceived;
     u8 unkE;
     u8 timingNo;

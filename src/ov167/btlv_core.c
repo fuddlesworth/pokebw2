@@ -72,7 +72,7 @@ struct BtlvCore {
     u8 subSeq;
     // Set for a mon that chooses after the first one this turn (BtlvScd's slot)
     u8 laterMon;
-    u8 unk1B6[6]; // Never read or written; six bytes before tcbManager
+    u8 padding1B6[6]; // Never read or written; six bytes before tcbManager
     TCBExManager *tcbManager;
     BtlvScu *scu;
     BtlvScd *scd;
@@ -1165,7 +1165,7 @@ BOOL BtlvCore_WaitChoice(BtlvCore *core) {
 }
 
 void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
-                              u8 arg6) {
+                              u8 effectParam2) {
     u8 attacker;
     u8 target;
 
@@ -1175,7 +1175,7 @@ void BtlvCore_StartMoveEffect(BtlvCore *core, u8 attackerPos, u8 targetPos, u16 
     } else {
         target = 0xff;
     }
-    BtlvScu_StartMoveEffect(core->scu, attacker, target, move, moveTarget, variant, arg6);
+    BtlvScu_StartMoveEffect(core->scu, attacker, target, move, moveTarget, variant, effectParam2);
 }
 
 BOOL BtlvCore_WaitMoveEffect(BtlvCore *core) {

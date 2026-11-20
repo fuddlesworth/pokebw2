@@ -108,7 +108,7 @@ struct BtlvScu {
     u8 taskCount;                      // 0x040 tasks of BtlvScu_StartChangeMon, 021d35e0, 021d363c, 021d3830
     u8 gaugeShowTaskCount;             // 0x041 tasks of BtlvScu_StartMemberIn
     u8 gaugeHideTaskCount;             // 0x042 tasks of BtlvScu_StartMemberOut
-    u8 unk043[5];                      // 0x043 never accessed
+    u8 padding043[5];                  // 0x043 never accessed
     BtlvScuGauge gauges[6];            // 0x048 by battle position
     BtlvScuAbilityWin abilityWins[2];  // 0x090 by side
     void *abilityCharFile;             // 0x0D8 the file GFL_G2DIOReadBGNCGR reads, freed with GFL_HeapFree
@@ -155,7 +155,7 @@ typedef struct BtlvScuWildDoubleWork {
     u8 monIds[2];        // 0x08
     u8 pos[2];           // 0x0A
     u8 viewPos[2];       // 0x0C
-    u8 unk0E;            // 0x0E never accessed
+    u8 padding0E;        // 0x0E never accessed
     u8 clientId;         // 0x0F
 } BtlvScuWildDoubleWork; // size 0x10
 
@@ -219,7 +219,7 @@ typedef struct BtlvScuPkmTask {
     u32 viewPos;   // 0x04 the view position whose sprite changes
     PartyPkm *pkm; // 0x08
     s32 seq;       // 0x0C
-    u8 unk10;      // 0x10 never accessed
+    u8 padding10;  // 0x10 never accessed
     u8 immediate;  // 0x11 BtlvEffect_ChangeSprite at once rather than BtlvEffect_StartChangeSprite if set
     u8 *count;     // 0x14 &scu->taskCount
 } BtlvScuPkmTask;  // size 0x18
@@ -2112,16 +2112,17 @@ BOOL BtlvScu_WaitMsg(BtlvScu *scu) {
     return FALSE;
 }
 
-// Starts the effect of a move. arg6 goes to the effect parameter's unk0D, the effect VM's unk2; no caller sets it
+// Starts the effect of a move. effectParam2 goes to the effect parameter's unk0D, the effect VM's unk2 (its second
+// script parameter); no caller sets it
 void BtlvScu_StartMoveEffect(BtlvScu *scu, u8 attackerPos, u8 targetPos, u16 move, s32 moveTarget, u32 variant,
-                             u8 arg6) {
+                             u8 effectParam2) {
     BtlvMoveEffectParam *param = (BtlvMoveEffectParam *)scu->work;
 
     param->move = move;
     param->attackerPos = attackerPos;
     param->targetPos = targetPos;
     param->variant = variant;
-    param->unk0D = arg6;
+    param->unk0D = effectParam2;
     param->target = moveTarget;
     BtlvScu_SetSubProc(scu, BtlvScu_MoveEffectProc);
 }
