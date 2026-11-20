@@ -195,11 +195,11 @@ typedef struct {
     u8 palette;
 } WinRecordWindowData;
 
-// The animations of a button, normal and pressed
+// The animations of a button, normal, pressed and disabled, and an unused entry kept for the layout
 typedef struct {
     s16 normal;
     s16 pressed;
-    s16 unk4;
+    s16 disabled;
     s16 unk6;
 } WinRecordButtonAnims;
 
