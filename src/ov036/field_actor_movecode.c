@@ -416,7 +416,7 @@ static u16 FieldActorMovecode_GetNextDirInRotation(u16 moveCode, u16 faceDir) {
     return DIR_NONE;
 }
 
-void func_ov036_021913dc(FieldActor *actor) {
+void FieldActorMovecode_DeleteTurnRandom(FieldActor *actor) {
 }
 
 void FieldActorMovecode_InitWalkRandomSet11(FieldActor *actor) {

@@ -401,7 +401,7 @@ void BattleMon_SetComboMove(BattleMon *mon, u8 monId, u16 move);
 BOOL BattleMon_GetComboMove(BattleMon *mon, u8 *monId, u16 *move);
 BOOL BattleMon_HasComboMove(BattleMon *mon);
 void BattleMon_RecalcStats(BattleMon *mon);
-BOOL func_ov167_021bc6ac(BattleMon *mon);
+BOOL BattleMon_IsHp41(BattleMon *mon);
 
 // Overlay 169's, which ov167 calls through a linker veneer: whether a condition passes to the Pokémon that Baton Pass
 // brings in

@@ -150,7 +150,7 @@ u16 BtlServerCmdQueue_Read(BtlServerCmdQueue *que, u32 *args);
 void BtlServerCmdQueue_PutByte(BtlServerCmdQueue *que, u8 value);
 u8 BtlServerCmdQueue_ReadByte(BtlServerCmdQueue *que);
 void BtlServerCmdQueue_PutMsg(BtlServerCmdQueue *que, u8 event, ...);
-void func_ov167_021b1670(void);
+void BtlServerCmd_Init(void);
 
 // SC_OP_UPDATE_USED_MOVE, with its arguments' types
 static inline void BtlServerCmd_Put18(BtlServerCmdQueue *queue, u8 monId, u8 target, u8 result, u8 type, u16 move,

@@ -651,5 +651,5 @@ static void ReadMsgArgs(BtlServerCmdQueue *que, u8 event, u32 *args) {
     }
 }
 
-void func_ov167_021b1670(void) {
+void BtlServerCmd_Init(void) {
 }

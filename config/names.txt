@@ -6286,6 +6286,7 @@ overlays/ov010 0x0214ff28 BattleProc_Exit
 overlays/ov010 0x0214ff58 BattleProc_Main
 overlays/ov010 0x02150310 EventMake_Create
 overlays/ov010 0x0215033c EventMake_Callback
+overlays/ov010 0x0215039c EVENT_MAKE_BATTLE_PROC_FUNCTIONS
 overlays/ov011 0x021503c0 NetDevWifi_Prepare
 overlays/ov011 0x021503c8 NetDevWifi_Init
 overlays/ov011 0x02150410 NetDevWifi_Start
@@ -10879,6 +10880,8 @@ overlays/ov036 0x0218fcc0 FieldAcmdTCB_MarkWait
 overlays/ov036 0x0218fce8 FieldAcmdTCB_MarkWaitExcl
 overlays/ov036 0x0218fcf8 FieldAcmdTCB_MarkWaitExclNoSe
 overlays/ov036 0x0218fd08 FieldAcmdTCB_MarkWaitNoteNoSe
+overlays/ov036 0x0218fd18 FieldAcmdTCB_MarkWaitExclDup
+overlays/ov036 0x0218fd28 FieldAcmdTCB_MarkWaitExclDup2
 overlays/ov036 0x0218fd38 FieldAcmdTCB_MarkWaitQuestion
 overlays/ov036 0x0218fd48 FieldAcmdTCB_MarkWaitNote
 overlays/ov036 0x0218fd58 FieldAcmdTCB_MarkWaitEllipsis
@@ -10933,6 +10936,7 @@ overlays/ov036 0x0219042c FieldAcmdTCB_StepRightFaceUp8F
 overlays/ov036 0x0219045c FieldAcmdTCB_StepUpFaceRight8F
 overlays/ov036 0x0219048c FieldAcmdTCB_StepDownFaceLeft8F
 overlays/ov036 0x021904c0 FieldAcmdTCB_StepLeftFaceUp8F
+overlays/ov036 0x021904f4 FieldAcmdTCB_StepRightFaceDown8F
 overlays/ov036 0x02190528 FieldAcmdTCB_StepUpFaceDown8F
 overlays/ov036 0x0219055c FieldAcmdTCB_StepDownFaceUp8F
 overlays/ov036 0x02190590 FieldAcmdTCB_StepLeftFaceRight8F
@@ -10952,6 +10956,7 @@ overlays/ov036 0x02190814 FieldAcmdTCB_DashStepRightFaceUp4F
 overlays/ov036 0x02190848 FieldAcmdTCB_DashStepUpFaceRight4F
 overlays/ov036 0x0219087c FieldAcmdTCB_DashStepDownFaceLeft4F
 overlays/ov036 0x021908b0 FieldAcmdTCB_DashStepLeftFaceUp4F
+overlays/ov036 0x021908e4 FieldAcmdTCB_DashStepRightFaceDown4F
 overlays/ov036 0x02190918 FieldAcmdTCB_DashStepUpFaceDown4F
 overlays/ov036 0x0219094c FieldAcmdTCB_DashStepDownFaceUp4F
 overlays/ov036 0x02190980 FieldAcmdTCB_DashStepLeftFaceRight4F
@@ -10965,6 +10970,7 @@ overlays/ov036 0x02190cc0 FieldAcmdTCB_HopRightFaceUp8F
 overlays/ov036 0x02190ce8 FieldAcmdTCB_HopUpFaceRight8F
 overlays/ov036 0x02190d0c FieldAcmdTCB_HopDownFaceLeft8F
 overlays/ov036 0x02190d38 FieldAcmdTCB_HopLeftFaceUp8F
+overlays/ov036 0x02190d60 FieldAcmdTCB_HopRightFaceDown8F
 overlays/ov036 0x02190d88 FieldAcmdTCB_HopUpFaceDown8F
 overlays/ov036 0x02190db0 FieldAcmdTCB_HopDownFaceUp8F
 overlays/ov036 0x02190ddc FieldAcmdTCB_HopLeftFaceRight8F
@@ -10976,11 +10982,13 @@ overlays/ov036 0x02190e74 FieldAcmdTCB_DashLeft2F
 overlays/ov036 0x02190eac FieldAcmdTCB_Dash2FMove
 overlays/ov036 0x02190eec FieldAcmdTCB_FlyUpInit
 overlays/ov036 0x02190f14 FieldAcmdTCB_FlyUpMove
+overlays/ov036 0x0219100c FieldAcmdTCB_SetAnime10Dup
 overlays/ov036 0x02191020 FieldAcmdTCB_AnimeWaitEndFaceDownInit
 overlays/ov036 0x02191034 FieldAcmdTCB_AnimeWaitEndFaceDown
 overlays/ov036 0x02191090 FieldAcmdTCB_ResetDrawOffset
 overlays/ov036 0x021910b0 FieldAcmdTCB_FlyReadyInit
 overlays/ov036 0x021910f4 FieldAcmdTCB_FlyReadyMove
+overlays/ov036 0x02191174 FieldAcmdTCB_SetAnime10Dup2
 overlays/ov036 0x02191188 FieldAcmdTCB_DrawReadyWaitInit10
 overlays/ov036 0x0219119c FieldAcmdTCB_DrawReadyWaitInit11
 overlays/ov036 0x021911b0 FieldAcmdTCB_DrawReadyWaitInit12
@@ -11001,6 +11009,7 @@ overlays/ov036 0x021912c8 FieldActorMovecode_InitTurnRandomSet9
 overlays/ov036 0x021912d4 FieldActorMovecode_InitTurnRandomSet10
 overlays/ov036 0x021912e0 FieldActorMovecode_MoveTurnRandom
 overlays/ov036 0x02191378 FieldActorMovecode_GetNextDirInRotation
+overlays/ov036 0x021913dc FieldActorMovecode_DeleteTurnRandom
 overlays/ov036 0x021913e0 FieldActorMovecode_InitWalkRandomSet11
 overlays/ov036 0x021913f0 FieldActorMovecode_InitWalkRandomSet12
 overlays/ov036 0x02191400 FieldActorMovecode_InitWalkRandomSet13
@@ -13162,7 +13171,9 @@ overlays/ov036 0x021cab70 sCenterY
 overlays/ov036 0x021cab80 sTouchRects3
 overlays/ov036 0x021cab98 sTouchRectsA
 overlays/ov036 0x021cacac ACMD_SET_FACE_DIR_LOCK_FLAG_TABLE
+overlays/ov036 0x021cacb4 ACMD_SET_ANIME10_DUP2_TABLE
 overlays/ov036 0x021cacbc ACMD_SET_ANIME10_TABLE
+overlays/ov036 0x021cacc4 ACMD_SET_ANIME10_DUP_TABLE
 overlays/ov036 0x021caccc ACMD_FACE_RIGHT_TABLE
 overlays/ov036 0x021cacd4 ACMD_SET_ANIME_PAUSE_FLAG_TABLE
 overlays/ov036 0x021cacdc ACMD_CLEAR_FACE_DIR_LOCK_FLAG_TABLE
@@ -13180,6 +13191,7 @@ overlays/ov036 0x021cad70 ACMD_WALK_LEFT16_F_FAST_ANIME_TABLE
 overlays/ov036 0x021cad7c ACMD_WALK_DOWN16_F_FAST_ANIME_TABLE
 overlays/ov036 0x021cad88 ACMD_WALK_UP16_F_FAST_ANIME_TABLE
 overlays/ov036 0x021cad94 ACMD_JUMP_RIGHT3_G24_F_NO_SE_TABLE
+overlays/ov036 0x021cada0 ACMD_MARK_WAIT_EXCL_DUP2_TABLE
 overlays/ov036 0x021cadac ACMD_HOP_RIGHT_FACE_LEFT8_F_TABLE
 overlays/ov036 0x021cadb8 ACMD_MARK_WAIT_EXCL_TABLE
 overlays/ov036 0x021cadc4 ACMD_STEP_RIGHT_FACE_LEFT4_F_TABLE
@@ -13195,6 +13207,7 @@ overlays/ov036 0x021cae30 ACMD_ANIME_WAIT_END_INIT11_SE_TABLE
 overlays/ov036 0x021cae3c ACMD_DASH_STEP_LEFT_FACE_RIGHT4_F_TABLE
 overlays/ov036 0x021cae48 ACMD_DASH_STEP_DOWN_FACE_UP4_F_TABLE
 overlays/ov036 0x021cae54 ACMD_DASH_STEP_UP_FACE_DOWN4_F_TABLE
+overlays/ov036 0x021cae60 ACMD_DASH_STEP_RIGHT_FACE_DOWN4_F_TABLE
 overlays/ov036 0x021cae6c ACMD_DASH_STEP_LEFT_FACE_UP4_F_TABLE
 overlays/ov036 0x021cae78 ACMD_DASH_STEP_DOWN_FACE_LEFT4_F_TABLE
 overlays/ov036 0x021cae84 ACMD_DASH_STEP_UP_FACE_RIGHT4_F_TABLE
@@ -13263,10 +13276,12 @@ overlays/ov036 0x021cb184 ACMD_WALK_UP6_F_TABLE
 overlays/ov036 0x021cb190 ACMD_MARK_WAIT_ELLIPSIS_TABLE
 overlays/ov036 0x021cb19c ACMD_MARK_WAIT_NOTE_TABLE
 overlays/ov036 0x021cb1a8 ACMD_MARK_WAIT_QUESTION_TABLE
+overlays/ov036 0x021cb1b4 ACMD_MARK_WAIT_EXCL_DUP_TABLE
 overlays/ov036 0x021cb1c0 ACMD_MARK_WAIT_NOTE_NO_SE_TABLE
 overlays/ov036 0x021cb1cc ACMD_STEP_DOWN_FACE_UP2_F_TABLE
 overlays/ov036 0x021cb1d8 ACMD_STEP_UP_FACE_DOWN2_F_TABLE
 overlays/ov036 0x021cb1e4 ACMD_JUMP_RIGHT1_G16_F_TABLE
+overlays/ov036 0x021cb1f0 ACMD_STEP_RIGHT_FACE_DOWN8_F_TABLE
 overlays/ov036 0x021cb1fc ACMD_HOP_DOWN_FACE_LEFT8_F_TABLE
 overlays/ov036 0x021cb208 ACMD_STEP_UP_FACE_DOWN8_F_TABLE
 overlays/ov036 0x021cb214 ACMD_STEP_DOWN_FACE_UP8_F_TABLE
@@ -13331,6 +13346,7 @@ overlays/ov036 0x021cb550 ACMD_WALK_DOWN16_F_TABLE
 overlays/ov036 0x021cb568 ACMD_WALK_RIGHT32_F_TABLE
 overlays/ov036 0x021cb574 ACMD_WALK_LEFT32_F_TABLE
 overlays/ov036 0x021cb580 ACMD_WALK_DOWN32_F_TABLE
+overlays/ov036 0x021cb598 ACMD_HOP_RIGHT_FACE_DOWN8_F_TABLE
 overlays/ov036 0x021cb5a4 ACMD_ANIME_WAIT_END_FACE_DOWN_INIT_TABLE
 overlays/ov036 0x021cb5b0 sWalk3FSteps
 overlays/ov036 0x021cb5d4 sWalk6FSteps
@@ -14546,9 +14562,12 @@ overlays/ov061 0x021e59ac Scrcmd_BlackTower_CallBattleEvent
 overlays/ov061 0x021e59ec Scrcmd_BlackTower_CallDoorEvent
 overlays/ov061 0x021e5a38 Scrcmd_BlackTower_CallMachineEvent
 overlays/ov061 0x021e5a64 Scrcmd_BlackTower_CallLiftEvent
+overlays/ov061 0x021e5a90 Scrcmd_BlackTower_GetAreaTrainerCode
 overlays/ov061 0x021e5aa8 Scrcmd_BlackTower_SetTrainerDefeated
 overlays/ov061 0x021e5af4 Scrcmd_BlackTower_IsTrainerDefeated
 overlays/ov061 0x021e5b40 Scrcmd_BlackTower_GetNpcScript
+overlays/ov061 0x021e5bac Scrcmd_BlackTower_GetAreaValue
+overlays/ov061 0x021e5bc4 Scrcmd_BlackTower_GetNpcKind
 overlays/ov061 0x021e5c04 Scrcmd_BlackTower_SetSpecialTrainerFlag
 overlays/ov061 0x021e5c5c Scrcmd_BlackTower_GetSpecialTrainerFlag
 overlays/ov061 0x021e5cb8 Scrcmd_BlackTower_GetGoalFloor
@@ -14559,6 +14578,7 @@ overlays/ov061 0x021e5dd4 Scrcmd_BlackTower_SetInChallenge
 overlays/ov061 0x021e5e08 Scrcmd_BlackTower_GetTrainerId
 overlays/ov061 0x021e5e60 Scrcmd_BlackTower_GetVersion
 overlays/ov061 0x021e5e98 Scrcmd_BlackTower_GetInfo
+overlays/ov061 0x021e5f94 BlackTower_GetAreaPair
 overlays/ov061 0x021e5fe4 Scrcmd_BlackTower_IsTargetSlot
 overlays/ov061 0x021e603c Scrcmd_BlackTower_GetNpcScriptByResult
 overlays/ov061 0x021e60a8 Scrcmd_BlackTower_HasEarnedMoney
@@ -19430,6 +19450,7 @@ overlays/ov167 0x0219e378 BtlMain_FreeStudioData
 overlays/ov167 0x0219e39c GetStudioRules
 overlays/ov167 0x0219e3ac GetStudioWork
 overlays/ov167 0x0219e3bc GetPokewoodCutin
+overlays/ov167 0x0219e3c8 BtlScriptedRules_Init
 overlays/ov167 0x0219e3cc BattleServer_Create
 overlays/ov167 0x0219e498 BattleServer_AttachClient
 overlays/ov167 0x0219e4d0 BattleServer_AttachNetClient
@@ -19868,6 +19889,7 @@ overlays/ov167 0x021b15c0 BtlServerCmdQueue_PutByte
 overlays/ov167 0x021b15c8 BtlServerCmdQueue_ReadByte
 overlays/ov167 0x021b15d0 BtlServerCmdQueue_PutMsg
 overlays/ov167 0x021b1630 ReadMsgArgs
+overlays/ov167 0x021b1670 BtlServerCmd_Init
 overlays/ov167 0x021b1674 BattleClient_Create
 overlays/ov167 0x021b1890 BattleClient_Delete
 overlays/ov167 0x021b18c4 BattleClient_SetForceQuit
@@ -20248,6 +20270,7 @@ overlays/ov167 0x021bc640 BattleMon_SetComboMove
 overlays/ov167 0x021bc650 BattleMon_GetComboMove
 overlays/ov167 0x021bc674 BattleMon_HasComboMove
 overlays/ov167 0x021bc6a0 BattleMon_RecalcStats
+overlays/ov167 0x021bc6ac BattleMon_IsHp41
 overlays/ov167 0x021bc6bc BattleEvent_Init
 overlays/ov167 0x021bc6f8 BattleEvent_ClearTurnPause
 overlays/ov167 0x021bc718 BattleEvent_DebugPrintFactorList
@@ -20294,6 +20317,7 @@ overlays/ov167 0x021bd7b0 BtlCalc_GetPrizeMoney
 overlays/ov167 0x021bd7e4 BtlCalc_GetTrainerPrizeMoney
 overlays/ov167 0x021bd820 BtlCalc_GetLostMoney
 overlays/ov167 0x021bd874 BtlCalc_SetHeapID
+overlays/ov167 0x021bd880 BtlCalc_ExitItemData
 overlays/ov167 0x021bd894 BtlCalc_PackMonIDs
 overlays/ov167 0x021bd8b8 BtlCalc_UnpackMonIDs
 overlays/ov167 0x021bd8d0 BtlCalc_GetCurseTarget
@@ -24231,6 +24255,7 @@ overlays/ov182 0x021aee40 DWCUtilInfoMenu_ErasedWaitFadeIn
 overlays/ov182 0x021aee60 DWCUtilInfoMenu_ErasedWaitButtons
 overlays/ov182 0x021aee80 DWCUtilInfoMenu_ErasedMain
 overlays/ov182 0x021aee90 DWCUtilInfoMenu_ErasedHandleInput
+overlays/ov182 0x021aeea4 DWCUtilInfoMenu_ErasedDraw
 overlays/ov182 0x021aeea8 DWCUtilInfoMenu_ErasedHandleChoice
 overlays/ov182 0x021aeec4 DWCUtilInfoMenu_ErasedDisableButtons
 overlays/ov182 0x021aeedc DWCUtilInfoMenu_ErasedFadeOut
@@ -24243,6 +24268,7 @@ overlays/ov182 0x021af130 DWCUtilInfoMenu_InfoWaitFadeIn
 overlays/ov182 0x021af158 DWCUtilInfoMenu_InfoWaitButtons
 overlays/ov182 0x021af178 DWCUtilInfoMenu_InfoMain
 overlays/ov182 0x021af188 DWCUtilInfoMenu_InfoHandleInput
+overlays/ov182 0x021af19c DWCUtilInfoMenu_InfoDraw
 overlays/ov182 0x021af1a0 DWCUtilInfoMenu_InfoHandleChoice
 overlays/ov182 0x021af1bc DWCUtilInfoMenu_InfoDisableButtons
 overlays/ov182 0x021af1d4 DWCUtilInfoMenu_InfoFadeOut
@@ -24266,6 +24292,7 @@ overlays/ov182 0x021af740 initGraphics
 overlays/ov182 0x021af790 procInit
 overlays/ov182 0x021af7b4 procInit1
 overlays/ov182 0x021af7d8 DWCUtilTopMenu_MoveMain
+overlays/ov182 0x021af7e4 DWCUtilTopMenu_MoveHandleInput
 overlays/ov182 0x021af7e8 draw
 overlays/ov182 0x021af7ec DWCUtilTopMenu_MoveFadeOut
 overlays/ov182 0x021af808 DWCUtilTopMenu_MoveWaitFadeOut
@@ -24277,6 +24304,7 @@ overlays/ov182 0x021af934 procInit1
 overlays/ov182 0x021af954 procInit2
 overlays/ov182 0x021af974 procScene
 overlays/ov182 0x021af984 input
+overlays/ov182 0x021af998 DWCUtilInfoMenu_MovCompleteDraw
 overlays/ov182 0x021af99c button
 overlays/ov182 0x021af9b8 endScene
 overlays/ov182 0x021af9d0 endScene1
@@ -24288,6 +24316,7 @@ overlays/ov182 0x021afaa0 DWCUtilTopMenu_InstructionsWaitFadeIn
 overlays/ov182 0x021afac8 DWCUtilTopMenu_InstructionsWaitButtons
 overlays/ov182 0x021afae8 DWCUtilTopMenu_InstructionsMain
 overlays/ov182 0x021afaf8 DWCUtilTopMenu_InstructionsHandleInput
+overlays/ov182 0x021afb0c DWCUtilTopMenu_InstructionsDraw
 overlays/ov182 0x021afb10 DWCUtilTopMenu_InstructionsHandleChoice
 overlays/ov182 0x021afb2c DWCUtilTopMenu_InstructionsDisableButtons
 overlays/ov182 0x021afb44 DWCUtilTopMenu_InstructionsFadeOut
@@ -24644,6 +24673,7 @@ overlays/ov182 0x021b6610 procInit
 overlays/ov182 0x021b6648 procInit1
 overlays/ov182 0x021b66a0 DWCUtilAutoConnectIntro_WaitDialog
 overlays/ov182 0x021b66d0 draw
+overlays/ov182 0x021b66d4 DWCUtilAutoConnectIntro_Input
 overlays/ov182 0x021b66d8 endScene1
 overlays/ov182 0x021b66fc DWCUtilAutoConnectIntro_WaitFadeOut
 overlays/ov182 0x021b6728 DWCi_SceneSetUsbComplete
@@ -32329,6 +32359,7 @@ overlays/ov257 0x021af65c SSP_ExifEncode
 overlays/ov257 0x021af740 sIndexTable
 overlays/ov257 0x021af750 sStepTable
 overlays/ov257 0x021af8b4 sDrawPens
+overlays/ov257 0x021b18c4 sCameraRotations
 overlays/ov257 0x021b18cc sPictureWidths
 overlays/ov257 0x021b18d8 sPictureHeights
 overlays/ov257 0x021b18e4 sPictureSizes

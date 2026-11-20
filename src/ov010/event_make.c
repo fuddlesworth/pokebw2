@@ -44,7 +44,7 @@ enum {
     EVENT_STEP_WAIT,
 };
 
-const GameProcFunctions data_ov010_0215039c = { BattleProc_Init, BattleProc_Main, BattleProc_Exit };
+const GameProcFunctions EVENT_MAKE_BATTLE_PROC_FUNCTIONS = { BattleProc_Init, BattleProc_Main, BattleProc_Exit };
 
 BOOL BattleProc_Init(GameProc *proc, u32 *state, void *param, void *work) {
     BattleProcWork *procWork;
@@ -314,7 +314,7 @@ GameEventReturnCode EventMake_Callback(GameEvent *event, u32 *state, void *data)
         param->rule = work->players->rule;
         param->counter = work->players->counter;
         param->markNetErrShown = work->markNetErrShown;
-        GSYS_QueueProc(gsys, -1, &data_ov010_0215039c, param);
+        GSYS_QueueProc(gsys, -1, &EVENT_MAKE_BATTLE_PROC_FUNCTIONS, param);
         (*state)++;
         break;
     case EVENT_STEP_WAIT:

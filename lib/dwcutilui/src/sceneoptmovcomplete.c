@@ -16,7 +16,7 @@ static void procInit1(void);
 static void procInit2(void);
 static void procScene(void);
 static void input(void);
-static void func_ov182_021af998(void);
+static void DWCUtilInfoMenu_MovCompleteDraw(void);
 static void button(void);
 static void endScene(void);
 static void endScene1(void);
@@ -60,7 +60,7 @@ static void procInit2(void) {
 
 static void procScene(void) {
     input();
-    func_ov182_021af998();
+    DWCUtilInfoMenu_MovCompleteDraw();
     button();
 }
 
@@ -70,7 +70,7 @@ static void input(void) {
     }
 }
 
-static void func_ov182_021af998(void) {
+static void DWCUtilInfoMenu_MovCompleteDraw(void) {
 }
 
 static void button(void) {

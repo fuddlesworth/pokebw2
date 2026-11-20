@@ -29,8 +29,8 @@ static const FieldActorMoveCode sMoveCode1 = { MOVE_CODE_1, MoveCodeNone_Init, M
                                                MoveCodeNone_Return };
 
 static const FieldActorMoveCode sMoveCodeTurnRandom = { MOVE_CODE_TURN_RANDOM, FieldActorMovecode_InitTurnRandomSet0,
-                                                        FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                        MoveCodeNone_Return };
+                                                        FieldActorMovecode_MoveTurnRandom,
+                                                        FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return };
 
 static const FieldActorMoveCode sMoveCodeWalkRandom = { MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitWalkRandomSet11,
                                                         FieldActorMovecode_MoveWalkRandom, MoveCodeNone_Delete,
@@ -51,55 +51,55 @@ static const FieldActorMoveCode sMoveCodeWalkRandomLeftRightBump = { MOVE_CODE_W
                                                                      FieldActorMovecode_MoveWalkRandom,
                                                                      MoveCodeNone_Delete, MoveCodeNone_Return };
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpLeft = { MOVE_CODE_WALK_RANDOM,
-                                                              FieldActorMovecode_InitTurnRandomSet1,
-                                                              FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                              MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpLeft = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet1, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpRight = { MOVE_CODE_WALK_RANDOM,
-                                                               FieldActorMovecode_InitTurnRandomSet2,
-                                                               FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                               MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet2, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomDownLeft = { MOVE_CODE_WALK_RANDOM,
-                                                                FieldActorMovecode_InitTurnRandomSet3,
-                                                                FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                                MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomDownLeft = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet3, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomDownRight = { MOVE_CODE_WALK_RANDOM,
-                                                                 FieldActorMovecode_InitTurnRandomSet4,
-                                                                 FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                                 MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomDownRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet4, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpDownLeft = { MOVE_CODE_WALK_RANDOM,
-                                                                  FieldActorMovecode_InitTurnRandomSet5,
-                                                                  FieldActorMovecode_MoveTurnRandom,
-                                                                  func_ov036_021913dc, MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpDownLeft = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet5, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpDownRight = { MOVE_CODE_WALK_RANDOM,
-                                                                   FieldActorMovecode_InitTurnRandomSet6,
-                                                                   FieldActorMovecode_MoveTurnRandom,
-                                                                   func_ov036_021913dc, MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpDownRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet6, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpLeftRight = { MOVE_CODE_WALK_RANDOM,
-                                                                   FieldActorMovecode_InitTurnRandomSet7,
-                                                                   FieldActorMovecode_MoveTurnRandom,
-                                                                   func_ov036_021913dc, MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpLeftRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet7, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomDownLeftRight = { MOVE_CODE_WALK_RANDOM,
-                                                                     FieldActorMovecode_InitTurnRandomSet8,
-                                                                     FieldActorMovecode_MoveTurnRandom,
-                                                                     func_ov036_021913dc, MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomDownLeftRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet8, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomUpDown = { MOVE_CODE_WALK_RANDOM,
-                                                              FieldActorMovecode_InitTurnRandomSet9,
-                                                              FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                              MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomUpDown = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet9, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
-static const FieldActorMoveCode sMoveCodeTurnRandomLeftRight = { MOVE_CODE_WALK_RANDOM,
-                                                                 FieldActorMovecode_InitTurnRandomSet10,
-                                                                 FieldActorMovecode_MoveTurnRandom, func_ov036_021913dc,
-                                                                 MoveCodeNone_Return };
+static const FieldActorMoveCode sMoveCodeTurnRandomLeftRight = {
+    MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitTurnRandomSet10, FieldActorMovecode_MoveTurnRandom,
+    FieldActorMovecode_DeleteTurnRandom, MoveCodeNone_Return
+};
 
 static const FieldActorMoveCode sMoveCodeFaceUp = { MOVE_CODE_WALK_RANDOM, FieldActorMovecode_InitFixedDirUp,
                                                     FieldActorMovecode_MoveFixedDir, MoveCodeNone_Delete,
@@ -602,7 +602,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_ANIME_WAIT_END_INIT10_ANIME_WAIT_END_STOP_TABLE,
     ACMD_HIDE_OFF_INIT_TABLE,
     ACMD_STAY_WALK32_F40_F_TABLE,
-    data_ov036_021cb1b4,
+    ACMD_MARK_WAIT_EXCL_DUP_TABLE,
     ACMD_STAY_WALK16_F41_F_TABLE,
     ACMD_STEP_UP_FACE_LEFT8_F_TABLE,
     ACMD_STEP_DOWN_FACE_RIGHT8_F_TABLE,
@@ -611,7 +611,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_STEP_UP_FACE_RIGHT8_F_TABLE,
     ACMD_STEP_DOWN_FACE_LEFT8_F_TABLE,
     ACMD_STEP_LEFT_FACE_UP8_F_TABLE,
-    data_ov036_021cb1f0,
+    ACMD_STEP_RIGHT_FACE_DOWN8_F_TABLE,
     ACMD_STEP_UP_FACE_DOWN8_F_TABLE,
     ACMD_STEP_DOWN_FACE_UP8_F_TABLE,
     ACMD_STEP_LEFT_FACE_RIGHT8_F_TABLE,
@@ -627,7 +627,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_DASH_STEP_UP_FACE_RIGHT4_F_TABLE,
     ACMD_DASH_STEP_DOWN_FACE_LEFT4_F_TABLE,
     ACMD_DASH_STEP_LEFT_FACE_UP4_F_TABLE,
-    data_ov036_021cae60,
+    ACMD_DASH_STEP_RIGHT_FACE_DOWN4_F_TABLE,
     ACMD_DASH_STEP_UP_FACE_DOWN4_F_TABLE,
     ACMD_DASH_STEP_DOWN_FACE_UP4_F_TABLE,
     ACMD_DASH_STEP_LEFT_FACE_RIGHT4_F_TABLE,
@@ -639,7 +639,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_HOP_UP_FACE_RIGHT8_F_TABLE,
     ACMD_HOP_DOWN_FACE_LEFT8_F_TABLE,
     ACMD_HOP_LEFT_FACE_UP8_F_TABLE,
-    data_ov036_021cb598,
+    ACMD_HOP_RIGHT_FACE_DOWN8_F_TABLE,
     ACMD_HOP_UP_FACE_DOWN8_F_TABLE,
     ACMD_HOP_DOWN_FACE_UP8_F_TABLE,
     ACMD_HOP_LEFT_FACE_RIGHT8_F_TABLE,
@@ -652,7 +652,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_STEP_DOWN_FACE_UP2_F_TABLE,
     ACMD_STEP_LEFT_FACE_RIGHT2_F_TABLE,
     ACMD_STEP_RIGHT_FACE_LEFT2_F_TABLE,
-    data_ov036_021cada0,
+    ACMD_MARK_WAIT_EXCL_DUP2_TABLE,
     ACMD_STAY_WALK_BOB_INIT_TABLE,
     ACMD_WALK_UP16_F_FAST_ANIME_TABLE,
     ACMD_WALK_DOWN16_F_FAST_ANIME_TABLE,
@@ -674,7 +674,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_SET_ANIME10_TABLE,
     ACMD_DASH_LEFT2_F_TABLE,
     ACMD_FLY_UP_INIT_TABLE,
-    data_ov036_021cacc4,
+    ACMD_SET_ANIME10_DUP_TABLE,
     ACMD_ANIME_WAIT_END_FACE_DOWN_INIT_TABLE,
     ACMD_DRAW_READY_WAIT_INIT10_TABLE,
     ACMD_DRAW_READY_WAIT_INIT11_TABLE,
@@ -690,7 +690,7 @@ const ActorAcmdFunc *const ACTOR_ACTION_COMMAND_TABLES[] = {
     ACMD_FLY_READY_INIT_TABLE,
     ACMD_MARK_WAIT_EXCL_NO_SE_TABLE,
     ACMD_MARK_WAIT_NOTE_NO_SE_TABLE,
-    data_ov036_021cacb4,
+    ACMD_SET_ANIME10_DUP2_TABLE,
     ACMD_DRAW_READY_WAIT_INIT13_TABLE,
 };
 

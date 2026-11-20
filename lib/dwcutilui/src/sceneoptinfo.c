@@ -23,7 +23,7 @@ static void DWCUtilInfoMenu_InfoWaitFadeIn(void);
 static void DWCUtilInfoMenu_InfoWaitButtons(void);
 static void DWCUtilInfoMenu_InfoMain(void);
 static void DWCUtilInfoMenu_InfoHandleInput(void);
-static void func_ov182_021af19c(void);
+static void DWCUtilInfoMenu_InfoDraw(void);
 static void DWCUtilInfoMenu_InfoHandleChoice(void);
 static void DWCUtilInfoMenu_InfoDisableButtons(void);
 static void DWCUtilInfoMenu_InfoFadeOut(void);
@@ -107,7 +107,7 @@ static void DWCUtilInfoMenu_InfoWaitButtons(void) {
 
 static void DWCUtilInfoMenu_InfoMain(void) {
     DWCUtilInfoMenu_InfoHandleInput();
-    func_ov182_021af19c();
+    DWCUtilInfoMenu_InfoDraw();
     DWCUtilInfoMenu_InfoHandleChoice();
 }
 
@@ -117,7 +117,7 @@ static void DWCUtilInfoMenu_InfoHandleInput(void) {
     }
 }
 
-static void func_ov182_021af19c(void) {
+static void DWCUtilInfoMenu_InfoDraw(void) {
 }
 
 static void DWCUtilInfoMenu_InfoHandleChoice(void) {

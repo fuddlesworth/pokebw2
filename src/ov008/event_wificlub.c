@@ -417,7 +417,7 @@ GameEventReturnCode EventWifiClub_Callback(GameEvent *event, u32 *state, void *d
         wk->battle.markNetErrShown = TRUE;
         wk->records = GameData_GetRecords(GSYS_GetGameData(wk->gsys));
         GFL_OvlUnload(OVERLAY_BATTLE_MAIN);
-        GSYS_QueueProcAsEvent(wk->event, OVERLAY_BATTLE, &data_ov010_0215039c, &wk->battle);
+        GSYS_QueueProcAsEvent(wk->event, OVERLAY_BATTLE, &EVENT_MAKE_BATTLE_PROC_FUNCTIONS, &wk->battle);
         (*state)++;
         break;
     }

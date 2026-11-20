@@ -18,7 +18,7 @@ static void procInit(void);
 static void procInit1(void);
 static void DWCUtilAutoConnectIntro_WaitDialog(void);
 static void draw(void);
-static void func_ov182_021b66d4(void);
+static void DWCUtilAutoConnectIntro_Input(void);
 static void endScene1(void);
 static void DWCUtilAutoConnectIntro_WaitFadeOut(void);
 
@@ -68,7 +68,7 @@ static void procInit1(void) {
 
 static void DWCUtilAutoConnectIntro_WaitDialog(void) {
     draw();
-    func_ov182_021b66d4();
+    DWCUtilAutoConnectIntro_Input();
     if (DWCi_WINlGet() == DWC_UTIL_DIALOG_BUTTON_FIRST) {
         DWCi_SNDlPlay(6);
         DWCi_WINlEnd();
@@ -80,7 +80,7 @@ static void DWCUtilAutoConnectIntro_WaitDialog(void) {
 static void draw(void) {
 }
 
-static void func_ov182_021b66d4(void) {
+static void DWCUtilAutoConnectIntro_Input(void) {
 }
 
 static void endScene1(void) {

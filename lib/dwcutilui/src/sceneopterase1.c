@@ -17,7 +17,7 @@ static void DWCUtilInfoMenu_ErasedWaitFadeIn(void);
 static void DWCUtilInfoMenu_ErasedWaitButtons(void);
 static void DWCUtilInfoMenu_ErasedMain(void);
 static void DWCUtilInfoMenu_ErasedHandleInput(void);
-static void func_ov182_021aeea4(void);
+static void DWCUtilInfoMenu_ErasedDraw(void);
 static void DWCUtilInfoMenu_ErasedHandleChoice(void);
 static void DWCUtilInfoMenu_ErasedDisableButtons(void);
 static void DWCUtilInfoMenu_ErasedFadeOut(void);
@@ -63,7 +63,7 @@ static void DWCUtilInfoMenu_ErasedWaitButtons(void) {
 
 static void DWCUtilInfoMenu_ErasedMain(void) {
     DWCUtilInfoMenu_ErasedHandleInput();
-    func_ov182_021aeea4();
+    DWCUtilInfoMenu_ErasedDraw();
     DWCUtilInfoMenu_ErasedHandleChoice();
 }
 
@@ -73,7 +73,7 @@ static void DWCUtilInfoMenu_ErasedHandleInput(void) {
     }
 }
 
-static void func_ov182_021aeea4(void) {
+static void DWCUtilInfoMenu_ErasedDraw(void) {
 }
 
 static void DWCUtilInfoMenu_ErasedHandleChoice(void) {

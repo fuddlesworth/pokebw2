@@ -1834,7 +1834,7 @@ void BattleMon_RecalcStats(BattleMon *mon) {
     PokeParty_RecalcStats(mon->core.src);
 }
 
-BOOL func_ov167_021bc6ac(BattleMon *mon) {
+BOOL BattleMon_IsHp41(BattleMon *mon) {
     if (mon->core.hp == 0x29) {
         return TRUE;
     }

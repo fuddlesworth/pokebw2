@@ -6257,7 +6257,7 @@ static BOOL BattleClient_ScExpGain(BtlClient *client, s32 *seq, const u32 *args)
         BattleMon_RecalcStats(mon);
         JoinAvenue_RecordActivity(9);
         BattleMon_ReloadSrcData(mon);
-        func_ov167_021bc6ac(mon);
+        BattleMon_IsHp41(mon);
         if (visible) {
             BtlvEffect_CalcGaugeExpLevelUp(pos, mon);
             *seq = EXP_SEQ_WAIT_GAUGE_LEVEL_UP;

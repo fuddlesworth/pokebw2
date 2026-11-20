@@ -899,8 +899,8 @@ FieldAcmdTCB_MarkWait kind:function(thumb,size=0x28) addr:0x0218fcc0
 FieldAcmdTCB_MarkWaitExcl kind:function(thumb,size=0x10) addr:0x0218fce8
 FieldAcmdTCB_MarkWaitExclNoSe kind:function(thumb,size=0x10) addr:0x0218fcf8
 FieldAcmdTCB_MarkWaitNoteNoSe kind:function(thumb,size=0x10) addr:0x0218fd08
-func_ov036_0218fd18 kind:function(thumb,size=0x10) addr:0x0218fd18
-func_ov036_0218fd28 kind:function(thumb,size=0x10) addr:0x0218fd28
+FieldAcmdTCB_MarkWaitExclDup kind:function(thumb,size=0x10) addr:0x0218fd18
+FieldAcmdTCB_MarkWaitExclDup2 kind:function(thumb,size=0x10) addr:0x0218fd28
 FieldAcmdTCB_MarkWaitQuestion kind:function(thumb,size=0x10) addr:0x0218fd38
 FieldAcmdTCB_MarkWaitNote kind:function(thumb,size=0x10) addr:0x0218fd48
 FieldAcmdTCB_MarkWaitEllipsis kind:function(thumb,size=0x10) addr:0x0218fd58
@@ -955,7 +955,7 @@ FieldAcmdTCB_StepRightFaceUp8F kind:function(thumb,size=0x30) addr:0x0219042c
 FieldAcmdTCB_StepUpFaceRight8F kind:function(thumb,size=0x30) addr:0x0219045c
 FieldAcmdTCB_StepDownFaceLeft8F kind:function(thumb,size=0x34) addr:0x0219048c
 FieldAcmdTCB_StepLeftFaceUp8F kind:function(thumb,size=0x34) addr:0x021904c0
-func_ov036_021904f4 kind:function(thumb,size=0x34) addr:0x021904f4
+FieldAcmdTCB_StepRightFaceDown8F kind:function(thumb,size=0x34) addr:0x021904f4
 FieldAcmdTCB_StepUpFaceDown8F kind:function(thumb,size=0x34) addr:0x02190528
 FieldAcmdTCB_StepDownFaceUp8F kind:function(thumb,size=0x34) addr:0x0219055c
 FieldAcmdTCB_StepLeftFaceRight8F kind:function(thumb,size=0x30) addr:0x02190590
@@ -975,7 +975,7 @@ FieldAcmdTCB_DashStepRightFaceUp4F kind:function(thumb,size=0x34) addr:0x0219081
 FieldAcmdTCB_DashStepUpFaceRight4F kind:function(thumb,size=0x34) addr:0x02190848
 FieldAcmdTCB_DashStepDownFaceLeft4F kind:function(thumb,size=0x34) addr:0x0219087c
 FieldAcmdTCB_DashStepLeftFaceUp4F kind:function(thumb,size=0x34) addr:0x021908b0
-func_ov036_021908e4 kind:function(thumb,size=0x34) addr:0x021908e4
+FieldAcmdTCB_DashStepRightFaceDown4F kind:function(thumb,size=0x34) addr:0x021908e4
 FieldAcmdTCB_DashStepUpFaceDown4F kind:function(thumb,size=0x34) addr:0x02190918
 FieldAcmdTCB_DashStepDownFaceUp4F kind:function(thumb,size=0x34) addr:0x0219094c
 FieldAcmdTCB_DashStepLeftFaceRight4F kind:function(thumb,size=0x34) addr:0x02190980
@@ -989,7 +989,7 @@ FieldAcmdTCB_HopRightFaceUp8F kind:function(thumb,size=0x28) addr:0x02190cc0
 FieldAcmdTCB_HopUpFaceRight8F kind:function(thumb,size=0x22) addr:0x02190ce8
 FieldAcmdTCB_HopDownFaceLeft8F kind:function(thumb,size=0x2c) addr:0x02190d0c
 FieldAcmdTCB_HopLeftFaceUp8F kind:function(thumb,size=0x28) addr:0x02190d38
-func_ov036_02190d60 kind:function(thumb,size=0x26) addr:0x02190d60
+FieldAcmdTCB_HopRightFaceDown8F kind:function(thumb,size=0x26) addr:0x02190d60
 FieldAcmdTCB_HopUpFaceDown8F kind:function(thumb,size=0x26) addr:0x02190d88
 FieldAcmdTCB_HopDownFaceUp8F kind:function(thumb,size=0x2c) addr:0x02190db0
 FieldAcmdTCB_HopLeftFaceRight8F kind:function(thumb,size=0x28) addr:0x02190ddc
@@ -1001,13 +1001,13 @@ FieldAcmdTCB_DashLeft2F kind:function(thumb,size=0x36) addr:0x02190e74
 FieldAcmdTCB_Dash2FMove kind:function(thumb,size=0x40) addr:0x02190eac
 FieldAcmdTCB_FlyUpInit kind:function(thumb,size=0x28) addr:0x02190eec
 FieldAcmdTCB_FlyUpMove kind:function(thumb,size=0xf8) addr:0x02190f14
-func_ov036_0219100c kind:function(thumb,size=0x14) addr:0x0219100c
+FieldAcmdTCB_SetAnime10Dup kind:function(thumb,size=0x14) addr:0x0219100c
 FieldAcmdTCB_AnimeWaitEndFaceDownInit kind:function(thumb,size=0x14) addr:0x02191020
 FieldAcmdTCB_AnimeWaitEndFaceDown kind:function(thumb,size=0x5c) addr:0x02191034
 FieldAcmdTCB_ResetDrawOffset kind:function(thumb,size=0x20) addr:0x02191090
 FieldAcmdTCB_FlyReadyInit kind:function(thumb,size=0x44) addr:0x021910b0
 FieldAcmdTCB_FlyReadyMove kind:function(thumb,size=0x80) addr:0x021910f4
-func_ov036_02191174 kind:function(thumb,size=0x14) addr:0x02191174
+FieldAcmdTCB_SetAnime10Dup2 kind:function(thumb,size=0x14) addr:0x02191174
 FieldAcmdTCB_DrawReadyWaitInit10 kind:function(thumb,size=0x14) addr:0x02191188
 FieldAcmdTCB_DrawReadyWaitInit11 kind:function(thumb,size=0x14) addr:0x0219119c
 FieldAcmdTCB_DrawReadyWaitInit12 kind:function(thumb,size=0x1a) addr:0x021911b0
@@ -1028,7 +1028,7 @@ FieldActorMovecode_InitTurnRandomSet9 kind:function(thumb,size=0xc) addr:0x02191
 FieldActorMovecode_InitTurnRandomSet10 kind:function(thumb,size=0xc) addr:0x021912d4
 FieldActorMovecode_MoveTurnRandom kind:function(thumb,size=0x98) addr:0x021912e0
 FieldActorMovecode_GetNextDirInRotation kind:function(thumb,size=0x64) addr:0x02191378
-func_ov036_021913dc kind:function(thumb,size=0x2) addr:0x021913dc
+FieldActorMovecode_DeleteTurnRandom kind:function(thumb,size=0x2) addr:0x021913dc
 FieldActorMovecode_InitWalkRandomSet11 kind:function(thumb,size=0xe) addr:0x021913e0
 FieldActorMovecode_InitWalkRandomSet12 kind:function(thumb,size=0xe) addr:0x021913f0
 FieldActorMovecode_InitWalkRandomSet13 kind:function(thumb,size=0xe) addr:0x02191400
@@ -4409,9 +4409,9 @@ data_ov036_021cac4c kind:data(any) addr:0x021cac4c
 data_ov036_021cac6c kind:data(any) addr:0x021cac6c
 data_ov036_021cac8c kind:data(any) addr:0x021cac8c
 ACMD_SET_FACE_DIR_LOCK_FLAG_TABLE kind:data(any) addr:0x021cacac
-data_ov036_021cacb4 kind:data(any) addr:0x021cacb4
+ACMD_SET_ANIME10_DUP2_TABLE kind:data(any) addr:0x021cacb4
 ACMD_SET_ANIME10_TABLE kind:data(any) addr:0x021cacbc
-data_ov036_021cacc4 kind:data(any) addr:0x021cacc4
+ACMD_SET_ANIME10_DUP_TABLE kind:data(any) addr:0x021cacc4
 ACMD_FACE_RIGHT_TABLE kind:data(any) addr:0x021caccc
 ACMD_SET_ANIME_PAUSE_FLAG_TABLE kind:data(any) addr:0x021cacd4
 ACMD_CLEAR_FACE_DIR_LOCK_FLAG_TABLE kind:data(any) addr:0x021cacdc
@@ -4433,7 +4433,7 @@ ACMD_WALK_LEFT16_F_FAST_ANIME_TABLE kind:data(any) addr:0x021cad70
 ACMD_WALK_DOWN16_F_FAST_ANIME_TABLE kind:data(any) addr:0x021cad7c
 ACMD_WALK_UP16_F_FAST_ANIME_TABLE kind:data(any) addr:0x021cad88
 ACMD_JUMP_RIGHT3_G24_F_NO_SE_TABLE kind:data(any) addr:0x021cad94
-data_ov036_021cada0 kind:data(any) addr:0x021cada0
+ACMD_MARK_WAIT_EXCL_DUP2_TABLE kind:data(any) addr:0x021cada0
 ACMD_HOP_RIGHT_FACE_LEFT8_F_TABLE kind:data(any) addr:0x021cadac
 ACMD_MARK_WAIT_EXCL_TABLE kind:data(any) addr:0x021cadb8
 ACMD_STEP_RIGHT_FACE_LEFT4_F_TABLE kind:data(any) addr:0x021cadc4
@@ -4449,7 +4449,7 @@ ACMD_ANIME_WAIT_END_INIT11_SE_TABLE kind:data(any) addr:0x021cae30
 ACMD_DASH_STEP_LEFT_FACE_RIGHT4_F_TABLE kind:data(any) addr:0x021cae3c
 ACMD_DASH_STEP_DOWN_FACE_UP4_F_TABLE kind:data(any) addr:0x021cae48
 ACMD_DASH_STEP_UP_FACE_DOWN4_F_TABLE kind:data(any) addr:0x021cae54
-data_ov036_021cae60 kind:data(any) addr:0x021cae60
+ACMD_DASH_STEP_RIGHT_FACE_DOWN4_F_TABLE kind:data(any) addr:0x021cae60
 ACMD_DASH_STEP_LEFT_FACE_UP4_F_TABLE kind:data(any) addr:0x021cae6c
 ACMD_DASH_STEP_DOWN_FACE_LEFT4_F_TABLE kind:data(any) addr:0x021cae78
 ACMD_DASH_STEP_UP_FACE_RIGHT4_F_TABLE kind:data(any) addr:0x021cae84
@@ -4520,12 +4520,12 @@ ACMD_WALK_UP6_F_TABLE kind:data(any) addr:0x021cb184
 ACMD_MARK_WAIT_ELLIPSIS_TABLE kind:data(any) addr:0x021cb190
 ACMD_MARK_WAIT_NOTE_TABLE kind:data(any) addr:0x021cb19c
 ACMD_MARK_WAIT_QUESTION_TABLE kind:data(any) addr:0x021cb1a8
-data_ov036_021cb1b4 kind:data(any) addr:0x021cb1b4
+ACMD_MARK_WAIT_EXCL_DUP_TABLE kind:data(any) addr:0x021cb1b4
 ACMD_MARK_WAIT_NOTE_NO_SE_TABLE kind:data(any) addr:0x021cb1c0
 ACMD_STEP_DOWN_FACE_UP2_F_TABLE kind:data(any) addr:0x021cb1cc
 ACMD_STEP_UP_FACE_DOWN2_F_TABLE kind:data(any) addr:0x021cb1d8
 ACMD_JUMP_RIGHT1_G16_F_TABLE kind:data(any) addr:0x021cb1e4
-data_ov036_021cb1f0 kind:data(any) addr:0x021cb1f0
+ACMD_STEP_RIGHT_FACE_DOWN8_F_TABLE kind:data(any) addr:0x021cb1f0
 ACMD_HOP_DOWN_FACE_LEFT8_F_TABLE kind:data(any) addr:0x021cb1fc
 ACMD_STEP_UP_FACE_DOWN8_F_TABLE kind:data(any) addr:0x021cb208
 ACMD_STEP_DOWN_FACE_UP8_F_TABLE kind:data(any) addr:0x021cb214
@@ -4603,7 +4603,7 @@ ACMD_WALK_RIGHT32_F_TABLE kind:data(any) addr:0x021cb568
 ACMD_WALK_LEFT32_F_TABLE kind:data(any) addr:0x021cb574
 ACMD_WALK_DOWN32_F_TABLE kind:data(any) addr:0x021cb580
 ACMD_WALK32_TABLE kind:data(any) addr:0x021cb58c
-data_ov036_021cb598 kind:data(any) addr:0x021cb598
+ACMD_HOP_RIGHT_FACE_DOWN8_F_TABLE kind:data(any) addr:0x021cb598
 ACMD_ANIME_WAIT_END_FACE_DOWN_INIT_TABLE kind:data(any) addr:0x021cb5a4
 sWalk3FSteps kind:data(any) addr:0x021cb5b0
 ACMD_TCB_FUNCS kind:data(any) addr:0x021cb5bc

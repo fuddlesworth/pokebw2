@@ -16,7 +16,7 @@ static void DWCUtilTopMenu_InstructionsWaitFadeIn(void);
 static void DWCUtilTopMenu_InstructionsWaitButtons(void);
 static void DWCUtilTopMenu_InstructionsMain(void);
 static void DWCUtilTopMenu_InstructionsHandleInput(void);
-static void func_ov182_021afb0c(void);
+static void DWCUtilTopMenu_InstructionsDraw(void);
 static void DWCUtilTopMenu_InstructionsHandleChoice(void);
 static void DWCUtilTopMenu_InstructionsDisableButtons(void);
 static void DWCUtilTopMenu_InstructionsFadeOut(void);
@@ -59,7 +59,7 @@ static void DWCUtilTopMenu_InstructionsWaitButtons(void) {
 
 static void DWCUtilTopMenu_InstructionsMain(void) {
     DWCUtilTopMenu_InstructionsHandleInput();
-    func_ov182_021afb0c();
+    DWCUtilTopMenu_InstructionsDraw();
     DWCUtilTopMenu_InstructionsHandleChoice();
 }
 
@@ -69,7 +69,7 @@ static void DWCUtilTopMenu_InstructionsHandleInput(void) {
     }
 }
 
-static void func_ov182_021afb0c(void) {
+static void DWCUtilTopMenu_InstructionsDraw(void) {
 }
 
 static void DWCUtilTopMenu_InstructionsHandleChoice(void) {

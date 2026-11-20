@@ -664,7 +664,7 @@ data_ov257_021b0681_w2_us kind:data(any) addr:0x021b0681 ambiguous
 data_ov257_021b0905_w2_us kind:data(any) addr:0x021b0905 ambiguous
 data_ov257_021b0d03_w2_us kind:data(any) addr:0x021b0d03 ambiguous
 data_ov257_021b0fdc_w2_us kind:data(any) addr:0x021b0fdc ambiguous
-data_ov257_021b18c4 kind:data(any) addr:0x021b1900
+sCameraRotations kind:data(any) addr:0x021b1900
 sPictureWidths kind:data(any) addr:0x021b1908
 sPictureHeights kind:data(any) addr:0x021b1914
 sPictureSizes kind:data(any) addr:0x021b1920

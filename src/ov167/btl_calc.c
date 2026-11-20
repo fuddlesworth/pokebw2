@@ -617,7 +617,7 @@ void BtlCalc_SetHeapID(HeapID heapId) {
     g_BtlCalcWork.heapId = heapId;
 }
 
-void func_ov167_021bd880(void) {
+void BtlCalc_ExitItemData(void) {
 }
 
 u32 ItemGetParam(u16 item, u32 param) {

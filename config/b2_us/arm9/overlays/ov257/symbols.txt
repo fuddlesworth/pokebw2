@@ -635,7 +635,7 @@ sStepTable kind:data(any) addr:0x021af750
 data_ov257_021af821 kind:data(any) addr:0x021af821 ambiguous
 data_ov257_021af865 kind:data(any) addr:0x021af865 ambiguous
 sDrawPens kind:data(any) addr:0x021af8b4
-data_ov257_021b18c4 kind:data(any) addr:0x021b18c4
+sCameraRotations kind:data(any) addr:0x021b18c4
 sPictureWidths kind:data(any) addr:0x021b18cc
 sPictureHeights kind:data(any) addr:0x021b18d8
 sPictureSizes kind:data(any) addr:0x021b18e4

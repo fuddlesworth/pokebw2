@@ -57,7 +57,7 @@ typedef struct {
     BOOL vsPlayerLoaded;
 } BattleProcWork;
 
-extern const GameProcFunctions data_ov010_0215039c;
+extern const GameProcFunctions EVENT_MAKE_BATTLE_PROC_FUNCTIONS;
 // The battle system's proc
 extern const GameProcFunctions BATTLE_PROC_FUNCTIONS;
 extern const GameProcFunctions CommBtlDemoProc;

@@ -84,7 +84,7 @@ static void CtvtCamera_SetWindowTarget(CtvtCameraWindow *window, u16 x, u16 y, u
 static BOOL CtvtCamera_MoveWindow(CtvtCamera *work, CtvtCameraWindow *window);
 static BOOL CtvtCamera_MoveCoord(CtvtCamera *work, u16 *cur, u16 *target);
 
-const u16 data_ov257_021b18c4[4] = { 0, 0x80, 0x40, 0xc0 };
+const u16 sCameraRotations[4] = { 0, 0x80, 0x40, 0xc0 };
 
 static const u32 sPictureWidths[] = {
     [CTDM_SINGLE] = 256,

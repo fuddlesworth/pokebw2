@@ -20,7 +20,7 @@ void FieldActorMovecode_InitTurnRandomSet8(FieldActor *actor);
 void FieldActorMovecode_InitTurnRandomSet9(FieldActor *actor);
 void FieldActorMovecode_InitTurnRandomSet10(FieldActor *actor);
 void FieldActorMovecode_MoveTurnRandom(FieldActor *actor);
-void func_ov036_021913dc(FieldActor *actor);
+void FieldActorMovecode_DeleteTurnRandom(FieldActor *actor);
 void FieldActorMovecode_InitWalkRandomSet11(FieldActor *actor);
 void FieldActorMovecode_InitWalkRandomSet12(FieldActor *actor);
 void FieldActorMovecode_InitWalkRandomSet13(FieldActor *actor);

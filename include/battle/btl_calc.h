@@ -62,7 +62,7 @@ u32 BtlCalc_GetPrizeMoney(BtlSetup *setup);
 u32 BtlCalc_GetTrainerPrizeMoney(BtlSetupTrainer *trainer, PokeParty *party);
 u32 BtlCalc_GetLostMoney(u32 index, BattleParty *party);
 void BtlCalc_SetHeapID(HeapID heapId);
-void func_ov167_021bd880(void);
+void BtlCalc_ExitItemData(void);
 u32 ItemGetParam(u16 item, u32 param);
 u32 BtlCalc_PackMonIDs(const u8 *values);
 void BtlCalc_UnpackMonIDs(u32 packed, u8 *values);

@@ -23,7 +23,7 @@ typedef struct {
     u32 unk4;
 } BlackTowerUnkPair;
 
-static const BlackTowerUnkPair *func_ov061_021e5f94(FieldScriptEnv *env);
+static const BlackTowerUnkPair *BlackTower_GetAreaPair(FieldScriptEnv *env);
 
 static BOOL Scrcmd_BlackTower_CreateWalls(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
@@ -128,10 +128,10 @@ static BOOL Scrcmd_BlackTower_CallLiftEvent(VM *vm, FieldScriptEnv *env) {
     return TRUE;
 }
 
-static BOOL func_ov061_021e5a90(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_BlackTower_GetAreaTrainerCode(VM *vm, FieldScriptEnv *env) {
     u16 *var = ScriptReadVar(vm, env);
 
-    *var = func_ov061_021e5f94(env)->unk0;
+    *var = BlackTower_GetAreaPair(env)->unk0;
     return FALSE;
 }
 
@@ -169,14 +169,14 @@ static BOOL Scrcmd_BlackTower_GetNpcScript(VM *vm, FieldScriptEnv *env) {
     return FALSE;
 }
 
-static BOOL func_ov061_021e5bac(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_BlackTower_GetAreaValue(VM *vm, FieldScriptEnv *env) {
     u16 *var = ScriptReadVar(vm, env);
 
-    *var = func_ov061_021e5f94(env)->unk4;
+    *var = BlackTower_GetAreaPair(env)->unk4;
     return FALSE;
 }
 
-static BOOL func_ov061_021e5bc4(VM *vm, FieldScriptEnv *env) {
+static BOOL Scrcmd_BlackTower_GetNpcKind(VM *vm, FieldScriptEnv *env) {
     ScriptWork *work = FieldScriptEnv_GetScriptWork(env);
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     u16 objCode = FldAct_GetObjCode(ScriptWork_GetParentActor(work));
@@ -365,7 +365,7 @@ static const BlackTowerUnkPair sUnkPairs[] = {
     { 0xc3, 0x1f }, { 0xc5, 0x20 }, { 0xc7, 0x21 }, { 0xc9, 0x130 }, { 0x1f8, 0x20 },
 };
 
-static const BlackTowerUnkPair *func_ov061_021e5f94(FieldScriptEnv *env) {
+static const BlackTowerUnkPair *BlackTower_GetAreaPair(FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);
     InfinityDungeon *dungeon = InfinityDungeonGimmick_GetDungeon(GSYS_GetField(gsys));
     u8 level = KeyDataSave_GetArea(getKeyDataBlkAddress(GameData_GetSaveControl(GSYS_GetGameData(gsys))));
@@ -453,12 +453,12 @@ const FieldScriptCommand BLACK_TOWER_SCRIPT_COMMANDS[] = {
     Scrcmd_BlackTower_ChangeFloor,
     Scrcmd_BlackTower_GetArea,
     Scrcmd_BlackTower_CallBattleEvent,
-    func_ov061_021e5a90,
+    Scrcmd_BlackTower_GetAreaTrainerCode,
     Scrcmd_BlackTower_SetTrainerDefeated,
-    func_ov061_021e5bac,
+    Scrcmd_BlackTower_GetAreaValue,
     Scrcmd_BlackTower_IsTrainerDefeated,
     Scrcmd_BlackTower_GetNpcScript,
-    func_ov061_021e5bc4,
+    Scrcmd_BlackTower_GetNpcKind,
     Scrcmd_BlackTower_GetSpecialTrainerFlag,
     Scrcmd_BlackTower_SetSpecialTrainerFlag,
     Scrcmd_BlackTower_CallDoorEvent,

@@ -4,4 +4,4 @@ BattleProc_Main kind:function(thumb,size=0x3a8) addr:0x0214ff98
 eventMakeFunc kind:function(thumb,size=0x10) addr:0x02150340
 EventMake_Create kind:function(thumb,size=0x2c) addr:0x02150350
 EventMake_Callback kind:function(thumb,size=0x60) addr:0x0215037c
-data_ov010_0215039c kind:data(any) addr:0x021503dc
+EVENT_MAKE_BATTLE_PROC_FUNCTIONS kind:data(any) addr:0x021503dc

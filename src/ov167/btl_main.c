@@ -220,7 +220,7 @@ BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work) {
             mainModule->rand = setup->rand;
         }
         BtlCalc_Init(&mainModule->rand, mainModule->heapId);
-        func_ov167_021b1670();
+        BtlServerCmd_Init();
         mainModule->prizeMoney = BtlCalc_GetPrizeMoney(setup);
         mainModule->money = 0;
         mainModule->lossMoney = 0;
@@ -390,7 +390,7 @@ BOOL BtlMain_ProcExit(GameProc *proc, u32 *state, void *param, void *work) {
         if (BtlMainSeq_Run(&mainModule->seq)) {
             BtlAdapter_QuitSystem();
             BtlNet_Exit();
-            func_ov167_021bd880();
+            BtlCalc_ExitItemData();
             (*state)++;
         }
         break;
@@ -3736,7 +3736,7 @@ BtlSetup *GetBattleSetupParam(BtlMainModule *mainModule) {
 void BtlMain_LoadStudioData(BtlMainModule *mainModule, u8 movie) {
     mainModule->studioRules = GFL_ArcSysReadHeapNew(ARCID_POKEWOOD_MOVIE, movie, HEAPID_BATTLE);
     mainModule->studioWork = GFL_HeapAllocate(HEAPID_BATTLE, 0x14, FALSE, "btl_main.c", 6432);
-    func_ov167_0219e3c8(mainModule->studioRules);
+    BtlScriptedRules_Init(mainModule->studioRules);
     mainModule->studioWork->aiMoveIndex = 0xff;
     mainModule->cutin = PokewoodCutin_Create(HEAPID_BATTLE);
     if (GetStudioMode(mainModule) == BTL_STUDIO_MODE_PLAYBACK) {
@@ -3768,5 +3768,5 @@ PokewoodCutin *GetPokewoodCutin(BtlMainModule *mainModule) {
     return mainModule->cutin;
 }
 
-void func_ov167_0219e3c8(BtlScriptedRules *data) {
+void BtlScriptedRules_Init(BtlScriptedRules *data) {
 }

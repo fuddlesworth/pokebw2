@@ -19,7 +19,7 @@ static void initGraphics(void);
 static void procInit(void);
 static void procInit1(void);
 static void DWCUtilTopMenu_MoveMain(void);
-static void func_ov182_021af7e4(void);
+static void DWCUtilTopMenu_MoveHandleInput(void);
 static void draw(void);
 static void DWCUtilTopMenu_MoveFadeOut(void);
 static void DWCUtilTopMenu_MoveWaitFadeOut(void);
@@ -61,11 +61,11 @@ static void procInit1(void) {
 }
 
 static void DWCUtilTopMenu_MoveMain(void) {
-    func_ov182_021af7e4();
+    DWCUtilTopMenu_MoveHandleInput();
     draw();
 }
 
-static void func_ov182_021af7e4(void) {
+static void DWCUtilTopMenu_MoveHandleInput(void) {
 }
 
 static void draw(void) {

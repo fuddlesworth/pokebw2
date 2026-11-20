@@ -463,7 +463,7 @@ void BtlMain_FreeStudioData(BtlMainModule *mainModule);
 BtlScriptedRules *GetStudioRules(BtlMainModule *mainModule);
 BtlStudioWork *GetStudioWork(BtlMainModule *mainModule);
 PokewoodCutin *GetPokewoodCutin(BtlMainModule *mainModule);
-void func_ov167_0219e3c8(BtlScriptedRules *data);
+void BtlScriptedRules_Init(BtlScriptedRules *data);
 
 BOOL BtlMain_ProcInit(GameProc *proc, u32 *state, void *param, void *work);
 BOOL BtlMain_ProcMain(GameProc *proc, u32 *state, void *param, void *work);

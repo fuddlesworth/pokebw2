@@ -308,9 +308,9 @@ u32 ActionOrder_Run(BtlServerFlow *flow, u32 i) {
         }
         prevAction = ActionOrder_Proc(flow, &flow->actionOrder[i]);
         fainted = ServerControl_CheckExpGain(flow);
-        func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+        BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
         matchup = ServerControl_CheckMatchup(flow);
-        func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+        BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
         if (matchup) {
             flow->result = BTL_FLOW_RESULT_BATTLE_END;
             return i + 1;
@@ -322,7 +322,7 @@ u32 ActionOrder_Run(BtlServerFlow *flow, u32 i) {
             return i + 1;
         }
         if (fainted) {
-            func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+            BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
             flow->result = BTL_FLOW_RESULT_CONTINUE;
             return i + 1;
         }
@@ -423,14 +423,14 @@ BOOL ServerControl_CheckMatchup(BtlServerFlow *flow) {
             side = GetClientSide(flow->mainModule, i);
             alive = GetAlivePartyCount(party);
             if (i == 0) {
-                func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+                BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
             }
             if (alive != 0) {
                 hasMons[side] = 1;
             }
         }
     }
-    func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+    BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
     if ((GetStudioMode(flow->mainModule) == BTL_STUDIO_MODE_FILM ||
          GetStudioMode(flow->mainModule) == BTL_STUDIO_MODE_PLAYBACK) &&
         CheckScriptedBattleRules(flow->mainModule, flow->pokeCon)) {
@@ -5594,16 +5594,16 @@ void ServerEvent_BeforeFaint(BtlServerFlow *flow, BattleMon *mon) {
 BOOL ServerControl_CheckExpGain(BtlServerFlow *flow) {
     BOOL result = FALSE;
 
-    func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+    BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
     if (IsExpGainEnabled(flow->mainModule)) {
         u32 i;
         u32 count = BtlFaintRec_GetCount(&flow->faintRec, 0);
 
-        func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+        BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
         for (i = 0; i < count; i++) {
             if (!BtlFaintRec_IsHandled(&flow->faintRec, 0, i)) {
                 BattleMon *mon = GetPokeParam(flow->pokeCon, BtlFaintRec_GetMonId(&flow->faintRec, 0, i));
-                func_ov167_021bc6ac(GetPokeParam(flow->pokeCon, 0));
+                BattleMon_IsHp41(GetPokeParam(flow->pokeCon, 0));
                 if (BtlSetup_GetBattleType(flow->mainModule) == BTL_TYPE_WILD && !flow->winBgmPlayed &&
                     ServerControl_CheckMatchup(flow) && ServerControl_PlayerSideHasMons(flow)) {
                     BtlServerCmdQueue_Put(flow->queue, SC_PLAY_BGM, GetWinBGM(flow->mainModule));
