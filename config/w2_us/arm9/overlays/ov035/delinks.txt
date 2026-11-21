@@ -4,18 +4,18 @@
     .data       start:0x0217f600 end:0x0217f640 kind:data align:32
     .bss        start:0x0217f640 end:0x0217f640 kind:bss align:32
 
-src/ov035/el_scoreboard.c:
+src/field/el_scoreboard.c:
     complete
     .text       start:0x0217edac end:0x0217ee98
     .rodata     start:0x0217f568 end:0x0217f588
     .data       start:0x0217f614 end:0x0217f640
 
-src/ov035/event_season_banner.c:
+src/field/event_season_banner.c:
     complete
     .text       start:0x0217ee98 end:0x0217f568
     .rodata     start:0x0217f588 end:0x0217f5e8
 
-src/ov035/event_mapchange.c:
+src/field/event_mapchange.c:
     complete
     .text       start:0x0217c980 end:0x0217edac
     .data       start:0x0217f600 end:0x0217f614

@@ -2,6 +2,6 @@
     .ctor       start:0x0216e8c4 end:0x0216e8c4 kind:rodata align:4
     .bss        start:0x0216e8e0 end:0x0216e8e0 kind:bss align:32
 
-src/ov021/event_festival.c:
+src/entralink/event_festival.c:
     complete
     .text       start:0x0216e6a0 end:0x0216e8c4

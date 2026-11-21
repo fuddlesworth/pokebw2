@@ -3,7 +3,7 @@
     .ctor       start:0x021f633c end:0x021f633c kind:rodata align:4
     .bss        start:0x021f6340 end:0x021f6340 kind:bss align:32
 
-src/ov152/encounter_effect_cells.c:
+src/field/eventcmd/encounter_effect_cells.c:
     complete
     .text       start:0x021f6240 end:0x021f6330
     .rodata     start:0x021f6330 end:0x021f633c

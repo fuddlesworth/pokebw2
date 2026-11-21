@@ -4,51 +4,51 @@
     .data       start:0x021a0460 end:0x021a0560 kind:data align:32
     .bss        start:0x021a0560 end:0x021a0560 kind:bss align:32
 
-src/ov143/monolith_main.c:
+src/app/monolith/monolith_main.c:
     complete
     .text       start:0x02199900 end:0x0219a1b0
     .rodata     start:0x0219feb0 end:0x0219ff5c
 
-src/ov143/monolith_tool.c:
+src/app/monolith/monolith_tool.c:
     complete
     .text       start:0x0219a1b0 end:0x0219aab0
     .rodata     start:0x0219ff5c end:0x0219ffa4
     .data       start:0x021a0460 end:0x021a048c
 
-src/ov143/monolith_top.c:
+src/app/monolith/monolith_top.c:
     complete
     .text       start:0x0219aab0 end:0x0219afec
     .rodata     start:0x0219ffa4 end:0x021a0028
     .data       start:0x021a048c end:0x021a04ac
 
-src/ov143/monolith_record.c:
+src/app/monolith/monolith_record.c:
     complete
     .text       start:0x0219afec end:0x0219b714
     .rodata     start:0x021a0028 end:0x021a0094
 
-src/ov143/monolith_status.c:
+src/app/monolith/monolith_status.c:
     complete
     .text       start:0x0219b714 end:0x0219bbc0
     .rodata     start:0x021a0094 end:0x021a00e0
 
-src/ov143/monolith_power_select.c:
+src/app/monolith/monolith_power_select.c:
     complete
     .text       start:0x0219bbc0 end:0x0219d3a0
     .rodata     start:0x021a00e0 end:0x021a0174
     .data       start:0x021a04ac end:0x021a0504
 
-src/ov143/monolith_power_info.c:
+src/app/monolith/monolith_power_info.c:
     complete
     .text       start:0x0219d3a0 end:0x0219d938
     .rodata     start:0x021a0174 end:0x021a01c0
 
-src/ov143/monolith_mission_select.c:
+src/app/monolith/monolith_mission_select.c:
     complete
     .text       start:0x0219d938 end:0x0219f68c
     .rodata     start:0x021a01c0 end:0x021a0380
     .data       start:0x021a0504 end:0x021a0560
 
-src/ov143/monolith_mission_info.c:
+src/app/monolith/monolith_mission_info.c:
     complete
     .text       start:0x0219f68c end:0x0219feb0
     .rodata     start:0x021a0380 end:0x021a045c

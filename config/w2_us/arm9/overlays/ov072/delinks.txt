@@ -2,6 +2,6 @@
     .ctor       start:0x021e90f8 end:0x021e90f8 kind:rodata align:4
     .bss        start:0x021e9100 end:0x021e9100 kind:bss align:32
 
-src/ov072/fest_mission_gimmick.c:
+src/entralink/fest_mission_gimmick.c:
     complete
     .text       start:0x021e8c20 end:0x021e90f8

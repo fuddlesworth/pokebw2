@@ -4,20 +4,20 @@
     .data       start:0x021756e0 end:0x02175820 kind:data align:32
     .bss        start:0x02175820 end:0x02175840 kind:bss align:32
 
-src/ov030/net_devwireless.c:
+src/wifi/device/net_devwireless.c:
     complete
     .text       start:0x02173120 end:0x0217337c
     .data       start:0x021756e0 end:0x021757c0
     .bss        start:0x02175820 end:0x02175824
 
-src/ov030/net_whpipe.c:
+src/wifi/device/net_whpipe.c:
     complete
     .text       start:0x0217337c end:0x02174180
     .rodata     start:0x021756c0 end:0x021756cc
     .data       start:0x021757c0 end:0x021757f4
     .bss        start:0x02175824 end:0x02175828
 
-src/ov030/wih.c:
+src/wifi/device/wih.c:
     complete
     .text       start:0x02174180 end:0x021756c0
     .data       start:0x021757f4 end:0x02175820

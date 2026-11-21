@@ -4,69 +4,69 @@
     .data       start:0x021a74a0 end:0x021a75e0 kind:data align:32
     .bss        start:0x021a75e0 end:0x021a75e0 kind:bss align:32
 
-src/ov185/pms_input_data.c:
+src/app/pms/pms_input_data.c:
     complete
     .text       start:0x0219cec0 end:0x0219d370
     .rodata     start:0x021a516c end:0x021a6f24
     .data       start:0x021a74a0 end:0x021a74b4
 
-src/ov185/pms_input_view.c:
+src/app/pms/pms_input_view.c:
     complete
     .text       start:0x0219d370 end:0x0219e7fc
     .rodata     start:0x021a6f24 end:0x021a707c
     .data       start:0x021a74b4 end:0x021a7554
 
-src/ov185/pmsi_search.c:
+src/app/pms/pmsi_search.c:
     complete
     .text       start:0x0219e7fc end:0x0219eb14
     .rodata     start:0x021a707c end:0x021a70c8
     .data       start:0x021a7554 end:0x021a7564
 
-src/ov185/pmsi_initial_data.c:
+src/app/pms/pmsi_initial_data.c:
     complete
     .text       start:0x0219eb14 end:0x0219ebb0
     .rodata     start:0x021a70c8 end:0x021a71d8
 
-src/ov185/pmsiv_category.c:
+src/app/pms/pmsiv_category.c:
     complete
     .text       start:0x0219ebb0 end:0x0219f57c
     .rodata     start:0x021a71d8 end:0x021a71f0
     .data       start:0x021a7564 end:0x021a7578
 
-src/ov185/pmsiv_tool.c:
+src/app/pms/pmsiv_tool.c:
     complete
     .text       start:0x021a00ac end:0x021a02b0
     .rodata     start:0x021a71f0 end:0x021a71f4
 
-src/ov185/pmsiv_edit.c:
+src/app/pms/pmsiv_edit.c:
     complete
     .text       start:0x0219f57c end:0x021a00ac
     .data       start:0x021a7578 end:0x021a7588
 
-src/ov185/pmsiv_menu.c:
+src/app/pms/pmsiv_menu.c:
     complete
     .text       start:0x021a02b0 end:0x021a0da4
     .rodata     start:0x021a71f4 end:0x021a7210
     .data       start:0x021a7588 end:0x021a7598
 
-src/ov185/pms_input.c:
+src/app/pms/pms_input.c:
     complete
     .text       start:0x021a0da4 end:0x021a3164
     .rodata     start:0x021a7210 end:0x021a72f4
     .data       start:0x021a7598 end:0x021a75a4
 
-src/ov185/pmsiv_wordwin.c:
+src/app/pms/pmsiv_wordwin.c:
     complete
     .text       start:0x021a3164 end:0x021a3a54
     .data       start:0x021a75a4 end:0x021a75b4
 
-src/ov185/pms_select.c:
+src/app/pms/pms_select.c:
     complete
     .text       start:0x021a3a54 end:0x021a4f30
     .rodata     start:0x021a72f4 end:0x021a7338
     .data       start:0x021a75b4 end:0x021a75b8
 
-src/ov185/pms_select_graphic.c:
+src/app/pms/pms_select_graphic.c:
     complete
     .text       start:0x021a4f30 end:0x021a516c
     .rodata     start:0x021a7338 end:0x021a749c

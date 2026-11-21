@@ -4,77 +4,77 @@
     .data       start:0x021c2820 end:0x021c2940 kind:data align:32
     .bss        start:0x021c2940 end:0x021c2940 kind:bss align:32
 
-src/ov268/br_start_proc.c:
+src/app/battle_recorder/br_start_proc.c:
     complete
     .text       start:0x021ba180 end:0x021ba538
     .rodata     start:0x021c2128 end:0x021c2134
 
-src/ov268/br_menu_proc.c:
+src/app/battle_recorder/br_menu_proc.c:
     complete
     .text       start:0x021ba538 end:0x021ba7e0
     .rodata     start:0x021c2134 end:0x021c215c
 
-src/ov268/br_record_proc.c:
+src/app/battle_recorder/br_record_proc.c:
     complete
     .text       start:0x021ba7e0 end:0x021bc220
     .rodata     start:0x021c215c end:0x021c2210
     .data       start:0x021c2820 end:0x021c2854
 
-src/ov268/br_btlsubway_proc.c:
+src/app/battle_recorder/br_btlsubway_proc.c:
     complete
     .text       start:0x021bc220 end:0x021bd06c
     .rodata     start:0x021c2210 end:0x021c23d0
 
-src/ov268/br_rndmatch_proc.c:
+src/app/battle_recorder/br_rndmatch_proc.c:
     complete
     .text       start:0x021bd06c end:0x021bd844
     .rodata     start:0x021c23d0 end:0x021c25b4
 
-src/ov268/br_bvrank_proc.c:
+src/app/battle_recorder/br_bvrank_proc.c:
     complete
     .text       start:0x021bd844 end:0x021be7d0
     .rodata     start:0x021c25b4 end:0x021c25e8
     .data       start:0x021c2854 end:0x021c288c
 
-src/ov268/br_bvsearch_proc.c:
+src/app/battle_recorder/br_bvsearch_proc.c:
     complete
     .text       start:0x021be7d0 end:0x021bf3bc
     .rodata     start:0x021c25e8 end:0x021c2704
 
-src/ov268/br_codein_proc.c:
+src/app/battle_recorder/br_codein_proc.c:
     complete
     .text       start:0x021bf3bc end:0x021bf580
     .rodata     start:0x021c2704 end:0x021c2710
 
-src/ov268/br_codein.c:
+src/app/battle_recorder/br_codein.c:
     complete
     .text       start:0x021bf580 end:0x021bf6f8
     .data       start:0x021c288c end:0x021c28d4
 
-src/ov268/br_codein_disp.c:
+src/app/battle_recorder/br_codein_disp.c:
     complete
     .text       start:0x021bf6f8 end:0x021c008c
     .rodata     start:0x021c2710 end:0x021c2718
     .data       start:0x021c28d4 end:0x021c28dc
 
-src/ov268/br_codein_pv.c:
+src/app/battle_recorder/br_codein_pv.c:
     complete
     .text       start:0x021c008c end:0x021c0b3c
     .rodata     start:0x021c2718 end:0x021c27a0
     .data       start:0x021c28dc end:0x021c2914
 
-src/ov268/br_bvsend_proc.c:
+src/app/battle_recorder/br_bvsend_proc.c:
     complete
     .text       start:0x021c0b3c end:0x021c0ee4
     .rodata     start:0x021c27a0 end:0x021c27b4
 
-src/ov268/br_bvdelete_proc.c:
+src/app/battle_recorder/br_bvdelete_proc.c:
     complete
     .text       start:0x021c0ee4 end:0x021c1438
     .rodata     start:0x021c27b4 end:0x021c27d0
     .data       start:0x021c2914 end:0x021c2940
 
-src/ov268/br_bvsave_proc.c:
+src/app/battle_recorder/br_bvsave_proc.c:
     complete
     .text       start:0x021c1438 end:0x021c2128
     .rodata     start:0x021c27d0 end:0x021c2804

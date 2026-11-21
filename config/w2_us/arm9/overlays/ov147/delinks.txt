@@ -3,7 +3,7 @@
     .ctor       start:0x021f5df4 end:0x021f5df4 kind:rodata align:4
     .bss        start:0x021f5e00 end:0x021f5e00 kind:bss align:32
 
-src/ov147/battle_cutin_db.c:
+src/field/eventcmd/battle_cutin_db.c:
     complete
     .text       start:0x021f5ca0 end:0x021f5cb0
     .rodata     start:0x021f5cb0 end:0x021f5df4

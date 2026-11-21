@@ -2,6 +2,6 @@
     .ctor       start:0x0216e7c8 end:0x0216e7c8 kind:rodata align:4
     .bss        start:0x0216e7e0 end:0x0216e7e0 kind:bss align:32
 
-src/ov016/event_egg_demo.c:
+src/communication/event_egg_demo.c:
     complete
     .text       start:0x0216e6a0 end:0x0216e7c8

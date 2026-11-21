@@ -2,6 +2,6 @@
     .ctor       start:0x0214f904 end:0x0214f904 kind:rodata align:4
     .bss        start:0x0214f920 end:0x0214f920 kind:bss align:32
 
-src/ov000/event_gsync.c:
+src/wifi/gsync/event_gsync.c:
     complete
     .text       start:0x0214f500 end:0x0214f904

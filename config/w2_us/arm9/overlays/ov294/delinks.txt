@@ -4,47 +4,47 @@
     .data       start:0x021a4c20 end:0x021a4dc0 kind:data align:32
     .bss        start:0x021a4dc0 end:0x021a4dc0 kind:bss align:32
 
-src/ov294/intro.c:
+src/demo/intro/intro.c:
     complete
     .text       start:0x021a1ba0 end:0x021a1cd0
     .rodata     start:0x021a3d74 end:0x021a3da0
 
-src/ov294/intro_graphic.c:
+src/demo/intro/intro_graphic.c:
     complete
     .text       start:0x021a1cd0 end:0x021a226c
     .rodata     start:0x021a3da0 end:0x021a4020
     .data       start:0x021a4c20 end:0x021a4c30
 
-src/ov294/intro_cmd.c:
+src/demo/intro/intro_cmd.c:
     complete
     .text       start:0x021a226c end:0x021a30dc
     .rodata     start:0x021a4020 end:0x021a404c
     .data       start:0x021a4c30 end:0x021a4d1c
 
-src/ov294/intro_script.c:
+src/demo/intro/intro_script.c:
     complete
     .text       start:0x021a30dc end:0x021a30e8
     .rodata     start:0x021a404c end:0x021a4b5c
     .data       start:0x021a4d1c end:0x021a4d54
 
-src/ov294/intro_msg.c:
+src/demo/intro/intro_msg.c:
     complete
     .text       start:0x021a30e8 end:0x021a35dc
     .data       start:0x021a4d54 end:0x021a4d60
 
-src/ov294/intro_mcss.c:
+src/demo/intro/intro_mcss.c:
     complete
     .text       start:0x021a35dc end:0x021a3928
     .rodata     start:0x021a4b5c end:0x021a4b74
     .data       start:0x021a4d60 end:0x021a4d70
 
-src/ov294/intro_g3d.c:
+src/demo/intro/intro_g3d.c:
     complete
     .text       start:0x021a3928 end:0x021a3c78
     .rodata     start:0x021a4b74 end:0x021a4c14
     .data       start:0x021a4d70 end:0x021a4d7c
 
-src/ov294/intro_particle.c:
+src/demo/intro/intro_particle.c:
     complete
     .text       start:0x021a3c78 end:0x021a3d74
     .data       start:0x021a4d7c end:0x021a4dc0

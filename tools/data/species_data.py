@@ -77,7 +77,7 @@ TYPE_TUTOR_MOVES = ["MOVE_GRASS_PLEDGE", "MOVE_FIRE_PLEDGE", "MOVE_WATER_PLEDGE"
                     "MOVE_BLAST_BURN", "MOVE_HYDRO_CANNON", "MOVE_DRACO_METEOR"]
 # The four move tutors' moves are their shop tables in this file, in the order of MOVE_TUTOR_SHOP_ITEMS: a move's bit
 # in its tutor's word is its place in the table (ShopUI_LoadMoveTutorItems, PML_UtilCheckMoveTutorPaid)
-TUTOR_SHOPS = Path(__file__).parents[2] / "src/ov036/scrcmd_shop.c"
+TUTOR_SHOPS = Path(__file__).parents[2] / "src/field/scrcmd_shop.c"
 
 
 def tutor_moves() -> list[list[str]]:

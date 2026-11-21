@@ -4,50 +4,50 @@
     .data       start:0x021d9680 end:0x021d9720 kind:data align:32
     .bss        start:0x021d9720 end:0x021d9720 kind:bss align:32
 
-src/ov255/box2.c:
+src/app/box/box2.c:
     complete
     .text       start:0x021bb740 end:0x021bb820
     .rodata     start:0x021d6fac end:0x021d6fb8
 
-src/ov255/box2_main.c:
+src/app/box/box2_main.c:
     complete
     .text       start:0x021bb820 end:0x021c28e8
     .rodata     start:0x021d6fb8 end:0x021d710c
     .data       start:0x021d9680 end:0x021d968c
 
-src/ov255/box2_seq.c:
+src/app/box/box2_seq.c:
     complete
     .text       start:0x021c28e8 end:0x021cdf58
     .rodata     start:0x021d710c end:0x021d747c
     .data       start:0x021d968c end:0x021d9698
 
-src/ov255/box2_bmp.c:
+src/app/box/box2_bmp.c:
     complete
     .text       start:0x021cdf58 end:0x021cf400
     .rodata     start:0x021d747c end:0x021d7524
 
-src/ov255/box2_obj.c:
+src/app/box/box2_obj.c:
     complete
     .text       start:0x021cf400 end:0x021d2418
     .rodata     start:0x021d7524 end:0x021d7900
 
-src/ov255/box2_ui.c:
+src/app/box/box2_ui.c:
     complete
     .text       start:0x021d2418 end:0x021d368c
     .rodata     start:0x021d7900 end:0x021d8df0
     .data       start:0x021d9698 end:0x021d96a4
 
-src/ov255/box2_bgwfrm.c:
+src/app/box/box2_bgwfrm.c:
     complete
     .text       start:0x021d368c end:0x021d3ba4
 
-src/ov255/box_search.c:
+src/app/box/box_search.c:
     complete
     .text       start:0x021d3ba4 end:0x021d6d68
     .rodata     start:0x021d8df0 end:0x021d94d0
     .data       start:0x021d96a4 end:0x021d9700
 
-src/ov255/box_search_graphic.c:
+src/app/box/box_search_graphic.c:
     complete
     .text       start:0x021d6d68 end:0x021d6fac
     .rodata     start:0x021d94d0 end:0x021d9660

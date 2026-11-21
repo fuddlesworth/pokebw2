@@ -4,18 +4,18 @@
     .data       start:0x021b7b20 end:0x021b7ce0 kind:data align:32
     .bss        start:0x021b7ce0 end:0x021ba180 kind:bss align:32
 
-src/ov201/gds_rap.c:
+src/app/battle_recorder/gds_rap.c:
     complete
     .text       start:0x021b5460 end:0x021b6144
     .rodata     start:0x021b7a9c end:0x021b7aec
     .data       start:0x021b7b20 end:0x021b7bcc
 
-src/ov201/gds_rap_response.c:
+src/app/battle_recorder/gds_rap_response.c:
     complete
     .text       start:0x021b6144 end:0x021b635c
     .data       start:0x021b7bcc end:0x021b7bd4
 
-src/ov201/battle_rec_ov.c:
+src/app/battle_recorder/battle_rec_ov.c:
     complete
     .text       start:0x021b635c end:0x021b6528
 

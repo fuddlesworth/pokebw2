@@ -3,7 +3,7 @@
     .ctor       start:0x021e7bc8 end:0x021e7bc8 kind:rodata align:4
     .bss        start:0x021e7be0 end:0x021e7be0 kind:bss align:32
 
-src/ov056/scrcmd_wbt_entrance.c:
+src/field/eventcmd/scrcmd_wbt_entrance.c:
     complete
     .text       start:0x021e75c0 end:0x021e7ba4
     .rodata     start:0x021e7ba4 end:0x021e7bc8

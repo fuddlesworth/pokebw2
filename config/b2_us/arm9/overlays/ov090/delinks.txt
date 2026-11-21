@@ -2,6 +2,6 @@
     .ctor       start:0x021eece8 end:0x021eece8 kind:rodata align:4
     .bss        start:0x021eed00 end:0x021eed00 kind:bss align:32
 
-src/ov090/gimmick_state.c:
+src/field/gimmick_state.c:
     complete
     .text       start:0x021eec80 end:0x021eece8

@@ -3,7 +3,7 @@
     .ctor       start:0x021ef1d0 end:0x021ef1d0 kind:rodata align:4
     .bss        start:0x021ef1e0 end:0x021ef1e0 kind:bss align:32
 
-src/ov097/gym_driftveil_lift.c:
+src/field/gym_driftveil_lift.c:
     complete
     .text       start:0x021eecc0 end:0x021ef150
     .rodata     start:0x021ef150 end:0x021ef1d0

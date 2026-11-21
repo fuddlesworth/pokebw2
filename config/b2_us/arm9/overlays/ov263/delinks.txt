@@ -3,7 +3,7 @@
     .ctor       start:0x021c2c68 end:0x021c2c68 kind:rodata align:4
     .bss        start:0x021c2c80 end:0x021c2c80 kind:bss align:32
 
-src/ov263/wifibattlematch_subproc.c:
+src/wifi/battle_match/wifibattlematch_subproc.c:
     complete
     .text       start:0x021c2560 end:0x021c2c50
     .rodata     start:0x021c2c50 end:0x021c2c68

@@ -2,6 +2,6 @@
     .ctor       start:0x021e8cb4 end:0x021e8cb4 kind:rodata align:4
     .bss        start:0x021e8cc0 end:0x021e8cc0 kind:bss align:32
 
-src/ov279/new_game.c:
+src/demo/title/new_game.c:
     complete
     .text       start:0x021e8c20 end:0x021e8cb4

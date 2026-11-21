@@ -3,7 +3,7 @@
     .data       start:0x021ef340 end:0x021ef360 kind:data align:32
     .bss        start:0x021ef360 end:0x021ef360 kind:bss align:32
 
-src/ov131/rail_slipdown.c:
+src/field/rail_slipdown.c:
     complete
     .text       start:0x021eec80 end:0x021ef334
     .data       start:0x021ef340 end:0x021ef360

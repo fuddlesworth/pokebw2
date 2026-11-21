@@ -4,18 +4,18 @@
     .data       start:0x021df7e0 end:0x021df820 kind:data align:32
     .bss        start:0x021df820 end:0x021df820 kind:bss align:32
 
-src/ov307/egg_demo.c:
+src/demo/egg/egg_demo.c:
     .text       start:0x021ddbc0 end:0x021de730
     .rodata     start:0x021df528 end:0x021df564
     complete
 
-src/ov307/egg_demo_graphic.c:
+src/demo/egg/egg_demo_graphic.c:
     .text       start:0x021de730 end:0x021dead0
     .rodata     start:0x021df564 end:0x021df70c
     .data       start:0x021df7e0 end:0x021df7f4
     complete
 
-src/ov307/egg_demo_view.c:
+src/demo/egg/egg_demo_view.c:
     .text       start:0x021dead0 end:0x021df528
     .rodata     start:0x021df70c end:0x021df7d0
     .data       start:0x021df7f4 end:0x021df820

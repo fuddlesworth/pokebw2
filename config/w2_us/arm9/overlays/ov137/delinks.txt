@@ -4,31 +4,31 @@
     .data       start:0x021f58e0 end:0x021f5940 kind:data align:32
     .bss        start:0x021f5940 end:0x021f5a20 kind:bss align:32
 
-src/ov137/resort_npc.c:
+src/field/resort_npc.c:
     complete
     .text       start:0x021f1c64 end:0x021f1f5c
     .data       start:0x021f5918 end:0x021f5928
 
-src/ov137/resort_data_manager.c:
+src/field/resort_data_manager.c:
     complete
     .text       start:0x021f1750 end:0x021f1c64
     .rodata     start:0x021f55dc end:0x021f56cc
     .data       start:0x021f5900 end:0x021f5918
 
-src/ov137/resort_people.c:
+src/field/resort_people.c:
     complete
     .text       start:0x021f0ed8 end:0x021f1750
     .rodata     start:0x021f5590 end:0x021f55dc
     .data       start:0x021f58f0 end:0x021f5900
 
-src/ov137/resort_field.c:
+src/field/resort_field.c:
     complete
     .text       start:0x021eecc0 end:0x021f0ed8
     .rodata     start:0x021f52f0 end:0x021f5590
     .data       start:0x021f58e0 end:0x021f58f0
     .bss        start:0x021f5940 end:0x021f5a20
 
-src/ov137/resort_sys.c:
+src/field/resort_sys.c:
     complete
     .text       start:0x021f1f5c end:0x021f52f0
     .rodata     start:0x021f56cc end:0x021f58d4

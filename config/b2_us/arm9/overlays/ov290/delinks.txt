@@ -4,13 +4,13 @@
     .data       start:0x021fd040 end:0x021fd080 kind:data align:32
     .bss        start:0x021fd080 end:0x021fd080 kind:bss align:32
 
-src/ov290/wifibattlematch_sys.c:
+src/wifi/battle_match/wifibattlematch_sys.c:
     complete
     .text       start:0x021fb880 end:0x021fcb4c
     .rodata     start:0x021fcf84 end:0x021fd020
     .data       start:0x021fd040 end:0x021fd080
 
-src/ov290/wifibattlematch_battle.c:
+src/wifi/battle_match/wifibattlematch_battle.c:
     complete
     .text       start:0x021fcb4c end:0x021fcf84
     .rodata     start:0x021fd020 end:0x021fd02c

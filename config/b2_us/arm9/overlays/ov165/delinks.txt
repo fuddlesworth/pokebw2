@@ -4,51 +4,51 @@
     .data       start:0x021a4ce0 end:0x021a4d40 kind:data align:32
     .bss        start:0x021a4d40 end:0x021a4d60 kind:bss align:32
 
-src/ov165/pokelist.c:
+src/app/pokelist/pokelist.c:
     complete
     .text       start:0x02199a00 end:0x02199b88
     .data       start:0x021a4ce0 end:0x021a4cec
     .bss        start:0x021a4d40 end:0x021a4d44
 
-src/ov165/plist_sys.c:
+src/app/pokelist/plist_sys.c:
     complete
     .text       start:0x02199b88 end:0x0219e678
     .rodata     start:0x021a49dc end:0x021a4be0
 
-src/ov165/plist_plate.c:
+src/app/pokelist/plist_plate.c:
     complete
     .text       start:0x0219e678 end:0x0219f5ec
     .rodata     start:0x021a4be0 end:0x021a4bf0
     .data       start:0x021a4cec end:0x021a4cfc
 
-src/ov165/plist_message.c:
+src/app/pokelist/plist_message.c:
     complete
     .text       start:0x0219f5ec end:0x0219fae8
     .data       start:0x021a4cfc end:0x021a4d0c
 
-src/ov165/plist_menu.c:
+src/app/pokelist/plist_menu.c:
     complete
     .text       start:0x0219fae8 end:0x0219fef0
     .rodata     start:0x021a4bf0 end:0x021a4c5c
     .data       start:0x021a4d0c end:0x021a4d1c
 
-src/ov165/plist_item.c:
+src/app/pokelist/plist_item.c:
     complete
     .text       start:0x0219fef0 end:0x021a0d38
     .rodata     start:0x021a4c5c end:0x021a4c68
 
-src/ov165/plist_battle.c:
+src/app/pokelist/plist_battle.c:
     complete
     .text       start:0x021a0d38 end:0x021a1944
     .data       start:0x021a4d1c end:0x021a4d2c
 
-src/ov165/plist_demo.c:
+src/app/pokelist/plist_demo.c:
     complete
     .text       start:0x021a1944 end:0x021a23e8
     .rodata     start:0x021a4c68 end:0x021a4c84
     .data       start:0x021a4d2c end:0x021a4d40
 
-src/ov165/status_rcv.c:
+src/app/pokelist/status_rcv.c:
     complete
     .text       start:0x021a23e8 end:0x021a30f8
 

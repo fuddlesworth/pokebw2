@@ -2,6 +2,6 @@
     .ctor       start:0x0214f614 end:0x0214f614 kind:rodata align:4
     .bss        start:0x0214f620 end:0x0214f620 kind:bss align:32
 
-src/ov009/event_wifi_bsubway.c:
+src/tournament/event_wifi_bsubway.c:
     complete
     .text       start:0x0214f500 end:0x0214f614

@@ -1,10 +1,10 @@
 # CtvtDraw function/data emission and relocated pointers match with per-function IPA
 # when its tables precede their first user; see docs/matching.md.
 [file_flags]
-"src/ov257/ctvt_draw.c" = ["-ipa function"]
+"src/communication/ctvt_draw.c" = ["-ipa function"]
 
 # The explicit assertion filename joins initialized data under per-function IPA.
-"src/ov012/delivery_beacon.c" = ["-ipa function", '-pragma "explicit_zero_data on"']
+"src/field/delivery_beacon.c" = ["-ipa function", '-pragma "explicit_zero_data on"']
 
 # The image, OBJ and palette loader tables emit in first-use batches under per-function IPA.
 "src/gfl/arc_util.c" = ["-ipa function"]

@@ -4,12 +4,12 @@
     .data       start:0x02171220 end:0x02171240 kind:data align:32
     .bss        start:0x02171240 end:0x02171240 kind:bss align:32
 
-src/ov027/scrcmd_survey.c:
+src/entralink/scrcmd_survey.c:
     complete
     .text       start:0x02170380 end:0x02170b04
     .rodata     start:0x02170e78 end:0x021711f8
 
-src/ov027/fest_mission_data.c:
+src/entralink/fest_mission_data.c:
     complete
     .text       start:0x02170b04 end:0x02170e78
     .rodata     start:0x021711f8 end:0x02171200

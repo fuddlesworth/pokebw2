@@ -4,30 +4,30 @@
     .data       start:0x021e75a0 end:0x021e7600 kind:data align:32
     .bss        start:0x021e7600 end:0x021e7600 kind:bss align:32
 
-src/ov055/scrcmd_wbt.c:
+src/tournament/scrcmd_wbt.c:
     complete
     .text       start:0x021e5840 end:0x021e5bd8
     .rodata     start:0x021e72a4 end:0x021e739c
 
-src/ov055/wbt_system.c:
+src/tournament/wbt_system.c:
     complete
     .text       start:0x021e5bd8 end:0x021e63c8
     .rodata     start:0x021e739c end:0x021e7538
     .data       start:0x021e75a0 end:0x021e75b0
 
-src/ov055/wbt_tool.c:
+src/tournament/wbt_tool.c:
     complete
     .text       start:0x021e63c8 end:0x021e6834
     .rodata     start:0x021e7538 end:0x021e757c
     .data       start:0x021e75b0 end:0x021e75bc
 
-src/ov055/wbt_setup.c:
+src/tournament/wbt_setup.c:
     complete
     .text       start:0x021e6834 end:0x021e6b44
     .rodata     start:0x021e757c end:0x021e7588
     .data       start:0x021e75bc end:0x021e75c8
 
-src/ov055/wbt_party.c:
+src/tournament/wbt_party.c:
     complete
     .text       start:0x021e6b44 end:0x021e72a4
     .data       start:0x021e75c8 end:0x021e7600

@@ -4,64 +4,64 @@
     .data       start:0x021f7b60 end:0x021f7f80 kind:data align:32
     .bss        start:0x021f7f80 end:0x021f7f80 kind:bss align:32
 
-src/ov271/br_core.c:
+src/app/battle_recorder/br_core.c:
     complete
     .text       start:0x021efe40 end:0x021f0770
     .rodata     start:0x021f70a0 end:0x021f71b0
     .data       start:0x021f7b60 end:0x021f7b84
 
-src/ov271/br_proc_sys.c:
+src/app/battle_recorder/br_proc_sys.c:
     complete
     .text       start:0x021f0770 end:0x021f0a6c
     .data       start:0x021f7b84 end:0x021f7c04
 
-src/ov271/br_btn_data.c:
+src/app/battle_recorder/br_btn_data.c:
     complete
     .text       start:0x021f23b8 end:0x021f266c
     .rodata     start:0x021f71d0 end:0x021f76d8
     .data       start:0x021f7cd8 end:0x021f7d50
 
-src/ov271/br_btn.c:
+src/app/battle_recorder/br_btn.c:
     complete
     .text       start:0x021f0a6c end:0x021f23b8
     .rodata     start:0x021f71b0 end:0x021f71d0
     .data       start:0x021f7c04 end:0x021f7cd8
 
-src/ov271/br_res.c:
+src/app/battle_recorder/br_res.c:
     complete
     .text       start:0x021f266c end:0x021f31b8
     .rodata     start:0x021f76d8 end:0x021f7758
     .data       start:0x021f7d50 end:0x021f7e10
 
-src/ov271/br_graphic.c:
+src/app/battle_recorder/br_graphic.c:
     complete
     .text       start:0x021f31b8 end:0x021f34a0
     .rodata     start:0x021f7758 end:0x021f7928
     .data       start:0x021f7e10 end:0x021f7e20
 
-src/ov271/br_util.c:
+src/app/battle_recorder/br_util.c:
     complete
     .text       start:0x021f34a0 end:0x021f54d8
     .rodata     start:0x021f7928 end:0x021f79cc
     .data       start:0x021f7e20 end:0x021f7eb0
 
-src/ov271/br_fade.c:
+src/app/battle_recorder/br_fade.c:
     complete
     .text       start:0x021f54d8 end:0x021f5b68
     .data       start:0x021f7eb0 end:0x021f7ebc
 
-src/ov271/br_sidebar.c:
+src/app/battle_recorder/br_sidebar.c:
     complete
     .text       start:0x021f5b68 end:0x021f6224
     .rodata     start:0x021f79cc end:0x021f7aec
     .data       start:0x021f7ebc end:0x021f7ed4
 
-src/ov271/br_net.c:
+src/app/battle_recorder/br_net.c:
     complete
     .text       start:0x021f6224 end:0x021f6a1c
     .data       start:0x021f7ed4 end:0x021f7f08
 
-src/ov271/br_pokesearch.c:
+src/app/battle_recorder/br_pokesearch.c:
     complete
     .text       start:0x021f6a1c end:0x021f70a0
     .rodata     start:0x021f7aec end:0x021f7b50

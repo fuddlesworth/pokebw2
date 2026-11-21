@@ -3,12 +3,12 @@
     .data       start:0x021ef1e0 end:0x021ef220 kind:data align:32
     .bss        start:0x021ef220 end:0x021ef220 kind:bss align:32
 
-src/ov210/musical_system.c:
+src/musical/musical_system.c:
     complete
     .text       start:0x021eecc0 end:0x021eef78
     .data       start:0x021ef1e0 end:0x021ef1f4
 
-src/ov210/mus_item_data.c:
+src/musical/mus_item_data.c:
     complete
     .text       start:0x021eef78 end:0x021ef1c8
     .data       start:0x021ef1f4 end:0x021ef220

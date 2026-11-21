@@ -4,18 +4,18 @@
     .data       start:0x021e6a80 end:0x021e6ac0 kind:data align:32
     .bss        start:0x021e6ac0 end:0x021e6ac0 kind:bss align:32
 
-src/ov062/scrcmd_pokewood.c:
+src/pokewood/scrcmd_pokewood.c:
     complete
     .text       start:0x021e5840 end:0x021e618c
     .rodata     start:0x021e68a8 end:0x021e69f4
 
-src/ov062/pokewood_system.c:
+src/pokewood/pokewood_system.c:
     complete
     .text       start:0x021e618c end:0x021e66c0
     .rodata     start:0x021e69f4 end:0x021e6a70
     .data       start:0x021e6a80 end:0x021e6aac
 
-src/ov062/pokewood_setup.c:
+src/pokewood/pokewood_setup.c:
     complete
     .text       start:0x021e66c0 end:0x021e68a8
     .data       start:0x021e6aac end:0x021e6ac0

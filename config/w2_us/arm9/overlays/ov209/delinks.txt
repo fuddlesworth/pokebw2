@@ -4,93 +4,93 @@
     .data       start:0x021c3040 end:0x021c3280 kind:data align:32
     .bss        start:0x021c3280 end:0x021c32a0 kind:bss align:32
 
-src/ov209/musical_shot_sys.c:
+src/musical/musical_shot_sys.c:
     complete
     .text       start:0x021ba180 end:0x021ba5d8
     .rodata     start:0x021c2c2c end:0x021c2c6c
     .data       start:0x021c3040 end:0x021c3060
 
-src/ov209/mus_shot_photo.c:
+src/musical/mus_shot_photo.c:
     complete
     .text       start:0x021ba5d8 end:0x021bad6c
     .rodata     start:0x021c2c6c end:0x021c2d60
     .data       start:0x021c3060 end:0x021c3074
 
-src/ov209/mus_shot_info.c:
+src/musical/mus_shot_info.c:
     complete
     .text       start:0x021bad6c end:0x021bb3a8
     .rodata     start:0x021c2d60 end:0x021c2dc8
     .data       start:0x021c3074 end:0x021c3084
 
-src/ov209/mus_item_draw.c:
+src/musical/mus_item_draw.c:
     complete
     .text       start:0x021bb3a8 end:0x021bb9fc
     .rodata     start:0x021c2dc8 end:0x021c2dd4
     .data       start:0x021c3084 end:0x021c3094
 
-src/ov209/mus_poke_draw.c:
+src/musical/mus_poke_draw.c:
     complete
     .text       start:0x021bb9fc end:0x021bbe90
     .data       start:0x021c3094 end:0x021c30a4
 
-src/ov209/musical_mcss.c:
+src/musical/musical_mcss.c:
     complete
     .text       start:0x021bbe90 end:0x021bd278
     .rodata     start:0x021c2dd4 end:0x021c2df8
     .data       start:0x021c30a4 end:0x021c30b4
 
-src/ov209/sta_act_obj.c:
+src/musical/sta_act_obj.c:
     complete
     .text       start:0x021bd278 end:0x021bd46c
     .rodata     start:0x021c2df8 end:0x021c2dfc
     .data       start:0x021c30b4 end:0x021c30c4
 
-src/ov209/sta_act_light.c:
+src/musical/sta_act_light.c:
     complete
     .text       start:0x021bd46c end:0x021bd7b8
     .data       start:0x021c30c4 end:0x021c30d4
 
-src/ov209/sta_act_bg.c:
+src/musical/sta_act_bg.c:
     complete
     .text       start:0x021bd7b8 end:0x021bd930
     .data       start:0x021c30d4 end:0x021c3120
 
-src/ov209/sta_act_effect.c:
+src/musical/sta_act_effect.c:
     complete
     .text       start:0x021c03c0 end:0x021c055c
     .data       start:0x021c3140 end:0x021c3154
 
-src/ov209/sta_act_poke.c:
+src/musical/sta_act_poke.c:
     complete
     .text       start:0x021bd930 end:0x021be9f0
     .rodata     start:0x021c2dfc end:0x021c2e10
     .data       start:0x021c3120 end:0x021c3130
 
-src/ov209/sta_act_audience.c:
+src/musical/sta_act_audience.c:
     complete
     .text       start:0x021c055c end:0x021c0b20
     .rodata     start:0x021c2fac end:0x021c2fb8
     .data       start:0x021c3154 end:0x021c3168
 
-src/ov209/sta_act_button.c:
+src/musical/sta_act_button.c:
     complete
     .text       start:0x021c0b20 end:0x021c1064
     .rodata     start:0x021c2fb8 end:0x021c2fc4
     .data       start:0x021c3168 end:0x021c317c
 
-src/ov209/sta_act_script.c:
+src/musical/sta_act_script.c:
     complete
     .text       start:0x021c1064 end:0x021c138c
     .rodata     start:0x021c2fc4 end:0x021c2fdc
     .data       start:0x021c317c end:0x021c3190
 
-src/ov209/script_command.c:
+src/musical/script_command.c:
     complete
     .text       start:0x021c138c end:0x021c2c2c
     .rodata     start:0x021c2fdc end:0x021c3024
     .data       start:0x021c3190 end:0x021c3280
 
-src/ov209/sta_acting.c:
+src/musical/sta_acting.c:
     complete
     .text       start:0x021be9f0 end:0x021c03c0
     .rodata     start:0x021c2e10 end:0x021c2fac

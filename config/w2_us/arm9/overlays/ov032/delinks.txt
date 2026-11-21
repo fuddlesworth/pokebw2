@@ -2,6 +2,6 @@
     .ctor       start:0x02199c9c end:0x02199c9c kind:rodata align:4
     .bss        start:0x02199ca0 end:0x02199ca0 kind:bss align:32
 
-src/ov032/wfc_user_info_warning.c:
+src/wifi/net/wfc_user_info_warning.c:
     complete
     .text       start:0x02199900 end:0x02199c9c

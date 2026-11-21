@@ -3,7 +3,7 @@
     .ctor       start:0x021ef7c8 end:0x021ef7c8 kind:rodata align:4
     .bss        start:0x021ef7e0 end:0x021ef7e0 kind:bss align:32
 
-src/ov269/br_musical_send_proc.c:
+src/app/battle_recorder/br_musical_send_proc.c:
     complete
     .text       start:0x021ef220 end:0x021ef7bc
     .rodata     start:0x021ef7bc end:0x021ef7c8

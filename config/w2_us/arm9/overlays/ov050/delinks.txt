@@ -3,11 +3,11 @@
     .ctor       start:0x021e7704 end:0x021e7704 kind:rodata align:4
     .bss        start:0x021e7720 end:0x021e7720 kind:bss align:32
 
-src/ov050/scrcmd_bsubway.c:
+src/field/eventcmd/scrcmd_bsubway.c:
     complete
     .text       start:0x021e5840 end:0x021e7048
     .rodata     start:0x021e7048 end:0x021e76f0
 
-src/ov050/scrcmd_bsubway_table.c:
+src/field/eventcmd/scrcmd_bsubway_table.c:
     complete
     .rodata     start:0x021e76f0 end:0x021e7704

@@ -4,7 +4,7 @@
     .data       start:0x021eb040 end:0x021eb0a0 kind:data align:32
     .bss        start:0x021eb0a0 end:0x021eb0a0 kind:bss align:32
 
-src/ov088/c_gear_power_onoff.c:
+src/app/c_gear/c_gear_power_onoff.c:
     complete
     .text       start:0x021ea8a0 end:0x021eafd4
     .rodata     start:0x021eafd4 end:0x021eb03c

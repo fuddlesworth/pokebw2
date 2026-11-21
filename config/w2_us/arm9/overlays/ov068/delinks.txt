@@ -3,7 +3,7 @@
     .ctor       start:0x021e59c0 end:0x021e59c0 kind:rodata align:4
     .bss        start:0x021e59e0 end:0x021e59e0 kind:bss align:32
 
-src/ov068/scrcmd_plugin16.c:
+src/field/eventcmd/scrcmd_plugin16.c:
     complete
     .text       start:0x021e5840 end:0x021e599c
     .rodata     start:0x021e599c end:0x021e59c0

@@ -4,34 +4,34 @@
     .data       start:0x021a1ae0 end:0x021a1b00 kind:data align:32
     .bss        start:0x021a1b00 end:0x021a1b20 kind:bss align:32
 
-src/ov162/title.c:
+src/demo/title/title.c:
     complete
     .text       start:0x0219ce80 end:0x0219d914
     .rodata     start:0x021a1468 end:0x021a1674
 
-src/ov162/startmenu.c:
+src/demo/title/startmenu.c:
     complete
     .text       start:0x0219d914 end:0x021a000c
     .rodata     start:0x021a1674 end:0x021a1914
     .data       start:0x021a1ae0 end:0x021a1aec
 
-src/ov162/game_start.c:
+src/demo/title/game_start.c:
     complete
     .text       start:0x021a000c end:0x021a0a1c
     .rodata     start:0x021a1914 end:0x021a19e4
 
-src/ov162/boot_screens.c:
+src/demo/title/boot_screens.c:
     complete
     .text       start:0x021a0a1c end:0x021a0d28
     .rodata     start:0x021a19e4 end:0x021a1a70
 
-src/ov162/delete_save.c:
+src/demo/title/delete_save.c:
     complete
     .text       start:0x021a0d28 end:0x021a12c0
     .rodata     start:0x021a1a70 end:0x021a1adc
     .bss        start:0x021a1b00 end:0x021a1b20
 
-src/ov162/save_control_intr.c:
+src/demo/title/save_control_intr.c:
     complete
     .text       start:0x021a12c0 end:0x021a1468
     .data       start:0x021a1aec end:0x021a1b00

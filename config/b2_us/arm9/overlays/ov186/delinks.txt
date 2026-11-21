@@ -4,23 +4,23 @@
     .data       start:0x021ada00 end:0x021ada60 kind:data align:32
     .bss        start:0x021ada60 end:0x021ada80 kind:bss align:32
 
-src/ov186/trainer_card.c:
+src/app/trainer_card/trainer_card.c:
     complete
     .text       start:0x021a75a0 end:0x021a9f80
     .rodata     start:0x021acd20 end:0x021acff0
     .data       start:0x021ada00 end:0x021ada38
 
-src/ov186/trcard_bmp.c:
+src/app/trainer_card/trcard_bmp.c:
     complete
     .text       start:0x021a9f80 end:0x021aaf00
     .rodata     start:0x021acff0 end:0x021ad02c
 
-src/ov186/trcard_obj.c:
+src/app/trainer_card/trcard_obj.c:
     complete
     .text       start:0x021aaf00 end:0x021ab178
     .rodata     start:0x021ad02c end:0x021ad0d4
 
-src/ov186/badge_view.c:
+src/app/trainer_card/badge_view.c:
     complete
     .text       start:0x021ab178 end:0x021acd20
     .rodata     start:0x021ad0d4 end:0x021ad9f8

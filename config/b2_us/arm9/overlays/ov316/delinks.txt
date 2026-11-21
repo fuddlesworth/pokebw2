@@ -4,13 +4,13 @@
     .data       start:0x0219fe00 end:0x0219fe20 kind:data align:32
     .bss        start:0x0219fe20 end:0x0219fe20 kind:bss align:32
 
-src/ov316/psel.c:
+src/app/pokemon_select/psel.c:
     complete
     .text       start:0x0219ce80 end:0x0219f6d0
     .rodata     start:0x0219fa84 end:0x0219fc44
     .data       start:0x0219fe00 end:0x0219fe08
 
-src/ov316/psel_graphic.c:
+src/app/pokemon_select/psel_graphic.c:
     complete
     .text       start:0x0219f6d0 end:0x0219fa84
     .rodata     start:0x0219fc44 end:0x0219fdec

@@ -3,7 +3,7 @@
     .ctor       start:0x0216fabc end:0x0216fabc kind:rodata align:4
     .bss        start:0x0216fac0 end:0x0216fac0 kind:bss align:32
 
-src/ov026/fest_mission_hollow.c:
+src/entralink/fest_mission_hollow.c:
     complete
     .text       start:0x0216f900 end:0x0216fa50
     .rodata     start:0x0216fa50 end:0x0216fabc

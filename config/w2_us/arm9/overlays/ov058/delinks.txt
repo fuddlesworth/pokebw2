@@ -2,6 +2,6 @@
     .ctor       start:0x021e58e4 end:0x021e58e4 kind:rodata align:4
     .bss        start:0x021e5900 end:0x021e5900 kind:bss align:32
 
-src/ov058/scrcmd_resort_table.c:
+src/field/eventcmd/scrcmd_resort_table.c:
     complete
     .rodata     start:0x021e5840 end:0x021e58e4

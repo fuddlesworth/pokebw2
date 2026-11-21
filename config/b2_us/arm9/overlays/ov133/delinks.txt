@@ -3,7 +3,7 @@
     .ctor       start:0x021eef3c end:0x021eef3c kind:rodata align:4
     .bss        start:0x021eef40 end:0x021eef40 kind:bss align:32
 
-src/ov133/gimmick_nuvema.c:
+src/field/gimmick_nuvema.c:
     complete
     .text       start:0x021eec80 end:0x021eeeb0
     .rodata     start:0x021eeeb0 end:0x021eef3c

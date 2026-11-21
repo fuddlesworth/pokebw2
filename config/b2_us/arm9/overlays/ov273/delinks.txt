@@ -3,7 +3,7 @@
     .data       start:0x021ea080 end:0x021ea0a0 kind:data align:32
     .bss        start:0x021ea0a0 end:0x021ea0a0 kind:bss align:32
 
-src/ov273/battle_rec_tool.c:
+src/app/battle_recorder/battle_rec_tool.c:
     complete
     .text       start:0x021e92a0 end:0x021ea074
     .data       start:0x021ea080 end:0x021ea0a0

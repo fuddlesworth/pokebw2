@@ -4,7 +4,7 @@
     .data       start:0x0219f160 end:0x0219f1e0 kind:data align:32
     .bss        start:0x0219f1e0 end:0x0219f1e0 kind:bss align:32
 
-src/ov140/config_panel.c:
+src/app/config/config_panel.c:
     complete
     .text       start:0x0219cec0 end:0x0219ee7c
     .rodata     start:0x0219ee7c end:0x0219f150

@@ -3,7 +3,7 @@
     .ctor       start:0x02199a30 end:0x02199a30 kind:rodata align:4
     .bss        start:0x02199a40 end:0x02199a40 kind:bss align:32
 
-src/ov164/net_sync.c:
+src/wifi/net/net_sync.c:
     complete
     .text       start:0x02199900 end:0x02199a28
     .rodata     start:0x02199a28 end:0x02199a30

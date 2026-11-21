@@ -3,7 +3,7 @@
     .ctor       start:0x021eefe0 end:0x021eefe0 kind:rodata align:4
     .bss        start:0x021ef000 end:0x021ef000 kind:bss align:32
 
-src/ov114/gimmick_underground_ruins.c:
+src/field/gimmick_underground_ruins.c:
     complete
     .text       start:0x021eecc0 end:0x021eef34
     .rodata     start:0x021eef34 end:0x021eefe0

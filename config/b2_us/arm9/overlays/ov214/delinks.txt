@@ -4,84 +4,84 @@
     .data       start:0x021e29a0 end:0x021e30c0 kind:data align:32
     .bss        start:0x021e30c0 end:0x021e30e0 kind:bss align:32
 
-src/ov214/worldtrade.c:
+src/communication/worldtrade.c:
     complete
     .text       start:0x021d3380 end:0x021d3f9c
     .rodata     start:0x021e1ab8 end:0x021e1b5c
     .data       start:0x021e29a0 end:0x021e2b78
     .bss        start:0x021e30c0 end:0x021e30e0
 
-src/ov214/worldtrade_box.c:
+src/communication/worldtrade_box.c:
     complete
     .text       start:0x021d3f9c end:0x021d5c48
     .rodata     start:0x021e1b5c end:0x021e1db8
     .data       start:0x021e2b78 end:0x021e2bec
 
-src/ov214/worldtrade_demo.c:
+src/communication/worldtrade_demo.c:
     complete
     .text       start:0x021d5c48 end:0x021d61dc
     .data       start:0x021e2bec end:0x021e2c24
 
-src/ov214/worldtrade_deposit.c:
+src/communication/worldtrade_deposit.c:
     complete
     .text       start:0x021d61dc end:0x021d77c8
     .rodata     start:0x021e1db8 end:0x021e20f8
     .data       start:0x021e2c24 end:0x021e2d1c
 
-src/ov214/worldtrade_enter.c:
+src/communication/worldtrade_enter.c:
     complete
     .text       start:0x021d77c8 end:0x021d8074
     .rodata     start:0x021e20f8 end:0x021e210c
     .data       start:0x021e2d1c end:0x021e2d48
 
-src/ov214/worldtrade_input.c:
+src/communication/worldtrade_input.c:
     complete
     .text       start:0x021d8074 end:0x021daeb8
     .rodata     start:0x021e210c end:0x021e23b8
     .data       start:0x021e2d48 end:0x021e2e10
 
-src/ov214/worldtrade_mypoke.c:
+src/communication/worldtrade_mypoke.c:
     complete
     .text       start:0x021daeb8 end:0x021dba8c
     .rodata     start:0x021e23b8 end:0x021e2508
     .data       start:0x021e2e10 end:0x021e2e34
 
-src/ov214/worldtrade_partner.c:
+src/communication/worldtrade_partner.c:
     complete
     .text       start:0x021dba8c end:0x021dc784
     .rodata     start:0x021e2508 end:0x021e26b4
     .data       start:0x021e2e34 end:0x021e2e58
 
-src/ov214/worldtrade_search.c:
+src/communication/worldtrade_search.c:
     complete
     .text       start:0x021dc784 end:0x021de3f8
     .rodata     start:0x021e26b4 end:0x021e2790
     .data       start:0x021e2e58 end:0x021e2f58
 
-src/ov214/worldtrade_status.c:
+src/communication/worldtrade_status.c:
     complete
     .text       start:0x021de3f8 end:0x021de510
     .data       start:0x021e2f58 end:0x021e2f6c
 
-src/ov214/worldtrade_sublcd.c:
+src/communication/worldtrade_sublcd.c:
     complete
     .text       start:0x021de510 end:0x021dec14
     .rodata     start:0x021e2790 end:0x021e27ec
     .data       start:0x021e2f6c end:0x021e2f80
 
-src/ov214/worldtrade_title.c:
+src/communication/worldtrade_title.c:
     complete
     .text       start:0x021dec14 end:0x021dfa78
     .rodata     start:0x021e27ec end:0x021e2910
     .data       start:0x021e2f80 end:0x021e2fbc
 
-src/ov214/worldtrade_upload.c:
+src/communication/worldtrade_upload.c:
     complete
     .text       start:0x021dfa78 end:0x021e14e0
     .rodata     start:0x021e2910 end:0x021e2980
     .data       start:0x021e2fbc end:0x021e308c
 
-src/ov214/worldtrade_adapter.c:
+src/communication/worldtrade_adapter.c:
     complete
     .text       start:0x021e14e0 end:0x021e1ab8
     .data       start:0x021e308c end:0x021e30c0

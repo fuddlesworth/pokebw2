@@ -4,49 +4,49 @@
     .data       start:0x021b99c0 end:0x021b9c40 kind:data align:32
     .bss        start:0x021b9c40 end:0x021b9c60 kind:bss align:32
 
-src/ov199/gsync_menu.c:
+src/wifi/gsync/gsync_menu.c:
     complete
     .text       start:0x021b2fc0 end:0x021b4264
     .rodata     start:0x021b95ec end:0x021b96e8
     .data       start:0x021b99c0 end:0x021b9a30
 
-src/ov199/gsync_message.c:
+src/wifi/gsync/gsync_message.c:
     complete
     .text       start:0x021b4264 end:0x021b48b0
     .rodata     start:0x021b96e8 end:0x021b972c
     .data       start:0x021b9a30 end:0x021b9a40
 
-src/ov199/gsync_download.c:
+src/wifi/gsync/gsync_download.c:
     complete
     .text       start:0x021b48b0 end:0x021b4b88
     .data       start:0x021b9a40 end:0x021b9a84
     .bss        start:0x021b9c40 end:0x021b9c60
 
-src/ov199/gsync_disp.c:
+src/wifi/gsync/gsync_disp.c:
     complete
     .text       start:0x021b4b88 end:0x021b5c3c
     .rodata     start:0x021b972c end:0x021b9834
     .data       start:0x021b9a84 end:0x021b9b90
 
-src/ov199/gsync_state.c:
+src/wifi/gsync/gsync_state.c:
     complete
     .text       start:0x021b5c3c end:0x021b8278
     .rodata     start:0x021b9834 end:0x021b9860
     .data       start:0x021b9b90 end:0x021b9bd8
 
-src/ov199/pdwacc_message.c:
+src/wifi/gsync/pdwacc_message.c:
     complete
     .text       start:0x021b8278 end:0x021b8910
     .rodata     start:0x021b9860 end:0x021b98a4
     .data       start:0x021b9bd8 end:0x021b9bec
 
-src/ov199/pdwacc_disp.c:
+src/wifi/gsync/pdwacc_disp.c:
     complete
     .text       start:0x021b8910 end:0x021b8f8c
     .rodata     start:0x021b98a4 end:0x021b99a4
     .data       start:0x021b9bec end:0x021b9c40
 
-src/ov199/pdwacc_state.c:
+src/wifi/gsync/pdwacc_state.c:
     complete
     .text       start:0x021b8f8c end:0x021b95ec
     .rodata     start:0x021b99a4 end:0x021b99b0

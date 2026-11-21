@@ -4,120 +4,120 @@
     .data       start:0x0217c640 end:0x0217c6a0 kind:data align:32
     .bss        start:0x0217c6a0 end:0x0217c6a0 kind:bss align:32
 
-src/ov033/entree_forest.c:
+src/entralink/entree_forest.c:
     complete
     .text       start:0x02176b40 end:0x02176dc8
     .rodata     start:0x0217c380 end:0x0217c428
 
-src/ov033/event_funfest_mission.c:
+src/entralink/event_funfest_mission.c:
     complete
     .text       start:0x02176dc8 end:0x02176f04
 
-src/ov033/entree_forest_first_warp.c:
+src/entralink/entree_forest_first_warp.c:
     complete
     .text       start:0x02176f04 end:0x02176fd0
     .rodata     start:0x0217c428 end:0x0217c434
 
-src/ov033/scrcmd_funfest.c:
+src/entralink/scrcmd_funfest.c:
     complete
     .text       start:0x02176fd0 end:0x021773b0
 
-src/ov033/entralink_warp.c:
+src/entralink/entralink_warp.c:
     complete
     .text       start:0x021773b0 end:0x021775b4
     .rodata     start:0x0217c434 end:0x0217c440
 
-src/ov033/event_cgear_shutdown.c:
+src/field/event_cgear_shutdown.c:
     complete
     .text       start:0x021775b4 end:0x02177628
 
-src/ov033/event_phrase_input.c:
+src/field/event_phrase_input.c:
     complete
     .text       start:0x02177628 end:0x021779d8
     .rodata     start:0x0217c440 end:0x0217c444
 
-src/ov033/pdw_postman.c:
+src/entralink/pdw_postman.c:
     complete
     .text       start:0x021779d8 end:0x02178488
     .rodata     start:0x0217c444 end:0x0217c4c4
     .data       start:0x0217c640 end:0x0217c650
 
-src/ov033/scrcmd_field_move.c:
+src/field/scrcmd_field_move.c:
     complete
     .text       start:0x02178488 end:0x02178604
 
-src/ov033/event_sweet_scent.c:
+src/field/event_sweet_scent.c:
     complete
     .text       start:0x02178604 end:0x02178948
     .rodata     start:0x0217c4c4 end:0x0217c4c8
 
-src/ov033/event_fly.c:
+src/field/event_fly.c:
     complete
     .text       start:0x02178948 end:0x02178ce8
 
-src/ov033/event_chatot.c:
+src/field/event_chatot.c:
     complete
     .text       start:0x02178ce8 end:0x02179200
     .rodata     start:0x0217c4c8 end:0x0217c4d0
 
-src/ov033/event_fishing.c:
+src/field/event_fishing.c:
     complete
     .text       start:0x02179200 end:0x021796a4
 
-src/ov033/event_hall_of_fame_machine.c:
+src/field/event_hall_of_fame_machine.c:
     complete
     .text       start:0x021796a4 end:0x021798a8
     .rodata     start:0x0217c4d0 end:0x0217c518
 
-src/ov033/event_pc.c:
+src/field/event_pc.c:
     complete
     .text       start:0x021798a8 end:0x02179b94
 
-src/ov033/event_pokemon_center.c:
+src/field/event_pokemon_center.c:
     complete
     .text       start:0x02179b94 end:0x02179e14
     .rodata     start:0x0217c518 end:0x0217c560
 
-src/ov033/event_game_manual.c:
+src/field/event_game_manual.c:
     complete
     .text       start:0x02179e14 end:0x02179ed8
     .data       start:0x0217c650 end:0x0217c664
 
-src/ov033/event_abyssal_ruins.c:
+src/field/event_abyssal_ruins.c:
     complete
     .text       start:0x02179ed8 end:0x02179f44
     .rodata     start:0x0217c560 end:0x0217c574
 
-src/ov033/event_dive.c:
+src/field/event_dive.c:
     complete
     .text       start:0x02179f44 end:0x0217a1f0
 
-src/ov033/field_actor_animation.c:
+src/field/field_actor_animation.c:
     complete
     .text       start:0x0217a1f0 end:0x0217a4e0
     .rodata     start:0x0217c574 end:0x0217c5a4
 
-src/ov033/fld_trade.c:
+src/field/fld_trade.c:
     complete
     .text       start:0x0217a4e0 end:0x0217aa5c
     .data       start:0x0217c664 end:0x0217c670
 
-src/ov033/unity_visitor.c:
+src/field/unity_visitor.c:
     complete
     .text       start:0x0217aa5c end:0x0217acb0
 
-src/ov033/trial_house.c:
+src/field/trial_house.c:
     complete
     .text       start:0x0217acb0 end:0x0217b4a8
     .data       start:0x0217c670 end:0x0217c680
 
-src/ov033/bsubway_scr.c:
+src/tournament/bsubway_scr.c:
     complete
     .text       start:0x0217b4a8 end:0x0217c0d4
     .rodata     start:0x0217c5a4 end:0x0217c5f8
     .data       start:0x0217c680 end:0x0217c6a0
 
-src/ov033/bsubway_trainers.c:
+src/tournament/bsubway_trainers.c:
     complete
     .text       start:0x0217c0d4 end:0x0217c380
     .rodata     start:0x0217c5f8 end:0x0217c630

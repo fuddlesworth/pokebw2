@@ -3,7 +3,7 @@
     .ctor       start:0x021eeee8 end:0x021eeee8 kind:rodata align:4
     .bss        start:0x021eef00 end:0x021eef00 kind:bss align:32
 
-src/ov106/gimmick_league_lift.c:
+src/field/gimmick_league_lift.c:
     complete
     .text       start:0x021eec80 end:0x021eee58
     .rodata     start:0x021eee58 end:0x021eeee8

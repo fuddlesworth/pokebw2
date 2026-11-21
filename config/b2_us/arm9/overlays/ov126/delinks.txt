@@ -3,7 +3,7 @@
     .ctor       start:0x021eeed8 end:0x021eeed8 kind:rodata align:4
     .bss        start:0x021eeee0 end:0x021eeee0 kind:bss align:32
 
-src/ov126/underwater_effect.c:
+src/field/underwater_effect.c:
     complete
     .text       start:0x021eec80 end:0x021eee3c
     .rodata     start:0x021eee3c end:0x021eeed8

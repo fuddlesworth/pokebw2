@@ -3,7 +3,7 @@
     .ctor       start:0x0219f5ac end:0x0219f5ac kind:rodata align:4
     .bss        start:0x0219f5c0 end:0x0219f5c0 kind:bss align:32
 
-src/ov184/error_window_screen.c:
+src/app/ui/error_window_screen.c:
     complete
     .text       start:0x0219f380 end:0x0219f4ec
     .rodata     start:0x0219f4ec end:0x0219f5ac

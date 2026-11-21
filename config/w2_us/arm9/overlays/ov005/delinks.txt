@@ -3,7 +3,7 @@
     .data       start:0x0214f620 end:0x0214f640 kind:data align:32
     .bss        start:0x0214f640 end:0x0214f640 kind:bss align:32
 
-src/ov005/event_wbt_wifi.c:
+src/tournament/event_wbt_wifi.c:
     complete
     .text       start:0x0214f540 end:0x0214f608
     .data       start:0x0214f620 end:0x0214f640

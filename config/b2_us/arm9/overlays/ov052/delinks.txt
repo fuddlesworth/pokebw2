@@ -3,7 +3,7 @@
     .ctor       start:0x021e5bb0 end:0x021e5bb0 kind:rodata align:4
     .bss        start:0x021e5bc0 end:0x021e5bc0 kind:bss align:32
 
-src/ov052/scrcmd_pokemon_league.c:
+src/field/eventcmd/scrcmd_pokemon_league.c:
     complete
     .text       start:0x021e5800 end:0x021e5b44
     .rodata     start:0x021e5b44 end:0x021e5bb0

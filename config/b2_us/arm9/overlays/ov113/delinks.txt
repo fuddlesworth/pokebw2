@@ -3,7 +3,7 @@
     .ctor       start:0x021ef080 end:0x021ef080 kind:rodata align:4
     .bss        start:0x021ef0a0 end:0x021ef0a0 kind:bss align:32
 
-src/ov113/gimmick_humilau.c:
+src/field/gimmick_humilau.c:
     complete
     .text       start:0x021eec80 end:0x021eefd8
     .rodata     start:0x021eefd8 end:0x021ef080

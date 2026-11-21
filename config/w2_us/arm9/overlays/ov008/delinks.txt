@@ -4,7 +4,7 @@
     .data       start:0x0214fee0 end:0x0214ff40 kind:data align:32
     .bss        start:0x0214ff40 end:0x0214ff40 kind:bss align:32
 
-src/ov008/event_wificlub.c:
+src/wifi/event_wificlub.c:
     complete
     .text       start:0x0214f540 end:0x0214fec8
     .rodata     start:0x0214fec8 end:0x0214fecc

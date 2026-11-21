@@ -3,7 +3,7 @@
     .ctor       start:0x021e5af4 end:0x021e5af4 kind:rodata align:4
     .bss        start:0x021e5b00 end:0x021e5b00 kind:bss align:32
 
-src/ov064/scrcmd_plasma_frigate.c:
+src/field/eventcmd/scrcmd_plasma_frigate.c:
     complete
     .text       start:0x021e5800 end:0x021e5acc
     .rodata     start:0x021e5acc end:0x021e5af4

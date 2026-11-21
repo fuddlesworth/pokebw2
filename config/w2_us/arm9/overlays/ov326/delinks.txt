@@ -4,36 +4,36 @@
     .data       start:0x021a3700 end:0x021a37c0 kind:data align:32
     .bss        start:0x021a37c0 end:0x021a37c0 kind:bss align:32
 
-src/ov326/win_record.c:
+src/tournament/win_record.c:
     complete
     .text       start:0x0219cec0 end:0x0219e274
     .rodata     start:0x021a2d80 end:0x021a2ff0
 
-src/ov326/win_record_graphic.c:
+src/tournament/win_record_graphic.c:
     complete
     .text       start:0x0219e274 end:0x0219e4b8
     .rodata     start:0x021a2ff0 end:0x021a31ac
     .data       start:0x021a3700 end:0x021a3718
 
-src/ov326/t_download.c:
+src/tournament/t_download.c:
     complete
     .text       start:0x0219e4b8 end:0x021a0ac4
     .rodata     start:0x021a31ac end:0x021a31b8
     .data       start:0x021a3718 end:0x021a3738
 
-src/ov326/t_download_graphic.c:
+src/tournament/t_download_graphic.c:
     complete
     .text       start:0x021a2b3c end:0x021a2d80
     .rodata     start:0x021a352c end:0x021a36e8
     .data       start:0x021a379c end:0x021a37c0
 
-src/ov326/t_download_util.c:
+src/tournament/t_download_util.c:
     complete
     .text       start:0x021a0ac4 end:0x021a24ec
     .rodata     start:0x021a31b8 end:0x021a3514
     .data       start:0x021a3738 end:0x021a3788
 
-src/ov326/t_download_save.c:
+src/tournament/t_download_save.c:
     complete
     .text       start:0x021a24ec end:0x021a2b3c
     .rodata     start:0x021a3514 end:0x021a352c

@@ -3,12 +3,12 @@
     .data       start:0x02176640 end:0x021767a0 kind:data align:32
     .bss        start:0x021767a0 end:0x02176b00 kind:bss align:32
 
-src/ov031/net_devirc.c:
+src/wifi/device/net_devirc.c:
     complete
     .text       start:0x02175800 end:0x0217591c
     .data       start:0x02176640 end:0x0217670c
 
-src/ov031/net_irc.c:
+src/wifi/device/net_irc.c:
     complete
     .text       start:0x0217591c end:0x02175f30
     .data       start:0x0217670c end:0x02176784
