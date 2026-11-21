@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle/vs_multi_list.h"
+#include "battle/select/vs_multi_list.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

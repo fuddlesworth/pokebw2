@@ -1,0 +1,46 @@
+#include "types.h"
+#include "field/effect/building_enter_effect.h"
+#include "gfl/tcb.h"
+#include "nitro/fx.h"
+#include "nitro/gx.h"
+
+// The zoom into a building as the player enters it, an affine scale of BG 2 each VBlank (a descriptive name).
+// setBuildingEnterVBlankCallback is swan's name
+
+typedef struct {
+    f32 scale;
+    u32 unk4;
+} BuildingEnterEffect;
+
+static void buildingEnterVBlankCallback(void *data);
+
+static f32 sScaleStep = 0.0044f;
+static BuildingEnterEffect sEffect;
+
+static void buildingEnterVBlankCallback(void *data) {
+    MtxFx22 mtx;
+    f32 zoom = 0.0f;
+    fx32 scale;
+
+    if (reg_GX_DISPSTAT & REG_GX_DISPSTAT_VBLK_MASK) {
+        zoom = sEffect.scale + sScaleStep;
+        sEffect.scale = zoom;
+        scale = FX32_CONST(1.0f / zoom);
+        MTX_Scale22_(&mtx, scale, scale);
+        G2_SetBG2Affine(&mtx, 128, 92, 0, 0);
+    }
+}
+
+void setBuildingEnterVBlankCallback(void) {
+    sEffect.scale = 1.0f;
+    sEffect.unk4 = 0;
+    GFL_VBlankSetCallback(buildingEnterVBlankCallback, NULL);
+}
+
+void resetBuildingEnterVBlankCallback(void) {
+    MtxFx22 mtx;
+
+    MTX_Identity22_(&mtx);
+    G2_SetBG2Affine(&mtx, 128, 92, 0, 0);
+    GFL_VBlankResetCallback();
+}

@@ -1,12 +1,12 @@
 #include "types.h"
-#include "app/codein.h"
+#include "app/codein/codein.h"
+#include "app/unity_tower/unity_tower.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "dpw/dpw_bt.h"
 #include "dwc/dwc.h"
 #include "dwc/dwc_encsession.h"
-#include "field/unity_tower.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/backup_system.h"
@@ -61,9 +61,9 @@
 #include "text/system/name_input.h"
 #include "text/system/wifi_battle_subway.h"
 #include "tournament/bsubway_scr.h"
-#include "wifi/wifi_bsubway.h"
-#include "wifi/wifi_bsubway_graphic.h"
-#include "wifi/wifi_login.h"
+#include "tournament/wifi_bsubway.h"
+#include "tournament/wifi_bsubway_graphic.h"
+#include "wifi/login/wifi_login.h"
 
 // The Wi-Fi Battle Subway's screen: its proc, the three things it does with the Battle Subway's server (sending the
 // player's record, downloading a train's trainers and downloading a train's leaders), the requests behind them and the

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/name_input_graphic.h"
+#include "app/name_input/name_input_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

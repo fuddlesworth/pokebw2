@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/directions.h"
 #include "constants/zones.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "nitro/fx.h"
 
 // The spawn info of a zone change: where the player arrives, by warp or by position, on the grid or on a rail.

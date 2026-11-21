@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle/b_app_tool.h"
+#include "battle/select/b_app_tool.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

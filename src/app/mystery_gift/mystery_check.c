@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/mystery/mystery_check.h"
-#include "app/mystery/mystery_gift_data.h"
+#include "app/mystery_gift/mystery_check.h"
+#include "app/mystery_gift/mystery_gift_data.h"
 #include "gfl/heap.h"
 #include "gfl/str.h"
 

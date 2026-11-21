@@ -3,7 +3,7 @@
 // gives no name for this file, so monolith_main.c is a guess, after monolith_tool.c, whose name it does give
 
 #include "types.h"
-#include "app/monolith.h"
+#include "app/monolith/monolith.h"
 #include "app/monolith/monolith_main.h"
 #include "app/monolith/monolith_mission_info.h"
 #include "app/monolith/monolith_mission_select.h"

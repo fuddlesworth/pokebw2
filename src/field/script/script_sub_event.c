@@ -3,7 +3,7 @@
 // GPL-3.0)
 
 #include "types.h"
-#include "field/field_script.h"
+#include "field/script/field_script.h"
 #include "gfl/std.h"
 #include "system/game_event.h"
 

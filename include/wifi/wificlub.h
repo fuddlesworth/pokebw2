@@ -5,7 +5,7 @@
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"
-#include "wifi/wifi_status.h"
+#include "wifi/battle_match/wifi_status.h"
 
 // The Wi-Fi Club runs in overlay 203, and its proc table is in overlay 173, which also has to be loaded
 #define OVERLAY_WIFICLUB OVERLAY_ID(203)

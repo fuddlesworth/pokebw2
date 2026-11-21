@@ -8,13 +8,13 @@
 
 #include "types.h"
 #include "constants/directions.h"
-#include "field/field_acmd.h"
-#include "field/field_actor.h"
-#include "field/field_actor_internal.h"
-#include "field/field_actor_movecode.h"
-#include "field/field_actor_movecode_pair.h"
-#include "field/field_comm_actor.h"
-#include "field/fld_act_rail.h"
+#include "field/actor/field_acmd.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_internal.h"
+#include "field/actor/field_actor_movecode.h"
+#include "field/actor/field_actor_movecode_pair.h"
+#include "field/actor/fld_act_rail.h"
+#include "field/comm/field_comm_actor.h"
 
 // The functions of each move code (constants/move_codes.h), by move code, except that MOVE_CODE_TURN_RANDOM_UP_DOWN
 // and MOVE_CODE_TURN_RANDOM_LEFT_RIGHT follow MOVE_CODE_TURN_RANDOM_DOWN_LEFT_RIGHT, MOVE_CODE_SWING follows

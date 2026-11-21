@@ -97,16 +97,16 @@ src/field/actor/field_actor_animation.c:
     .text       start:0x0217a1f0 end:0x0217a4e0
     .rodata     start:0x0217c574 end:0x0217c5a4
 
-src/field/fld_trade.c:
+src/communication/fld_trade.c:
     complete
     .text       start:0x0217a4e0 end:0x0217aa5c
     .data       start:0x0217c664 end:0x0217c670
 
-src/field/unity_visitor.c:
+src/entralink/unity_visitor.c:
     complete
     .text       start:0x0217aa5c end:0x0217acb0
 
-src/field/trial_house.c:
+src/field/event/trial_house.c:
     complete
     .text       start:0x0217acb0 end:0x0217b4a8
     .data       start:0x0217c670 end:0x0217c680

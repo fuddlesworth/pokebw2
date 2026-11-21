@@ -2,8 +2,8 @@
 #define POKEBW2_FIELD_WBT_MAKEMATCH_H
 
 #include "types.h"
-#include "app/p_status.h"
-#include "app/pokelist.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
 #include "struct_decls.h"
 
 // wbt_makematch.c, overlay 135, which the ROM names: the Pokémon World Tournament's entrance (zone 192), which

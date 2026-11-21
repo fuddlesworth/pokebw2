@@ -1,6 +1,6 @@
 // The ROM names this file shinka_demo_graphic.c.
 #include "types.h"
-#include "demo/evolution_demo.h"
+#include "demo/evolution/evolution_demo.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

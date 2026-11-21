@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/national_pokedex_award_graphic.h"
+#include "app/pokedex/national_pokedex_award_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

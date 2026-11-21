@@ -4,7 +4,7 @@
 #include "types.h"
 #include "entralink/fest_mission_gimmick.h"
 #include "entralink/fest_mission_sparkle.h"
-#include "field/rival_select.h"
+#include "entralink/rival_select.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "nitro/math.h"

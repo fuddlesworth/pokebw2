@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/manual_graphic.h"
+#include "app/manual/manual_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

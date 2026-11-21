@@ -20,7 +20,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/time_icon.h"
-#include "wifi/wifibattlematch_util.h"
+#include "wifi/battle_match/wifibattlematch_util.h"
 
 enum {
     WIFIBATTLEMATCH_MSG_IDLE = 4,

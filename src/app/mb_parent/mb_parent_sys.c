@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/mb_parent.h"
 #include "app/mb_parent/mb_comm_sys.h"
+#include "app/mb_parent/mb_parent.h"
 #include "app/mb_parent/mb_util_msg.h"
 #include "app/mb_parent/mbp.h"
 #include "constants/arc.h"

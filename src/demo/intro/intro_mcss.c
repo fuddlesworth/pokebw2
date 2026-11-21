@@ -1,6 +1,6 @@
 #include "types.h"
-#include "demo/intro.h"
-#include "demo/intro_script.h"
+#include "demo/intro/intro.h"
+#include "demo/intro/intro_script.h"
 #include "gfl/graphics.h"
 #include "gfl/random.h"
 #include "nitro/hw.h"

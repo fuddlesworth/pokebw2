@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/net_command.h"
 #include "struct_decls.h"
-#include "wifi/wifi_p2pmatch.h"
-#include "wifi/wifi_p2pmatch_net.h"
+#include "wifi/battle_match/wifi_p2pmatch.h"
+#include "wifi/battle_match/wifi_p2pmatch_net.h"
 
 // The command table of the Wi-Fi Club's match board. The ROM has no name for this file, and the name is a guess; the
 // handlers that do something are in wifi_p2pmatch.c

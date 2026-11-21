@@ -4,8 +4,8 @@
 
 #include "types.h"
 #include "constants/sound.h"
-#include "field/event_sound.h"
-#include "field/field_sound.h"
+#include "system/event_sound.h"
+#include "system/field_sound.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"

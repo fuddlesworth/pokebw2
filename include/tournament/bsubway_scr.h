@@ -2,14 +2,14 @@
 #define POKEBW2_FIELD_BSUBWAY_SCR_H
 
 #include "types.h"
-#include "app/ov306.h"
-#include "battle/btl_setup.h"
-#include "communication/ircbattlematch.h"
+#include "app/battle_recorder/ov306.h"
+#include "communication/irc/ircbattlematch.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 #include "save/bsubway_save.h"
 #include "save/player_info.h"
 #include "struct_decls.h"
+#include "system/btl_setup.h"
 #include "system/pms.h"
 
 // The Battle Subway's work while the player is on the subway, which GameData_GetBSubwayScrWork returns. Overlay 33's

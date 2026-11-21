@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/codein.h"
-#include "app/name_entry.h"
+#include "app/codein/codein.h"
+#include "app/name_input/name_entry.h"
 #include "app/ui/print_msg.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
@@ -51,8 +51,8 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/wifi_note.h"
-#include "wifi/wifi_2dchar.h"
-#include "wifi/wifi_note.h"
+#include "wifi/2dmap/wifi_2dchar.h"
+#include "wifi/note/wifi_note.h"
 #include "wifi/wificlub.h"
 
 // The Pal Pad. The ROM has no name for this file; "wifi_note.c" is a guess from pokeplatinum, whose Pal Pad has the

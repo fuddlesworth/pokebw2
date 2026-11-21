@@ -4,7 +4,7 @@
 #include "constants/species.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "gfl/msg.h"
 #include "gfl/str.h"
 #include "nitro/rtc.h"

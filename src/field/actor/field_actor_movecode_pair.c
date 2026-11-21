@@ -6,14 +6,14 @@
 
 #include "types.h"
 #include "constants/directions.h"
-#include "field/event_trainer_eye.h"
+#include "field/actor/field_acmd.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_internal.h"
+#include "field/actor/field_actor_movecode_pair.h"
+#include "field/effect/field_effect.h"
+#include "field/event/event_trainer_eye.h"
 #include "field/field.h"
-#include "field/field_acmd.h"
-#include "field/field_actor.h"
-#include "field/field_actor_internal.h"
-#include "field/field_actor_movecode_pair.h"
-#include "field/field_effect.h"
-#include "field/field_map.h"
+#include "field/map/field_map.h"
 #include "nitro/fx.h"
 
 // A position in fx32 and the grid square that holds it

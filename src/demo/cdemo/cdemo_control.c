@@ -1,5 +1,5 @@
-#include "app/cdemo.h"
 #include "constants/arc.h"
+#include "demo/cdemo/cdemo.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

@@ -1,6 +1,6 @@
-#include "app/pmsi_initial_data.h"
+#include "app/pms/pmsi_initial_data.h"
 #include "types.h"
-#include "app/pms_input_data.h"
+#include "app/pms/pms_input_data.h"
 #include "gfl/str.h"
 
 // The initials that the phrase input sorts words by, and where their buttons are on the lower screen. The ROM doesn't

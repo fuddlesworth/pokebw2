@@ -1,10 +1,10 @@
 #include "types.h"
-#include "field/field_g3d_mapper.h"
-#include "field/field_map.h"
-#include "field/field_map_chunk.h"
-#include "field/field_prop.h"
-#include "field/field_terrain_animator.h"
-#include "field/resort_mapcreate.h"
+#include "field/map/field_g3d_mapper.h"
+#include "field/map/field_map.h"
+#include "field/map/field_map_chunk.h"
+#include "field/map/field_prop.h"
+#include "field/map/field_terrain_animator.h"
+#include "field/resort/resort_mapcreate.h"
 #include "nitro/fx.h"
 
 // An 'RD' chunk file, whose terrain holds its planes itself and which the Join Avenue's shops are added to: a model,

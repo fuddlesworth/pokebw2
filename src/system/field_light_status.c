@@ -1,12 +1,12 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/field_light_status.h"
-#include "field/field_weather.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
+#include "field/weather/field_weather.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "system/area_data.h"
+#include "system/field_light_status.h"
 #include "system/rtc.h"
 
 // The field's light colors at a time of day, read from the light files without a field, which the battle uses to

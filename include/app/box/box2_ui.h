@@ -1,0 +1,290 @@
+#ifndef POKEBW2_APP_BOX_BOX2_UI_H
+#define POKEBW2_APP_BOX_BOX2_UI_H
+
+#include "types.h"
+#include "struct_decls.h"
+
+// The PC box's cursor and touch handling, in box2_ui.c. None of these functions has a name yet
+
+// What Box2Ui_UpdateCursor3 returns besides a position
+#define CURSORMOVE_NONE 0xffffffff
+#define CURSORMOVE_CANCEL 0xfffffffe
+#define CURSORMOVE_CURSOR_MOVE 0xfffffffd
+#define CURSORMOVE_CURSOR_ON 0xfffffffc
+// A key pushed against the edge, as CursorMove_Update's CURSOR_MOVE_EDGE_*: right, left, down and up
+#define CURSORMOVE_SCROLL_R 0xfffffffb
+#define CURSORMOVE_SCROLL_L 0xfffffffa
+#define CURSORMOVE_SCROLL_D 0xfffffff9
+#define CURSORMOVE_SCROLL_U 0xfffffff8
+
+void Box2Ui_CreateCursor(Box2SysWork *syswk);
+void Box2Ui_ChangeCursor(Box2SysWork *syswk, u32 id, u32 pos);
+void Box2Ui_PlaceCursorActor(Box2SysWork *syswk, u32 pos);
+void Box2Ui_DeleteCursor(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor0(Box2SysWork *syswk);
+void Box2Ui_StartMoveToPartyPos(Box2SysWork *syswk, u32 pos);
+void Box2Ui_StartMoveToCursor1(Box2SysWork *syswk, u32 pos);
+u32 Box2Ui_UpdateCursor2(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor3(Box2SysWork *syswk);
+// The party's version of Box2Ui_UpdateCursor3
+u32 Box2Ui_UpdateCursor5(Box2SysWork *syswk);
+void Box2Ui_SetButtonStates(Box2SysWork *syswk, u32 pos);
+u32 Box2Ui_UpdateCursor4(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor6(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor7(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor8(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor13(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor14(Box2SysWork *syswk);
+u32 Box2Ui_UpdateCursor15(Box2SysWork *syswk);
+void Box2Ui_StartCursorMove(Box2AppWork *app, u32 pos, u32 curPos);
+// The position at a touch
+u32 Box2Ui_GetTrayPokeAt(u32 x, u32 y);
+u32 Box2Ui_GetTrayPokeTrigger(void);
+u32 Box2Ui_GetTrayPokeHeld(void);
+u32 Box2Ui_GetLeftPartyPokeTrigger(void);
+u32 Box2Ui_GetPartyPokeTrigger(void);
+u32 Box2Ui_GetPartyPokeHeld(void);
+u32 Box2Ui_GetTrayArrowHeld(void);
+u32 Box2Ui_GetBoxListArrowHeld(void);
+BOOL Box2Ui_GetBoxListScrollTouch(u32 *x, u32 *y);
+BOOL Box2Ui_GetBoxListTouch(u32 *x, u32 *y);
+int Box2Ui_GetBoxListRowAt(u32 x, u32 y);
+// The position of the box list at a touch, or BOX2_GET_NONE
+u32 Box2Ui_GetBoxListPosAt(u32 x, u32 y);
+BOOL Box2Ui_IsPartyLeftHeld(void);
+BOOL Box2Ui_IsPartyRightHeld(void);
+u32 Box2Ui_GetSwitchButtonHeld(void);
+BOOL Box2Ui_IsTrayHeld(void);
+
+// Indices into sCursorMoveTables.
+enum {
+    BOX2_CURSOR_DEPOSIT_PARTY = 0,
+    BOX2_CURSOR_DEPOSIT_BOX = 1,
+    BOX2_CURSOR_WITHDRAW = 2,
+    BOX2_CURSOR_ARRANGE_TRAY = 3,
+    BOX2_CURSOR_MOVE_BOXLIST = 4,
+    BOX2_CURSOR_ARRANGE_PARTY = 5,
+    BOX2_CURSOR_MOVE_PARTY = 6,
+    BOX2_CURSOR_ITEM_TRAY = 7,
+    BOX2_CURSOR_ITEM_PARTY = 8,
+    BOX2_CURSOR_MARKINGS = 9,
+    BOX2_CURSOR_BOX_MENU = 10,
+    BOX2_CURSOR_WALLPAPER_MENU = 11,
+    BOX2_CURSOR_BOX_JUMP = 12,
+    BOX2_CURSOR_BATTLE_BOX_TRAY = 13,
+    BOX2_CURSOR_BATTLE_BOX_PARTY = 14,
+    BOX2_CURSOR_DREAM_WORLD = 15,
+};
+
+// Input positions in the deposit party cursor layout.
+enum {
+    BOX2_DEPOSIT_PARTY_INPUT_CLOSE = 6,
+    BOX2_DEPOSIT_PARTY_INPUT_BACK = 7,
+    BOX2_DEPOSIT_PARTY_INPUT_DEPOSIT = 8,
+    BOX2_DEPOSIT_PARTY_INPUT_SUMMARY = 9,
+    BOX2_DEPOSIT_PARTY_INPUT_MARKINGS = 10,
+    BOX2_DEPOSIT_PARTY_INPUT_RELEASE = 11,
+    BOX2_DEPOSIT_PARTY_INPUT_CANCEL = 12,
+};
+
+// Input positions in the deposit box cursor layout.
+enum {
+    BOX2_DEPOSIT_BOX_INPUT_TITLE = 0,
+    BOX2_DEPOSIT_BOX_INPUT_BOX = 1,
+    BOX2_DEPOSIT_BOX_INPUT_SCROLL_LEFT = 2,
+    BOX2_DEPOSIT_BOX_INPUT_SCROLL_RIGHT = 3,
+    BOX2_DEPOSIT_BOX_INPUT_BACK = 4,
+};
+
+// Input positions in the withdraw cursor layout.
+enum {
+    BOX2_WITHDRAW_INPUT_TITLE = 30,
+    BOX2_WITHDRAW_INPUT_SCROLL_LEFT = 31,
+    BOX2_WITHDRAW_INPUT_SCROLL_RIGHT = 32,
+    BOX2_WITHDRAW_INPUT_CLOSE = 33,
+    BOX2_WITHDRAW_INPUT_BACK = 34,
+    BOX2_WITHDRAW_INPUT_WITHDRAW = 35,
+    BOX2_WITHDRAW_INPUT_SUMMARY = 36,
+    BOX2_WITHDRAW_INPUT_MARKINGS = 37,
+    BOX2_WITHDRAW_INPUT_RELEASE = 38,
+    BOX2_WITHDRAW_INPUT_CANCEL = 39,
+};
+
+// Input positions in the arrange tray cursor layout.
+enum {
+    BOX2_ARRANGE_TRAY_INPUT_TITLE = 30,
+    BOX2_ARRANGE_TRAY_INPUT_SCROLL_LEFT = 31,
+    BOX2_ARRANGE_TRAY_INPUT_SCROLL_RIGHT = 32,
+    BOX2_ARRANGE_TRAY_INPUT_PARTY = 33,
+    BOX2_ARRANGE_TRAY_INPUT_CLOSE = 34,
+    BOX2_ARRANGE_TRAY_INPUT_BACK = 35,
+    BOX2_ARRANGE_TRAY_INPUT_MOVE = 36,
+    BOX2_ARRANGE_TRAY_INPUT_SUMMARY = 37,
+    BOX2_ARRANGE_TRAY_INPUT_HELD_ITEMS = 38,
+    BOX2_ARRANGE_TRAY_INPUT_MARKINGS = 39,
+    BOX2_ARRANGE_TRAY_INPUT_RELEASE = 40,
+    BOX2_ARRANGE_TRAY_INPUT_CANCEL = 41,
+    BOX2_ARRANGE_TRAY_INPUT_MENU_MODE = 42,
+    BOX2_ARRANGE_TRAY_INPUT_SINGLE_MODE = 43,
+    BOX2_ARRANGE_TRAY_INPUT_RANGE_MODE = 44,
+    BOX2_ARRANGE_TRAY_INPUT_SEARCH = 45,
+};
+
+// Input positions in the move boxlist cursor layout.
+enum {
+    BOX2_MOVE_BOXLIST_INPUT_TITLE = 30,
+    BOX2_MOVE_BOXLIST_INPUT_SCROLL_LEFT = 31,
+    BOX2_MOVE_BOXLIST_INPUT_SCROLL_RIGHT = 32,
+    BOX2_MOVE_BOXLIST_INPUT_LIST_SCROLL_UP = 33,
+    BOX2_MOVE_BOXLIST_INPUT_BOX_ROW_FIRST = 34,
+    BOX2_MOVE_BOXLIST_INPUT_BOX_ROW_SECOND = 35,
+    BOX2_MOVE_BOXLIST_INPUT_BOX_ROW_THIRD = 36,
+    BOX2_MOVE_BOXLIST_INPUT_BOX_ROW_LAST = 37,
+    BOX2_MOVE_BOXLIST_INPUT_LIST_SCROLL_DOWN = 38,
+    BOX2_MOVE_BOXLIST_INPUT_PARTY = 39,
+    BOX2_MOVE_BOXLIST_INPUT_SUMMARY = 40,
+    BOX2_MOVE_BOXLIST_INPUT_BACK = 41,
+    BOX2_MOVE_BOXLIST_INPUT_MENU_MODE = 42,
+    BOX2_MOVE_BOXLIST_INPUT_SINGLE_MODE = 43,
+    BOX2_MOVE_BOXLIST_INPUT_RANGE_MODE = 44,
+    BOX2_MOVE_BOXLIST_INPUT_SEARCH = 45,
+};
+
+// Input positions in the arrange party cursor layout.
+enum {
+    BOX2_ARRANGE_PARTY_INPUT_BOXES = 6,
+    BOX2_ARRANGE_PARTY_INPUT_CLOSE = 7,
+    BOX2_ARRANGE_PARTY_INPUT_BACK = 8,
+    BOX2_ARRANGE_PARTY_INPUT_MOVE = 9,
+    BOX2_ARRANGE_PARTY_INPUT_SUMMARY = 10,
+    BOX2_ARRANGE_PARTY_INPUT_HELD_ITEMS = 11,
+    BOX2_ARRANGE_PARTY_INPUT_MARKINGS = 12,
+    BOX2_ARRANGE_PARTY_INPUT_RELEASE = 13,
+    BOX2_ARRANGE_PARTY_INPUT_CANCEL = 14,
+    BOX2_ARRANGE_PARTY_INPUT_MENU_MODE = 15,
+    BOX2_ARRANGE_PARTY_INPUT_SINGLE_MODE = 16,
+    BOX2_ARRANGE_PARTY_INPUT_RANGE_MODE = 17,
+    BOX2_ARRANGE_PARTY_INPUT_SEARCH = 18,
+};
+
+// Input positions in the move party cursor layout.
+enum {
+    BOX2_MOVE_PARTY_INPUT_TITLE = 36,
+    BOX2_MOVE_PARTY_INPUT_SCROLL_LEFT = 37,
+    BOX2_MOVE_PARTY_INPUT_SCROLL_RIGHT = 38,
+    BOX2_MOVE_PARTY_INPUT_BOXES = 39,
+    BOX2_MOVE_PARTY_INPUT_SUMMARY = 40,
+    BOX2_MOVE_PARTY_INPUT_BACK = 41,
+    BOX2_MOVE_PARTY_INPUT_MENU_MODE = 42,
+    BOX2_MOVE_PARTY_INPUT_SINGLE_MODE = 43,
+    BOX2_MOVE_PARTY_INPUT_RANGE_MODE = 44,
+    BOX2_MOVE_PARTY_INPUT_SEARCH = 45,
+};
+
+// Input positions in the item tray cursor layout.
+enum {
+    BOX2_ITEM_TRAY_INPUT_TITLE = 30,
+    BOX2_ITEM_TRAY_INPUT_SCROLL_LEFT = 31,
+    BOX2_ITEM_TRAY_INPUT_SCROLL_RIGHT = 32,
+    BOX2_ITEM_TRAY_INPUT_PARTY = 33,
+    BOX2_ITEM_TRAY_INPUT_CLOSE = 34,
+    BOX2_ITEM_TRAY_INPUT_BACK = 35,
+    BOX2_ITEM_TRAY_INPUT_MOVE = 36,
+    BOX2_ITEM_TRAY_INPUT_BAG = 37,
+    BOX2_ITEM_TRAY_INPUT_CANCEL = 38,
+    BOX2_ITEM_TRAY_INPUT_MENU_MODE = 39,
+    BOX2_ITEM_TRAY_INPUT_SINGLE_MODE = 40,
+};
+
+// Input positions in the item party cursor layout.
+enum {
+    BOX2_ITEM_PARTY_INPUT_BOXES = 6,
+    BOX2_ITEM_PARTY_INPUT_CLOSE = 7,
+    BOX2_ITEM_PARTY_INPUT_BACK = 8,
+    BOX2_ITEM_PARTY_INPUT_MOVE = 9,
+    BOX2_ITEM_PARTY_INPUT_BAG = 10,
+    BOX2_ITEM_PARTY_INPUT_CANCEL = 11,
+    BOX2_ITEM_PARTY_INPUT_MENU_MODE = 12,
+    BOX2_ITEM_PARTY_INPUT_SINGLE_MODE = 13,
+};
+
+// Input positions in the markings cursor layout.
+enum {
+    BOX2_MARKINGS_INPUT_CONFIRM = 6,
+    BOX2_MARKINGS_INPUT_CANCEL = 7,
+};
+
+// Input positions in the box menu cursor layout.
+enum {
+    BOX2_BOX_MENU_INPUT_SWITCH_BOX = 0,
+    BOX2_BOX_MENU_INPUT_WALLPAPER = 1,
+    BOX2_BOX_MENU_INPUT_NAME = 2,
+    BOX2_BOX_MENU_INPUT_CANCEL = 3,
+};
+
+// Input positions in the wallpaper menu cursor layout.
+enum {
+    BOX2_WALLPAPER_MENU_INPUT_BACK = 5,
+};
+
+// Input positions in the box jump cursor layout.
+enum {
+    BOX2_BOX_JUMP_INPUT_SCROLL_UP = 0,
+    BOX2_BOX_JUMP_INPUT_BOX_ROW_FIRST = 1,
+    BOX2_BOX_JUMP_INPUT_BOX_ROW_SECOND = 2,
+    BOX2_BOX_JUMP_INPUT_BOX_ROW_THIRD = 3,
+    BOX2_BOX_JUMP_INPUT_BOX_ROW_LAST = 4,
+    BOX2_BOX_JUMP_INPUT_SCROLL_DOWN = 5,
+    BOX2_BOX_JUMP_INPUT_BACK = 6,
+};
+
+// Input positions in the battle box tray cursor layout.
+enum {
+    BOX2_BATTLE_BOX_TRAY_INPUT_TITLE = 30,
+    BOX2_BATTLE_BOX_TRAY_INPUT_SCROLL_LEFT = 31,
+    BOX2_BATTLE_BOX_TRAY_INPUT_SCROLL_RIGHT = 32,
+    BOX2_BATTLE_BOX_TRAY_INPUT_PARTY = 33,
+    BOX2_BATTLE_BOX_TRAY_INPUT_CLOSE = 34,
+    BOX2_BATTLE_BOX_TRAY_INPUT_BACK = 35,
+    BOX2_BATTLE_BOX_TRAY_INPUT_MOVE = 36,
+    BOX2_BATTLE_BOX_TRAY_INPUT_SUMMARY = 37,
+    BOX2_BATTLE_BOX_TRAY_INPUT_HELD_ITEMS = 38,
+    BOX2_BATTLE_BOX_TRAY_INPUT_CANCEL = 39,
+    BOX2_BATTLE_BOX_TRAY_INPUT_MENU_MODE = 40,
+    BOX2_BATTLE_BOX_TRAY_INPUT_SINGLE_MODE = 41,
+    BOX2_BATTLE_BOX_TRAY_INPUT_RANGE_MODE = 42,
+    BOX2_BATTLE_BOX_TRAY_INPUT_SEARCH = 43,
+};
+
+// Input positions in the battle box party cursor layout.
+enum {
+    BOX2_BATTLE_BOX_PARTY_INPUT_BOXES = 6,
+    BOX2_BATTLE_BOX_PARTY_INPUT_CLOSE = 7,
+    BOX2_BATTLE_BOX_PARTY_INPUT_BACK = 8,
+    BOX2_BATTLE_BOX_PARTY_INPUT_MOVE = 9,
+    BOX2_BATTLE_BOX_PARTY_INPUT_SUMMARY = 10,
+    BOX2_BATTLE_BOX_PARTY_INPUT_HELD_ITEMS = 11,
+    BOX2_BATTLE_BOX_PARTY_INPUT_CANCEL = 12,
+    BOX2_BATTLE_BOX_PARTY_INPUT_MENU_MODE = 13,
+    BOX2_BATTLE_BOX_PARTY_INPUT_SINGLE_MODE = 14,
+    BOX2_BATTLE_BOX_PARTY_INPUT_RANGE_MODE = 15,
+    BOX2_BATTLE_BOX_PARTY_INPUT_SEARCH = 16,
+};
+
+// Input positions in the dream world cursor layout.
+enum {
+    BOX2_DREAM_WORLD_INPUT_TITLE = 30,
+    BOX2_DREAM_WORLD_INPUT_SCROLL_LEFT = 31,
+    BOX2_DREAM_WORLD_INPUT_SCROLL_RIGHT = 32,
+    BOX2_DREAM_WORLD_INPUT_BACK = 33,
+    BOX2_DREAM_WORLD_INPUT_TUCK_IN = 34,
+    BOX2_DREAM_WORLD_INPUT_CANCEL = 35,
+};
+
+// Direction indices returned by the box-list arrow/scroll-strip helpers.
+enum {
+    BOX2_BOX_LIST_ARROW_UP = 0,
+    BOX2_BOX_LIST_ARROW_DOWN = 1,
+};
+
+#endif // POKEBW2_APP_BOX2_UI_H

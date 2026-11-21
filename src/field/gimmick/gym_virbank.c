@@ -3,17 +3,17 @@
 #include "constants/sound.h"
 #include "constants/vars.h"
 #include "constants/zones.h"
+#include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_exp_obj.h"
-#include "field/gym_virbank.h"
+#include "field/gimmick/gym_virbank.h"
+#include "field/map/field_exp_obj.h"
 #include "gfl/g3d.h"
 #include "nitro/fx.h"
 #include "save/event_work.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
-#include "system/iss_switch_sys.h"
-#include "system/iss_sys.h"
+#include "system/iss/iss_switch_sys.h"
+#include "system/iss/iss_sys.h"
 
 #define GIMMICK_WORK_ID 1
 

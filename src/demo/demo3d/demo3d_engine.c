@@ -1,10 +1,9 @@
 #include "types.h"
-#include "app/demo3d/demo3d_capture.h"
-#include "app/demo3d/demo3d_cmdsys.h"
-#include "app/demo3d/demo3d_data.h"
-#include "app/demo3d/demo3d_engine.h"
-#include "app/demo3d/demo3d_graphic.h"
-#include "field/field_light_status.h"
+#include "demo/demo3d/demo3d_capture.h"
+#include "demo/demo3d/demo3d_cmdsys.h"
+#include "demo/demo3d/demo3d_data.h"
+#include "demo/demo3d/demo3d_engine.h"
+#include "demo/demo3d/demo3d_graphic.h"
 #include "gfl/double3Ddisp.h"
 #include "gfl/g3d.h"
 #include "gfl/graphics.h"
@@ -12,6 +11,7 @@
 #include "gfl/tcb.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
+#include "system/field_light_status.h"
 #include "system/rtc.h"
 
 // What plays a 3D demo, named after the ROM's "demo3d_engine.c": it steps the camera's animation and the models'

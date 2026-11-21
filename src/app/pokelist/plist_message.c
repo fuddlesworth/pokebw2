@@ -1,4 +1,4 @@
-#include "app/pokelist.h"
+#include "app/pokelist/pokelist.h"
 #include "constants/sound.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"

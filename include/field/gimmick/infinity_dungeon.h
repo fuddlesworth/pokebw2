@@ -1,0 +1,148 @@
+#ifndef POKEBW2_FIELD_GIMMICK_INFINITY_DUNGEON_H
+#define POKEBW2_FIELD_GIMMICK_INFINITY_DUNGEON_H
+
+#include "types.h"
+#include "struct_decls.h"
+
+// The ten areas, indexed from zero in the rank tables.
+enum {
+    INFINITY_DUNGEON_AREA_1 = 0,
+    INFINITY_DUNGEON_AREA_2 = 1,
+    INFINITY_DUNGEON_AREA_3 = 2,
+    INFINITY_DUNGEON_AREA_4 = 3,
+    INFINITY_DUNGEON_AREA_5 = 4,
+    INFINITY_DUNGEON_AREA_6 = 5,
+    INFINITY_DUNGEON_AREA_7 = 6,
+    INFINITY_DUNGEON_AREA_8 = 7,
+    INFINITY_DUNGEON_AREA_9 = 8,
+    INFINITY_DUNGEON_AREA_10 = 9,
+    INFINITY_DUNGEON_AREA_COUNT = 10,
+};
+
+// Passage indices differ from the field actor facing directions: east is 2, west is 3.
+enum {
+    INFINITY_DUNGEON_PASSAGE_NORTH = 0,
+    INFINITY_DUNGEON_PASSAGE_SOUTH = 1,
+    INFINITY_DUNGEON_PASSAGE_EAST = 2,
+    INFINITY_DUNGEON_PASSAGE_WEST = 3,
+    INFINITY_DUNGEON_PASSAGE_COUNT = 4,
+};
+
+// infinity_dungeon.c, overlay 127, which the ROM names: the Black Tower and White Treehollow, five floors of 4x4 rooms
+// that infinity_dungeon_creator.c lays out from a seed, with their trainers and the reward at the end. Script plugin
+// 61 drives it
+
+#define INFINITY_DUNGEON_FLOOR_COUNT 5
+#define INFINITY_DUNGEON_ROOM_COUNT 16
+#define INFINITY_DUNGEON_FLOOR_TRAINER_MAX 32
+// A room's type that isn't set yet, past the 19 templates
+#define INFINITY_DUNGEON_ROOM_TYPE_NONE 19
+
+// The room kinds that the room templates give
+enum {
+    ROOM_KIND_START,
+    ROOM_KIND_GOAL,
+    ROOM_KIND_ORDINARY = 4,
+};
+
+// A room of a floor's grid, x + y * 4
+typedef struct {
+    u8 type;
+    u8 kind; // ROOM_KIND_*; 4 also marks an ordinary room before its template is chosen
+    u32 open[INFINITY_DUNGEON_PASSAGE_COUNT]; // the passages north, south, east and west
+    u8 index;
+} InfinityDungeonRoom;
+
+typedef struct {
+    InfinityDungeonRoom rooms[INFINITY_DUNGEON_ROOM_COUNT];
+} InfinityDungeonFloor;
+
+// The work of the whole dungeon, which the gimmick allocates
+struct InfinityDungeon {
+    u32 seed; // from the save, and the three derived from it
+    u32 trainerSeed;
+    u32 layoutSeed;
+    u32 rewardSeed;
+    u16 battleSeeds[INFINITY_DUNGEON_FLOOR_COUNT][INFINITY_DUNGEON_FLOOR_TRAINER_MAX];
+    InfinityDungeonFloor floors[INFINITY_DUNGEON_FLOOR_COUNT];
+    u16 trainerIds[INFINITY_DUNGEON_FLOOR_COUNT][INFINITY_DUNGEON_FLOOR_TRAINER_MAX]; // 0xffff for none
+    u16 specialTrainers[INFINITY_DUNGEON_FLOOR_TRAINER_MAX];
+    u16 specialRoom[INFINITY_DUNGEON_FLOOR_COUNT]; // the room of each floor's special trainer, 16 for none
+    u8 targetFloor;
+    u8 targetRoom;
+    u8 targetSlot;
+    u16 rewardItem;
+    u8 rewardCount;
+    u8 version; // the save's, VERSION_BLACK2 or VERSION_WHITE2
+};
+
+// A 64-bit linear congruential generator
+typedef struct {
+    u64 state;
+    u64 multiplier;
+    u64 increment;
+} InfinityDungeonRandom;
+
+// A position in tiles of a room, which the room's tables give for its doors, passages and entrances
+typedef struct {
+    s32 x;
+    s32 y;
+    s32 z;
+} InfinityDungeonPos;
+
+// An NPC of the dungeon: how it moves and acts, how large the area it notices the player in is, and its script
+typedef struct {
+    u16 moveCode;
+    u16 evType;
+    u16 direction;
+    u16 userParam0;
+    u16 userParam1;
+    s32 areaW;
+    s32 areaH;
+    u16 script;
+} InfinityDungeonNpc;
+
+// An NPC of a room template, and where it stands
+typedef struct {
+    u16 npc;
+    s32 x;
+    s32 y;
+} InfinityDungeonRoomNpc;
+
+// One of the 19 kinds of room, with the NPCs that stand in it
+typedef struct {
+    u8 group;
+    u8 npcCount;
+    u32 kind;
+    InfinityDungeonRoomNpc npcs[4];
+} InfinityDungeonRoomTemplate;
+
+// The levels of the dungeon's trainers' Pokémon in a rank
+typedef struct {
+    u16 minLevel;
+    u16 maxLevel;
+} InfinityDungeonLevelRange;
+
+void InfinityDungeon_CreateCurrentWalls(GameSystem *gsys, InfinityDungeon *gimmick);
+GameEvent *InfinityDungeon_CreateBattleEvent(GameSystem *gsys, Field *field, u8 slot);
+u32 InfinityDungeon_GetGoalFloor(InfinityDungeon *gimmick);
+u32 InfinityDungeon_GetNpcScript(KeyDataSave *keyData, InfinityDungeon *gimmick, u16 objCode, u8 slot);
+u32 InfinityDungeon_GetNpcScriptByResult(KeyDataSave *keyData, InfinityDungeon *gimmick, u16 objCode, u16 battleStage);
+u32 InfinityDungeon_FindSpecialTrainer(InfinityDungeon *gimmick, u16 trainerId);
+u32 InfinityDungeon_CountTrainers(InfinityDungeon *gimmick);
+BOOL InfinityDungeon_IsBelowGoal(InfinityDungeon *gimmick, u32 floor, u32 room);
+u16 InfinityDungeon_GetEntryFacing(u16 direction);
+void InfinityDungeonRoomChange_CreateNpcs(InfinityDungeonRoomChange *roomChange, InfinityDungeonRoom *room);
+void InfinityDungeon_Setup(KeyDataSave *keyData, InfinityDungeon *gimmick);
+BOOL InfinityDungeonRoomChange_UsesFade(InfinityDungeonRoomChange *roomChange);
+BOOL InfinityDungeon_IsTargetDefeated(InfinityDungeon *gimmick, KeyDataSave *keyData);
+
+// One of the dungeon's own 640 trainers, which stands from minRank to maxRank for a version, 0 for both
+typedef struct {
+    u8 minRank;
+    u8 maxRank;
+    u8 version;
+    u8 trainerClass;
+} InfinityDungeonTrainer;
+
+#endif // POKEBW2_FIELD_INFINITY_DUNGEON_H

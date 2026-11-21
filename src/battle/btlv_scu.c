@@ -3,7 +3,7 @@
 #include "battle/btl_pokeparam.h"
 #include "battle/btl_string.h"
 #include "battle/btlv.h"
-#include "battle/btlv_timer.h"
+#include "battle/graphic/btlv_timer.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/sound.h"

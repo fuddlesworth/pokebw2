@@ -3,18 +3,18 @@
 // is descriptive. Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), except our
 // descriptive ones of commands 0x15B and 0x15C.
 #include "types.h"
-#include "field/event_gtsnego.h"
-#include "field/event_wificlub.h"
-#include "field/event_worldtrade.h"
+#include "communication/gts/event_gtsnego.h"
+#include "communication/worldtrade/event_worldtrade.h"
 #include "field/field.h"
-#include "field/field_script.h"
-#include "field/scrcmd_net.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_net.h"
 #include "gfl/overlay.h"
 #include "save/wifi_list.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/vm.h"
+#include "wifi/event_wificlub.h"
 
 BOOL Scrcmd_Net_GameCommGetStatus(VM *vm, FieldScriptEnv *env) {
     GameSystem *gsys = FieldScriptEnv_GetGameSystem(env);

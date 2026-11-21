@@ -1,4 +1,4 @@
-#include "battle/condition_effects.h"
+#include "battle/handler/condition_effects.h"
 #include "types.h"
 #include "battle/btl_calc.h"
 #include "battle/btl_event.h"

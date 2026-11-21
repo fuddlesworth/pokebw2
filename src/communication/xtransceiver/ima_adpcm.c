@@ -1,4 +1,4 @@
-#include "app/comm_tvt/ima_adpcm.h"
+#include "communication/xtransceiver/ima_adpcm.h"
 #include "types.h"
 
 // IMA ADPCM, which packs the voice of a video chat from 16-bit samples into 4 bits each: the encoder for the

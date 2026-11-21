@@ -1,13 +1,12 @@
 // The events that ask the player for a name through the name entry (overlay 280): a Pokémon's nickname, the Hidden
 // Hollow rival's and a Join Avenue passerby's. The name is descriptive: the ROM embeds none for this file
 #include "types.h"
-#include "app/name_entry.h"
+#include "app/name_input/name_entry.h"
+#include "app/ui/shortcut_menu.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"
 #include "field/field.h"
-#include "field/field_event.h"
-#include "field/shortcut_menu.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
 #include "gfl/str.h"
@@ -16,6 +15,7 @@
 #include "save/join_avenue.h"
 #include "save/records.h"
 #include "save/save_control.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"

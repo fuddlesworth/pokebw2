@@ -1,11 +1,11 @@
 // The game's clock: what changes as minutes and days pass, and the date and time of the save. Function names from swan;
 // the file's name is a guess after Platinum's ev_time.c
 #include "types.h"
-#include "field/ev_time.h"
+#include "app/unity_tower/unity_tower.h"
+#include "field/event/ev_time.h"
+#include "field/event/shaymin_form.h"
+#include "field/event/survey.h"
 #include "field/field.h"
-#include "field/shaymin_form.h"
-#include "field/survey.h"
-#include "field/unity_tower.h"
 #include "gfl/rtc_cache.h"
 #include "nitro/rtc.h"
 #include "pml/poke_party.h"

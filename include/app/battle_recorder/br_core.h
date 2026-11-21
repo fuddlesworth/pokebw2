@@ -2,7 +2,7 @@
 #define POKEBW2_APP_BATTLE_RECORDER_BR_CORE_H
 
 #include "types.h"
-#include "app/battle_recorder.h"
+#include "app/battle_recorder/battle_recorder.h"
 #include "app/battle_recorder/br_btn.h"
 #include "app/battle_recorder/br_fade.h"
 #include "app/battle_recorder/br_graphic.h"

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/directions.h"
-#include "field/field_rail.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
+#include "field/rail/field_rail.h"
 
 // The rail's direction keys for the directions of the actors.
 // The file's name is a guess, from what it does: the ROM has no string for it. The function's name is swan's

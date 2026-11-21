@@ -4,7 +4,7 @@
 // runs it as BR_PROCID_BV_SAVE
 
 #include "types.h"
-#include "app/battle_rec_ov.h"
+#include "app/battle_recorder/battle_rec_ov.h"
 #include "app/battle_recorder/br_btn.h"
 #include "app/battle_recorder/br_bvsave_proc.h"
 #include "app/battle_recorder/br_core.h"

@@ -1,6 +1,6 @@
 #include "types.h"
+#include "app/mail/mailtool.h"
 #include "constants/pokemon.h"
-#include "field/mailtool.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "pml/poke_party.h"

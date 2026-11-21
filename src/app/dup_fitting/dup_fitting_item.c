@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/dup_fitting_item.h"
+#include "app/dup_fitting/dup_fitting_item.h"
 #include "gfl/heap.h"
 #include "musical/mus_item_draw.h"
 #include "nitro/fx.h"

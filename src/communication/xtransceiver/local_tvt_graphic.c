@@ -1,6 +1,6 @@
-#include "communication/local_tvt_graphic.h"
+#include "communication/xtransceiver/local_tvt_graphic.h"
 #include "types.h"
-#include "communication/local_tvt_common.h"
+#include "communication/xtransceiver/local_tvt_common.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

@@ -4,11 +4,11 @@
 // Overlay 167's link battle functions, which exchange the clients' data before a link battle starts
 
 #include "types.h"
-#include "battle/btl_setup.h"
 #include "gfl/heap.h"
 #include "gfl/net_command.h"
 #include "save/chatter.h"
 #include "struct_decls.h"
+#include "system/btl_setup.h"
 
 void BtlNet_Init(NetHandle *netHandle, u16 clientMask, HeapID heapId);
 BOOL BtlNet_IsInitSynced(void);

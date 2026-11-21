@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "field/field.h"
-#include "field/underwater_effect.h"
+#include "field/gimmick/underwater_effect.h"
 #include "gfl/arc.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

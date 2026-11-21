@@ -1,6 +1,6 @@
-#include "battle/b_bag_ui.h"
-#include "battle/b_app_tool.h"
-#include "battle/b_bag_main.h"
+#include "battle/select/b_bag_ui.h"
+#include "battle/select/b_app_tool.h"
+#include "battle/select/b_bag_main.h"
 #include "system/cursor_move.h"
 
 // The battle bag's key cursor: a CursorMove on the page's table of positions, whose callbacks move and show overlay

@@ -1,4 +1,4 @@
-#include "battle/btl_faintrec.h"
+#include "battle/record/btl_faintrec.h"
 #include "types.h"
 
 static void BtlFaintRecTurn_Init(BtlFaintRecTurn *turn);

@@ -1,11 +1,11 @@
 #include "types.h"
-#include "app/mystery/mystery_album.h"
-#include "app/mystery/mystery_check.h"
-#include "app/mystery/mystery_gift_data.h"
-#include "app/mystery/mystery_graphic.h"
-#include "app/mystery/mystery_net.h"
-#include "app/mystery/mystery_util.h"
-#include "app/mystery_gift.h"
+#include "app/mystery_gift/mystery_album.h"
+#include "app/mystery_gift/mystery_check.h"
+#include "app/mystery_gift/mystery_gift.h"
+#include "app/mystery_gift/mystery_gift_data.h"
+#include "app/mystery_gift/mystery_graphic.h"
+#include "app/mystery_gift/mystery_net.h"
+#include "app/mystery_gift/mystery_util.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/script_text_banks.h"
@@ -49,7 +49,7 @@
 #include "system/printsys.h"
 #include "system/version.h"
 #include "system/wordset.h"
-#include "wifi/wifi_login.h"
+#include "wifi/login/wifi_login.h"
 
 enum {
     TOP_CHOICE_RECEIVE = 0,

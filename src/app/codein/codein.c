@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/codein.h"
-#include "app/codein_pv.h"
+#include "app/codein/codein.h"
+#include "app/codein/codein_pv.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/bg_sys.h"

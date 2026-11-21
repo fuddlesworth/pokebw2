@@ -5,8 +5,8 @@
 // The name is a guess (no string in the overlay names it)
 
 #include "types.h"
-#include "field/field_effect.h"
-#include "field/zone.h"
+#include "field/effect/field_effect.h"
+#include "field/map/zone.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
 

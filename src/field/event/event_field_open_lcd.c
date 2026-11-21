@@ -2,8 +2,8 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0); the file's name is descriptive
 #include "types.h"
 #include "field/field.h"
-#include "field/field_event.h"
 #include "gfl/gx_layers.h"
+#include "system/field_event.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 

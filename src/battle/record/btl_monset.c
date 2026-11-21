@@ -1,4 +1,4 @@
-#include "battle/btl_monset.h"
+#include "battle/record/btl_monset.h"
 #include "types.h"
 #include "battle/btl_calc.h"
 #include "battle/btl_main.h"

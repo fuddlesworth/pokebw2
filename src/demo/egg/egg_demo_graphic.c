@@ -1,5 +1,5 @@
 #include "types.h"
-#include "demo/egg_demo.h"
+#include "demo/egg/egg_demo.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

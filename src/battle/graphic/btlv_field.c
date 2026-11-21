@@ -1,9 +1,9 @@
 // The battle view's field: the ground and weather model around the stage, with its animations and palette fade. The
 // name is the ROM's string, from GFL_HeapAllocate's asserts. BtlvField_Create is swan's name; the others are ours
 
-#include "battle/btlv_field.h"
+#include "battle/graphic/btlv_field.h"
 #include "types.h"
-#include "battle/btlv_stage.h"
+#include "battle/graphic/btlv_stage.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "gfl/arc.h"

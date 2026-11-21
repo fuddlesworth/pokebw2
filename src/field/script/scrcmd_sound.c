@@ -2,17 +2,17 @@
 // the ISS switches. The ROM has no name for the file; scrcmd_sound.c is descriptive. Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/event_sound.h"
 #include "field/field.h"
-#include "field/field_script.h"
-#include "field/field_sound.h"
-#include "field/scrcmd_sound.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_sound.h"
 #include "gfl/sound.h"
+#include "system/event_sound.h"
+#include "system/field_sound.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "system/iss_switch_sys.h"
-#include "system/iss_sys.h"
+#include "system/iss/iss_switch_sys.h"
+#include "system/iss/iss_sys.h"
 #include "system/vm.h"
 
 // The players of the sound effects that ScriptWork_GetSEBitMask tracks

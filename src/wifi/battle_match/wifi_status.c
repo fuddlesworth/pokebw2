@@ -2,7 +2,7 @@
 #include "gfl/net.h"
 #include "gfl/std.h"
 #include "nitro/os.h"
-#include "wifi/wifi_status.h"
+#include "wifi/battle_match/wifi_status.h"
 
 // The status a player of the Wi-Fi Club shows the friends. The ROM has no name for this file: it is named after
 // Black and White's wifi_status.c, and the functions' names are ours

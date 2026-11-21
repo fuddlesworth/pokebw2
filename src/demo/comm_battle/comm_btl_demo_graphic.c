@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/comm_btl_demo_graphic.h"
+#include "demo/comm_battle/comm_btl_demo_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "wifi/wifibattlematch_net.h"
+#include "wifi/battle_match/wifibattlematch_net.h"
 
 // wifibattlematch_net_fields.c, the file that follows wifibattlematch_net.c in overlay 260 (named descriptively: the
 // ROM gives it no string). It holds the names of the fields of the Sake tables that the Wi-Fi battle competitions keep

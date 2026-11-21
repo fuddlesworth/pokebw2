@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/btl_setup.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
@@ -34,6 +33,7 @@
 #include "pokewood/pkwd_briefing.h"
 #include "save/player_info.h"
 #include "save/pokewood.h"
+#include "system/btl_setup.h"
 #include "system/gf_font.h"
 #include "system/infowin.h"
 #include "system/printsys.h"

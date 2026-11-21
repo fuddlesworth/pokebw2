@@ -40,11 +40,11 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/system/wifi_battle_match.h"
-#include "wifi/wifibattlematch_graphic.h"
-#include "wifi/wifibattlematch_link.h"
-#include "wifi/wifibattlematch_net.h"
-#include "wifi/wifibattlematch_util.h"
-#include "wifi/wifibattlematch_view.h"
+#include "wifi/battle_match/wifibattlematch_graphic.h"
+#include "wifi/battle_match/wifibattlematch_link.h"
+#include "wifi/battle_match/wifibattlematch_net.h"
+#include "wifi/battle_match/wifibattlematch_util.h"
+#include "wifi/battle_match/wifibattlematch_view.h"
 
 enum {
     RANDOM_LINK_PHASE_FADE_IN = 0,

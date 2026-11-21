@@ -1,10 +1,10 @@
 // The two countdowns of a timed battle on the upper screen: the battle's time and the time to choose a command. The
 // name is the ROM's string, from GFL_HeapAllocate's assert. The names are ours; swan has none for this file
 
-#include "battle/btlv_timer.h"
+#include "battle/graphic/btlv_timer.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/btlv_gauge.h"
+#include "battle/graphic/btlv_gauge.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"

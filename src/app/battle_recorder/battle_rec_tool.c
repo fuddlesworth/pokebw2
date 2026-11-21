@@ -3,8 +3,7 @@
 // parameters to the form they are kept in
 
 #include "types.h"
-#include "battle/battle_rec_tool.h"
-#include "battle/btl_setup.h"
+#include "app/battle_recorder/battle_rec_tool.h"
 #include "constants/battle.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
@@ -12,6 +11,7 @@
 #include "pml/poke_party.h"
 #include "save/config.h"
 #include "save/player_info.h"
+#include "system/btl_setup.h"
 
 // Positions in the movie conversion helpers, independent of BATTLE_REC_CLIENT_* tags; both current callers pass one
 // client

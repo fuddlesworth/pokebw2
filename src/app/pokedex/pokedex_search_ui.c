@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/pokedex_search_main.h"
-#include "app/pokedex_search_ui.h"
+#include "app/pokedex/pokedex_search_main.h"
+#include "app/pokedex/pokedex_search_ui.h"
 #include "app/ui/frame_list.h"
 #include "gfl/bg_sys.h"
 #include "gfl/key.h"

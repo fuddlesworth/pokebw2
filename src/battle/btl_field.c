@@ -2,7 +2,7 @@
 #include "battle/btl_field.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/field_handlers.h"
+#include "battle/handler/field_handlers.h"
 #include "gfl/heap.h"
 
 // Overlay 167's btl_field.c (named by its string): the weather and the effects of the whole field, such as Trick

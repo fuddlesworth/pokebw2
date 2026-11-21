@@ -4,7 +4,7 @@
 // of the Global Link is played. The name is a guess: the ROM gives none, and br_core.c runs it as BR_PROCID_RECORD
 
 #include "types.h"
-#include "app/battle_rec_ov.h"
+#include "app/battle_recorder/battle_rec_ov.h"
 #include "app/battle_recorder/br_btn.h"
 #include "app/battle_recorder/br_core.h"
 #include "app/battle_recorder/br_fade.h"

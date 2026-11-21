@@ -1,6 +1,6 @@
-#include "app/comm_tvt/ctvt_game_target.h"
+#include "communication/xtransceiver/ctvt_game_target.h"
 #include "types.h"
-#include "app/comm_tvt/ctvt_game.h"
+#include "communication/xtransceiver/ctvt_game.h"
 #include "gfl/g3d.h"
 #include "gfl/tcb.h"
 #include "nitro/fx.h"

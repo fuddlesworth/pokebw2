@@ -4,73 +4,73 @@
     .data       start:0x021c9300 end:0x021c94e0 kind:data align:32
     .bss        start:0x021c94e0 end:0x021c9500 kind:bss align:32
 
-src/app/key_system/key_system_main.c:
+src/app/unova_link/key_system_main.c:
     complete
     .text       start:0x021bef20 end:0x021c0160
     .rodata     start:0x021c8b78 end:0x021c8bb4
     .data       start:0x021c9300 end:0x021c9318
 
-src/app/key_system/key_system_graphic.c:
+src/app/unova_link/key_system_graphic.c:
     complete
     .text       start:0x021c0160 end:0x021c058c
     .rodata     start:0x021c8bb4 end:0x021c8da8
     .data       start:0x021c9318 end:0x021c9330
 
-src/app/key_system/key_system_util.c:
+src/app/unova_link/key_system_util.c:
     complete
     .text       start:0x021c058c end:0x021c1e10
     .rodata     start:0x021c8da8 end:0x021c8e1c
     .data       start:0x021c9330 end:0x021c9364
 
-src/app/key_system/key_system_net.c:
+src/app/unova_link/key_system_net.c:
     complete
     .text       start:0x021c1e10 end:0x021c2b58
     .rodata     start:0x021c8e1c end:0x021c8eac
     .data       start:0x021c9364 end:0x021c93f0
     .bss        start:0x021c94e0 end:0x021c9500
 
-src/app/key_system/key_system_flow.c:
+src/app/unova_link/key_system_flow.c:
     complete
     .text       start:0x021c2b58 end:0x021c4600
     .rodata     start:0x021c8f58 end:0x021c8fa0
     .data       start:0x021c93f0 end:0x021c9488
 
-src/app/key_system/data_convert_flow.c:
+src/app/unova_link/data_convert_flow.c:
     complete
     .text       start:0x021c5420 end:0x021c6e58
     .rodata     start:0x021c9038 end:0x021c90c8
     .data       start:0x021c9488 end:0x021c94a8
 
-src/app/key_system/wb_save_block.c:
+src/app/unova_link/wb_save_block.c:
     complete
     .text       start:0x021c6e58 end:0x021c6ec4
     .rodata     start:0x021c90c8 end:0x021c91e4
 
-src/app/key_system/wb_save_convert.c:
+src/app/unova_link/wb_save_convert.c:
     complete
     .text       start:0x021c6ec4 end:0x021c706c
     .rodata     start:0x021c91e4 end:0x021c929c
     .data       start:0x021c94a8 end:0x021c94bc
 
-src/app/key_system/cygnus_flow.c:
+src/app/unova_link/cygnus_flow.c:
     complete
     .text       start:0x021c706c end:0x021c8b78
     .rodata     start:0x021c929c end:0x021c92fc
     .data       start:0x021c94bc end:0x021c94e0
 
-src/app/key_system/key_system_key_frames.c:
+src/app/unova_link/key_system_key_frames.c:
     complete
     .rodata     start:0x021c8eac end:0x021c8eb8
 
-src/app/key_system/key_system_plate_frames.c:
+src/app/unova_link/key_system_plate_frames.c:
     complete
     .rodata     start:0x021c8eb8 end:0x021c8ec8
 
-src/app/key_system/key_system_anim_data.c:
+src/app/unova_link/key_system_anim_data.c:
     complete
     .rodata     start:0x021c8ec8 end:0x021c8f58
 
-src/app/key_system/key_system_flow_sub.c:
+src/app/unova_link/key_system_flow_sub.c:
     complete
     .text       start:0x021c4600 end:0x021c5420
     .rodata     start:0x021c8fa0 end:0x021c9038

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/heap.h"
-#include "wifi/wf2dmap_cmdq.h"
-#include "wifi/wf2dmap_common.h"
+#include "wifi/2dmap/wf2dmap_cmdq.h"
+#include "wifi/2dmap/wf2dmap_common.h"
 
 // A queue of the requests of the Wi-Fi Club's 2D map, named after the ROM's "wf2dmap_cmdq.c"
 

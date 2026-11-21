@@ -2,7 +2,7 @@
 // screen's BG 1, which fades in and out by alpha blending. The name is the ROM's string, from GFL_HeapAllocate's assert
 
 #include "types.h"
-#include "app/pdc_msg.h"
+#include "battle/pdc_msg.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "gfl/arc_util.h"

@@ -5,7 +5,7 @@
 #include "gfl/g3d.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
-#include "system/iss_3ds_sys.h"
+#include "system/iss/iss_3ds_sys.h"
 
 // The field's sound emitters (sound_obj.c, overlay 36): a 3D sound unit of the ISS that follows an actor's matrix,
 // which a motion curve can move. Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)

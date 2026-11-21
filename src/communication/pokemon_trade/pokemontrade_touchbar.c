@@ -1,7 +1,7 @@
 #include "types.h"
 #include "app/ui/touchbar.h"
-#include "communication/pokemon_trade_local.h"
-#include "communication/pokemontrade_touchbar.h"
+#include "communication/pokemon_trade/pokemon_trade_local.h"
+#include "communication/pokemon_trade/pokemontrade_touchbar.h"
 #include "constants/sound.h"
 #include "nitro/mi.h"
 

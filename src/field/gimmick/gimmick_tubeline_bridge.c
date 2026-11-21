@@ -3,11 +3,11 @@
 // guess. Archive 128 holds the bridge's data: each train's sound range and volume, its curve and its wait range
 #include "types.h"
 #include "constants/arc.h"
+#include "field/camera/field_camera.h"
 #include "field/field.h"
-#include "field/field_camera.h"
-#include "field/field_exp_obj.h"
-#include "field/field_map.h"
-#include "field/gimmick_tubeline_bridge.h"
+#include "field/gimmick/gimmick_tubeline_bridge.h"
+#include "field/map/field_exp_obj.h"
+#include "field/map/field_map.h"
 #include "field/sound_obj.h"
 #include "gfl/arc.h"
 #include "gfl/g3d.h"
@@ -16,8 +16,8 @@
 #include "nitro/fx.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
-#include "system/iss_3ds_sys.h"
-#include "system/iss_sys.h"
+#include "system/iss/iss_3ds_sys.h"
+#include "system/iss/iss_sys.h"
 
 #define GIMMICK_STATE_ID 11
 #define TRAIN_COUNT 2

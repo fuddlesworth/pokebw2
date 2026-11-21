@@ -2,12 +2,12 @@
 #define POKEBW2_SAVE_BATTLE_REC_H
 
 #include "types.h"
-#include "battle/btl_setup.h"
 #include "gfl/heap.h"
 #include "nitro/math.h"
 #include "save/gds_profile.h"
 #include "save/player_info.h"
 #include "struct_decls.h"
+#include "system/btl_setup.h"
 #include "system/pms_data.h"
 #include <stddef.h>
 

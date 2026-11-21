@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/field_script.h"
+#include "field/script/field_script.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"

@@ -1,5 +1,5 @@
-#include "battle/b_plist_anm.h"
-#include "battle/b_plist_main.h"
+#include "battle/select/b_plist_anm.h"
+#include "battle/select/b_plist_main.h"
 #include "gfl/bg_sys.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"

@@ -1,6 +1,6 @@
-#include "battle/b_plist_cursor.h"
-#include "battle/b_app_tool.h"
-#include "battle/b_plist_main.h"
+#include "battle/select/b_plist_cursor.h"
+#include "battle/select/b_app_tool.h"
+#include "battle/select/b_plist_main.h"
 #include "system/cursor_move.h"
 
 // The battle party list's key cursor: a CursorMove on the page's table of positions, whose callbacks move and show

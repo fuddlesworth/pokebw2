@@ -1,0 +1,119 @@
+#ifndef POKEBW2_FIELD_UNION_ONESELF_H
+#define POKEBW2_FIELD_UNION_ONESELF_H
+
+#include "types.h"
+#include "communication/union/union_actor.h"
+#include "communication/union/union_comm.h"
+#include "struct_decls.h"
+
+// union_oneself.c, overlay 34, which the ROM names: the Union Room's steps on the field for this machine (its situ).
+// The actors of the players heard are union_actor.c's, whose header this one includes
+
+// The steps of this machine (UnionSelf.step): a row of union_oneself.c's table, with a function to begin the step, one
+// to run it and one to end it. The rows from UNION_STEP_JOIN_DRAW to UNION_STEP_JOIN_SPIN_TRADE are those of the
+// activities, UNION_STEP_FOR_ACTIVITY(activity)
+enum {
+    UNION_STEP_IDLE = 0,
+    UNION_STEP_RESET,
+    UNION_STEP_NONE,
+    UNION_STEP_COUNTER,
+    UNION_STEP_GREETING,
+    UNION_STEP_ASK,
+    UNION_STEP_ASKED,
+    UNION_STEP_PARENT,
+    UNION_STEP_OFFER,
+    UNION_STEP_OFFER_PARTY,
+    UNION_STEP_RULE_SELECT,
+    UNION_STEP_ANSWER,
+    UNION_STEP_ANSWER_MEMBER,
+    UNION_STEP_CARD,
+    UNION_STEP_JOIN_DRAW,
+    UNION_STEP_JOIN_BATTLE_0,
+    UNION_STEP_JOIN_BATTLE_1,
+    UNION_STEP_JOIN_BATTLE_2,
+    UNION_STEP_JOIN_BATTLE_3,
+    UNION_STEP_JOIN_BATTLE_4,
+    UNION_STEP_JOIN_BATTLE_5,
+    UNION_STEP_JOIN_BATTLE_6,
+    UNION_STEP_JOIN_BATTLE_7,
+    UNION_STEP_JOIN_BATTLE_8,
+    UNION_STEP_JOIN_BATTLE_9,
+    UNION_STEP_JOIN_BATTLE_10,
+    UNION_STEP_JOIN_BATTLE_11,
+    UNION_STEP_JOIN_BATTLE_12,
+    UNION_STEP_JOIN_BATTLE_13,
+    UNION_STEP_JOIN_BATTLE_14,
+    UNION_STEP_JOIN_BATTLE_15,
+    UNION_STEP_JOIN_MULTI_0,
+    UNION_STEP_JOIN_MULTI_1,
+    UNION_STEP_JOIN_MULTI_2,
+    UNION_STEP_JOIN_MULTI_3,
+    UNION_STEP_TRADE,
+    UNION_STEP_JOIN_SPIN_TRADE,
+    UNION_STEP_LEAVE_2,
+    UNION_STEP_RECRUIT,
+    UNION_STEP_LEAVE,
+    UNION_STEP_COLOSSEUM,
+    UNION_STEP_COLOSSEUM_SEND,
+    UNION_STEP_COLOSSEUM_IDLE,
+    UNION_STEP_COLOSSEUM_SIT,
+    UNION_STEP_COLOSSEUM_STAND,
+    UNION_STEP_PARTY_SELECT,
+    UNION_STEP_PARTY_WAIT,
+    UNION_STEP_PARTY_SEND,
+    UNION_STEP_BATTLE_LIST,
+    UNION_STEP_QUIT,
+    UNION_STEP_COLOSSEUM_END,
+    UNION_STEP_COLOSSEUM_CARD,
+    UNION_STEP_END,
+};
+
+#define UNION_STEP_FOR_ACTIVITY(activity) ((activity) + 11)
+
+// What a player does or offers in the Union Room, which its beacon shows and the menus pick. The battles are
+// UNION_ACTIVITY_SINGLE + 4 * the format (union_msg.c's menu: single, double, triple, rotation, multi) + 2 for a
+// flat battle + 1 without the Wonder Launcher. UNION_ACTIVITY_NONE is the main menu's battle row, which opens the
+// rules menu
+enum {
+    UNION_ACTIVITY_TALKING = 1,
+    UNION_ACTIVITY_CARD,
+    UNION_ACTIVITY_DRAW,
+    UNION_ACTIVITY_SINGLE,
+    UNION_ACTIVITY_SINGLE_NO_LAUNCHER,
+    UNION_ACTIVITY_SINGLE_FLAT,
+    UNION_ACTIVITY_SINGLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_DOUBLE,
+    UNION_ACTIVITY_DOUBLE_NO_LAUNCHER,
+    UNION_ACTIVITY_DOUBLE_FLAT,
+    UNION_ACTIVITY_DOUBLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_TRIPLE,
+    UNION_ACTIVITY_TRIPLE_NO_LAUNCHER,
+    UNION_ACTIVITY_TRIPLE_FLAT,
+    UNION_ACTIVITY_TRIPLE_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_ROTATION,
+    UNION_ACTIVITY_ROTATION_NO_LAUNCHER,
+    UNION_ACTIVITY_ROTATION_FLAT,
+    UNION_ACTIVITY_ROTATION_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_MULTI,
+    UNION_ACTIVITY_MULTI_NO_LAUNCHER,
+    UNION_ACTIVITY_MULTI_FLAT,
+    UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER,
+    UNION_ACTIVITY_TRADE,
+    UNION_ACTIVITY_SPIN_TRADE,
+    UNION_ACTIVITY_NONE = 0x1b,
+};
+
+void UnionOneself_CheckEntries(UnionSystem *unisys);
+GameEvent *UnionOneself_CreateCommandEvent(GameSystem *gsys, Field *field);
+// The event that the A button would start in the Union Room; there is none
+GameEvent *UnionOneself_ReturnFalse(GameSystem *gsys, Field *field);
+u8 UnionOneself_RunStep(UnionSystem *unisys, Field *field);
+void UnionOneself_SetUpdateDisabled(UnionSystem *unisys, Field *field, u8 disable);
+
+// Functions outside this file that it calls, without their own header yet
+// (main) whether the trainer ID is one in the rival data
+BOOL Misc_IsMetTrainer(RivalDataSave *rival, u32 trainerId);
+// (overlay 36) adds the player of a beacon heard to the visitors the field shows
+void UnionChat_AppendLine(UnionSystem *unisys, UnionBeaconEntry *entry, const u16 *look, u8 state);
+
+#endif // POKEBW2_FIELD_UNION_ONESELF_H

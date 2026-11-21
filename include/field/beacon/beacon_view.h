@@ -1,0 +1,390 @@
+#ifndef POKEBW2_FIELD_BEACON_BEACON_VIEW_H
+#define POKEBW2_FIELD_BEACON_BEACON_VIEW_H
+
+#include "types.h"
+#include "entralink/fest_mission_data.h"
+#include "field/beacon/beacon_view_common.h"
+#include "field/effect/field_disp_control.h"
+#include "gfl/arc.h"
+#include "gfl/clact.h"
+#include "gfl/heap.h"
+#include "gfl/msg.h"
+#include "gfl/overlay.h"
+#include "gfl/str.h"
+#include "gfl/tcb.h"
+#include "gfl/tcbl.h"
+#include "nnsys/g2d.h"
+#include "save/high_link.h"
+#include "struct_decls.h"
+#include "system/app_keycursor.h"
+#include "system/bmp_oam.h"
+#include "system/fest_mission.h"
+#include "system/game_beacon.h"
+#include "system/game_event.h"
+#include "system/palanm.h"
+#include "system/printsys.h"
+#include "system/wordset.h"
+
+// The C-Gear's log of passersby on the touch screen, overlay 84: the last 30 beacons received, four to a page, with
+// the messages of new ones and the Pass Powers and Funfest missions they offer. Its files are beacon_view_setup.c,
+// which the ROM names, and beacon_view.c, beacon_view_sub.c and beacon_view_accessor.c, whose names are guesses.
+// Overlay 83's beacon_view_common.c is what it shares with overlay 85. swan has no names for this overlay; the names
+// are ours
+#define OVERLAY_BEACON_VIEW OVERLAY_ID(84)
+
+#define BEACON_VIEW_PANEL_MAX 5
+// The log's lines on the screen
+#define BEACON_VIEW_LINE_MAX 4
+#define BEACON_VIEW_PANEL_DIGITS 3
+#define BEACON_VIEW_TRAINER_CHARS 16
+#define BEACON_VIEW_ICON_CHARS 12
+
+// The events the view asks the field for (BeaconView_RequestEvent), which BeaconView_CheckEvent creates
+enum {
+    BEACON_VIEW_EVENT_NONE,
+    BEACON_VIEW_EVENT_MENU,
+    BEACON_VIEW_EVENT_MENU_COMM,
+    BEACON_VIEW_EVENT_MENU_WIFI,
+    BEACON_VIEW_EVENT_DETAIL,
+    BEACON_VIEW_EVENT_MEDAL,
+    BEACON_VIEW_EVENT_PASS_POWER,
+    BEACON_VIEW_EVENT_PASS_POWER_USE,
+    BEACON_VIEW_EVENT_PASS_POWER_LIST,
+    BEACON_VIEW_EVENT_PASS_POWER_LIST_2,
+    BEACON_VIEW_EVENT_GREETING,
+    BEACON_VIEW_EVENT_MISSION_START,
+    BEACON_VIEW_EVENT_MISSION_MESSAGE,
+    BEACON_VIEW_EVENT_MISSION_INFO,
+};
+
+// The actors of the screen itself
+enum {
+    BEACON_VIEW_ACTOR_PASS_POWER,
+    BEACON_VIEW_ACTOR_GREETING,
+    BEACON_VIEW_ACTOR_THANKS,
+    BEACON_VIEW_ACTOR_RETURN,
+    BEACON_VIEW_ACTOR_UP,
+    BEACON_VIEW_ACTOR_DOWN,
+    BEACON_VIEW_ACTOR_BAR,
+    BEACON_VIEW_ACTOR_COUNT = 9,
+};
+// The four buttons at once, for BeaconView_SetButtonAnim
+#define BEACON_VIEW_BUTTON_ALL 4
+
+// The screen's windows: the message, and the total
+enum {
+    BEACON_VIEW_WIN_MESSAGE,
+    BEACON_VIEW_WIN_TOTAL,
+    BEACON_VIEW_WIN_COUNT,
+};
+
+// The sets of OAM resources: the screen's own, the trainers' and the icons'
+enum {
+    BEACON_VIEW_RES_COMMON,
+    BEACON_VIEW_RES_TRAINER,
+    BEACON_VIEW_RES_ICON,
+    BEACON_VIEW_RES_COUNT,
+};
+
+// The kinds of resource in a set
+enum {
+    BEACON_VIEW_RES_PALETTE,
+    BEACON_VIEW_RES_CHARS,
+    BEACON_VIEW_RES_CELLS,
+    BEACON_VIEW_RES_KINDS,
+};
+
+// The three animation states of the four screen buttons.
+enum {
+    BEACON_VIEW_BUTTON_IDLE = 0,
+    BEACON_VIEW_BUTTON_TOUCHED = 1,
+    BEACON_VIEW_BUTTON_OFF = 2,
+};
+
+// A panel display mode; GREETING also slides a newly added line in horizontally.
+enum {
+    BEACON_VIEW_PANEL_MESSAGE = 0,
+    BEACON_VIEW_PANEL_GREETING = 1,
+    BEACON_VIEW_PANEL_NAME = 2,
+};
+
+// The records queued for their special Pass Power.
+enum {
+    BEACON_VIEW_RECORD_NONE = 0,
+    BEACON_VIEW_RECORD_NON_ENGLISH = 1,
+    BEACON_VIEW_RECORD_OTHER_VERSION_20 = 2,
+    BEACON_VIEW_RECORD_HUNDRED_PASSERSBY = 3,
+    BEACON_VIEW_RECORD_LOG_FULL = 4,
+    BEACON_VIEW_RECORD_OTHER_GENDER_20 = 5,
+    BEACON_VIEW_RECORD_REPDIGIT = 6,
+};
+
+// Log movement: older entries move rows up, newer entries down; SLIDE_IN keeps the line.
+enum {
+    BEACON_VIEW_MOVE_OLDER = 0,
+    BEACON_VIEW_MOVE_NEWER = 1,
+    BEACON_VIEW_MOVE_SLIDE_IN = 2,
+};
+
+// The three choices of a mission offer.
+enum {
+    BEACON_VIEW_MISSION_CHECK = 0,
+    BEACON_VIEW_MISSION_JOIN = 1,
+    BEACON_VIEW_MISSION_DECLINE = 2,
+};
+
+// No refusal, too little time for join/check, or a missing required flag.
+enum {
+    BEACON_VIEW_MISSION_REFUSAL_NONE = 0,
+    BEACON_VIEW_MISSION_JOIN_TOO_LATE = 1,
+    BEACON_VIEW_MISSION_CHECK_TOO_LATE = 2,
+    BEACON_VIEW_MISSION_FLAG_REQUIRED = 3,
+};
+
+#define BEACON_VIEW_PANEL_UNASSIGNED 0xff
+#define BEACON_VIEW_MEDAL_UNSUPPORTED 0xffff
+
+// The registered resources of one kind
+typedef struct {
+    u32 count;
+    u32 *ids;
+} BeaconViewResList;
+
+typedef struct {
+    BeaconViewResList lists[BEACON_VIEW_RES_KINDS];
+} BeaconViewRes;
+
+typedef struct {
+    BeaconViewWin win;
+    u32 unused;
+} BeaconViewWinSlot;
+
+// A character file kept in memory, to change an actor's characters from
+typedef struct {
+    NNSG2dCharacterData *data;
+    void *file;
+} BeaconViewChars;
+
+typedef struct {
+    NNSG2dPaletteData *data;
+    u16 *colors;
+    void *file;
+} BeaconViewPalette;
+
+// A point of the touch screen
+typedef struct {
+    int x;
+    int y;
+} BeaconViewTouch;
+
+// A line of the log on the screen: a plate with the player's sprite, name or message, icon and medal count. One more
+// than the screen shows, for the line that scrolls in
+typedef struct {
+    u8 id;
+    // The log entry it shows, or 0xff when it is free
+    u8 dataIndex;
+    // 1 to 4 on the screen, 0 above it and 5 below
+    u8 line;
+    u8 rank;
+    u8 gender;
+    // Whether the beacon is too old for its name to be shown in the fresh color
+    u8 old;
+    u8 version;
+    // 1 for a player of a White version
+    u8 colorSet;
+    u8 medalCount;
+    // GameBeacon_GetFavoriteMedal, 0xffff on Black and White
+    u16 favoriteMedal;
+    u16 trainerId;
+    s16 x;
+    s16 y;
+    ClActor *base;
+    ClActor *trainer;
+    ClActor *icon;
+    ClActor *medal;
+    ClActor *digits[BEACON_VIEW_PANEL_DIGITS];
+    BeaconViewOam oam;
+    StrBuf *greeting;
+    StrBuf *name;
+    PrintQueue *queue;
+    // The task that waits for the plate's text to be printed
+    TCBEx *printTask;
+    // The task that shows the plate's icon for a while
+    TCBEx *iconTask;
+} BeaconViewPanel;
+
+typedef struct BeaconViewWork {
+    GameSystem *gsys;
+    GameData *gameData;
+    Field *field;
+    FieldSubscreen *parent;
+    FieldDispControl *dispControl;
+    TrainerCardSave *trainerCard;
+    BagSave *bag;
+    GameCommSys *commSys;
+    WifiList *wifiList;
+    LinkFestival *festival;
+    FestMissionConfig *missionConfig;
+    FestivalText *festText;
+    PassPowerData *passPowerData;
+    // The Pass Power the player has set to give
+    u32 passPower;
+    u32 trainerId;
+    u8 gender;
+    // The player's Union Room appearance (PlayerInfo_GetUnionView)
+    u8 unionView;
+    u8 version;
+    BeaconStatus *status;
+    // The beacons received since the last frame
+    GameBeaconInfoTable *newTable;
+    // The game's log
+    GameBeaconInfoTable *log;
+    GameBeacon *beacon;
+    GameBeacon *countBeacon;
+    u16 time;
+    u16 newTime;
+    GameBeacon *newBeacon;
+    BeaconViewPanel *newPanel;
+    u8 newOffset;
+    u8 newIndex;
+    u8 padding62;
+    u8 oldCount;
+    // How many of the log are of the other gender, and of another version
+    u8 otherGenderCount;
+    u8 otherVersionCount;
+    BOOL isNew;
+    BOOL active;
+    u32 padding70;
+    int seq;
+    int subSeq;
+    // The sequence to go back to once the bar is let go of
+    int barReturnSeq;
+    u16 eventRequest;
+    u16 eventRunning;
+    int wait;
+    u8 unk88;
+    // Set while the screen is first drawn: text is printed at once, not through the queue
+    u8 printNow;
+    u8 padding8a[2];
+    u8 logCount;
+    u8 top;
+    u8 viewCount;
+    u8 selected;
+    u8 selectedPanel;
+    u8 barDragging;
+    u8 padding92[2];
+    u8 barTarget;
+    u8 barDistance;
+    u8 barUp;
+    // The Pass Power the player chose to use, until its event takes it
+    u8 usePassPower;
+    u8 missionButton;
+    u32 missionRefusal;
+    // The mission the player chose, until its event takes it
+    FestMissionConfig mission;
+    u8 scrolling;
+    u8 scrollEnd;
+    u8 scrollReturnSeq;
+    int scrollDir;
+    int scrollFrames;
+    u32 paddingd8[2];
+    u16 resHeapId;
+    u16 tmpHeapId;
+    u16 heapId;
+    ArcTool *arc;
+    TCBExManager *tcbManager;
+    TCB *vblankTask;
+    // The tasks still running
+    int pending;
+    PaletteFade *paletteFade;
+    Font *font;
+    PrintQueue *printQueue;
+    u32 padding104;
+    KeyCursor *keyCursor;
+    BeaconViewMenu *menu;
+    WordSet *wordSet;
+    MsgData *msgData;
+    StrBuf *strTemplate;
+    StrBuf *strExpand;
+    StrBuf *strMessage;
+    BmpOamSys *bmpOam;
+    ClActUnit *clUnit;
+    ClActRenderer *renderer;
+    u32 padding130;
+    BeaconViewRes res[BEACON_VIEW_RES_COUNT];
+    BeaconViewWinSlot wins[BEACON_VIEW_WIN_COUNT];
+    BeaconViewOam countOam;
+    BeaconViewPanel panels[BEACON_VIEW_PANEL_MAX];
+    ClActor *actors[BEACON_VIEW_ACTOR_COUNT];
+    // How many players the player has passed by
+    u32 passerbyCount;
+    BeaconViewChars iconChars[BEACON_VIEW_ICON_CHARS];
+    BeaconViewChars trainerChars[BEACON_VIEW_TRAINER_CHARS];
+    BeaconViewPalette trainerPalette;
+    BeaconViewPalette commonPalette;
+} BeaconViewWork;
+
+// beacon_view_setup.c
+BeaconViewWork *BeaconView_Create(GameSystem *gsys, FieldSubscreen *parent);
+void BeaconView_Free(BeaconViewWork *work);
+void BeaconView_RequestEvent(BeaconViewWork *work, u16 request);
+void BeaconView_ClearEventRequest(BeaconViewWork *work);
+// The event of the view's request, or NULL. It first waits for the touched button's animation
+GameEvent *BeaconView_CreateEvent(BeaconViewWork *work, BOOL enabled);
+
+// beacon_view.c
+BeaconViewWork *BeaconView_Init(GameSystem *gsys, FieldSubscreen *parent);
+void BeaconView_Exit(BeaconViewWork *work);
+void BeaconView_Update(BeaconViewWork *work, BOOL active);
+BOOL BeaconView_Draw(BeaconViewWork *work);
+GameEvent *BeaconView_CheckEvent(BeaconViewWork *work, BOOL enabled);
+// Sets the animation of one of the four buttons, or of all with BEACON_VIEW_BUTTON_ALL: 0 idle, 1 touched, 2 off
+void BeaconView_SetButtonAnim(BeaconViewWork *work, int button, int state);
+BOOL BeaconView_IsButtonAnimating(BeaconViewWork *work, int button);
+
+// beacon_view_sub.c
+void BeaconView_CountOthers(BeaconViewWork *work, u8 *genderCount, u8 *versionCount);
+void BeaconView_CheckRecords(BeaconViewWork *work, const GameBeacon *beacon, u8 oldCount);
+u32 BeaconView_GetRecordPassPower(BeaconViewWork *work);
+int BeaconView_HitTestPanel(BeaconViewWork *work, BeaconViewTouch *touch);
+int BeaconView_HitTestMedal(BeaconViewWork *work, BeaconViewTouch *touch);
+int BeaconView_HitTestArrow(BeaconViewWork *work, BeaconViewTouch *touch);
+int BeaconView_HitTestBar(BeaconViewWork *work, BeaconViewTouch *touch);
+int BeaconView_HitTestButton(BeaconViewWork *work, BeaconViewTouch *touch);
+void BeaconView_PrintCount(BeaconViewWork *work);
+void BeaconView_PrintTotal(BeaconViewWork *work, u8 messageId, int *pending);
+void BeaconView_UpdateArrows(BeaconViewWork *work);
+void BeaconView_UpdateBar(BeaconViewWork *work);
+void BeaconView_UpdateThanksButton(BeaconViewWork *work);
+void BeaconViewPanel_SetVisible(BeaconViewPanel *panel, BOOL visible);
+void BeaconViewPanel_Assign(BeaconViewPanel *panel, u8 dataIndex, u8 line);
+BeaconViewPanel *BeaconView_FindPanel(BeaconViewWork *work, u8 dataIndex);
+BOOL BeaconViewPanel_HasNoMedals(BeaconViewPanel *panel);
+void BeaconViewPanel_SetBeacon(BeaconViewWork *work, BeaconViewPanel *panel, const GameBeacon *beacon, int mode,
+                               BOOL quiet, int *pending);
+void BeaconView_UpdateNameColors(BeaconViewWork *work);
+void BeaconView_ScrollLine(BeaconViewWork *work, int dir, u8 frames);
+void BeaconView_StartScroll(BeaconViewWork *work, int dir, u8 returnSeq);
+BOOL BeaconView_DragBar(BeaconViewWork *work, int y);
+void BeaconView_AddLine(BeaconViewWork *work, const GameBeacon *beacon, u8 dataIndex, u8 dir, u8 frames, int mode);
+void BeaconView_StartJump(BeaconViewWork *work, u8 top);
+BOOL BeaconView_ShowBeaconMessage(BeaconViewWork *work, const GameBeacon *beacon, BOOL isNew);
+void BeaconView_ShowMessage(BeaconViewWork *work, u8 messageId);
+void BeaconView_OfferRecordPassPower(BeaconViewWork *work, u32 passPower);
+void BeaconView_OfferPassPower(BeaconViewWork *work, u32 passPower, u8 record, int *pending);
+void BeaconView_OfferMission(BeaconViewWork *work, const FestMissionConfig *config, int *pending);
+void BeaconView_FlashSelected(BeaconViewWork *work, u8 offset);
+
+// beacon_view_accessor.c
+// The first mission another player offers that has time left, with the player's name; special missions first
+BOOL BeaconView_GetMissionOffer(LinkFestival *festival, FestMissionConfig *dest, StrBuf *name);
+// The records the player has reached, each of which gives a Pass Power once the view offers it
+void BeaconStatus_AddRecord(BeaconStatus *status, u8 record);
+u8 BeaconStatus_GetRecord(BeaconStatus *status);
+void BeaconStatus_PopRecord(BeaconStatus *status);
+// The Pass Power a beacon gave that the player has not answered yet, with the name of its player
+void BeaconStatus_SetGivenPassPower(BeaconStatus *status, u32 passPower, const StrBuf *name);
+u32 BeaconStatus_GetGivenPassPower(BeaconStatus *status, StrBuf *name);
+void BeaconStatus_ClearGivenPassPower(BeaconStatus *status);
+
+#endif // POKEBW2_FIELD_BEACON_VIEW_H

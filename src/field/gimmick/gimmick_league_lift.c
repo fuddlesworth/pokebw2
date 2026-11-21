@@ -1,8 +1,8 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "field/field.h"
-#include "field/field_exp_obj.h"
-#include "field/gimmick_league_lift.h"
+#include "field/gimmick/gimmick_league_lift.h"
+#include "field/map/field_exp_obj.h"
 #include "gfl/g3d.h"
 #include "nitro/fx.h"
 

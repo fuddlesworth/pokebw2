@@ -1,4 +1,4 @@
-#include "app/pokelist.h"
+#include "app/pokelist/pokelist.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"

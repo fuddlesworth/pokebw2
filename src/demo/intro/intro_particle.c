@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "demo/intro.h"
+#include "demo/intro/intro.h"
 #include "gfl/particle.h"
 
 // The particles of the intro

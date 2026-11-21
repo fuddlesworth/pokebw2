@@ -1,7 +1,7 @@
 // The battle view's 3D camera. The name is the ROM's string, from GFL_HeapAllocate's assert. BtlvCamera_Create is
 // swan's name; the others are ours
 
-#include "battle/btlv_camera.h"
+#include "battle/graphic/btlv_camera.h"
 #include "types.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

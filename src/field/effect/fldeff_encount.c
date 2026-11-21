@@ -4,16 +4,16 @@
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
 #include "constants/sound.h"
-#include "field/encounter.h"
+#include "field/effect/field_effect.h"
+#include "field/encounter/encounter.h"
 #include "field/field.h"
-#include "field/field_controller.h"
-#include "field/field_effect.h"
-#include "field/field_map.h"
-#include "field/field_sound.h"
+#include "field/map/field_controller.h"
+#include "field/map/field_map.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"
+#include "system/field_sound.h"
 #include "system/game_data.h"
 
 // The effects of the phenomena, the slots of ENCOUNT_EFFECT_SPECS, in the order of field_effect.h's FLDEFF_ENCOUNT_*

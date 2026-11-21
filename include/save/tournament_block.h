@@ -2,9 +2,9 @@
 #define POKEBW2_SAVE_TOURNAMENT_BLOCK_H
 
 #include "types.h"
-#include "battle/regulation.h"
 #include "pml/poke_party.h"
 #include "struct_decls.h"
+#include "system/regulation.h"
 
 // The save block that swan calls the tournament block: two entries of 0x160 bytes, each a regulation with the
 // competition's data after it, whose fields a number picks, and two records of the teams entered

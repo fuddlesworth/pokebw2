@@ -5,8 +5,8 @@
 #include "constants/pms_words.h"
 #include "constants/sound.h"
 #include "field/field_ambience.h"
-#include "field/scrcmd_field.h"
-#include "field/subscreen.h"
+#include "field/menu/subscreen.h"
+#include "field/script/scrcmd_field.h"
 #include "system/pms_word.h"
 
 typedef struct {

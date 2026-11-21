@@ -2,9 +2,9 @@
 // is descriptive. Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
 #include "field/field.h"
-#include "field/field_msgbg.h"
-#include "field/field_script.h"
-#include "field/scrcmd_menu.h"
+#include "field/menu/field_msgbg.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_menu.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/vm.h"

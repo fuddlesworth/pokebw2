@@ -1,8 +1,8 @@
 // fldeff_bubble.c: the bubbles that rise from an actor in the water
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/zone.h"
+#include "field/actor/field_actor.h"
+#include "field/effect/field_effect.h"
+#include "field/map/zone.h"
 #include "gfl/arc.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

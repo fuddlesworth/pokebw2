@@ -1,8 +1,5 @@
 #include "types.h"
-#include "app/livebattlematch_flow.h"
-#include "app/livebattlematch_irc.h"
 #include "battle/btl_result.h"
-#include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -27,7 +24,10 @@
 #include "system/game_data.h"
 #include "system/gf_font.h"
 #include "system/pms.h"
+#include "system/regulation.h"
 #include "system/wordset.h"
+#include "wifi/battle_match/livebattlematch_flow.h"
+#include "wifi/battle_match/livebattlematch_irc.h"
 
 enum {
     LIVE_CHOICE_YES = 0,

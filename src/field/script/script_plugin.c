@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_script.h"
-#include "field/field_script_plugin.h"
+#include "field/script/field_script.h"
+#include "field/script/field_script_plugin.h"
 #include "gfl/overlay.h"
 #include "system/game_data.h"
 

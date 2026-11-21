@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/demo3d/demo3d_data.h"
-#include "app/demo3d/demo3d_graphic.h"
+#include "demo/demo3d/demo3d_data.h"
+#include "demo/demo3d/demo3d_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

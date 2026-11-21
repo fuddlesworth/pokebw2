@@ -1,7 +1,5 @@
 #include "types.h"
-#include "app/livebattlematch_irc.h"
-#include "communication/net_devirc.h"
-#include "field/delivery_irc.h"
+#include "communication/delivery_irc.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"
@@ -9,7 +7,9 @@
 #include "gfl/std.h"
 #include "pml/poke_party.h"
 #include "system/version.h"
-#include "wifi/wifibattlematch.h"
+#include "wifi/battle_match/livebattlematch_irc.h"
+#include "wifi/battle_match/wifibattlematch.h"
+#include "wifi/device/net_devirc.h"
 
 enum {
     LIVE_IR_LINK_INIT = 0,

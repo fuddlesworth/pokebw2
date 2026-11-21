@@ -8,7 +8,7 @@
 #include "gfl/proc.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
-#include "wifi/wifibattlematch_link.h"
+#include "wifi/battle_match/wifibattlematch_link.h"
 
 static BOOL WifiBattleMatchLink_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WifiBattleMatchLink_Exit(GameProc *proc, u32 *state, void *param, void *work);

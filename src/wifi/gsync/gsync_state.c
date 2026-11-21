@@ -44,10 +44,10 @@
 #include "system/tpoke_data.h"
 #include "system/wipe.h"
 #include "text/system/game_sync_menu.h"
-#include "wifi/gsync.h"
-#include "wifi/gsync_disp.h"
-#include "wifi/gsync_download.h"
-#include "wifi/gsync_message.h"
+#include "wifi/gsync/gsync.h"
+#include "wifi/gsync/gsync_disp.h"
+#include "wifi/gsync/gsync_download.h"
+#include "wifi/gsync/gsync_message.h"
 
 #define HEAPID_GSYNC 0x62
 

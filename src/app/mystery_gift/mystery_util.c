@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/mystery/mystery_util.h"
+#include "app/mystery_gift/mystery_util.h"
 #include "constants/sound.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"

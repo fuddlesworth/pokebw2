@@ -1,9 +1,8 @@
 #include "types.h"
-#include "communication/gtsnego.h"
-#include "communication/pokemon_trade.h"
-#include "demo/evolution_demo.h"
-#include "field/event_gtsnego.h"
-#include "field/field_event.h"
+#include "communication/gts/event_gtsnego.h"
+#include "communication/gts/gtsnego.h"
+#include "communication/pokemon_trade/pokemon_trade.h"
+#include "demo/evolution/evolution_demo.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_state.h"
@@ -11,11 +10,12 @@
 #include "gfl/std.h"
 #include "pml/poke_party.h"
 #include "save/player_info.h"
+#include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "wifi/wifi_login.h"
+#include "wifi/login/wifi_login.h"
 
 typedef struct {
     u32 bgm;

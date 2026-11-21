@@ -1,4 +1,4 @@
-#include "battle/pos_handlers.h"
+#include "battle/handler/pos_handlers.h"
 #include "types.h"
 #include "battle/btl_calc.h"
 #include "battle/btl_event.h"

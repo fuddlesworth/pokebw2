@@ -6,9 +6,9 @@
 #include "types.h"
 #include "constants/directions.h"
 #include "constants/sound.h"
-#include "field/field_actor.h"
-#include "field/field_rail.h"
-#include "field/fld_act_rail.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/fld_act_rail.h"
+#include "field/rail/field_rail.h"
 #include "gfl/sound.h"
 #include "nitro/fx.h"
 

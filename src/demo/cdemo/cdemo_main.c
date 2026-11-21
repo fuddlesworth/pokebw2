@@ -1,5 +1,5 @@
-#include "app/cdemo.h"
 #include "constants/sound.h"
+#include "demo/cdemo/cdemo.h"
 #include "gfl/arc_util.h"
 #include "gfl/calctool.h"
 #include "gfl/gx_layers.h"

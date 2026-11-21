@@ -1,13 +1,10 @@
 #include "types.h"
 #include "battle/btl_result.h"
-#include "battle/btl_setup.h"
-#include "battle/regulation.h"
 #include "battle/trainer_data.h"
 #include "constants/flags.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
-#include "field/field_event.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/std.h"
@@ -22,8 +19,11 @@
 #include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "save/trainer_data_savedata.h"
+#include "system/btl_setup.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/pms_data.h"
+#include "system/regulation.h"
 
 // The setup of a battle: its kind, parties, trainers and surroundings. The file name is the ROM's string; the function
 // names are swan's where they have one.

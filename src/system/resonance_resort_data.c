@@ -6,13 +6,13 @@
 // JoinAvenuePersonList_Free, JoinAvenuePersonList_GetCount, JoinAvenuePersonList_Get, JoinAvenue_GetParam,
 // setImportantJABlockAddresses and gfRand. The rest are ours
 #include "types.h"
+#include "app/unity_tower/unity_tower.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/script_text_banks.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
-#include "field/survey.h"
-#include "field/unity_tower.h"
+#include "field/event/survey.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
 #include "gfl/random.h"

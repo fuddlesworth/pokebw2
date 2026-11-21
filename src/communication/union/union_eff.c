@@ -1,12 +1,12 @@
 // The Union Room's effects on the field (the file's name is from its heap allocation): a focus on the player that the
 // others look at, and the marks over the players who are in a trade or a battle, drawn as models of one archive. The
 // work is allocated by UnionEff_Create and kept by the field. Before them, three checks for the Union Room's actors
-#include "communication/union_eff.h"
+#include "communication/union/union_eff.h"
 #include "types.h"
-#include "communication/union_oneself.h"
+#include "communication/union/union_oneself.h"
+#include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/player_state.h"
+#include "field/player/player_state.h"
 #include "gfl/arc.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

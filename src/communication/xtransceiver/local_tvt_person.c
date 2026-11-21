@@ -1,8 +1,8 @@
-#include "communication/local_tvt_person.h"
+#include "communication/xtransceiver/local_tvt_person.h"
 #include "types.h"
-#include "communication/local_tvt_chara.h"
-#include "communication/local_tvt_common.h"
-#include "communication/local_tvt_util.h"
+#include "communication/xtransceiver/local_tvt_chara.h"
+#include "communication/xtransceiver/local_tvt_common.h"
+#include "communication/xtransceiver/local_tvt_util.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 

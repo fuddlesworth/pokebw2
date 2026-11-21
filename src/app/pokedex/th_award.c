@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/th_award.h"
-#include "app/th_award_graphic.h"
+#include "app/pokedex/th_award.h"
+#include "app/pokedex/th_award_graphic.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/script_text_banks.h"

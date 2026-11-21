@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_script.h"
-#include "field/fld_faceup.h"
+#include "field/gimmick/fld_faceup.h"
+#include "field/script/field_script.h"
 #include "gfl/overlay.h"
 #include "system/game_event.h"
 #include "system/game_system.h"

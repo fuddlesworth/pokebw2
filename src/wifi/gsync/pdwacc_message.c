@@ -2,7 +2,6 @@
 // ID. The name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
 #include "types.h"
-#include "app/gsync/pdwacc_message.h"
 #include "constants/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -26,6 +25,7 @@
 #include "system/time_icon.h"
 #include "system/wordset.h"
 #include "text/system/0107.h"
+#include "wifi/gsync/pdwacc_message.h"
 
 #define PDWACC_MESSAGE_WIN_MAX 12
 

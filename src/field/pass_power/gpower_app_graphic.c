@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/gpower_app_graphic.h"
+#include "field/pass_power/gpower_app_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

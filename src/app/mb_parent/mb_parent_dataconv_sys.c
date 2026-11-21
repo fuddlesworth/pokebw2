@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/mb_parent.h"
 #include "app/mb_parent/mb_comm_sys.h"
+#include "app/mb_parent/mb_parent.h"
 #include "app/mb_parent/mbp.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"

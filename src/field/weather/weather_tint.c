@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_weather.h"
-#include "field/weather_tint.h"
+#include "field/weather/field_weather.h"
+#include "field/weather/weather_tint.h"
 
 // The weathers that only tint the screen. The ROM doesn't name the file; the name is a guess. Each fades a level and an
 // RGB555 colour in and out and plays a sound. Weather 9 is fixed. The others (10, 11, 13 and 14) pick the level and the

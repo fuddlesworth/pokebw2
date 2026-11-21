@@ -1,0 +1,32 @@
+#ifndef POKEBW2_BATTLE_GRAPHIC_BTLV_STAGE_H
+#define POKEBW2_BATTLE_GRAPHIC_BTLV_STAGE_H
+
+// Overlay 168's btlv_stage.c (named by its string), the battle view's 3D stage: the two grounds the Pokémon stand on,
+// their animations and the fade of their textures' palettes. BtlvStage_Create is swan's name; the rest are ours
+
+#include "types.h"
+#include "gfl/heap.h"
+#include "moveeffect/btlv_effect.h"
+#include "nitro/fx.h"
+#include "struct_decls.h"
+
+// battleStyle is BTL_STYLE_*. stageId and variant pick the grounds from file 2 of archive 151; a studioMode
+// (BTL_STUDIO_MODE_*) other than none picks stage 27 instead
+BtlvStage *BtlvStage_Create(u32 battleStyle, u32 stageId, u8 variant, HeapID heapId, u32 studioMode);
+void BtlvStage_Delete(BtlvStage *stage);
+void BtlvStage_Main(BtlvStage *stage);
+void BtlvStage_Draw(BtlvStage *stage);
+void BtlvStage_StartPaletteFade(BtlvStage *stage, u8 startEvy, u8 targetEvy, u8 wait, u16 color);
+BOOL BtlvStage_IsPaletteFading(BtlvStage *stage);
+// The side BtlvStage_SetVanish takes for both grounds
+#define BTLV_STAGE_SIDE_BOTH 2
+
+// side 0 or 1, or BTLV_STAGE_SIDE_BOTH
+void BtlvStage_SetVanish(BtlvStage *stage, u32 side, BOOL hide);
+void BtlvStage_StartAnimation(BtlvStage *stage, u32 side, u32 anm, fx32 speed, s32 frames);
+BOOL BtlvStage_IsAnimating(BtlvStage *stage);
+
+// An absent model or animation in the stage resource table.
+#define BTLV_STAGE_RES_NONE 0xffff
+
+#endif // POKEBW2_BATTLE_BTLV_STAGE_H

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "communication/worldtrade.h"
-#include "communication/worldtrade_local.h"
+#include "communication/worldtrade/worldtrade.h"
+#include "communication/worldtrade/worldtrade_local.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "dpw/dpw_tr.h"

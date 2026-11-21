@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/btl_rec_sel.h"
-#include "app/btl_rec_sel_graphic.h"
+#include "app/battle_recorder/btl_rec_sel.h"
+#include "app/battle_recorder/btl_rec_sel_graphic.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
 #include "constants/items.h"

@@ -1,13 +1,13 @@
 // Overlay 31, the second of its four files (see net_devirc.c): NetIrcSys, which makes the packets of the infrared
 // device and takes turns with the other machine, over the link of frames in irc_link.c. It also holds the timeout and
 // peer filter that the games set through net_devirc.h.
-#include "communication/net_irc.h"
-#include "communication/net_devirc.h"
+#include "wifi/device/net_irc.h"
 #include "gfl/net_handle.h"
 #include "gfl/random.h"
 #include "gfl/std.h"
 #include "irc/irc_link.h"
 #include "nitro/wm.h"
+#include "wifi/device/net_devirc.h"
 
 // The most data one packet carries, and the size of a whole one
 #define _IRC_SEND_SIZE 0xa6

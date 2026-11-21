@@ -5,7 +5,7 @@
 // It draws with gtsnego_disp.c and prints with gtsnego_message.c. Our names
 
 #include "types.h"
-#include "communication/gtsnego_local.h"
+#include "communication/gts/gtsnego_local.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"

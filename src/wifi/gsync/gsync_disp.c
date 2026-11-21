@@ -29,7 +29,7 @@
 #include "system/poke_icon.h"
 #include "system/sin_wave_table.h"
 #include "system/tpoke_data.h"
-#include "wifi/gsync_disp.h"
+#include "wifi/gsync/gsync_disp.h"
 
 #define GSYNC_DISP_ACTOR_COUNT 17
 #define GSYNC_DISP_FLOAT_COUNT (GSYNC_DISP_FLOAT_ITEM_COUNT + GSYNC_DISP_FLOAT_POKEMON_COUNT)

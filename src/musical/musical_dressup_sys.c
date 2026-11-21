@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/dup_fitting.h"
+#include "app/dup_fitting/dup_fitting.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"

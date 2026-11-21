@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/field_actor.h"
+#include "field/actor/field_actor.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"

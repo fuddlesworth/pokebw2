@@ -1,8 +1,8 @@
 // The ROM names this file zknsearch_main.c.
 #include "types.h"
-#include "app/pokedex_search_bmp.h"
-#include "app/pokedex_search_main.h"
-#include "app/pokedex_search_obj.h"
+#include "app/pokedex/pokedex_search_bmp.h"
+#include "app/pokedex/pokedex_search_main.h"
+#include "app/pokedex/pokedex_search_obj.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "gfl/arc.h"

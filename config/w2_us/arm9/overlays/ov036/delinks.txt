@@ -11,13 +11,13 @@ src/field/map/fieldmap.c:
     .data       start:0x021d4b60 end:0x021d4b6c
     .bss        start:0x021e57e0 end:0x021e57f0
 
-src/field/field_buildmodel.c:
+src/field/map/field_buildmodel.c:
     complete
     .text       start:0x0218308c end:0x02184284
     .rodata     start:0x021ca8e0 end:0x021ca964
     .data       start:0x021d4b6c end:0x021d4b80
 
-src/field/field_g3d_mapper.c:
+src/field/map/field_g3d_mapper.c:
     complete
     .text       start:0x02184284 end:0x021856e0
     .rodata     start:0x021ca964 end:0x021ca9bc
@@ -33,29 +33,29 @@ src/field/script/scrcmd_medal.c:
     .text       start:0x021c7b70 end:0x021c8010
     .rodata     start:0x021d46b8 end:0x021d4738
 
-src/field/fld_vreq.c:
+src/field/effect/fld_vreq.c:
     complete
     .text       start:0x021c8010 end:0x021c822c
     .data       start:0x021d5714 end:0x021d573c
 
-src/field/field_palace_sys.c:
+src/field/map/field_palace_sys.c:
     complete
     .text       start:0x021c822c end:0x021c8420
     .rodata     start:0x021d4738 end:0x021d479c
     .data       start:0x021d573c end:0x021d5750
 
-src/field/field_goout_effect.c:
+src/field/effect/field_goout_effect.c:
     complete
     .text       start:0x021c8420 end:0x021c8840
     .data       start:0x021d5750 end:0x021d5768
 
-src/field/field_goout_effect_data.c:
+src/field/effect/field_goout_effect_data.c:
     complete
     .text       start:0x021c8840 end:0x021c898c
     .rodata     start:0x021d479c end:0x021d484c
     .data       start:0x021d5768 end:0x021d5784
 
-src/field/resort_mapcreate.c:
+src/field/resort/resort_mapcreate.c:
     complete
     .text       start:0x021c898c end:0x021c8c6c
     .data       start:0x021d5784 end:0x021d5798
@@ -66,7 +66,7 @@ src/field/script/scrcmd_leaves.c:
     .rodata     start:0x021d4954 end:0x021d4b44
     .data       start:0x021d57a8 end:0x021d57e0
 
-src/field/field_ground_anime.c:
+src/field/map/field_ground_anime.c:
     complete
     .text       start:0x0219ea10 end:0x0219f1b8
     .rodata     start:0x021cfe50 end:0x021cfe68
@@ -76,18 +76,18 @@ src/field/event/event_entrance_effect.c:
     complete
     .text       start:0x0219f1b8 end:0x0219fa50
 
-src/field/enc_pokeset.c:
+src/field/encounter/enc_pokeset.c:
     complete
     .text       start:0x021a0a5c end:0x021a1680
     .rodata     start:0x021d014c end:0x021d02c8
 
-src/field/field_menu.c:
+src/field/menu/field_menu.c:
     complete
     .text       start:0x0219fa50 end:0x021a0a5c
     .rodata     start:0x021cfe68 end:0x021d014c
     .data       start:0x021d4fb4 end:0x021d4fc4
 
-src/field/field_encount.c:
+src/field/encounter/field_encount.c:
     complete
     .text       start:0x021a1680 end:0x021a201c
     .rodata     start:0x021d02c8 end:0x021d02f8
@@ -104,12 +104,12 @@ src/field/effect/effect_encount.c:
     .rodata     start:0x021d02f8 end:0x021d0358
     .data       start:0x021d4fd4 end:0x021d4fe8
 
-src/field/fld_scenearea.c:
+src/field/camera/fld_scenearea.c:
     complete
     .text       start:0x021a2f48 end:0x021a3138
     .data       start:0x021d4fe8 end:0x021d4ff8
 
-src/field/fld_scenearea_loader.c:
+src/field/camera/fld_scenearea_loader.c:
     complete
     .text       start:0x021a3138 end:0x021a36a4
     .rodata     start:0x021d03a8 end:0x021d03bc
@@ -261,7 +261,7 @@ src/field/script/scrcmd_misc.c:
     .text       start:0x021afd0c end:0x021b0260
     .rodata     start:0x021d0f98 end:0x021d0fcc
 
-src/field/rail_attr.c:
+src/field/rail/rail_attr.c:
     complete
     .text       start:0x021b3a74 end:0x021b3be4
     .data       start:0x021d529c end:0x021d52a8
@@ -293,19 +293,19 @@ src/field/map/field_map_chunk_height.c:
     .text       start:0x021c7060 end:0x021c720c
     .rodata     start:0x021d2a38 end:0x021d45bc
 
-src/field/field_player.c:
+src/field/player/field_player.c:
     complete
     .text       start:0x0219a4bc end:0x0219ad8c
     .rodata     start:0x021cfc44 end:0x021cfc94
     .data       start:0x021d4ec8 end:0x021d4ed8
 
-src/field/field_player_grid.c:
+src/field/player/field_player_grid.c:
     complete
     .text       start:0x0219b7e8 end:0x0219cee0
     .rodata     start:0x021cfd24 end:0x021cfe00
     .data       start:0x021d4eec end:0x021d4f00
 
-src/field/field_nogrid_mapper.c:
+src/field/map/field_nogrid_mapper.c:
     complete
     .text       start:0x021b3be4 end:0x021b3e88
     .data       start:0x021d52a8 end:0x021d52c0
@@ -336,7 +336,7 @@ src/field/event/event_name_entry.c:
     complete
     .text       start:0x021bf94c end:0x021bfec0
 
-src/field/shortcut_menu.c:
+src/app/ui/shortcut_menu.c:
     complete
     .text       start:0x021bee10 end:0x021bf94c
     .rodata     start:0x021d227c end:0x021d22dc
@@ -347,46 +347,46 @@ src/field/map/fieldmap_event.c:
     .text       start:0x0218151c end:0x0218308c
     .rodata     start:0x021ca878 end:0x021ca8e0
 
-src/field/field_camera.c:
+src/field/camera/field_camera.c:
     complete
     .text       start:0x021856e0 end:0x02186f10
     .rodata     start:0x021ca9bc end:0x021ca9e0
     .data       start:0x021d4ba0 end:0x021d4bd8
 
-src/field/field_camera_anime.c:
+src/field/camera/field_camera_anime.c:
     complete
     .text       start:0x02186f10 end:0x02187710
     .data       start:0x021d4bd8 end:0x021d4bf0
 
-src/field/field_msgbg.c:
+src/field/menu/field_msgbg.c:
     complete
     .text       start:0x02187710 end:0x0218a838
     .rodata     start:0x021ca9e0 end:0x021caae8
     .data       start:0x021d4bf0 end:0x021d4c00
 
-src/field/field_wfbc.c:
+src/field/comm/field_wfbc.c:
     complete
     .text       start:0x0218adec end:0x0218ae78
     .data       start:0x021d4c00 end:0x021d4c10
 
-src/field/field_comm_actor.c:
+src/field/comm/field_comm_actor.c:
     complete
     .text       start:0x0218ae78 end:0x0218b16c
     .rodata     start:0x021caae8 end:0x021cab0c
     .data       start:0x021d4c10 end:0x021d4c24
 
-src/field/talkmsgwin.c:
+src/field/menu/talkmsgwin.c:
     complete
     .text       start:0x0218b238 end:0x0218d128
     .data       start:0x021d4c24 end:0x021d4c74
 
-src/field/ircbattlemenu.c:
+src/communication/irc/ircbattlemenu.c:
     complete
     .text       start:0x0218d128 end:0x0218ed58
     .rodata     start:0x021cab0c end:0x021cace0
     .data       start:0x021d4c74 end:0x021d4d74
 
-src/field/field_menu_event.c:
+src/field/menu/field_menu_event.c:
     complete
     .text       start:0x0218b16c end:0x0218b238
 
@@ -414,45 +414,45 @@ src/field/actor/fld_act_rail.c:
     .rodata     start:0x021cf3a8 end:0x021cf6d0
     .data       start:0x021d4db4 end:0x021d4dc0
 
-src/field/field_rail_loader.c:
+src/field/rail/field_rail_loader.c:
     complete
     .text       start:0x02196278 end:0x021974dc
     .rodata     start:0x021cf7fc end:0x021cf9d4
     .data       start:0x021d4e28 end:0x021d4e3c
 
-src/field/field_fog.c:
+src/field/weather/field_fog.c:
     complete
     .text       start:0x02197574 end:0x02197750
     .data       start:0x021d4e3c end:0x021d4e48
 
-src/field/field_zonefog.c:
+src/field/weather/field_zonefog.c:
     complete
     .text       start:0x02197750 end:0x02197860
     .data       start:0x021d4e48 end:0x021d4e58
 
-src/field/field_light.c:
+src/field/weather/field_light.c:
     complete
     .text       start:0x02197860 end:0x021981d8
     .data       start:0x021d4e58 end:0x021d4e68
 
-src/field/field_subscreen.c:
+src/field/menu/field_subscreen.c:
     complete
     .text       start:0x021981d8 end:0x02198c00
     .rodata     start:0x021cf9ec end:0x021cfb78
     .data       start:0x021d4e68 end:0x021d4e7c
 
-src/field/field_3dbg.c:
+src/field/weather/field_3dbg.c:
     complete
     .text       start:0x02198c00 end:0x02199044
     .data       start:0x021d4e7c end:0x021d4e8c
 
-src/field/weather.c:
+src/field/weather/weather.c:
     complete
     .text       start:0x02199044 end:0x02199420
     .rodata     start:0x021cfb78 end:0x021cfc18
     .data       start:0x021d4e8c end:0x021d4ea0
 
-src/field/weather_task.c:
+src/field/weather/weather_task.c:
     complete
     .text       start:0x02199420 end:0x0219a3f4
     .rodata     start:0x021cfc18 end:0x021cfc30
@@ -465,13 +465,13 @@ src/field/map/fieldmap_ctrl_grid.c:
     .rodata     start:0x021cfc30 end:0x021cfc44
     .data       start:0x021d4eb0 end:0x021d4ec8
 
-src/field/field_player_core.c:
+src/field/player/field_player_core.c:
     complete
     .text       start:0x0219ad8c end:0x0219b7e8
     .rodata     start:0x021cfc94 end:0x021cfd24
     .data       start:0x021d4ed8 end:0x021d4eec
 
-src/field/field_player_nogrid.c:
+src/field/player/field_player_nogrid.c:
     complete
     .text       start:0x0219cee0 end:0x0219e368
     .rodata     start:0x021cfe00 end:0x021cfe28
@@ -492,13 +492,13 @@ src/field/script/scrcmd_pokemon_fld.c:
     .text       start:0x021afa6c end:0x021afd0c
     .data       start:0x021d5258 end:0x021d5270
 
-src/field/field_rail.c:
+src/field/rail/field_rail.c:
     complete
     .text       start:0x021b0260 end:0x021b243c
     .rodata     start:0x021d0fcc end:0x021d1020
     .data       start:0x021d5270 end:0x021d529c
 
-src/field/union_mine_pms.c:
+src/communication/union/union_mine_pms.c:
     complete
     .text       start:0x021b4494 end:0x021b46e8
     .rodata     start:0x021d10ac end:0x021d10b4
@@ -510,52 +510,52 @@ src/field/effect/fldeff_reflect.c:
     .rodata     start:0x021d110c end:0x021d1144
     .data       start:0x021d5378 end:0x021d538c
 
-src/field/field_place_name.c:
+src/field/menu/field_place_name.c:
     complete
     .text       start:0x021b4eec end:0x021b5bb4
     .rodata     start:0x021d1144 end:0x021d1174
     .data       start:0x021d538c end:0x021d53a0
 
-src/field/field_fmission_info.c:
+src/entralink/field_fmission_info.c:
     complete
     .text       start:0x021b5bb4 end:0x021b64e8
     .rodata     start:0x021d1174 end:0x021d11a4
     .data       start:0x021d53a0 end:0x021d53b8
 
-src/field/fes_gimmick.c:
+src/entralink/fes_gimmick.c:
     complete
     .text       start:0x021b64e8 end:0x021b685c
     .data       start:0x021d53b8 end:0x021d53c8
 
-src/field/place_name_letter.c:
+src/field/menu/place_name_letter.c:
     complete
     .text       start:0x021b685c end:0x021b7374
     .rodata     start:0x021d11a4 end:0x021d1278
     .data       start:0x021d53c8 end:0x021d5404
 
-src/field/entrance_camera.c:
+src/field/camera/entrance_camera.c:
     complete
     .text       start:0x021b7374 end:0x021b7fb4
     .rodata     start:0x021d1278 end:0x021d12a8
     .data       start:0x021d5404 end:0x021d5418
 
-src/field/field_gimmick.c:
+src/field/gimmick/field_gimmick.c:
     complete
     .text       start:0x021b7fb4 end:0x021b8084
     .rodata     start:0x021d12a8 end:0x021d1658
 
-src/field/fld_exp_obj.c:
+src/field/map/fld_exp_obj.c:
     complete
     .text       start:0x021b8084 end:0x021b870c
     .rodata     start:0x021d1658 end:0x021d1668
     .data       start:0x021d5418 end:0x021d5428
 
-src/field/field_transition.c:
+src/field/effect/field_transition.c:
     complete
     .text       start:0x021b870c end:0x021b94cc
     .rodata     start:0x021d1668 end:0x021d1788
 
-src/field/field_fade.c:
+src/field/effect/field_fade.c:
     complete
     .text       start:0x021b94cc end:0x021ba608
     .rodata     start:0x021d1788 end:0x021d1794
@@ -567,7 +567,7 @@ src/field/map/height_ex.c:
     .rodata     start:0x021d1794 end:0x021d17a0
     .data       start:0x021d5438 end:0x021d5444
 
-src/field/field_player_grid_event.c:
+src/field/player/field_player_grid_event.c:
     complete
     .text       start:0x021ba854 end:0x021bb5c8
     .rodata     start:0x021d17a0 end:0x021d17b8
@@ -579,13 +579,13 @@ src/field/effect/fld_particle.c:
     .rodata     start:0x021d17b8 end:0x021d1cb4
     .data       start:0x021d5460 end:0x021d5470
 
-src/field/fld3d_ci.c:
+src/field/encounter/fld3d_ci.c:
     complete
     .text       start:0x021bb6b4 end:0x021bd2e4
     .rodata     start:0x021d1cb4 end:0x021d2118
     .data       start:0x021d5470 end:0x021d54e4
 
-src/field/day_care.c:
+src/field/event/day_care.c:
     complete
     .text       start:0x021bd2e4 end:0x021be7c8
     .rodata     start:0x021d2118 end:0x021d2240
@@ -603,7 +603,7 @@ src/field/effect/fldeff_splash.c:
     .rodata     start:0x021d2268 end:0x021d227c
     .data       start:0x021d5504 end:0x021d5514
 
-src/field/field_g3dobj.c:
+src/field/actor/field_g3dobj.c:
     complete
     .text       start:0x021bfec0 end:0x021c060c
     .data       start:0x021d5530 end:0x021d5540
@@ -624,7 +624,7 @@ src/field/field_task_manager.c:
     .rodata     start:0x021d22dc end:0x021d22f4
     .data       start:0x021d556c end:0x021d5584
 
-src/field/field_flash.c:
+src/field/weather/field_flash.c:
     complete
     .text       start:0x021c1bfc end:0x021c1dc0
     .rodata     start:0x021d22f4 end:0x021d2304
@@ -635,23 +635,23 @@ src/field/effect/fieldskill_mapeff.c:
     .text       start:0x021c1dc0 end:0x021c1e68
     .data       start:0x021d5594 end:0x021d55a8
 
-src/field/fld_wipe_3dobj.c:
+src/field/effect/fld_wipe_3dobj.c:
     complete
     .text       start:0x021c1e68 end:0x021c20b8
     .rodata     start:0x021d2304 end:0x021d2380
     .data       start:0x021d55a8 end:0x021d55bc
 
-src/field/pleasure_boat.c:
+src/field/event/pleasure_boat.c:
     complete
     .text       start:0x021c20b8 end:0x021c22d4
     .data       start:0x021d55bc end:0x021d55cc
 
-src/field/field_slope_slip.c:
+src/field/player/field_slope_slip.c:
     complete
     .text       start:0x021c22d4 end:0x021c24ec
     .rodata     start:0x021d2380 end:0x021d23a0
 
-src/field/field_water_current.c:
+src/field/player/field_water_current.c:
     complete
     .text       start:0x021c24ec end:0x021c27c0
     .rodata     start:0x021d23a0 end:0x021d23c8
@@ -673,19 +673,19 @@ src/field/effect/fldeff_cut.c:
     .rodata     start:0x021d24dc end:0x021d252c
     .data       start:0x021d55f4 end:0x021d5614
 
-src/field/party_select_list.c:
+src/app/pokelist/party_select_list.c:
     complete
     .text       start:0x021c31b8 end:0x021c3c6c
     .rodata     start:0x021d252c end:0x021d2574
     .data       start:0x021d5614 end:0x021d5660
 
-src/field/field_bbd_color.c:
+src/field/weather/field_bbd_color.c:
     complete
     .text       start:0x021c3c6c end:0x021c3dd4
     .rodata     start:0x021d2574 end:0x021d2594
     .data       start:0x021d5660 end:0x021d5674
 
-src/field/comm_entry_menu.c:
+src/communication/comm_entry_menu.c:
     complete
     .text       start:0x021c3dd4 end:0x021c5db4
     .rodata     start:0x021d2594 end:0x021d2620
@@ -715,7 +715,7 @@ src/field/effect/fldeff_bubble.c:
     .rodata     start:0x021d29e8 end:0x021d2a14
     .data       start:0x021d56b4 end:0x021d5700
 
-src/field/field_saveanime.c:
+src/field/effect/field_saveanime.c:
     complete
     .text       start:0x021c6d00 end:0x021c7060
     .rodata     start:0x021d2a14 end:0x021d2a38
@@ -770,7 +770,7 @@ src/field/map/fieldmap_proc.c:
     .rodata     start:0x021c9eec end:0x021c9ef8
     .bss        start:0x021d57e0 end:0x021e57e0
 
-src/field/hidden_hollow_generate.c:
+src/entralink/hidden_hollow_generate.c:
     complete
     .text       start:0x021c8c6c end:0x021c8d08
     .rodata     start:0x021d484c end:0x021d4914
@@ -795,12 +795,12 @@ src/field/actor/field_actor_rail.c:
     .text       start:0x021955d0 end:0x02196248
     .rodata     start:0x021cf6d0 end:0x021cf7fc
 
-src/field/rail_data_handle.c:
+src/field/rail/rail_data_handle.c:
     complete
     .text       start:0x02196248 end:0x02196278
     .data       start:0x021d4dc0 end:0x021d4e28
 
-src/field/field_rail_func.c:
+src/field/rail/field_rail_func.c:
     complete
     .text       start:0x021b243c end:0x021b3a74
     .rodata     start:0x021d1020 end:0x021d1038

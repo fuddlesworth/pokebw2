@@ -1,7 +1,7 @@
 // A side's gauge of party balls, which slides in at a trainer battle's start. The name is the ROM's string, from
 // GFL_HeapAllocate's asserts. The names are ours; swan has none for this file
 
-#include "battle/btlv_b_gauge.h"
+#include "battle/graphic/btlv_b_gauge.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
 #include "constants/arc.h"

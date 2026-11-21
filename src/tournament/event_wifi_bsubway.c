@@ -1,10 +1,10 @@
 #include "types.h"
-#include "field/event_wifi_bsubway.h"
-#include "field/field_event.h"
+#include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "wifi/wifi_bsubway.h"
+#include "tournament/event_wifi_bsubway.h"
+#include "tournament/wifi_bsubway.h"
 
 // The steps of the event
 enum {

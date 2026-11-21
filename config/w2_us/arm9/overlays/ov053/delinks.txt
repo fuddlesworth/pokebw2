@@ -4,7 +4,7 @@
     .data       start:0x021e5900 end:0x021e5920 kind:data align:32
     .bss        start:0x021e5920 end:0x021e5920 kind:bss align:32
 
-src/field/eventcmd/scrcmd_palpark.c:
+src/field/script_facility/scrcmd_palpark.c:
     complete
     .text       start:0x021e5840 end:0x021e58e4
     .rodata     start:0x021e58e4 end:0x021e58f0

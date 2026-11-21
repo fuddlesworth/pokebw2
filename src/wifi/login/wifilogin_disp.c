@@ -19,7 +19,7 @@
 #include "nnsys/g2d.h"
 #include "system/palanm.h"
 #include "system/sin_wave_table.h"
-#include "wifi/wifilogin_disp.h"
+#include "wifi/login/wifilogin_disp.h"
 
 #define WIFILOGIN_DISP_ACTOR_COUNT 5
 

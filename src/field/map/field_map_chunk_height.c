@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_map.h"
-#include "field/field_map_chunk.h"
+#include "field/map/field_map.h"
+#include "field/map/field_map_chunk.h"
 #include "nitro/fx.h"
 
 // The height and tile type of a position in a chunk's terrain. The ROM doesn't name the file; the name is a guess.

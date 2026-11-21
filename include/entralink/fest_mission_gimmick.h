@@ -3,7 +3,7 @@
 
 #include "types.h"
 #include "entralink/fest_mission_data.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
 

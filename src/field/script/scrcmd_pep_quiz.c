@@ -3,8 +3,8 @@
 // after the 176-byte ambient sound table of scrcmd_field.c, which one file's size sort can't give. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/field_script.h"
-#include "field/scrcmd_pep_quiz.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_pep_quiz.h"
 #include "gfl/random.h"
 #include "save/adventure.h"
 #include "save/save_control.h"

@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"
@@ -10,6 +9,7 @@
 #include "pml/poke_party.h"
 #include "save/save_control.h"
 #include "save/tournament_block.h"
+#include "system/regulation.h"
 #include <stddef.h>
 
 // The rules of a battle, and the save block of the competitions' regulations and the teams entered in them, which

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/resort.h"
+#include "field/actor/field_actor.h"
+#include "field/resort/resort.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"

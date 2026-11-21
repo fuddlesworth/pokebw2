@@ -2,7 +2,6 @@
 // scrolling BG 0. The name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
 #include "types.h"
-#include "app/gsync/pdwacc_disp.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
@@ -20,6 +19,7 @@
 #include "nitro/os.h"
 #include "nnsys/g2d.h"
 #include "system/palanm.h"
+#include "wifi/gsync/pdwacc_disp.h"
 
 #define PDWACC_DISP_ACTOR_COUNT 13
 #define PDWACC_DISP_RES_COUNT 9

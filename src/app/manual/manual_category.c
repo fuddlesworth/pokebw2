@@ -1,8 +1,8 @@
 #include "types.h"
-#include "app/manual_category.h"
-#include "app/manual_common.h"
-#include "app/manual_data.h"
-#include "app/manual_list.h"
+#include "app/manual/manual_category.h"
+#include "app/manual/manual_common.h"
+#include "app/manual/manual_data.h"
+#include "app/manual/manual_list.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
 

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/pokedex_list_bmp.h"
-#include "app/pokedex_list_main.h"
+#include "app/pokedex/pokedex_list_bmp.h"
+#include "app/pokedex/pokedex_list_main.h"
 #include "app/ui/frame_list.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"

@@ -1,9 +1,9 @@
 // The event that turns the C-Gear on: it stops the game's communication, starts it again when asked to, and changes the
 // subscreen to the C-Gear. Function names from swan; the file's name is descriptive, after event_cgear_shutdown.c
 #include "types.h"
-#include "field/event_cgear_poweron.h"
+#include "field/event/event_cgear_poweron.h"
 #include "field/field.h"
-#include "field/subscreen.h"
+#include "field/menu/subscreen.h"
 #include "gfl/std.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"

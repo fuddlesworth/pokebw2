@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/calender.h"
-#include "field/zone.h"
+#include "field/event/calender.h"
+#include "field/map/zone.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "system/game_data.h"

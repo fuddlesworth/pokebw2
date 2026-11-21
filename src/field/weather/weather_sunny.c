@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/field_weather.h"
+#include "field/weather/field_weather.h"
 
 WeatherData SUNNY_WEATHER = {
     { 0 },

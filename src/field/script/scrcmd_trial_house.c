@@ -1,9 +1,9 @@
 // The Trial House's script commands, 0x1E6 to 0x1F5. Command names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0); the file's name is descriptive
 #include "types.h"
-#include "field/field_script.h"
-#include "field/scrcmd_trial_house.h"
-#include "field/trial_house.h"
+#include "field/event/trial_house.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_trial_house.h"
 #include "save/records.h"
 #include "save/save_control.h"
 #include "system/game_data.h"

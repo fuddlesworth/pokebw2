@@ -1,5 +1,5 @@
 #include "types.h"
-#include "communication/pokemontrade_ircdemo.h"
+#include "communication/pokemon_trade/pokemontrade_ircdemo.h"
 #include "gfl/clact.h"
 #include "gfl/g3d.h"
 #include "gfl/gx_layers.h"

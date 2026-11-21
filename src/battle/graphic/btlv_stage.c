@@ -2,7 +2,7 @@
 // their animations and the fade of their palettes. The name is the ROM's string, from GFL_HeapAllocate's asserts.
 // BtlvStage_Create is swan's name; the rest are ours
 
-#include "battle/btlv_stage.h"
+#include "battle/graphic/btlv_stage.h"
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/battle.h"

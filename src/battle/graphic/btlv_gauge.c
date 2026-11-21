@@ -1,7 +1,7 @@
 // The battle view's gauges. The name is the ROM's string, from GFL_HeapAllocate's asserts. The names are ours; swan has
 // none for this file
 
-#include "battle/btlv_gauge.h"
+#include "battle/graphic/btlv_gauge.h"
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"

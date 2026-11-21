@@ -3,9 +3,9 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
 #include "constants/arc.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_effect.h"
-#include "field/field_map.h"
+#include "field/map/field_map.h"
 #include "gfl/arc.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/g3d.h"

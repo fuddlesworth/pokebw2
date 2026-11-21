@@ -7,7 +7,7 @@
 // are ours; swan has none for this file (its disassembly calls the two empty functions nullsub_34 and nullsub_33)
 
 #include "types.h"
-#include "battle/btlv_input.h"
+#include "battle/graphic/btlv_input.h"
 #include "gfl/heap.h"
 #include "struct_decls.h"
 

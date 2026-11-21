@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/fmission_log_accessor_fv.h"
-#include "field/zone.h"
+#include "entralink/fmission_log_accessor_fv.h"
+#include "field/map/zone.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "gfl/str.h"

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "communication/worldtrade_local.h"
+#include "communication/worldtrade/worldtrade_local.h"
 #include "constants/sound.h"
 #include "dpw/dpw_tr.h"
 #include "dwc/dwc.h"
@@ -20,8 +20,8 @@
 #include "system/bmp_winframe.h"
 #include "system/game_system.h"
 #include "system/wordset.h"
-#include "wifi/wifi_login.h"
-#include "wifi/wifilogin_message.h"
+#include "wifi/login/wifi_login.h"
+#include "wifi/login/wifilogin_message.h"
 
 // Internet/server/profile polling helper results; these are not WifiLogin callback results.
 enum {

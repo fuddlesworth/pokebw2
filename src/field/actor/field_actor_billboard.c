@@ -3,8 +3,8 @@
 // Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), in English: swan's BlAct is BillboardActor.
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_actor_drawdata.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_drawdata.h"
 #include "gfl/arc.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/g3d.h"

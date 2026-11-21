@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/fmission_app_gra.h"
+#include "entralink/fmission_app_gra.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

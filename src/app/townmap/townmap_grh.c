@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/townmap.h"
+#include "app/townmap/townmap.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"

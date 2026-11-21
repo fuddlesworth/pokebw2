@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/itemmenu.h"
-#include "app/itemmenu_disp.h"
+#include "app/bag/itemmenu.h"
+#include "app/bag/itemmenu_disp.h"
 #include "constants/arc.h"
 #include "constants/items.h"
 #include "constants/moves.h"

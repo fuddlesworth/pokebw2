@@ -1,12 +1,12 @@
 #ifndef POKEBW2_FIELD_FIELD_INTERNAL_H
 #define POKEBW2_FIELD_FIELD_INTERNAL_H
 
+#include "field/camera/field_scene_area.h"
 #include "field/field.h"
-#include "field/field_controller.h"
-#include "field/field_g3d_mapper.h"
-#include "field/field_palace.h"
-#include "field/field_scene_area.h"
-#include "field/zone.h"
+#include "field/map/field_controller.h"
+#include "field/map/field_g3d_mapper.h"
+#include "field/map/field_palace.h"
+#include "field/map/zone.h"
 #include "gfl/billboard_actor.h"
 
 // The gimmick work of Field_AllocGimmickWorkBlock, password FIELD_GIMMICK_PASSWORD_NONE for none

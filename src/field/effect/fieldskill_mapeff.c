@@ -1,7 +1,7 @@
 // The map effects of the field moves, of which there is only Flash's darkness. The name is the ROM's string
 #include "types.h"
-#include "field/field_flash.h"
-#include "field/field_skill_map_eff.h"
+#include "field/effect/field_skill_map_eff.h"
+#include "field/weather/field_flash.h"
 #include "gfl/heap.h"
 
 struct FieldSkillMapEff {

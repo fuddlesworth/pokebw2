@@ -1,6 +1,6 @@
-#include "app/comm_tvt/ctvt_mic.h"
+#include "communication/xtransceiver/ctvt_mic.h"
 #include "types.h"
-#include "app/comm_tvt/ima_adpcm.h"
+#include "communication/xtransceiver/ima_adpcm.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/std.h"

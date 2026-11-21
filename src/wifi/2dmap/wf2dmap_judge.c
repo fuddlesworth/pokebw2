@@ -1,8 +1,8 @@
 #include "types.h"
-#include "wifi/wf2dmap_common.h"
-#include "wifi/wf2dmap_judge.h"
-#include "wifi/wf2dmap_map.h"
-#include "wifi/wf2dmap_obj.h"
+#include "wifi/2dmap/wf2dmap_common.h"
+#include "wifi/2dmap/wf2dmap_judge.h"
+#include "wifi/2dmap/wf2dmap_map.h"
+#include "wifi/2dmap/wf2dmap_obj.h"
 
 // Decides whether an object of the Wi-Fi Club's 2D map can do what its player asks. The ROM has no name for this
 // file: it is named after the older games' wf2dmap_judge.c

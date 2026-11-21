@@ -33,7 +33,7 @@
 #include "system/wordset.h"
 #include "tournament/wbt_download_net_graphic.h"
 #include "tournament/wbt_download_net_util.h"
-#include "wifi/net_common_download.h"
+#include "wifi/net/net_common_download.h"
 #include <stddef.h>
 
 // The process that downloads the tournaments: it shows messages over the animated background of the Dream World

@@ -6,13 +6,13 @@
 // btlv_effvm.c and keeps the tasks of the view's effects. BtlvEffect_Create is swan's name; the rest are ours
 
 #include "types.h"
-#include "battle/btl_setup.h"
-#include "battle/btlv_b_gauge.h"
-#include "battle/btlv_mcss.h"
+#include "battle/graphic/btlv_b_gauge.h"
+#include "battle/graphic/btlv_mcss.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
+#include "system/btl_setup.h"
 
 // The move effect BtlvScu_StartMoveEffect starts, which BtlvEffect_StartMove reads
 typedef struct BtlvMoveEffectParam {

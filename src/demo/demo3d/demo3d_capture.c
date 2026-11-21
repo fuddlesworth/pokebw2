@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/demo3d/demo3d_capture.h"
+#include "demo/demo3d/demo3d_capture.h"
 #include "gfl/graphics.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"

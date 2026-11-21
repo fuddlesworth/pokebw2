@@ -3,7 +3,7 @@
 // BR_PROCID_BV_DELETE
 
 #include "types.h"
-#include "app/battle_rec_ov.h"
+#include "app/battle_recorder/battle_rec_ov.h"
 #include "app/battle_recorder/br_bvdelete_proc.h"
 #include "app/battle_recorder/br_core.h"
 #include "app/battle_recorder/br_fade.h"

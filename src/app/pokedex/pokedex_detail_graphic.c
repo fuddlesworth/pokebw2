@@ -1,6 +1,6 @@
 // The ROM names this file zukan_detail_graphic.c.
 #include "types.h"
-#include "app/pokedex_detail.h"
+#include "app/pokedex/pokedex_detail.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

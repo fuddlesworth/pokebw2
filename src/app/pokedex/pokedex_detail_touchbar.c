@@ -1,6 +1,6 @@
 // The ROM names this file zukan_detail_touchbar.c.
 #include "types.h"
-#include "app/pokedex_detail.h"
+#include "app/pokedex/pokedex_detail.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "gfl/arc.h"

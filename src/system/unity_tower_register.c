@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/unity_tower.h"
+#include "app/unity_tower/unity_tower.h"
 #include "save/player_info.h"
 
 // Records the partners of trades in the Unity Tower's survey, a list of the latest 20 with at most 5 from one country.

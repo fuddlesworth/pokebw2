@@ -2,11 +2,10 @@
 // with the senders for them. The file's name is a guess: the ROM only shows that it is a file of its own, before
 // colosseum.c, by the assert file name ("") of its assert
 #include "types.h"
-#include "app/pms_select.h"
-#include "communication/colosseum.h"
-#include "communication/union_comm.h"
-#include "field/event_colosseum_battle.h"
-#include "field/field_event.h"
+#include "app/pms/pms_select.h"
+#include "communication/union/colosseum.h"
+#include "communication/union/union_comm.h"
+#include "field/event/event_colosseum_battle.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"
@@ -14,6 +13,7 @@
 #include "gfl/overlay.h"
 #include "gfl/std.h"
 #include "pml/poke_party.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 

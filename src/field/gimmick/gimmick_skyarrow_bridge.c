@@ -5,12 +5,12 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
+#include "field/camera/field_camera.h"
 #include "field/field.h"
-#include "field/field_camera.h"
-#include "field/field_exp_obj.h"
-#include "field/field_map.h"
-#include "field/field_player.h"
-#include "field/gimmick_skyarrow_bridge.h"
+#include "field/gimmick/gimmick_skyarrow_bridge.h"
+#include "field/map/field_exp_obj.h"
+#include "field/map/field_map.h"
+#include "field/player/field_player.h"
 #include "field/sound_obj.h"
 #include "gfl/arc.h"
 #include "gfl/g3d.h"
@@ -22,8 +22,8 @@
 #include "nitro/math.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
-#include "system/iss_3ds_sys.h"
-#include "system/iss_sys.h"
+#include "system/iss/iss_3ds_sys.h"
+#include "system/iss/iss_sys.h"
 
 #define GIMMICK_STATE_ID 1
 #define OBJ_COUNT 5

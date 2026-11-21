@@ -3,10 +3,10 @@
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
 #include "constants/sound.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_g3dobj.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/field_g3dobj.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"
 #include "nitro/fx.h"

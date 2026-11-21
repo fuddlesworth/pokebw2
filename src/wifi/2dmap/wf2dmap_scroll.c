@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "wifi/wf2dmap_common.h"
-#include "wifi/wf2dmap_obj.h"
-#include "wifi/wf2dmap_scroll.h"
+#include "wifi/2dmap/wf2dmap_common.h"
+#include "wifi/2dmap/wf2dmap_obj.h"
+#include "wifi/2dmap/wf2dmap_scroll.h"
 
 // Where the Wi-Fi Club's 2D map is scrolled to. The ROM has no name for this file: it is named after the older games'
 // wf2dmap_scroll.c, and its first function is their wf2dmap_scrcont.c's

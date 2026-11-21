@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/pokedex_detail.h"
+#include "app/pokedex/pokedex_detail.h"
 
 // Three tables of the Pokédex detail screen's forms page. The linker placed them ahead of pokedex_detail_form.c's
 // .rodata, before its local initializers, which no order of declarations in one file gives, so they come from an

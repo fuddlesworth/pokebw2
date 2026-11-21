@@ -1,0 +1,35 @@
+#ifndef POKEBW2_COMMUNICATION_DELIVERY_IRC_H
+#define POKEBW2_COMMUNICATION_DELIVERY_IRC_H
+
+// Overlay 12's delivery_irc.c: hands out or receives data over infrared, with nearly the same init as
+// delivery_beacon.c. The sender picks the data whose region and mask match the receiver's, and sends it encrypted with
+// its CRC
+
+#include "types.h"
+#include "communication/delivery_beacon.h"
+
+// The init of delivery_beacon.c, but with a halfword at offset 4
+typedef struct {
+    u32 code;
+    u16 unk04;
+    HeapID heapId;
+    DeliveryData data[7];
+    u32 dataNum;
+} DeliveryIrcInit;
+
+enum {
+    DELIVERY_IRC_RESULT_RUNNING = 0,
+    DELIVERY_IRC_RESULT_SUCCESS = 1,
+    DELIVERY_IRC_RESULT_DAMAGED = 2,
+    DELIVERY_IRC_RESULT_NO_DATA = 3,
+};
+
+DeliveryIrcWork *DeliveryIrc_Init(const DeliveryIrcInit *init);
+// Starts the network, unless it is busy
+BOOL DeliveryIrc_RecvStart(DeliveryIrcWork *work);
+// 1 once the data came or went, 2 if it came damaged, 3 if there was none to give
+u8 DeliveryIrc_GetResult(DeliveryIrcWork *work);
+void DeliveryIrc_Main(DeliveryIrcWork *work);
+void DeliveryIrc_End(DeliveryIrcWork *work);
+
+#endif // POKEBW2_FIELD_DELIVERY_IRC_H

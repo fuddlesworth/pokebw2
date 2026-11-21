@@ -1,0 +1,499 @@
+// The report: the screen that asks whether to save the game, saves it alongside the field and says so. Names from swan
+// (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
+#include "types.h"
+#include "constants/arc.h"
+#include "constants/script_text_banks.h"
+#include "constants/sound.h"
+#include "constants/text_banks.h"
+#include "field/actor/field_actor.h"
+#include "field/effect/field_effect.h"
+#include "field/event/event_save.h"
+#include "field/field.h"
+#include "field/menu/field_msgbg.h"
+#include "field/menu/subscreen.h"
+#include "field/player/field_player.h"
+#include "gfl/arc_util.h"
+#include "gfl/backup_system.h"
+#include "gfl/bmp.h"
+#include "gfl/bmpwin.h"
+#include "gfl/heap.h"
+#include "gfl/key.h"
+#include "gfl/msg.h"
+#include "gfl/sound.h"
+#include "gfl/str.h"
+#include "gfl/tcb.h"
+#include "gfl/tcbl.h"
+#include "gfl/touchpanel.h"
+#include "save/records.h"
+#include "save/save_control.h"
+#include "system/app_keycursor.h"
+#include "system/app_taskmenu.h"
+#include "system/bmp_winframe.h"
+#include "system/game_data.h"
+#include "system/game_system.h"
+#include "system/printsys.h"
+#include "system/text_speed.h"
+#include "system/time_icon.h"
+#include "system/wordset.h"
+#include "text/script/global_10520.h"
+#include "text/system/report.h"
+
+// The report's states: it asks whether to save, saves alongside the player's animation and the subscreen's bar, says
+// how it went, and puts the subscreen back
+enum {
+    REPORT_STATE_OPEN_SUBSCREEN,
+    REPORT_STATE_SETUP,
+    REPORT_STATE_ASK,
+    REPORT_STATE_WAIT_ASK,
+    REPORT_STATE_YES_NO,
+    REPORT_STATE_START_SAVE,
+    REPORT_STATE_WAIT_PRINT,
+    REPORT_STATE_WAIT_PLAYER,
+    REPORT_STATE_SAVE,
+    REPORT_STATE_SAVING,
+    REPORT_STATE_SAVED,
+    REPORT_STATE_WAIT_SAVED_MESSAGE,
+    REPORT_STATE_WAIT_SAVE_SE,
+    REPORT_STATE_SAVE_FAILED,
+    REPORT_STATE_WAIT_MESSAGE,
+    REPORT_STATE_WAIT_KEY,
+    REPORT_STATE_WAIT_KEY_OR_TIMER,
+    REPORT_STATE_BACK,
+    REPORT_STATE_BACK_END,
+    REPORT_STATE_EXIT,
+    REPORT_STATE_END,
+};
+
+typedef struct {
+    BmpWin *window;
+    // Set while the print queue has yet to draw into the window
+    u8 printing;
+} ReportWindow;
+
+struct ReportWork {
+    TCBExManager *tcbManager;
+    MsgData *msgData;
+    ReportWindow window;
+    PrintStream *stream;
+    PrintQueue *printQueue;
+    StrBuf *strbuf;
+    KeyCursor *cursor;
+    // Set once the player has continued a paused message
+    u32 continued;
+    AppTaskMenuItem items[2];
+    AppTaskMenuRes *menuRes;
+    AppTaskMenu *menu;
+    WaitIcon *waitIcon;
+    FieldSaveAnime *effect;
+    u32 timer;
+};
+
+static void Report_Exit(EventSaveWork *work);
+static void Report_CreateWindow(EventSaveWork *work);
+static void Report_FreeWindow(EventSaveWork *work);
+static void Report_PrintMessage(EventSaveWork *work, u32 messageId);
+static void Report_StartStream(EventSaveWork *work);
+static BOOL Report_UpdateStream(EventSaveWork *work);
+static BOOL Report_UpdateMessage(EventSaveWork *work);
+static void Report_PrintMessageInstant(EventSaveWork *work, u32 messageId);
+static BOOL Report_UpdatePrintQueue(EventSaveWork *work);
+static void Report_CreateYesNoRes(EventSaveWork *work);
+static void Report_FreeYesNoRes(EventSaveWork *work);
+static void Report_OpenYesNoMenu(EventSaveWork *work);
+static int Report_UpdateYesNoMenu(EventSaveWork *work);
+static void Report_StartPlayerSaveSeq(EventSaveWork *work);
+static void Report_EndPlayerSaveSeq(EventSaveWork *work);
+static BOOL Report_IsPlayerSeqDone(EventSaveWork *work);
+static BOOL Report_IsAvatarReady(EventSaveWork *work);
+static void Report_StartSaveIcon(EventSaveWork *work);
+static void Report_EndSaveIcon(EventSaveWork *work);
+
+u32 EventSave_Update(EventSaveWork *work, u32 *state) {
+    WordSet *wordSet;
+    StrBuf *str;
+
+    switch (*state) {
+    case REPORT_STATE_OPEN_SUBSCREEN:
+        FieldSubscreen_ReqChange(Field_GetSubscreen(work->field), FLD_SUBSCREEN_ID_SAVE_REPORT);
+        *state = REPORT_STATE_SETUP;
+        break;
+    case REPORT_STATE_SETUP:
+        if (FieldSubscreen_IsReady(Field_GetSubscreen(work->field)) == TRUE &&
+            FieldSubscreen_Report_IsReady(Field_GetSubscreen(work->field)) == TRUE) {
+            work->report = GFL_HeapAllocate(work->heapId, sizeof(ReportWork), FALSE, "report_event.c", 159);
+            work->report->msgData =
+                GFL_MsgSysLoadData(FALSE, ARCID_SCRIPT_MESSAGE, SCRIPT_TEXT_GLOBAL_10520, work->heapId);
+            work->report->strbuf = GFL_StrBufCreate(0x200, work->heapId);
+            work->report->tcbManager = GFL_TCBExMgrCreate(work->heapId, work->heapId, 1, 4);
+            work->report->cursor = KeyCursor_Create(0xf, 1, 1, work->heapId);
+            work->report->printQueue = PrintQueue_CreateDefault(work->heapId);
+            work->report->timer = 0;
+            Report_CreateWindow(work);
+            Report_CreateYesNoRes(work);
+            *state = REPORT_STATE_ASK;
+        }
+        break;
+    case REPORT_STATE_ASK:
+        Report_PrintMessage(work, Global10520_Text_WouldLikeSaveGame);
+        *state = REPORT_STATE_WAIT_ASK;
+        break;
+    case REPORT_STATE_WAIT_ASK:
+        if (Report_UpdateMessage(work) == FALSE) {
+            Report_OpenYesNoMenu(work);
+            *state = REPORT_STATE_YES_NO;
+        }
+        break;
+    case REPORT_STATE_YES_NO:
+        switch (Report_UpdateYesNoMenu(work)) {
+        case 0:
+            if (SaveControl_IsNewGameOverSave(work->save) == TRUE) {
+                Report_PrintMessage(work, Global10520_Text_ThereAlreadySavedGame);
+                *state = REPORT_STATE_WAIT_MESSAGE;
+            } else {
+                BmpWin_ClearFrame(work->report->window.window, WINFRAME_TRANSFER_VBLANK);
+                *state = REPORT_STATE_START_SAVE;
+            }
+            break;
+        case 1:
+            *state = REPORT_STATE_BACK;
+            break;
+        }
+        break;
+    case REPORT_STATE_START_SAVE:
+        RecordAddOne(GameData_GetRecords(GSYS_GetGameData(work->gameSystem)), 1);
+        FieldSubscreen_Report_InitSave(Field_GetSubscreen(work->field));
+        if (FieldSubscreen_Report_IsLargeSave(Field_GetSubscreen(work->field)) == TRUE) {
+            Report_PrintMessageInstant(work, Global10520_Text_SavingLotDataDont);
+        } else {
+            Report_PrintMessageInstant(work, Global10520_Text_SavingDontTurnOff);
+        }
+        *state = REPORT_STATE_WAIT_PRINT;
+        break;
+    case REPORT_STATE_WAIT_PRINT:
+        if (Report_UpdatePrintQueue(work) == TRUE) {
+            Report_StartPlayerSaveSeq(work);
+            *state = REPORT_STATE_WAIT_PLAYER;
+        }
+        break;
+    case REPORT_STATE_WAIT_PLAYER:
+        if (Report_IsPlayerSeqDone(work) == TRUE) {
+            *state = REPORT_STATE_SAVE;
+        }
+        break;
+    case REPORT_STATE_SAVE:
+        if (Report_IsAvatarReady(work)) {
+            work->report->waitIcon =
+                WaitIcon_Create(GFL_VBlankGetTCBMgr(), work->report->window.window, 0xf, 0x10, work->heapId);
+            FieldSubscreen_Report_StartBar(Field_GetSubscreen(work->field));
+            Report_StartSaveIcon(work);
+            GameData_StartSave(GSYS_GetGameData(work->gameSystem));
+            *state = REPORT_STATE_SAVING;
+        }
+        break;
+    case REPORT_STATE_SAVING:
+        switch (GameData_UpdateSave(GSYS_GetGameData(work->gameSystem))) {
+        case SAVE_RESULT_CONTINUE:
+        case SAVE_RESULT_LAST:
+            break;
+        case SAVE_RESULT_OK:
+            *state = REPORT_STATE_SAVED;
+            break;
+        case SAVE_RESULT_NG:
+            FieldSubscreen_Report_StopBar(Field_GetSubscreen(work->field));
+            Report_EndSaveIcon(work);
+            Report_EndPlayerSaveSeq(work);
+            Report_PrintMessage(work, Global10520_Text_SaveError);
+            WaitIcon_Free(work->report->waitIcon);
+            *state = REPORT_STATE_SAVE_FAILED;
+            break;
+        }
+        break;
+    case REPORT_STATE_SAVED:
+        if (FieldSubscreen_Report_IsBarFull(Field_GetSubscreen(work->field)) == TRUE) {
+            GFL_SndSEPlay(SEQ_SE_SAVE);
+            Report_EndSaveIcon(work);
+            Report_EndPlayerSaveSeq(work);
+            wordSet = GFL_WordSetSystemCreateDefault(work->heapId);
+            str = GFL_MsgDataLoadStrbufNew(work->report->msgData, Global10520_Text_SavedGame);
+            copyVarForText(wordSet, 0, GetGameDataPlayerInfo(GSYS_GetGameData(work->gameSystem)));
+            GFL_WordSetFormatStrbuf(wordSet, work->report->strbuf, str);
+            GFL_StrBufFree(str);
+            GFL_WordSetSystemFree(wordSet);
+            Report_StartStream(work);
+            WaitIcon_Free(work->report->waitIcon);
+            *state = REPORT_STATE_WAIT_SAVED_MESSAGE;
+        }
+        break;
+    case REPORT_STATE_WAIT_SAVED_MESSAGE:
+        if (Report_IsPlayerSeqDone(work) == TRUE && Report_IsAvatarReady(work) && Report_UpdateMessage(work) == FALSE) {
+            *state = REPORT_STATE_WAIT_SAVE_SE;
+        }
+        break;
+    case REPORT_STATE_WAIT_SAVE_SE:
+        if (!GFL_SndIsPlaying(SEQ_SE_SAVE)) {
+            *state = REPORT_STATE_WAIT_KEY_OR_TIMER;
+        }
+        break;
+    case REPORT_STATE_SAVE_FAILED:
+        if (Report_IsPlayerSeqDone(work) != TRUE || !Report_IsAvatarReady(work)) {
+            break;
+        }
+        *state = REPORT_STATE_WAIT_MESSAGE;
+        // fallthrough
+    case REPORT_STATE_WAIT_MESSAGE:
+        if (Report_UpdateMessage(work) == FALSE) {
+            *state = REPORT_STATE_WAIT_KEY;
+        }
+        break;
+    case REPORT_STATE_WAIT_KEY:
+        if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
+            *state = REPORT_STATE_EXIT;
+        }
+        break;
+    case REPORT_STATE_WAIT_KEY_OR_TIMER:
+        if (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)) {
+            *state = REPORT_STATE_EXIT;
+        }
+        if (work->report->timer >= 150) {
+            *state = REPORT_STATE_EXIT;
+        } else {
+            work->report->timer++;
+        }
+        break;
+    case REPORT_STATE_BACK:
+        Report_Exit(work);
+        FieldSubscreen_ReqChange(Field_GetSubscreen(work->field), FLD_SUBSCREEN_ID_FIELD_MENU);
+        *state = REPORT_STATE_BACK_END;
+        break;
+    case REPORT_STATE_BACK_END:
+        return EVENT_SAVE_RESULT_BACK;
+    case REPORT_STATE_EXIT:
+        Report_Exit(work);
+        if (work->screenId == FLD_SUBSCREEN_ID_FUNFEST || work->screenId == FLD_SUBSCREEN_ID_ENTRALINK) {
+            FieldSubscreen *subscreen = Field_GetSubscreen(work->field);
+            FieldSubscreen_ReqChange(subscreen, work->screenId);
+        } else {
+            FieldSubscreen_ReqChange(Field_GetSubscreen(work->field), FLD_SUBSCREEN_ID_DEFAULT);
+        }
+        *state = REPORT_STATE_END;
+        break;
+    case REPORT_STATE_END:
+        FieldSubscreen_ResumeField(Field_GetSubscreen(work->field), work->heapId);
+        return EVENT_SAVE_RESULT_DONE;
+    }
+    return EVENT_SAVE_RESULT_RUNNING;
+}
+
+static void Report_Exit(EventSaveWork *work) {
+    Report_FreeYesNoRes(work);
+    Report_FreeWindow(work);
+    PrintQueue_Free(work->report->printQueue);
+    KeyCursor_Free(work->report->cursor);
+    GFL_TCBExMgrFree(work->report->tcbManager);
+    GFL_StrBufFree(work->report->strbuf);
+    GFL_MsgDataFree(work->report->msgData);
+    GFL_HeapFree(work->report);
+}
+
+static void Report_CreateWindow(EventSaveWork *work) {
+    work->report->window.window = BmpWin_CreateDynamic(6, 1, 1, 30, 4, 12, 1);
+    LoadSysMsgBox(6, 1, 13, 0, work->heapId);
+    GFL_BGSysLoadNCLRDefault(0x17, 5, 4, 0x180, 0x20, work->heapId);
+}
+
+static void Report_FreeWindow(EventSaveWork *work) {
+    BmpWin_Free(work->report->window.window);
+}
+
+static void Report_PrintMessage(EventSaveWork *work, u32 messageId) {
+    GFL_MsgDataLoadStrbuf(work->report->msgData, messageId, work->report->strbuf);
+    Report_StartStream(work);
+}
+
+static void Report_StartStream(EventSaveWork *work) {
+    ReportWork *report;
+    BmpWin *window;
+
+    GFL_BitmapFill(BmpWin_GetBitmap(work->report->window.window), 15);
+    BmpWin_DrawFrame(work->report->window.window, 2, 1, 13);
+    report = work->report;
+    work->report->stream =
+        PrintStream_Create(report->window.window, 0, 0, report->strbuf, MsgBGPrinter_GetFont(work->msgBgSys),
+                           TextSpeed_GetCurrentWait(), report->tcbManager, 10, work->heapId, 15);
+    work->report->continued = FALSE;
+    window = work->report->window.window;
+    BmpWin_Transfer(window);
+}
+
+static BOOL Report_UpdateStream(EventSaveWork *work) {
+    switch (PrintStream_GetState(work->report->stream)) {
+    case PRINT_STREAM_RUNNING:
+        if (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetHeldKeys() & (PAD_BUTTON_A | PAD_BUTTON_B))) {
+            PrintStream_SkipWait(work->report->stream, 0);
+        }
+        work->report->continued = FALSE;
+        break;
+    case PRINT_STREAM_PAUSED:
+        if (work->report->continued == FALSE &&
+            (GFL_HIDIsTouchPressed() == TRUE || (GCTX_HIDGetPressedKeys() & (PAD_BUTTON_A | PAD_BUTTON_B)))) {
+            GFL_SndSEPlay(SEQ_SE_MESSAGE);
+            PrintStream_Continue(work->report->stream);
+            work->report->continued = TRUE;
+        }
+        break;
+    case PRINT_STREAM_DONE:
+        PrintStream_Delete(work->report->stream);
+        work->report->continued = FALSE;
+        return FALSE;
+    }
+    return TRUE;
+}
+
+// Prints at twice the speed
+static BOOL Report_UpdateMessage(EventSaveWork *work) {
+    GFL_TCBExMgrUpdate(work->report->tcbManager);
+    KeyCursor_Update(work->report->cursor, work->report->stream, work->report->window.window);
+    if (Report_UpdateStream(work) == FALSE) {
+        return FALSE;
+    }
+    GFL_TCBExMgrUpdate(work->report->tcbManager);
+    KeyCursor_Update(work->report->cursor, work->report->stream, work->report->window.window);
+    return Report_UpdateStream(work);
+}
+
+static void Report_PrintMessageInstant(EventSaveWork *work, u32 messageId) {
+    StrBuf *str;
+    ReportWindow *reportWindow;
+    PrintQueue *queue;
+    Font *font;
+    BmpWin *window;
+
+    GFL_BitmapFill(BmpWin_GetBitmap(work->report->window.window), 15);
+    BmpWin_DrawFrame(work->report->window.window, 2, 1, 13);
+    str = GFL_MsgDataLoadStrbufNew(work->report->msgData, messageId);
+    font = MsgBGPrinter_GetFont(work->msgBgSys);
+    reportWindow = &work->report->window;
+    queue = work->report->printQueue;
+    PrintQueue_Print(queue, BmpWin_GetBitmap(reportWindow->window), 0, 0, str, font);
+    reportWindow->printing = TRUE;
+    GFL_StrBufFree(str);
+    window = work->report->window.window;
+    BmpWin_Transfer(window);
+}
+
+static BOOL Report_UpdatePrintQueue(EventSaveWork *work) {
+    ReportWindow *reportWindow;
+    PrintQueue *queue;
+
+    PrintQueue_Main(work->report->printQueue);
+    queue = work->report->printQueue;
+    reportWindow = &work->report->window;
+    if (reportWindow->printing && !PrintQueue_IsBitmapPending(queue, BmpWin_GetBitmap(reportWindow->window))) {
+        BmpWin_FlushChar(reportWindow->window);
+        reportWindow->printing = FALSE;
+    }
+    return PrintQueue_IsEmpty(work->report->printQueue);
+}
+
+static void Report_CreateYesNoRes(EventSaveWork *work) {
+    MsgData *msgData = GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_REPORT, work->heapId);
+
+    work->report->items[0].str = GFL_MsgDataLoadStrbufNew(msgData, Report_Text_Yes);
+    work->report->items[0].color = 0x39e3;
+    work->report->items[0].type = 0;
+    work->report->items[1].str = GFL_MsgDataLoadStrbufNew(msgData, Report_Text_No);
+    work->report->items[1].color = 0x39e3;
+    work->report->items[1].type = 0;
+    GFL_MsgDataFree(msgData);
+    work->report->menuRes = AppTaskMenuRes_Create(6, 14, MsgBGPrinter_GetFont(work->msgBgSys),
+                                                  MsgBGPrinter_GetPrintQue(work->msgBgSys), work->heapId);
+}
+
+static void Report_FreeYesNoRes(EventSaveWork *work) {
+    AppTaskMenuRes_Free(work->report->menuRes);
+    GFL_StrBufFree(work->report->items[1].str);
+    GFL_StrBufFree(work->report->items[0].str);
+}
+
+static void Report_OpenYesNoMenu(EventSaveWork *work) {
+    AppTaskMenuInit init;
+
+    init.heapId = work->heapId;
+    init.itemCount = 2;
+    init.items = work->report->items;
+    init.posType = APP_TASKMENU_POS_BOTTOM_RIGHT;
+    init.x = 32;
+    init.y = 12;
+    init.width = 8;
+    init.height = 3;
+    work->report->menu = AppTaskMenu_CreateFastFlash(&init, work->report->menuRes);
+}
+
+// 0 for yes, 1 for no, and -1 until one is picked
+static int Report_UpdateYesNoMenu(EventSaveWork *work) {
+    u32 pos;
+
+    AppTaskMenu_Update(work->report->menu);
+    if (AppTaskMenu_IsFlashFinished(work->report->menu) == TRUE) {
+        pos = AppTaskMenu_GetCursorPos(work->report->menu);
+        AppTaskMenu_Free(work->report->menu);
+        if (pos == 0) {
+            return 0;
+        }
+        return 1;
+    }
+    return -1;
+}
+
+static void Report_StartPlayerSaveSeq(EventSaveWork *work) {
+    FieldPlayer *player = Field_GetPlayer(work->field);
+    FieldActor *actor;
+
+    if (FieldPlayer_CheckNotWaterForm(player) == TRUE) {
+        actor = FieldPlayer_GetActor(player);
+        FieldPlayer_SetSpecialSeq(player, 0x20);
+        EnableActorMovement(actor);
+        ClearActorFlag(actor, 0x10);
+        FieldPlayer_StepFormChange(player);
+    }
+}
+
+static void Report_EndPlayerSaveSeq(EventSaveWork *work) {
+    FieldPlayer *player = Field_GetPlayer(work->field);
+
+    if (FieldPlayer_CheckNotWaterForm(player) == TRUE) {
+        FieldPlayer_SetSpecialSeq(player, 8);
+        FieldPlayer_StepFormChange(player);
+    }
+}
+
+static BOOL Report_IsPlayerSeqDone(EventSaveWork *work) {
+    FieldPlayer *player = Field_GetPlayer(work->field);
+
+    if (FieldPlayer_CheckNotWaterForm(player) == FALSE) {
+        return TRUE;
+    }
+    if (FieldPlayer_StepFormChange(player) == TRUE) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static BOOL Report_IsAvatarReady(EventSaveWork *work) {
+    FieldPlayer *player = Field_GetPlayer(work->field);
+
+    if (FieldPlayer_CheckNotWaterForm(player) == TRUE) {
+        return FieldPlayer_CheckAnimePaused(player);
+    }
+    return TRUE;
+}
+
+static void Report_StartSaveIcon(EventSaveWork *work) {
+    work->report->effect = FieldSaveanime_Create(work->heapId, work->field);
+    FieldSaveanime_Start(work->report->effect);
+}
+
+static void Report_EndSaveIcon(EventSaveWork *work) {
+    FieldSaveanime_Stop(work->report->effect);
+    FieldSaveanime_Delete(work->report->effect);
+}

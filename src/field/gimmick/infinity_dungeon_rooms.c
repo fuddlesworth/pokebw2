@@ -2,11 +2,11 @@
 // of the NPCs in them, the 640 trainers and the tables by rank, the shuffles of the generator, the seeds, the trainer
 // slots of a room, and the maze that digs the passages of each floor and puts the rooms in it. The ROM has no name for
 // this file, which is the one after infinity_dungeon.c: named after what it holds
-#include "field/infinity_dungeon_rooms.h"
+#include "field/gimmick/infinity_dungeon_rooms.h"
 #include "types.h"
 #include "constants/version.h"
 #include "constants/zones.h"
-#include "field/infinity_dungeon.h"
+#include "field/gimmick/infinity_dungeon.h"
 #include "gfl/std.h"
 #include "nitro/math.h"
 

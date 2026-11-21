@@ -1,7 +1,6 @@
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btl_net.h"
-#include "battle/btl_setup.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"
@@ -11,6 +10,7 @@
 #include "pml/poke_party.h"
 #include "save/chatter.h"
 #include "save/player_info.h"
+#include "system/btl_setup.h"
 #include "system/str_tool.h"
 
 // The link battle's commands, in the order of BTL_NET_COMMANDS

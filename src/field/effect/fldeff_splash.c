@@ -1,9 +1,9 @@
 // The splash around an actor wading through water: field effect FLDEFF_SPLASH. The name is the ROM's own, from
 // GFL_HeapAllocate's file argument.
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/field_g3dobj.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_g3dobj.h"
+#include "field/effect/field_effect.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"

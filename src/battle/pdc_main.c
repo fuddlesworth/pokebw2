@@ -3,10 +3,10 @@
 // is the ROM's string, from GFL_HeapAllocate's assert
 
 #include "types.h"
-#include "app/pdc_main.h"
-#include "app/pdc_msg.h"
-#include "battle/b_bag_main.h"
-#include "battle/btlv_input.h"
+#include "battle/graphic/btlv_input.h"
+#include "battle/pdc_main.h"
+#include "battle/pdc_msg.h"
+#include "battle/select/b_bag_main.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "gfl/bg_sys.h"

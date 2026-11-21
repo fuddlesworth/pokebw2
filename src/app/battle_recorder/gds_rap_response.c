@@ -4,7 +4,7 @@
 // assertion's strings, which gds_rap.c has too.
 
 #include "types.h"
-#include "app/gds_rap.h"
+#include "app/battle_recorder/gds_rap.h"
 #include "gfl/std.h"
 #include "poke_net/poke_net_gds.h"
 #include "save/battle_rec.h"

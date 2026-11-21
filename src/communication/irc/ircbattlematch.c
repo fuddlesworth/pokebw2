@@ -1,11 +1,10 @@
 #include "types.h"
-#include "communication/ircbattlematch.h"
-#include "communication/net_devirc.h"
+#include "communication/delivery_irc.h"
+#include "communication/irc/ircbattlematch.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
-#include "field/delivery_irc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -40,6 +39,7 @@
 #include "system/palanm.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "wifi/device/net_devirc.h"
 
 // Overlay 174's ircbattlematch.c, named after its string: the infrared match screen of the infrared menu's battles,
 // trades and friend codes, the musical and the Battle Subway. The players make an infrared connection, which shows

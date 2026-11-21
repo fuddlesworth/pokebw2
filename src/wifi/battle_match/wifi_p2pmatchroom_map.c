@@ -1,7 +1,7 @@
 #include "types.h"
-#include "wifi/wf2dmap_map.h"
-#include "wifi/wifi_p2pmatchroom.h"
-#include "wifi/wifi_p2pmatchroom_map.h"
+#include "wifi/2dmap/wf2dmap_map.h"
+#include "wifi/battle_match/wifi_p2pmatchroom.h"
+#include "wifi/battle_match/wifi_p2pmatchroom_map.h"
 
 // The maps of the Wi-Fi Club match board's room: one more block of eight seats and a PC for every eight friends of the
 // friend list. The ROM has no name for this file: it is named after the older games' wifi_p2pmatchroom_map.c

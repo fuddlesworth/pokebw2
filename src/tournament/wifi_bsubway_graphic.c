@@ -8,7 +8,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
-#include "wifi/wifi_bsubway_graphic.h"
+#include "tournament/wifi_bsubway_graphic.h"
 
 // The BGs of the Wi-Fi Battle Subway's screen, named after the ROM's "wifi_bsubway_graphic.c". It is the graphic
 // template of pkwd_selectscreen_graphic.c without the cell actors

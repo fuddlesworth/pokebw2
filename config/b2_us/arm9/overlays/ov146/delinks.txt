@@ -2,6 +2,6 @@
     .ctor       start:0x021f5c50 end:0x021f5c50 kind:rodata align:4
     .bss        start:0x021f5c60 end:0x021f5c60 kind:bss align:32
 
-src/field/eventcmd/event_encounter_cutin.c:
+src/field/encounter/event_encounter_cutin.c:
     complete
     .text       start:0x021f59e0 end:0x021f5c50

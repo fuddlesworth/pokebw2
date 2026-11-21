@@ -3,8 +3,8 @@
 
 #include "types.h"
 // For the files that call field_msgbg.c through this header: comm_entry_menu.c, field_subscreen.c and fieldmap.c
-#include "field/field_msgbg.h"
-#include "field/height_ex.h"
+#include "field/map/height_ex.h"
+#include "field/menu/field_msgbg.h"
 #include "gfl/bmpwin.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

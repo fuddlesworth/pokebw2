@@ -1,5 +1,4 @@
-#include "app/pokelist.h"
-#include "battle/regulation.h"
+#include "app/pokelist/pokelist.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/pokemon.h"
@@ -19,6 +18,7 @@
 #include "system/hp_gauge.h"
 #include "system/poke_icon.h"
 #include "system/printsys.h"
+#include "system/regulation.h"
 #include "system/wordset.h"
 #include "text/system/party_list.h"
 

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/pms_select_graphic.h"
+#include "app/pms/pms_select_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

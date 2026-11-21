@@ -4,7 +4,7 @@
 #include "entralink/fest_mission_gimmick.h"
 #include "entralink/fest_mission_hollow.h"
 #include "entralink/festival.h"
-#include "field/rival_select.h"
+#include "entralink/rival_select.h"
 #include "gfl/std.h"
 #include "nitro/math.h"
 

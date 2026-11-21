@@ -1,4 +1,4 @@
-#include "app/p_status_local.h"
+#include "app/p_status/p_status_local.h"
 #include "constants/arc.h"
 #include "constants/met_locations.h"
 #include "constants/pokemon.h"

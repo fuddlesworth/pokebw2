@@ -4,8 +4,8 @@
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "nnsys/g2d.h"
-#include "wifi/wf2dmap_scrdraw.h"
-#include "wifi/wf2dmap_scroll.h"
+#include "wifi/2dmap/wf2dmap_scrdraw.h"
+#include "wifi/2dmap/wf2dmap_scroll.h"
 
 // Draws the Wi-Fi Club's 2D map on a BG, named after the ROM's "wf2dmap_scrdraw.c"
 

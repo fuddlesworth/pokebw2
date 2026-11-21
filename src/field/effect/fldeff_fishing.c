@@ -1,7 +1,7 @@
 // The ripples where the fishing line meets the water. The name is the ROM's own, from GFL_HeapAllocate's file
 // argument. Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/field_effect.h"
+#include "field/effect/field_effect.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"

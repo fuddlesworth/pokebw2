@@ -4,10 +4,10 @@
 // shared one, and the shared one starts with its smallest object. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "field/event/field_pokemon_form.h"
 #include "field/field.h"
 #include "field/field_internal.h"
-#include "field/field_pokemon_form.h"
-#include "field/player_state.h"
+#include "field/player/player_state.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 #include "system/game_comm.h"

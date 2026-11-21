@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/psel_graphic.h"
+#include "app/pokemon_select/psel_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

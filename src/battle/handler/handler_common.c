@@ -5,7 +5,7 @@
 #include "battle/btl_pokeparam.h"
 #include "battle/btl_server_flow.h"
 #include "battle/btl_tables.h"
-#include "battle/handler_common.h"
+#include "battle/handler/handler_common.h"
 #include "constants/items.h"
 #include "constants/species.h"
 #include "pml/move.h"

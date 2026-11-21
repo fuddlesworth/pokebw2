@@ -1,6 +1,6 @@
-#include "app/pmsiv_tool.h"
+#include "app/pms/pmsiv_tool.h"
 #include "types.h"
-#include "app/pms_input_view.h"
+#include "app/pms/pms_input_view.h"
 #include "gfl/bg_sys.h"
 #include "gfl/graphics.h"
 #include "gfl/tcb.h"

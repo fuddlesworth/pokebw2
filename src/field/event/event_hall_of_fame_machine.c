@@ -2,12 +2,12 @@
 // name). Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), in English: swan's EventDendouMachine
 // is EventHallOfFameMachine
 #include "types.h"
-#include "field/event_hall_of_fame_machine.h"
+#include "field/event/event_hall_of_fame_machine.h"
 #include "field/field.h"
-#include "field/field_g3d_mapper.h"
-#include "field/field_map.h"
 #include "field/field_party.h"
-#include "field/field_prop.h"
+#include "field/map/field_g3d_mapper.h"
+#include "field/map/field_map.h"
+#include "field/map/field_prop.h"
 #include "gfl/calctool.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"

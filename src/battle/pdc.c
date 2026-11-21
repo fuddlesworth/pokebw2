@@ -3,8 +3,8 @@
 // GFL_HeapAllocate's assert. pdc_main.c has the scene and pdc_msg.c the messages
 
 #include "types.h"
-#include "app/pdc.h"
-#include "app/pdc_main.h"
+#include "battle/pdc.h"
+#include "battle/pdc_main.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"

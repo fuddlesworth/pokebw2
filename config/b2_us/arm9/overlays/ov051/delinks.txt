@@ -3,7 +3,7 @@
     .ctor       start:0x021e59a0 end:0x021e59a0 kind:rodata align:4
     .bss        start:0x021e59c0 end:0x021e59c0 kind:bss align:32
 
-src/field/eventcmd/scrcmd_pleasure_boat.c:
+src/field/script_facility/scrcmd_pleasure_boat.c:
     complete
     .text       start:0x021e5800 end:0x021e5984
     .rodata     start:0x021e5984 end:0x021e59a0

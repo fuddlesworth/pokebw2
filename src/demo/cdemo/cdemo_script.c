@@ -1,4 +1,4 @@
-#include "app/cdemo.h"
+#include "demo/cdemo/cdemo.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/heap.h"

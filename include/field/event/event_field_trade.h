@@ -1,0 +1,38 @@
+#ifndef POKEBW2_FIELD_EVENT_EVENT_FIELD_TRADE_H
+#define POKEBW2_FIELD_EVENT_EVENT_FIELD_TRADE_H
+
+// Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
+
+#include "types.h"
+#include "communication/fld_trade.h"
+#include "demo/evolution/evolution_demo.h"
+#include "struct_decls.h"
+#include "system/game_event.h"
+
+typedef struct {
+    GameSystem *gameSystem;
+    GameData *gameData;
+    PokeParty *party;
+    u8 offerIndex;
+    u8 partyIndex;
+    u8 paddingE[2];
+    FieldTradeInput *input;
+    u8 subprocessData[0x30];
+    GameData *transitionGameData;
+    PartyPkm *partyPkm;
+    PartyPkm *tradePkm;
+    PlayerInfo *playerInfo;
+    PlayerInfo *tradeTrainer;
+    EvolutionDemoParam *evolutionParam;
+} EventFieldTradeWork;
+
+GameEvent *EventFieldTrade_Create(GameSystem *gsys, u8 offerIndex, u8 partyIndex);
+GameEventReturnCode EventFieldTrade_Callback(GameEvent *event, u32 *state, void *data);
+void EventFieldTrade_CreatePkm(GameData *gameData, HeapID heapId, PartyPkm *pkm, FieldTradeOfferData *offer,
+                               u32 offerIndex);
+void EventFieldTrade_DebugLogPkm(PartyPkm *pkm);
+void FieldTradeInput_DumpTradeData(FieldTradeOfferData *param);
+
+extern const GameProcFunctions POKEMONTRADE_IRCDEMO_PROC_FUNCTIONS;
+
+#endif // POKEBW2_FIELD_EVENT_FIELD_TRADE_H

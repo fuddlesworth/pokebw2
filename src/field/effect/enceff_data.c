@@ -4,11 +4,11 @@
 // is no end of comm_entry_menu.c, which nothing of this table uses, so it is a file of its own. Table name from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/encounter_effect.h"
-#include "field/encounter_effect_model.h"
-#include "field/encounter_effect_ripple.h"
-#include "field/encounter_effect_spread.h"
-#include "field/event_encounter_cutin.h"
+#include "field/encounter/encounter_effect.h"
+#include "field/encounter/encounter_effect_model.h"
+#include "field/encounter/encounter_effect_ripple.h"
+#include "field/encounter/encounter_effect_spread.h"
+#include "field/encounter/event_encounter_cutin.h"
 
 const EncEffInfo ENC_EFFECT_CONTROLLERS[ENCEFF_COUNT] = {
     /* 0 */ { (EncEffCreateFunc)EncEffModel_CreateModel7, EncEffModel_Render, 149, 1, 0x13010 },

@@ -2,7 +2,7 @@
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "gfl/random.h"
 #include "pml/item.h"
 #include "pml/poke_friendship.h"

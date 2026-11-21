@@ -1,4 +1,4 @@
-#include "app/error_window_screen.h"
+#include "app/ui/error_window_screen.h"
 #include "types.h"
 #include "constants/arc.h"
 #include "gfl/arc_util.h"

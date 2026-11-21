@@ -1,7 +1,7 @@
 // Script commands of the rival's hollows (a descriptive name)
 #include "types.h"
-#include "field/field_script.h"
-#include "field/scrcmd_hollow_rival.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_hollow_rival.h"
 #include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"

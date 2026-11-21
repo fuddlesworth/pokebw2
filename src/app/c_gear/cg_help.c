@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/cg_help.h"
+#include "app/c_gear/cg_help.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"

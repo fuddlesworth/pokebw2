@@ -2,10 +2,10 @@
 // the ROM's own, from GFL_HeapAllocate's file argument. Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "field/actor/field_actor.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

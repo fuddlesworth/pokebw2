@@ -1,8 +1,8 @@
 // The ROM names this file guru2.c.
 #include "types.h"
-#include "app/p_status.h"
-#include "app/pokelist.h"
-#include "app/spin_trade.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
+#include "app/spin_trade/spin_trade.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/overlay.h"

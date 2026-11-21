@@ -6,8 +6,8 @@
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "system/game_system.h"
-#include "system/iss_3ds_sys.h"
-#include "system/iss_sys.h"
+#include "system/iss/iss_3ds_sys.h"
+#include "system/iss/iss_sys.h"
 
 // The field's sound emitters: a 3D sound unit that follows a matrix, which a motion curve can move. The name is the
 // ROM's own, from GFL_HeapAllocate's file argument. Function names from swan

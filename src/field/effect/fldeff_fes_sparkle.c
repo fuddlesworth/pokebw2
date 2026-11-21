@@ -2,8 +2,8 @@
 // fldeff_fes_kira.c, by GFL_HeapAllocate's file argument ("kira" is sparkle). Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_effect.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"

@@ -10,7 +10,7 @@
 #include "tournament/wbt.h"
 #include "tournament/wbt_download.h"
 #include "tournament/wbt_download_net_util.h"
-#include "wifi/wifi_login.h"
+#include "wifi/login/wifi_login.h"
 
 // The process that downloads tournaments for the Pokémon World Tournament over Wi-Fi: it logs in, runs the download of
 // wbt_download_net_util.c, logs out and shows the tournaments with overlay 326's T_DOWNLOAD. The name is the ROM's

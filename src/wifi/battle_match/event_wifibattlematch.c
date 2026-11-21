@@ -1,15 +1,15 @@
 #include "types.h"
-#include "field/event_wifibattlematch.h"
-#include "field/field_event.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"
 #include "save/records.h"
 #include "save/save_control.h"
+#include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "wifi/wifibattlematch.h"
+#include "wifi/battle_match/event_wifibattlematch.h"
+#include "wifi/battle_match/wifibattlematch.h"
 
 // The steps of the event
 enum {

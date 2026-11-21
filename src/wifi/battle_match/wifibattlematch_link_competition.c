@@ -6,9 +6,7 @@
 // message box and menus
 
 #include "types.h"
-#include "app/livebattlematch_flow.h"
 #include "battle/btl_result.h"
-#include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -43,13 +41,15 @@
 #include "system/pms.h"
 #include "system/pms_data.h"
 #include "system/printsys.h"
+#include "system/regulation.h"
 #include "system/wordset.h"
 #include "text/system/wifi_battle_match.h"
-#include "wifi/wifibattlematch_graphic.h"
-#include "wifi/wifibattlematch_link.h"
-#include "wifi/wifibattlematch_net.h"
-#include "wifi/wifibattlematch_util.h"
-#include "wifi/wifibattlematch_view.h"
+#include "wifi/battle_match/livebattlematch_flow.h"
+#include "wifi/battle_match/wifibattlematch_graphic.h"
+#include "wifi/battle_match/wifibattlematch_link.h"
+#include "wifi/battle_match/wifibattlematch_net.h"
+#include "wifi/battle_match/wifibattlematch_util.h"
+#include "wifi/battle_match/wifibattlematch_view.h"
 
 enum {
     COMPETITION_PHASE_FADE_IN = 0,

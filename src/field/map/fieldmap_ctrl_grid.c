@@ -1,10 +1,10 @@
 // The controller of the maps where the player moves on the grid. Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
+#include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_controller.h"
-#include "field/field_player.h"
+#include "field/map/field_controller.h"
+#include "field/player/field_player.h"
 #include "gfl/heap.h"
 #include "gfl/key.h"
 

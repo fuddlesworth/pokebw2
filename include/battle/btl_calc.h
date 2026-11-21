@@ -7,6 +7,7 @@
 #include "types.h"
 #include "battle/btl_pokeparam.h"
 #include "gfl/heap.h"
+#include "nitro/fx.h"
 #include "nitro/math.h"
 #include "pml/move.h"
 #include "struct_decls.h"

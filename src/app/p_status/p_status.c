@@ -1,5 +1,5 @@
-#include "app/p_status.h"
-#include "app/p_status_local.h"
+#include "app/p_status/p_status.h"
+#include "app/p_status/p_status_local.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "gfl/heap.h"

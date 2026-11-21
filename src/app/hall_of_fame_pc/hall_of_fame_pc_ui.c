@@ -1,7 +1,7 @@
 #include "types.h"
-#include "app/hall_of_fame_pc_main.h"
-#include "app/hall_of_fame_pc_obj.h"
-#include "app/hall_of_fame_pc_ui.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_main.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_obj.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_ui.h"
 #include "gfl/key.h"
 #include "gfl/touchpanel.h"
 

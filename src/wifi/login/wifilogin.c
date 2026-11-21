@@ -4,7 +4,7 @@
 // process (our name). It draws with wifilogin_disp.c and prints with wifilogin_message.c
 
 #include "types.h"
-#include "app/error_window_screen.h"
+#include "app/ui/error_window_screen.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "dwc/dwc.h"
@@ -31,9 +31,9 @@
 #include "system/game_data.h"
 #include "system/wipe.h"
 #include "text/system/wifi_error.h"
-#include "wifi/wifi_login.h"
-#include "wifi/wifilogin_disp.h"
-#include "wifi/wifilogin_message.h"
+#include "wifi/login/wifi_login.h"
+#include "wifi/login/wifilogin_disp.h"
+#include "wifi/login/wifilogin_message.h"
 
 typedef struct WifiLoginWork WifiLoginWork;
 typedef void (*WifiLoginStateFunc)(WifiLoginWork *work);

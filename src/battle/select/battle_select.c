@@ -1,9 +1,7 @@
-#include "battle/battle_select.h"
+#include "battle/select/battle_select.h"
 #include "types.h"
-#include "app/p_status.h"
-#include "app/pokelist.h"
-#include "battle/btl_setup.h"
-#include "battle/regulation.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
@@ -17,7 +15,9 @@
 #include "pml/poke_party.h"
 #include "save/pokedex_savedata.h"
 #include "save/save_control.h"
+#include "system/btl_setup.h"
 #include "system/game_data.h"
+#include "system/regulation.h"
 
 // The net command that sends the team picked, after the party list's commands
 #define BATTLE_SELECT_NET_CMD_BASE 0x2f00

@@ -1,8 +1,8 @@
 #include "system/boot_proc.h"
 #include "types.h"
-#include "app/boot_screens.h"
-#include "app/cdemo.h"
-#include "app/title.h"
+#include "demo/cdemo/cdemo.h"
+#include "demo/title/boot_screens.h"
+#include "demo/title/title.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 

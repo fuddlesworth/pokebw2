@@ -3,10 +3,9 @@
 // argument. Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
-#include "battle/regulation.h"
 #include "field/field.h"
-#include "field/field_script.h"
-#include "field/scrcmd_fld_battle.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_fld_battle.h"
 #include "gfl/heap.h"
 #include "save/box.h"
 #include "save/pokedex_savedata.h"
@@ -14,6 +13,7 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/regulation.h"
 #include "system/vm.h"
 #include "system/wordset.h"
 

@@ -1,11 +1,11 @@
 // Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 // The linear task's names are our descriptive guesses.
 
-#include "field/fieldmap_tcb_camera_zoom.h"
+#include "field/map/fieldmap_tcb_camera_zoom.h"
 #include "types.h"
+#include "field/camera/field_camera.h"
 #include "field/field.h"
 #include "field/field_animation_curve.h"
-#include "field/field_camera.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
 #include "nitro/fx.h"

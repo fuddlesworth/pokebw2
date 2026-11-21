@@ -1,6 +1,6 @@
 // The ROM names this file zukan_search_engine.c.
 #include "types.h"
-#include "app/pokedex_search_engine.h"
+#include "app/pokedex/pokedex_search_engine.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"

@@ -3,7 +3,7 @@
     .ctor       start:0x021f5dc4 end:0x021f5dc4 kind:rodata align:4
     .bss        start:0x021f5de0 end:0x021f5de0 kind:bss align:32
 
-src/field/eventcmd/encounter_effect_capture.c:
+src/field/encounter/encounter_effect_capture.c:
     complete
     .text       start:0x021f5a20 end:0x021f5db8
     .rodata     start:0x021f5db8 end:0x021f5dc4

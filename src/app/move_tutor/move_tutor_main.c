@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/p_status.h"
+#include "app/p_status/p_status.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

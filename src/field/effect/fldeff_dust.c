@@ -1,9 +1,9 @@
 // The puff of dust where a field actor lands or steps. The ROM names it fldeff_kemuri.c, by GFL_HeapAllocate's file
 // argument ("kemuri" is smoke). Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/field_g3dobj.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_g3dobj.h"
+#include "field/effect/field_effect.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 

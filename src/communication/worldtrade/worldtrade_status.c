@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/p_status.h"
-#include "communication/worldtrade_local.h"
+#include "app/p_status/p_status.h"
+#include "communication/worldtrade/worldtrade_local.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"

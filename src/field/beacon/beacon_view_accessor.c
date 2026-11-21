@@ -1,6 +1,6 @@
 #include "types.h"
 #include "entralink/festival.h"
-#include "field/beacon_view.h"
+#include "field/beacon/beacon_view.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "save/high_link.h"

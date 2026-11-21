@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/field_weather.h"
-#include "field/weather_sandstorm.h"
+#include "field/weather/field_weather.h"
+#include "field/weather/weather_sandstorm.h"
 #include "gfl/clact.h"
 #include "gfl/random.h"
 

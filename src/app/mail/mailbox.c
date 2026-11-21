@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/mailbox.h"
-#include "app/mailbox_local.h"
+#include "app/mail/mailbox.h"
+#include "app/mail/mailbox_local.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 #include "gfl/std.h"

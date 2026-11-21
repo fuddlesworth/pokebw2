@@ -2,10 +2,10 @@
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
-#include "wifi/wf2dmap_common.h"
-#include "wifi/wf2dmap_obj.h"
-#include "wifi/wf2dmap_objdraw.h"
-#include "wifi/wifi_2dchar.h"
+#include "wifi/2dmap/wf2dmap_common.h"
+#include "wifi/2dmap/wf2dmap_obj.h"
+#include "wifi/2dmap/wf2dmap_objdraw.h"
+#include "wifi/2dmap/wifi_2dchar.h"
 
 // Draws the objects of the Wi-Fi Club's 2D map, named after the ROM's "wf2dmap_objdraw.c"
 

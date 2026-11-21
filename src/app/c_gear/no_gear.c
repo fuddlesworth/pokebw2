@@ -1,6 +1,6 @@
 #include "types.h"
+#include "app/c_gear/no_gear.h"
 #include "constants/arc.h"
-#include "field/no_gear.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

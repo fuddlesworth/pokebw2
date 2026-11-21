@@ -2,7 +2,7 @@
 #include "app/mb_parent/mb_util_msg.h"
 #include "constants/arc.h"
 #include "constants/script_text_banks.h"
-#include "field/talkmsgwin.h"
+#include "field/menu/talkmsgwin.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"

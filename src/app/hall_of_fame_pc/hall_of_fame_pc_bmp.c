@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/hall_of_fame_pc_bmp.h"
-#include "app/hall_of_fame_pc_main.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_bmp.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_main.h"
 #include "app/ui/print_msg.h"
 #include "constants/species.h"
 #include "gfl/bg_sys.h"

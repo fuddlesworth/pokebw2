@@ -3,7 +3,7 @@
     .data       start:0x0216e9e0 end:0x0216ea00 kind:data align:32
     .bss        start:0x0216ea00 end:0x0216ea00 kind:bss align:32
 
-src/app/p_status/event_poke_status.c:
+src/field/event/event_poke_status.c:
     complete
     .text       start:0x0216e660 end:0x0216e9d4
     .data       start:0x0216e9e0 end:0x0216ea00

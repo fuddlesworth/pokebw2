@@ -1,10 +1,10 @@
 // Two script commands that move an actor outside its movement codes: one raises or lowers it to a height over frames,
 // and one holds it in place for a few frames. The name is descriptive
 #include "types.h"
+#include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_script.h"
-#include "field/scrcmd_actor_move.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_actor_move.h"
 #include "nitro/fx.h"
 #include "system/game_event.h"
 #include "system/game_system.h"

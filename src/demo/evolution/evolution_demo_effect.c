@@ -2,7 +2,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "demo/demo_particle.h"
-#include "demo/evolution_demo.h"
+#include "demo/evolution/evolution_demo.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/particle.h"

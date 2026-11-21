@@ -6,7 +6,6 @@
 #include "app/battle_recorder/br_bvrank_proc.h"
 #include "app/battle_recorder/br_core.h"
 #include "app/battle_recorder/br_start_proc.h"
-#include "field/field_sound.h"
 #include "gfl/fade.h"
 #include "gfl/net.h"
 #include "gfl/overlay.h"
@@ -19,6 +18,7 @@
 #include "save/records.h"
 #include "save/save_control.h"
 #include "save/trainer_card.h"
+#include "system/field_sound.h"
 #include "system/game_data.h"
 
 typedef struct {

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "demo/the_end.h"
+#include "demo/ending/the_end.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

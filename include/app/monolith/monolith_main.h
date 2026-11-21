@@ -2,7 +2,7 @@
 #define POKEBW2_APP_MONOLITH_MONOLITH_MAIN_H
 
 #include "types.h"
-#include "app/monolith.h"
+#include "app/monolith/monolith.h"
 #include "gfl/clact.h"
 #include "save/high_link.h"
 #include "struct_decls.h"

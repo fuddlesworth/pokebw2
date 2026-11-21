@@ -4,7 +4,7 @@
 #include "constants/sound.h"
 #include "constants/species.h"
 #include "demo/demo_particle.h"
-#include "demo/egg_demo.h"
+#include "demo/egg/egg_demo.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/particle.h"

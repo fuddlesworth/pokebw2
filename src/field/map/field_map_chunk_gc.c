@@ -1,9 +1,9 @@
 #include "types.h"
-#include "field/field_g3d_mapper.h"
-#include "field/field_map.h"
-#include "field/field_map_chunk.h"
-#include "field/field_prop.h"
-#include "field/field_terrain_animator.h"
+#include "field/map/field_g3d_mapper.h"
+#include "field/map/field_map.h"
+#include "field/map/field_map_chunk.h"
+#include "field/map/field_prop.h"
+#include "field/map/field_terrain_animator.h"
 #include "gfl/std.h"
 
 // A 'GC' chunk file, with two layers of terrain: a model, the terrain of each layer and props. The ROM doesn't name the

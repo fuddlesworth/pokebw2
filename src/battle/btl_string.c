@@ -6,7 +6,6 @@
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
 #include "battle/btl_result.h"
-#include "battle/btl_setup.h"
 #include "battle/btl_string.h"
 #include "battle/trainer_data.h"
 #include "constants/arc.h"
@@ -15,6 +14,7 @@
 #include "gfl/str.h"
 #include "save/player_info.h"
 #include "stdarg.h"
+#include "system/btl_setup.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
 

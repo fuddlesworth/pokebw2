@@ -3,8 +3,8 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
 #include "constants/items.h"
-#include "field/field_script.h"
-#include "field/scrcmd_item.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_item.h"
 #include "pml/item.h"
 #include "save/bag.h"
 #include "system/game_data.h"

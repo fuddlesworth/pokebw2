@@ -5,6 +5,7 @@
 #include "battle/btl_handler.h"
 #include "battle/btl_server.h"
 #include "constants/battle.h"
+#include "nitro/fx.h"
 #include "struct_decls.h"
 
 // The stat that a move's stat change affects, as PML_MoveGetStatChangeStage returns it: one stat from 1, a

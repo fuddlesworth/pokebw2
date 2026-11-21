@@ -1,7 +1,7 @@
 #include "types.h"
 #include "field/field.h"
-#include "field/field_map.h"
-#include "field/gym_nacrene.h"
+#include "field/gimmick/gym_nacrene.h"
+#include "field/map/field_map.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 

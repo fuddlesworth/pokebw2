@@ -1,4 +1,4 @@
-#include "battle/btl_move_rec.h"
+#include "battle/record/btl_move_rec.h"
 #include "types.h"
 #include "constants/moves.h"
 #include "gfl/std.h"

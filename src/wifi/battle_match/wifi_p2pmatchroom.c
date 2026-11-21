@@ -10,9 +10,9 @@
 #include "nitro/fx.h"
 #include "nitro/os.h"
 #include "nnsys/gfd.h"
-#include "wifi/wf2dmap_judge.h"
-#include "wifi/wifi_p2pmatchroom.h"
-#include "wifi/wifi_p2pmatchroom_map.h"
+#include "wifi/2dmap/wf2dmap_judge.h"
+#include "wifi/battle_match/wifi_p2pmatchroom.h"
+#include "wifi/battle_match/wifi_p2pmatchroom_map.h"
 
 // The room of the Wi-Fi Club's match board, where the player walks among the friends who are online. The ROM has no
 // name for this file: it is named after the older games' wifi_p2pmatchroom.c, and so are its functions

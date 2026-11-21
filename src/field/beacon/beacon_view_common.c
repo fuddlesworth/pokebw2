@@ -2,7 +2,7 @@
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/beacon_view_common.h"
+#include "field/beacon/beacon_view_common.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"

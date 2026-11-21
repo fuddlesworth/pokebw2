@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_status.h"
 #include "gfl/heap.h"
+#include "system/field_status.h"
 
 // The field's status that is not saved as it is: whether the game was just loaded or continued, Flash, the script
 // reserved for the next map and what the field is busy with.

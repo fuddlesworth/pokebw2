@@ -1,13 +1,13 @@
 // The Pokémon World Tournament's events, which the script plugins of its entrance (overlay 56) and stadium (overlay 57)
 // and overlay 55's commands start: picking the Pokémon to enter, the list of Trainers, a round's battle, and the
 // records and downloaded tournaments. The name is descriptive
-#include "field/event_wbt.h"
-#include "app/p_status.h"
-#include "app/pokelist.h"
-#include "field/event_battle.h"
-#include "field/field_event.h"
+#include "tournament/event_wbt.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
+#include "field/event/event_battle.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"

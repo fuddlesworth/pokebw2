@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/boot_screens.h"
 #include "constants/arc.h"
+#include "demo/title/boot_screens.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/fade.h"

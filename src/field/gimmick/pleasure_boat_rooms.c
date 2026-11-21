@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/pleasure_boat.h"
-#include "field/pleasure_boat_rooms.h"
+#include "field/event/pleasure_boat.h"
+#include "field/gimmick/pleasure_boat_rooms.h"
 #include "gfl/random.h"
 #include "nitro/rtc.h"
 

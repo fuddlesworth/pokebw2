@@ -1,6 +1,6 @@
-#include "app/comm_tvt/ctvt_game_balloon.h"
+#include "communication/xtransceiver/ctvt_game_balloon.h"
 #include "types.h"
-#include "app/comm_tvt/ctvt_game.h"
+#include "communication/xtransceiver/ctvt_game.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"

@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/psel.h"
-#include "app/psel_graphic.h"
+#include "app/pokemon_select/psel.h"
+#include "app/pokemon_select/psel_graphic.h"
 #include "constants/arc.h"
 #include "constants/script_text_banks.h"
 #include "constants/sound.h"

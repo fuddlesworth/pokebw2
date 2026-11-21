@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/pokelist.h"
+#include "app/pokelist/pokelist.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "pml/mail.h"

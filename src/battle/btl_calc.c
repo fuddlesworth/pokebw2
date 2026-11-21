@@ -2,10 +2,9 @@
 #include "battle/btl_calc.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/btl_pospoke.h"
 #include "battle/btl_result.h"
-#include "battle/btl_setup.h"
 #include "battle/btl_tables.h"
+#include "battle/select/btl_pospoke.h"
 #include "battle/trainer_data.h"
 #include "constants/battle.h"
 #include "constants/moves.h"
@@ -17,6 +16,7 @@
 #include "pml/move.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
+#include "system/btl_setup.h"
 
 // A numerator and a denominator
 typedef struct {

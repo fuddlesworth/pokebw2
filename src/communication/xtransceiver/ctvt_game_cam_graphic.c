@@ -1,4 +1,4 @@
-#include "app/comm_tvt/ctvt_game_cam_graphic.h"
+#include "communication/xtransceiver/ctvt_game_cam_graphic.h"
 #include "types.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"

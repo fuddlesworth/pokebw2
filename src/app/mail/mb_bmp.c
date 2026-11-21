@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/mailbox_local.h"
+#include "app/mail/mailbox_local.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"

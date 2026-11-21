@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/btl_rec_sel_graphic.h"
+#include "app/battle_recorder/btl_rec_sel_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

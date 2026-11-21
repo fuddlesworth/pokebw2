@@ -1,6 +1,6 @@
 // The ROM names this file zukan_detail_procsys.c.
 #include "types.h"
-#include "app/pokedex_detail.h"
+#include "app/pokedex/pokedex_detail.h"
 #include "gfl/heap.h"
 
 // Runs one of the Pokédex detail screens' pages (its info, map, cry and forms) as a small process: its init, main and

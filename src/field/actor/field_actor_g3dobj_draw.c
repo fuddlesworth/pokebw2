@@ -4,9 +4,9 @@
 // after field_actor_g3dobj.c whose models it draws, is a guess. It is a file of its own because its table lies after
 // field_rail_loader.c's 48-byte RAIL_OBJ_ANIMS, past the end of that file's size-sorted .rodata
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_actor_internal.h"
-#include "field/field_g3dobj.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_internal.h"
+#include "field/actor/field_g3dobj.h"
 #include "nitro/fx.h"
 
 static void FieldActorG3DObjDraw_Create(FieldActor *actor) {

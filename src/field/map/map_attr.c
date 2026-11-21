@@ -2,8 +2,8 @@
 // the rest. The name is descriptive; the ROM has no string for this file. Function names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/field_g3d_mapper.h"
-#include "field/field_map.h"
+#include "field/map/field_g3d_mapper.h"
+#include "field/map/field_map.h"
 
 static BOOL MapTile_IsNormalTallGrassSingleBtl(u32 tileClass);
 static BOOL MapTile_IsTallGrassSingleBtl(u32 tileClass);

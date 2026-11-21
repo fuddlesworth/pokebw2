@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/drawing.h"
-#include "communication/union_app.h"
+#include "app/drawing/drawing.h"
+#include "communication/union/union_app.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
 #include "gfl/bmpwin.h"

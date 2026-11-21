@@ -4,10 +4,10 @@
 #include "types.h"
 #include "battle/btl_calc.h"
 #include "battle/btl_rec.h"
-#include "battle/btl_setup.h"
 #include "constants/battle.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"
+#include "system/btl_setup.h"
 
 // What IsAdjacentOpponent looks up for a position
 struct AdjacentOpponentData {

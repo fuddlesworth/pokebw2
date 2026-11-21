@@ -10,9 +10,9 @@
 
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
-#include "field/field_actor.h"
-#include "field/field_actor_drawdata.h"
-#include "field/field_actor_internal.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_drawdata.h"
+#include "field/actor/field_actor_internal.h"
 #include "gfl/billboard_actor.h"
 
 const FieldActorSceneNodeVTable *const FIELD_ACTOR_MAIN_VTABLES[] = {

@@ -3,7 +3,7 @@
     .ctor       start:0x021e5874 end:0x021e5874 kind:rodata align:4
     .bss        start:0x021e5880 end:0x021e5880 kind:bss align:32
 
-src/field/eventcmd/scrcmd_abyssal_ruins.c:
+src/field/script_facility/scrcmd_abyssal_ruins.c:
     complete
     .text       start:0x021e5800 end:0x021e5868
     .rodata     start:0x021e5868 end:0x021e5874

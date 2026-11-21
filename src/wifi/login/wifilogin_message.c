@@ -24,7 +24,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
-#include "wifi/wifilogin_message.h"
+#include "wifi/login/wifilogin_message.h"
 
 #define WIFILOGIN_MESSAGE_TITLE_BG 1
 

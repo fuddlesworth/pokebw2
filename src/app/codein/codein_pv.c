@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/codein.h"
-#include "app/codein_pv.h"
+#include "app/codein/codein.h"
+#include "app/codein/codein_pv.h"
 #include "constants/sound.h"
 #include "gfl/button_man.h"
 #include "gfl/clact.h"

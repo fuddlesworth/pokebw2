@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/bag_item.h"
+#include "app/bag/bag_item.h"
 #include "constants/items.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"

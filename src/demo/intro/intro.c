@@ -2,7 +2,7 @@
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "demo/intro.h"
+#include "demo/intro/intro.h"
 #include "gfl/msg.h"
 #include "gfl/std.h"
 #include "nitro/gx.h"

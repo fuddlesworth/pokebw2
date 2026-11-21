@@ -1,5 +1,5 @@
 #include "types.h"
-#include "battle/battle_rec_tool.h"
+#include "app/battle_recorder/battle_rec_tool.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/rtc_cache.h"

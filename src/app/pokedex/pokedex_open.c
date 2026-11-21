@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/pokedex_common.h"
-#include "app/pokedex_open.h"
+#include "app/pokedex/pokedex_common.h"
+#include "app/pokedex/pokedex_open.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

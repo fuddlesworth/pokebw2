@@ -2,7 +2,7 @@
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
 #include "constants/sound.h"
-#include "field/field_3dci.h"
+#include "field/encounter/field_3dci.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/particle.h"

@@ -1,6 +1,7 @@
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btlv.h"
+#include "battle/pokewood_cutin.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -10,7 +11,6 @@
 #include "gfl/std.h"
 #include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
-#include "pokewood/pokewood_cutin.h"
 #include "system/palanm.h"
 
 // Overlay 167's pokewood_cutin.c (named by its string): the cut-ins of the Pokestar Studios movies. A cut-in is a

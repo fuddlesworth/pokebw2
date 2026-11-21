@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/mailbox_local.h"
+#include "app/mail/mailbox_local.h"
 #include "gfl/key.h"
 #include "gfl/touchpanel.h"
 #include "system/cursor_move.h"

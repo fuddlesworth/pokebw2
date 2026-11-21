@@ -1,6 +1,6 @@
 // The ROM names this file zukan_toroku_graphic.c.
 #include "types.h"
-#include "app/pokedex_registration_graphic.h"
+#include "app/pokedex/pokedex_registration_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

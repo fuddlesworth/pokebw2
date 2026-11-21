@@ -1,6 +1,6 @@
 #include "types.h"
-#include "field/field_map.h"
-#include "field/zone.h"
+#include "field/map/field_map.h"
+#include "field/map/zone.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"

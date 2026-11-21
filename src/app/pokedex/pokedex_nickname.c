@@ -1,7 +1,7 @@
 // The ROM names this file zukan_nickname.c.
 #include "types.h"
-#include "app/pokedex_nickname.h"
-#include "battle/btlv_input.h"
+#include "app/pokedex/pokedex_nickname.h"
+#include "battle/graphic/btlv_input.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

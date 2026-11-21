@@ -2,10 +2,10 @@
 // it fldeff_gyoe.c, by GFL_HeapAllocate's file argument ("gyoe" is a cry of surprise).
 #include "types.h"
 #include "constants/sound.h"
+#include "field/actor/field_actor.h"
+#include "field/camera/field_camera.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_actor.h"
-#include "field/field_camera.h"
-#include "field/field_effect.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"

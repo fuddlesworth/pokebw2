@@ -1,0 +1,485 @@
+#include "types.h"
+#include "app/name_input/name_entry.h"
+#include "battle/battle_facility.h"
+#include "battle/fld_btl_inst_event.h"
+#include "constants/pokemon.h"
+#include "field/effect/field_effect.h"
+#include "field/event/trial_house.h"
+#include "gfl/backup_system.h"
+#include "gfl/heap.h"
+#include "gfl/key.h"
+#include "gfl/net.h"
+#include "gfl/random.h"
+#include "gfl/std.h"
+#include "gfl/touchpanel.h"
+#include "gfl/ui.h"
+#include "pml/poke_party.h"
+#include "save/battle_examination.h"
+#include "save/records.h"
+#include "save/save_control.h"
+#include "save/trial_house.h"
+#include "struct_decls.h"
+#include "system/game_data.h"
+#include "system/game_event.h"
+#include "system/game_system.h"
+#include "system/version.h"
+#include <stddef.h>
+
+struct TrialHouseWork *CreateTrialHouseWk(GameSystem *gsys) {
+    u32 saveSize = BattleExamination_GetSize();
+    GameData *gameData = GSYS_GetGameData(gsys);
+    struct TrialHouseWork *work;
+
+    GameData_GetSaveControl(gameData);
+    work = GFL_HeapAllocate(HEAPID_TRIAL_HOUSE, sizeof(struct TrialHouseWork), TRUE, "trial_house.c", 0x5d);
+    work->heapId = HEAPID_TRIAL_HOUSE;
+    work->saveBuffer = GFL_HeapAllocate(HEAPID_TRIAL_HOUSE, saveSize, TRUE, "trial_house.c", 0x5f);
+    TrialHouse_LoadDeliveryState(gsys, work);
+    work->party = PokeParty_Create(work->heapId);
+    return work;
+}
+
+void TrialHouse_LoadDeliveryState(GameSystem *gsys, TrialHouseWork *work) {
+    u32 state;
+    SaveControl *save;
+    void *buffer;
+    BattleExaminationSave *extraSave;
+
+    save = GameData_GetSaveControl(GSYS_GetGameData(gsys));
+    buffer = GFL_HeapAllocate(HEAPID_TAIL(HEAPID_GAMEEVENT), BATTLE_EXAMINATION_LOAD_SIZE, TRUE, "trial_house.c", 0x79);
+    SaveControl_LoadExtraBlock(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, HEAPID_TAIL(HEAPID_GAMEEVENT), buffer,
+                               BATTLE_EXAMINATION_LOAD_SIZE);
+    extraSave = getAddressOfExtraSaveBlk(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, 0);
+    state = TRIAL_HOUSE_DELIVERY_NONE;
+    if (BattleExamination_IsValid(extraSave)) {
+        if (BattleExamination_IsSingle(extraSave)) {
+            state = TRIAL_HOUSE_DELIVERY_SINGLE;
+        } else {
+            state = TRIAL_HOUSE_DELIVERY_DOUBLE;
+        }
+    }
+    freeIntermediateSaveExtraBlksAfterLoad2(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION);
+    GFL_HeapFree(buffer);
+    work->initState = state;
+}
+
+void TrialHouseWorkDelete(void *unused, struct TrialHouseWork **workPtr) {
+    if (*workPtr != NULL) {
+        GFL_HeapFree((*workPtr)->saveBuffer);
+        GFL_HeapFree((*workPtr)->party);
+        GFL_HeapFree(*workPtr);
+        *workPtr = NULL;
+    }
+}
+
+void TrialHouse_SetBattleMode(TrialHouseWork *work, u32 mode) {
+    u32 battleType;
+
+    if (work != NULL) {
+        if (mode <= BSUBWAY_MODE_DOUBLE) {
+            if (mode == BSUBWAY_MODE_SINGLE) {
+                battleType = BSUBWAY_MODE_SINGLE;
+                work->capacity = 3;
+            } else {
+                battleType = BSUBWAY_MODE_DOUBLE;
+                work->capacity = 4;
+            }
+            work->battleType = battleType;
+        } else {
+            work->battleType = BSUBWAY_MODE_SINGLE;
+            work->capacity = 3;
+        }
+        PokeParty_InitCore(work->party, work->capacity);
+    }
+}
+
+void TrialHouse_SetSelectionFlag(TrialHouseWork *work, u32 selectionFlag) {
+    work->selectionFlag = selectionFlag;
+}
+
+u32 TrialHouse_LoadTrainer(GameSystem *gsys, TrialHouseWork *work, u32 trainerIndex) {
+    if (work->selectionFlag != 0) {
+        TrialHouse_LoadDeliveredTrainer(gsys, work, trainerIndex);
+    } else {
+        TrialHouse_BuildTrainerFromMode(work, trainerIndex);
+    }
+    return TrialHouse_GetTrainerObjCode(work);
+}
+
+void TrialHouse_BuildTrainerFromMode(TrialHouseWork *work, u32 trainerIndex) {
+    u32 base;
+    u32 range;
+    u32 value;
+
+    switch (trainerIndex) {
+    case 0:
+        base = 0x32;
+        range = 0x14;
+        break;
+    case 1:
+        base = 0x6e;
+        range = 0x32;
+        break;
+    case 2:
+        base = 0xa0;
+        range = 0x14;
+        break;
+    case 3:
+        base = 0xf0;
+        range = 0x1e;
+        break;
+    case 4:
+        base = 0x10e;
+        range = 0x1e;
+        break;
+    default:
+        base = 0x32;
+        range = 0x14;
+        break;
+    }
+    value = base + GFL_RandomLC(range);
+    BtlInst_MakeRomTrainerAndTeam(&work->trainer, value, work->capacity, NULL, NULL, NULL, HEAPID_TAIL(work->heapId));
+}
+
+void TrialHouse_LoadDeliveredTrainer(GameSystem *gsys, TrialHouseWork *work, u32 trainerIndex) {
+    SaveControl *save;
+    void *buffer;
+    BattleExaminationSave *extra;
+
+    save = GameData_GetSaveControl(GSYS_GetGameData(gsys));
+    buffer =
+        GFL_HeapAllocate(HEAPID_TAIL(HEAPID_GAMEEVENT), BATTLE_EXAMINATION_LOAD_SIZE, TRUE, "trial_house.c", 0x14c);
+    if (SaveControl_LoadExtraBlock(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, HEAPID_TAIL(HEAPID_GAMEEVENT), buffer,
+                                   BATTLE_EXAMINATION_LOAD_SIZE) == 1) {
+        extra = getAddressOfExtraSaveBlk(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, 0);
+        work->trainer = *BattleExamination_GetTrainer(extra, trainerIndex);
+    }
+    freeIntermediateSaveExtraBlksAfterLoad2(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION);
+    GFL_HeapFree(buffer);
+}
+
+u32 TrialHouse_GetTrainerObjCode(TrialHouseWork *work) {
+    return BtlInst_GetTrainerClassObjCode(work->trainer.trainerId);
+}
+
+GameEvent *TrialHouse_CreateTrainerMsgEvent(GameSystem *gsys, TrialHouseWork *work, u32 index, u32 actorId) {
+    return EventBtlInstTrainerMsg_Create(gsys, &work->trainer, index, (u16)actorId);
+}
+
+GameEvent *TrialHouse_CreateDeliveryTask(GameSystem *gsys, TrialHouseWork *work, u16 *result) {
+    GameEvent *event;
+    struct TrialHouseEventData *data;
+
+    event = GameEvent_Create(gsys, NULL, TrialHouse_DeliveryTaskMain, sizeof(struct TrialHouseEventData));
+    data = GameEvent_GetData(event);
+    data->gsys = gsys;
+    data->result = result;
+    data->work = work;
+    data->timeout = 0;
+    data->init.code = 0x2e;
+    data->init.data[0].datasize = BattleExamination_GetSize();
+    data->init.data[0].pData = (u8 *)work->saveBuffer;
+    data->init.data[0].region = region;
+#ifdef BLACK2
+    data->init.data[0].mask = 0x800000;
+#else
+    data->init.data[0].mask = 0x400000;
+#endif
+    data->init.dataNum = 1;
+    data->init.flag4 = 0;
+    data->init.heapId = HEAPID_TAIL(HEAPID_FIELDMAP);
+    return event;
+}
+
+// The steps of receiving a battle examination: start the beacon, let it run for 120 frames, see whether any examination
+// was found, receive it, end the beacon and wait for the network to close, and read the examination's state again.
+// B cancels while it runs
+enum {
+    TRIAL_HOUSE_DELIVERY_STEP_START,
+    TRIAL_HOUSE_DELIVERY_STEP_WAIT,
+    TRIAL_HOUSE_DELIVERY_STEP_SEARCH,
+    TRIAL_HOUSE_DELIVERY_STEP_RECEIVE,
+    TRIAL_HOUSE_DELIVERY_STEP_END,
+    TRIAL_HOUSE_DELIVERY_STEP_WAIT_NET_EXIT,
+    TRIAL_HOUSE_DELIVERY_STEP_RELOAD,
+};
+
+GameEventReturnCode TrialHouse_DeliveryTaskMain(GameEvent *event, u32 *state, void *arg) {
+    TrialHouseEventData *data;
+    GameSystem *gsys;
+    GameData *gameData;
+    TrialHouseSave *save;
+    BattleExaminationSave *saveBuffer;
+    u32 a;
+    u32 b;
+    u32 c;
+
+    data = arg;
+    gsys = data->gsys;
+    switch (*state) {
+    case TRIAL_HOUSE_DELIVERY_STEP_START:
+        data->subwork = DeliveryBeacon_Init(&data->init);
+        if (DeliveryBeacon_RecvStart(data->subwork) == 0) {
+            *data->result = TRIAL_HOUSE_RECEIVE_NOT_RECEIVED;
+            *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+        } else {
+            *state = TRIAL_HOUSE_DELIVERY_STEP_WAIT;
+        }
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_WAIT:
+        if (GCTX_HIDGetPressedKeys() == PAD_BUTTON_B) {
+            *data->result = TRIAL_HOUSE_RECEIVE_CANCELED;
+            *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+            break;
+        }
+        DeliveryBeacon_Main(data->subwork);
+        data->timeout++;
+        if (data->timeout > 120) {
+            *state = TRIAL_HOUSE_DELIVERY_STEP_SEARCH;
+        }
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_SEARCH:
+        if (GCTX_HIDGetPressedKeys() == PAD_BUTTON_B) {
+            *data->result = TRIAL_HOUSE_RECEIVE_CANCELED;
+            *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+            break;
+        }
+        DeliveryBeacon_Main(data->subwork);
+        if (DeliveryBeacon_IsAnyReceived(data->subwork)) {
+            *state = TRIAL_HOUSE_DELIVERY_STEP_RECEIVE;
+        } else {
+            *data->result = TRIAL_HOUSE_RECEIVE_NOT_RECEIVED;
+            *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+        }
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_RECEIVE:
+        if (GCTX_HIDGetPressedKeys() == PAD_BUTTON_B) {
+            *data->result = TRIAL_HOUSE_RECEIVE_CANCELED;
+            *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+            break;
+        }
+        DeliveryBeacon_Main(data->subwork);
+        if (!DeliveryBeacon_IsReceiveDone(data->subwork)) {
+            break;
+        }
+        gameData = GSYS_GetGameData(gsys);
+        save = TrialHouseSave_Get(GameData_GetSaveControl(gameData));
+        saveBuffer = data->work->saveBuffer;
+        a = BattleExamination_GetNumber(saveBuffer);
+        b = BattleExamination_IsValid(saveBuffer);
+        c = TrialHouse_IsDeliveryIdReceived(save, a);
+        if (b != 0 && (c == 0 || a == 0)) {
+            TrialHouse_MarkDeliveryIdReceived(save, a);
+            BattleExamination_Load(gameData, data->work->saveBuffer, HEAPID_TAIL(HEAPID_GAMEEVENT));
+            *data->result = TRIAL_HOUSE_RECEIVE_RECEIVED;
+        } else if (c != 0) {
+            *data->result = TRIAL_HOUSE_RECEIVE_ALREADY_RECEIVED;
+        } else {
+            *data->result = TRIAL_HOUSE_RECEIVE_NOT_RECEIVED;
+        }
+        *state = TRIAL_HOUSE_DELIVERY_STEP_END;
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_END:
+        DeliveryBeacon_End(data->subwork);
+        *state = TRIAL_HOUSE_DELIVERY_STEP_WAIT_NET_EXIT;
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_WAIT_NET_EXIT:
+        if (GFL_NetIsNotInitialized()) {
+            *state = TRIAL_HOUSE_DELIVERY_STEP_RELOAD;
+        }
+        break;
+    case TRIAL_HOUSE_DELIVERY_STEP_RELOAD:
+        TrialHouse_LoadDeliveryState(gsys, data->work);
+        return GAMEEVENT_DONE;
+    }
+    return GAMEEVENT_CONTINUE;
+}
+
+void TrialHouseCalcPointScore(GameSystem *gsys, TrialHouseWork *work, u16 *rankOut, u16 *pointsOut) {
+    u16 *stats = work->stats;
+    s32 total;
+    SaveControl *save;
+    u32 points;
+    TrialHouseSave *thSave;
+    u32 rank;
+    TrialHouseRecord *record;
+    s32 i;
+    PartyPkm *pkm;
+    TrialHousePokemon *pokemon;
+    SaveControl *extraSaveControl;
+    void *buffer;
+    GameRecords *records;
+
+    total = 0;
+    total += stats[7] * 1000;
+    total += stats[8] * 80;
+    total += stats[1] * 5;
+    total += stats[3];
+    total += stats[5] * 5;
+    total += stats[6] * 2;
+    total += stats[11] * 15;
+    total -= stats[0] * 10;
+    total -= stats[2] * 10;
+    total -= stats[4] * 2;
+    total -= stats[9] * 80;
+    total -= 500 - stats[10];
+    if (total < 0) {
+        total = 0;
+    } else if (total > 9999) {
+        total = 9999;
+    }
+    points = total;
+    if (points >= 6000) {
+        rank = 6;
+    } else if (points >= 5000) {
+        rank = 5;
+    } else if (points >= 4000) {
+        rank = 4;
+    } else if (points >= 3000) {
+        rank = 3;
+    } else if (points >= 2000) {
+        rank = 2;
+    } else if (points >= 1000) {
+        rank = 1;
+    } else {
+        rank = 0;
+    }
+    *rankOut = rank;
+    *pointsOut = points;
+    save = GameData_GetSaveControl(GSYS_GetGameData(gsys));
+    thSave = TrialHouseSave_Get(save);
+    record = &thSave->records[(u8)(work->initState != TRIAL_HOUSE_DELIVERY_NONE ? 1 : 0)];
+    record->valid = TRUE;
+    if (work->capacity == 3) {
+        record->isDouble = FALSE;
+    } else if (work->capacity == 4) {
+        record->isDouble = TRUE;
+    } else {
+        record->isDouble = FALSE;
+    }
+    record->points = points;
+    MI_CpuFill8(record->pokemon, 0, sizeof(record->pokemon));
+    for (i = 0; i < (s32)work->capacity; i++) {
+        pokemon = &record->pokemon[i];
+        pkm = PokeParty_GetPkm(work->party, i);
+        pokemon->species = PokeParty_GetParam(pkm, PKM_PARAM_SPECIES, NULL);
+        pokemon->form = PokeParty_GetParam(pkm, PKM_PARAM_FORM, NULL);
+        pokemon->sex = PokeParty_GetParam(pkm, PKM_PARAM_SEX, NULL);
+    }
+    if (work->initState != TRIAL_HOUSE_DELIVERY_NONE) {
+        extraSaveControl = GameData_GetSaveControl(GSYS_GetGameData(gsys));
+        buffer =
+            GFL_HeapAllocate(HEAPID_TAIL(HEAPID_GAMEEVENT), BATTLE_EXAMINATION_LOAD_SIZE, TRUE, "trial_house.c", 0x277);
+        if (SaveControl_LoadExtraBlock(extraSaveControl, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION,
+                                       HEAPID_TAIL(HEAPID_GAMEEVENT), buffer, BATTLE_EXAMINATION_LOAD_SIZE) == 1) {
+            MI_CpuCopy8((u8 *)getAddressOfExtraSaveBlk(extraSaveControl, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, 0) +
+                            offsetof(BattleExaminationSave, name),
+                        thSave->examinationName, sizeof(thSave->examinationName));
+        }
+        GFL_HeapFree(buffer);
+        freeIntermediateSaveExtraBlksAfterLoad2(extraSaveControl, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION);
+    }
+    records = getTrainerCardInfoBlkAddress(save);
+    RecordSetTrialHousePoints(records, points);
+    RecordSetTrialHouseRank(records, rank);
+}
+
+u32 TrialHouse_GetDeliveryState(GameSystem *gsys, TrialHouseWork *work) {
+    return work->initState;
+}
+
+GameEvent *TrialHouse_CreateSaveTask(GameSystem *gsys, TrialHouseWork *work, u32 mode) {
+    GameEvent *event;
+    TrialHouseEffectEvent *data;
+
+    event = GameEvent_Create(gsys, NULL, TrialHouse_SaveTaskMain, sizeof(TrialHouseEffectEvent));
+    data = GameEvent_GetData(event);
+    data->gsys = gsys;
+    data->buffer = NULL;
+    data->mode = mode;
+    data->effect = FieldSaveanime_Create(0x8015, GSYS_GetField(gsys));
+    FieldSaveanime_Start(data->effect);
+    return event;
+}
+
+u32 TrialHouse_GetRecordSlotsState(GameSystem *gsys) {
+    TrialHouseSave *save;
+
+    save = TrialHouseSave_Get(GameData_GetSaveControl(GSYS_GetGameData(gsys)));
+    if (save->records[0].valid) {
+        if (save->records[1].valid) {
+            return TRIAL_HOUSE_RECORDS_BOTH;
+        }
+        return TRIAL_HOUSE_RECORDS_REGULAR;
+    }
+    if (save->records[1].valid) {
+        return TRIAL_HOUSE_RECORDS_DOWNLOADED;
+    }
+    return TRIAL_HOUSE_RECORDS_NONE;
+}
+
+u8 TrialHouse_IsDeliveryIdReceived(TrialHouseSave *save, u32 index) {
+    u8 byte;
+    u8 bit;
+
+    if (index < 128) {
+        byte = index / 8;
+        bit = index % 8;
+        return (save->bits[byte] >> bit) & 1;
+    }
+    return TRUE;
+}
+
+void TrialHouse_MarkDeliveryIdReceived(TrialHouseSave *save, u32 index) {
+    u8 byte;
+    u8 bit;
+
+    if (index < 128) {
+        byte = index / 8;
+        bit = index % 8;
+        save->bits[byte] |= 1 << bit;
+    }
+}
+
+// The steps of the save: start saving the examination block, marked as taken or cleared, then wait for it
+enum {
+    TRIAL_HOUSE_SAVE_STEP_START,
+    TRIAL_HOUSE_SAVE_STEP_WAIT,
+};
+
+GameEventReturnCode TrialHouse_SaveTaskMain(GameEvent *event, u32 *state, void *arg) {
+    TrialHouseEffectEvent *data;
+    GameData *gameData;
+    SaveControl *save;
+    BattleExaminationSave *extraSave;
+
+    data = arg;
+    gameData = GSYS_GetGameData(data->gsys);
+    save = GameData_GetSaveControl(gameData);
+    switch (*state) {
+    case TRIAL_HOUSE_SAVE_STEP_START:
+        data->buffer = GFL_HeapAllocate(HEAPID_TAIL(HEAPID_GAMEEVENT), BATTLE_EXAMINATION_LOAD_SIZE, FALSE,
+                                        "trial_house.c", 0x34c);
+        SaveControl_LoadExtraBlock(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, HEAPID_TAIL(HEAPID_GAMEEVENT),
+                                   data->buffer, BATTLE_EXAMINATION_LOAD_SIZE);
+        extraSave = getAddressOfExtraSaveBlk(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION, 0);
+        if (data->mode == 1) {
+            BattleExamination_SetUsed(extraSave);
+        } else {
+            MI_CpuFill8(extraSave, 0, BattleExamination_GetSize());
+        }
+        GameData_StartSaveBlock(gameData, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION);
+        (*state)++;
+        break;
+    case TRIAL_HOUSE_SAVE_STEP_WAIT:
+        if (GameData_UpdateSaveBlock(gameData, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION) == SAVE_RESULT_OK) {
+            freeIntermediateSaveExtraBlksAfterLoad2(save, SAVE_EXTRA_BLOCK_BATTLE_EXAMINATION);
+            GFL_HeapFree(data->buffer);
+            FieldSaveanime_Stop(data->effect);
+            FieldSaveanime_Delete(data->effect);
+            return GAMEEVENT_DONE;
+        }
+        break;
+    }
+    return GAMEEVENT_CONTINUE;
+}

@@ -23,9 +23,9 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/wifi_error.h"
-#include "wifi/wifi_login.h"
-#include "wifi/wifilogin_disp.h"
-#include "wifi/wifilogin_message.h"
+#include "wifi/login/wifi_login.h"
+#include "wifi/login/wifilogin_disp.h"
+#include "wifi/login/wifilogin_message.h"
 
 typedef struct WifiLogoutWork WifiLogoutWork;
 typedef void (*WifiLogoutStateFunc)(WifiLogoutWork *work);

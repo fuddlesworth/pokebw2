@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/manual.h"
-#include "app/manual_data.h"
+#include "app/manual/manual.h"
+#include "app/manual/manual_data.h"
 #include "constants/flags.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"

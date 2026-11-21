@@ -2,9 +2,8 @@
 #define POKEBW2_FIELD_POKEWOOD_SYSTEM_H
 
 #include "types.h"
-#include "app/p_status.h"
-#include "app/pokelist.h"
-#include "battle/regulation.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
 #include "constants/arc.h"
 #include "gfl/heap.h"
 #include "pokewood/pkwd_book.h"
@@ -12,6 +11,7 @@
 #include "pokewood/pkwd_selectscreen.h"
 #include "save/pokewood.h"
 #include "struct_decls.h"
+#include "system/regulation.h"
 
 // Pokéstar Studios' state while the player makes a movie, in overlay 62 with its script plugin (plugin 10). Overlay
 // 23's event_pokewood.c runs the movie

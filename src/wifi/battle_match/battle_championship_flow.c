@@ -1,6 +1,4 @@
-#include "app/battle_championship_flow.h"
 #include "types.h"
-#include "app/livebattlematch_flow.h"
 #include "constants/arc.h"
 #include "constants/script_text_banks.h"
 #include "constants/sound.h"
@@ -28,7 +26,9 @@
 #include "system/wordset.h"
 #include "text/script/global_10520.h"
 #include "text/system/battle_championship_flow.h"
-#include "wifi/digitalcardcheck.h"
+#include "wifi/battle_match/battle_championship_flow.h"
+#include "wifi/battle_match/digitalcardcheck.h"
+#include "wifi/battle_match/livebattlematch_flow.h"
 
 enum {
     CHAMP_TOP_CHOICE_WIFI = 0,

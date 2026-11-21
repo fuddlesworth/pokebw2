@@ -1,7 +1,7 @@
 // The ROM names this file zukan_common.c.
 #include "types.h"
-#include "app/pokedex_common.h"
-#include "app/pokedex_search_engine.h"
+#include "app/pokedex/pokedex_common.h"
+#include "app/pokedex/pokedex_search_engine.h"
 #include "constants/arc.h"
 #include "constants/flags.h"
 #include "constants/species.h"

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "battle/trainer_data.h"
-#include "field/field_script.h"
-#include "field/trainer_script.h"
+#include "field/script/field_script.h"
+#include "field/script/trainer_script.h"
 #include "nitro/os.h"
 #include "save/event_work.h"
 

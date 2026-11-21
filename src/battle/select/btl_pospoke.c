@@ -1,4 +1,4 @@
-#include "battle/btl_pospoke.h"
+#include "battle/select/btl_pospoke.h"
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"

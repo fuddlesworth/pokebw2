@@ -1,4 +1,4 @@
-#include "app/p_status_local.h"
+#include "app/p_status/p_status_local.h"
 #include "constants/pokemon.h"
 
 // The ribbons as the summary screen shows them: each one's Pokémon field, icon and palette, name and description, and

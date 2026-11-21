@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/trainer_card.h"
+#include "app/trainer_card/trainer_card.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"

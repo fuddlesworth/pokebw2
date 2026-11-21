@@ -1,0 +1,103 @@
+#ifndef POKEBW2_FIELD_ENCOUNTER_ENCOUNTER_EFFECT_H
+#define POKEBW2_FIELD_ENCOUNTER_ENCOUNTER_EFFECT_H
+
+#include "types.h"
+#include "gfl/heap.h"
+#include "nitro/fx.h"
+#include "struct_decls.h"
+#include "system/game_event.h"
+
+// Overlay 150 runs the encounter effects that split the screen into a grid of cells, which overlays 152 to 154 set
+// up. Overlay 148 runs the event around such an effect
+
+// A cell of the screen, 0x40 bytes
+struct EncEffCell {
+    VecFx32 pos;
+    u8 padding0c[0xc];
+    u32 unk18;
+    s32 offset;
+    // The turn around the z axis
+    u32 angleZ;
+    // Added to pos.x each frame
+    fx32 speed;
+    u8 padding28[0x8];
+    s32 frame;
+    BOOL visible;
+    BOOL done;
+    // Called for each visible cell, until it returns TRUE
+    BOOL (*update)(EncEffCell *cell);
+};
+
+struct EncEffGrid {
+    EncEffCell cells[192];
+    // For the grid's update function
+    s32 work[2];
+    u16 columns;
+    u16 rows;
+    // The effect's own work: encounter_effect_spread.c keeps its EncEffSpread here
+    u8 effectWork[0x64];
+    void (*update)(EncEffGrid *grid);
+    // The fade at the end, and the clear color behind the cells, both white or both black
+    u32 fadeMode;
+    u32 clearColor;
+};
+
+struct EncEffGridParam {
+    // The size of a cell, in tiles
+    u32 cellWidth;
+    u32 cellHeight;
+    void (*init)(EncEffGrid *grid);
+    void (*update)(EncEffGrid *grid);
+    BOOL (*cellUpdate)(EncEffCell *cell);
+};
+
+#define ENCEFF_COUNT 38
+
+typedef GameEvent *(*EncEffCreateFunc)(GameSystem *gsys, Field *field, u32 param);
+
+// What it takes to run an effect
+typedef struct {
+    EncEffCreateFunc create;
+    void (*render)(EncEff *effect);
+    // The overlay with the effect's code, or -1 for none
+    s32 overlay;
+    u32 param;
+    // The smallest part of the heap that is free for the effect to run
+    u32 heapSize;
+} EncEffInfo;
+
+// Every encounter effect, by its ID, which EncEff_StartEvent runs
+extern const EncEffInfo ENC_EFFECT_CONTROLLERS[ENCEFF_COUNT];
+
+void EncEff_LoadCaptureGridSubOvls(EncEff *effect);
+// Loads overlay 148 alone, for the effects that draw the captured screen themselves
+void EncEff_LoadCaptureSubOvl(EncEff *effect);
+void *EncEff_AllocWorkArea(EncEff *effect, u32 size, HeapID heapId);
+void *EncEff_GetWorkArea(EncEff *effect);
+void *EncEff_GetEventData(EncEff *effect);
+Fld3DCi *Field_Get3DCi(Field *field);
+void EncEff_CallRenderFunc(EncEff *effect);
+GameEvent *EventFieldEffect_CreatePokeSprite(GameSystem *gsys, Fld3DCi *ci, u8 partySlot);
+GameEvent *EventFieldEffect_CreateAlderFly(GameSystem *gsys, Fld3DCi *ci, u32 actorId);
+// The event of an effect: init makes the effect's event, and render draws it
+GameEvent *EncEffCapture_CreateFlashEvent(GameSystem *gsys, const VecFx32 *pos, GameEvent *(*init)(GameSystem *gsys),
+                                          void (*render)(EncEffGrid *grid));
+void EncEffCapture_Draw(EncEffCaptureWork *work);
+GameEvent *EncEffGrid_CreateEvent(GameSystem *gsys, const EncEffGridParam *param, u32 mode);
+// Clears the screen to the grid's color, then draws the effect with overlay 148
+void EncEffGrid_ClearAndDraw(EncEff *effect);
+void EncEffGrid_Draw(EncEffGrid *grid);
+
+GameEvent *EncEffCells_Create(GameSystem *gsys, Field *field);
+GameEvent *EncEffCells_CreateGridEvent(GameSystem *gsys);
+void EncEffCells_Update(EncEffGrid *grid);
+BOOL EncEffCells_UpdateCell(EncEffCell *cell);
+
+GameEvent *EncEffColumns_Create(GameSystem *gsys, Field *field);
+GameEvent *EncEffColumns_CreateGridEvent(GameSystem *gsys);
+void EncEffColumns_Update(EncEffGrid *grid);
+BOOL EncEffColumns_UpdateCell(EncEffCell *cell);
+EncEff *EncEff_Create(HeapID heapId, Field *field);
+void EncEff_Free(EncEff *encEff);
+
+#endif // POKEBW2_FIELD_ENCOUNTER_EFFECT_H

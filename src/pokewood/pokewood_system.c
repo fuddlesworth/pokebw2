@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/btl_setup.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "constants/types.h"
@@ -13,6 +12,7 @@
 #include "save/pokewood.h"
 #include "save/records.h"
 #include "save/save_control.h"
+#include "system/btl_setup.h"
 #include "system/game_data.h"
 
 // The regulation of the movies' battles, in arc 106

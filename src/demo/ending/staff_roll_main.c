@@ -2,7 +2,7 @@
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
-#include "demo/staff_roll.h"
+#include "demo/ending/staff_roll.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

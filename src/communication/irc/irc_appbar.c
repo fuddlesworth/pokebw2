@@ -1,5 +1,5 @@
 #include "types.h"
-#include "communication/irc_appbar.h"
+#include "communication/irc/irc_appbar.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/config_panel.h"
+#include "app/config/config_panel.h"
 #include "app/ui/touchbar.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"

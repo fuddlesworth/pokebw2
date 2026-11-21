@@ -1,0 +1,41 @@
+#ifndef POKEBW2_FIELD_EVENT_FIELD_DAYCARE_H
+#define POKEBW2_FIELD_EVENT_FIELD_DAYCARE_H
+
+#include "types.h"
+#include "app/p_status/p_status.h"
+#include "app/pokelist/pokelist.h"
+#include "gfl/heap.h"
+#include "struct_decls.h"
+#include "system/game_event.h"
+
+// The event that picks a party Pokémon to leave at the day care
+typedef struct {
+    GameSystem *gsys;
+    Field *field;
+    PokeListParam *partyParam;
+    PStatusParam *summaryParam;
+    u16 *result;
+} DayCarePokeSelectWork;
+
+DayCare *Field_GetDayCare(Field *field);
+BOOL DayCare_CheckSpawnFlag(DayCare *dayCare);
+void DayCare_Breed(DayCare *dayCare, PokeParty *party);
+void DayCare_CheckResetSeed(DayCare *dayCare);
+GameEvent *EventDayCarePokeSelect_Create(GameSystem *gsys, Field *field, u16 *result);
+GameEventReturnCode EventDayCarePokeSelect_Callback(GameEvent *event, u32 *state, void *data);
+void DayCare_AddPkm(DayCare *dayCare, PokeParty *party, u32 slot);
+void DayCare_RemovePkm(DayCare *dayCare, u32 slot, PokeParty *party);
+u8 DayCare_GetPkmCount(DayCare *dayCare);
+u32 DayCare_CalcEggSpawnChance(DayCare *dayCare);
+PartyPkm *DayCare_GetPkm(DayCare *dayCare, u32 slot);
+u32 DayCare_CalcNewLevel(DayCare *dayCare, u32 slot);
+u32 DayCare_CalcLevelGain(DayCare *dayCare, u32 slot);
+u32 DayCare_CalcWithdrawCost(DayCare *dayCare, u32 slot);
+u32 getNameGenderStatus(PartyPkm *pkm);
+// The day care's work for the field, over the day care's save data
+DayCare *DayCare_Create(HeapID heapId, Field *field, DayCareSave *save);
+void DayCare_Free(DayCare *dayCare);
+// Counts a step of the Pokémon left there, and returns TRUE when an egg appears
+BOOL DayCare_Update(DayCare *dayCare);
+
+#endif // POKEBW2_FIELD_FIELD_DAYCARE_H

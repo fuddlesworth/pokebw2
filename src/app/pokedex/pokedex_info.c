@@ -1,4 +1,4 @@
-#include "app/pokedex_info.h"
+#include "app/pokedex/pokedex_info.h"
 #include "types.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"

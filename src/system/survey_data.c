@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/survey.h"
+#include "field/event/survey.h"
 #include "save/survey_savedata.h"
 
 // The tables of the passerby survey's questions: the messages of their answers, and where the answers are kept in

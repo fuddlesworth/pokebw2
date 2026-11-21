@@ -4,13 +4,13 @@
 #include "types.h"
 #include "battle/btl_action.h"
 #include "battle/btl_action_order.h"
-#include "battle/btl_faintrec.h"
 #include "battle/btl_handler_work.h"
-#include "battle/btl_monset.h"
-#include "battle/btl_move_rec.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/btl_pospoke.h"
 #include "battle/btl_server.h"
+#include "battle/record/btl_faintrec.h"
+#include "battle/record/btl_monset.h"
+#include "battle/record/btl_move_rec.h"
+#include "battle/select/btl_pospoke.h"
 #include "struct_decls.h"
 
 // The start of every handler command's parameters

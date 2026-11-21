@@ -3,11 +3,11 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
+#include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/field_effect.h"
-#include "field/field_script.h"
-#include "field/scrcmd_save.h"
-#include "field/subscreen.h"
+#include "field/menu/subscreen.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_save.h"
 #include "gfl/backup_system.h"
 #include "pokewood/pokewood_system.h"
 #include "save/records.h"

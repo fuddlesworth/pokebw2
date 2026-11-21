@@ -5,7 +5,7 @@
 #include "constants/trainers.h"
 #include "constants/version.h"
 #include "constants/zones.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "gfl/str.h"

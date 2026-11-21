@@ -6,7 +6,7 @@
 #include "types.h"
 #include "app/ui/touchbar.h"
 #include "app/ui/ui_scene.h"
-#include "communication/gtsnego_local.h"
+#include "communication/gts/gtsnego_local.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"

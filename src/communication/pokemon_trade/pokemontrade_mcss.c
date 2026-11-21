@@ -1,6 +1,6 @@
 #include "types.h"
-#include "communication/pokemon_trade_local.h"
-#include "communication/pokemontrade_mcss.h"
+#include "communication/pokemon_trade/pokemon_trade_local.h"
+#include "communication/pokemon_trade/pokemontrade_mcss.h"
 #include "constants/sound.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"

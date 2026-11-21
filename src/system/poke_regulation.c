@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/regulation.h"
 #include "constants/arc.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
@@ -12,6 +11,7 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "pml/poke_party.h"
+#include "system/regulation.h"
 #include "system/wordset.h"
 #include "text/system/poke_regulation.h"
 

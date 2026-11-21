@@ -1,0 +1,407 @@
+#ifndef POKEBW2_FIELD_MAP_ZONE_H
+#define POKEBW2_FIELD_MAP_ZONE_H
+
+// Names, layouts and constants from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
+
+#include "types.h"
+#include "gfl/heap.h"
+#include "nitro/fx.h"
+#include "struct_decls.h"
+
+// The number of zones, one past the last, which code also uses for no zone
+#define ZONE_MAX 615
+
+struct RailPosition {
+    u16 componentId;
+    u8 componentIsLine;
+    u8 railDirection;
+    s16 posSide;
+    u16 posFront;
+};
+
+typedef union {
+    VecFx32 vec;
+    RailPosition rail;
+} FieldPosition;
+
+struct ZoneSpawnInfo {
+    u32 changeType;
+    s16 zoneId;
+    s16 warpId;
+    s16 warpDir;
+    u16 posWeightBits;
+    BOOL isRail;
+    FieldPosition pos;
+};
+
+struct RespawnZoneInfo {
+    u16 discoveryFlagId;
+    u16 canReturnHere : 1;
+    u16 discoverOnVisit : 1;
+    u16 unkFlags : 14;
+    u16 zoneId;
+    u16 x : 8;
+    u16 z : 8;
+    u16 mainZoneId;
+    u16 unk0A;
+    u16 unk0C;
+    u16 unk0E;
+    u16 unk10;
+    u16 unk12;
+};
+
+struct ZoneWarpGridPosition {
+    u16 x;
+    u16 y;
+    u16 z;
+    u16 width;
+    u16 height;
+    u16 unk0a;
+};
+
+struct ZoneWarpRailPosition {
+    u16 componentId;
+    u16 posFront;
+    s16 posSide;
+    u16 frontSpan;
+    u16 sideSpan;
+    // Which of the warp's spans a position's index is counted from the far end of, and so which ones the code flips
+    // the index of: CalcWarpTransferAddend and ZoneWarp_CalcPosWeightBitsRail_ both read it
+    u16 param;
+};
+
+// What ZoneWarpRailPosition.param is: the span whose index is flipped
+enum {
+    ZONE_WARP_RAIL_FLIP_FRONT,
+    ZONE_WARP_RAIL_FLIP_SIDE,
+    ZONE_WARP_RAIL_FLIP_BOTH,
+    ZONE_WARP_RAIL_FLIP_NONE,
+};
+
+// What ZoneBGEntity.condition is known to hold. The event check skips an entity from 3 up, so the festival's places
+// are only found by the missions that look for them
+enum {
+    BG_ENTITY_CONDITION_HIDDEN_ITEM = 2,
+    // A place for a mission's sparkle or person
+    BG_ENTITY_CONDITION_FEST_PLACE = 4,
+    // A place for a mission's person only
+    BG_ENTITY_CONDITION_FEST_PEOPLE_PLACE = 5,
+};
+
+// What ZoneBGEntity.direction holds: the sides of the event that can be interacted with, which CheckProxyEntityEvent
+// checks against the player's facing and GetBGEntityPosRail_ turns into the side the event faces. The first four are
+// one side, the rest both sides of an axis or every side.
+enum {
+    BG_ENTITY_DIR_DOWN,
+    BG_ENTITY_DIR_LEFT,
+    BG_ENTITY_DIR_RIGHT,
+    BG_ENTITY_DIR_UP,
+    // From any side
+    BG_ENTITY_DIR_ANY,
+    // From the left or the right
+    BG_ENTITY_DIR_LEFT_RIGHT,
+    // From above or below
+    BG_ENTITY_DIR_UP_DOWN,
+};
+
+// Field names from swan's ZoneFurniture. The struct is halfword-aligned (the festival missions copy it as a loop
+// of 10 halfwords), so a grid entity's s32 x, y and z are read through a cast of its position.
+struct ZoneBGEntity {
+    u16 scrId;
+    u16 condition;
+    u16 direction;
+    u16 isRail;
+    union {
+        // s32 x, y and z
+        u16 grid[6];
+        struct {
+            u16 componentId;
+            u16 posFront;
+            // Signed; read through a cast where its sign matters
+            u16 posSide;
+        } rail;
+    } pos;
+};
+
+// A trigger's rectangle of the grid
+struct ZoneTriggerGridPosition {
+    u16 x;
+    u16 z;
+    u16 width;
+    u16 height;
+    s16 y;
+};
+
+// Field names from swan.
+struct ZoneTrigger {
+    u16 scrId;
+    u16 workValue;
+    u16 workId;
+    u16 type;
+    u16 isRail;
+    union {
+        ZoneTriggerGridPosition grid;
+        struct {
+            u16 componentId;
+            u16 posFront;
+            s16 posSide;
+            u16 frontSpan;
+            u16 sideSpan;
+        } rail;
+    } pos;
+    u16 unk14;
+};
+
+// A warp's transition type, which picks the events that take the player out through it and in at the other end
+// (entrance_camera.c) and how it is taken (fieldmap_event.c): stepped on (NONE, WARP_PAD, GATE), walked off from where
+// the player stands (MAT) or walked into from the tile before it (the rest)
+enum {
+    // No entrance: a map change to a position, and the one warp of the Pokémon League's entrance
+    WARP_TRANSITION_NONE,
+    // A warp the player stands on and walks off the map from, such as a building's exit mat
+    WARP_TRANSITION_MAT,
+    // The player walks one tile into the warp and one tile out of the other end. The code treats WALK_IN_2 alike; the
+    // maps use it between a house's floors and between some of the towers' and caves'
+    WARP_TRANSITION_WALK_IN_2,
+    // A building's door, which opens for the player
+    WARP_TRANSITION_DOOR,
+    WARP_TRANSITION_WALK_IN,
+    // The warp pads that spin the player away and down, as EventMapChangeWarpPad_Create's map change
+    WARP_TRANSITION_WARP_PAD,
+    // The way through a gate, from one of its halves to the other, with a fade and a sound
+    WARP_TRANSITION_GATE,
+    // The first of the entrances with an entrance camera, each with its file of archive 0xb1 from here
+    WARP_TRANSITION_CAMERA,
+};
+
+struct ZoneWarp {
+    // The zone and the warp the player arrives at
+    u16 destZoneId;
+    u16 destId;
+    // The direction the player faces on arriving at this warp, one more than its DIR_*, or 0 for none: the player
+    // walks the other way into it
+    u8 direction;
+    u8 transitionType;
+    u16 isRail;
+    union {
+        ZoneWarpGridPosition grid;
+        ZoneWarpRailPosition rail;
+    } pos;
+};
+
+extern const RespawnZoneInfo RESPAWN_ZONE_INFO[82];
+// Tables of zonedata.c that no code of the ROM reads
+extern const u16 BC_WF_ZONES[9];
+extern const u16 GEAR_STATION_PLATFORM_ZONES[9];
+
+// What GetRailIDForZone and GetCameraIDForZone return for a zone without one
+#define ZONE_RAIL_NONE 0xffffffff
+#define ZONE_CAMERA_NONE 0xffff
+// What a warp's destZoneId or destId holds for no destination
+#define WARP_DEST_NONE 0xffff
+// What a warp's destId holds for the spawn the game has queued as its next zone, which the FieldSetNextZone script
+// commands set: EventMapChangeWarp_CreateFromEntity takes the destination from GameData_GetNextZone instead of the
+// warp, and SetupZoneWarpArrival marks the arrival ZONE_SPAWN_CHANGE_TYPE_3
+#define WARP_DEST_ID_NEXT_ZONE 0x100
+// What GetZoneMatrixCamBoundIdx returns for a zone without a camera boundary
+#define ZONE_CAMERA_BOUNDARY_NONE 0xffff
+
+// ZoneSpawnInfo's changeType: a spawn at the warp warpId, or at a position with warpId -1. SetupZoneWarpArrival sets
+// the arrival at a warp's destination, or 3 for a warp whose destId is 0x100
+enum {
+    ZONE_SPAWN_CHANGE_TYPE_WARP,
+    ZONE_SPAWN_CHANGE_TYPE_POSITION,
+    ZONE_SPAWN_CHANGE_TYPE_WARP_ARRIVAL,
+    ZONE_SPAWN_CHANGE_TYPE_3,
+};
+
+enum {
+    WARP_DIR_UP = 1,
+    WARP_DIR_DOWN,
+    WARP_DIR_LEFT,
+    WARP_DIR_RIGHT,
+};
+
+// What the festival missions pass to FindTriggerAtPosGrid and GetTriggerSCRIDAtPosGrid to find a trigger whichever way
+// the player faces
+#define TRIGGER_DIR_ANY 8
+
+// What ZoneTrigger.type is: no direction, so it fires whichever way the player faces, the direction the player must
+// face (a WARP_DIR_*), or a collision area, which FindCollidingZoneTriggerAtLocation looks for. No zone's data holds 5;
+// 7 is held only by route 5's triggers, whose script is 0, and no code reads it.
+enum {
+    ZONE_TRIGGER_TYPE_NONE,
+    ZONE_TRIGGER_TYPE_UP = WARP_DIR_UP,
+    ZONE_TRIGGER_TYPE_DOWN,
+    ZONE_TRIGGER_TYPE_LEFT,
+    ZONE_TRIGGER_TYPE_RIGHT,
+    ZONE_TRIGGER_TYPE_COLLISION = 6,
+};
+
+// With a map replace event set, each version allows its own area
+enum {
+    VERSION_AREA_BLACK2,
+    VERSION_AREA_WHITE2,
+    VERSION_AREA_2,
+};
+#ifdef BLACK2
+#define VERSION_AREA_OWN VERSION_AREA_BLACK2
+#else
+#define VERSION_AREA_OWN VERSION_AREA_WHITE2
+#endif
+
+u16 ConvDirToWarpDir(u16 dir);
+u32 ConvDirToRailDir(u32 direction);
+u32 ConvDirToTriggerDir(u32 dir);
+s16 GetDirectionVectorCompX(u16 direction);
+s16 GetDirectionVectorCompZ(u16 direction);
+void VecGPosToWPos(s32 x, s32 y, s32 z, VecFx32 *position);
+u16 GetInverseDirection(u32 direction);
+u16 GetDirFromPosToPos(s32 x1, s32 z1, s32 x2, s32 z2);
+u8 RotateDirByAngle(u32 direction, u16 angle);
+BOOL CheckWarpPositionMatch(const ZoneWarp *warp, const VecFx32 *position);
+BOOL CheckWarpPositionMatchRail(const ZoneWarp *warp, const RailPosition *position);
+BOOL CheckBGPositionMatchRail(const ZoneBGEntity *entity, const RailPosition *position);
+BOOL CheckBGPositionMatchGrid(const ZoneBGEntity *entity, const VecFx32 *position);
+void GetBGEntityCenterPosGrid(const ZoneBGEntity *entity, VecFx32 *position);
+void GetBGEntityPosRail(const ZoneBGEntity *entity, RailPosition *position);
+void GetTriggerCenterPos(const ZoneTrigger *trigger, VecFx32 *position);
+void SetBGEntityLocation(EventData *data, u32 index, u16 x, u16 z, u16 y);
+u16 ZoneWarp_CalcPosWeightBitsGrid_(ZoneWarp *warp, const VecFx32 *position);
+u16 ZoneWarp_CalcPosWeightBitsRail_(ZoneWarp *warp, const RailPosition *position);
+u16 ZoneWarp_CalcPosWeightBitsGrid(ZoneWarp *warp, const VecFx32 *position);
+u16 ZoneWarp_CalcPosWeightBitsRail(ZoneWarp *warp, const RailPosition *position);
+void GetBGEntityPosGrid_(const ZoneBGEntity *entity, VecFx32 *position);
+void GetBGEntityPosRail_(const ZoneBGEntity *entity, RailPosition *position);
+void GetTriggerCenterPos_(const ZoneTrigger *trigger, VecFx32 *position);
+BOOL CheckTriggerPositionMatchRail(const ZoneTrigger *trigger, const RailPosition *position);
+BOOL CheckTriggerPositionMatchXYZ(const ZoneTrigger *trigger, const VecFx32 *position);
+BOOL CheckTriggerPositionMatchXZ(const ZoneTrigger *trigger, const VecFx32 *position);
+BOOL CheckWarpDirectionMatch(const ZoneWarp *warp, u16 direction);
+BOOL IsWarpZoneOrWarpID0xFFFF(const ZoneWarp *warp);
+void SetZoneWarpLocation(EventData *eventData, u16 warpId, u16 x, u16 y, u16 z);
+u32 ZoneWarp_GetDirection(const ZoneWarp *warp);
+void GetGridWarpOutPos(ZoneWarp *warp, u32 direction, VecFx32 *position);
+void GetRailWarpOutPos(const ZoneWarp *warp, u32 direction, RailPosition *position);
+u16 CalcWarpTransferAddend(u32 posWeightBits, u32 warpDirection, BOOL isRail, u32 railParam, u16 span);
+void CreateZoneChangeData(ZoneSpawnInfo *spawn, u32 zoneId, s16 warpDir, s32 x, s32 y, s32 z);
+void CreateZoneChangeDataRail(ZoneSpawnInfo *spawn, u16 zoneId, s16 warpDir, u16 componentId, u16 posFront,
+                              s16 posSide);
+void SetupZoneSpawnInfoWarp(ZoneSpawnInfo *spawn, u16 zoneId, u16 warpId, u32 posWeightBits);
+void SetupWarpParamByWarp(ZoneWarp *warp, ZoneSpawnInfo *spawn, u32 direction);
+u32 GetInTransitionTypeBetweenZones(u16 fromZone, u16 toZone);
+BOOL GetIsZoneMatrix0(u16 zoneId);
+u32 GetOutTransitionTypeBetweenZones(u16 fromZone, u16 toZone);
+u32 GetRespawnLocationIndexForRespawnZone(s32 zoneId);
+u16 GetRespawnZoneMainZone(u16 index);
+u32 GetLeaguePokeCenReturnLocationIdx(void);
+BOOL IsReturnLocationNonLeaguePokeCen(GameData *gameData);
+BOOL RangeCheckTeleportZone(s32 index);
+u32 GetActualRespawnZoneIdx(u32 index);
+void CreateRespawnZoneChangeData(ZoneSpawnInfo *spawn, u16 zoneId, u32 unused, u16 x, u16 z);
+u32 GetWarpTransitionType(ZoneWarp *warp);
+BOOL GetZoneFlagsEnableEscapeRope(u16 zoneId);
+BOOL GetZoneFlagsEnableEntralinkWarp(u16 zoneId);
+BOOL GetZoneFlagsEnableFlyFrom(u16 zoneId);
+BOOL GetZoneIsEntralinkAny(u16 zoneId);
+// Whether the zone is the Hidden Grotto's
+BOOL GetZoneIsHiddenGroto(u16 zoneId);
+ZoneTrigger *FindCollidingZoneTriggerAtLocation(EventData *eventData, EventWork *eventWork, const VecFx32 *position);
+ZoneTrigger *FindTriggerAtPosGrid(EventData *eventData, EventWork *eventWork, const VecFx32 *position, u32 direction);
+ZoneTrigger *FindTriggerAtPosRail(EventData *eventData, EventWork *eventWork, const RailPosition *position);
+u16 GetTriggerSCRIDAtPosGrid(EventData *eventData, EventWork *eventWork, const VecFx32 *position, u32 direction);
+u16 GetSCRIDOfCollidingTriggerAtLocation(EventData *eventData, EventWork *eventWork, const VecFx32 *position);
+u16 GetTriggerSCRIDAtPosRail(EventData *eventData, EventWork *eventWork, const RailPosition *position);
+u32 GetZoneFlashFlags(u16 zoneId);
+BOOL GetZoneIsMusicalTheater(u16 zoneId);
+BOOL GetZoneIsPWTBattleStage(u16 zoneId);
+BOOL GetZoneIsUnionRoom(u16 zoneId);
+u16 GetZoneMatrixId(u16 zoneId);
+BOOL GetZoneSpawnInfoIsRail(ZoneSpawnInfo *spawn);
+ZoneWarp *GetZoneWarpByID(const EventData *eventData, u16 warpId);
+BOOL IsWarpDestId256(ZoneWarp *warp);
+BOOL IsZone150Or151(u16 zoneId);
+BOOL IsZoneAbyssalRuinsOutside(u16 zoneId);
+BOOL IsZoneNimbasaStadium(u16 zoneId);
+BOOL IsZoneAbyssalRuinsInside(u16 zoneId);
+BOOL IsZoneAbyssalRuinsFlashRock(u16 zoneId);
+BOOL IsZoneAbyssalRuinsStrengthRock(u16 zoneId);
+// Whether a place name is one of the Entralink's
+BOOL IsMetLocationEntralink(u16 location);
+BOOL GetIsZoneRoute14Or15(u16 zoneId);
+// Whether the zone is a normal field zone: not the Union Room, Entralink or the like
+BOOL IsZoneNormal(u16 zoneId);
+BOOL IsZoneEntralinkHub(u16 zoneId);
+BOOL GetZoneIsEntreeForest(u16 zoneId);
+BOOL IsZoneGameCommDisabled(u16 zoneId);
+BOOL IsZoneInVictoryRoad(u16 zoneId);
+BOOL IsZoneJoinAvenue(u16 zoneId);
+BOOL IsZoneJoinAvenueSubZone(u16 zoneId);
+BOOL IsZoneRoyalUnova(u16 zoneId);
+BOOL IsZoneBlackTowerOrWhiteTreehollow(u16 zoneId);
+void LoadAspertiaCitySpawnInfo(ZoneSpawnInfo *spawn);
+void LoadZoneSpawnInfoCheckRail(ZoneSpawnInfo *spawn, u16 zoneId);
+void SetAllowVersionSpecificArea(u32 area, BOOL allow);
+void SetTeleportZoneDiscover(GameData *gameData, s32 zoneId);
+void SetupTeleportZoneChange(u16 returnLocation, ZoneSpawnInfo *spawn);
+BOOL SetupZoneWarpArrival(const EventData *eventData, ZoneSpawnInfo *spawn, u16 warpId, u16 posWeightBits);
+u16 ZoneData_GetAreaID(u16 zoneId);
+u16 GetZoneEntitiesID(u16 zoneId);
+u16 GetZoneEncID(u16 zoneId);
+u32 GetZoneBattleBGID(u16 zoneId);
+void InitZoneSpawnInfo(ZoneSpawnInfo *spawn);
+void SetupZoneWarpArrivalGrid(ZoneSpawnInfo *spawn, u16 zoneId, s16 warpId, s16 warpDir, u16 posWeightBits, s32 x,
+                              s32 y, s32 z);
+void SetupZoneWarpArrivalRail(ZoneSpawnInfo *spawn, u16 zoneId, s16 warpId, s16 warpDir, u16 posWeightBits,
+                              u16 componentId, u16 posFront, s16 posSide);
+u16 ZoneData_GetScriptDatID(u16 zoneId);
+u16 ZoneData_GetTextDatID(u16 zoneId);
+// The zone data, which the functions that read it need loaded
+void InitZoneDataSystem(HeapID heapId);
+void FreeZoneDataSystem(void);
+u16 ZoneData_GetPlaceNameID(u16 zoneId);
+
+// The zone in the other version for a zone that differs, in the main module
+u16 GetVersionedMapChangeZoneNum2(u16 zoneId);
+u16 GetZoneMatrixCamBoundIdx(u16 zoneId);
+u32 GetZoneDefaultCameraIndex(u16 zoneId);
+BOOL GetZoneFlagsEnableCycling(u16 zoneId);
+// The zone's BGM for the season
+u16 DecideZoneHeaderBGMID(u16 zoneId, u8 season);
+// Whether the cycling and surfing BGM play in the zone
+BOOL GetZoneFlagsEnableCycleSurfBGM(u16 zoneId);
+u16 GetZoneEnvFlagsWeather(u16 zoneId);
+// The zone a zone belongs to, such as the town of a building
+u16 GetZoneParentZone(u16 zoneId);
+BOOL GetZoneHasRailSystem(u16 zoneId);
+u32 GetRailIDForZone(u16 zoneId);
+BOOL IsZoneEntralinkEdgeColorTable(u16 zoneId);
+BOOL IsZoneFlashbackMemoryPostFX(u16 zoneId);
+BOOL IsZoneBlackCityOrWhiteForestLobby(u16 zoneId);
+u32 GetZoneStaticLightDataIndex(u16 zoneId);
+u16 GetCameraIDForZone(u16 zoneId);
+// The position Fly lands at
+void LoadZoneFlyPosToVecFx32(u16 zoneId, VecFx32 *position);
+void LoadZoneFlyPosRailCoords(u16 zoneId, VecFx32 *position);
+// Whether Fly lands on a rail in the zone
+BOOL IsZonesWithRailsArrayHasZoneID(u16 zoneId);
+// Whether the zone is one of the Battle Subway's two
+BOOL IsZoneLEQ76(u16 zoneId);
+// The zone's place name for a game of the given version
+u16 GetZoneLocationNameIdx(u16 zoneId, u32 version);
+// When the field shows the zone's place name on entering it: never, always, only when the game continues from the
+// save there, or except then
+enum {
+    PLACE_NAME_DISP_NEVER,
+    PLACE_NAME_DISP_ALWAYS,
+    PLACE_NAME_DISP_ON_CONTINUE,
+    PLACE_NAME_DISP_NOT_ON_CONTINUE,
+};
+u32 GetZoneLocNameDispType(u16 zoneId);
+u32 GetZoneEasyChallengeModeLevelAdjust(u16 zoneId);
+u16 GetZoneNameIcon(u16 zoneId);
+u32 GetMapTransitionEffectType(u16 zoneId);
+void GetPlayerZoneStateWPos(const ZoneSpawnInfo *spawn, VecFx32 *pos);
+void SetPlayerZoneStateWPos(ZoneSpawnInfo *spawn, const VecFx32 *pos);
+
+#endif // POKEBW2_FIELD_ZONE_H

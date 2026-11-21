@@ -1,4 +1,4 @@
-#include "app/pokelist.h"
+#include "app/pokelist/pokelist.h"
 #include "dsprot/dsprot.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"

@@ -2,9 +2,9 @@
 #define POKEBW2_BATTLE_BTLV_H
 
 #include "types.h"
-#include "battle/b_plist_main.h"
 #include "battle/btl_action.h"
 #include "battle/btl_pokeparam.h"
+#include "battle/select/b_plist_main.h"
 #include "gfl/bg_sys.h"
 #include "gfl/clact.h"
 #include "gfl/graphics.h"

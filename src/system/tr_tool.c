@@ -1,5 +1,4 @@
 #include "types.h"
-#include "battle/btl_setup.h"
 #include "battle/trainer_data.h"
 #include "constants/arc.h"
 #include "constants/moves.h"
@@ -19,6 +18,7 @@
 #include "pml/personal.h"
 #include "pml/poke_party.h"
 #include "save/save_control.h"
+#include "system/btl_setup.h"
 #include "system/game_data.h"
 #include "system/pms_data.h"
 

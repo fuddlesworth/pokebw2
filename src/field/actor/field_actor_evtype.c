@@ -6,8 +6,8 @@
 
 #include "types.h"
 #include "constants/directions.h"
-#include "field/field_actor.h"
-#include "field/field_actor_internal.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_internal.h"
 #include "gfl/key.h"
 
 // The 9-byte block of the codes that turn in place: a state machine in state, one in phase

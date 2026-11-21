@@ -1,15 +1,15 @@
 // The battle's lower screen. The name is the ROM's string, from GFL_HeapAllocate's asserts. The names are ours; swan
 // has none for this file
 
-#include "battle/btlv_input.h"
+#include "battle/graphic/btlv_input.h"
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
 #include "battle/btlv.h"
-#include "battle/btlv_finger_cursor.h"
-#include "battle/btlv_gauge.h"
-#include "battle/btlv_mcss.h"
 #include "battle/btlv_scd.h"
+#include "battle/graphic/btlv_finger_cursor.h"
+#include "battle/graphic/btlv_gauge.h"
+#include "battle/graphic/btlv_mcss.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/moves.h"

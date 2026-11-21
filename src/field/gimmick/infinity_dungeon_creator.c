@@ -1,11 +1,11 @@
 // The Black Tower and White Treehollow's creator: from the dungeon's trainer seed it picks the trainers of each floor,
 // the goal's room and trainer, the reward and the special trainers that stand on the floors. Named after the ROM's
 // "infinity_dungeon_creator.c"
-#include "field/infinity_dungeon_creator.h"
+#include "field/gimmick/infinity_dungeon_creator.h"
 #include "types.h"
 #include "constants/version.h"
-#include "field/infinity_dungeon.h"
-#include "field/infinity_dungeon_rooms.h"
+#include "field/gimmick/infinity_dungeon.h"
+#include "field/gimmick/infinity_dungeon_rooms.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 

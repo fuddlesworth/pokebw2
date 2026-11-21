@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/medalbox_data_sys.h"
+#include "app/medalbox/medalbox_data_sys.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"

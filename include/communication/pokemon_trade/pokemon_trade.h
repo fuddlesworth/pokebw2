@@ -1,0 +1,77 @@
+#ifndef POKEBW2_APP_POKEMON_TRADE_H
+#define POKEBW2_APP_POKEMON_TRADE_H
+
+#include "types.h"
+#include "communication/gts/gtsnego.h"
+#include "demo/evolution/evolution_demo.h"
+#include "gfl/overlay.h"
+#include "gfl/proc.h"
+#include "struct_decls.h"
+
+#define OVERLAY_POKEMONTRADE OVERLAY_ID(194)
+
+// What to do after the trade
+#define TRADE_NEXT_EVOLVE 1
+#define TRADE_NEXT_NEGOTIATE 2
+
+typedef struct {
+    u32 padding0;
+    u32 padding4;
+    u32 next;
+    // After TRADE_NEXT_EVOLVE, the species the Pokémon evolves into and how, which the events pass to the evolution
+    // demo
+    u32 evolveSpecies;
+    u32 evolveMethod;
+    GameData *gameData;
+    GtsNegoParam *nego;
+    PokeParty *party;
+    // Not used by the trade, the events keep the evolution demo's parameter here
+    EvolutionDemoParam *evolution;
+    void *buffer;
+    // Where the Pokémon traded away is
+    u16 box;
+    u16 slot;
+    u16 friendIndex;
+    u16 unk2E;
+} PokemonTradeParam;
+
+// The parameter of the procs that only show the trade's animation
+typedef struct {
+    PokemonTradeParam trade;
+    GameData *gameData;
+    // The Pokémon of this player and of the other
+    PartyPkm *pkm[2];
+    PlayerInfo *myInfo;
+    PlayerInfo *partnerInfo;
+} PokemonTradeDemoParam;
+
+// For GTS Negotiation
+extern const GameProcFunctions POKEMONTRADE_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_WIFICLUB_PROC_FUNCTIONS;
+// For the infrared event
+extern const GameProcFunctions POKEMONTRADE_IRC_PROC_FUNCTIONS;
+// The procs that only show the trade's animation: the infrared trade's, which the in-game trades show, and the Global
+// Trade Station's
+extern const GameProcFunctions POKEMONTRADE_IRCDEMO_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_GTS_WITHDRAW_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_GTS_TRADE_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_GTS_DEPOSIT_PROC_FUNCTIONS;
+// For the Union Room
+extern const GameProcFunctions POKEMONTRADE_UNION_PROC_FUNCTIONS;
+
+// The trade demo's parameter for the Global Trade Station
+typedef struct {
+    u8 padding0[0x30];
+    GameData *gameData;
+    PartyPkm *sendPkm;
+    PartyPkm *recvPkm;
+    PlayerInfo *myStatus;
+    PlayerInfo *partnerStatus;
+} PokemonTradeGtsParam;
+
+// For the Global Trade Station: a deposit, a received trade, and a trade made or picked up
+extern const GameProcFunctions POKEMONTRADE_GTS_DEPOSIT_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_GTS_WITHDRAW_PROC_FUNCTIONS;
+extern const GameProcFunctions POKEMONTRADE_GTS_TRADE_PROC_FUNCTIONS;
+
+#endif // POKEBW2_APP_POKEMON_TRADE_H

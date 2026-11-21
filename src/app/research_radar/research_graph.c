@@ -10,7 +10,7 @@
 #include "app/research_radar/research_graph.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
-#include "field/survey.h"
+#include "field/event/survey.h"
 #include "gfl/arc.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"

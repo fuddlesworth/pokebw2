@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/beacon_detail_gra.h"
+#include "field/beacon/beacon_detail_gra.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

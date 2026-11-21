@@ -3,7 +3,7 @@
 // OAM, that the screens use for their own buttons. The name is the ROM's string, from GFL_HeapAllocate's asserts
 
 #include "types.h"
-#include "app/battle_recorder.h"
+#include "app/battle_recorder/battle_recorder.h"
 #include "app/battle_recorder/br_btn.h"
 #include "app/battle_recorder/br_btn_data.h"
 #include "app/battle_recorder/br_res.h"

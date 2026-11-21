@@ -1,6 +1,6 @@
 #include "types.h"
 #include "battle/btl_action.h"
-#include "battle/btl_pospoke.h"
+#include "battle/select/btl_pospoke.h"
 
 // Function names from swan.
 void BattleAction_SetFightParam(BattleAction *action, u16 move, u8 target) {

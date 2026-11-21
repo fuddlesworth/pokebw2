@@ -1,4 +1,4 @@
-#include "battle/btl_poke_select.h"
+#include "battle/select/btl_poke_select.h"
 #include "types.h"
 
 static void PokeListCmd_SetSlotState(BtlvPokeListCmd *cmd, u8 state, u8 slot);

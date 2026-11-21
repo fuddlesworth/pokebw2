@@ -1,6 +1,6 @@
 // The ROM names this file zknd_tbar.c.
 #include "types.h"
-#include "app/pokedex_detail.h"
+#include "app/pokedex/pokedex_detail.h"
 #include "constants/sound.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"

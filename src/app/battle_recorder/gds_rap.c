@@ -5,8 +5,8 @@
 // GFL_HeapAllocate is given.
 
 #include "types.h"
-#include "app/battle_rec_ov.h"
-#include "app/gds_rap.h"
+#include "app/battle_recorder/battle_rec_ov.h"
+#include "app/battle_recorder/gds_rap.h"
 #include "constants/arc.h"
 #include "constants/language.h"
 #include "constants/text_banks.h"

@@ -4,8 +4,8 @@
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
 #include "constants/directions.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
+#include "field/actor/field_actor.h"
+#include "field/effect/field_effect.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

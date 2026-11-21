@@ -2,9 +2,9 @@
 // own; Scrcmd_Keysystem_GameGetDifficulty and Scrcmd_Keysystem_CallUnovaLinkKeyUnlock are swan's names
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "app/unova_link.h"
-#include "field/field_script.h"
-#include "field/scrcmd_keysystem.h"
+#include "app/unova_link/unova_link.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_keysystem.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "save/key_info.h"

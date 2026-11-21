@@ -1,5 +1,5 @@
-#include "battle/b_bag_item.h"
-#include "battle/b_bag_main.h"
+#include "battle/select/b_bag_item.h"
+#include "battle/select/b_bag_main.h"
 #include "constants/arc.h"
 #include "constants/items.h"
 #include "gfl/arc.h"

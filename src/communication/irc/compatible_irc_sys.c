@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/error_window_screen.h"
-#include "communication/compatible_irc_sys.h"
+#include "app/ui/error_window_screen.h"
+#include "communication/irc/compatible_irc_sys.h"
 #include "constants/pokemon.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"

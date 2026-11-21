@@ -2,13 +2,11 @@
 // proc and switches between the core proc of overlay 271 and the battle system, which plays a battle video
 
 #include "types.h"
-#include "app/battle_recorder.h"
+#include "app/battle_recorder/battle_rec_tool.h"
+#include "app/battle_recorder/battle_recorder.h"
 #include "app/battle_recorder/br_core.h"
 #include "battle/battle_proc.h"
-#include "battle/battle_rec_tool.h"
-#include "battle/btl_setup.h"
 #include "constants/sound.h"
-#include "field/field_sound.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
@@ -16,6 +14,8 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "save/save_control.h"
+#include "system/btl_setup.h"
+#include "system/field_sound.h"
 #include "system/game_data.h"
 #include "tournament/bsubway_scr.h"
 

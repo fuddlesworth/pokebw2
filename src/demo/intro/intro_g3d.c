@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
-#include "demo/intro.h"
+#include "demo/intro/intro.h"
 #include "gfl/g3d.h"
 #include "gfl/graphics.h"
 #include "gfl/sound.h"

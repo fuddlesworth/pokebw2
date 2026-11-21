@@ -1,11 +1,11 @@
 #include "types.h"
-#include "field/event_wbt_wifi.h"
-#include "field/field_event.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
+#include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "tournament/event_wbt_wifi.h"
 #include "tournament/wbt_download.h"
 
 // The steps of the event

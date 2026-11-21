@@ -1,13 +1,13 @@
 // The colosseum's checks of who is here and ready, and the spots that its players stand on. The file's name is a
 // guess: the ROM only shows that this is a file of its own, after union_eff.c, by the order of its tables in
 // `.rodata`, which one file with union_eff.c's cannot give. Names are not swan's
-#include "communication/colosseum_tool.h"
+#include "communication/union/colosseum_tool.h"
 #include "types.h"
-#include "communication/colosseum.h"
+#include "communication/comm_player.h"
+#include "communication/union/colosseum.h"
 #include "constants/zones.h"
-#include "field/comm_player.h"
+#include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/field_actor.h"
 #include "gfl/net.h"
 #include "gfl/net_handle.h"
 #include "nitro/fx.h"

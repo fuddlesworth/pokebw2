@@ -18,7 +18,7 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/system/wifi_battle_match.h"
-#include "wifi/digitalcardcheck.h"
+#include "wifi/battle_match/digitalcardcheck.h"
 
 enum {
     CARD_CONFIRM_CHOICE_YES = 0,

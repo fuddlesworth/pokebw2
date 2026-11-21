@@ -1,6 +1,6 @@
 #include "types.h"
-#include "communication/pokemon_trade_local.h"
-#include "communication/pokemontrade_ircdemo.h"
+#include "communication/pokemon_trade/pokemon_trade_local.h"
+#include "communication/pokemon_trade/pokemontrade_ircdemo.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "gfl/arc.h"

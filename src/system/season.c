@@ -1,6 +1,6 @@
 #include "system/season.h"
 #include "types.h"
-#include "field/intrude_work.h"
+#include "entralink/intrude_work.h"
 #include "nitro/rtc.h"
 #include "system/game_data.h"
 #include "system/game_system.h"

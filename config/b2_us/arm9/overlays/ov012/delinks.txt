@@ -36,24 +36,24 @@ src/field/event/event_colosseum_battle.c:
     .text       start:0x0215264c end:0x0215291c
     .data       start:0x0216e01c end:0x0216e034
 
-src/field/delivery_beacon.c:
+src/communication/delivery_beacon.c:
     complete
     .text       start:0x0215291c end:0x02152c0c
     .rodata     start:0x0216af34 end:0x0216af3c
     .data       start:0x0216e034 end:0x0216e110
 
-src/field/delivery_irc.c:
+src/communication/delivery_irc.c:
     complete
     .text       start:0x02152c0c end:0x02153160
     .rodata     start:0x0216af3c end:0x0216af5c
     .data       start:0x0216e110 end:0x0216e190
 
-src/field/mystery_gift_pokemon.c:
+src/app/mystery_gift/mystery_gift_pokemon.c:
     complete
     .text       start:0x02153160 end:0x021535dc
     .rodata     start:0x0216af5c end:0x0216af98
 
-src/field/intrude_work.c:
+src/entralink/intrude_work.c:
     complete
     .text       start:0x021535dc end:0x0215366c
 
@@ -94,7 +94,7 @@ src/field/map/map_replace.c:
     .rodata     start:0x0216c300 end:0x0216c33c
     .data       start:0x0216e1d4 end:0x0216e1e4
 
-src/field/respawn_zone.c:
+src/field/encounter/respawn_zone.c:
     complete
     .text       start:0x02154ea0 end:0x02154f98
     .rodata     start:0x0216c33c end:0x0216c9a4
@@ -136,7 +136,7 @@ src/field/script/scrcmd_musical.c:
     .text       start:0x021580c4 end:0x021590ec
     .data       start:0x0216e22c end:0x0216e240
 
-src/field/field_encount_st.c:
+src/field/encounter/field_encount_st.c:
     complete
     .text       start:0x021590ec end:0x02159230
     .rodata     start:0x0216ca34 end:0x0216ca74
@@ -194,7 +194,7 @@ src/field/event/event_3d_demo.c:
     complete
     .text       start:0x0215cb48 end:0x0215cd58
 
-src/field/city_state.c:
+src/field/map/city_state.c:
     complete
     .text       start:0x0215cd58 end:0x0215cda4
 
@@ -208,7 +208,7 @@ src/field/actor/field_actor_tool.c:
     .text       start:0x0215dabc end:0x0215ee10
     .rodata     start:0x0216cd60 end:0x0216cde4
 
-src/field/zone_change.c:
+src/field/map/zone_change.c:
     complete
     .text       start:0x0215ee10 end:0x0215ef60
 
@@ -217,7 +217,7 @@ src/field/event/itemuse_event.c:
     .text       start:0x0215ef60 end:0x0215f23c
     .rodata     start:0x0216cde4 end:0x0216ce44
 
-src/field/hidden_item.c:
+src/field/event/hidden_item.c:
     complete
     .text       start:0x0215f23c end:0x0215f2d0
     .rodata     start:0x0216ce44 end:0x0216d698
@@ -232,18 +232,18 @@ src/field/script/scrcmd_ndemo.c:
     complete
     .text       start:0x0215f440 end:0x0215f55c
 
-src/field/game_beacon_search.c:
+src/field/beacon/game_beacon_search.c:
     complete
     .text       start:0x0215f55c end:0x0215f958
     .rodata     start:0x0216d6a8 end:0x0216d718
     .data       start:0x0216e2b8 end:0x0216e2d0
 
-src/field/game_beacon_set.c:
+src/field/beacon/game_beacon_set.c:
     complete
     .text       start:0x0215f958 end:0x02160668
     .rodata     start:0x0216d718 end:0x0216d720
 
-src/field/symbol_map.c:
+src/field/map/symbol_map.c:
     complete
     .text       start:0x02160668 end:0x021609b4
     .rodata     start:0x0216d720 end:0x0216d8fc
@@ -257,13 +257,13 @@ src/field/script/scrcmd_unity_tower.c:
     complete
     .text       start:0x02160b80 end:0x02160dc8
 
-src/field/building_enter_effect.c:
+src/field/effect/building_enter_effect.c:
     complete
     .text       start:0x02160dc8 end:0x02160eb4
     .data       start:0x0216e2e0 end:0x0216e2e4
     .bss        start:0x0216e644 end:0x0216e660
 
-src/field/townmap_util.c:
+src/app/townmap/townmap_util.c:
     complete
     .text       start:0x02160eb4 end:0x02160ff4
 
@@ -275,25 +275,25 @@ src/field/script/scrcmd_weather.c:
     complete
     .text       start:0x021611e0 end:0x02161260
 
-src/field/symbol_save_field.c:
+src/field/map/symbol_save_field.c:
     complete
     .text       start:0x02161260 end:0x021613d0
 
-src/field/comm_player.c:
+src/communication/comm_player.c:
     complete
     .text       start:0x021613d0 end:0x02161844
     .data       start:0x0216e2e4 end:0x0216e36c
 
-src/field/bsubway_comm.c:
+src/tournament/bsubway_comm.c:
     complete
     .text       start:0x02161844 end:0x02161c88
     .rodata     start:0x0216d8fc end:0x0216d9ac
 
-src/field/fld_btl_inst_event.c:
+src/battle/fld_btl_inst_event.c:
     complete
     .text       start:0x02161c88 end:0x02161f6c
 
-src/field/fld_btl_inst_tool.c:
+src/battle/fld_btl_inst_tool.c:
     complete
     .text       start:0x02161f6c end:0x02162b64
     .rodata     start:0x0216d9ac end:0x0216da88
@@ -311,18 +311,18 @@ src/field/event/ev_time.c:
     complete
     .text       start:0x02162f44 end:0x021631c8
 
-src/field/field_g3d_map.c:
+src/field/map/field_g3d_map.c:
     complete
     .text       start:0x021631c8 end:0x02163b38
     .rodata     start:0x0216da88 end:0x0216dac4
     .data       start:0x0216e380 end:0x0216e390
 
-src/field/report_event.c:
+src/app/report/report_event.c:
     complete
     .text       start:0x02163b38 end:0x02164330
     .data       start:0x0216e390 end:0x0216e3a0
 
-src/field/shaymin_form.c:
+src/field/event/shaymin_form.c:
     complete
     .text       start:0x02164330 end:0x02164490
 
@@ -334,7 +334,7 @@ src/field/script/scrcmd_actor_move.c:
     complete
     .text       start:0x02164838 end:0x021649ec
 
-src/field/season_form.c:
+src/field/event/season_form.c:
     complete
     .text       start:0x021649ec end:0x02164ae0
 
@@ -343,7 +343,7 @@ src/field/script/scrcmd_entree_forest.c:
     .text       start:0x02164ae0 end:0x021652cc
     .rodata     start:0x0216dac4 end:0x0216dad0
 
-src/field/survey.c:
+src/field/event/survey.c:
     complete
     .text       start:0x021652cc end:0x02165598
     .rodata     start:0x0216dad0 end:0x0216dc1c
@@ -352,12 +352,12 @@ src/field/script/scrcmd_sp_poke_gimmick.c:
     complete
     .text       start:0x02165598 end:0x0216598c
 
-src/field/oneshot_dr.c:
+src/field/event/oneshot_dr.c:
     complete
     .text       start:0x0216598c end:0x021659ec
     .rodata     start:0x0216dc1c end:0x0216dc3c
 
-src/field/name_input_setup.c:
+src/app/name_input/name_input_setup.c:
     complete
     .text       start:0x021659ec end:0x02165b1c
     .data       start:0x0216e3a0 end:0x0216e3b0
@@ -372,17 +372,17 @@ src/field/event/event_bsubway.c:
     .text       start:0x02165eb8 end:0x02166664
     .rodata     start:0x0216dc5c end:0x0216dc68
 
-src/field/field_actor.c:
+src/field/actor/field_actor.c:
     complete
     .text       start:0x02166664 end:0x02168320
     .data       start:0x0216e3b0 end:0x0216e5cc
 
-src/field/fest_mission_field.c:
+src/entralink/fest_mission_field.c:
     complete
     .text       start:0x02168320 end:0x02168468
     .rodata     start:0x0216dc68 end:0x0216dc90
 
-src/field/trcard_sys.c:
+src/app/trainer_card/trcard_sys.c:
     complete
     .text       start:0x0216919c end:0x02169c1c
     .rodata     start:0x0216dd60 end:0x0216de04
@@ -392,17 +392,17 @@ src/field/script/scrcmd_sp_poke.c:
     complete
     .text       start:0x02169c1c end:0x02169c7c
 
-src/field/move_tutor.c:
+src/app/move_tutor/move_tutor.c:
     complete
     .text       start:0x02169c7c end:0x02169e18
     .data       start:0x0216e5fc end:0x0216e60c
 
-src/field/g3d_text_draw.c:
+src/field/menu/g3d_text_draw.c:
     complete
     .text       start:0x02169e18 end:0x0216a190
     .rodata     start:0x0216de04 end:0x0216de58
 
-src/field/pass_power_check.c:
+src/field/pass_power/pass_power_check.c:
     complete
     .text       start:0x0216a190 end:0x0216a23c
 
@@ -419,7 +419,7 @@ src/field/script/scrcmd_pedometer.c:
     complete
     .text       start:0x0216abc0 end:0x0216ac28
 
-src/field/hidden_hollow.c:
+src/entralink/hidden_hollow.c:
     complete
     .text       start:0x0216ac28 end:0x0216acc4
     .rodata     start:0x0216de58 end:0x0216df98
@@ -432,7 +432,7 @@ src/field/event/event_field_open_lcd.c:
     complete
     .text       start:0x0216ad3c end:0x0216adcc
 
-src/field/burmy_form.c:
+src/field/event/burmy_form.c:
     complete
     .text       start:0x02168468 end:0x021684bc
     .rodata     start:0x0216dc90 end:0x0216dd1c
@@ -443,7 +443,7 @@ src/field/event/event_battle.c:
     .rodata     start:0x0216dd1c end:0x0216dd60
     .data       start:0x0216e5cc end:0x0216e5ec
 
-src/field/pair_sys.c:
+src/field/actor/pair_sys.c:
     complete
     .text       start:0x0216a23c end:0x0216a6a4
     .data       start:0x0216e60c end:0x0216e618

@@ -1,0 +1,357 @@
+#ifndef POKEBW2_BATTLE_SELECT_B_PLIST_MAIN_H
+#define POKEBW2_BATTLE_SELECT_B_PLIST_MAIN_H
+
+#include "types.h"
+#include "battle/select/b_app_tool.h"
+#include "gfl/clact.h"
+#include "gfl/heap.h"
+#include "gfl/overlay.h"
+#include "gfl/tcb.h"
+#include "struct_decls.h"
+#include "system/printsys.h"
+
+// The battle party list in overlay 287 (b_plist_main.c and the other b_plist_*.c files, the first named by the ROM's
+// embedded string): the party shown during a battle to switch a Pokémon in, see its summary and moves, or pick a
+// move to forget, which runs on the evolution demo's tasks with overlay 285 loaded. It sets done when it ends.
+// Every name here is ours; swan has none for this overlay.
+
+#define OVERLAY_OV285 OVERLAY_ID(285)
+#define OVERLAY_OV287 OVERLAY_ID(287)
+
+// What the list is opened for (BPlistParam.mode, BtlvPokeListCmd.mode)
+enum {
+    // A Pokémon to switch in, from the action menu
+    BPLIST_MODE_SELECT,
+    // One to switch in during a turn, which can't be cancelled
+    BPLIST_MODE_MID_TURN,
+    // One to replace a fainted Pokémon
+    BPLIST_MODE_FAINTED,
+    // The Pokémon to use an item on
+    BPLIST_MODE_ITEM,
+    // The move to forget for a new one
+    BPLIST_MODE_FORGET_MOVE,
+    // A Pokémon's moves
+    BPLIST_MODE_MOVE_INFO,
+};
+
+// No party slot, in BPlistParam's chosen
+#define BPLIST_NONE 0xff
+
+// Pages shared by the task, tilemaps, text, sprites and cursor layouts.
+enum {
+    BPLIST_PAGE_PARTY = 0,
+    BPLIST_PAGE_SELECTED = 1,
+    BPLIST_PAGE_SUMMARY = 2,
+    BPLIST_PAGE_MOVES = 3,
+    BPLIST_PAGE_MOVE_INFO = 4,
+    BPLIST_PAGE_PP_RESTORE = 5,
+    BPLIST_PAGE_FORGET_MOVE = 6,
+    BPLIST_PAGE_CONFIRM_FORGET = 7,
+    BPLIST_PAGE_SWITCH_POSITION = 8,
+};
+
+// A button ID is distinct from the cursor index on any particular page.
+enum {
+    BPLIST_BUTTON_PARTY_0 = 0,
+    BPLIST_BUTTON_PARTY_1 = 1,
+    BPLIST_BUTTON_PARTY_2 = 2,
+    BPLIST_BUTTON_PARTY_3 = 3,
+    BPLIST_BUTTON_PARTY_4 = 4,
+    BPLIST_BUTTON_PARTY_5 = 5,
+    BPLIST_BUTTON_BACK = 6,
+    BPLIST_BUTTON_SWITCH = 7,
+    BPLIST_BUTTON_SELECTED_SUMMARY = 8,
+    BPLIST_BUTTON_MOVES_SUMMARY = 9,
+    BPLIST_BUTTON_SELECTED_MOVES = 10,
+    BPLIST_BUTTON_SUMMARY_MOVES = 11,
+    BPLIST_BUTTON_PREV_POKEMON = 12,
+    BPLIST_BUTTON_NEXT_POKEMON = 13,
+    BPLIST_BUTTON_MOVE_INFO_0 = 14,
+    BPLIST_BUTTON_MOVE_INFO_1 = 15,
+    BPLIST_BUTTON_MOVE_INFO_2 = 16,
+    BPLIST_BUTTON_MOVE_INFO_3 = 17,
+    BPLIST_BUTTON_PP_RESTORE_0 = 18,
+    BPLIST_BUTTON_PP_RESTORE_1 = 19,
+    BPLIST_BUTTON_PP_RESTORE_2 = 20,
+    BPLIST_BUTTON_PP_RESTORE_3 = 21,
+    BPLIST_BUTTON_FORGET_0 = 22,
+    BPLIST_BUTTON_FORGET_1 = 23,
+    BPLIST_BUTTON_FORGET_2 = 24,
+    BPLIST_BUTTON_FORGET_3 = 25,
+    BPLIST_BUTTON_FORGET_NEW_MOVE = 26,
+    BPLIST_BUTTON_CONFIRM_FORGET = 27,
+    BPLIST_BUTTON_MOVE_TAB_0 = 28,
+    BPLIST_BUTTON_MOVE_TAB_1 = 29,
+    BPLIST_BUTTON_MOVE_TAB_2 = 30,
+    BPLIST_BUTTON_MOVE_TAB_3 = 31,
+};
+
+enum {
+    BPLIST_BUTTON_NORMAL = 0,
+    BPLIST_BUTTON_PRESSED = 1,
+    BPLIST_BUTTON_SELECTED = 2,
+    BPLIST_BUTTON_DISABLED = 3,
+};
+
+enum {
+    BPLIST_PLATE_IN_BATTLE = 0,
+    BPLIST_PLATE_RESERVE = 1,
+};
+
+// Cursor entries before the CURSOR_MOVE_* control results.
+enum {
+    BPLIST_PARTY_CURSOR_0 = 0,
+    BPLIST_PARTY_CURSOR_1 = 1,
+    BPLIST_PARTY_CURSOR_2 = 2,
+    BPLIST_PARTY_CURSOR_3 = 3,
+    BPLIST_PARTY_CURSOR_4 = 4,
+    BPLIST_PARTY_CURSOR_5 = 5,
+    BPLIST_PARTY_CURSOR_BACK = 6,
+};
+
+enum {
+    BPLIST_SELECTED_CURSOR_SWITCH = 0,
+    BPLIST_SELECTED_CURSOR_SUMMARY = 1,
+    BPLIST_SELECTED_CURSOR_MOVES = 2,
+    BPLIST_SELECTED_CURSOR_BACK = 3,
+};
+
+enum {
+    BPLIST_SUMMARY_CURSOR_PREV = 0,
+    BPLIST_SUMMARY_CURSOR_NEXT = 1,
+    BPLIST_SUMMARY_CURSOR_MOVES = 2,
+    BPLIST_SUMMARY_CURSOR_BACK = 3,
+};
+
+enum {
+    BPLIST_MOVES_CURSOR_MOVE_0 = 0,
+    BPLIST_MOVES_CURSOR_MOVE_1 = 1,
+    BPLIST_MOVES_CURSOR_MOVE_2 = 2,
+    BPLIST_MOVES_CURSOR_MOVE_3 = 3,
+    BPLIST_MOVES_CURSOR_PREV = 4,
+    BPLIST_MOVES_CURSOR_NEXT = 5,
+    BPLIST_MOVES_CURSOR_SUMMARY = 6,
+    BPLIST_MOVES_CURSOR_BACK = 7,
+};
+
+enum {
+    BPLIST_MOVE_CURSOR_0 = 0,
+    BPLIST_MOVE_CURSOR_1 = 1,
+    BPLIST_MOVE_CURSOR_2 = 2,
+    BPLIST_MOVE_CURSOR_3 = 3,
+    BPLIST_MOVE_CURSOR_BACK = 4,
+};
+
+enum {
+    BPLIST_FORGET_CURSOR_MOVE_0 = 0,
+    BPLIST_FORGET_CURSOR_MOVE_1 = 1,
+    BPLIST_FORGET_CURSOR_MOVE_2 = 2,
+    BPLIST_FORGET_CURSOR_MOVE_3 = 3,
+    BPLIST_FORGET_CURSOR_NEW_MOVE = 4,
+    BPLIST_FORGET_CURSOR_BACK = 5,
+};
+
+enum {
+    BPLIST_CONFIRM_CURSOR_CONFIRM = 0,
+    BPLIST_CONFIRM_CURSOR_BACK = 1,
+};
+
+// The party position and switch checks return these value sets.
+enum {
+    BPLIST_POS_EMPTY = 0,
+    BPLIST_POS_IN_BATTLE = 1,
+    BPLIST_POS_RESERVE = 2,
+};
+
+enum {
+    BPLIST_SWITCH_OK = 0,
+    BPLIST_SWITCH_PARTNER = 1,
+    BPLIST_SWITCH_FAINTED = 2,
+    BPLIST_SWITCH_IN_BATTLE = 3,
+    BPLIST_SWITCH_CHOSEN = 4,
+    BPLIST_SWITCH_EGG = 5,
+    BPLIST_SWITCH_TRAPPED = 6,
+};
+
+#define BPLIST_PARTY_CANCEL 6
+#define BPLIST_MOVE_SLOT_NONE 4
+
+typedef struct {
+    GameData *gameData;
+    PokeParty *party;
+    // The ally's party in a multi battle (GetAllyPokeParty), else NULL
+    PokeParty *allyParty;
+    Font *font;
+    HeapID heapId;
+    u32 battleStyle;
+    BOOL isMulti;
+    // The player's place among the multi battle's trainers (GetMultiTrainerIndex), which orders the list
+    u8 multiTrainerIndex;
+    // The party slots chosen before for the other positions this turn, 6 for none
+    u8 alreadyChosen[2];
+    // A BPLIST_MODE_*
+    u8 mode;
+    u8 partyIndex;
+    // The position whose Pokémon is switched out, where the choice goes in chosen
+    u8 switchOutPos;
+    // How many positions are in battle (GetClientBattlerCount, 3 in a rotation battle)
+    u8 battlePosCount;
+    u8 padding23;
+    u16 item;
+    // The new move in forget mode; a nonzero switch-block flag in the battle party menu.
+    u16 move;
+    TCBManager *tcbManager;
+    PaletteFade *paletteFade;
+    // 1 leaves, choosing nothing (BattleClientCmd_QuitPokeSelect)
+    u32 quit;
+    // 1 leaves at once
+    u32 abort;
+    // Whether each party slot's Pokémon is under Embargo, so no item can be used on it
+    u8 embargo[6];
+    u8 padding3E[2];
+    // 1 plays the sound effects
+    u32 playSound;
+    u8 *usingKeys;
+    // Out: the party slot chosen for each position, BPLIST_NONE for none
+    u8 chosen[3];
+    // The slot of the move to forget, or 4 for none
+    u8 slot;
+    u8 done;
+} BPlistParam;
+
+// A move of a BPlistPokemon
+struct BPlistMove {
+    u16 move;
+    u8 pp;
+    u8 maxPp;
+    u8 type;
+    u8 category;
+    u8 accuracy; // 0 when the move always hits
+    u8 power;
+};
+
+// One Pokémon as the list shows it
+struct BPlistPokemon {
+    PartyPkm *pkm; // 0x00  NULL for an empty slot
+    u16 species;   // 0x04  0 for an empty slot
+    u16 attack;    // 0x06
+    u16 defense;   // 0x08
+    u16 speed;     // 0x0a
+    u16 spAttack;  // 0x0c
+    u16 spDefense; // 0x0e
+    u16 hp;        // 0x10
+    u16 maxHp;     // 0x12
+    u8 type1;      // 0x14
+    u8 type2;      // 0x15
+    u8 level : 7;  // 0x16
+    u8 hideSex : 1;
+    u8 sex : 3; // 0x17
+    u8 status : 4;
+    u8 isEgg : 1;
+    u16 ability;         // 0x18
+    u16 item;            // 0x1a
+    u32 exp;             // 0x1c
+    u32 levelExp;        // 0x20
+    u32 nextLevelExp;    // 0x24
+    u32 form;            // 0x28
+    BPlistMove moves[4]; // 0x2c
+}; // 0x4c
+
+// The first of each kind of actor in BPlistWork's actors, which overlays its arrays of them
+enum {
+    BPLIST_ACTOR_ITEM = 0,
+    BPLIST_ACTOR_POKE = 7,
+    BPLIST_ACTOR_STATUS = 13,
+    BPLIST_ACTOR_HP_BAR = 19,
+    BPLIST_ACTOR_POKE_TYPE = 25,
+    BPLIST_ACTOR_MOVE_TYPE = 29,
+    BPLIST_ACTOR_CATEGORY = 39,
+    BPLIST_ACTOR_MAX = 41,
+};
+
+// The list's work, 0x2544 bytes, shared by the overlay's files
+struct BPlistWork {
+    BPlistParam *param;       // 0x0000
+    BPlistPokemon pokemon[6]; // 0x0004
+    u8 partyOrder[6];         // 0x01cc  the party slot at each list position
+    TCBExManager *tcbExMgr;   // 0x01d4
+    PaletteFade *paletteFade; // 0x01d8
+    // Screen pieces cut from the list's tilemaps, by button
+    u16 plateScrn[2][4][16 * 6];   // 0x01dc  buttons 0-5: [source column][state]
+    u16 moveButtonScrn[4][13 * 5]; // 0x07dc  buttons 8-11
+    u16 button12Scrn[4][5 * 5];    // 0x09e4
+    u16 button13Scrn[4][5 * 5];    // 0x0aac
+    u16 button6Scrn[4][5 * 5];     // 0x0b74
+    u16 button7Scrn[3][30 * 17];   // 0x0c3c
+    u16 button14Scrn[4][16 * 6];   // 0x1830  buttons 14-26
+    u16 button27Scrn[3][26 * 5];   // 0x1b30
+    u16 button28Scrn[3][5 * 2];    // 0x1e3c  buttons 28-31
+    u16 savedPalette[16];          // 0x1e78
+    u8 animSeq;                    // 0x1e98  also the swap animation's
+    u8 animCount;                  // 0x1e99
+    u8 animButton;                 // 0x1e9a
+    u8 : 4;                        // 0x1e9b
+    u8 animMode : 3;
+    u8 animActive : 1;
+    Font *smallFont;          // 0x1e9c
+    MsgData *msgData;         // 0x1ea0
+    WordSet *wordSet;         // 0x1ea4
+    StrBuf *strBuf;           // 0x1ea8
+    PrintQueue *printQueue;   // 0x1eac
+    PrintStream *printStream; // 0x1eb0
+    BOOL streamAdvanced;      // 0x1eb4
+    ClActUnit *actorUnit;     // 0x1eb8
+    union {
+        ClActor *actors[BPLIST_ACTOR_MAX]; // 0x1ebc  all of them, created, hidden and freed as one
+        struct {
+            ClActor *itemIcons[7];      // 0x1ebc  by party slot, then one more for page 2
+            ClActor *pokeIcons[6];      // 0x1ed8
+            ClActor *statusIcons[6];    // 0x1ef0
+            ClActor *hpBarActors[6];    // 0x1f08  the common HP-bar actors, one per party member
+            ClActor *pokeTypeIcons[4];  // 0x1f20  two pairs, by pokeTypeIconBuf
+            ClActor *moveTypeIcons[10]; // 0x1f30  two sets of five, by typeIconBuf
+            ClActor *categoryIcons[2];  // 0x1f58  by categoryIconBuf
+        };
+    };
+    PrintWindow msgWins[2];  // 0x1f60  the info line and the message window
+    PrintWindow windows[64]; // 0x1f70  at most 22 used
+    BmpWin *dummyWin;        // 0x2170
+    u8 windowCount;          // 0x2174
+    u8 windowSwap : 5;       // 0x2175
+    u8 pokeTypeIconBuf : 1;  // which pair of Pokémon type icons
+    u8 typeIconBuf : 1;      // which set of move type icons
+    u8 categoryIconBuf : 1;  // which category icon
+    u8 startPos;             // 0x2176  the party index at entry
+    u8 pageChangeSeq : 4;    // 0x2177
+    u8 infoWinFramePending : 4;
+    int seq;                 // 0x2178  the state, 0x21 ends
+    int nextSeq;             // 0x217c  taken once the button animation ends
+    u8 page;                 // 0x2180
+    CursorMove *cursorMove;  // 0x2184
+    BAppCursor *cursor;      // 0x2188
+    BOOL cursorVisible;      // 0x218c
+    u8 page1Pos;             // 0x2190
+    u8 page6Pos;             // 0x2191
+    u8 page7Pos;             // 0x2192
+    u8 msgWinOpen;           // 0x2193
+    BGWinFrame *plateFrames; // 0x2194
+    u8 padding2198[0x300];   // 0x2198  never accessed
+    u8 swapPos;              // 0x2498
+    u8 swapAnimPos[2];       // 0x2499
+    u16 swaps[2][2];         // 0x249c  swapped position pairs, 0xff when empty
+    u32 charRes[26];         // 0x24a4
+    u32 plttRes[6];          // 0x250c
+    u32 cellRes[6];          // 0x2524
+    const u8 *flushList;     // 0x253c  window indices ending in 0xff
+    BOOL initialized;        // 0x2540
+}; // 0x2544
+
+void BPlistMain_Start(BPlistParam *param);
+
+int BPlistMain_CheckPos(BPlistWork *work, int pos);
+int BPlistMain_GetSwitchError(BPlistWork *work);
+BOOL BPlistMain_IsPartnerSlot(BPlistWork *work, u32 idx);
+u8 BPlistMain_GetPartySlot(BPlistWork *work, int pos); // the party slot at a list position
+BOOL BPlistMain_PopSwap(BPlistWork *work, u8 *pos1, u8 *pos2, BOOL clear);
+
+#endif // POKEBW2_BATTLE_B_PLIST_MAIN_H

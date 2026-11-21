@@ -2,7 +2,7 @@
 #define POKEBW2_SAVE_UNITY_TOWER_FLOOR_SAVEDATA_H
 
 #include "types.h"
-#include "field/unity_tower.h"
+#include "app/unity_tower/unity_tower.h"
 #include "struct_decls.h"
 
 // Block 0x3e, the visitors on the Unity Tower's floor (unity_tower_floor_savedata.c, a descriptive name).

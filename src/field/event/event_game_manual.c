@@ -1,8 +1,8 @@
 #include "types.h"
-#include "field/event_game_manual.h"
-#include "field/field_event.h"
+#include "field/event/event_game_manual.h"
 #include "gfl/heap.h"
 #include "struct_decls.h"
+#include "system/field_event.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 

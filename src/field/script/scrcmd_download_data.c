@@ -2,8 +2,8 @@
 // flags, values and names, and the musical program and props in it. The name is descriptive; the data looks like what
 // the game downloads
 #include "types.h"
-#include "field/field_script.h"
-#include "field/scrcmd_download_data.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_download_data.h"
 #include "gfl/heap.h"
 #include "gfl/str.h"
 #include "save/download_data.h"

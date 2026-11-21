@@ -3,7 +3,7 @@
 // battle_rec_ov.c, which holds the same functions after the GDS client's files.
 
 #include "types.h"
-#include "app/battle_rec_ov.h"
+#include "app/battle_recorder/battle_rec_ov.h"
 #include "gfl/backup_system.h"
 #include "gfl/std.h"
 #include "save/battle_rec.h"

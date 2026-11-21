@@ -1,0 +1,50 @@
+#include "types.h"
+#include "field/script/field_script.h"
+#include "field/script_facility/scrcmd_resort.h"
+
+// The Join Avenue's script plugin (plugin 8), commands from 1000. The table is in its own overlay, 58, as overlay
+// 60's shop command takes overlay 59's place at the first command's address
+
+const FieldScriptCommand RESORT_SCRIPT_COMMANDS[] = {
+    Scrcmd_Resort_StartTalk,
+    Scrcmd_Resort_EndTalk,
+    Scrcmd_Resort_GetValue,
+    Scrcmd_Resort_GetScriptValue,
+    Scrcmd_Resort_ShowRecords,
+    Scrcmd_Resort_MakeData,
+    Scrcmd_Resort_RecreatePeople,
+    Scrcmd_Resort_SetWord,
+    Scrcmd_Resort_RemovePerson,
+    Scrcmd_Resort_AddShopExperience,
+    Scrcmd_Resort_AddPopularity,
+    Scrcmd_Resort_StartTalk,
+    Scrcmd_Resort_SaveShopId,
+    Scrcmd_Resort_SetOccupantsLocked,
+    Scrcmd_Resort_HideActors,
+    Scrcmd_Resort_RaffleShopItem,
+    Scrcmd_Resort_SetFriendship,
+    Scrcmd_Resort_RaiseLevel,
+    Scrcmd_Resort_ChangeEffortValue,
+    Scrcmd_Resort_ShortenEggSteps,
+    Scrcmd_Resort_SetShopFlag,
+    Scrcmd_Resort_PayAndSetShopFlag,
+    Scrcmd_Resort_GetPersonVisit,
+    Scrcmd_Resort_NameEntry,
+    Scrcmd_Resort_Visit,
+    Scrcmd_Resort_CheckRank100Unlock,
+    Scrcmd_Resort_MarkRaffled,
+    Scrcmd_Resort_AddRecordPerson,
+    Scrcmd_Resort_AddEntryOrRecord,
+    Scrcmd_Resort_GetNPCValue,
+    Scrcmd_Resort_SetOwnValue,
+    Scrcmd_Resort_GetOwnValue,
+    Scrcmd_Resort_SetOccupantWords,
+    Scrcmd_Resort_SetNPCWord,
+    Scrcmd_Resort_GetGoodsValue,
+    Scrcmd_Resort_DescribeOccupant,
+    Scrcmd_Medalinfo_ShowMedalInfo,
+    Scrcmd_Resort_StartSceneAnim,
+    Scrcmd_Resort_IsSceneAnimDone,
+    Scrcmd_Resort_EndSceneAnim,
+    (FieldScriptCommand)0xFFFFFFFF,
+};

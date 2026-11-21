@@ -1,4 +1,4 @@
-#include "battle/side_handlers.h"
+#include "battle/handler/side_handlers.h"
 #include "types.h"
 #include "battle/btl_calc.h"
 #include "battle/btl_event.h"

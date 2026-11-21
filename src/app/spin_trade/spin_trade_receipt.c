@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/spin_trade.h"
-#include "communication/union_app.h"
+#include "app/spin_trade/spin_trade.h"
+#include "communication/union/union_app.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"

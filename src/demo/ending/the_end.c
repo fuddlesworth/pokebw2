@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/version.h"
-#include "demo/the_end.h"
+#include "demo/ending/the_end.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

@@ -3,9 +3,9 @@
 // the surfing Pokémon). Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
 #include "constants/obj_codes.h"
-#include "field/field_actor.h"
-#include "field/field_effect.h"
-#include "field/field_g3dobj.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_g3dobj.h"
+#include "field/effect/field_effect.h"
 #include "gfl/calctool.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

@@ -2,7 +2,7 @@
 #define POKEBW2_SAVE_PLAYER_SAVEDATA_H
 
 #include "types.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
 

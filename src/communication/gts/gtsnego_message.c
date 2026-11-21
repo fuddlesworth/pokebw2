@@ -3,9 +3,9 @@
 // name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
 #include "types.h"
-#include "communication/gtsnego_local.h"
+#include "app/unity_tower/unity_tower.h"
+#include "communication/gts/gtsnego_local.h"
 #include "constants/arc.h"
-#include "field/unity_tower.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"

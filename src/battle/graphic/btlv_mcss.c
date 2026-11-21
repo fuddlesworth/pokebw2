@@ -1,11 +1,11 @@
 // The battle view's Pokémon sprites, drawn by MCSS. The name is the ROM's string, from GFL_HeapAllocate's asserts. The
 // names are ours; swan has none for this file
 
-#include "battle/btlv_mcss.h"
+#include "battle/graphic/btlv_mcss.h"
 #include "types.h"
 #include "battle/btl_main.h"
-#include "battle/btlv_gauge.h"
-#include "battle/btlv_stage.h"
+#include "battle/graphic/btlv_gauge.h"
+#include "battle/graphic/btlv_stage.h"
 #include "constants/battle.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"

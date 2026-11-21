@@ -1,8 +1,6 @@
 #include "types.h"
 #include "constants/types.h"
-#include "field/event_wbt.h"
-#include "field/field_script.h"
-#include "field/scrcmd_wbt.h"
+#include "field/script/field_script.h"
 #include "gfl/overlay.h"
 #include "gfl/str.h"
 #include "save/event_work.h"
@@ -12,6 +10,8 @@
 #include "system/game_system.h"
 #include "system/vm.h"
 #include "system/wordset.h"
+#include "tournament/event_wbt.h"
+#include "tournament/scrcmd_wbt.h"
 #include "tournament/wbt.h"
 #include "tournament/wbt_makematch.h"
 

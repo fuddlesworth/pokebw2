@@ -3,11 +3,11 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 // Additional helper and table names, and those of commands 0x207, 0x208, 0x275 and 0x298, are our descriptive guesses.
 #include "types.h"
+#include "field/event/field_daycare.h"
 #include "field/field.h"
-#include "field/field_daycare.h"
-#include "field/field_script.h"
-#include "field/scrcmd_word.h"
-#include "field/zone.h"
+#include "field/map/zone.h"
+#include "field/script/field_script.h"
+#include "field/script/scrcmd_word.h"
 #include "gfl/str.h"
 #include "pml/item.h"
 #include "pml/poke_party.h"

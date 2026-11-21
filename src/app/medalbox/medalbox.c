@@ -1,6 +1,6 @@
 #include "types.h"
-#include "app/medalbox.h"
-#include "app/medalbox_data_sys.h"
+#include "app/medalbox/medalbox.h"
+#include "app/medalbox/medalbox_data_sys.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"

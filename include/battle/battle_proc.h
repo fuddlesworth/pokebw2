@@ -2,8 +2,8 @@
 #define POKEBW2_BATTLE_BATTLE_PROC_H
 
 #include "types.h"
-#include "app/ov306.h"
-#include "battle/vs_multi_list.h"
+#include "app/battle_recorder/ov306.h"
+#include "battle/select/vs_multi_list.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"

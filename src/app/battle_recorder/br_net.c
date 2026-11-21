@@ -4,7 +4,7 @@
 
 #include "types.h"
 #include "app/battle_recorder/br_net.h"
-#include "app/gds_rap.h"
+#include "app/battle_recorder/gds_rap.h"
 #include "dwc/error.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/dwc_rapcommon.h"

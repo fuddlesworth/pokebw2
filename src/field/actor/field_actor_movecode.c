@@ -6,11 +6,11 @@
 
 #include "types.h"
 #include "constants/directions.h"
-#include "field/event_trainer_eye.h"
-#include "field/field_acmd.h"
-#include "field/field_actor.h"
-#include "field/field_actor_internal.h"
-#include "field/field_actor_movecode.h"
+#include "field/actor/field_acmd.h"
+#include "field/actor/field_actor.h"
+#include "field/actor/field_actor_internal.h"
+#include "field/actor/field_actor_movecode.h"
+#include "field/event/event_trainer_eye.h"
 #include "gfl/key.h"
 #include "gfl/random.h"
 

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "app/hall_of_fame_pc_main.h"
+#include "app/hall_of_fame_pc/hall_of_fame_pc_main.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "gfl/arc.h"

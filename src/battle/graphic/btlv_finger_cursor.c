@@ -1,7 +1,7 @@
 // The pointing finger that the catching demonstration and the battle bag show tapping the touch screen. The name is
 // the ROM's string, from GFL_HeapAllocate's assert. BtlvFingerCursor_Create is swan's name; the other names are ours
 
-#include "battle/btlv_finger_cursor.h"
+#include "battle/graphic/btlv_finger_cursor.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
 #include "constants/arc.h"

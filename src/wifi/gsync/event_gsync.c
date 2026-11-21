@@ -1,7 +1,5 @@
 #include "types.h"
-#include "app/box2.h"
-#include "field/event_gsync.h"
-#include "field/field_event.h"
+#include "app/box/box2.h"
 #include "gfl/net.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
@@ -11,12 +9,14 @@
 #include "save/dream_world.h"
 #include "save/player_info.h"
 #include "save/save_control.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
-#include "wifi/dwc_utility.h"
-#include "wifi/gsync.h"
-#include "wifi/wifi_login.h"
+#include "wifi/device/dwc_utility.h"
+#include "wifi/gsync/event_gsync.h"
+#include "wifi/gsync/gsync.h"
+#include "wifi/login/wifi_login.h"
 
 // Game Sync's event phases, including its menu and child procs.
 enum {

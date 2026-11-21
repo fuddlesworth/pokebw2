@@ -1,8 +1,8 @@
 #include "types.h"
-#include "app/research_radar.h"
-#include "field/event_research_radar.h"
-#include "field/field_event.h"
+#include "app/research_radar/event_research_radar.h"
+#include "app/research_radar/research_radar.h"
 #include "gfl/heap.h"
+#include "system/field_event.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 

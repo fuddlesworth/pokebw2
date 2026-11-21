@@ -1,13 +1,12 @@
 // The Union Room's colosseum (the file's name is from its allocations' strings): the work of up to four players, which
 // Colosseum_Create allocates and the UnionSystem keeps, and the teams of a battle. Its net commands are
 // colosseum_comm.c's
-#include "communication/colosseum.h"
+#include "communication/union/colosseum.h"
 #include "types.h"
-#include "app/comm_btl_demo.h"
-#include "app/pms_select.h"
-#include "communication/union_comm.h"
-#include "field/event_colosseum_battle.h"
-#include "field/field_event.h"
+#include "app/pms/pms_select.h"
+#include "communication/union/union_comm.h"
+#include "demo/comm_battle/comm_btl_demo.h"
+#include "field/event/event_colosseum_battle.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"
@@ -17,6 +16,7 @@
 #include "nitro/os.h"
 #include "pml/poke_party.h"
 #include "save/battle_rec.h"
+#include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 

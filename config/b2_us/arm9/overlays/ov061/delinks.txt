@@ -3,7 +3,7 @@
     .ctor       start:0x021e62b4 end:0x021e62b4 kind:rodata align:4
     .bss        start:0x021e62c0 end:0x021e62c0 kind:bss align:32
 
-src/field/eventcmd/scrcmd_black_tower.c:
+src/field/script_facility/scrcmd_black_tower.c:
     complete
     .text       start:0x021e5800 end:0x021e6180
     .rodata     start:0x021e6180 end:0x021e62b4

@@ -2,7 +2,7 @@
 #define POKEBW2_FIELD_APP_CALL_H
 
 #include "types.h"
-#include "field/player_action.h"
+#include "field/player/player_action.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"

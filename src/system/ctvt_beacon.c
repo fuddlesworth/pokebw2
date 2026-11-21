@@ -1,6 +1,6 @@
 #include "system/ctvt_beacon.h"
 #include "types.h"
-#include "app/comm_tvt/ctvt_comm.h"
+#include "communication/xtransceiver/ctvt_comm.h"
 #include "save/player_info.h"
 #include "save/wifi_list.h"
 

@@ -1,7 +1,7 @@
 // The effects' moves and waves of the battle's background, BG 3. The name is the ROM's string, from
 // GFL_HeapAllocate's asserts. The names are ours; swan has none for this file
 
-#include "battle/btlv_bg.h"
+#include "battle/graphic/btlv_bg.h"
 #include "types.h"
 #include "gfl/bg_sys.h"
 #include "gfl/heap.h"

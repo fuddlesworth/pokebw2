@@ -1,6 +1,6 @@
 #include "types.h"
 #include "app/ui/print_msg.h"
-#include "battle/b_choice_main.h"
+#include "battle/select/b_choice_main.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "gfl/arc.h"
