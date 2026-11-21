@@ -46,7 +46,7 @@ class Patterns(unittest.TestCase):
         self.assertIn("unk_10", code)
 
     def test_modules(self):
-        self.assertEqual(nr.module_of("src/field/fieldmap.c"), "ov036")
+        self.assertEqual(nr.module_of("src/field/map/fieldmap.c"), "ov036")
         self.assertEqual(nr.module_of("src/gfl/heap.c"), "main")
         self.assertEqual(nr.module_of("src/system/pokedex_savedata.c"), "main")
         self.assertEqual(nr.module_of("lib/nitro/src/fx/fx.c"), "lib/nitro")

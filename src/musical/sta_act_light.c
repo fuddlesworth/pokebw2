@@ -1,11 +1,11 @@
 #include "types.h"
-#include "app/musical/sta_act_light.h"
-#include "app/musical/sta_act_poke.h"
-#include "app/musical/sta_acting.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
+#include "musical/sta_act_light.h"
+#include "musical/sta_act_poke.h"
+#include "musical/sta_acting.h"
 #include "nitro/fx.h"
 
 // Overlay 209's sta_act_light.c: the stage's spotlights, 2D cell actors over the 3D stage, placed in fixed point

@@ -3,7 +3,7 @@
     .ctor       start:0x021ef554 end:0x021ef554 kind:rodata align:4
     .bss        start:0x021ef560 end:0x021ef560 kind:bss align:32
 
-src/field/gimmick_league_marshal.c:
+src/field/gimmick/gimmick_league_marshal.c:
     complete
     .text       start:0x021eec80 end:0x021ef464
     .rodata     start:0x021ef464 end:0x021ef554

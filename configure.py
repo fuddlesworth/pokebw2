@@ -461,7 +461,7 @@ DATA_PACKS += [("tools/data/graphics_archive.py", str(directory.relative_to(ROOT
 # (script_imports).
 DATA_PACK_TOOLS = ["tools/data/datajson.py", "tools/text/text_ids.py", "tools/data/gen_constants.py", "tools/data/narc.py",
                    "tools/text/text_sources.py", "tools/text/text_data.py", "tools/text/msgdata.py",
-                   "src/field/scrcmd_shop.c", "tools/data/facility_data.py", "tools/data/make_constants.py"]
+                   "src/field/script/scrcmd_shop.c", "tools/data/facility_data.py", "tools/data/make_constants.py"]
 # The C files a packer reads its tables from, besides scrcmd_shop.c
 DATA_PACK_SOURCES = {"tools/data/pokemon_graphics.py": ["src/system/poke_icon.c"],
                      "tools/data/pokemon_cries.py": ["src/system/poke_icon.c"],

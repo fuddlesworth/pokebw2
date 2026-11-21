@@ -1,10 +1,10 @@
 // The ROM names this file oekaki.c.
 #include "types.h"
 #include "app/drawing.h"
+#include "communication/union_app.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/union_app.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wbt_list_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -10,6 +9,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "tournament/wbt_list_graphic.h"
 
 // The BGs and cell actors of the Pokémon World Tournament's list of Trainers, named after the ROM's
 // "wbt_list_graphic.c"

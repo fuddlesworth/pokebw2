@@ -3,8 +3,6 @@
 #include "field/event_wbt.h"
 #include "field/field_script.h"
 #include "field/scrcmd_wbt.h"
-#include "field/wbt.h"
-#include "field/wbt_makematch.h"
 #include "gfl/overlay.h"
 #include "gfl/str.h"
 #include "save/event_work.h"
@@ -14,6 +12,8 @@
 #include "system/game_system.h"
 #include "system/vm.h"
 #include "system/wordset.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_makematch.h"
 
 // The commands of the Pokémon World Tournament's script plugins (plugins 6 and 7), from 1000, that both plugins use
 

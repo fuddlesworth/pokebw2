@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/net_common_download.h"
 #include "dwc/nd.h"
 #include "field/delivery_beacon.h"
 #include "gfl/dwc_rap.h"
@@ -9,6 +8,7 @@
 #include "gfl/net_state.h"
 #include "gfl/std.h"
 #include "system/game_data.h"
+#include "wifi/net_common_download.h"
 
 // The states of a download that wait for the download library
 enum {

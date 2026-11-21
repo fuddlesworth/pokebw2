@@ -3,10 +3,10 @@
 
 #include "battle/btlv_bg.h"
 #include "types.h"
-#include "battle/btlv_effect.h"
 #include "gfl/bg_sys.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "system/sin_wave_table.h"

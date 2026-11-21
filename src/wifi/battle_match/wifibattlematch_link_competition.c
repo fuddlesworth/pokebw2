@@ -7,11 +7,6 @@
 
 #include "types.h"
 #include "app/livebattlematch_flow.h"
-#include "app/wifibattlematch_graphic.h"
-#include "app/wifibattlematch_link.h"
-#include "app/wifibattlematch_net.h"
-#include "app/wifibattlematch_util.h"
-#include "app/wifibattlematch_view.h"
 #include "battle/btl_result.h"
 #include "battle/regulation.h"
 #include "constants/arc.h"
@@ -50,6 +45,11 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/system/wifi_battle_match.h"
+#include "wifi/wifibattlematch_graphic.h"
+#include "wifi/wifibattlematch_link.h"
+#include "wifi/wifibattlematch_net.h"
+#include "wifi/wifibattlematch_util.h"
+#include "wifi/wifibattlematch_view.h"
 
 enum {
     COMPETITION_PHASE_FADE_IN = 0,

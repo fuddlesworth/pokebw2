@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wifibattlematch.h"
 #include "field/event_wifibattlematch.h"
 #include "field/field_event.h"
 #include "gfl/heap.h"
@@ -10,6 +9,7 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "wifi/wifibattlematch.h"
 
 // The steps of the event
 enum {

@@ -1,8 +1,4 @@
 #include "types.h"
-#include "app/t_download/t_download_graphic.h"
-#include "app/t_download/t_download_local.h"
-#include "app/t_download/t_download_save.h"
-#include "app/t_download/t_download_util.h"
 #include "app/ui/frame_list.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"
@@ -30,6 +26,10 @@
 #include "system/scroll_bar.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
+#include "tournament/t_download_graphic.h"
+#include "tournament/t_download_local.h"
+#include "tournament/t_download_save.h"
+#include "tournament/t_download_util.h"
 
 // The BGs, windows, messages, menus and cell actors of the Pokémon World Tournament's downloaded tournaments' screens.
 // The name is ours, after the file between t_download.c and the ROM's "t_download_save.c"

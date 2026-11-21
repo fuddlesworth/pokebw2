@@ -2,9 +2,6 @@
 // for it, so it is named after its process (our name)
 
 #include "types.h"
-#include "app/wifi_login.h"
-#include "app/wifilogin_disp.h"
-#include "app/wifilogin_message.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "gfl/bg_sys.h"
@@ -26,6 +23,9 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/wifi_error.h"
+#include "wifi/wifi_login.h"
+#include "wifi/wifilogin_disp.h"
+#include "wifi/wifilogin_message.h"
 
 typedef struct WifiLogoutWork WifiLogoutWork;
 typedef void (*WifiLogoutStateFunc)(WifiLogoutWork *work);

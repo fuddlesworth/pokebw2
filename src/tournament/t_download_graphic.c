@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/t_download/t_download_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -9,6 +8,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "tournament/t_download_graphic.h"
 
 // The BGs and cell actors of the Pokémon World Tournament's downloaded tournaments, named after the ROM's
 // "t_download_graphic.c". The names are ours

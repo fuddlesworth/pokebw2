@@ -1,10 +1,10 @@
 #include "types.h"
 #include "field/dup_fitting.h"
-#include "field/musical.h"
-#include "field/musical_dressup_sys.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
+#include "musical/musical.h"
+#include "musical/musical_dressup_sys.h"
 #include "save/musical_savedata.h"
 #include "save/save_control.h"
 

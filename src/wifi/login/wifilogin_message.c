@@ -1,7 +1,6 @@
 // The Wi-Fi login and logout's messages and menus: a message window printed a character at a time, a title window and
 // a yes/no menu. The name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
-#include "app/wifilogin_message.h"
 #include "types.h"
 #include "constants/arc.h"
 #include "gfl/arc_util.h"
@@ -25,6 +24,7 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include "wifi/wifilogin_message.h"
 
 #define WIFILOGIN_MESSAGE_TITLE_BG 1
 

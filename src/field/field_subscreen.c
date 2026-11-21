@@ -6,6 +6,8 @@
 // FieldSubscreen_ResetReturnSubscreen, sFieldSubscreenDefs and sFieldMenuBGSetup are ours. First written by mariano54
 // on their parallel-decomp branch
 #include "types.h"
+#include "communication/union_main.h"
+#include "communication/union_subdisp.h"
 #include "constants/arc.h"
 #include "field/beacon_view.h"
 #include "field/beacon_view_common.h"
@@ -21,9 +23,6 @@
 #include "field/player_state.h"
 #include "field/report.h"
 #include "field/subscreen.h"
-#include "field/union_main.h"
-#include "field/union_subdisp.h"
-#include "field/wbt_subscreen.h"
 #include "field/zone.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -38,6 +37,7 @@
 #include "system/game_system.h"
 #include "system/infowin.h"
 #include "system/wipe.h"
+#include "tournament/wbt_subscreen.h"
 
 // The previous screen that FieldSubscreen_Create gives the first screen's init. It is no screen, past
 // FLD_SUBSCREEN_ID_MAX, so it stays out of swan's FieldSubscreenID

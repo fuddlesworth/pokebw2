@@ -2,7 +2,7 @@
 #define POKEBW2_SYSTEM_FEST_MISSION_H
 
 #include "types.h"
-#include "field/fest_mission_data.h"
+#include "entralink/fest_mission_data.h"
 #include "gfl/heap.h"
 #include "struct_decls.h"
 

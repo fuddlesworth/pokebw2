@@ -2,7 +2,6 @@
 // Wi-Fi settings and return. The name is the ROM's string, from GFL_HeapAllocate's calls. Function names are ours.
 
 #include "types.h"
-#include "app/gsync.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -45,6 +44,7 @@
 #include "system/wipe.h"
 #include "text/system/game_sync_menu.h"
 #include "text/system/wifi_error.h"
+#include "wifi/gsync.h"
 
 // The menu shares the IR battle menu's heap
 #define HEAPID_GSYNC_MENU HEAPID_IRC_BATTLE_MENU

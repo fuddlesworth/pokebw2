@@ -3,7 +3,7 @@
     .ctor       start:0x0219c334 end:0x0219c334 kind:rodata align:4
     .bss        start:0x0219c340 end:0x0219c340 kind:bss align:32
 
-src/communication/irc_compat_result.c:
+src/communication/irc/irc_compat_result.c:
     complete
     .text       start:0x0219ad60 end:0x0219c184
     .rodata     start:0x0219c184 end:0x0219c334

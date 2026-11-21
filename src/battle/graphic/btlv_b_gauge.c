@@ -4,7 +4,6 @@
 #include "battle/btlv_b_gauge.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/btlv_effect.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
 #include "constants/sound.h"
@@ -13,6 +12,7 @@
 #include "gfl/heap.h"
 #include "gfl/sound.h"
 #include "gfl/tcb.h"
+#include "moveeffect/btlv_effect.h"
 #include "system/palanm.h"
 
 // A ball, or the gauge's frame as the last, 0x1c bytes

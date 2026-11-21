@@ -1,7 +1,7 @@
 # CtvtDraw function/data emission and relocated pointers match with per-function IPA
 # when its tables precede their first user; see docs/matching.md.
 [file_flags]
-"src/communication/ctvt_draw.c" = ["-ipa function"]
+"src/communication/xtransceiver/ctvt_draw.c" = ["-ipa function"]
 
 # The explicit assertion filename joins initialized data under per-function IPA.
 "src/field/delivery_beacon.c" = ["-ipa function", '-pragma "explicit_zero_data on"']

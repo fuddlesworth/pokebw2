@@ -6,12 +6,12 @@
 // "fmission_app_draw.c" are guesses from it. app/festival.h has the screen's parameters and its process
 
 #include "types.h"
-#include "app/festival.h"
 #include "app/fmission_app_gra.h"
 #include "app/fmission_log_accessor_fapp.h"
 #include "constants/arc.h"
-#include "field/fest_mission_data.h"
-#include "field/festival.h"
+#include "entralink/fest_mission_data.h"
+#include "entralink/festival.h"
+#include "entralink/festival_app.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"

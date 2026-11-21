@@ -3,9 +3,9 @@
 
 #include "types.h"
 #include "app/livebattlematch_flow.h"
-#include "app/wifibattlematch.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"
+#include "wifi/wifibattlematch.h"
 
 // Overlay 261's battle_championship_flow.c (named by its embedded string): the process that overlay 290's Wi-Fi and
 // live battle competitions (wifibattlematch_sys.c) run for the battle competition menu of Entree Forest, the Battle

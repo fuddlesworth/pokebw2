@@ -1,6 +1,6 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/symbol_map.h"

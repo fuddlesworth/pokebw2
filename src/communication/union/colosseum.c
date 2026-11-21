@@ -1,0 +1,249 @@
+// The Union Room's colosseum (the file's name is from its allocations' strings): the work of up to four players, which
+// Colosseum_Create allocates and the UnionSystem keeps, and the teams of a battle. Its net commands are
+// colosseum_comm.c's
+#include "communication/colosseum.h"
+#include "types.h"
+#include "app/comm_btl_demo.h"
+#include "app/pms_select.h"
+#include "communication/union_comm.h"
+#include "field/event_colosseum_battle.h"
+#include "field/field_event.h"
+#include "gfl/heap.h"
+#include "gfl/net.h"
+#include "gfl/net_command.h"
+#include "gfl/net_handle.h"
+#include "gfl/overlay.h"
+#include "gfl/std.h"
+#include "nitro/os.h"
+#include "pml/poke_party.h"
+#include "save/battle_rec.h"
+#include "system/game_data.h"
+#include "system/game_system.h"
+
+static void Colosseum_SetPlayer(UnionColosseum *colosseum, BattlePlayer *player, u8 index, u32 unused);
+
+UnionColosseum *Colosseum_Create(GameData *gameData, GameSystem *gsys, const PlayerInfo *info, u32 joinedRecruit) {
+    UnionColosseum *colosseum;
+    int self = GFL_NetGetHandleNetId(NetHandle_GetOwn());
+    int i;
+    u8 value;
+    ColosseumMember *member;
+
+    colosseum = GFL_HeapAllocate(HEAPID_UNION, sizeof(UnionColosseum), TRUE, "colosseum.c", 53);
+    colosseum->commPlayer = CommPlayer_Init(4, gsys, HEAPID_UNION, 0);
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        colosseum->card[i] = GFL_HeapAllocate(HEAPID_UNION, sizeof(TrainerCardData), TRUE, "colosseum.c", 56);
+        colosseum->cardCheck[i] = colosseum->card[i];
+        colosseum->party[i] = PokeParty_Create(HEAPID_UNION);
+    }
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        colosseum->vote[i] = COLOSSEUM_VOTE_NONE;
+        colosseum->voteReply[i] = COLOSSEUM_VOTE_REPLY_NONE;
+    }
+    colosseum->myVote = COLOSSEUM_VOTE_NONE;
+    colosseum->myVoteReply = COLOSSEUM_VOTE_REPLY_NONE;
+    PokeParty_Copy(GameData_GetParty(gameData), colosseum->party[self]);
+    member = &colosseum->members[self];
+    PlayerInfo_Copy(info, &member->info);
+    OS_GetMacAddress(member->mac);
+    member->present = 1;
+    value = 1;
+    if (joinedRecruit == 1) {
+        value = 0;
+    }
+    member->autoAccept = value;
+    member->battleRecordVersion = BATTLE_REC_VERSION;
+    TrainerCardData_Fill(colosseum->cardCheck[self], gameData, TRUE, FALSE, HEAPID_UNION);
+    TrainerCardData_FillExtras(colosseum->card[self], gameData, HEAPID_UNION);
+    colosseum->cardReady[self] = TRUE;
+    return colosseum;
+}
+
+void Colosseum_Free(UnionColosseum *colosseum, GameSystem *gsys) {
+    int i;
+
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        GFL_HeapFree(colosseum->card[i]);
+        GFL_HeapFree(colosseum->party[i]);
+    }
+    CommPlayer_Exit(gsys, colosseum->commPlayer);
+    GFL_HeapFree(colosseum);
+}
+
+void Colosseum_SetStarted(UnionColosseum *colosseum, BOOL value) {
+    colosseum->started = value;
+}
+
+void Colosseum_SetMyVote(UnionColosseum *colosseum, u32 value) {
+    colosseum->myVote = value;
+    colosseum->myVoteReply = COLOSSEUM_VOTE_REPLY_NONE;
+}
+
+u8 Colosseum_GetMyVote(const UnionColosseum *colosseum) {
+    return colosseum->myVote;
+}
+
+void Colosseum_SetMyVoteReply(UnionColosseum *colosseum, u32 value) {
+    colosseum->myVoteReply = value;
+}
+
+u8 Colosseum_GetMyVoteReply(const UnionColosseum *colosseum) {
+    return colosseum->myVoteReply;
+}
+
+BOOL Colosseum_Vote(UnionColosseum *colosseum, u32 netId, u8 value) {
+    int i;
+    BOOL accepted;
+
+    if (value == COLOSSEUM_VOTE_NONE) {
+        colosseum->vote[netId] = value;
+        accepted = TRUE;
+    } else {
+        for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+            if (value == colosseum->vote[i]) {
+                accepted = FALSE;
+                break;
+            }
+        }
+        if (i == COLOSSEUM_MEMBER_MAX) {
+            colosseum->vote[netId] = value;
+            accepted = TRUE;
+        }
+    }
+    colosseum->voteReply[netId] = accepted;
+    return accepted;
+}
+
+void Colosseum_SendVoteReplies(UnionColosseum *colosseum) {
+    int i;
+
+    if (GFL_NetIsParent()) {
+        for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+            u8 value = colosseum->voteReply[i];
+
+            if (value != COLOSSEUM_VOTE_REPLY_NONE && Colosseum_SendVoteReply(colosseum, i, value) == TRUE) {
+                colosseum->voteReply[i] = COLOSSEUM_VOTE_REPLY_NONE;
+            }
+        }
+    }
+}
+
+void Colosseum_UpdateReadySync(UnionColosseum *colosseum) {
+    int count;
+    int i;
+
+    if (GFL_NetIsParent()) {
+        count = 0;
+        for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+            if (colosseum->readyReceived[i] == 1) {
+                count++;
+            }
+        }
+        if (count == GFL_NetGetNegotiatedCount()) {
+            if (Colosseum_SendAllReady() == TRUE) {
+                for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+                    colosseum->readyReceived[i] = 0;
+                    colosseum->cancelReceived[i] = 0;
+                }
+            }
+        } else {
+            for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+                if (colosseum->cancelReceived[i] == 1 && Colosseum_SendCancelAck(i) == TRUE) {
+                    colosseum->cancelReceived[i] = 0;
+                }
+            }
+        }
+    }
+}
+
+void Colosseum_StoreChoice(UnionColosseum *colosseum, u32 netId, const ColosseumChoice *choice) {
+    colosseum->choice[netId] = *choice;
+    colosseum->choiceReady[netId] = TRUE;
+}
+
+u8 Colosseum_TakeChoice(UnionColosseum *colosseum, u32 netId, ColosseumChoice *choice) {
+    u8 ready;
+
+    *choice = colosseum->choice[netId];
+    ready = colosseum->choiceReady[netId];
+    colosseum->choiceReady[netId] = FALSE;
+    return ready;
+}
+
+void Colosseum_ResetConfirmCount(UnionColosseum *colosseum) {
+    colosseum->confirmCount = 0;
+}
+
+BOOL Colosseum_AreAllPartiesReceived(const UnionColosseum *colosseum) {
+    int count = 0;
+    int i;
+
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        if (colosseum->partyReady[i] == 1) {
+            count++;
+        }
+    }
+    if (count >= GFL_NetGetNegotiatedCount()) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+void Colosseum_ClearParties(UnionColosseum *colosseum, BOOL keepOwn) {
+    int self = GFL_NetGetHandleNetId(NetHandle_GetOwn());
+    int i;
+
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        if (!keepOwn || self != i) {
+            PokeParty_Init(colosseum->party[i]);
+        }
+        colosseum->partyReady[i] = FALSE;
+    }
+}
+
+void Colosseum_BuildBattlePlayers(UnionColosseum *colosseum, GameSystem *gsys, ColosseumPlayers *players, u32 unused) {
+    int member_max = 0;
+    int i;
+    int self;
+    int tr_no;
+    int selfTeam;
+    int slot;
+
+    MI_CpuFill8(players, 0, sizeof(ColosseumPlayers));
+    players->battle.demoType = COMM_BTL_DEMO_TYPE_MULTI_START;
+    for (i = 0; i < COLOSSEUM_MEMBER_MAX; i++) {
+        if (colosseum->partyReady[i] == 0) {
+            players->battle.demoType = COMM_BTL_DEMO_TYPE_SINGLE_START;
+            break;
+        }
+        member_max++;
+    }
+    GFL_ASSERT(member_max == 2 || member_max == 4);
+    self = GFL_NetGetHandleNetId(NetHandle_GetOwn());
+    selfTeam = colosseum->positions[self];
+    for (i = 0; i < member_max; i++) {
+        u8 team = colosseum->positions[i];
+
+        if ((team & 1) == (selfTeam & 1)) {
+            slot = 0;
+        } else if (players->battle.demoType == COMM_BTL_DEMO_TYPE_SINGLE_START) {
+            slot = 1;
+        } else {
+            slot = 2;
+        }
+        tr_no = slot + (team >> 1);
+        GFL_ASSERT(tr_no < member_max);
+        Colosseum_SetPlayer(colosseum, &players->battle.players[tr_no], i, unused);
+    }
+    players->records = GameData_GetRecords(GSYS_GetGameData(gsys));
+}
+
+void Colosseum_ClearPlayers(ColosseumPlayers *players) {
+    MI_CpuFill8(players, 0, sizeof(ColosseumPlayers));
+}
+
+static void Colosseum_SetPlayer(UnionColosseum *colosseum, BattlePlayer *player, u8 index, u32 unused) {
+    player->party = colosseum->party[index];
+    player->info = &colosseum->members[index].info;
+    player->battleRecordVersion = colosseum->members[index].battleRecordVersion;
+}

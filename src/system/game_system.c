@@ -1,7 +1,7 @@
 #include "types.h"
 #include "dsprot/dsprot.h"
+#include "entralink/festival.h"
 #include "field/event_game_clear.h"
-#include "field/festival.h"
 #include "field/field.h"
 #include "field/field_sound.h"
 #include "field/intrude_work.h"

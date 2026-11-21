@@ -1,0 +1,332 @@
+#include "communication/local_tvt_person_chelen.h"
+#include "types.h"
+#include "communication/local_tvt_calldata.h"
+#include "communication/local_tvt_chara.h"
+#include "communication/local_tvt_common.h"
+#include "communication/local_tvt_message.h"
+#include "communication/local_tvt_person.h"
+#include "communication/local_tvt_util.h"
+#include "constants/arc.h"
+#include "constants/pokemon.h"
+#include "constants/text_banks.h"
+#include "gfl/heap.h"
+#include "gfl/msg.h"
+#include "gfl/std.h"
+#include "pml/poke_party.h"
+#include "system/game_data.h"
+
+// The party selection and explanation of a selected Pokemon
+enum {
+    LOCAL_TVT_CHELEN_EXPLAIN_PROMPT,
+    LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT,
+    LOCAL_TVT_CHELEN_EXPLAIN_DELAY,
+    LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY,
+    LOCAL_TVT_CHELEN_EXPLAIN_SELECT,
+    LOCAL_TVT_CHELEN_EXPLAIN_CANCEL,
+    LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN,
+    LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION,
+};
+
+// A message starts, waits for its face, then finishes
+enum {
+    LOCAL_TVT_CHELEN_TALK_START,
+    LOCAL_TVT_CHELEN_TALK_WAIT,
+    LOCAL_TVT_CHELEN_TALK_FINISH,
+};
+
+// What the person of LOCAL_TVT_CALL_CHELEN says in a call on the Xtransceiver, named after the ROM's
+// "local_tvt_person_chelen.c": what the types of a Pokémon of the party are weak to, and what its Ability does
+
+// The types a Pokémon can have; a pair of types is counted with the smaller type first
+#define TYPE_COUNT 17
+
+struct LocalTvtChelen {
+    int step;
+    u32 timer;
+    LocalTvtPokeSelect *select;
+    GameData *gameData;
+    u16 heapId;
+    // The banks with a message for each pair of types and for each Ability
+    MsgData *typeMsgData;
+    MsgData *abilityMsgData;
+};
+
+static LocalTvtChelen *LocalTvtChelen_Create(GameData *gameData, HeapID heapId);
+static void LocalTvtChelen_Free(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static BOOL LocalTvtChelen_Greet(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static BOOL LocalTvtChelen_Chat(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static BOOL LocalTvtChelen_Types(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static BOOL LocalTvtChelen_Ability(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static BOOL LocalTvtChelen_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work);
+static u16 LocalTvtChelen_GetTypesMsg(u16 type1, u16 type2);
+
+void LocalTvtChelen_Setup(LocalTvtPersonFuncs *funcs, MsgData *msgData, GameData *gameData, HeapID heapId) {
+    MI_CpuFill8(funcs, 0, sizeof(LocalTvtPersonFuncs));
+    funcs->work = LocalTvtChelen_Create(gameData, heapId);
+    funcs->msgData = msgData;
+    funcs->free = LocalTvtChelen_Free;
+    funcs->greet = LocalTvtChelen_Greet;
+    funcs->topics[0] = LocalTvtChelen_Chat;
+    funcs->topicNames[0] = 19;
+    funcs->topics[1] = LocalTvtChelen_Types;
+    funcs->topicNames[1] = 20;
+    funcs->topics[2] = LocalTvtChelen_Ability;
+    funcs->topicNames[2] = 21;
+    funcs->topics[3] = LocalTvtChelen_Bye;
+    funcs->topicNames[3] = 22;
+    funcs->topicCount = 4;
+    funcs->menuMsg = 25;
+}
+
+static LocalTvtChelen *LocalTvtChelen_Create(GameData *gameData, HeapID heapId) {
+    LocalTvtChelen *chelen = GFL_HeapAllocate(heapId, sizeof(LocalTvtChelen), TRUE, "local_tvt_person_chelen.c", 120);
+
+    chelen->heapId = heapId;
+    chelen->gameData = gameData;
+    chelen->typeMsgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_XTRANSCEIVER_CALL_CHEREN_TYPE, heapId);
+    chelen->abilityMsgData =
+        GFL_MsgSysLoadData(FALSE, ARCID_SYSTEM_MESSAGE, TEXT_BANK_XTRANSCEIVER_CALL_CHEREN_ABILITY, heapId);
+    return chelen;
+}
+
+static void LocalTvtChelen_Free(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+
+    GFL_MsgDataFree(chelen->abilityMsgData);
+    GFL_MsgDataFree(chelen->typeMsgData);
+    GFL_HeapFree(chelen);
+}
+
+static BOOL LocalTvtChelen_Greet(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+    MsgData *msgData = NULL;
+    LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
+
+    switch (chelen->step) {
+    case LOCAL_TVT_CHELEN_TALK_START:
+        msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
+        LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetGreetingMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static BOOL LocalTvtChelen_Chat(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+    MsgData *msgData = NULL;
+    LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
+
+    switch (chelen->step) {
+    case LOCAL_TVT_CHELEN_TALK_START:
+        msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
+        LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetChatMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static BOOL LocalTvtChelen_Types(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+    LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
+
+    switch (chelen->step) {
+    case LOCAL_TVT_CHELEN_EXPLAIN_PROMPT:
+        LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 23);
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->timer = 0;
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_DELAY:
+        if (chelen->timer++ > 15) {
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY:
+        if (chelen->select != NULL) {
+            LocalTvtPokeSelect_SetActive(chelen->select, TRUE);
+            LocalTvtPokeSelect_Restart(chelen->select);
+        } else {
+            LocalTvtPokeSelectSetup selectSetup;
+
+            MI_CpuFill8(&selectSetup, 0, sizeof(selectSetup));
+            selectSetup.message = setup->message;
+            selectSetup.unit = setup->unit;
+            selectSetup.party = GameData_GetParty(chelen->gameData);
+            chelen->select = LocalTvtPokeSelect_Create(&selectSetup, chelen->heapId);
+        }
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_SELECT:
+        LocalTvtPokeSelect_Main(chelen->select);
+        switch (LocalTvtPokeSelect_GetResult(chelen->select)) {
+        case LOCAL_TVT_POKE_SELECT_DECIDE:
+            LocalTvtPokeSelect_SetActive(chelen->select, FALSE);
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN;
+            break;
+        case LOCAL_TVT_POKE_SELECT_CANCEL:
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_CANCEL;
+            break;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_CANCEL:
+        LocalTvtPokeSelect_Free(chelen->select);
+        chelen->select = NULL;
+        chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
+        return TRUE;
+    case LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN: {
+        PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(chelen->select);
+        u32 type1 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE1, NULL);
+        u32 type2 = PokeParty_GetParam(pkm, PKM_PARAM_TYPE2, NULL);
+        u16 messageId = LocalTvtChelen_GetTypesMsg(type1, type2);
+
+        LocalTvtMessage_SetPlayerName(setup->message, chelen->gameData);
+        LocalTvtMessage_SetPokemonNickname(setup->message, pkm, 1);
+        LocalTvtFace_Talk(face, chelen->typeMsgData, messageId);
+        chelen->step++;
+        break;
+    }
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
+        }
+        break;
+    }
+    return FALSE;
+}
+
+static BOOL LocalTvtChelen_Ability(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+    u16 messageId = 0;
+    LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
+
+    switch (chelen->step) {
+    case LOCAL_TVT_CHELEN_EXPLAIN_PROMPT:
+        LocalTvtFace_Talk(face, LocalTvtMessage_GetTalkMsgData(setup->message), 24);
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_PROMPT:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->timer = 0;
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_DELAY:
+        if (chelen->timer++ > 15) {
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_OPEN_PARTY:
+        if (chelen->select != NULL) {
+            LocalTvtPokeSelect_SetActive(chelen->select, TRUE);
+            LocalTvtPokeSelect_Restart(chelen->select);
+        } else {
+            LocalTvtPokeSelectSetup selectSetup;
+
+            MI_CpuFill8(&selectSetup, 0, sizeof(selectSetup));
+            selectSetup.message = setup->message;
+            selectSetup.unit = setup->unit;
+            selectSetup.party = GameData_GetParty(chelen->gameData);
+            chelen->select = LocalTvtPokeSelect_Create(&selectSetup, chelen->heapId);
+        }
+        chelen->step++;
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_SELECT:
+        LocalTvtPokeSelect_Main(chelen->select);
+        switch (LocalTvtPokeSelect_GetResult(chelen->select)) {
+        case LOCAL_TVT_POKE_SELECT_DECIDE:
+            LocalTvtPokeSelect_SetActive(chelen->select, FALSE);
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN;
+            break;
+        case LOCAL_TVT_POKE_SELECT_CANCEL:
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_CANCEL;
+            break;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_EXPLAIN_CANCEL:
+        LocalTvtPokeSelect_Free(chelen->select);
+        chelen->select = NULL;
+        chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
+        return TRUE;
+    case LOCAL_TVT_CHELEN_EXPLAIN_EXPLAIN: {
+        PartyPkm *pkm = LocalTvtPokeSelect_GetPkm(chelen->select);
+
+        messageId = PokeParty_GetParam(pkm, PKM_PARAM_ABILITY, NULL);
+        LocalTvtMessage_SetPlayerName(setup->message, chelen->gameData);
+        LocalTvtMessage_SetPokemonNickname(setup->message, pkm, 1);
+        LocalTvtFace_Talk(face, chelen->abilityMsgData, messageId);
+        chelen->step++;
+        break;
+    }
+    case LOCAL_TVT_CHELEN_EXPLAIN_WAIT_EXPLANATION:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->step = LOCAL_TVT_CHELEN_EXPLAIN_PROMPT;
+        }
+        break;
+    }
+    return FALSE;
+}
+
+static BOOL LocalTvtChelen_Bye(LocalTvtPerson *person, const LocalTvtPersonSetup *setup, void *work) {
+    LocalTvtChelen *chelen = work;
+    LocalTvtFace *face = LocalTvtChara_GetFace(setup->chara, 0);
+
+    switch (chelen->step) {
+    case LOCAL_TVT_CHELEN_TALK_START: {
+        MsgData *msgData = LocalTvtMessage_GetTalkMsgData(setup->message);
+
+        LocalTvtFace_Talk(face, msgData, LocalTvtCallData_GetByeMsg(setup->callData, LOCAL_TVT_CALL_CHELEN));
+        chelen->step++;
+        break;
+    }
+    case LOCAL_TVT_CHELEN_TALK_WAIT:
+        if (LocalTvtFace_UpdateTalk(face, setup->chara)) {
+            chelen->step++;
+        }
+        break;
+    case LOCAL_TVT_CHELEN_TALK_FINISH:
+        chelen->step = LOCAL_TVT_CHELEN_TALK_START;
+        LocalTvtPerson_End(person);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// The index of a pair of types among the pairs with the smaller type first
+static u16 LocalTvtChelen_GetTypesMsg(u16 type1, u16 type2) {
+    int i;
+    int index = 0;
+
+    if (type1 > type2) {
+        int type = type1;
+
+        type1 = type2;
+        type2 = type;
+    }
+    for (i = 0; i < type1; i++) {
+        index += TYPE_COUNT - i;
+    }
+    return index + (type2 - i);
+}

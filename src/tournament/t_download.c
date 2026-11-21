@@ -1,9 +1,4 @@
 #include "types.h"
-#include "app/t_download.h"
-#include "app/t_download/t_download_graphic.h"
-#include "app/t_download/t_download_local.h"
-#include "app/t_download/t_download_save.h"
-#include "app/t_download/t_download_util.h"
 #include "app/ui/frame_list.h"
 #include "app/ui/ui_scene.h"
 #include "constants/arc.h"
@@ -29,6 +24,11 @@
 #include "system/printsys.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
+#include "tournament/t_download.h"
+#include "tournament/t_download_graphic.h"
+#include "tournament/t_download_local.h"
+#include "tournament/t_download_save.h"
+#include "tournament/t_download_util.h"
 
 // Key changes distinguish tab selection, a page button and a jump to either end.
 enum {

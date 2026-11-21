@@ -42,11 +42,11 @@
 #include "field/infinity_dungeon_gimmick.h"
 #include "field/resort.h"
 #include "field/sp_poke_gimmick.h"
-#include "field/wbt_stadium_gimmick.h"
 #include "gfl/overlay.h"
 #include "save/gimmick_savedata.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "tournament/wbt_stadium_gimmick.h"
 
 typedef struct GimmickInfo {
     u32 overlayId;

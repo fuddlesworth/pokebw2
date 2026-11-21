@@ -2,7 +2,7 @@
 #define POKEBW2_APP_SPIN_TRADE_H
 
 #include "types.h"
-#include "field/union_app.h"
+#include "communication/union_app.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"

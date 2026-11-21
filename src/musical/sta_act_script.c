@@ -1,8 +1,8 @@
 #include "types.h"
-#include "app/musical/sta_act_script.h"
-#include "app/musical/sta_acting.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
+#include "musical/sta_act_script.h"
+#include "musical/sta_acting.h"
 #include "nnsys/fnd.h"
 #include "system/vm.h"
 

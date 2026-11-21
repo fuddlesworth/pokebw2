@@ -1,8 +1,8 @@
 #include "types.h"
-#include "field/bsubway_scr.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "save/bsubway_save.h"
+#include "tournament/bsubway_scr.h"
 
 // The Battle Subway's three save blocks: the play saved in the middle of (0x38), the scores with the Battle Points
 // (0x39) and the Wi-Fi train's downloaded data (0x3a). The file's name is the ROM's, which BSubwayWifiData_AllocLeaders

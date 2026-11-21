@@ -2,12 +2,9 @@
 #include "app/ui/frame_list.h"
 #include "app/ui/print_msg.h"
 #include "app/ui/ui_scene.h"
-#include "app/win_record.h"
-#include "app/win_record_graphic.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -34,6 +31,9 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/win_record.h"
+#include "tournament/wbt.h"
+#include "tournament/win_record.h"
+#include "tournament/win_record_graphic.h"
 
 // End marker for the byte-sized BG and actor resource tables.
 #define WIN_RECORD_TABLE_END 0xff

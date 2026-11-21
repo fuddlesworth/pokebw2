@@ -1,14 +1,14 @@
 #include "types.h"
 #include "constants/moves.h"
 #include "constants/types.h"
-#include "field/wbt.h"
-#include "field/wbt_makematch.h"
 #include "gfl/heap.h"
 #include "gfl/random.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "nitro/math.h"
 #include "pml/poke_party.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_makematch.h"
 
 enum {
     WBT_TYPE_DAMAGE_IMMUNE = 0,

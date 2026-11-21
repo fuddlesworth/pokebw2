@@ -4,34 +4,34 @@
     .data       start:0x02172f60 end:0x02173120 kind:data align:32
     .bss        start:0x02173120 end:0x02173120 kind:bss align:32
 
-src/communication/union_comm.c:
+src/communication/union/union_comm.c:
     complete
     .text       start:0x02170380 end:0x02170f08
     .rodata     start:0x02172cd4 end:0x02172df4
     .data       start:0x02172f60 end:0x02172f70
 
-src/communication/union_main.c:
+src/communication/union/union_main.c:
     complete
     .text       start:0x02170f08 end:0x0217114c
     .data       start:0x02172f70 end:0x02172fcc
 
-src/communication/colosseum.c:
+src/communication/union/colosseum.c:
     complete
     .text       start:0x02172870 end:0x02172cd4
     .data       start:0x021730c4 end:0x02173120
 
-src/communication/union_receive.c:
+src/communication/union/union_receive.c:
     complete
     .text       start:0x0217114c end:0x02171a1c
     .data       start:0x02172fcc end:0x0217302c
 
-src/communication/union_subproc.c:
+src/communication/union/union_subproc.c:
     complete
     .text       start:0x02171a1c end:0x0217242c
     .rodata     start:0x02172df4 end:0x02172ee4
     .data       start:0x0217302c end:0x021730a8
 
-src/communication/colosseum_comm.c:
+src/communication/union/colosseum_comm.c:
     complete
     .text       start:0x0217242c end:0x02172870
     .rodata     start:0x02172ee4 end:0x02172f54

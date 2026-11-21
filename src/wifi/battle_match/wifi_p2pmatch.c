@@ -1,11 +1,7 @@
 #include "types.h"
 #include "app/ui/touchbar.h"
-#include "app/wifi_p2pmatch.h"
-#include "app/wifi_p2pmatch_net.h"
-#include "app/wifi_p2pmatchroom.h"
-#include "app/wifi_status.h"
-#include "app/wificlub.h"
 #include "battle/regulation.h"
+#include "communication/union_msg.h"
 #include "constants/arc.h"
 #include "constants/language.h"
 #include "constants/pokemon.h"
@@ -13,7 +9,6 @@
 #include "constants/species.h"
 #include "constants/text_banks.h"
 #include "constants/version.h"
-#include "field/union_msg.h"
 #include "field/unity_tower.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -69,6 +64,11 @@
 #include "system/wordset.h"
 #include "text/system/wifi_club.h"
 #include "text/system/wifi_error.h"
+#include "wifi/wifi_p2pmatch.h"
+#include "wifi/wifi_p2pmatch_net.h"
+#include "wifi/wifi_p2pmatchroom.h"
+#include "wifi/wifi_status.h"
+#include "wifi/wificlub.h"
 
 // The Wi-Fi Club's match board: the room where the player meets the friends who are online, the friend list of the
 // lower screen, and the states of calling a friend, of choosing what to play and of leaving for the game. The ROM has

@@ -1,11 +1,11 @@
 #include "types.h"
-#include "app/wf2dmap/wifi_2dchar.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"
+#include "wifi/wifi_2dchar.h"
 
 // The characters of the Wi-Fi Club's 2D map, named after the ROM's "wifi_2dchar.c"
 

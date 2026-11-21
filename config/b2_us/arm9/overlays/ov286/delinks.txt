@@ -4,32 +4,32 @@
     .data       start:0x021f7420 end:0x021f7440 kind:data align:32
     .bss        start:0x021f7440 end:0x021f7440 kind:bss align:32
 
-src/battle/b_bag_bmp.c:
+src/battle/select/b_bag_bmp.c:
     complete
     .text       start:0x021f4440 end:0x021f4cc4
     .rodata     start:0x021f6d54 end:0x021f6e88
 
-src/battle/b_bag_item.c:
+src/battle/select/b_bag_item.c:
     complete
     .text       start:0x021f4cc4 end:0x021f4f04
     .rodata     start:0x021f6e88 end:0x021f6e90
 
-src/battle/b_bag_anm.c:
+src/battle/select/b_bag_anm.c:
     complete
     .text       start:0x021f4f04 end:0x021f5354
     .rodata     start:0x021f6e90 end:0x021f6ec8
 
-src/battle/b_bag_obj.c:
+src/battle/select/b_bag_obj.c:
     complete
     .text       start:0x021f5354 end:0x021f5b64
     .rodata     start:0x021f6ec8 end:0x021f71fc
 
-src/battle/b_bag_ui.c:
+src/battle/select/b_bag_ui.c:
     complete
     .text       start:0x021f6c10 end:0x021f6d54
     .rodata     start:0x021f72dc end:0x021f7414
 
-src/battle/b_bag_main.c:
+src/battle/select/b_bag_main.c:
     complete
     .text       start:0x021f5b64 end:0x021f6c10
     .rodata     start:0x021f71fc end:0x021f72dc

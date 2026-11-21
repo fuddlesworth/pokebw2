@@ -1,4 +1,3 @@
-#include "app/wfc_user_info_warning.h"
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
@@ -21,6 +20,7 @@
 #include "system/gf_font.h"
 #include "system/main.h"
 #include "system/printsys.h"
+#include "wifi/wfc_user_info_warning.h"
 
 // The warning that the Nintendo Wi-Fi Connection user information may have been erased: a window on BG1 of the main
 // screen with the message, until A or B is pressed. It draws the screen the way save_error.c does, with the same

@@ -2,7 +2,6 @@
 // The name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
 #include "types.h"
-#include "app/gsync/gsync_message.h"
 #include "constants/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -26,6 +25,7 @@
 #include "system/time_icon.h"
 #include "system/wordset.h"
 #include "text/system/game_sync_menu.h"
+#include "wifi/gsync_message.h"
 
 #define GSYNC_MESSAGE_WIN_MAX 12
 

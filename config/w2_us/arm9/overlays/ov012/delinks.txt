@@ -4,7 +4,7 @@
     .data       start:0x0216dfe0 end:0x0216e680 kind:data align:32
     .bss        start:0x0216e680 end:0x0216e6a0 kind:bss align:32
 
-src/field/event_ircbattle.c:
+src/field/event/event_ircbattle.c:
     complete
     .text       start:0x02150400 end:0x02150d38
     .rodata     start:0x0216ae0c end:0x0216ae24
@@ -31,7 +31,7 @@ src/musical/musical_program.c:
     .text       start:0x02152318 end:0x0215268c
     .data       start:0x0216e048 end:0x0216e05c
 
-src/field/event_colosseum_battle.c:
+src/field/event/event_colosseum_battle.c:
     complete
     .text       start:0x0215268c end:0x0215295c
     .data       start:0x0216e05c end:0x0216e074
@@ -57,38 +57,38 @@ src/field/intrude_work.c:
     complete
     .text       start:0x0215361c end:0x021536ac
 
-src/field/script_sys.c:
+src/field/script/script_sys.c:
     complete
     .text       start:0x021536ac end:0x02153de4
     .rodata     start:0x0216afd8 end:0x0216b524
     .data       start:0x0216e1d0 end:0x0216e1f4
 
-src/field/script_work.c:
+src/field/script/script_work.c:
     complete
     .text       start:0x02153de4 end:0x021540b0
     .data       start:0x0216e1f4 end:0x0216e204
 
-src/field/script_sub_event.c:
+src/field/script/script_sub_event.c:
     complete
     .text       start:0x021540b0 end:0x021541c0
     .bss        start:0x0216e680 end:0x0216e684
 
-src/field/scrcmd_vm.c:
+src/field/script/scrcmd_vm.c:
     complete
     .text       start:0x021541c0 end:0x02154988
     .rodata     start:0x0216b524 end:0x0216c144
 
-src/field/script_plugin.c:
+src/field/script/script_plugin.c:
     complete
     .text       start:0x02154988 end:0x02154aa4
     .rodata     start:0x0216c144 end:0x0216c340
 
-src/field/map_matrix.c:
+src/field/map/map_matrix.c:
     complete
     .text       start:0x02154aa4 end:0x02154cd4
     .data       start:0x0216e204 end:0x0216e214
 
-src/field/map_replace.c:
+src/field/map/map_replace.c:
     complete
     .text       start:0x02154cd4 end:0x02154ee0
     .rodata     start:0x0216c340 end:0x0216c37c
@@ -99,39 +99,39 @@ src/field/respawn_zone.c:
     .text       start:0x02154ee0 end:0x02154fd8
     .rodata     start:0x0216c37c end:0x0216c9e4
 
-src/field/trainer_script.c:
+src/field/script/trainer_script.c:
     complete
     .text       start:0x02154fd8 end:0x021550e4
     .rodata     start:0x0216c9e4 end:0x0216ca00
 
-src/field/scrcmd_work.c:
+src/field/script/scrcmd_work.c:
     complete
     .text       start:0x021550e4 end:0x02155638
     .rodata     start:0x0216ca00 end:0x0216ca20
     .data       start:0x0216e224 end:0x0216e234
 
-src/field/scrcmd_game_state.c:
+src/field/script/scrcmd_game_state.c:
     complete
     .text       start:0x02155638 end:0x021561b4
     .rodata     start:0x0216ca20 end:0x0216ca44
 
-src/field/scrcmd_pokemon.c:
+src/field/script/scrcmd_pokemon.c:
     complete
     .text       start:0x021561b4 end:0x021574e4
     .rodata     start:0x0216ca44 end:0x0216ca74
     .data       start:0x0216e234 end:0x0216e248
 
-src/field/scrcmd_proc.c:
+src/field/script/scrcmd_proc.c:
     complete
     .text       start:0x021574e4 end:0x02157c60
     .data       start:0x0216e248 end:0x0216e258
 
-src/field/scrcmd_day_care.c:
+src/field/script/scrcmd_day_care.c:
     complete
     .text       start:0x02157c60 end:0x02158104
     .data       start:0x0216e258 end:0x0216e26c
 
-src/field/scrcmd_musical.c:
+src/field/script/scrcmd_musical.c:
     complete
     .text       start:0x02158104 end:0x0215912c
     .data       start:0x0216e26c end:0x0216e280
@@ -142,55 +142,55 @@ src/field/field_encount_st.c:
     .rodata     start:0x0216ca74 end:0x0216cab4
     .data       start:0x0216e280 end:0x0216e294
 
-src/field/hm_event.c:
+src/field/event/hm_event.c:
     complete
     .text       start:0x02159270 end:0x02159c00
     .rodata     start:0x0216cab4 end:0x0216cb78
 
-src/field/scrcmd_network.c:
+src/field/script/scrcmd_network.c:
     complete
     .text       start:0x02159c00 end:0x02159d94
     .data       start:0x0216e294 end:0x0216e2a8
 
-src/field/scrcmd_stadium.c:
+src/field/script/scrcmd_stadium.c:
     complete
     .text       start:0x02159d94 end:0x0215a0f0
 
-src/field/event_battle_lose.c:
+src/field/event/event_battle_lose.c:
     complete
     .text       start:0x0215a0f0 end:0x0215a1dc
 
-src/field/event_game_clear.c:
+src/field/event/event_game_clear.c:
     complete
     .text       start:0x0215a1dc end:0x0215a7e4
     .rodata     start:0x0216cb78 end:0x0216cbb4
 
-src/field/event_field_menu.c:
+src/field/event/event_field_menu.c:
     complete
     .text       start:0x0215a7e4 end:0x0215ab18
     .rodata     start:0x0216cbb4 end:0x0216cbd8
 
-src/field/event_shortcut_menu.c:
+src/field/event/event_shortcut_menu.c:
     complete
     .text       start:0x0215ab18 end:0x0215b4c8
     .data       start:0x0216e2a8 end:0x0216e2c0
 
-src/field/event_field_proclink.c:
+src/field/event/event_field_proclink.c:
     complete
     .text       start:0x0215b4c8 end:0x0215c538
     .rodata     start:0x0216cbd8 end:0x0216cd40
     .data       start:0x0216e2c0 end:0x0216e2d8
 
-src/field/event_save.c:
+src/field/event/event_save.c:
     complete
     .text       start:0x0215c538 end:0x0215c6f0
 
-src/field/event_action_call.c:
+src/field/event/event_action_call.c:
     complete
     .text       start:0x0215c6f0 end:0x0215cb88
     .rodata     start:0x0216cd40 end:0x0216cda0
 
-src/field/event_3d_demo.c:
+src/field/event/event_3d_demo.c:
     complete
     .text       start:0x0215cb88 end:0x0215cd98
 
@@ -198,12 +198,12 @@ src/field/city_state.c:
     complete
     .text       start:0x0215cd98 end:0x0215cde4
 
-src/field/eventdata_system.c:
+src/field/event/eventdata_system.c:
     complete
     .text       start:0x0215cde4 end:0x0215dafc
     .data       start:0x0216e2d8 end:0x0216e2ec
 
-src/field/field_actor_tool.c:
+src/field/actor/field_actor_tool.c:
     complete
     .text       start:0x0215dafc end:0x0215ee50
     .rodata     start:0x0216cda0 end:0x0216ce24
@@ -212,7 +212,7 @@ src/field/zone_change.c:
     complete
     .text       start:0x0215ee50 end:0x0215efa0
 
-src/field/itemuse_event.c:
+src/field/event/itemuse_event.c:
     complete
     .text       start:0x0215efa0 end:0x0215f27c
     .rodata     start:0x0216ce24 end:0x0216ce84
@@ -222,13 +222,13 @@ src/field/hidden_item.c:
     .text       start:0x0215f27c end:0x0215f310
     .rodata     start:0x0216ce84 end:0x0216d6d8
 
-src/field/calender.c:
+src/field/event/calender.c:
     complete
     .text       start:0x0215f310 end:0x0215f480
     .rodata     start:0x0216d6d8 end:0x0216d6e8
     .data       start:0x0216e2ec end:0x0216e2f8
 
-src/field/scrcmd_ndemo.c:
+src/field/script/scrcmd_ndemo.c:
     complete
     .text       start:0x0215f480 end:0x0215f59c
 
@@ -249,11 +249,11 @@ src/field/symbol_map.c:
     .rodata     start:0x0216d760 end:0x0216d93c
     .data       start:0x0216e310 end:0x0216e320
 
-src/field/event_royal_unova.c:
+src/field/event/event_royal_unova.c:
     complete
     .text       start:0x021609f4 end:0x02160bc0
 
-src/field/scrcmd_unity_tower.c:
+src/field/script/scrcmd_unity_tower.c:
     complete
     .text       start:0x02160bc0 end:0x02160e08
 
@@ -267,11 +267,11 @@ src/field/townmap_util.c:
     complete
     .text       start:0x02160ef4 end:0x02161034
 
-src/field/scrcmd_phrase_select.c:
+src/field/script/scrcmd_phrase_select.c:
     complete
     .text       start:0x02161034 end:0x02161220
 
-src/field/scrcmd_weather.c:
+src/field/script/scrcmd_weather.c:
     complete
     .text       start:0x02161220 end:0x021612a0
 
@@ -299,15 +299,15 @@ src/field/fld_btl_inst_tool.c:
     .rodata     start:0x0216d9ec end:0x0216dac8
     .data       start:0x0216e3ac end:0x0216e3c0
 
-src/field/event_cgear_poweron.c:
+src/field/event/event_cgear_poweron.c:
     complete
     .text       start:0x02162ba4 end:0x02162c88
 
-src/field/event_trial_house.c:
+src/field/event/event_trial_house.c:
     complete
     .text       start:0x02162c88 end:0x02162f84
 
-src/field/ev_time.c:
+src/field/event/ev_time.c:
     complete
     .text       start:0x02162f84 end:0x02163208
 
@@ -326,11 +326,11 @@ src/field/shaymin_form.c:
     complete
     .text       start:0x02164370 end:0x021644d0
 
-src/field/scrcmd_trial_house.c:
+src/field/script/scrcmd_trial_house.c:
     complete
     .text       start:0x021644d0 end:0x02164878
 
-src/field/scrcmd_actor_move.c:
+src/field/script/scrcmd_actor_move.c:
     complete
     .text       start:0x02164878 end:0x02164a2c
 
@@ -338,7 +338,7 @@ src/field/season_form.c:
     complete
     .text       start:0x02164a2c end:0x02164b20
 
-src/field/scrcmd_entree_forest.c:
+src/field/script/scrcmd_entree_forest.c:
     complete
     .text       start:0x02164b20 end:0x0216530c
     .rodata     start:0x0216db04 end:0x0216db10
@@ -348,7 +348,7 @@ src/field/survey.c:
     .text       start:0x0216530c end:0x021655d8
     .rodata     start:0x0216db10 end:0x0216dc5c
 
-src/field/scrcmd_sp_poke_gimmick.c:
+src/field/script/scrcmd_sp_poke_gimmick.c:
     complete
     .text       start:0x021655d8 end:0x021659cc
 
@@ -362,12 +362,12 @@ src/field/name_input_setup.c:
     .text       start:0x02165a2c end:0x02165b5c
     .data       start:0x0216e3e0 end:0x0216e3f0
 
-src/field/event_league_lift.c:
+src/field/event/event_league_lift.c:
     complete
     .text       start:0x02165b5c end:0x02165ef8
     .rodata     start:0x0216dc7c end:0x0216dc9c
 
-src/field/event_bsubway.c:
+src/field/event/event_bsubway.c:
     complete
     .text       start:0x02165ef8 end:0x021666a4
     .rodata     start:0x0216dc9c end:0x0216dca8
@@ -388,7 +388,7 @@ src/field/trcard_sys.c:
     .rodata     start:0x0216dda0 end:0x0216de44
     .data       start:0x0216e62c end:0x0216e63c
 
-src/field/scrcmd_sp_poke.c:
+src/field/script/scrcmd_sp_poke.c:
     complete
     .text       start:0x02169c5c end:0x02169cbc
 
@@ -406,16 +406,16 @@ src/field/pass_power_check.c:
     complete
     .text       start:0x0216a1d0 end:0x0216a27c
 
-src/field/scrcmd_hollow_rival.c:
+src/field/script/scrcmd_hollow_rival.c:
     complete
     .text       start:0x0216a6e4 end:0x0216a86c
 
-src/field/scrcmd_keysystem.c:
+src/field/script/scrcmd_keysystem.c:
     complete
     .text       start:0x0216a86c end:0x0216a990
     .data       start:0x0216e658 end:0x0216e680
 
-src/field/scrcmd_pedometer.c:
+src/field/script/scrcmd_pedometer.c:
     complete
     .text       start:0x0216ac00 end:0x0216ac68
 
@@ -424,11 +424,11 @@ src/field/hidden_hollow.c:
     .text       start:0x0216ac68 end:0x0216ad04
     .rodata     start:0x0216de98 end:0x0216dfd8
 
-src/field/scrcmd_join_avenue_store.c:
+src/field/script/scrcmd_join_avenue_store.c:
     complete
     .text       start:0x0216ad04 end:0x0216ad7c
 
-src/field/event_field_open_lcd.c:
+src/field/event/event_field_open_lcd.c:
     complete
     .text       start:0x0216ad7c end:0x0216ae0c
 
@@ -437,7 +437,7 @@ src/field/burmy_form.c:
     .text       start:0x021684a8 end:0x021684fc
     .rodata     start:0x0216dcd0 end:0x0216dd5c
 
-src/field/event_battle.c:
+src/field/event/event_battle.c:
     complete
     .text       start:0x021684fc end:0x021691dc
     .rodata     start:0x0216dd5c end:0x0216dda0
@@ -448,6 +448,6 @@ src/field/pair_sys.c:
     .text       start:0x0216a27c end:0x0216a6e4
     .data       start:0x0216e64c end:0x0216e658
 
-src/field/scrcmd_download_data.c:
+src/field/script/scrcmd_download_data.c:
     complete
     .text       start:0x0216a990 end:0x0216ac00

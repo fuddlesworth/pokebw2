@@ -6,8 +6,8 @@
 // musical_dressup_sys.c runs it, with a copy of its parameter
 
 #include "types.h"
-#include "field/musical_dressup_sys.h"
 #include "gfl/heap.h"
+#include "musical/musical_dressup_sys.h"
 
 // The dressing room's work, whose layout only dup_fitting.c needs
 typedef struct DupFittingWork DupFittingWork;

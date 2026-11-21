@@ -6,11 +6,6 @@
 #include "app/comm_btl_demo.h"
 #include "app/livebattlematch_irc.h"
 #include "app/ov306.h"
-#include "app/wifi_login.h"
-#include "app/wifibattlematch.h"
-#include "app/wifibattlematch_battle.h"
-#include "app/wifibattlematch_link.h"
-#include "app/wifibattlematch_subproc.h"
 #include "battle/battle_proc.h"
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_net.h"
@@ -38,6 +33,11 @@
 #include "save/save_control.h"
 #include "save/tournament_block.h"
 #include "system/game_data.h"
+#include "wifi/wifi_login.h"
+#include "wifi/wifibattlematch.h"
+#include "wifi/wifibattlematch_battle.h"
+#include "wifi/wifibattlematch_link.h"
+#include "wifi/wifibattlematch_subproc.h"
 
 // The heap of the proc that runs the battle
 #define HEAPID_WIFIBATTLEMATCH_BATTLE 0x58

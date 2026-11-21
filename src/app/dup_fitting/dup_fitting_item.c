@@ -1,7 +1,7 @@
 #include "types.h"
-#include "app/musical/mus_item_draw.h"
 #include "field/dup_fitting_item.h"
 #include "gfl/heap.h"
+#include "musical/mus_item_draw.h"
 #include "nitro/fx.h"
 
 // Overlay 208's dup_fitting_item.c, named after its string: the lists and nodes of the props in the dressing room.

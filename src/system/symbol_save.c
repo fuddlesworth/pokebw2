@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "nitro/os.h"

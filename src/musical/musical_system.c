@@ -1,10 +1,10 @@
 #include "types.h"
-#include "app/musical/musical_system.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
+#include "musical/musical_system.h"
 #include "pml/poke_party.h"
 #include "save/save_control.h"
 

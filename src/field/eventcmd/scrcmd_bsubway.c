@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wifi_bsubway.h"
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_result.h"
 #include "battle/btl_setup.h"
@@ -7,7 +6,6 @@
 #include "constants/pokemon.h"
 #include "constants/version.h"
 #include "constants/zones.h"
-#include "field/bsubway_scr.h"
 #include "field/comm_entry_menu.h"
 #include "field/event_wifi_bsubway.h"
 #include "field/field.h"
@@ -39,6 +37,8 @@
 #include "system/iss_switch_sys.h"
 #include "system/iss_sys.h"
 #include "system/vm.h"
+#include "tournament/bsubway_scr.h"
+#include "wifi/wifi_bsubway.h"
 
 // The script plugin of the Battle Subway (plugin 1), commands from 1000. Command 1003 does most of the work, with its
 // own command IDs: from 300 they need the subway's work

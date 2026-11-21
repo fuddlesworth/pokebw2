@@ -4,32 +4,32 @@
     .data       start:0x021a42a0 end:0x021a4780 kind:data align:32
     .bss        start:0x021a4780 end:0x021a4920 kind:bss align:32
 
-src/ov181/mb_parent_sys.c:
+src/app/mb_parent/mb_parent_sys.c:
     complete
     .text       start:0x0219ce80 end:0x0219eec8
     .rodata     start:0x021a4040 end:0x021a41c4
     .data       start:0x021a42a0 end:0x021a43ac
     .bss        start:0x021a4780 end:0x021a478c
 
-src/ov181/mbp.c:
+src/app/mb_parent/mbp.c:
     complete
     .text       start:0x0219eec8 end:0x0219f580
     .data       start:0x021a43ac end:0x021a46a8
     .bss        start:0x021a478c end:0x021a47c8
 
-src/ov181/mb_comm_sys.c:
+src/app/mb_parent/mb_comm_sys.c:
     complete
     .text       start:0x0219f580 end:0x0219fc0c
     .rodata     start:0x021a41c4 end:0x021a4254
     .data       start:0x021a46a8 end:0x021a46b8
     .bss        start:0x021a47c8 end:0x021a47cc
 
-src/ov181/mb_util_msg.c:
+src/app/mb_parent/mb_util_msg.c:
     complete
     .text       start:0x0219fc0c end:0x021a039c
     .data       start:0x021a46b8 end:0x021a46c8
 
-src/ov181/mb_parent_dataconv_sys.c:
+src/app/mb_parent/mb_parent_dataconv_sys.c:
     complete
     .text       start:0x021a039c end:0x021a092c
     .data       start:0x021a46c8 end:0x021a4728

@@ -1,8 +1,8 @@
 #include "types.h"
-#include "app/musical/sta_act_bg.h"
 #include "constants/arc.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
+#include "musical/sta_act_bg.h"
 #include "nitro/fx.h"
 
 // Overlay 209's sta_act_bg.c: the stage's background, a 3D model with three animations, from ARCID_MUSICAL's

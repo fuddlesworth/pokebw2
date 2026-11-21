@@ -3,9 +3,6 @@
 #include "app/name_entry.h"
 #include "app/ui/print_msg.h"
 #include "app/ui/ui_scene.h"
-#include "app/wf2dmap/wifi_2dchar.h"
-#include "app/wifi_note.h"
-#include "app/wificlub.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -54,6 +51,9 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/wifi_note.h"
+#include "wifi/wifi_2dchar.h"
+#include "wifi/wifi_note.h"
+#include "wifi/wificlub.h"
 
 // The Pal Pad. The ROM has no name for this file; "wifi_note.c" is a guess from pokeplatinum, whose Pal Pad has the
 // same five screens: the menu, the friend roster, the name and code entry, the player's own code and a friend's

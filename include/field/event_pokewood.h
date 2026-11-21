@@ -2,12 +2,12 @@
 #define POKEBW2_FIELD_EVENT_POKEWOOD_H
 
 #include "types.h"
-#include "app/pkwd_book.h"
-#include "app/pkwd_briefing.h"
-#include "app/pkwd_record_monitor.h"
-#include "app/pkwd_selectscreen.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
+#include "pokewood/pkwd_book.h"
+#include "pokewood/pkwd_briefing.h"
+#include "pokewood/pkwd_record_monitor.h"
+#include "pokewood/pkwd_selectscreen.h"
 #include "struct_decls.h"
 
 // Overlay 23's event_pokewood.c, which runs Pokéstar Studios' movies for its script plugin (overlay 62)

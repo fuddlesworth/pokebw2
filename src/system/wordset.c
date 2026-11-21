@@ -4,8 +4,7 @@
 #include "constants/pokemon.h"
 #include "constants/script_text_banks.h"
 #include "constants/text_banks.h"
-#include "field/fest_mission_data.h"
-#include "field/wbt.h"
+#include "entralink/fest_mission_data.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
 #include "gfl/std.h"
@@ -22,6 +21,7 @@
 #include "system/printsys.h"
 #include "system/str_tool.h"
 #include "system/wordset.h"
+#include "tournament/wbt.h"
 
 // Word sets: buffers of words that a message's word set commands are replaced by, such as names of Pokémon, items
 // and moves, and numbers. Each buffer has a few attributes besides its string, one of which adds a layout command

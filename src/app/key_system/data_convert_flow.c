@@ -2,7 +2,6 @@
 #include "app/mb_parent.h"
 #include "app/name_entry.h"
 #include "app/unova_link.h"
-#include "app/wifi_login.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "gfl/arc.h"
@@ -30,6 +29,7 @@
 #include "system/game_data.h"
 #include "system/wordset.h"
 #include "text/system/key_system.h"
+#include "wifi/wifi_login.h"
 
 // Phases of DataConvert_SeqMenu.
 enum {

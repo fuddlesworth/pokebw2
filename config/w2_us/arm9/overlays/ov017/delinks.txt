@@ -2,6 +2,6 @@
     .ctor       start:0x0216e80c end:0x0216e80c kind:rodata align:4
     .bss        start:0x0216e820 end:0x0216e820 kind:bss align:32
 
-src/communication/event_comm_tvt.c:
+src/communication/xtransceiver/event_comm_tvt.c:
     complete
     .text       start:0x0216e6a0 end:0x0216e80c

@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/pkwd_record_monitor_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -9,6 +8,7 @@
 #include "gfl/std.h"
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
+#include "pokewood/pkwd_record_monitor_graphic.h"
 #include "system/gf_font.h"
 
 // The BGs and cell actors of Pokéstar Studios' record monitor, named after the ROM's

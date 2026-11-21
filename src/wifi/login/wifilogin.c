@@ -5,9 +5,6 @@
 
 #include "types.h"
 #include "app/error_window_screen.h"
-#include "app/wifi_login.h"
-#include "app/wifilogin_disp.h"
-#include "app/wifilogin_message.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
 #include "dwc/dwc.h"
@@ -34,6 +31,9 @@
 #include "system/game_data.h"
 #include "system/wipe.h"
 #include "text/system/wifi_error.h"
+#include "wifi/wifi_login.h"
+#include "wifi/wifilogin_disp.h"
+#include "wifi/wifilogin_message.h"
 
 typedef struct WifiLoginWork WifiLoginWork;
 typedef void (*WifiLoginStateFunc)(WifiLoginWork *work);

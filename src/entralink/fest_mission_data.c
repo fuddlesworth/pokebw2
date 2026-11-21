@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
-#include "field/fest_mission_data.h"
+#include "entralink/fest_mission_data.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"

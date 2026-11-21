@@ -1,9 +1,9 @@
 #include "types.h"
-#include "app/musical/sta_act_effect.h"
 #include "constants/arc.h"
 #include "gfl/heap.h"
 #include "gfl/particle.h"
 #include "gfl/tcb.h"
+#include "musical/sta_act_effect.h"
 
 // Overlay 209's sta_act_effect.c: the stage's particle effects
 

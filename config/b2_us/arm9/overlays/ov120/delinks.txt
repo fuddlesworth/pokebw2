@@ -3,7 +3,7 @@
     .ctor       start:0x021ef478 end:0x021ef478 kind:rodata align:4
     .bss        start:0x021ef480 end:0x021ef480 kind:bss align:32
 
-src/field/gimmick_league_champion.c:
+src/field/gimmick/gimmick_league_champion.c:
     complete
     .text       start:0x021eec80 end:0x021ef36c
     .rodata     start:0x021ef36c end:0x021ef478

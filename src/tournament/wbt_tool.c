@@ -3,7 +3,6 @@
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"
 #include "constants/types.h"
-#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -13,6 +12,7 @@
 #include "save/event_work.h"
 #include "save/wbt_save.h"
 #include "system/game_data.h"
+#include "tournament/wbt.h"
 
 typedef struct {
     u16 name;

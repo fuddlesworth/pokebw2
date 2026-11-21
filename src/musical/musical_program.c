@@ -1,9 +1,9 @@
 #include "types.h"
-#include "field/musical.h"
-#include "field/musical_program.h"
-#include "field/musical_stage_sys.h"
 #include "gfl/heap.h"
 #include "gfl/random.h"
+#include "musical/musical.h"
+#include "musical/musical_program.h"
+#include "musical/musical_stage_sys.h"
 
 // The item of a prop slot with no prop: the programs' data writes it for an empty slot
 // (tools/data/musical_program_data.py's NO_PROP), and the prop table has 250 entries, so it is no prop. 0x1fe, which

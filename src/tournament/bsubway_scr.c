@@ -3,7 +3,6 @@
 #include "battle/btl_setup.h"
 #include "constants/pokemon.h"
 #include "field/battle_facility.h"
-#include "field/bsubway_scr.h"
 #include "field/player_state.h"
 #include "gfl/heap.h"
 #include "gfl/random.h"
@@ -18,6 +17,7 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/version.h"
+#include "tournament/bsubway_scr.h"
 
 // The losses in a row that lower a Wi-Fi rank, by rank
 static const u8 sWifiRankLoseLimits[12] = { 0, 5, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0 };

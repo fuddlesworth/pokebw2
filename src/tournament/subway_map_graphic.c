@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/subway_map.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -11,6 +10,7 @@
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "tournament/subway_map.h"
 
 // The BGs, cell actors and 3D system of the subway map
 

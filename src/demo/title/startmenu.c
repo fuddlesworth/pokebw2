@@ -1,14 +1,11 @@
 #include "types.h"
-#include "app/dwc_utility.h"
 #include "app/game_start.h"
-#include "app/gsync.h"
 #include "app/mb_parent.h"
-#include "app/mic_test.h"
 #include "app/mystery_gift.h"
 #include "app/start_menu.h"
 #include "app/title.h"
 #include "app/unova_link.h"
-#include "app/wifibattlematch.h"
+#include "communication/mic_test.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -60,6 +57,9 @@
 #include "system/wordset.h"
 #include "text/system/start_menu.h"
 #include "text/system/wifi_error.h"
+#include "wifi/dwc_utility.h"
+#include "wifi/gsync.h"
+#include "wifi/wifibattlematch.h"
 
 // The menu after the title screen. Its items scroll on the main engine's BGs 1 and 2, and the sub engine shows the
 // saved game. Picking an item ends the menu, and its exit starts what the item leads to

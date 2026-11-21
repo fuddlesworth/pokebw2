@@ -2,12 +2,11 @@
 #include "app/comm_btl_demo.h"
 #include "app/comm_btl_demo_graphic.h"
 #include "app/ui/ui_scene.h"
-#include "app/wifi_login.h"
+#include "communication/union_comm.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/union_comm.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -37,6 +36,7 @@
 #include "save/records.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "wifi/wifi_login.h"
 
 // The screen before and after a link battle. The ROM has no name for this file; "comm_btl_demo.c" is a guess from
 // "comm_btl_demo_graphic.c", the name of the file after it, as wifi_bsubway.c is to wifi_bsubway_graphic.c.

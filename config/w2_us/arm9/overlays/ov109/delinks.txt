@@ -4,7 +4,7 @@
     .data       start:0x021ef360 end:0x021ef380 kind:data align:32
     .bss        start:0x021ef380 end:0x021ef380 kind:bss align:32
 
-src/field/gimmick_skyarrow_bridge.c:
+src/field/gimmick/gimmick_skyarrow_bridge.c:
     complete
     .text       start:0x021eecc0 end:0x021ef2bc
     .rodata     start:0x021ef2bc end:0x021ef354

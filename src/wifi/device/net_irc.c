@@ -1,8 +1,8 @@
 // Overlay 31, the second of its four files (see net_devirc.c): NetIrcSys, which makes the packets of the infrared
 // device and takes turns with the other machine, over the link of frames in irc_link.c. It also holds the timeout and
 // peer filter that the games set through net_devirc.h.
-#include "field/net_irc.h"
-#include "field/net_devirc.h"
+#include "communication/net_irc.h"
+#include "communication/net_devirc.h"
 #include "gfl/net_handle.h"
 #include "gfl/random.h"
 #include "gfl/std.h"

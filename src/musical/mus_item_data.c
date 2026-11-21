@@ -1,9 +1,9 @@
 #include "types.h"
-#include "app/musical/mus_item_data.h"
-#include "app/musical/mus_poke_draw.h"
 #include "constants/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
+#include "musical/mus_item_data.h"
+#include "musical/mus_poke_draw.h"
 
 // Overlay 210's mus_item_data.c, named after its string: the table of the musical's props
 

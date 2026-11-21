@@ -1,6 +1,4 @@
 #include "types.h"
-#include "app/gsync.h"
-#include "app/wifi_login.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/proc.h"
@@ -9,6 +7,8 @@
 #include "save/dream_world.h"
 #include "save/save_control.h"
 #include "system/game_data.h"
+#include "wifi/gsync.h"
+#include "wifi/wifi_login.h"
 
 // The proc of the start menu's Game Sync settings: logs in, runs the Dream World account screens of overlay 199,
 // logs out and restarts the game. The file's name is a guess, from what it does: the ROM has no string for it

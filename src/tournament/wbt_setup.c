@@ -2,7 +2,6 @@
 #include "constants/arc.h"
 #include "field/field_actor.h"
 #include "field/field_actor_drawdata.h"
-#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/str.h"
@@ -11,6 +10,7 @@
 #include "save/wbt_save.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "tournament/wbt.h"
 
 static const u16 sMatchScoreMessages[] = { 8, 13, 18, 23, 28 };
 

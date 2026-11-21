@@ -4,7 +4,7 @@
 #include "constants/sound.h"
 #include "constants/version.h"
 #include "constants/zones.h"
-#include "field/fest_mission_people.h"
+#include "entralink/fest_mission_people.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/zone.h"

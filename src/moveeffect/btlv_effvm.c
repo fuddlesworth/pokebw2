@@ -3,14 +3,13 @@
 // animation. The name is the ROM's string, from GFL_HeapAllocate's asserts. BtlvEffect_QueueCommands and MOVE_SCRCMD
 // are swan's names; the others are ours
 
-#include "battle/btlv_effvm.h"
+#include "moveeffect/btlv_effvm.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
 #include "battle/btlv.h"
 #include "battle/btlv_bg.h"
 #include "battle/btlv_camera.h"
 #include "battle/btlv_clact.h"
-#include "battle/btlv_effect.h"
 #include "battle/btlv_gauge.h"
 #include "battle/btlv_mcss.h"
 #include "constants/arc.h"
@@ -27,6 +26,7 @@
 #include "gfl/sound.h"
 #include "gfl/std.h"
 #include "gfl/tcb.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"

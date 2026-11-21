@@ -5,7 +5,7 @@
 // grown, and the symbol encounters in them
 
 #include "types.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "gfl/heap.h"
 #include "struct_decls.h"
 

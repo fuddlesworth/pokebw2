@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/pkwd_briefing.h"
 #include "battle/btl_setup.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
@@ -32,6 +31,7 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "pml/poke_party.h"
+#include "pokewood/pkwd_briefing.h"
 #include "save/player_info.h"
 #include "save/pokewood.h"
 #include "system/gf_font.h"

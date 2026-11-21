@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/bsubway_records.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
@@ -33,6 +32,7 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/battle_subway_records.h"
+#include "tournament/bsubway_records.h"
 
 // bsubway_records.c, a descriptive name: the Battle Subway's records screen, overlay 141. It lists the records that the
 // Battle Subway's save holds, ten to a page on the main screen's frames, and shows the one under the cursor below

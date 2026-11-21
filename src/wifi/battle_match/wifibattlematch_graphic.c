@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wifibattlematch_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -8,6 +7,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "wifi/wifibattlematch_graphic.h"
 
 // The BGs and cell actor system that the Wi-Fi and live competition screens of overlay 261 draw on (the file name is
 // the ROM's own string)

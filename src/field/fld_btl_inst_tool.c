@@ -10,10 +10,8 @@
 #include "constants/trainer_classes.h"
 #include "constants/version.h"
 #include "field/battle_facility.h"
-#include "field/bsubway_scr.h"
 #include "field/field.h"
 #include "field/field_event.h"
-#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
@@ -29,6 +27,8 @@
 #include "save/bsubway_save.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "tournament/bsubway_scr.h"
+#include "tournament/wbt.h"
 
 #define MOVE_FRUSTRATION 218
 

@@ -1,6 +1,6 @@
 #include "types.h"
+#include "communication/union_oneself.h"
 #include "field/rival_select.h"
-#include "field/union_oneself.h"
 #include "gfl/std.h"
 #include "save/misc_savedata.h"
 #include "save/save_control.h"

@@ -1,11 +1,11 @@
 #include "types.h"
 #include "constants/species.h"
-#include "field/musical.h"
-#include "field/musical_program.h"
-#include "field/musical_stage_sys.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
+#include "musical/musical.h"
+#include "musical/musical_program.h"
+#include "musical/musical_stage_sys.h"
 
 typedef struct {
     MusicalStageParam *param;

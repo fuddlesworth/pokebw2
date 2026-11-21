@@ -1,7 +1,7 @@
 #include "types.h"
-#include "app/wf2dmap/wf2dmap_map.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
+#include "wifi/wf2dmap_map.h"
 
 // The grid of the Wi-Fi Club's 2D map, named after the ROM's "wf2dmap_map.c"
 

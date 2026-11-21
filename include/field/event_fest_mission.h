@@ -2,7 +2,7 @@
 #define POKEBW2_FIELD_EVENT_FEST_MISSION_H
 
 #include "types.h"
-#include "field/festival.h"
+#include "entralink/festival.h"
 #include "gfl/overlay.h"
 #include "struct_decls.h"
 

@@ -1,6 +1,4 @@
 #include "types.h"
-#include "app/t_download/t_download_local.h"
-#include "app/t_download/t_download_save.h"
 #include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
@@ -10,6 +8,8 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/time_icon.h"
+#include "tournament/t_download_local.h"
+#include "tournament/t_download_save.h"
 #include <stddef.h>
 
 // The Pokémon World Tournament's downloaded tournaments, as the save's extra blocks keep them and as the download

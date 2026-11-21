@@ -2,7 +2,7 @@
 #define POKEBW2_OV214_WORLDTRADE_LOCAL_H
 
 #include "types.h"
-#include "app/worldtrade.h"
+#include "communication/worldtrade.h"
 #include "dpw/dpw_tr.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"

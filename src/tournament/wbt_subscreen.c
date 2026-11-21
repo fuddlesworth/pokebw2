@@ -1,7 +1,5 @@
 #include "types.h"
 #include "constants/arc.h"
-#include "field/wbt.h"
-#include "field/wbt_subscreen.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -16,6 +14,8 @@
 #include "system/game_system.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_subscreen.h"
 
 // The Pokémon World Tournament's touch screen, named after the ROM's "wbt_subscreen.c": the tournament's name and
 // battle style, centered on the sub screen, over a background from archive 245. The names are ours

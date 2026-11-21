@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/pkwd_book_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -9,6 +8,7 @@
 #include "gfl/std.h"
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
+#include "pokewood/pkwd_book_graphic.h"
 #include "system/gf_font.h"
 #include "system/palanm.h"
 

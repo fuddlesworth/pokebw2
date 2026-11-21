@@ -4,12 +4,12 @@
 #include "battle/btlv_finger_cursor.h"
 #include "types.h"
 #include "battle/btl_pokeparam.h"
-#include "battle/btlv_effect.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 #include "system/palanm.h"
 

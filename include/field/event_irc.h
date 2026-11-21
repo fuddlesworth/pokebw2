@@ -2,9 +2,9 @@
 #define POKEBW2_FIELD_EVENT_IRC_H
 
 #include "types.h"
-#include "app/ircbattlematch.h"
-#include "app/pokemon_trade.h"
 #include "battle/battle_proc.h"
+#include "communication/ircbattlematch.h"
+#include "communication/pokemon_trade.h"
 #include "gfl/proc.h"
 #include "struct_decls.h"
 #include "system/game_event.h"

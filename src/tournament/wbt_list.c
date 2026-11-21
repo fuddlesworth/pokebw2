@@ -1,12 +1,9 @@
 #include "types.h"
 #include "app/ui/print_msg.h"
 #include "app/ui/ui_scene.h"
-#include "app/wbt_list.h"
-#include "app/wbt_list_graphic.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/wbt.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
@@ -39,6 +36,9 @@
 #include "system/wipe.h"
 #include "system/wordset.h"
 #include "text/system/world_tournament_list.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_list.h"
+#include "tournament/wbt_list_graphic.h"
 
 // The Pokémon World Tournament's list of Trainers: the upper screen's bracket of the eight entrants, which an
 // announcer's messages go through on the lower screen. The ROM has no name for this file; "wbt_list.c" is a guess from

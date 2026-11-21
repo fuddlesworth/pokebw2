@@ -2,7 +2,7 @@
 #define POKEBW2_APP_DRAWING_H
 
 #include "types.h"
-#include "field/union_app.h"
+#include "communication/union_app.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"

@@ -1,7 +1,7 @@
 // The ROM names this file guru2_comm.c.
 #include "types.h"
 #include "app/spin_trade.h"
-#include "field/union_app.h"
+#include "communication/union_app.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"

@@ -1,8 +1,5 @@
 #include "types.h"
 #include "app/box2.h"
-#include "app/dwc_utility.h"
-#include "app/gsync.h"
-#include "app/wifi_login.h"
 #include "field/event_gsync.h"
 #include "field/field_event.h"
 #include "gfl/net.h"
@@ -17,6 +14,9 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "wifi/dwc_utility.h"
+#include "wifi/gsync.h"
+#include "wifi/wifi_login.h"
 
 // Game Sync's event phases, including its menu and child procs.
 enum {

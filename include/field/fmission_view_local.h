@@ -2,8 +2,8 @@
 #define POKEBW2_FIELD_FMISSION_VIEW_LOCAL_H
 
 #include "types.h"
+#include "entralink/fest_mission_data.h"
 #include "field/beacon_view_common.h"
-#include "field/fest_mission_data.h"
 #include "field/field_disp_control.h"
 #include "field/fmission_view.h"
 #include "gfl/arc.h"

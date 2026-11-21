@@ -1,7 +1,7 @@
 #include "types.h"
-#include "app/musical/sta_act_obj.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/heap.h"
+#include "musical/sta_act_obj.h"
 #include "nitro/fx.h"
 
 // Overlay 209's sta_act_obj.c: the stage's objects, billboard actors placed in pixels and scrolled with the stage

@@ -1,12 +1,12 @@
 // The ROM names this file guru2_main.c.
 #include "types.h"
 #include "app/spin_trade.h"
+#include "communication/union_app.h"
 #include "constants/arc.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
 #include "constants/text_banks.h"
-#include "field/union_app.h"
 #include "gfl/arc.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"

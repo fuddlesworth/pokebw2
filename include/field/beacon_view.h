@@ -2,8 +2,8 @@
 #define POKEBW2_FIELD_BEACON_VIEW_H
 
 #include "types.h"
+#include "entralink/fest_mission_data.h"
 #include "field/beacon_view_common.h"
-#include "field/fest_mission_data.h"
 #include "field/field_disp_control.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"

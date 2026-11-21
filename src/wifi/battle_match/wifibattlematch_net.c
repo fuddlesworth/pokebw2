@@ -1,4 +1,3 @@
-#include "app/wifibattlematch_net.h"
 #include "types.h"
 #include "app/livebattlematch_flow.h"
 #include "battle/btl_result.h"
@@ -32,6 +31,7 @@
 #include "system/game_data.h"
 #include "text/system/name_input.h"
 #include "text/system/wifi_error.h"
+#include "wifi/wifibattlematch_net.h"
 
 enum {
     WBM_WIFI_STATUS_CONNECTING = 0,

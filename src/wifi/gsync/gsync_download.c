@@ -3,13 +3,13 @@
 // Function names are ours.
 
 #include "types.h"
-#include "app/gsync/gsync_download.h"
 #include "dwc/nd.h"
 #include "gfl/dwc_rap.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/std.h"
 #include "nitro/os.h"
+#include "wifi/gsync_download.h"
 
 // How long a call may take, in frames
 #define GSYNC_DOWNLOAD_TIMEOUT 3600

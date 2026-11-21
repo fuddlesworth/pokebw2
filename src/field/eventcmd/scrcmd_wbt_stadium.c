@@ -3,9 +3,6 @@
 #include "field/field_script.h"
 #include "field/scrcmd_msg.h"
 #include "field/scrcmd_wbt.h"
-#include "field/wbt.h"
-#include "field/wbt_battle.h"
-#include "field/wbt_stadium_gimmick.h"
 #include "gfl/overlay.h"
 #include "gfl/str.h"
 #include "pml/poke_party.h"
@@ -16,6 +13,9 @@
 #include "system/game_system.h"
 #include "system/vm.h"
 #include "system/wordset.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_battle.h"
+#include "tournament/wbt_stadium_gimmick.h"
 
 // The commands of the Pokémon World Tournament's stadium (plugin 7) that overlay 55 doesn't have
 

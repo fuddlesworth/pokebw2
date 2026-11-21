@@ -4,8 +4,6 @@
 #include "field/field.h"
 #include "field/field_script.h"
 #include "field/scrcmd_wbt.h"
-#include "field/wbt.h"
-#include "field/wbt_makematch.h"
 #include "field/zone.h"
 #include "gfl/overlay.h"
 #include "save/bsubway_save.h"
@@ -16,6 +14,8 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "text/script/global_10655.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_makematch.h"
 
 // The commands of the Pokémon World Tournament's entrance (plugin 6) that overlay 55 doesn't have. The name is
 // descriptive

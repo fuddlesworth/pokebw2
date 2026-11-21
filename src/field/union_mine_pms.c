@@ -1,9 +1,9 @@
 // Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0).
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
-#include "field/union_comm.h"
-#include "field/union_eff.h"
-#include "field/union_oneself.h"
+#include "communication/union_comm.h"
+#include "communication/union_eff.h"
+#include "communication/union_oneself.h"
 #include "gfl/net.h"
 #include "gfl/std.h"
 #include "nitro/os.h"

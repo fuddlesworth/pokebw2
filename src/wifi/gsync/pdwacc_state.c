@@ -3,7 +3,6 @@
 // pdwacc_disp.c's counterpart of gsync_state.c. Function names are ours.
 
 #include "types.h"
-#include "app/gsync.h"
 #include "app/gsync/pdwacc_disp.h"
 #include "app/gsync/pdwacc_message.h"
 #include "constants/sound.h"
@@ -26,6 +25,7 @@
 #include "system/game_data.h"
 #include "system/wipe.h"
 #include "text/system/0107.h"
+#include "wifi/gsync.h"
 
 typedef struct PdwAccWork PdwAccWork;
 typedef void (*PdwAccStateFunc)(PdwAccWork *wk);

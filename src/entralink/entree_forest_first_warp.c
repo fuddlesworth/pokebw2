@@ -1,5 +1,5 @@
 #include "types.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "field/field.h"
 #include "field/field_script_event.h"
 #include "field/intrude_work.h"

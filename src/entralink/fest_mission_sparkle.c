@@ -1,9 +1,9 @@
 // Overlay 71: the Funfest missions of type 4, where the player looks for sparkles hidden around the zones. Overlay
 // 36's festival gimmick calls into it while such a mission runs. The file name is a guess
 #include "types.h"
-#include "field/fest_mission_gimmick.h"
-#include "field/fest_mission_sparkle.h"
-#include "field/festival.h"
+#include "entralink/fest_mission_gimmick.h"
+#include "entralink/fest_mission_sparkle.h"
+#include "entralink/festival.h"
 #include "field/field.h"
 #include "field/field_actor.h"
 #include "field/field_effect.h"

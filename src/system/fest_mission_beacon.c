@@ -2,7 +2,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/species.h"
-#include "field/festival.h"
+#include "entralink/festival.h"
 #include "gfl/std.h"
 #include "nitro/mi.h"
 #include "pml/item.h"

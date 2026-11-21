@@ -1,7 +1,7 @@
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/script_text_banks.h"
-#include "field/festival.h"
+#include "entralink/festival.h"
 #include "field/field.h"
 #include "field/field_msgbg.h"
 #include "field/field_script.h"

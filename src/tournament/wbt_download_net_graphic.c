@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wbt_download_net_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -10,6 +9,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "tournament/wbt_download_net_graphic.h"
 
 // The tournament download's BGs and cell actor system. The name is the ROM's string, from GFL_HeapAllocate's call.
 // Function names are ours

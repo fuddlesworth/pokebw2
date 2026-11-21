@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/win_record_graphic.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmpwin.h"
 #include "gfl/clact.h"
@@ -9,6 +8,7 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "system/gf_font.h"
+#include "tournament/win_record_graphic.h"
 
 // The BGs and cell actors of the Pokémon World Tournament's win record, named after the ROM's "win_record_graphic.c".
 // The names are ours

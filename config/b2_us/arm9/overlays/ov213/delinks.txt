@@ -3,7 +3,7 @@
     .ctor       start:0x021bbb44 end:0x021bbb44 kind:rodata align:4
     .bss        start:0x021bbb60 end:0x021bbb60 kind:bss align:32
 
-src/battle/battle_select.c:
+src/battle/select/battle_select.c:
     complete
     .text       start:0x021bb700 end:0x021bbb30
     .rodata     start:0x021bbb30 end:0x021bbb44

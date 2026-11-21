@@ -2,7 +2,6 @@
 // the trainers of the train and the partner's choices. The name is descriptive; the file has no assert to give it
 #include "types.h"
 #include "constants/pokemon.h"
-#include "field/bsubway_scr.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/net_command.h"
@@ -13,6 +12,7 @@
 #include "pml/poke_party.h"
 #include "save/player_info.h"
 #include "system/game_data.h"
+#include "tournament/bsubway_scr.h"
 
 static void *BSubwayComm_GetBeacon(void *work);
 static int BSubwayComm_GetBeaconSize(void *work);

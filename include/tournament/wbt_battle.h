@@ -1,0 +1,55 @@
+#ifndef POKEBW2_FIELD_WBT_BATTLE_H
+#define POKEBW2_FIELD_WBT_BATTLE_H
+
+#include "types.h"
+#include "gfl/str.h"
+#include "struct_decls.h"
+#include "tournament/wbt.h"
+
+// wbt_battle.c, overlay 134, which the ROM names: the Pokémon World Tournament's rounds, their opponents and battles
+
+// The two possible picks from each side's party.
+enum {
+    WBT_PICK_PLAYER_FIRST = 0,
+    WBT_PICK_PLAYER_SECOND = 1,
+    WBT_PICK_OPPONENT_FIRST = 2,
+    WBT_PICK_OPPONENT_SECOND = 3,
+};
+
+// The Trainer's lines, including the stadium announcement and both kinds of battle result.
+enum {
+    WBT_TRAINER_LINE_FIRST_ROUND = 0,
+    WBT_TRAINER_LINE_SECOND_ROUND = 1,
+    WBT_TRAINER_LINE_FINAL_ROUND = 2,
+    WBT_TRAINER_LINE_DEFEAT = 3,
+    WBT_TRAINER_LINE_VICTORY = 4,
+    WBT_TRAINER_LINE_AFTER_DEFEAT = 5,
+    WBT_TRAINER_LINE_AFTER_VICTORY = 6,
+    WBT_TRAINER_LINE_INTRODUCTION = 7,
+    WBT_TRAINER_LINE_COUNT = 8,
+};
+
+void WbtBattle_SwapPickedPokemon(WbtSystem *sys);
+void WbtBattle_ResetPicks(WbtSystem *sys);
+void WbtBattle_SetPick(WbtSystem *sys, u32 index, u8 value);
+void WbtBattle_RandomPick(WbtSystem *sys, u32 index);
+u8 WbtBattle_GetPick(WbtSystem *sys, u32 index);
+WbtPartyList *WbtBattle_CreatePartyList(FieldScriptEnv *env, WbtSystem *sys);
+void WbtBattle_ShowPartyList(WbtPartyList *work);
+void WbtBattle_ClosePartyList(WbtPartyList *work);
+void WbtBattle_FreePartyList(WbtPartyList *work);
+void WbtBattle_MakeOpponentParty(WbtSystem *sys, GameSystem *gsys, const WbtEntrant *opponent);
+// The battle of the current round, which overlay 22 starts, and its end and freeing
+BtlSetup *WbtBattle_SetupBattle(WbtSystem *sys, GameSystem *gsys);
+void WbtBattle_FreeBattle(WbtSystem *sys, BtlSetup *setup);
+u8 WbtBattle_GetRoundRemaining(WbtSystem *sys, u16 round);
+void WbtBattle_EndBattle(WbtSystem *sys, GameData *gameData, BtlSetup *setup);
+// The player's opponent in the current round
+WbtEntrant *WbtBattle_GetOpponent(WbtSystem *sys);
+u32 WbtBattle_GetOpponentFlag(WbtSystem *sys);
+u16 WbtBattle_GetOpponentObjCode(WbtSystem *sys);
+// The opponent's name
+void WbtBattle_GetOpponentName(WbtSystem *sys, StrBuf *strbuf);
+void WbtBattle_LoadOpponentLine(WbtSystem *sys, int index, StrBuf *strbuf);
+
+#endif // POKEBW2_FIELD_WBT_BATTLE_H

@@ -63,22 +63,22 @@ src/battle/battle_action.c:
     complete
     .text       start:0x021bdb38 end:0x021bdcec
 
-src/battle/ability_handlers.c:
+src/battle/handler/ability_handlers.c:
     complete
     .text       start:0x021bdcec end:0x021c272c
     .rodata     start:0x021d7664 end:0x021d8428
 
-src/battle/item_handlers.c:
+src/battle/handler/item_handlers.c:
     complete
     .text       start:0x021c272c end:0x021c5b44
     .rodata     start:0x021d8428 end:0x021d94c8
 
-src/battle/move_handlers.c:
+src/battle/handler/move_handlers.c:
     complete
     .text       start:0x021c5b44 end:0x021cde78
     .rodata     start:0x021d94c8 end:0x021da904
 
-src/battle/handler_common.c:
+src/battle/handler/handler_common.c:
     complete
     .text       start:0x021cde78 end:0x021ce14c
 
@@ -91,7 +91,7 @@ src/battle/battle_condition.c:
     complete
     .text       start:0x021ce198 end:0x021ce560
 
-src/battle/poke_type_pair.c:
+src/battle/handler/poke_type_pair.c:
     complete
     .text       start:0x021ce560 end:0x021ce644
 

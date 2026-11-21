@@ -5,8 +5,8 @@
 // their animations and the fade of their textures' palettes. BtlvStage_Create is swan's name; the rest are ours
 
 #include "types.h"
-#include "battle/btlv_effect.h"
 #include "gfl/heap.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"
 

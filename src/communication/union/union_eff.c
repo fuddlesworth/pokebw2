@@ -1,0 +1,408 @@
+// The Union Room's effects on the field (the file's name is from its heap allocation): a focus on the player that the
+// others look at, and the marks over the players who are in a trade or a battle, drawn as models of one archive. The
+// work is allocated by UnionEff_Create and kept by the field. Before them, three checks for the Union Room's actors
+#include "communication/union_eff.h"
+#include "types.h"
+#include "communication/union_oneself.h"
+#include "field/field.h"
+#include "field/field_actor.h"
+#include "field/player_state.h"
+#include "gfl/arc.h"
+#include "gfl/g3d.h"
+#include "gfl/heap.h"
+#include "gfl/std.h"
+#include "nitro/fx.h"
+#include "save/wifi_list.h"
+#include "system/game_system.h"
+
+// The archive of the effects' models and animations
+#define UNION_EFF_ARC_ID 0x58
+enum {
+    UNION_EFF_FOCUS_NSBMD = 0x14,
+    UNION_EFF_FOCUS_NSBCA,
+    UNION_EFF_MARK_FRIEND_NSBMD,
+    UNION_EFF_MARK_PLAYED_NSBMD,
+};
+
+#define FOCUS_SLOT_MAX 1
+#define MARK_SLOT_MAX 10
+// The frames that the focus is shown for
+#define FOCUS_FRAMES 0x5A
+
+// One effect on an actor
+typedef struct {
+    FieldActor *actor;
+    G3DModel *model;
+    G3DAnimation *anm;
+    G3DActor *g3dActor;
+    u16 serial; // the oldest is freed when there is no room
+    u16 frame;
+} UnionEffSlot;
+
+typedef struct {
+    UnionEffSlot slot[FOCUS_SLOT_MAX];
+    G3DResource *res_nsbmd;
+    G3DResource *res_nsbca;
+    u16 serial;
+} FocusMan;
+
+typedef struct {
+    UnionEffSlot slot[MARK_SLOT_MAX];
+    G3DResource *res_nsbmd_friend;
+    G3DResource *res_nsbmd_played;
+    u16 serial;
+} MarkMan;
+
+struct UnionEffect {
+    FocusMan focus;
+    MarkMan mark;
+};
+
+static void UnionEff_LoadFocus(FocusMan *focus_man, HeapID heapId);
+static void UnionEff_UnloadFocus(FocusMan *focus_man);
+static void UnionEff_StartFocus(FocusMan *focus_man, FieldActor *actor);
+static void UnionEff_InitFocusSlot(FocusMan *focus_man, UnionEffSlot *slot, FieldActor *actor, u16 serial);
+static void UnionEff_FreeFocusSlot(UnionEffSlot *slot);
+static void UnionEff_StepFocusSlot(UnionEffSlot *slot);
+static void UnionEff_DrawFocusSlot(UnionEffSlot *slot, SRTMatrix *mtx);
+static void UnionEff_ExitFocus(FocusMan *focus_man);
+static void UnionEff_UpdateFocus(FocusMan *focus_man);
+static void UnionEff_DrawFocus(FocusMan *focus_man);
+static UnionEffSlot *UnionEff_GetFreeFocusSlot(FocusMan *focus_man);
+static void UnionEff_LoadMarks(MarkMan *mark_man, HeapID heapId);
+static void UnionEff_UnloadMarks(MarkMan *mark_man);
+static void UnionEff_StartMark(MarkMan *mark_man, FieldActor *actor, BOOL played);
+static void UnionEff_InitMarkSlot(MarkMan *mark_man, UnionEffSlot *slot, FieldActor *actor, u16 serial, BOOL played);
+static UnionEffSlot *UnionEff_GetFreeMarkSlot(MarkMan *mark_man);
+static void UnionEff_FreeMarkSlot(UnionEffSlot *slot);
+static void UnionEff_StepMarkSlot(UnionEffSlot *slot);
+static void UnionEff_DrawMarkSlot(UnionEffSlot *slot, SRTMatrix *mtx);
+static void UnionEff_ExitMarks(MarkMan *mark_man);
+static void UnionEff_UpdateMarks(MarkMan *mark_man);
+static void UnionEff_DrawMarks(MarkMan *mark_man);
+
+BOOL UnionEff_IsPlayerOnSpot(Field *field) {
+    static const s16 spots[1][2] = { { 11, 15 } };
+    FieldPlayer *player = Field_GetPlayer(field);
+    PlayerState *state = GSYS_GetPlayerState(Field_GetGameSystem(field));
+    VecFx32 pos;
+    u32 i;
+
+    FieldPlayer_GetWPos(player, &pos);
+    pos.x = (pos.x >> 4) / FX32_ONE;
+    pos.z = (pos.z >> 4) / FX32_ONE;
+    PlayerState_GetRotation(state);
+    for (i = 0; i < 1; i++) {
+        if (pos.x == spots[i][0] && pos.z == spots[i][1]) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+int UnionEff_GetKindStep(int activity) {
+    if (activity >= UNION_ACTIVITY_SINGLE && activity <= UNION_ACTIVITY_MULTI_FLAT_NO_LAUNCHER) {
+        return UNION_WANT_BATTLE;
+    }
+    switch (activity) {
+    case UNION_ACTIVITY_DRAW:
+        return UNION_WANT_DRAW;
+    case UNION_ACTIVITY_TRADE:
+        return UNION_WANT_TRADE;
+    case UNION_ACTIVITY_SPIN_TRADE:
+        return UNION_WANT_SPIN_TRADE;
+    // 0x1a: the activity between the spin trade and NONE, which no menu or step of the Union Room names
+    case 0x1a:
+        return UNION_WANT_3;
+    default:
+        return UNION_WANT_NONE;
+    }
+}
+
+BOOL UnionEff_IsFriendBeacon(WifiList *wifiList, const UnionBeacon *beacon) {
+    u32 friendIndex;
+
+    if (WifiList_FindFriend(wifiList, beacon->name, beacon->trainerId, beacon->gender, &friendIndex) == TRUE) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+UnionEffect *UnionEff_Create(HeapID heapId) {
+    UnionEffect *eff = GFL_HeapAllocate(heapId, sizeof(UnionEffect), TRUE, "union_eff.c", 142);
+
+    UnionEff_LoadFocus(&eff->focus, heapId);
+    UnionEff_LoadMarks(&eff->mark, heapId);
+    return eff;
+}
+
+void UnionEff_Free(UnionEffect *eff) {
+    if (eff != NULL) {
+        UnionEff_ExitMarks(&eff->mark);
+        UnionEff_UnloadMarks(&eff->mark);
+        UnionEff_ExitFocus(&eff->focus);
+        UnionEff_UnloadFocus(&eff->focus);
+        GFL_HeapFree(eff);
+    }
+}
+
+void UnionEff_Update(UnionEffect *eff) {
+    if (eff != NULL) {
+        UnionEff_UpdateMarks(&eff->mark);
+        UnionEff_UpdateFocus(&eff->focus);
+    }
+}
+
+void UnionEff_Draw(UnionEffect *eff) {
+    if (eff != NULL) {
+        UnionEff_DrawMarks(&eff->mark);
+        UnionEff_DrawFocus(&eff->focus);
+    }
+}
+
+void UnionEff_AddFocus(UnionEffect *eff, FieldActor *actor) {
+    if (eff != NULL) {
+        UnionEff_StartFocus(&eff->focus, actor);
+    }
+}
+
+void UnionEff_AddMark(UnionEffect *eff, FieldActor *actor, BOOL played) {
+    if (eff != NULL) {
+        UnionEff_StartMark(&eff->mark, actor, played);
+    }
+}
+
+void UnionEff_RemoveMark(UnionEffect *eff, FieldActor *actor) {
+    MarkMan *mark_man = &eff->mark;
+    int i;
+
+    for (i = 0; i < MARK_SLOT_MAX; i++) {
+        if (mark_man->slot[i].actor == actor) {
+            UnionEff_FreeMarkSlot(&mark_man->slot[i]);
+            return;
+        }
+    }
+}
+
+static void UnionEff_LoadFocus(FocusMan *focus_man, HeapID heapId) {
+    ArcTool *arc = GFL_ArcSysCreateFileHandle(UNION_EFF_ARC_ID, heapId);
+    BOOL ret;
+
+    focus_man->res_nsbmd = GFL_G3DSysReadArcToolResource(arc, UNION_EFF_FOCUS_NSBMD);
+    focus_man->res_nsbca = GFL_G3DSysReadArcToolResource(arc, UNION_EFF_FOCUS_NSBCA);
+    ret = GFL_G3DResUploadTexData(focus_man->res_nsbmd);
+    GFL_ASSERT(ret);
+    GFL_ArcToolFree(arc);
+}
+
+static void UnionEff_UnloadFocus(FocusMan *focus_man) {
+    GFL_G3DResFreeTexData(focus_man->res_nsbmd);
+    GFL_G3DResFree(focus_man->res_nsbca);
+    focus_man->res_nsbca = NULL;
+    GFL_G3DResFree(focus_man->res_nsbmd);
+    focus_man->res_nsbmd = NULL;
+}
+
+static void UnionEff_StartFocus(FocusMan *focus_man, FieldActor *actor) {
+    UnionEffSlot *slot;
+
+    GFL_ASSERT(focus_man->res_nsbmd != NULL);
+    slot = UnionEff_GetFreeFocusSlot(focus_man);
+    UnionEff_InitFocusSlot(focus_man, slot, actor, focus_man->serial);
+    focus_man->serial++;
+}
+
+static void UnionEff_InitFocusSlot(FocusMan *focus_man, UnionEffSlot *slot, FieldActor *actor, u16 serial) {
+    MI_CpuFill8(slot, 0, sizeof(UnionEffSlot));
+    slot->actor = actor;
+    slot->serial = serial;
+    slot->model = GFL_G3DMdlCreate(focus_man->res_nsbmd, 0, focus_man->res_nsbmd);
+    slot->anm = GFL_G3DAnmCreate(slot->model, focus_man->res_nsbca, 0);
+    slot->g3dActor = GFL_G3DActorCreate(slot->model, &slot->anm, 1);
+    GFL_G3DActorBindAnm(slot->g3dActor, 0);
+}
+
+static void UnionEff_FreeFocusSlot(UnionEffSlot *slot) {
+    GFL_G3DAnmFree(slot->anm);
+    GFL_G3DActorFree(slot->g3dActor);
+    GFL_G3DMdlFree(slot->model);
+    MI_CpuFill8(slot, 0, sizeof(UnionEffSlot));
+}
+
+static void UnionEff_StepFocusSlot(UnionEffSlot *slot) {
+    GFL_G3DActorStepAnmFrameLoop(slot->g3dActor, 0, FX32_ONE);
+    slot->frame++;
+    if (slot->frame > FOCUS_FRAMES) {
+        UnionEff_FreeFocusSlot(slot);
+    }
+}
+
+static void UnionEff_DrawFocusSlot(UnionEffSlot *slot, SRTMatrix *mtx) {
+    CopyActorWPos(slot->actor, &mtx->translation);
+    mtx->translation.y -= 6 * FX32_ONE;
+    GFL_G3DSysDrawObjBBoxCull(slot->g3dActor, mtx);
+}
+
+static void UnionEff_ExitFocus(FocusMan *focus_man) {
+    if (focus_man->slot[0].g3dActor != NULL) {
+        UnionEff_FreeFocusSlot(&focus_man->slot[0]);
+    }
+}
+
+static void UnionEff_UpdateFocus(FocusMan *focus_man) {
+    UnionEffSlot *slot = &focus_man->slot[0];
+
+    if (slot->g3dActor != NULL) {
+        if (FldAct_IsInUse(slot->actor) == TRUE) {
+            UnionEff_StepFocusSlot(slot);
+        } else {
+            UnionEff_FreeFocusSlot(slot);
+        }
+    }
+}
+
+static void UnionEff_DrawFocus(FocusMan *focus_man) {
+    SRTMatrix mtx = { { 0, 0, 0 }, { FX32_ONE, FX32_ONE, FX32_ONE }, { 0 } };
+
+    MTX_Identity33_(&mtx.rotation);
+    if (focus_man->slot[0].g3dActor != NULL && FldAct_IsInUse(focus_man->slot[0].actor) == TRUE) {
+        UnionEff_DrawFocusSlot(&focus_man->slot[0], &mtx);
+    }
+}
+
+static UnionEffSlot *UnionEff_GetFreeFocusSlot(FocusMan *focus_man) {
+    int i;
+    int oldest = 0;
+
+    for (i = 0; i < FOCUS_SLOT_MAX; i++) {
+        if (focus_man->slot[i].g3dActor == NULL) {
+            return &focus_man->slot[i];
+        }
+        if (focus_man->slot[i].serial < focus_man->slot[oldest].serial) {
+            oldest = i;
+        }
+    }
+    UnionEff_FreeFocusSlot(&focus_man->slot[oldest]);
+    return &focus_man->slot[oldest];
+}
+
+static void UnionEff_LoadMarks(MarkMan *mark_man, HeapID heapId) {
+    ArcTool *arc = GFL_ArcSysCreateFileHandle(UNION_EFF_ARC_ID, heapId);
+    BOOL ret;
+
+    mark_man->res_nsbmd_friend = GFL_G3DSysReadArcToolResource(arc, UNION_EFF_MARK_FRIEND_NSBMD);
+    mark_man->res_nsbmd_played = GFL_G3DSysReadArcToolResource(arc, UNION_EFF_MARK_PLAYED_NSBMD);
+    ret = GFL_G3DResUploadTexData(mark_man->res_nsbmd_friend);
+    GFL_ASSERT(ret);
+    ret = GFL_G3DResUploadTexData(mark_man->res_nsbmd_played);
+    GFL_ASSERT(ret);
+    GFL_ArcToolFree(arc);
+}
+
+static void UnionEff_UnloadMarks(MarkMan *mark_man) {
+    GFL_G3DResFreeTexData(mark_man->res_nsbmd_friend);
+    GFL_G3DResFreeTexData(mark_man->res_nsbmd_played);
+    GFL_G3DResFree(mark_man->res_nsbmd_friend);
+    GFL_G3DResFree(mark_man->res_nsbmd_played);
+    mark_man->res_nsbmd_friend = NULL;
+    mark_man->res_nsbmd_played = NULL;
+}
+
+static void UnionEff_StartMark(MarkMan *mark_man, FieldActor *actor, BOOL played) {
+    UnionEffSlot *slot;
+
+    // GFL_ASSERT written out: the game prints Game Freak's name for res_nsbmd_friend, res_nsbmd_friend
+    if (!(mark_man->res_nsbmd_friend != NULL)) {
+        GFL_DebugAssertFail("", 0, "mark_man->res_nsbmd_tomo != NULL");
+    }
+    // GFL_ASSERT written out: the game prints Game Freak's name for res_nsbmd_played, res_nsbmd_asonda
+    if (!(mark_man->res_nsbmd_played != NULL)) {
+        GFL_DebugAssertFail("", 0, "mark_man->res_nsbmd_asonda != NULL");
+    }
+    slot = UnionEff_GetFreeMarkSlot(mark_man);
+    UnionEff_InitMarkSlot(mark_man, slot, actor, mark_man->serial, played);
+    mark_man->serial++;
+}
+
+static void UnionEff_InitMarkSlot(MarkMan *mark_man, UnionEffSlot *slot, FieldActor *actor, u16 serial, BOOL played) {
+    MI_CpuFill8(slot, 0, sizeof(UnionEffSlot));
+    slot->actor = actor;
+    slot->serial = serial;
+    if (played == FALSE) {
+        slot->model = GFL_G3DMdlCreate(mark_man->res_nsbmd_friend, 0, mark_man->res_nsbmd_friend);
+    } else {
+        slot->model = GFL_G3DMdlCreate(mark_man->res_nsbmd_played, 0, mark_man->res_nsbmd_played);
+    }
+    slot->g3dActor = GFL_G3DActorCreate(slot->model, NULL, 0);
+}
+
+static void UnionEff_FreeMarkSlot(UnionEffSlot *slot) {
+    GFL_G3DActorFree(slot->g3dActor);
+    GFL_G3DMdlFree(slot->model);
+    MI_CpuFill8(slot, 0, sizeof(UnionEffSlot));
+}
+
+static void UnionEff_StepMarkSlot(UnionEffSlot *slot) {
+}
+
+static void UnionEff_DrawMarkSlot(UnionEffSlot *slot, SRTMatrix *mtx) {
+    CopyActorWPos(slot->actor, &mtx->translation);
+    mtx->translation.y -= FX32_CONST(6.5);
+    GFL_G3DSysDrawObjBBoxCull(slot->g3dActor, mtx);
+}
+
+static void UnionEff_ExitMarks(MarkMan *mark_man) {
+    int i;
+
+    for (i = 0; i < MARK_SLOT_MAX; i++) {
+        if (mark_man->slot[i].g3dActor != NULL) {
+            UnionEff_FreeMarkSlot(&mark_man->slot[i]);
+        }
+    }
+}
+
+static void UnionEff_UpdateMarks(MarkMan *mark_man) {
+    int i;
+
+    for (i = 0; i < MARK_SLOT_MAX; i++) {
+        UnionEffSlot *slot = &mark_man->slot[i];
+
+        if (slot->g3dActor != NULL) {
+            if (FldAct_IsInUse(slot->actor) == TRUE) {
+                UnionEff_StepMarkSlot(slot);
+            } else {
+                UnionEff_FreeMarkSlot(slot);
+            }
+        }
+    }
+}
+
+static void UnionEff_DrawMarks(MarkMan *mark_man) {
+    SRTMatrix mtx = { { 0, 0, 0 }, { FX32_ONE, FX32_ONE, FX32_ONE }, { 0 } };
+    int i;
+
+    MTX_Identity33_(&mtx.rotation);
+    for (i = 0; i < MARK_SLOT_MAX; i++) {
+        UnionEffSlot *slot = &mark_man->slot[i];
+
+        if (slot->g3dActor != NULL && FldAct_IsInUse(slot->actor) == TRUE) {
+            UnionEff_DrawMarkSlot(slot, &mtx);
+        }
+    }
+}
+
+static UnionEffSlot *UnionEff_GetFreeMarkSlot(MarkMan *mark_man) {
+    int i;
+    int oldest = 0;
+
+    for (i = 0; i < MARK_SLOT_MAX; i++) {
+        if (mark_man->slot[i].g3dActor == NULL) {
+            return &mark_man->slot[i];
+        }
+        if (mark_man->slot[i].serial < mark_man->slot[oldest].serial) {
+            oldest = i;
+        }
+    }
+    UnionEff_FreeMarkSlot(&mark_man->slot[oldest]);
+    return &mark_man->slot[oldest];
+}

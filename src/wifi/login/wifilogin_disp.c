@@ -3,7 +3,6 @@
 // Game Sync. The name is the ROM's string, from GFL_HeapAllocate's call. Function names are ours.
 
 #include "types.h"
-#include "app/wifilogin_disp.h"
 #include "constants/arc.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
@@ -20,6 +19,7 @@
 #include "nnsys/g2d.h"
 #include "system/palanm.h"
 #include "system/sin_wave_table.h"
+#include "wifi/wifilogin_disp.h"
 
 #define WIFILOGIN_DISP_ACTOR_COUNT 5
 

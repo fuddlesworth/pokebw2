@@ -1,6 +1,5 @@
 #include "types.h"
 #include "app/livebattlematch_flow.h"
-#include "app/wifibattlematch_view.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
@@ -34,6 +33,7 @@
 #include "system/poke_icon.h"
 #include "system/printsys.h"
 #include "system/wordset.h"
+#include "wifi/wifibattlematch_view.h"
 
 enum {
     RANK_WINDOW_MODE_TITLE = 0,

@@ -3,10 +3,6 @@
 // name is the ROM's string, from GFL_HeapAllocate's calls and an assert. Function names are ours.
 
 #include "types.h"
-#include "app/gsync.h"
-#include "app/gsync/gsync_disp.h"
-#include "app/gsync/gsync_download.h"
-#include "app/gsync/gsync_message.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
 #include "constants/sound.h"
@@ -48,6 +44,10 @@
 #include "system/tpoke_data.h"
 #include "system/wipe.h"
 #include "text/system/game_sync_menu.h"
+#include "wifi/gsync.h"
+#include "wifi/gsync_disp.h"
+#include "wifi/gsync_download.h"
+#include "wifi/gsync_message.h"
 
 #define HEAPID_GSYNC 0x62
 

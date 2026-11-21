@@ -3,9 +3,6 @@
 #include "constants/pokemon.h"
 #include "constants/text_banks.h"
 #include "field/battle_facility.h"
-#include "field/bsubway_scr.h"
-#include "field/wbt.h"
-#include "field/wbt_battle.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -17,6 +14,9 @@
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
 #include "text/system/world_tournament_party.h"
+#include "tournament/bsubway_scr.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_battle.h"
 
 // The exclusion lists and their unused file marker.
 #define WBT_PARTY_FILTER_CAPACITY 12

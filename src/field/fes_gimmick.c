@@ -2,12 +2,12 @@
 // the mission its calls. The name is the ROM's own, from GFL_HeapAllocate's file argument. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
-#include "field/fest_mission_data.h"
-#include "field/fest_mission_gimmick.h"
-#include "field/fest_mission_hollow.h"
-#include "field/fest_mission_people.h"
-#include "field/fest_mission_sparkle.h"
-#include "field/festival.h"
+#include "entralink/fest_mission_data.h"
+#include "entralink/fest_mission_gimmick.h"
+#include "entralink/fest_mission_hollow.h"
+#include "entralink/fest_mission_people.h"
+#include "entralink/fest_mission_sparkle.h"
+#include "entralink/festival.h"
 #include "field/field.h"
 #include "field/field_effect.h"
 #include "field/field_nogrid_mapper.h"

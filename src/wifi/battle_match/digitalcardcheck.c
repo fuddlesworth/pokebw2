@@ -1,4 +1,3 @@
-#include "app/digitalcardcheck.h"
 #include "types.h"
 #include "constants/arc.h"
 #include "constants/sound.h"
@@ -19,6 +18,7 @@
 #include "system/printsys.h"
 #include "system/wordset.h"
 #include "text/system/wifi_battle_match.h"
+#include "wifi/digitalcardcheck.h"
 
 enum {
     CARD_CONFIRM_CHOICE_YES = 0,

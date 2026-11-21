@@ -4,11 +4,11 @@
 // Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
 #include "types.h"
-#include "field/bsubway_scr.h"
 #include "field/delivery_beacon.h"
 #include "gfl/heap.h"
 #include "struct_decls.h"
 #include "system/game_event.h"
+#include "tournament/bsubway_scr.h"
 
 struct TrialHouseWork {
     BSubwayTrainer trainer;

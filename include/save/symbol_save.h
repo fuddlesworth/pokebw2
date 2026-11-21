@@ -2,7 +2,7 @@
 #define POKEBW2_SAVE_SYMBOL_SAVE_H
 
 #include "types.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "struct_decls.h"
 
 // Block 0x3c, the symbol encounters of the Entree Forest (symbol_save.c, the ROM's name). The other functions of the

@@ -5,7 +5,7 @@
 // Forest, which the save keeps in its area NPC data, encrypted
 
 #include "types.h"
-#include "field/entree_forest.h"
+#include "entralink/entree_forest.h"
 #include "save/symbol_save.h"
 #include "struct_decls.h"
 

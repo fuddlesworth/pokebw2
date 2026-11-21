@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wbt_download.h"
 #include "field/event_wbt_wifi.h"
 #include "field/field_event.h"
 #include "gfl/heap.h"
@@ -7,6 +6,7 @@
 #include "system/game_comm.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "tournament/wbt_download.h"
 
 // The steps of the event
 enum {

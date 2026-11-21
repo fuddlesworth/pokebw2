@@ -5,8 +5,8 @@
 // picking the Pokémon to enter, and a Trainer's message in a balloon
 
 #include "types.h"
-#include "field/bsubway_scr.h"
 #include "struct_decls.h"
+#include "tournament/bsubway_scr.h"
 
 // The party screen for picking the Pokémon to enter, under the regulation of the file. The picked slots go to
 // picked, the screen's choice and result to choice and result, and the Pokémon picked are added to entered

@@ -1,0 +1,90 @@
+#ifndef POKEBW2_FIELD_POKEWOOD_SYSTEM_H
+#define POKEBW2_FIELD_POKEWOOD_SYSTEM_H
+
+#include "types.h"
+#include "app/p_status.h"
+#include "app/pokelist.h"
+#include "battle/regulation.h"
+#include "constants/arc.h"
+#include "gfl/heap.h"
+#include "pokewood/pkwd_book.h"
+#include "pokewood/pkwd_record_monitor.h"
+#include "pokewood/pkwd_selectscreen.h"
+#include "save/pokewood.h"
+#include "struct_decls.h"
+
+// Pokéstar Studios' state while the player makes a movie, in overlay 62 with its script plugin (plugin 10). Overlay
+// 23's event_pokewood.c runs the movie
+
+typedef struct {
+    u32 unk0;
+    u16 scoreMultiplier;
+    // How many Pokémon take part in the movie's battle
+    s16 castCount;
+    u16 director;
+    u8 unkA[0xe];
+    u16 maleFilmTrainerClass;
+    u16 maleWatchTrainerClass;
+    u16 femaleFilmTrainerClass;
+} PokewoodMovie;
+
+struct PokewoodSystem {
+    HeapID heapId;
+    u8 unk2[6];
+    // The party slots, from 1, of the Pokémon picked for the movie
+    u8 castSlots[6];
+    u16 listIndex;
+    u16 listResult;
+    // The movie's rules, whose unk3 is how many Pokémon take part
+    Regulation regulation;
+    u8 extraRuleType;
+    u8 extraRuleBanMoves;
+    u16 extraRuleMove;
+    u16 movie;
+    u16 *resultVar;
+    u16 usePlayerCast;
+    u16 saveSlot;
+    PokewoodBlock *pokewoodBlk;
+    PokewoodRecord record;
+    u32 studioEnding;
+    // The series of each slot's movie, from event_pokewood.c's slotInfo, for PokewoodSave_PushLastSeries
+    u8 slotSeries[8];
+};
+
+// pokewood_system.c
+PokewoodSystem *PokewoodSystem_Create(HeapID heapId);
+void PokewoodSystem_Free(PokewoodSystem *sys);
+void PokewoodSystem_SetCastFromPokeList(PokewoodSystem *sys, const PokeListParam *param);
+void PokewoodSystem_SetupPokeList(PokewoodSystem *sys, GameData *gameData, PokeListParam *param);
+void PokewoodSystem_SetupPStatus(PokewoodSystem *sys, GameData *gameData, PStatusParam *param);
+void PokewoodSystem_SetResultVar(PokewoodSystem *sys, u16 *var);
+u16 *PokewoodSystem_GetResultVar(PokewoodSystem *sys);
+void PokewoodSystem_SetUsePlayerCast(PokewoodSystem *sys, u16 value);
+u16 PokewoodSystem_GetUsePlayerCast(PokewoodSystem *sys);
+void PokewoodSystem_SetMovie(PokewoodSystem *sys, int movie);
+u16 PokewoodSystem_GetMovie(PokewoodSystem *sys);
+void PokewoodSystem_SetSaveSlot(PokewoodSystem *sys, u16 value);
+u16 PokewoodSystem_GetSaveSlot(PokewoodSystem *sys);
+PokewoodBlock *PokewoodSystem_GetPokewoodBlk(PokewoodSystem *sys);
+void PokewoodSystem_CopyCast(PokewoodSystem *sys, GameData *gameData, PokeParty *party);
+void PokewoodSystem_SetResultFlag(PokewoodSystem *sys, GameData *gameData, u32 movie, u32 result);
+void Pokewood_CheckMedals(GameData *gameData);
+void PokewoodSystem_SetRecord(PokewoodSystem *sys, const BtlSetup *setup, u32 movie);
+void PokewoodSystem_KeepBestRecord(GameData *gameData, PokewoodSystem *sys);
+void PokewoodSystem_RecordScore(GameData *gameData, PokewoodSystem *sys);
+void PokewoodSystem_AddGradePoints(GameData *gameData, PokewoodSystem *sys, u32 result, u32 slot);
+void PokewoodSystem_UpdateCastFame(GameData *gameData, PokewoodSystem *sys);
+void PokewoodSystem_PushLastSeries(GameData *gameData, PokewoodSystem *sys, u32 slot);
+void PokewoodSystem_SetSlotInfo(PokewoodSystem *sys, const u8 *src);
+
+// pokewood_setup.c: the parameters of overlay 23's events, which the caller frees once the event has them
+PkwdBookParam *PokewoodSetup_CreateBookParam(HeapID heapId, GameSystem *gsys, u16 *var);
+void PokewoodSetup_FreeBookParam(PkwdBookParam *param);
+// mode is a PKWD_SELECTSCREEN_MODE_*
+PkwdSelectScreenParam *PokewoodSetup_CreateMenuParam(HeapID heapId, GameSystem *gsys, u16 mode, u16 *var);
+void PokewoodSetup_FreeMenuParam(PkwdSelectScreenParam *param);
+PkwdRecordMonitorParam *PokewoodSetup_CreateRecordMonitorParam(HeapID heapId, GameSystem *gsys);
+void PokewoodSetup_FreeRecordMonitorParam(PkwdRecordMonitorParam *param);
+GameEvent *EventPokewoodSave_Create(GameSystem *gsys, u16 *var);
+
+#endif // POKEBW2_FIELD_POKEWOOD_SYSTEM_H

@@ -10,12 +10,12 @@ src/field/el_scoreboard.c:
     .rodata     start:0x0217f568 end:0x0217f588
     .data       start:0x0217f614 end:0x0217f640
 
-src/field/event_season_banner.c:
+src/field/event/event_season_banner.c:
     complete
     .text       start:0x0217ee98 end:0x0217f568
     .rodata     start:0x0217f588 end:0x0217f5e8
 
-src/field/event_mapchange.c:
+src/field/event/event_mapchange.c:
     complete
     .text       start:0x0217c980 end:0x0217edac
     .data       start:0x0217f600 end:0x0217f614

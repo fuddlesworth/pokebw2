@@ -3,7 +3,6 @@
 
 #include "battle/btlv_field.h"
 #include "types.h"
-#include "battle/btlv_effect.h"
 #include "battle/btlv_stage.h"
 #include "constants/arc.h"
 #include "constants/battle.h"
@@ -11,6 +10,7 @@
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/tcb.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
 

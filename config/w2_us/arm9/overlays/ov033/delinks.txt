@@ -27,11 +27,11 @@ src/entralink/entralink_warp.c:
     .text       start:0x021773b0 end:0x021775b4
     .rodata     start:0x0217c434 end:0x0217c440
 
-src/field/event_cgear_shutdown.c:
+src/field/event/event_cgear_shutdown.c:
     complete
     .text       start:0x021775b4 end:0x02177628
 
-src/field/event_phrase_input.c:
+src/field/event/event_phrase_input.c:
     complete
     .text       start:0x02177628 end:0x021779d8
     .rodata     start:0x0217c440 end:0x0217c444
@@ -42,57 +42,57 @@ src/entralink/pdw_postman.c:
     .rodata     start:0x0217c444 end:0x0217c4c4
     .data       start:0x0217c640 end:0x0217c650
 
-src/field/scrcmd_field_move.c:
+src/field/script/scrcmd_field_move.c:
     complete
     .text       start:0x02178488 end:0x02178604
 
-src/field/event_sweet_scent.c:
+src/field/event/event_sweet_scent.c:
     complete
     .text       start:0x02178604 end:0x02178948
     .rodata     start:0x0217c4c4 end:0x0217c4c8
 
-src/field/event_fly.c:
+src/field/event/event_fly.c:
     complete
     .text       start:0x02178948 end:0x02178ce8
 
-src/field/event_chatot.c:
+src/field/event/event_chatot.c:
     complete
     .text       start:0x02178ce8 end:0x02179200
     .rodata     start:0x0217c4c8 end:0x0217c4d0
 
-src/field/event_fishing.c:
+src/field/event/event_fishing.c:
     complete
     .text       start:0x02179200 end:0x021796a4
 
-src/field/event_hall_of_fame_machine.c:
+src/field/event/event_hall_of_fame_machine.c:
     complete
     .text       start:0x021796a4 end:0x021798a8
     .rodata     start:0x0217c4d0 end:0x0217c518
 
-src/field/event_pc.c:
+src/field/event/event_pc.c:
     complete
     .text       start:0x021798a8 end:0x02179b94
 
-src/field/event_pokemon_center.c:
+src/field/event/event_pokemon_center.c:
     complete
     .text       start:0x02179b94 end:0x02179e14
     .rodata     start:0x0217c518 end:0x0217c560
 
-src/field/event_game_manual.c:
+src/field/event/event_game_manual.c:
     complete
     .text       start:0x02179e14 end:0x02179ed8
     .data       start:0x0217c650 end:0x0217c664
 
-src/field/event_abyssal_ruins.c:
+src/field/event/event_abyssal_ruins.c:
     complete
     .text       start:0x02179ed8 end:0x02179f44
     .rodata     start:0x0217c560 end:0x0217c574
 
-src/field/event_dive.c:
+src/field/event/event_dive.c:
     complete
     .text       start:0x02179f44 end:0x0217a1f0
 
-src/field/field_actor_animation.c:
+src/field/actor/field_actor_animation.c:
     complete
     .text       start:0x0217a1f0 end:0x0217a4e0
     .rodata     start:0x0217c574 end:0x0217c5a4

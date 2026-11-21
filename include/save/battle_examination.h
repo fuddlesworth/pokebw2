@@ -2,7 +2,7 @@
 #define POKEBW2_SAVE_BATTLE_EXAMINATION_H
 
 #include "types.h"
-#include "field/bsubway_scr.h"
+#include "tournament/bsubway_scr.h"
 
 // Extra save block 5, a downloaded battle examination, which the Trial House plays (battle_examination.c).
 // save/trial_house.h declares the functions that the Trial House calls.

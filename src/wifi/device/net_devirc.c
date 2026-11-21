@@ -3,8 +3,8 @@
 // over NetIrcSys (net_irc.c), which the other files of the overlay carry down to the card's infrared chip. Overlay 31
 // is four original files, probably in this order: this one, net_irc.c, irc_link.c and irc_spi.c; MWCC sorts a file's
 // .bss by size, and the original's .bss order is only possible split so.
-#include "field/net_devirc.h"
-#include "field/net_irc.h"
+#include "communication/net_devirc.h"
+#include "communication/net_irc.h"
 #include "irc/irc_link.h"
 
 static BOOL NetDevIrc_Init(HeapID heapId, GFLNetSys *sys, BOOL (*callback)(BOOL success), void *work);

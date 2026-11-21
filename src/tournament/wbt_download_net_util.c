@@ -1,7 +1,4 @@
 #include "types.h"
-#include "app/net_common_download.h"
-#include "app/wbt_download_net_graphic.h"
-#include "app/wbt_download_net_util.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "gfl/arc.h"
@@ -34,6 +31,9 @@
 #include "system/text_speed.h"
 #include "system/time_icon.h"
 #include "system/wordset.h"
+#include "tournament/wbt_download_net_graphic.h"
+#include "tournament/wbt_download_net_util.h"
+#include "wifi/net_common_download.h"
 #include <stddef.h>
 
 // The process that downloads the tournaments: it shows messages over the animated background of the Dream World

@@ -4,28 +4,28 @@
     .data       start:0x021fb860 end:0x021fb880 kind:data align:32
     .bss        start:0x021fb880 end:0x021fb880 kind:bss align:32
 
-src/battle/b_plist_anm.c:
+src/battle/select/b_plist_anm.c:
     complete
     .text       start:0x021f4440 end:0x021f4f44
     .rodata     start:0x021fadac end:0x021fae2c
     .data       start:0x021fb860 end:0x021fb870
 
-src/battle/b_plist_bmp.c:
+src/battle/select/b_plist_bmp.c:
     complete
     .text       start:0x021f4f44 end:0x021f75dc
     .rodata     start:0x021fae2c end:0x021fb06c
 
-src/battle/b_plist_obj.c:
+src/battle/select/b_plist_obj.c:
     complete
     .text       start:0x021f75dc end:0x021f8714
     .rodata     start:0x021fb06c end:0x021fb468
 
-src/battle/b_plist_cursor.c:
+src/battle/select/b_plist_cursor.c:
     complete
     .text       start:0x021facd0 end:0x021fadac
     .rodata     start:0x021fb5d8 end:0x021fb858
 
-src/battle/b_plist_main.c:
+src/battle/select/b_plist_main.c:
     complete
     .text       start:0x021f8714 end:0x021facd0
     .rodata     start:0x021fb468 end:0x021fb5d8

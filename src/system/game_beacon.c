@@ -3,7 +3,7 @@
 #include "constants/language.h"
 #include "constants/species.h"
 #include "constants/version.h"
-#include "field/festival.h"
+#include "entralink/festival.h"
 #include "field/player_state.h"
 #include "field/survey.h"
 #include "field/townmap_util.h"

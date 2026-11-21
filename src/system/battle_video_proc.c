@@ -1,7 +1,6 @@
 #include "types.h"
 #include "app/battle_recorder.h"
 #include "app/battle_video.h"
-#include "app/wifi_login.h"
 #include "dwc/connectinet.h"
 #include "gfl/gx_layers.h"
 #include "gfl/heap.h"
@@ -9,6 +8,7 @@
 #include "gfl/proc.h"
 #include "gfl/std.h"
 #include "nitro/gx.h"
+#include "wifi/wifi_login.h"
 
 // The proc of the Global Link's Battle Videos and musical photos: logs in, runs the Battle Recorder of overlay 272
 // online and logs out, with a proc manager of its own. The file's name is a guess, from what it does: the ROM has no

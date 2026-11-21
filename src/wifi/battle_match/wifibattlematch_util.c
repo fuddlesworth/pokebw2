@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/wifibattlematch_util.h"
 #include "battle/btl_result.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
@@ -21,6 +20,7 @@
 #include "system/printsys.h"
 #include "system/text_speed.h"
 #include "system/time_icon.h"
+#include "wifi/wifibattlematch_util.h"
 
 enum {
     WIFIBATTLEMATCH_MSG_IDLE = 4,

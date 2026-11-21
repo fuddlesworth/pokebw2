@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "app/pdc_msg.h"
-#include "battle/btlv_effect.h"
 #include "constants/arc.h"
 #include "constants/text_banks.h"
 #include "gfl/arc_util.h"
@@ -16,6 +15,7 @@
 #include "gfl/msg.h"
 #include "gfl/str.h"
 #include "gfl/touchpanel.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "save/config.h"

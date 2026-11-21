@@ -3,7 +3,6 @@
 
 #include "gfl/dwc_rapcommon.h"
 #include "types.h"
-#include "app/wfc_user_info_warning.h"
 #include "dwc/dwc.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
@@ -13,6 +12,7 @@
 #include "nitro/os.h"
 #include "nnsys/fnd.h"
 #include "text/system/wifi_error.h"
+#include "wifi/wfc_user_info_warning.h"
 
 // The group ID of the second heap's blocks, which tells DWCRapCommon_Free which heap a block is from
 #define DWCRAP_SUB_HEAP_GROUP_ID 0xea

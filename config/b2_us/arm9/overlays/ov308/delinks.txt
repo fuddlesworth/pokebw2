@@ -4,18 +4,18 @@
     .data       start:0x021a1a60 end:0x021a1a80 kind:data align:32
     .bss        start:0x021a1a80 end:0x021a1a80 kind:bss align:32
 
-src/field/beacon_detail.c:
+src/field/beacon/beacon_detail.c:
     complete
     .text       start:0x0219f960 end:0x021a055c
     .rodata     start:0x021a17c0 end:0x021a1848
 
-src/field/beacon_detail_gra.c:
+src/field/beacon/beacon_detail_gra.c:
     complete
     .text       start:0x021a055c end:0x021a07d0
     .rodata     start:0x021a1848 end:0x021a1a24
     .data       start:0x021a1a60 end:0x021a1a80
 
-src/field/beacon_detail_sub.c:
+src/field/beacon/beacon_detail_sub.c:
     complete
     .text       start:0x021a07d0 end:0x021a17c0
     .rodata     start:0x021a1a24 end:0x021a1a54

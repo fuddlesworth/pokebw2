@@ -8,7 +8,6 @@
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_setup.h"
 #include "constants/sound.h"
-#include "field/bsubway_scr.h"
 #include "field/field_sound.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
@@ -18,6 +17,7 @@
 #include "gfl/str.h"
 #include "save/save_control.h"
 #include "system/game_data.h"
+#include "tournament/bsubway_scr.h"
 
 // The procs that br_main.c switches between, which index sBrMainProcTable
 enum {

@@ -3,7 +3,7 @@
     .ctor       start:0x021503e8 end:0x021503e8 kind:rodata align:4
     .bss        start:0x02150400 end:0x02150400 kind:bss align:32
 
-src/field/event_make.c:
+src/field/event/event_make.c:
     complete
     .text       start:0x0214ff40 end:0x021503dc
     .rodata     start:0x021503dc end:0x021503e8

@@ -1,9 +1,7 @@
-#include "app/wifibattlematch_subproc.h"
 #include "types.h"
 #include "app/livebattlematch_irc.h"
 #include "app/p_status.h"
 #include "app/pokelist.h"
-#include "app/wifibattlematch_net.h"
 #include "battle/regulation.h"
 #include "gfl/dwc_rapcommon.h"
 #include "gfl/heap.h"
@@ -18,6 +16,8 @@
 #include "save/pokedex_savedata.h"
 #include "save/save_control.h"
 #include "system/game_data.h"
+#include "wifi/wifibattlematch_net.h"
+#include "wifi/wifibattlematch_subproc.h"
 
 #define HEAPID_WIFIBATTLEMATCH_SUBPROC 0x58
 

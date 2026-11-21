@@ -3,9 +3,9 @@
 
 #include "battle/btlv_camera.h"
 #include "types.h"
-#include "battle/btlv_effect.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
+#include "moveeffect/btlv_effect.h"
 #include "nitro/fx.h"
 
 // The camera's work, 0xb8 bytes

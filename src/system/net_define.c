@@ -1,6 +1,6 @@
 #include "types.h"
+#include "communication/net_devirc.h"
 #include "constants/arc.h"
-#include "field/net_devirc.h"
 #include "gfl/net.h"
 #include "gfl/net_devwifi.h"
 #include "gfl/net_devwireless.h"

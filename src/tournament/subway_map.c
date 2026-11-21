@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/subway_map.h"
 #include "constants/arc.h"
 #include "constants/pokemon.h"
 #include "gfl/arc.h"
@@ -19,6 +18,7 @@
 #include "save/player_info.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "tournament/subway_map.h"
 
 // The process that shows the subway map
 

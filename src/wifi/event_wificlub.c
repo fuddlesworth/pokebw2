@@ -1,15 +1,12 @@
 #include "types.h"
-#include "app/comm_tvt.h"
-#include "app/pokemon_trade.h"
 #include "app/ui/ui_scene.h"
-#include "app/wifi_login.h"
-#include "app/wifi_status.h"
-#include "app/wificlub.h"
 #include "battle/battle_proc.h"
 #include "battle/battle_select.h"
 #include "battle/btl_net.h"
 #include "battle/btl_setup.h"
 #include "battle/regulation.h"
+#include "communication/comm_tvt.h"
+#include "communication/pokemon_trade.h"
 #include "constants/sound.h"
 #include "demo/evolution_demo.h"
 #include "field/event_wificlub.h"
@@ -29,6 +26,9 @@
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/ringtone_sys.h"
+#include "wifi/wifi_login.h"
+#include "wifi/wifi_status.h"
+#include "wifi/wificlub.h"
 
 enum {
     STEP_SAVE_BGM = 0,

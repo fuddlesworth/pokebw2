@@ -6,8 +6,8 @@
 // drawing of it
 
 #include "types.h"
-#include "app/musical/mus_item_draw.h"
 #include "gfl/heap.h"
+#include "musical/mus_item_draw.h"
 #include "nitro/fx.h"
 
 // A point of the touch screen

@@ -3,12 +3,12 @@
 // overlay 262, which the link's screens are made of, and runs the proc of the random matchups of the field or the
 // one of the Wi-Fi competition, which the title screen's menu starts
 
-#include "app/wifibattlematch_link.h"
 #include "types.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
+#include "wifi/wifibattlematch_link.h"
 
 static BOOL WifiBattleMatchLink_Init(GameProc *proc, u32 *state, void *param, void *work);
 static BOOL WifiBattleMatchLink_Exit(GameProc *proc, u32 *state, void *param, void *work);

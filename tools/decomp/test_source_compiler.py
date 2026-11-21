@@ -18,7 +18,7 @@ from tools.build import objdiff_config
 class SourceCompilerTests(unittest.TestCase):
     def test_game_library_and_external_settings(self):
         cases = [
-            ("src/communication/ctvt_draw.c", configure.MWCC_VERSION, False, "-ipa function"),
+            ("src/communication/xtransceiver/ctvt_draw.c", configure.MWCC_VERSION, False, "-ipa function"),
             ("src/unlisted.c", configure.MWCC_VERSION, False, "-ipa file"),
             ("lib/nnsys/src/snd/snd_capture.c", None, True, "-ipa function"),
             ("lib/nitro/src/card/card_pull_out.c", None, True, "-thumb"),
@@ -49,7 +49,7 @@ class SourceCompilerTests(unittest.TestCase):
 
     def test_flag_replacement_does_not_mutate_defaults(self):
         original = ["-O4,p", "-thumb", "-ipa file", "-sym on"]
-        source = Path("src/communication/ctvt_draw.c")
+        source = Path("src/communication/xtransceiver/ctvt_draw.c")
         with patch.dict(configure.FILE_FLAGS, {source.as_posix(): ["-O2,p", "-nothumb", "-ipa function"]}):
             self.assertEqual(configure.file_flags(source, original),
                              ["-sym on", "-O2,p", "-nothumb", "-ipa function"])
@@ -69,10 +69,10 @@ class SourceCompilerTests(unittest.TestCase):
                 '[file_flags]\n"../src/x.c" = ["-ipa function"]',
                 '[file_flags]\n"/src/x.c" = ["-ipa function"]',
                 '[file_flags]\n"src/missing.c" = ["-ipa function"]',
-                '[file_flags]\n"src/communication/ctvt_draw.c" = "-ipa function"',
-                '[file_flags]\n"src/communication/ctvt_draw.c" = ["-thumb", "-nothumb"]',
-                '[file_flags]\n"src/communication/ctvt_draw.c" = ["-ipa function -thumb"]',
-                '[file_flags]\n"src/communication/ctvt_draw.c" = [""]',
+                '[file_flags]\n"src/communication/xtransceiver/ctvt_draw.c" = "-ipa function"',
+                '[file_flags]\n"src/communication/xtransceiver/ctvt_draw.c" = ["-thumb", "-nothumb"]',
+                '[file_flags]\n"src/communication/xtransceiver/ctvt_draw.c" = ["-ipa function -thumb"]',
+                '[file_flags]\n"src/communication/xtransceiver/ctvt_draw.c" = [""]',
             ]
             for text in cases:
                 with self.subTest(text=text):
@@ -81,7 +81,7 @@ class SourceCompilerTests(unittest.TestCase):
                         configure.load_source_flags(manifest)
 
     def test_compile_all_command_uses_effective_build_settings(self):
-        sources = ["src/unlisted.c", "src/communication/ctvt_draw.c", "lib/nnsys/src/snd/snd_capture.c"]
+        sources = ["src/unlisted.c", "src/communication/xtransceiver/ctvt_draw.c", "lib/nnsys/src/snd/snd_capture.c"]
         for source in map(Path, sources):
             for version in configure.VERSIONS:
                 with self.subTest(source=source, version=version), tempfile.TemporaryDirectory() as tmp, \
@@ -105,7 +105,7 @@ class SourceCompilerTests(unittest.TestCase):
                     self.assertEqual("-ipa function" in flags, "-ipa function" in settings.flags)
 
     def test_probe_game_defaults_to_all_and_sdk_to_own_compiler(self):
-        for source in ["src/unlisted.c", "src/communication/ctvt_draw.c", "lib/nnsys/src/snd/snd_capture.c"]:
+        for source in ["src/unlisted.c", "src/communication/xtransceiver/ctvt_draw.c", "lib/nnsys/src/snd/snd_capture.c"]:
             with self.subTest(source=source), \
                     patch.object(sys, "argv", ["probe", source]), \
                     patch.object(Path, "iterdir", return_value=[Path("first"), Path("second")]), \
@@ -132,7 +132,7 @@ class SourceCompilerTests(unittest.TestCase):
         ]
         for extra, expected in cases:
             with self.subTest(extra=extra), \
-                    patch.object(sys, "argv", ["probe", "src/communication/ctvt_draw.c", "--compilers=custom/compiler", *extra]), \
+                    patch.object(sys, "argv", ["probe", "src/communication/xtransceiver/ctvt_draw.c", "--compilers=custom/compiler", *extra]), \
                     patch.object(compiler_probe, "load_modules", return_value={}), \
                     patch.object(compiler_probe, "mwcc_command", return_value=["compiler"]), \
                     patch.object(compiler_probe.subprocess, "run", return_value=subprocess.CompletedProcess([], 1, "", "")) as run, \
@@ -151,7 +151,7 @@ class SourceCompilerTests(unittest.TestCase):
     def test_objdiff_updates_only_overridden_game_scratch(self):
         units = [{"name": source, "metadata": {"source_path": source},
                   "scratch": {"compiler": "mwcc_40_1024", "c_flags": "explicit defaults"}}
-                 for source in ["src/communication/ctvt_draw.c", "src/unlisted.c", "lib/nnsys/src/snd/snd_capture.c"]]
+                 for source in ["src/communication/xtransceiver/ctvt_draw.c", "src/unlisted.c", "lib/nnsys/src/snd/snd_capture.c"]]
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "objdiff.json"
             with patch.object(sys, "argv", ["objdiff", "b2_us", "--dsd=dsd", "--compiler=mwcc_40_1024", "--c-flags=explicit defaults", "-o", str(output)]), \

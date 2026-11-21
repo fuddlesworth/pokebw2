@@ -1,5 +1,4 @@
 #include "types.h"
-#include "app/dwc_utility.h"
 #include "dwc/utility.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
@@ -8,6 +7,7 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "system/wih_dwc.h"
+#include "wifi/dwc_utility.h"
 
 // The game's procs around NitroDWC's Wi-Fi Connection settings (dwc_raputil.c, from the string of its allocation),
 // which the start menu and the Game Sync event open. The rest of the overlay is the library's

@@ -2,14 +2,14 @@
 #define POKEBW2_APP_LIVEBATTLEMATCH_FLOW_H
 
 #include "types.h"
-#include "app/wifibattlematch.h"
-#include "app/wifibattlematch_graphic.h"
-#include "app/wifibattlematch_util.h"
-#include "app/wifibattlematch_view.h"
 #include "gfl/heap.h"
 #include "save/battle_rec.h"
 #include "save/tournament_block.h"
 #include "struct_decls.h"
+#include "wifi/wifibattlematch.h"
+#include "wifi/wifibattlematch_graphic.h"
+#include "wifi/wifibattlematch_util.h"
+#include "wifi/wifibattlematch_view.h"
 
 // Overlay 261's livebattlematch_flow.c (named by its embedded string): the flow of the live competitions. It handles
 // entry, team registration, infrared matching and the results of each match

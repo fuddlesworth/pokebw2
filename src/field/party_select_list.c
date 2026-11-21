@@ -1,6 +1,7 @@
 // Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0).
 // Additional helper and table names are our descriptive guesses.
 #include "types.h"
+#include "communication/union_msg.h"
 #include "constants/arc.h"
 #include "constants/items.h"
 #include "constants/pokemon.h"
@@ -8,7 +9,6 @@
 #include "constants/text_banks.h"
 #include "field/field.h"
 #include "field/field_msgbg.h"
-#include "field/union_msg.h"
 #include "gfl/arc.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"

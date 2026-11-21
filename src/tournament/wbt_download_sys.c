@@ -1,16 +1,16 @@
 #include "types.h"
-#include "app/t_download.h"
-#include "app/wbt_download.h"
-#include "app/wbt_download_net_util.h"
-#include "app/wifi_login.h"
 #include "constants/sound.h"
-#include "field/wbt.h"
 #include "gfl/heap.h"
 #include "gfl/net.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
+#include "tournament/t_download.h"
+#include "tournament/wbt.h"
+#include "tournament/wbt_download.h"
+#include "tournament/wbt_download_net_util.h"
+#include "wifi/wifi_login.h"
 
 // The process that downloads tournaments for the Pokémon World Tournament over Wi-Fi: it logs in, runs the download of
 // wbt_download_net_util.c, logs out and shows the tournaments with overlay 326's T_DOWNLOAD. The name is the ROM's

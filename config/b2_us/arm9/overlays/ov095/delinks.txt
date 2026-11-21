@@ -2,6 +2,6 @@
     .ctor       start:0x021eecbc end:0x021eecbc kind:rodata align:4
     .bss        start:0x021eecc0 end:0x021eecc0 kind:bss align:32
 
-src/field/gym_striaton.c:
+src/field/gimmick/gym_striaton.c:
     complete
     .text       start:0x021eec80 end:0x021eecbc

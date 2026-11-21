@@ -3,7 +3,7 @@
 #include "app/fmission_app_gra.h"
 #include "app/ui/print_msg.h"
 #include "constants/arc.h"
-#include "field/fest_mission_data.h"
+#include "entralink/fest_mission_data.h"
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"

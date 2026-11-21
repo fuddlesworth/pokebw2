@@ -3,7 +3,7 @@
 // those started while another runs, and keeps the tasks of the view's effects. The name is the ROM's string, from
 // GFL_HeapAllocate's asserts. BtlvEffect_Create is swan's name; the rest are ours
 
-#include "battle/btlv_effect.h"
+#include "moveeffect/btlv_effect.h"
 #include "types.h"
 #include "battle/btl_main.h"
 #include "battle/btl_pokeparam.h"
@@ -12,7 +12,6 @@
 #include "battle/btlv_bg.h"
 #include "battle/btlv_camera.h"
 #include "battle/btlv_clact.h"
-#include "battle/btlv_effvm.h"
 #include "battle/btlv_field.h"
 #include "battle/btlv_gauge.h"
 #include "battle/btlv_mcss.h"
@@ -33,6 +32,7 @@
 #include "gfl/sound.h"
 #include "gfl/tcb.h"
 #include "gfl/touchpanel.h"
+#include "moveeffect/btlv_effvm.h"
 #include "nitro/fx.h"
 #include "nitro/gx.h"
 #include "nnsys/g3d.h"

@@ -3,7 +3,6 @@
 // GFL_HeapAllocate's file argument.
 // Function and data names are our own: swan names none of this overlay.
 #include "types.h"
-#include "app/pkwd_count.h"
 #include "battle/battle_proc.h"
 #include "battle/battle_rec_tool.h"
 #include "battle/btl_result.h"
@@ -20,7 +19,6 @@
 #include "field/field_event.h"
 #include "field/field_sound.h"
 #include "field/game_beacon_set.h"
-#include "field/pokewood_system.h"
 #include "gfl/arc.h"
 #include "gfl/heap.h"
 #include "gfl/msg.h"
@@ -31,6 +29,8 @@
 #include "gfl/str.h"
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
+#include "pokewood/pkwd_count.h"
+#include "pokewood/pokewood_system.h"
 #include "save/config.h"
 #include "save/event_work.h"
 #include "save/player_info.h"

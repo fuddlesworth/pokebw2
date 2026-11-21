@@ -2,7 +2,6 @@
 #include "battle/btl_setup.h"
 #include "constants/pokemon.h"
 #include "field/battle_facility.h"
-#include "field/bsubway_scr.h"
 #include "field/player_state.h"
 #include "gfl/heap.h"
 #include "gfl/random.h"
@@ -17,6 +16,7 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/version.h"
+#include "tournament/bsubway_scr.h"
 
 // Battle Subway trainer selection and team construction. The file name is descriptive; the ROM gives none here.
 
