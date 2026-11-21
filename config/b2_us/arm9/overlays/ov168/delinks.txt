@@ -4,78 +4,78 @@
     .data       start:0x021f3f20 end:0x021f4240 kind:data align:32
     .bss        start:0x021f4240 end:0x021f4260 kind:bss align:32
 
-src/ov168/btlv_input.c:
+src/battle/view/btlv_input.c:
     complete
     .text       start:0x021ea2a8 end:0x021ef794
     .rodata     start:0x021f35cc end:0x021f3d80
     .data       start:0x021f41a4 end:0x021f41d8
 
-src/ov168/btlv_camera.c:
+src/battle/view/btlv_camera.c:
     complete
     .text       start:0x021de6b4 end:0x021dec68
     .rodata     start:0x021f2f74 end:0x021f2f98
     .data       start:0x021f3f40 end:0x021f3f50
 
-src/ov168/btlv_stage.c:
+src/battle/view/btlv_stage.c:
     complete
     .text       start:0x021dda60 end:0x021de0f0
     .rodata     start:0x021f2f54 end:0x021f2f6c
     .data       start:0x021f3f20 end:0x021f3f30
 
-src/ov168/btlv_field.c:
+src/battle/view/btlv_field.c:
     complete
     .text       start:0x021de0f0 end:0x021de6b4
     .rodata     start:0x021f2f6c end:0x021f2f74
     .data       start:0x021f3f30 end:0x021f3f40
 
-src/ov168/btlv_finger_cursor.c:
+src/battle/view/btlv_finger_cursor.c:
     complete
     .text       start:0x021f2cdc end:0x021f2f54
     .rodata     start:0x021f3ef4 end:0x021f3f0c
     .data       start:0x021f4214 end:0x021f4240
 
-src/ov168/btlv_b_gauge.c:
+src/battle/view/btlv_b_gauge.c:
     complete
     .text       start:0x021f1c84 end:0x021f2174
     .rodata     start:0x021f3e50 end:0x021f3e9c
     .data       start:0x021f41e8 end:0x021f41f8
 
-src/ov168/btlv_bg.c:
+src/battle/view/btlv_bg.c:
     complete
     .text       start:0x021f26b8 end:0x021f2cdc
     .data       start:0x021f4208 end:0x021f4214
 
-src/ov168/btlv_clact.c:
+src/battle/view/btlv_clact.c:
     complete
     .text       start:0x021e982c end:0x021ea2a8
     .rodata     start:0x021f3594 end:0x021f35cc
     .data       start:0x021f4194 end:0x021f41a4
 
-src/ov168/btlv_gauge.c:
+src/battle/view/btlv_gauge.c:
     complete
     .text       start:0x021ef794 end:0x021f1c84
     .rodata     start:0x021f3d80 end:0x021f3e50
     .data       start:0x021f41d8 end:0x021f41e8
 
-src/ov168/btlv_timer.c:
+src/battle/view/btlv_timer.c:
     complete
     .text       start:0x021f2174 end:0x021f26b8
     .rodata     start:0x021f3e9c end:0x021f3ef4
     .data       start:0x021f41f8 end:0x021f4208
 
-src/ov168/btlv_effect.c:
+src/battle/view/btlv_effect.c:
     complete
     .text       start:0x021dec68 end:0x021e0de4
     .data       start:0x021f3f50 end:0x021f3fac
     .bss        start:0x021f4240 end:0x021f4260
 
-src/ov168/btlv_effvm.c:
+src/battle/view/btlv_effvm.c:
     complete
     .text       start:0x021e0de4 end:0x021e67b8
     .rodata     start:0x021f2f98 end:0x021f31ec
     .data       start:0x021f3fac end:0x021f4184
 
-src/ov168/btlv_mcss.c:
+src/battle/view/btlv_mcss.c:
     complete
     .text       start:0x021e67b8 end:0x021e982c
     .rodata     start:0x021f31ec end:0x021f3594

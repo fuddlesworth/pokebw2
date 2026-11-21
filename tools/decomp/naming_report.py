@@ -38,6 +38,7 @@ and a part whose image the build has not written is reported as unmeasured rathe
 """
 import argparse
 import collections
+import functools
 import json
 import re
 import sys
@@ -68,10 +69,27 @@ def module_of(path: str) -> str:
     """The module a source file belongs to."""
     parts = Path(path).parts
     if parts[0] == "src":
-        return parts[1] if parts[1].startswith("ov") else "main"
+        return overlay_of(path)
     if parts[0] == "lib":
         return f"lib/{parts[1]}"
     return "shared"
+
+
+@functools.lru_cache(maxsize=1)
+def overlay_sources() -> dict[str, str]:
+    """Each overlay source file's overlay (ovNNN), from the primary version's delinks.txt files."""
+    out = {}
+    for delinks in (CONFIG / "overlays").glob("ov*/delinks.txt"):
+        name = delinks.parent.name
+        for line in delinks.read_text().splitlines():
+            if line and not line[0].isspace() and line.startswith("src/") and line.endswith(":"):
+                out[line[:-1]] = name
+    return out
+
+
+def overlay_of(path: str) -> str:
+    """The overlay a source file belongs to, or "main" (src/gfl and src/system, or anything not in an overlay)."""
+    return overlay_sources().get(path, "main")
 
 
 def code_only(text: str) -> str:

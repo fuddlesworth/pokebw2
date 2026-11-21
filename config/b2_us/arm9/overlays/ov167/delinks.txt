@@ -4,146 +4,146 @@
     .data       start:0x021dae80 end:0x021db000 kind:data align:32
     .bss        start:0x021db000 end:0x021dda60 kind:bss align:32
 
-src/ov167/btl_main.c:
+src/battle/btl_main.c:
     complete
     .text       start:0x021998c0 end:0x0219e3cc
     .rodata     start:0x021d6c24 end:0x021d6cec
     .data       start:0x021dae80 end:0x021dae8c
 
-src/ov167/btl_server.c:
+src/battle/btl_server.c:
     complete
     .text       start:0x0219e3cc end:0x0219f390
     .data       start:0x021dae8c end:0x021dae9c
 
-src/ov167/btl_server_flow.c:
+src/battle/btl_server_flow.c:
     complete
     .text       start:0x0219f390 end:0x021ae32c
     .rodata     start:0x021d6cec end:0x021d6cfc
     .data       start:0x021dae9c end:0x021daeb0
     .bss        start:0x021db000 end:0x021db024
 
-src/ov167/btl_server_flow_sub.c:
+src/battle/btl_server_flow_sub.c:
     complete
     .text       start:0x021ae32c end:0x021b083c
     .rodata     start:0x021d6cfc end:0x021d6dd8
 
-src/ov167/btl_handler_work.c:
+src/battle/btl_handler_work.c:
     complete
     .text       start:0x021b083c end:0x021b0a1c
     .rodata     start:0x021d6dd8 end:0x021d6e50
 
-src/ov167/btl_server_cmd.c:
+src/battle/btl_server_cmd.c:
     complete
     .text       start:0x021b0a1c end:0x021b1674
     .rodata     start:0x021d6e50 end:0x021d6eb0
     .data       start:0x021daeb0 end:0x021daf60
     .bss        start:0x021db024 end:0x021db044
 
-src/ov167/btl_pokeparam.c:
+src/battle/btl_pokeparam.c:
     complete
     .text       start:0x021ba584 end:0x021bc6bc
     .rodata     start:0x021d7490 end:0x021d74a0
     .data       start:0x021daf7c end:0x021daf8c
     .bss        start:0x021db070 end:0x021db194
 
-src/ov167/battle_event.c:
+src/battle/battle_event.c:
     complete
     .text       start:0x021bc6bc end:0x021bd054
     .data       start:0x021daf8c end:0x021daf94
     .bss        start:0x021db194 end:0x021dd844
 
-src/ov167/btl_calc.c:
+src/battle/btl_calc.c:
     complete
     .text       start:0x021bd054 end:0x021bdaf8
     .rodata     start:0x021d74a0 end:0x021d7624
     .data       start:0x021daf94 end:0x021dafa0
     .bss        start:0x021dd844 end:0x021dd864
 
-src/ov167/battle_action.c:
+src/battle/battle_action.c:
     complete
     .text       start:0x021bdaf8 end:0x021bdcac
 
-src/ov167/ability_handlers.c:
+src/battle/ability_handlers.c:
     complete
     .text       start:0x021bdcac end:0x021c26ec
     .rodata     start:0x021d7624 end:0x021d83e8
 
-src/ov167/item_handlers.c:
+src/battle/item_handlers.c:
     complete
     .text       start:0x021c26ec end:0x021c5b04
     .rodata     start:0x021d83e8 end:0x021d9488
 
-src/ov167/move_handlers.c:
+src/battle/move_handlers.c:
     complete
     .text       start:0x021c5b04 end:0x021cde38
     .rodata     start:0x021d9488 end:0x021da8c4
 
-src/ov167/handler_common.c:
+src/battle/handler_common.c:
     complete
     .text       start:0x021cde38 end:0x021ce10c
 
-src/ov167/battle_overlay.c:
+src/battle/battle_overlay.c:
     complete
     .text       start:0x021ce10c end:0x021ce158
     .bss        start:0x021dd864 end:0x021dd868
 
-src/ov167/battle_condition.c:
+src/battle/battle_condition.c:
     complete
     .text       start:0x021ce158 end:0x021ce520
 
-src/ov167/poke_type_pair.c:
+src/battle/poke_type_pair.c:
     complete
     .text       start:0x021ce520 end:0x021ce604
 
-src/ov167/btlv_core.c:
+src/battle/btlv_core.c:
     complete
     .text       start:0x021ce604 end:0x021d0c24
     .rodata     start:0x021da8c4 end:0x021da930
     .data       start:0x021dafa0 end:0x021dafac
 
-src/ov167/btlv_scu.c:
+src/battle/btlv_scu.c:
     complete
     .text       start:0x021d0c24 end:0x021d45b0
     .rodata     start:0x021da930 end:0x021daa1c
     .data       start:0x021dafac end:0x021dafb8
 
-src/ov167/btl_rec.c:
+src/battle/btl_rec.c:
     complete
     .text       start:0x021d45b0 end:0x021d4a1c
     .data       start:0x021dafb8 end:0x021dafc4
 
-src/ov167/btl_adapter.c:
+src/battle/btl_adapter.c:
     complete
     .text       start:0x021d4a1c end:0x021d4c64
     .data       start:0x021dafc4 end:0x021dafd4
     .bss        start:0x021dd868 end:0x021dd87c
 
-src/ov167/btl_string.c:
+src/battle/btl_string.c:
     complete
     .text       start:0x021d4c64 end:0x021d5968
     .rodata     start:0x021daa1c end:0x021daaec
     .bss        start:0x021dd87c end:0x021dd8e8
 
-src/ov167/btl_field.c:
+src/battle/btl_field.c:
     complete
     .text       start:0x021d5968 end:0x021d5e1c
     .data       start:0x021dafd4 end:0x021dafe0
     .bss        start:0x021dd8e8 end:0x021dda60
 
-src/ov167/pokewood_cutin.c:
+src/battle/pokewood_cutin.c:
     complete
     .text       start:0x021d5e1c end:0x021d6c24
     .rodata     start:0x021daaec end:0x021dae64
     .data       start:0x021dafe0 end:0x021db000
 
-src/ov167/btl_client.c:
+src/battle/btl_client.c:
     complete
     .text       start:0x021b1674 end:0x021b9950
     .rodata     start:0x021d6eb0 end:0x021d7448
     .data       start:0x021daf60 end:0x021daf70
     .bss        start:0x021db044 end:0x021db06c
 
-src/ov167/btl_net.c:
+src/battle/btl_net.c:
     complete
     .text       start:0x021b9950 end:0x021ba584
     .rodata     start:0x021d7448 end:0x021d7490

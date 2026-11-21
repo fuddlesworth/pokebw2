@@ -4,7 +4,7 @@
     .data       start:0x02181ee0 end:0x02181f00 kind:data align:32
     .bss        start:0x02181f00 end:0x02181f20 kind:bss align:32
 
-src/ov170/tr_ai.c:
+src/battle/ai/tr_ai.c:
     complete
     .text       start:0x0217f640 end:0x02181cb4
     .rodata     start:0x02181cb4 end:0x02181ed4

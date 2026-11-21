@@ -27,8 +27,11 @@ every section.
   live functions in that decomp's order, can't be checked against the asm, and doesn't keep its file from `complete`.
   The file's comments flag it as reconstructions. It is used for `src/system/wipe_sub.c`'s dead wipe handlers and for
   the two `src/system/wipe_wnd.c` window readers that their plane swap calls.
-- `src/` holds the code built with the game's compiler. An overlay's files go in `src/ovNNN/`, and the main
-  module's in `src/gfl/` (Game Freak's library) and `src/system/` (the game's own code), mirroring `include/`.
+- `src/` holds the code built with the game's compiler. An overlay's files go under the logical module that owns them
+  (`src/battle/`, `src/field/`, …), grouped into feature subdirectories where a module has several (`src/battle/view/`,
+  `src/battle/ai/`), and the main module's in `src/gfl/` (Game Freak's library) and `src/system/` (the game's own code),
+  mirroring `include/`. The overlay a file belongs to is recorded in that overlay's `delinks.txt` under `config/`, not
+  in the source path.
   The default flags are in `configure.py`; a file whose original code and data require another setting goes in
   `config/compiler_flags.toml`, as `ctvt_draw.c` needs `-ipa function`. Different flags alone do not make a game
   source a library. See `docs/configs.md` for the shared compiler settings.
