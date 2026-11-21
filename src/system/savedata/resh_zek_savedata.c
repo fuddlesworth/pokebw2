@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
 #include "save/resh_zek.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The save block of the Reshiram or Zekrom fused with Kyurem. The ROM has no string for the file, so the name is a
 // guess (swan's getReshZekBlkAddress). Block 0x2b.

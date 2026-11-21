@@ -27,8 +27,6 @@
 #include "gfl/str.h"
 #include "pml/poke_party.h"
 #include "save/bsubway_save.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/event_sound.h"
 #include "system/field_event.h"
@@ -37,6 +35,8 @@
 #include "system/game_system.h"
 #include "system/pms.h"
 #include "system/regulation.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "tournament/bsubway_records.h"
 #include "tournament/bsubway_scr.h"
 

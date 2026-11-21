@@ -4,7 +4,7 @@
 #include "field/field.h"
 #include "field/gimmick/field_gimmick_bsubway.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "system/game_data.h"

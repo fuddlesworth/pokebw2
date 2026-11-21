@@ -14,12 +14,12 @@
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
 #include "save/player_info.h"
-#include "save/pokedex_savedata.h"
 #include "struct_decls.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
 
 FieldTradeInput *FieldTradeInput_Create(u32 heapId, u32 offerIndex) {
     u16 name[0x80];

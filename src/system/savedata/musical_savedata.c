@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The musical's save block: the photo of the last finale, the props owned and the ones not yet looked at, and the
 // musical's counters. The ROM has no string for the file, so the name is a guess (swan's

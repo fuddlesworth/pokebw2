@@ -2,7 +2,7 @@
 #include "entralink/entree_forest.h"
 #include "field/map/symbol_save_field.h"
 #include "gfl/std.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 static u8 SymbolSaveField_CopyPokemon(AreaNPCSave *npcData, EntreeForestPokemon *dest, int max, int start, int count);
 static u32 SymbolSaveField_CopySlots0To9(AreaNPCSave *npcData, EntreeForestPokemon *dest, int max, u8 *count);

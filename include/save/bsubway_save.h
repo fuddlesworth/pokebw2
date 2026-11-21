@@ -4,9 +4,9 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "nitro/rtc.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/pms_data.h"
+#include "system/savedata/save_control.h"
 
 // The Battle Subway's save blocks (save_control.h's SAVE_BLOCK_BSUBWAY_*): the current play, the scores, which
 // include the Battle Points, and block 0x3a

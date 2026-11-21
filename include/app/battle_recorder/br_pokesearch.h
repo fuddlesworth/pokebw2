@@ -5,9 +5,9 @@
 #include "app/battle_recorder/br_util.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/bmp_oam.h"
+#include "system/savedata/save_control.h"
 
 // The Battle Recorder's Pokémon search (br_pokesearch.c): picks a Pokémon by the first letter of its name and then
 // from a list

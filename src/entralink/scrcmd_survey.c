@@ -15,12 +15,12 @@
 #include "gfl/rtc_cache.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_beacon.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 static GameEventReturnCode SurveyTextEvent_Run(GameEvent *event, u32 *state, void *data);

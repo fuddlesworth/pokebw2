@@ -7,10 +7,10 @@
 #include "gfl/heap.h"
 #include "gfl/str.h"
 #include "save/download_data.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 BOOL Scrcmd_DownloadData_MemoryLinkCheckFlag(VM *vm, FieldScriptEnv *env) {

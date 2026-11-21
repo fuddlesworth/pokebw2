@@ -7,8 +7,8 @@
 #include "poke_net/poke_net_gds.h"
 #include "save/battle_rec.h"
 #include "save/gds_profile.h"
-#include "save/musical_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/musical_savedata.h"
 
 // The game's side of the Global Data Server (GDS) client, in overlay 201: gds_rap.c, which the ROM's string names, and
 // gds_rap_response.c after it (a guess, after the Generation 4 games' file of the same functions). The Battle

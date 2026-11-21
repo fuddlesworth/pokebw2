@@ -31,7 +31,6 @@
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "nnsys/g2d.h"
-#include "save/save_control.h"
 #include "system/bmp_oam.h"
 #include "system/game_beacon.h"
 #include "system/game_comm.h"
@@ -40,6 +39,7 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The Research Radar's graph of the survey being run: a circle graph of the answers to each of its three questions,

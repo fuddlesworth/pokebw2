@@ -5,8 +5,8 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "save/dream_world.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "wifi/gsync/gsync.h"
 #include "wifi/login/wifi_login.h"
 

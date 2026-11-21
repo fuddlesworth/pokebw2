@@ -12,9 +12,9 @@
 #include "musical/mus_item_data.h"
 #include "musical/musical_shot_sys.h"
 #include "musical/musical_system.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/game_event.h"
+#include "system/savedata/save_control.h"
 
 // The musical's communication work, which GameData_SetMusicalCommWork keeps in the game data
 struct MusicalCommWork {

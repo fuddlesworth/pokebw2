@@ -13,10 +13,10 @@
 #include "pml/poke_party.h"
 #include "save/bag.h"
 #include "save/join_avenue.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 #include "system/wordset.h"
 

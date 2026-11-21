@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/memory_link_savedata.h"
-#include "save/musical_savedata.h"
+#include "system/savedata/memory_link_savedata.h"
+#include "system/savedata/musical_savedata.h"
 #include "system/str_tool.h"
 
 // The Memory Link's data in the save: the players of the Black and White saves that were linked and what those saves

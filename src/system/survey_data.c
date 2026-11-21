@@ -1,6 +1,6 @@
 #include "types.h"
 #include "field/event/survey.h"
-#include "save/survey_savedata.h"
+#include "system/savedata/survey_savedata.h"
 
 // The tables of the passerby survey's questions: the messages of their answers, and where the answers are kept in
 // the save, which survey_savedata.c and the trainer's game info read. The ROM has no string for the file, so the name

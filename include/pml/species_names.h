@@ -5,7 +5,7 @@
 #include "gfl/heap.h"
 #include "struct_decls.h"
 
-// The species names' message data (pml_species_names.c), loaded once by PML_SpeciesNamesResidentInit
+// The species names' message data (species_names.c), loaded once by PML_SpeciesNamesResidentInit
 extern MsgData *g_PMLSpeciesNamesResident;
 
 void PML_SpeciesNamesResidentInit(HeapID heapId);

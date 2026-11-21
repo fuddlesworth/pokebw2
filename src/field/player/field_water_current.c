@@ -7,7 +7,7 @@
 #include "field/actor/field_actor.h"
 #include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/player/field_player.h"
 #include "field/player/field_water_current.h"
 #include "gfl/sound.h"

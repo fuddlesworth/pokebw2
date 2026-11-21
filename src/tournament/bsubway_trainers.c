@@ -10,11 +10,11 @@
 #include "save/bsubway_save.h"
 #include "save/player_info.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/btl_setup.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/version.h"
 #include "tournament/bsubway_scr.h"
 

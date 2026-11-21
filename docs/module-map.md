@@ -111,11 +111,13 @@ scripts) and ov146–ov154 (encounter cut-ins), split across the directories abo
 
 ## save/ — the save overlay and the save-data structures
 - `save_outside.c` — ov331
-- `include/save/` holds the save-data structure and block headers (`records.h`, `player_info.h`, `*_savedata.h`)
+- `include/save/` holds the save-data structure headers (`records.h`, `player_info.h`, `box.h`, …). The serialization
+  declarations (`*_savedata.h`, `save_control.h`, `save_table.h`) live beside their implementations in `system/savedata/`.
 
 ## system/ — the ARM9 main executable
 - (direct) — the game loop, field event/sound/status systems, UI widgets, Pokémon data helpers, net and sound
-- `savedata/` — the per-block save/load serialization (`*_savedata.c`, `save_control.c`, `save_table.c`, `save_error.c`)
+- `savedata/` — the per-block save/load serialization (`*_savedata.c` and their `*_savedata.h`, `save_control.c`,
+  `save_table.c`, `save_error.c`)
 - `iss/` — the interactive sound system
 
 ## tournament/ — the World Tournament and Battle Subway
@@ -132,10 +134,11 @@ scripts) and ov146–ov154 (encounter cut-ins), split across the directories abo
 - `net/` — ov032, ov164, ov196
 - (direct) — the Wi-Fi Club (`wificlub.h`, `event_wificlub.c`)
 
-## gfl/, pml/ — libraries (headers stay flat)
+## gfl/, pml/ — libraries
 - `gfl/` is the Game Freak library (graphics, sound, heap, net, procs).
-- `pml/` is the Pokémon library header module; its implementations live in `system/` (`pml_item.c`, `poke_personal.c`,
-  `pokegra.c`, `pokeparty.c`, …).
+- `pml/` is the Pokémon library: `src/pml/` holds the pure library implementations (`hm_check.c`, `item.c`, `met_data.c`,
+  `species_names.c`) and `include/pml/` the API headers. The Pokémon data and logic it wraps (`poke_personal.c`,
+  `pokegra.c`, `pokeparty.c`, `move_tool.c`, …) stays in `system/`, where the core game data lives.
 
 ## Unclassified (81 empty overlays, no source yet)
 ov006, ov007, ov019, ov037–ov049, ov138, ov158–ov161, ov163, ov183, ov188, ov202, ov206, ov212, ov217–ov252, ov254,

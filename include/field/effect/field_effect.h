@@ -110,7 +110,7 @@ enum {
     FLDEFF_SPLASH,
     FLDEFF_LEAVES,
     FLDEFF_FES_SPARKLE,
-    // fldeff_encount.c's phenomena, in the order of field_map.h's ENCOUNT_EFFECT_* that play them
+    // fldeff_encount.c's phenomena, in the order of fieldmap.h's ENCOUNT_EFFECT_* that play them
     FLDEFF_ENCOUNT_GRASS,
     FLDEFF_ENCOUNT_REALLY_TALL_GRASS,
     FLDEFF_ENCOUNT_DUST_CLOUD,

@@ -7,7 +7,7 @@
 #include "field/camera/field_camera.h"
 #include "field/effect/field_effect.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/billboard_actor.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

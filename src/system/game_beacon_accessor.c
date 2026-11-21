@@ -12,9 +12,9 @@
 #include "nitro/mi.h"
 #include "nitro/os.h"
 #include "save/high_link.h"
-#include "save/survey_savedata.h"
 #include "system/game_beacon.h"
 #include "system/pms_data.h"
+#include "system/savedata/survey_savedata.h"
 #include "system/wordset.h"
 
 // The tables of received beacons and the readers of a beacon's fields, which give a default for a value out of range.

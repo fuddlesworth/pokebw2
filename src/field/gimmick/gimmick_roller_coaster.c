@@ -15,11 +15,11 @@
 #include "nitro/fx.h"
 #include "nnsys/g3d.h"
 #include "nnsys/snd.h"
-#include "save/gimmick_savedata.h"
 #include "system/field_sound.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/gimmick_savedata.h"
 
 // The roller coaster of Nimbasa City's zone 585. Overlay 102 has no name string, so the name is a guess: it is gimmick
 // 48 of overlay 36's gimmick table, which archive 102 gives only zone 585, whose scripts are the roller coaster's

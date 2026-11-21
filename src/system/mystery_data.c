@@ -4,9 +4,9 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "save/mystery_gift.h"
-#include "save/save_control.h"
 #include "save/save_outside.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The mystery gift album: the cards received and the flag of each gift ID, encrypted in the save's block 0x22, or
 // in the data outside the save before there is one. The file's name is the ROM's; the function names from swan

@@ -17,9 +17,9 @@
 #include "gfl/net.h"
 #include "gfl/std.h"
 #include "nitro/os.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/union_view.h"
 
 #define UNION_ACTOR_ID_MEMBER_BASE 0x20

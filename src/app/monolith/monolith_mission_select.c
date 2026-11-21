@@ -32,7 +32,6 @@
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "save/event_work.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/app_menu_common.h"
 #include "system/app_printsys_common.h"
@@ -45,6 +44,7 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/text_speed.h"
 #include "system/wordset.h"
 

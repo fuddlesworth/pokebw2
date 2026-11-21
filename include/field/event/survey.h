@@ -6,8 +6,8 @@
 
 #include "types.h"
 #include "gfl/heap.h"
-#include "save/survey_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/survey_savedata.h"
 
 struct SurveyProbabilityState {
     u8 selection[6];

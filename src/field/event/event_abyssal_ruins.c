@@ -2,10 +2,10 @@
 #include "field/event/event_abyssal_ruins.h"
 #include "field/field.h"
 #include "field/script/field_script_event.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 // The script that plays at each count of steps
 static const struct {

@@ -19,11 +19,11 @@
 #include "pml/item.h"
 #include "save/bag.h"
 #include "save/encounter.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_beacon.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 #define FISHING_CHALLENGE_ZONE_COUNT 6

@@ -33,12 +33,12 @@
 #include "nnsys/g2d.h"
 #include "nnsys/gfd.h"
 #include "pml/poke_graphic.h"
-#include "save/timesig_savedata.h"
 #include "save/trainer_card.h"
 #include "system/app_menu_common.h"
 #include "system/game_data.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/timesig_savedata.h"
 #include "system/wipe.h"
 #include "system/wordset.h"
 

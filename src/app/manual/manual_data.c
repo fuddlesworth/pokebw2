@@ -5,13 +5,13 @@
 #include "gfl/arc.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
-#include "save/c_gear_savedata.h"
 #include "save/event_work.h"
 #include "save/medal_box.h"
-#include "save/misc_savedata.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/c_gear_savedata.h"
+#include "system/savedata/misc_savedata.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The manual's tables, named after the ROM's "manual_data.c". The titles and the categories are each a file of
 // records of 16-bit words, with a file of the records' offsets after their count

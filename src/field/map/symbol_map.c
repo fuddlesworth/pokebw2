@@ -4,9 +4,9 @@
 #include "field/map/symbol_map.h"
 #include "field/map/symbol_save_field.h"
 #include "gfl/heap.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 #define SYMBOL_MAP_WIDTH 3
 #define SYMBOL_MAP_SIZE 30

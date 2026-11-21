@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
 #include "save/pokewood.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The save block of Pokéstar Studios, which the game calls Pokewood: the flag lists with a flag for each movie, each
 // movie's best result and the last series filmed. The ROM has no string for the file, so the name is a guess; the

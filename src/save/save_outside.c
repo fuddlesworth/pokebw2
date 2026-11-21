@@ -5,8 +5,8 @@
 #include "gfl/ui.h"
 #include "save/key_info.h"
 #include "save/mystery_gift.h"
-#include "save/save_control.h"
 #include "save/save_outside.h"
+#include "system/savedata/save_control.h"
 
 // Data outside the save, at the end of the card: the gifts at GIFTS_ADDR and their backup copy at GIFTS_BACKUP_ADDR,
 // then the keys. A block is a header followed by its data, whose CRC it keeps. The file's name is the ROM's

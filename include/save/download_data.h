@@ -5,8 +5,8 @@
 // an 8-character name, flags and values, and the musical program and props, of ARM9 main. The name is descriptive
 
 #include "types.h"
-#include "save/memory_link_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/memory_link_savedata.h"
 
 MemoryLinkSave *SaveControl_GetMemoryLink(SaveControl *save);
 

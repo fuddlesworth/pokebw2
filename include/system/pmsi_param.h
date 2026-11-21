@@ -2,10 +2,10 @@
 #define POKEBW2_SYSTEM_PMSI_PARAM_H
 
 #include "types.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/pms_data.h"
 #include "system/pms_word.h"
+#include "system/savedata/save_control.h"
 
 // The parameters of the sentence input screen (pmsi_param.c): what it edits, one word, two words or a sentence, the
 // starting value and, once it closes, the result

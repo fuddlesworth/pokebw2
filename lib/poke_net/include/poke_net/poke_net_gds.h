@@ -4,7 +4,7 @@
 #include "types.h"
 #include "save/battle_rec.h"
 #include "save/gds_profile.h"
-#include "save/musical_savedata.h"
+#include "system/savedata/musical_savedata.h"
 
 // The client of the Global Data Server (GDS), which keeps the battle videos and the musical photos of the Global Link.
 // It is ARM code at the end of overlay 201, after the game's gds_rap.c that drives it. The ROM names none of it: the

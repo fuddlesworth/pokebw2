@@ -17,10 +17,10 @@
 #include "nitro/math.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/game_data.h"
 #include "system/pms_data.h"
+#include "system/savedata/save_control.h"
 
 // The trainers' records, parties and messages, and the trainer classes' tables. Names from swan
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), except the structs, the constants and the fields

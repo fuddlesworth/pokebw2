@@ -11,13 +11,13 @@
 #include "pml/poke_party.h"
 #include "save/gds_profile.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_game_info.h"
 #include "system/country_region.h"
 #include "system/game_data.h"
 #include "system/pms.h"
 #include "system/pms_data.h"
 #include "system/pms_word.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 #include <stddef.h>
 

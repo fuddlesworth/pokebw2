@@ -20,13 +20,13 @@
 #include "gfl/str.h"
 #include "nitro/gx.h"
 #include "save/join_avenue.h"
-#include "save/player_savedata.h"
-#include "save/save_control.h"
 #include "system/bmp_oam.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/printsys.h"
+#include "system/savedata/player_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/version.h"
 
 // The banner's modes: waiting for a request, loading the name and the window, sliding the letters in, showing them,

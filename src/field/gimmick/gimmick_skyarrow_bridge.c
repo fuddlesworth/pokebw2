@@ -9,7 +9,7 @@
 #include "field/field.h"
 #include "field/gimmick/gimmick_skyarrow_bridge.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/player/field_player.h"
 #include "field/sound_obj.h"
 #include "gfl/arc.h"

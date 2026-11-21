@@ -3,10 +3,10 @@
 #include "field/script/field_script.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 // The script plugin of the Poké Transfer Lab (plugin 4), commands from 1000

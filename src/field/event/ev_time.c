@@ -13,13 +13,13 @@
 #include "save/encounter.h"
 #include "save/event_work.h"
 #include "save/join_avenue.h"
-#include "save/musical_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "save/trainer_log.h"
 #include "system/game_data.h"
 #include "system/rtc.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 static BOOL calcPokerusDecay(AdventureTime *adventureTime, const RTCDate *date, const RTCTime *time, s32 *days,
                              s32 *minutes);

@@ -8,10 +8,10 @@
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "save/key_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 static void FreeUnovaLinkKeyParam(void *param);

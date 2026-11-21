@@ -6,8 +6,8 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
-#include "save/musical_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/musical_savedata.h"
 
 typedef struct {
     // Overlay 211's communication work, or NULL

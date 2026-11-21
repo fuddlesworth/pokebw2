@@ -14,9 +14,9 @@
 #include "nitro/fx.h"
 #include "save/event_work.h"
 #include "save/medal_box.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/wipe.h"
 
 // What the Pokédex's overlays share: the list of the species, and the habitat lists

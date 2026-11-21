@@ -2,7 +2,7 @@
 #include "constants/items.h"
 #include "gfl/std.h"
 #include "save/dream_world.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The save block of the Dream World: the Pokémon sent there to sleep, the items and the result it sent back,
 // and the state of the Game Sync. The ROM has no string for the file, so the name is a guess (swan's

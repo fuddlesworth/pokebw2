@@ -2,7 +2,7 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "save/records.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The save block of the records, which the trainer card shows (the ROM has no string for the file, so the name is a
 // guess). Block 0x26.

@@ -4,7 +4,7 @@
 #include "field/effect/field_effect.h"
 #include "field/field.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"

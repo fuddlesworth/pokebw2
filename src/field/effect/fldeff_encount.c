@@ -8,7 +8,7 @@
 #include "field/encounter/encounter.h"
 #include "field/field.h"
 #include "field/map/field_controller.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"

@@ -25,10 +25,10 @@
 #include "gfl/sound.h"
 #include "gfl/std.h"
 #include "gfl/tcb.h"
-#include "save/save_control.h"
 #include "system/bmp_winframe.h"
 #include "system/game_data.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/time_icon.h"
 
 // The steps of LocalTvtCallMode_SeqFadeOut

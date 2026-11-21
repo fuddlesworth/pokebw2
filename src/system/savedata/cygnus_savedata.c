@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/cygnus_save_control.h"
 #include "save/dream_world.h"
-#include "save/save_control.h"
+#include "system/savedata/cygnus_save_control.h"
+#include "system/savedata/save_control.h"
 #include <stddef.h>
 
 // Pokémon Dream Radar's save block, and the checks and the encoding of the data that Dream Radar writes to the card,

@@ -17,12 +17,12 @@
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "save/key_info.h"
-#include "save/save_control.h"
 #include "save/save_outside.h"
 #include "system/bmp_menulist.h"
 #include "system/bmp_oam.h"
 #include "system/dsi.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 #include "text/system/key_system.h"
 

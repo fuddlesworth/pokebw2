@@ -28,8 +28,8 @@
 #include "pml/item.h"
 #include "pml/poke_party.h"
 #include "save/bag.h"
-#include "save/trainer_data_savedata.h"
 #include "system/gf_font.h"
+#include "system/savedata/trainer_data_savedata.h"
 
 // The effects of the battle view that the scene plays: the Pokémon appearing, and its entrance
 #define PDC_EFFECT_APPEAR 0x231

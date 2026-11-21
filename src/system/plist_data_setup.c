@@ -3,9 +3,9 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "pml/mail.h"
-#include "save/save_control.h"
 #include "save/shortcut.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // Sets up the Pokémon list's parameters. Our names
 

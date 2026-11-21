@@ -2,8 +2,8 @@
 #include "communication/union/union_oneself.h"
 #include "entralink/rival_select.h"
 #include "gfl/std.h"
-#include "save/misc_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/misc_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 
 // A save block of several small things: the IDs of the trainers the player met last, a set of flags, the rival's

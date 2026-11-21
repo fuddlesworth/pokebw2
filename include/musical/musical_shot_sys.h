@@ -5,9 +5,9 @@
 
 #include "types.h"
 #include "gfl/proc.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 typedef struct {
     // Whether the touch screen asks to keep the photo in the save, after a musical, rather than showing a return

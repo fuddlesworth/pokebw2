@@ -32,8 +32,6 @@
 #include "pml/poke_party.h"
 #include "save/join_avenue.h"
 #include "save/player_info.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "save/wifi_list.h"
 #include "system/field_event.h"
 #include "system/field_sound.h"
@@ -41,6 +39,8 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 // What a command's handler gets: the GameSystem, the UnionSystem, the Field, the command's argument, the event that
 // runs it, a place for an event to run before the next call, and the step, which starts at 0. It returns whether it is

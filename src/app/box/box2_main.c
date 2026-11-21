@@ -40,8 +40,6 @@
 #include "save/box.h"
 #include "save/chatter.h"
 #include "save/dream_world.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/app_menu_common.h"
 #include "system/app_taskmenu.h"
 #include "system/bgwinfrm.h"
@@ -51,6 +49,8 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 #include "text/system/box.h"
 

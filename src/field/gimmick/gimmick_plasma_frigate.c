@@ -7,7 +7,7 @@
 #include "field/gimmick/gimmick_plasma_frigate.h"
 #include "field/map/field_exp_obj.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/calctool.h"
 #include "gfl/g3d.h"
 #include "gfl/sound.h"

@@ -4,9 +4,9 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "save/battle_rec.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The Battle Recorder's connection to the Global Link (br_net.c), used by its online modes
 

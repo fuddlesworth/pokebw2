@@ -21,11 +21,11 @@
 #include "nitro/os.h"
 #include "pml/personal.h"
 #include "pml/species_names.h"
-#include "save/pokedex_savedata.h"
 #include "system/app_menu_common.h"
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/wordset.h"
 #include "text/system/pokedex_list.h"
 

@@ -32,11 +32,11 @@
 #include "nitro/math.h"
 #include "save/join_avenue.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 #include "text/system/town_map.h"
 

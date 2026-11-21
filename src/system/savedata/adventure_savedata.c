@@ -5,7 +5,7 @@
 #include "nitro/os.h"
 #include "nitro/rtc.h"
 #include "save/adventure.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The save block with the game's clock: what the RTC was at, the DS owner's birthday, the day's countdown and when
 // the adventure began. The ROM has no string for the file, so the name is a guess. Block 0x25.

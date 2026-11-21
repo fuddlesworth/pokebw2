@@ -13,11 +13,11 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/game_data.h"
 #include "system/regulation.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The net command that sends the team picked, after the party list's commands
 #define BATTLE_SELECT_NET_CMD_BASE 0x2f00

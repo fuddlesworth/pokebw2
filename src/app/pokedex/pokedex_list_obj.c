@@ -16,12 +16,12 @@
 #include "nnsys/g2d.h"
 #include "pml/personal.h"
 #include "pml/poke_graphic.h"
-#include "save/pokedex_savedata.h"
 #include "system/app_menu_common.h"
 #include "system/blink_palanm.h"
 #include "system/game_data.h"
 #include "system/palanm.h"
 #include "system/poke_icon.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The actors of the Pokédex's list: the touch bar's buttons, the scroll bar, the buttons of the Pokédexes, the icons
 // of the rows and the picture of the species under the cursor. The ROM doesn't name this file; pokedex_list_obj.c is a

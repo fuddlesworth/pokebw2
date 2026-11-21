@@ -13,8 +13,8 @@
 #include "gfl/net.h"
 #include "gfl/proc.h"
 #include "gfl/std.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The proc of the Xtransceiver's calls with the game's characters, named after the ROM's "local_tvt_sys.c": it makes
 // the parts every mode shares and runs the mode the parameters ask for

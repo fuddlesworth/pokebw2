@@ -14,8 +14,8 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "nnsys/g2d.h"
-#include "save/pokedex_savedata.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/wordset.h"
 #include "text/system/pokedex_list.h"
 

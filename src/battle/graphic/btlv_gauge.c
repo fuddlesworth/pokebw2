@@ -27,12 +27,12 @@
 #include "nitro/math.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
 #include "system/app_menu_common.h"
 #include "system/gf_font.h"
 #include "system/hp_gauge.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/str_tool.h"
 
 // A gauge's animated value before its first step

@@ -39,9 +39,7 @@
 #include "nnsys/g2d.h"
 #include "save/high_link.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
-#include "save/trainer_data_savedata.h"
 #include "system/app_keycursor.h"
 #include "system/app_taskmenu.h"
 #include "system/beacon_status.h"
@@ -52,6 +50,8 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/trainer_data_savedata.h"
 #include "system/wordset.h"
 
 // Sets the Funfest mission's view up and frees it, and makes the events of the screens its buttons open, named after

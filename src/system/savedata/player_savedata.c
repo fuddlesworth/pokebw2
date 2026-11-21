@@ -2,9 +2,9 @@
 #include "field/actor/pair_sys.h"
 #include "field/player/player_state.h"
 #include "gfl/std.h"
-#include "save/player_savedata.h"
-#include "save/save_control.h"
 #include "system/field_status.h"
+#include "system/savedata/player_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The save block with the player's place, the places to return to, the follower and the step counters. The ROM has no
 // string for the file, so the name is a guess. Block 0x1c.

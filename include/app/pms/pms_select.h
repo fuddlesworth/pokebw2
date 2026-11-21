@@ -2,9 +2,9 @@
 #define POKEBW2_APP_PMS_PMS_SELECT_H
 
 #include "types.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/pms_data.h"
+#include "system/savedata/save_control.h"
 
 // pms_select.c: the phrase select of overlay 185, with which the trainer card picks its greeting from the saved
 // phrases, and edits them with the phrase input. The names are ours

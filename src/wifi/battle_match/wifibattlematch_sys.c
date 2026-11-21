@@ -3,7 +3,7 @@
 
 #include "types.h"
 #include "app/battle_recorder/battle_rec_tool.h"
-#include "app/battle_recorder/ov306.h"
+#include "app/battle_recorder/btl_rec_sel.h"
 #include "battle/battle_proc.h"
 #include "battle/btl_net.h"
 #include "constants/pokemon.h"
@@ -25,11 +25,11 @@
 #include "save/box.h"
 #include "save/player_info.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/tournament_block.h"
 #include "system/btl_setup.h"
 #include "system/game_data.h"
 #include "system/regulation.h"
+#include "system/savedata/save_control.h"
 #include "wifi/battle_match/battle_championship_flow.h"
 #include "wifi/battle_match/livebattlematch_irc.h"
 #include "wifi/battle_match/wifibattlematch.h"
@@ -878,14 +878,14 @@ static BOOL WifiBattleMatchSys_FinishExchange(WifiBattleMatchChain *chain, void 
 }
 
 static void *WifiBattleMatchSys_CreateResultParam(WifiBattleMatchChain *chain, HeapID heapId, WifiBattleMatchSys *sys) {
-    Ov306Param *param = GFL_HeapAllocate(heapId, sizeof(Ov306Param), FALSE, "wifibattlematch_sys.c", 1590);
+    BtlRecSelParam *param = GFL_HeapAllocate(heapId, sizeof(BtlRecSelParam), FALSE, "wifibattlematch_sys.c", 1590);
     u32 battleType;
     u32 index;
     u32 value;
     int launcher;
     Regulation *regulation = NULL;
 
-    MI_CpuFill8(param, 0, sizeof(Ov306Param));
+    MI_CpuFill8(param, 0, sizeof(BtlRecSelParam));
     if (sys->mode == MATCH_MODE_FREE) {
         battleType = sys->param.battleType + RECORD_MODE_FREE_SINGLE;
     } else if (sys->mode == MATCH_MODE_RATING) {

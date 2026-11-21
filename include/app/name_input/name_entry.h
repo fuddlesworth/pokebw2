@@ -2,10 +2,10 @@
 #define POKEBW2_APP_NAME_INPUT_NAME_ENTRY_H
 
 #include "types.h"
+#include "demo/title/save_control_intr.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
 #include "gfl/str.h"
-#include "save/save_control_intr.h"
 #include "struct_decls.h"
 
 // The name entry, overlay 280

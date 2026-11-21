@@ -15,7 +15,7 @@
 #include "field/field.h"
 #include "field/field_task.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/player/field_player.h"
 #include "field/player/player_state.h"

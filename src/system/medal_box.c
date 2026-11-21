@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
 #include "save/medal_box.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The save block of the Medal Rally: what the player knows of each medal and the day it was obtained, the medal
 // obtained last and the rank. The Pokédex's habitat list is kept at its end. The ROM has no string for the file, so

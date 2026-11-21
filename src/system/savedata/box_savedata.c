@@ -8,7 +8,7 @@
 #include "gfl/str.h"
 #include "pml/poke_party.h"
 #include "save/box.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 #include "text/system/box.h"
 
 // The PC boxes: the main block with the open box, the names, the wallpapers and how many boxes are open, and one

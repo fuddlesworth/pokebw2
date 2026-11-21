@@ -27,10 +27,10 @@
 #include "nitro/gx.h"
 #include "save/config.h"
 #include "save/player_info.h"
-#include "save/trainer_data_savedata.h"
 #include "system/game_data.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/trainer_data_savedata.h"
 #include "system/wordset.h"
 #include "text/script/title.h"
 

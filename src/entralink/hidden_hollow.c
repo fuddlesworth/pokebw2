@@ -3,7 +3,7 @@
 #include "types.h"
 #include "constants/zones.h"
 #include "entralink/hidden_hollow.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/script/field_script.h"
 #include "save/medal_box.h"
 #include "system/game_data.h"

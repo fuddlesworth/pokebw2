@@ -12,7 +12,7 @@
 #include "field/event/event_fishing.h"
 #include "field/field.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/player/field_player.h"
 #include "field/script/field_script.h"
 #include "gfl/key.h"

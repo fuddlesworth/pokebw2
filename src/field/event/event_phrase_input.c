@@ -7,7 +7,6 @@
 #include "gfl/str.h"
 #include "save/dream_world.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/beacon_status.h"
 #include "system/field_event.h"
@@ -15,6 +14,7 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 #include "system/wordset.h"
 

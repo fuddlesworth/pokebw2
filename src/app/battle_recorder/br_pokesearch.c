@@ -17,8 +17,8 @@
 #include "gfl/str.h"
 #include "gfl/touchpanel.h"
 #include "pml/species_names.h"
-#include "save/pokedex_savedata.h"
 #include "system/bmp_menuwork.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The first letters, which the buttons are for
 #define BR_POKESEARCH_LETTER_MAX 9

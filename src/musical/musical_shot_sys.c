@@ -19,8 +19,8 @@
 #include "nitro/gx.h"
 #include "nitro/hw.h"
 #include "nitro/rtc.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/wipe.h"
 
 // Overlay 209's musical_shot_sys.c: the proc that shows a musical's photo, with its information on the touch screen

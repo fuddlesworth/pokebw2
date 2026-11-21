@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/key_data_savedata.h"
 #include "save/key_info.h"
-#include "save/save_control.h"
+#include "system/savedata/key_data_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The save block that swan calls the key data: the run through the Black Tower or the White Treehollow (the seed of
 // its floors, the Trainers defeated, the floor and room reached) and the key information of the Key System. The ROM

@@ -1,6 +1,6 @@
 #include "types.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/script/field_script.h"
 #include "field/weather/field_environment.h"
 #include "field/weather/field_weather.h"

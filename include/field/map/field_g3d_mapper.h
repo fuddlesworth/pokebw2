@@ -5,9 +5,9 @@
 // from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
 #include "types.h"
-#include "field/map/field_map.h"
-#include "field/map/field_map_chunk.h"
 #include "field/map/field_terrain_animator.h"
+#include "field/map/fieldmap.h"
+#include "field/map/fieldmap_chunk.h"
 #include "gfl/heap.h"
 #include "nitro/fx.h"
 #include "struct_decls.h"

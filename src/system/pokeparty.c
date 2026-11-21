@@ -3,7 +3,7 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "pml/poke_party.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The party: a save block of six Pokémon with their count. The file's name is the ROM's string; the functions' names
 // are swan's

@@ -8,12 +8,12 @@
 #include "pml/poke_party.h"
 #include "pokewood/pokewood_system.h"
 #include "save/medal_box.h"
-#include "save/pokedex_savedata.h"
 #include "save/pokewood.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The regulation of the movies' battles, in arc 106
 #define POKEWOOD_REGULATION 5

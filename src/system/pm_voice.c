@@ -8,7 +8,7 @@
 #include "nitro/snd.h"
 #include "nnsys/snd.h"
 #include "save/chatter.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The cries of the Pokémon, each a wave archive of one 8-bit wave that is read whole and played through NitroSystem's
 // wave output, with a second channel for the chorus. Handle 0 has a buffer of its own; PokeVoice_AllocMulti gives

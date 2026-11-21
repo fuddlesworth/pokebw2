@@ -14,9 +14,9 @@
 #include "gfl/str.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
-#include "save/pokedex_savedata.h"
 #include "system/bgwinfrm.h"
 #include "system/bmp_menulist.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // Separate Back positions in the initial picker and the gender picker.
 enum {

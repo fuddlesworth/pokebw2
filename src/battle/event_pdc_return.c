@@ -19,10 +19,10 @@
 #include "save/event_work.h"
 #include "save/join_avenue.h"
 #include "save/player_info.h"
-#include "save/pokedex_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 #define HEAPID_PDC_RETURN 0x8b
 

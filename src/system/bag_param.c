@@ -4,8 +4,8 @@
 #include "field/player/player_state.h"
 #include "gfl/heap.h"
 #include "gfl/std.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The bag's parameters. Our names
 

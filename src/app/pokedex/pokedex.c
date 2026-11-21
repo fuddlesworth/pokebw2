@@ -12,9 +12,9 @@
 #include "gfl/proc.h"
 #include "gfl/std.h"
 #include "save/medal_box.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/season.h"
 
 // The Pokédex: a state machine that starts the process of each of its screens, waits for it, and picks the next from

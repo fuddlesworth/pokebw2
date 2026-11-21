@@ -5,8 +5,8 @@
 #include "gfl/msg.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/c_gear_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/c_gear_savedata.h"
+#include "system/savedata/save_control.h"
 #include "text/script/castelia_city_13.h"
 
 // The word at the end of the C-Gear's save block, which c_gear_savedata.c owns: its initial state, "Awesome!" of the

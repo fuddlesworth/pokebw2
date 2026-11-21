@@ -22,9 +22,9 @@
 #include "save/event_work.h"
 #include "save/high_link.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/aeabi.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "system/zone_weather.h"
 
 // The event flag that starts the swarms, which other systems wait for too

@@ -11,7 +11,7 @@
 #include "field/gimmick/gym_opelucid.h"
 #include "field/map/field_exp_obj.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/script/trainer_script.h"
 #include "field/weather/field_fog.h"
 #include "gfl/g3d.h"

@@ -20,11 +20,11 @@
 #include "gfl/ui.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
-#include "save/pokedex_savedata.h"
 #include "system/blink_palanm.h"
 #include "system/cursor_move.h"
 #include "system/game_data.h"
 #include "system/palanm.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The sequences of the Pokédex's search screen: the main page with the criteria, a page with a list for each
 // criterion, and the search. The ROM doesn't name this file; pokedex_search_seq.c is a guess after

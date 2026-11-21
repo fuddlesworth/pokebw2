@@ -19,8 +19,8 @@
 #include "nitro/gx.h"
 #include "nnsys/g2d.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The faces of the upper screen of the Xtransceiver's calls with the game's characters, named after the ROM's

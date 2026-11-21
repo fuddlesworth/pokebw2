@@ -28,9 +28,9 @@
 #include "gfl/str.h"
 #include "gfl/tcb.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 
 #endif // POKEBW2_APP_LOCAL_TVT_LOCAL_H

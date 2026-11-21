@@ -2,6 +2,7 @@
 #define POKEBW2_DEMO_INTRO_INTRO_H
 
 #include "types.h"
+#include "demo/title/save_control_intr.h"
 #include "gfl/clact.h"
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
@@ -9,7 +10,6 @@
 #include "gfl/str.h"
 #include "nitro/fx.h"
 #include "save/config.h"
-#include "save/save_control_intr.h"
 #include "struct_decls.h"
 #include "system/mcss.h"
 

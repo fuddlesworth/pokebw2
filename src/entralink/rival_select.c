@@ -7,9 +7,9 @@
 #include "field/field.h"
 #include "field/map/zone.h"
 #include "gfl/random.h"
-#include "save/save_control.h"
 #include "system/area_data.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 RivalEntry *RivalSelect_GetEntry(FesGimmick *gimmick, u32 id) {
     RivalEntry *entries = LinkFestival_GetMissionWork(gimmick->festival)->hollows;

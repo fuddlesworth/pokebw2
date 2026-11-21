@@ -6,10 +6,10 @@
 #include "pokewood/pokewood_system.h"
 #include "save/pokewood.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 // The event that keeps a movie's results and writes the Pokewood block to its slot
 typedef struct {

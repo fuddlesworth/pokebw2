@@ -1,7 +1,7 @@
 #include "system/text_speed.h"
 #include "types.h"
 #include "save/config.h"
-#include "save/trainer_data_savedata.h"
+#include "system/savedata/trainer_data_savedata.h"
 
 // The waits between characters that the text speeds give. The file has no name in the ROM: text_speed.c is a guess
 // from what its functions do. It follows game_data.c and keeps its own pointer to the save control

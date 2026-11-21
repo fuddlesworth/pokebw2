@@ -3,9 +3,9 @@
 #include "field/beacon/game_beacon_set.h"
 #include "gfl/str.h"
 #include "save/high_link.h"
-#include "save/save_control.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 
 static void GameBeacon_TryWildBattleStart(u16 value);

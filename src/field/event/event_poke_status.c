@@ -4,11 +4,11 @@
 #include "field/event/event_poke_status.h"
 #include "gfl/heap.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The steps of both events
 enum {

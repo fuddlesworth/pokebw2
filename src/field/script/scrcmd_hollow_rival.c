@@ -2,9 +2,9 @@
 #include "types.h"
 #include "field/script/field_script.h"
 #include "field/script/scrcmd_hollow_rival.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 #define HOLLOW_COUNT 15

@@ -16,10 +16,10 @@
 #include "gfl/sound.h"
 #include "gfl/tcb.h"
 #include "nitro/fx.h"
-#include "save/gimmick_savedata.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/gimmick_savedata.h"
 
 // The Humilau City gym's floating platforms, named after the zone: the overlay has no string. Eleven platforms float
 // on the water, each a cross of five squares. Stepping from a ride spot onto the platform in front starts a ride: the

@@ -16,8 +16,6 @@
 #include "gfl/ui.h"
 #include "nitro/mi.h"
 #include "nitro/os.h"
-#include "save/c_gear_savedata.h"
-#include "save/save_control.h"
 #include "system/aeabi.h"
 #include "system/field_sound.h"
 #include "system/game_beacon.h"
@@ -27,6 +25,8 @@
 #include "system/game_system.h"
 #include "system/iss/iss_sys.h"
 #include "system/playtime_ctrl.h"
+#include "system/savedata/c_gear_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The game system: the process that runs the game from the title screen's choice on, and the accessors of what it
 // owns. The file's name is a guess, from the GameSystem and GSYS names: the ROM has no string for it. The functions'

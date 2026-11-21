@@ -24,11 +24,11 @@
 #include "gfl/sound.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 // The door animation.
 enum {

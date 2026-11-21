@@ -5,7 +5,7 @@
 #include "field/gimmick/gym_icirrus.h"
 #include "field/map/field_controller.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/fieldmap_ctrl_hybrid.h"
 #include "gfl/g3d.h"
 #include "gfl/sound.h"

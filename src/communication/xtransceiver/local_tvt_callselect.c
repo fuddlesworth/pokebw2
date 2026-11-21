@@ -18,9 +18,9 @@
 #include "gfl/str.h"
 #include "gfl/touchpanel.h"
 #include "nitro/fx.h"
-#include "save/save_control.h"
 #include "system/app_taskmenu.h"
 #include "system/bmp_winframe.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The list of the persons the player can call on the Xtransceiver's lower screen, named after the ROM's

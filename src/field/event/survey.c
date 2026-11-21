@@ -5,9 +5,9 @@
 #include "gfl/rtc_cache.h"
 #include "nitro/rtc.h"
 #include "save/event_work.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The most an answer counts
 #define SURVEY_COUNT_MAX 999999

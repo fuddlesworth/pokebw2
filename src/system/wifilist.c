@@ -7,8 +7,8 @@
 #include "gfl/str.h"
 #include "nitro/rtc.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/wifi_list.h"
+#include "system/savedata/save_control.h"
 
 // The Pal Pad: the player's DWC account with the friends' data and records, block 0x1e, and the list of the
 // players traded with, block 0x1f. The file's name is the ROM's; the function names from swan are marked in

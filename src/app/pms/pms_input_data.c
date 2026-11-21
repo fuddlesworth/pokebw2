@@ -7,9 +7,9 @@
 #include "constants/text_banks.h"
 #include "constants/types.h"
 #include "gfl/heap.h"
-#include "save/pokedex_savedata.h"
 #include "system/pms_word.h"
 #include "system/pmsi_param.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The words that the phrase input offers: for each category and each initial, the words the player has unlocked, in
 // the order the input lists them. The names are ours, guessed

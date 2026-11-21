@@ -5,9 +5,9 @@
 #include "field/script/field_script.h"
 #include "field/script/scrcmd_trial_house.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 BOOL Scrcmd_TrialHouse_TrialHouseWorkInit(VM *vm, FieldScriptEnv *env) {

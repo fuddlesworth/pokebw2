@@ -2,12 +2,12 @@
 #include "constants/items.h"
 #include "gfl/random.h"
 #include "save/bag.h"
-#include "save/cygnus_save_control.h"
 #include "save/dream_world.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/new_game.h"
+#include "system/savedata/cygnus_save_control.h"
+#include "system/savedata/save_control.h"
 
 // Overlay 279 is only loaded to set up the save data of a new game
 

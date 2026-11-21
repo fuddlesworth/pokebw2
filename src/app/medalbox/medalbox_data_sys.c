@@ -5,8 +5,8 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "save/medal_box.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The medals of the Medal Box screen and their order, named by the ROM's string; the function names are ours
 

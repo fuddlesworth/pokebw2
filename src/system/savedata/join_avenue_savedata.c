@@ -1,8 +1,8 @@
 #include "types.h"
 #include "gfl/std.h"
 #include "save/join_avenue.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include <stddef.h>
 
 // The Join Avenue's save block, and adding a visitor, a person or an entry to it: merged into the one who is already

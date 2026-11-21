@@ -18,8 +18,8 @@
 #include "save/battle_rec.h"
 #include "save/bsubway_save.h"
 #include "save/gds_profile.h"
-#include "save/musical_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/musical_savedata.h"
 
 // The Battle Recorder's core proc (br_core.c), which overlay 272's br_main.c runs. It holds the systems its screens
 // share and runs the screens, the procs of overlays 268, 269 and 270, with br_proc_sys.c. The screens' parameters and

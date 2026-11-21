@@ -21,13 +21,13 @@
 #include "field/script/scrcmd_proc_fld.h"
 #include "gfl/heap.h"
 #include "save/box.h"
-#include "save/c_gear_savedata.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/c_gear_savedata.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 // What the PC Box's callback stores its result from

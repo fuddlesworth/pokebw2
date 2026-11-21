@@ -12,10 +12,10 @@
 #include "pml/poke_party.h"
 #include "save/box.h"
 #include "save/player_info.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "save/wbt_save.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "tournament/wbt.h"
 
 // wbt_makematch.c, named after the string the ROM keeps for its asserts (overlay 135, whose only file it is): the

@@ -9,11 +9,11 @@
 #include "gfl/heap.h"
 #include "pml/poke_party.h"
 #include "save/box.h"
-#include "save/pokedex_savedata.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/vm.h"
 
 BOOL Scrcmd_DayCare_DayCareCheckSpawnFlag(VM *vm, FieldScriptEnv *env) {

@@ -31,11 +31,11 @@
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "nitro/gx.h"
-#include "save/c_gear_savedata.h"
 #include "struct_decls.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/infowin.h"
+#include "system/savedata/c_gear_savedata.h"
 #include "system/wipe.h"
 #include "tournament/wbt_subscreen.h"
 

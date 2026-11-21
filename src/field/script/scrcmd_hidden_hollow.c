@@ -21,12 +21,12 @@
 #include "gfl/arc.h"
 #include "gfl/random.h"
 #include "save/event_work.h"
-#include "save/misc_savedata.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/misc_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/tpoke_data.h"
 
 // Which of a grotto file's two sets of Pokémon the version reads

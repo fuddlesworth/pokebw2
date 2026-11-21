@@ -15,11 +15,11 @@
 #include "field/script/field_script_event.h"
 #include "field/script/trainer_script.h"
 #include "gfl/heap.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 // The script of a Trainer's battle, and of the Trainer whose actor uses SCRID_SPECIAL_TRAINER
 #define SCRID_TRAINER_CLASH 0xee8

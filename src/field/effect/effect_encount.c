@@ -15,16 +15,16 @@
 #include "field/field.h"
 #include "field/map/field_controller.h"
 #include "field/map/field_g3d_mapper.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/script/field_script_event.h"
 #include "gfl/heap.h"
 #include "gfl/random.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"
 #include "save/high_link.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The phenomena that the zone's encounter tables allow: of land, with shaking grass, and of water, with rare surfing
 // or fishing

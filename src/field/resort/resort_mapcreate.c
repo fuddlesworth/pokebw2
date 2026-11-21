@@ -1,6 +1,6 @@
 #include "types.h"
 #include "field/event/event_data.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/resort/resort_mapcreate.h"
 #include "gfl/heap.h"

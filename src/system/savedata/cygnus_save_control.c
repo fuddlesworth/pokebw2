@@ -2,9 +2,9 @@
 #include "constants/species.h"
 #include "gfl/backup_system.h"
 #include "gfl/heap.h"
-#include "save/cygnus_save_control.h"
 #include "save/dream_world.h"
-#include "save/save_control.h"
+#include "system/savedata/cygnus_save_control.h"
+#include "system/savedata/save_control.h"
 
 // The data that Pokémon Dream Radar ("Cygnus") writes to the card outside the save: reading it, marking it read and
 // erasing it, and the Pokémon that its words name. The file's name is the ROM's string; ReadDreamRadarSaveData and

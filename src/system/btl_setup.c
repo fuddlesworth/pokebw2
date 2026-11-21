@@ -16,14 +16,14 @@
 #include "save/event_work.h"
 #include "save/key_info.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
-#include "save/trainer_data_savedata.h"
 #include "system/btl_setup.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/pms_data.h"
 #include "system/regulation.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/trainer_data_savedata.h"
 
 // The setup of a battle: its kind, parties, trainers and surroundings. The file name is the ROM's string; the function
 // names are swan's where they have one.

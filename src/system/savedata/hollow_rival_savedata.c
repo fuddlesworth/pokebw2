@@ -1,7 +1,7 @@
 #include "types.h"
-#include "save/hollow_rival_savedata.h"
-#include "save/misc_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/hollow_rival_savedata.h"
+#include "system/savedata/misc_savedata.h"
+#include "system/savedata/save_control.h"
 
 // A part of save block 0x42, which the script commands of scrcmd_hollow_rival.c read and write: a value and a flag
 // of each of eight indices, a counter, three flags and a value. The ROM has no string for the file, so the name is a

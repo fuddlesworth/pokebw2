@@ -7,7 +7,7 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "pml/personal.h"
-#include "save/pokedex_savedata.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The Pokédex's search: the species of the list that match the search screen's criteria, found a few at a time
 

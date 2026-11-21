@@ -5,9 +5,9 @@
 #include "gfl/heap.h"
 #include "gfl/str.h"
 #include "nitro/math.h"
-#include "save/extra_block_savedata.h"
 #include "struct_decls.h"
 #include "system/regulation.h"
+#include "system/savedata/extra_block_savedata.h"
 
 // The Pokémon World Tournament: overlay 55's wbt_system.c, wbt_tool.c, wbt_setup.c and wbt_party.c, and the script
 // plugins 6 (the entrance, with overlay 56) and 7 (the stadium, with overlay 57) that share overlay 55

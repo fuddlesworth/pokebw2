@@ -3,8 +3,8 @@
 
 #include "types.h"
 #include "gfl/heap.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
+#include "system/savedata/save_control.h"
 
 // A mystery gift card, 0xcc bytes
 struct MysteryGift {

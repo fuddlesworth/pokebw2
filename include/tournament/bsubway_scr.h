@@ -2,7 +2,7 @@
 #define POKEBW2_FIELD_BSUBWAY_SCR_H
 
 #include "types.h"
-#include "app/battle_recorder/ov306.h"
+#include "app/battle_recorder/btl_rec_sel.h"
 #include "communication/irc/ircbattlematch.h"
 #include "gfl/heap.h"
 #include "gfl/proc.h"
@@ -177,7 +177,7 @@ struct BSubwayScrWork {
     IrcBattleMatchParam ircMatchParam;
     PokeParty *allocatedBuffer;
     BtlSetup *btlSetup;
-    Ov306Param ov306Param;
+    BtlRecSelParam ov306Param;
     // BattleRec_FinishAndSaveSlot's steps
     u16 videoSeq;
     u16 videoSaveSeq;

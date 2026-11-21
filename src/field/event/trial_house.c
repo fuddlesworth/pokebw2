@@ -16,12 +16,12 @@
 #include "pml/poke_party.h"
 #include "save/battle_examination.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trial_house.h"
 #include "struct_decls.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/version.h"
 #include <stddef.h>
 

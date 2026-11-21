@@ -2,8 +2,8 @@
 #include "app/unity_tower/unity_tower.h"
 #include "nitro/mi.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/country_region.h"
+#include "system/savedata/save_control.h"
 
 // The Unity Tower's survey: the trainers met through trades and the GTS, and the countries and regions they came
 // from, which open the tower's floors. The ROM has no string for the file, so the name is a guess (swan's

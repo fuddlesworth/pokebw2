@@ -21,9 +21,9 @@
 #include "musical/sta_act_poke.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
-#include "save/save_control.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 #include "text/system/musical_photo.h"
 

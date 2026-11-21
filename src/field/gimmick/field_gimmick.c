@@ -43,9 +43,9 @@
 #include "field/gimmick/sp_poke_gimmick.h"
 #include "field/resort/resort.h"
 #include "gfl/overlay.h"
-#include "save/gimmick_savedata.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/gimmick_savedata.h"
 #include "tournament/wbt_stadium_gimmick.h"
 
 typedef struct GimmickInfo {

@@ -6,7 +6,7 @@
 #include "field/field.h"
 #include "field/field_task.h"
 #include "field/gimmick/rail_slipdown.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/player/field_player.h"
 #include "field/weather/field_fog.h"
 #include "gfl/overlay.h"

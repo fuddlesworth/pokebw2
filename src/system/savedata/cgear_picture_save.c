@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/cgear_picture_save.h"
-#include "save/save_control.h"
+#include "system/savedata/cgear_picture_save.h"
+#include "system/savedata/save_control.h"
 
 // The downloaded C-Gear skin, extra save block 4. The ROM has no string for the file, so the name is a guess
 

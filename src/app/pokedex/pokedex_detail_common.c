@@ -11,10 +11,10 @@
 #include "gfl/tcb.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
-#include "save/pokedex_savedata.h"
 #include "system/bmp_winframe.h"
 #include "system/game_data.h"
 #include "system/palanm.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // What the Pokédex detail screen's pages share: the screen's systems and the list of Pokémon it pages through, the
 // blending and palette fades of the pages, and the backgrounds that the pages load

@@ -6,8 +6,8 @@
 #include "gfl/std.h"
 #include "pokewood/pokewood_system.h"
 #include "save/pokewood.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // pokewood_rec.c, the name its allocation passes: the movie of Pokéstar Studios that is loaded, which the save keeps
 // in an extra block for each of the eight downloaded movies.

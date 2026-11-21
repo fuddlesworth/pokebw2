@@ -4,8 +4,8 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "gfl/str.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
+#include "system/savedata/save_control.h"
 
 // Names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0), except the ones config/names.txt records
 

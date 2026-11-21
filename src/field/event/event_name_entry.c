@@ -14,11 +14,11 @@
 #include "pml/species_names.h"
 #include "save/join_avenue.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 #include "system/wordset.h"
 

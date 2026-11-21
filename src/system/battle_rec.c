@@ -5,9 +5,9 @@
 #include "gfl/overlay.h"
 #include "gfl/std.h"
 #include "save/battle_rec.h"
-#include "save/save_control.h"
 #include "save/tournament_block.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // battle_rec.c (the name its allocation passes): the battle video that is loaded, and loading it from and saving it
 // to the extra save blocks of the four slots. Its body is encrypted with its CRC as the key.

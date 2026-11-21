@@ -4,8 +4,8 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "pml/mail.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
+#include "system/savedata/save_control.h"
 
 // The mail screen's callers' interface (overlay 215's mailtool.c): the params that the field app call allocates for the
 // mail screens, and reads the result of. The names are ours, guessed

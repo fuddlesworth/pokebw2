@@ -5,7 +5,7 @@
 #include "field/field.h"
 #include "field/gimmick/gimmick_league_shauntal.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/weather/field_fog.h"
 #include "gfl/g3d.h"
 #include "gfl/sound.h"

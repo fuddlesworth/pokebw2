@@ -4,11 +4,11 @@
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
 #include "gfl/std.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/pms.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 // The script command that lets the player pick a phrase (a descriptive name). Scrcmd_PhraseSelect_CallPhraseSelect is

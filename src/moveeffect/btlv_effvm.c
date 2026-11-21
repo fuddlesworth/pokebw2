@@ -274,7 +274,7 @@ enum {
     EFFVM_PAL_ANIM_PLAY = 1,
 };
 
-// Ball IDs returned by PML_ItemGetMonsBallID, matching pml_item.c MONS_BALL_ITEMS.
+// Ball IDs returned by PML_ItemGetMonsBallID, matching item.c MONS_BALL_ITEMS.
 enum {
     EFFVM_BALL_NONE = 0,
     EFFVM_BALL_POKE = 4,

@@ -8,9 +8,9 @@
 #include "gfl/msg.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "save/trainer_game_info.h"
+#include "system/savedata/save_control.h"
 #include "text/script/castelia_city_13.h"
 
 // The save block of the trainer's game info: the money, the badges, the favorite Pokémon, the greeting and thanks,

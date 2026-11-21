@@ -8,11 +8,11 @@
 #include "gfl/proc.h"
 #include "gfl/str.h"
 #include "nitro/fx.h"
-#include "save/memory_link_savedata.h"
 #include "save/player_info.h"
 #include "struct_decls.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/memory_link_savedata.h"
 #include "system/wordset.h"
 
 // Phases of the shared start-scene callback.

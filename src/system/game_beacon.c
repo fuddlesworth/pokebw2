@@ -24,13 +24,13 @@
 #include "save/join_avenue.h"
 #include "save/medal_box.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_beacon.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/ir_check.h"
 #include "system/pms.h"
+#include "system/savedata/save_control.h"
 
 // The game's beacons. The file's name is from the ROM's string
 

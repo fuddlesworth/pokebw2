@@ -16,10 +16,10 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "nnsys/g2d.h"
-#include "save/save_control.h"
 #include "system/gf_font.h"
 #include "system/main.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 
 // The screen of a save data error: a window on BG1 of the main screen with the error's message, which stops the game
 // until it is reset. The file's name is a guess, from swan's names: the ROM has no string for it

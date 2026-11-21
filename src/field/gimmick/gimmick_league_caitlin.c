@@ -5,7 +5,7 @@
 #include "field/field_task.h"
 #include "field/gimmick/gimmick_league_caitlin.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/g3d.h"
 #include "nitro/fx.h"
 #include "system/field_sound.h"

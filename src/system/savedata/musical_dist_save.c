@@ -5,10 +5,10 @@
 #include "gfl/msg.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/musical_dist_save.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/musical_dist_save.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The downloaded musical, extra save block 6: reading it for the musical, and writing the one Game Sync downloaded.
 // The name is the ROM's string, from GFL_HeapAllocate's calls. The function names are ours

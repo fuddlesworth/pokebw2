@@ -7,8 +7,8 @@
 #include "gfl/backup_system.h"
 #include "gfl/std.h"
 #include "save/battle_rec.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // What the video saves in: each step, then the save
 enum {

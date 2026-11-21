@@ -23,16 +23,16 @@
 #include "musical/musical_stage_sys.h"
 #include "nitro/rtc.h"
 #include "pml/poke_party.h"
-#include "save/musical_savedata.h"
 #include "save/player_info.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/event_sound.h"
 #include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The event of a musical show: the dressing room, the stage and the photo, alone with three performers of the

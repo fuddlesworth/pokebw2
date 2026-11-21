@@ -19,9 +19,9 @@
 #include "gfl/touchpanel.h"
 #include "nitro/hw.h"
 #include "save/medal_box.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/wordset.h"
 #include "text/system/pokedex_habitat.h"
 

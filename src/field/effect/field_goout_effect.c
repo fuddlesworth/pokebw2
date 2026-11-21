@@ -3,7 +3,7 @@
 #include "field/camera/field_camera.h"
 #include "field/field.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/weather/field_lens_flare.h"
 #include "gfl/arc_util.h"

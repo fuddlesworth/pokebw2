@@ -2,9 +2,9 @@
 #include "field/field_async_proc.h"
 #include "field/gimmick/underwater_effect.h"
 #include "field/script/field_script.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 
 // The script plugin of the Abyssal Ruins (plugin 5), commands from 1000
 

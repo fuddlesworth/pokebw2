@@ -5,8 +5,8 @@
 #include "gfl/proc.h"
 #include "musical/musical.h"
 #include "musical/musical_dressup_sys.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 typedef struct {
     // The copy of the parameter that overlay 208 gets

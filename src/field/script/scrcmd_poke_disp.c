@@ -20,7 +20,6 @@
 #include "gfl/random.h"
 #include "pml/poke_graphic.h"
 #include "pml/poke_party.h"
-#include "save/hollow_rival_savedata.h"
 #include "save/join_avenue.h"
 #include "save/records.h"
 #include "save/trainer_card.h"
@@ -28,6 +27,7 @@
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/pms_word.h"
+#include "system/savedata/hollow_rival_savedata.h"
 #include "system/vm.h"
 #include "text/system/c_gear_power_warning.h"
 

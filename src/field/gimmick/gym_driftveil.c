@@ -9,7 +9,7 @@
 #include "field/field_task.h"
 #include "field/gimmick/gym_driftveil.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/player/field_player.h"
 #include "gfl/g3d.h"
 #include "gfl/heap.h"

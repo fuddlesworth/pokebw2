@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/funfest_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/funfest_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The save block of the Funfest missions: how many were hosted, joined and completed, and each mission's record.
 // The ROM has no string for the file, so the name is a guess. Block 0x46.

@@ -3,7 +3,7 @@
 #include "field/field.h"
 #include "field/gimmick/gimmick_marine_tube.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/g3d.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"

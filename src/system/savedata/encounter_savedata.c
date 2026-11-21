@@ -2,7 +2,7 @@
 #include "gfl/random.h"
 #include "gfl/std.h"
 #include "save/encounter.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The wild encounters' save: the roaming Pokémon, the swarm's location, the repel and the special Pokémon that were
 // caught. The ROM has no string for the file, so the name is a guess. Block 0x37.

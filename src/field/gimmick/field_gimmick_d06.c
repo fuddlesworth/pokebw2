@@ -6,7 +6,7 @@
 #include "field/effect/field_effect.h"
 #include "field/field.h"
 #include "field/gimmick/field_gimmick_d06.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "gfl/heap.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"

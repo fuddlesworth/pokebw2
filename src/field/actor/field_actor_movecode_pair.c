@@ -13,7 +13,7 @@
 #include "field/effect/field_effect.h"
 #include "field/event/event_trainer_eye.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "nitro/fx.h"
 
 // A position in fx32 and the grid square that holds it

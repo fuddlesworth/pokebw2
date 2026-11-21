@@ -34,11 +34,11 @@
 #include "pml/poke_party.h"
 #include "save/box.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/regulation.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The keys that end a message: A, B and the Control Pad

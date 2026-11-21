@@ -1,0 +1,17 @@
+#ifndef POKEBW2_SYSTEM_SAVEDATA_POKEDEX_SKIN_SAVE_H
+#define POKEBW2_SYSTEM_SAVEDATA_POKEDEX_SKIN_SAVE_H
+
+#include "types.h"
+
+// The downloaded Pokédex skin, extra save block 7 (pokedex_skin_save.c, a descriptive name). Its size and its
+// accessors, which take the block as a void pointer, are declared in save/save_control.h
+
+struct PokedexSkinSave {
+    u8 chars[0x6000];
+    u8 palette[0x200];
+    BOOL valid;
+}; // size: 0x6204
+
+void PokedexSkinSave_Init(void *block);
+
+#endif // POKEBW2_SAVE_POKEDEX_SKIN_SAVE_H

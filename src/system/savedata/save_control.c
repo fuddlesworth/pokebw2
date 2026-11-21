@@ -3,15 +3,15 @@
 #include "gfl/heap.h"
 #include "gfl/overlay.h"
 #include "gfl/std.h"
-#include "save/cygnus_save_control.h"
 #include "save/download_data.h"
 #include "save/key_info.h"
-#include "save/memory_link_savedata.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "save/save_outside.h"
-#include "save/save_table.h"
-#include "save/trainer_data_savedata.h"
+#include "system/savedata/cygnus_save_control.h"
+#include "system/savedata/memory_link_savedata.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/save_table.h"
+#include "system/savedata/trainer_data_savedata.h"
 
 // The game's save: loading it when the game starts, saving it a step at a time, and the extra saves. The name is the
 // ROM's string, and SaveControlWork, ctrl, sv_extra and extra_id are the names its assertions keep. The tables of the

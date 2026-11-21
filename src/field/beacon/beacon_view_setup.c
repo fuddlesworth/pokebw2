@@ -39,9 +39,7 @@
 #include "nnsys/g2d.h"
 #include "save/high_link.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
-#include "save/trainer_data_savedata.h"
 #include "system/app_keycursor.h"
 #include "system/app_taskmenu.h"
 #include "system/beacon_status.h"
@@ -54,6 +52,8 @@
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/trainer_data_savedata.h"
 #include "system/wordset.h"
 
 // The beacon view's work: what it takes from the game, its graphics, windows and actors, and the events that leave

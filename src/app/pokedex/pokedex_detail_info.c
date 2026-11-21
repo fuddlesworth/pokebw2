@@ -21,9 +21,9 @@
 #include "gfl/ui.h"
 #include "nitro/fx.h"
 #include "nnsys/g2d.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/gf_font.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The detail screen's info page, which the ROM does not name: the Pokémon's entry on both screens, from overlay 296,
 // with buttons for the languages it has been seen in, which show the entry on the sub screen in that language

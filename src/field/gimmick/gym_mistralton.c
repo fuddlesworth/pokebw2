@@ -11,7 +11,7 @@
 #include "field/field_task.h"
 #include "field/gimmick/gym_mistralton.h"
 #include "field/map/field_exp_obj.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/player/field_player.h"
 #include "field/script/trainer_script.h"

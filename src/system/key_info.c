@@ -1,9 +1,9 @@
 #include "types.h"
 #include "gfl/random.h"
 #include "gfl/std.h"
-#include "save/key_data_savedata.h"
 #include "save/key_info.h"
-#include "save/save_control.h"
+#include "system/savedata/key_data_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The Key System's key information: the keys unlocked and enabled, and the difficulty, the city and the chamber that
 // they set. Each is kept as a constant exclusive-ored with a seed. It lies in save block 0x45 and at the start of the

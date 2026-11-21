@@ -11,12 +11,12 @@
 #include "musical/musical_system.h"
 #include "nitro/os.h"
 #include "pml/poke_party.h"
-#include "save/musical_savedata.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 // Overlay 211's mus_comm_func.c, named after its string: the musical's communication between the players of a show,
 // the callbacks of GAME_COMM_NO_MUSICAL. The players trade their Pokémon and trainer data, the parent decides their

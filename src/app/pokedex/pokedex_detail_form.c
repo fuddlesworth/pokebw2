@@ -29,10 +29,10 @@
 #include "pml/poke_graphic.h"
 #include "pml/poke_party.h"
 #include "pml/species_names.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/mcss.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 #include "system/wordset.h"
 #include "text/system/pokedex_detail.h"
 

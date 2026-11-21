@@ -20,8 +20,8 @@
 #include "nitro/gx.h"
 #include "nitro/os.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "system/wipe.h"
 
 // The Pokédex's opening

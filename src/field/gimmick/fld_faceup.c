@@ -16,11 +16,11 @@
 #include "nitro/hw.h"
 #include "nnsys/g2d.h"
 #include "save/config.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 
 // The face-up (the file name is the ROM's): a close-up of a character's face over the field. The face is on BG 2 and
 // its eyes and mouth on BG 3, where two animations write the frames' map entries, which a VBlank task loads

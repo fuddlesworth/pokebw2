@@ -19,11 +19,11 @@
 #include "gfl/std.h"
 #include "gfl/touchpanel.h"
 #include "musical/mus_shot_photo.h"
-#include "save/musical_savedata.h"
-#include "save/save_control.h"
 #include "system/bmp_oam.h"
 #include "system/game_data.h"
 #include "system/printsys.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The buttons on the sub screen
 enum {

@@ -7,7 +7,7 @@
 #include "field/event/event_sweet_scent.h"
 #include "field/event/itemuse_event.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/menu/subscreen.h"
 #include "field/player/field_player.h"

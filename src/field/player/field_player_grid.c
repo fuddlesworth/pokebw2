@@ -8,7 +8,7 @@
 #include "field/event/event_data.h"
 #include "field/field.h"
 #include "field/gimmick/gym_gimmick.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/player/field_player.h"
 #include "field/player/field_player_core.h"

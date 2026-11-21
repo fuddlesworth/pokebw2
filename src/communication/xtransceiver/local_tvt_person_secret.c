@@ -15,9 +15,9 @@
 #include "gfl/random.h"
 #include "gfl/std.h"
 #include "save/event_work.h"
-#include "save/save_control.h"
-#include "save/survey_savedata.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/survey_savedata.h"
 
 // The steps of LocalTvtSecret_WholeCall
 enum {

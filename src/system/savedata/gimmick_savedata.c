@@ -1,7 +1,7 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/gimmick_savedata.h"
-#include "save/save_control.h"
+#include "system/savedata/gimmick_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The state of the zone's gimmick and its save block. The ROM has no string for the file, so the name is a guess
 // (swan's GimmickSave_Init). Block 0x30.

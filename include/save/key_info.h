@@ -2,8 +2,8 @@
 #define POKEBW2_SAVE_KEY_INFO_H
 
 #include "types.h"
-#include "save/memory_link_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/memory_link_savedata.h"
 
 // The Key System's key information (key_info.c, a descriptive name). Every value is kept as a constant of a table
 // exclusive-ored with the seed, so that a plain number in the save means nothing.

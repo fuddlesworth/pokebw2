@@ -12,9 +12,9 @@
 #include "pml/met_data.h"
 #include "pml/poke_party.h"
 #include "save/encounter.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 #define MOVE_RELIC_SONG 547

@@ -3,14 +3,14 @@
 #include "communication/worldtrade/worldtrade.h"
 #include "gfl/sound.h"
 #include "gfl/std.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "save/wifi_list.h"
 #include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 typedef struct {
     u32 bgm;

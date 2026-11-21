@@ -20,13 +20,13 @@
 #include "save/config.h"
 #include "save/event_work.h"
 #include "save/medal_box.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/field_event.h"
 #include "system/game_comm.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/version.h"
 
 // Where the player returns to after the credits, in each version

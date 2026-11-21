@@ -1,9 +1,9 @@
 #include "types.h"
+#include "demo/title/save_control_intr.h"
 #include "gfl/backup_system.h"
 #include "gfl/heap.h"
 #include "gfl/ui.h"
-#include "save/save_control.h"
-#include "save/save_control_intr.h"
+#include "system/savedata/save_control.h"
 
 // Saving a new game in the background. A soft reset cancels it, and it does nothing if save data is already present
 

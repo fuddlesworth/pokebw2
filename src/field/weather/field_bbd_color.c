@@ -3,7 +3,7 @@
 #include "constants/zones.h"
 #include "field/actor/field_actor.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "gfl/arc.h"
 #include "gfl/billboard_actor.h"

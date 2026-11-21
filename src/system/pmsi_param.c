@@ -3,10 +3,10 @@
 #include "gfl/std.h"
 #include "gfl/ui.h"
 #include "save/event_work.h"
-#include "save/save_control.h"
 #include "system/pms_data.h"
 #include "system/pms_word.h"
 #include "system/pmsi_param.h"
+#include "system/savedata/save_control.h"
 
 // The parameters of the sentence input screen
 

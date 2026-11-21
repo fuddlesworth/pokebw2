@@ -3,9 +3,9 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "save/battle_examination.h"
-#include "save/save_control.h"
 #include "save/trial_house.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include <stddef.h>
 
 // The downloaded battle examination that the Trial House plays: five Trainers, a signature and a checksum.

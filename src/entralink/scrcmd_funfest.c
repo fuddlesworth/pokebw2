@@ -11,12 +11,12 @@
 #include "field/event/event_mapchange.h"
 #include "field/script/field_script.h"
 #include "save/high_link.h"
-#include "save/save_control.h"
 #include "struct_decls.h"
 #include "system/event_sound.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 BOOL Scrcmd_Funfest_FunfestBGMReturn(VM *vm, FieldScriptEnv *env) {

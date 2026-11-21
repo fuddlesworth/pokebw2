@@ -10,7 +10,7 @@
 // ITEM_FILE_* and ITEM_WORK_* constants, PML_ItemGetIconArcID, PML_ItemGetIconCellDatID, PML_ItemGetIconAnimDatID,
 // PML_ItemIsUnholdable, PML_ItemIsDummy and PML_ItemIsB2W2Only
 
-// Item data (pml_item.c, a guessed name): each item's file in ARCID_ITEMINFO, its icon's files in ARCID_ITEMGRA, and
+// Item data (item.c): each item's file in ARCID_ITEMINFO, its icon's files in ARCID_ITEMGRA, and
 // the tables of TMs, mail, berries and balls
 
 // What an item's work holds

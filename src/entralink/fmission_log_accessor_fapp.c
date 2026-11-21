@@ -10,13 +10,13 @@
 #include "gfl/str.h"
 #include "nitro/fx.h"
 #include "save/event_work.h"
-#include "save/funfest_savedata.h"
 #include "save/high_link.h"
 #include "save/medal_box.h"
-#include "save/save_control.h"
 #include "system/fest_mission.h"
 #include "system/fest_mission_beacon.h"
 #include "system/game_data.h"
+#include "system/savedata/funfest_savedata.h"
+#include "system/savedata/save_control.h"
 
 // What the Funfest mission screen takes from the festival: the last lines of the mission's log and the mission's
 // result, named after the ROM's "fmission_log_accessor_fapp.c"

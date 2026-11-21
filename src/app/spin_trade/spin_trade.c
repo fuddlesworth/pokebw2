@@ -9,8 +9,8 @@
 #include "gfl/proc.h"
 #include "gfl/std.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // spin_trade.c, which the ROM names: the proc of the Union Room's Spin Trade. It runs the receipt screen, where the
 // group gathers, the party list on which each member picks an Egg, and the main screen with the disc. Names are ours

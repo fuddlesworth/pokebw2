@@ -3,9 +3,9 @@
 #include "gfl/str.h"
 #include "pml/mail.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/pms_data.h"
+#include "system/savedata/save_control.h"
 #include "system/version.h"
 
 // The mail: a mailbox of MAIL_COUNT mails, and the mail of one Pokémon. The ROM's string for the file is "mail.c".

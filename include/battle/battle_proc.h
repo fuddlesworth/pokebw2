@@ -2,7 +2,7 @@
 #define POKEBW2_BATTLE_BATTLE_PROC_H
 
 #include "types.h"
-#include "app/battle_recorder/ov306.h"
+#include "app/battle_recorder/btl_rec_sel.h"
 #include "battle/select/vs_multi_list.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
@@ -44,7 +44,7 @@ typedef struct {
     u32 counter;
     // Set, a network error is marked shown when the proc ends
     u32 markNetErrShown;
-    Ov306Param ov306Param;
+    BtlRecSelParam ov306Param;
 } BattleParam;
 
 // The battle proc's work

@@ -8,7 +8,7 @@
 #include "entralink/hidden_hollow_generate.h"
 #include "gfl/random.h"
 #include "save/high_link.h"
-#include "save/misc_savedata.h"
+#include "system/savedata/misc_savedata.h"
 
 #define SLOT_CHANCE_COUNT 10
 

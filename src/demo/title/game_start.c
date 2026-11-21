@@ -6,6 +6,7 @@
 #include "constants/text_banks.h"
 #include "demo/intro/intro.h"
 #include "demo/title/game_start.h"
+#include "demo/title/save_control_intr.h"
 #include "gfl/arc_util.h"
 #include "gfl/bg_sys.h"
 #include "gfl/bmp.h"
@@ -28,13 +29,12 @@
 #include "nitro/hw.h"
 #include "save/config.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
-#include "save/save_control_intr.h"
 #include "save/save_outside.h"
 #include "system/bmp_winframe.h"
 #include "system/game_system.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wipe.h"
 
 // Starting the game: a new game runs the intro and the name entries while it creates the save data, and a continue

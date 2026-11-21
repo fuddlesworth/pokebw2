@@ -28,7 +28,7 @@
 #include "field/gimmick/infinity_dungeon.h"
 #include "field/gimmick/infinity_dungeon_gimmick.h"
 #include "field/gimmick/infinity_dungeon_rooms.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/player/player_state.h"
 #include "gfl/heap.h"
@@ -40,9 +40,7 @@
 #include "nitro/os.h"
 #include "pml/poke_party.h"
 #include "save/encounter.h"
-#include "save/pokedex_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/traded_pokemon.h"
 #include "system/aeabi.h"
 #include "system/area_data.h"
@@ -54,6 +52,8 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/zone_weather.h"
 
 // EventBattleCall_Callback's steps

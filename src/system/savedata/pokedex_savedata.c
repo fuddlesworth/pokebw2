@@ -7,9 +7,9 @@
 #include "gfl/std.h"
 #include "pml/personal.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The Pokédex's save block: the species caught, the ones seen by sex, shininess and form, which of them the Pokédex
 // shows, and the languages of the entries. The ROM has no string for the file, so the name is a guess. The names

@@ -3,7 +3,7 @@
 #include "gfl/std.h"
 #include "pml/poke_party.h"
 #include "save/box.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The day care's save block: its two Pokémon with the steps each has walked, the flag of a waiting egg and the
 // seed the egg is made from. The ROM has no string for the file, so the name is a guess (swan's DayCareSave

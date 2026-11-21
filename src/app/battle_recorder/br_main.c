@@ -13,10 +13,10 @@
 #include "gfl/sound.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/field_sound.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 #include "tournament/bsubway_scr.h"
 
 // The procs that br_main.c switches between, which index sBrMainProcTable

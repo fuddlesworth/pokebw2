@@ -9,9 +9,9 @@
 #include "field/map/zone.h"
 #include "save/event_work.h"
 #include "save/key_info.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 // The Union Room, the Plasma Frigate, the Hidden Grottoes and the Black Tower or White Treehollow with Black City's or
 // White Forest's gates show on the map where the player entered them, or where the game state puts them

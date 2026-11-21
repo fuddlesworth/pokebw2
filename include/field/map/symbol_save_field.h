@@ -6,8 +6,8 @@
 
 #include "types.h"
 #include "entralink/entree_forest.h"
-#include "save/symbol_save.h"
 #include "struct_decls.h"
+#include "system/savedata/symbol_save.h"
 
 u32 SymbolSaveField_GetGroup(AreaNPCSave *npcData);
 u32 SymbolSaveField_GetDeepestArea(AreaNPCSave *npcData);

@@ -19,10 +19,10 @@
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
 #include "nitro/gx.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The window slots, shared by their bitmap and print-window arrays

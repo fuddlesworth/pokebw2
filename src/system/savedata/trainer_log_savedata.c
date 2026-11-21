@@ -3,8 +3,8 @@
 #include "gfl/rtc_cache.h"
 #include "gfl/std.h"
 #include "nitro/fx.h"
-#include "save/save_control.h"
 #include "save/trainer_log.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 
 // The log of thirty trainers met, in the order of the value the scripts match against a fortune drawn from the

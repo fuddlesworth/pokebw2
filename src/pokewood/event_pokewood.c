@@ -31,7 +31,6 @@
 #include "save/event_work.h"
 #include "save/player_info.h"
 #include "save/pokewood.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/event_sound.h"
 #include "system/field_event.h"
@@ -39,6 +38,7 @@
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "text/system/pokewood_cast_names.h"
 
 // The kinds of movie event, in PokewoodMovieParam's kind

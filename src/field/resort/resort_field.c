@@ -17,13 +17,13 @@
 #include "save/event_work.h"
 #include "save/join_avenue.h"
 #include "save/medal_box.h"
-#include "save/save_control.h"
 #include "system/game_beacon.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/resort_binary.h"
 #include "system/resort_layout.h"
 #include "system/resort_work.h"
+#include "system/savedata/save_control.h"
 
 // The sources of text displayed in a balloon
 enum {

@@ -8,10 +8,10 @@
 #include "field/player/player_state.h"
 #include "gfl/arc_util.h"
 #include "gfl/heap.h"
-#include "save/hollow_rival_savedata.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/hollow_rival_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/zone_weather.h"
 
 // The table of the calls the player can make on the Xtransceiver and the save data of the calls made, named after

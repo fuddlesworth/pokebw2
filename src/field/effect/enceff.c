@@ -12,7 +12,7 @@
 #include "field/encounter/encounter_effect.h"
 #include "field/encounter/event_wild_battle.h"
 #include "field/field.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/player/field_player.h"
 #include "field/script/field_script.h"

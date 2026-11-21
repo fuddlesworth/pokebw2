@@ -6,9 +6,9 @@
 #include "field/map/zone.h"
 #include "field/map/zone_change.h"
 #include "save/event_work.h"
-#include "save/save_control.h"
 #include "system/field_status.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 void ZoneChange_OnSeamless(GameData *gameData, Field *field) {
     SaveControl_GetEncountSave(GameData_GetSaveControl(gameData));

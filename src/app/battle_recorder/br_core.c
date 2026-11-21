@@ -14,12 +14,12 @@
 #include "gfl/str.h"
 #include "save/battle_rec.h"
 #include "save/join_avenue.h"
-#include "save/musical_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "system/field_sound.h"
 #include "system/game_data.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/save_control.h"
 
 typedef struct {
     BrGraphic *graphic;

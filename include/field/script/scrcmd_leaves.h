@@ -5,8 +5,8 @@
 
 #include "types.h"
 #include "gfl/tcb.h"
-#include "save/pokedex_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // Where the fallen leaves effect plays
 typedef struct {

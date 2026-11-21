@@ -25,9 +25,9 @@
 #include "nitro/os.h"
 #include "pml/poke_graphic.h"
 #include "pml/species_names.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The detail screen's cry page, pokedex_detail_voice.c, zukan_detail_voice.c by the ROM's own string: the Pokémon on
 // the top screen, which stretches while its cry plays, with the cry's length and its wave scrolling by on the touch

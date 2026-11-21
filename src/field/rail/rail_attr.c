@@ -3,7 +3,7 @@
 // (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 #include "types.h"
 #include "constants/arc.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "field/map/zone.h"
 #include "field/rail/field_rail.h"
 #include "gfl/arc_util.h"

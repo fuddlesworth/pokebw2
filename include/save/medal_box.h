@@ -4,8 +4,8 @@
 // Function names from swan (https://github.com/ds-pokemon-hacking/swan, GPL-3.0)
 
 #include "types.h"
-#include "save/pokedex_habitat_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/pokedex_habitat_savedata.h"
 
 // The Medal Rally's medals, save block 0x44
 

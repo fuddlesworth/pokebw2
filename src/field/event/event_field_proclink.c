@@ -30,14 +30,14 @@
 #include "pml/mail.h"
 #include "pml/poke_party.h"
 #include "save/bag.h"
-#include "save/pokedex_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "system/field_event.h"
 #include "system/field_sound.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "wifi/note/wifi_note.h"
 
 // The app call's states: an app with a proc closes the field, runs and opens the next app until one gives another

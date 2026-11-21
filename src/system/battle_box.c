@@ -7,7 +7,7 @@
 #include "gfl/std.h"
 #include "pml/poke_party.h"
 #include "save/box.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 #include "text/system/box.h"
 
 // The battle box: the box of six Pokémon kept for link and Wi-Fi battles, with its name and the flags that lock

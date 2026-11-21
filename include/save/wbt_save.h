@@ -2,8 +2,8 @@
 #define POKEBW2_SAVE_WBT_SAVE_H
 
 #include "types.h"
-#include "save/extra_block_savedata.h"
 #include "struct_decls.h"
+#include "system/savedata/extra_block_savedata.h"
 
 // The Pokémon World Tournament's save data, from GameData_GetWbtSave. It counts to 9999 for each of 29 tournaments
 // (wbt_savedata.c, a descriptive name). It is 0x5c bytes into the Trial House's save block, 0x3f

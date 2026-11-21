@@ -8,10 +8,10 @@
 #include "gfl/proc.h"
 #include "gfl/std.h"
 #include "gfl/tcb.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The Pokédex's detail screen: sets up the bars and the systems that its pages share, and runs the page that the bars
 // switch to

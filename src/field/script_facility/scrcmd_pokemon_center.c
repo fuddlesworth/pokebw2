@@ -14,15 +14,15 @@
 #include "save/bsubway_save.h"
 #include "save/event_work.h"
 #include "save/medal_box.h"
-#include "save/musical_savedata.h"
-#include "save/pokedex_savedata.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
 #include "save/wifi_list.h"
 #include "system/game_beacon.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/musical_savedata.h"
+#include "system/savedata/pokedex_savedata.h"
+#include "system/savedata/save_control.h"
 #include "system/vm.h"
 
 // The script plugin of the Pokémon Centers (plugin 13), commands from 1000: Mr. Medal's Medal Rally, and records of

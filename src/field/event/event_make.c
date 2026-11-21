@@ -10,10 +10,10 @@
 #include "gfl/net_command.h"
 #include "gfl/overlay.h"
 #include "gfl/proc.h"
-#include "save/save_control.h"
 #include "system/btl_setup.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "tournament/bsubway_scr.h"
 
 #define HEAPID_BATTLE_PROC 0x76

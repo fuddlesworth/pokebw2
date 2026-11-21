@@ -1,0 +1,37 @@
+#ifndef POKEBW2_SYSTEM_SAVEDATA_MUSICAL_DIST_SAVE_H
+#define POKEBW2_SYSTEM_SAVEDATA_MUSICAL_DIST_SAVE_H
+
+#include "types.h"
+#include "struct_decls.h"
+
+// The downloaded musical, extra save block 6: a header with the size of its archive, then the archive.
+// musical_dist_save.c is the ROM's string. The work's functions are declared in save/save_control.h
+
+#define MUSICAL_DIST_SAVE_SIZE 0x17c00
+#define MUSICAL_DIST_BUFFER_SIZE 0x18000
+
+typedef struct {
+    // The size of the archive
+    u32 size;
+    u8 padding4[0xc];
+} MusicalDistHeader;
+
+// The work that reads the block, or that writes a downloaded musical to it
+struct MusicalDistWork {
+    u16 heapId;
+    // Whether the block was read
+    BOOL loaded;
+    u32 seq;
+    MusicalDistHeader header;
+    // The block, its header and the archive after it
+    void *block;
+    MusicalDistHeader *blockHeader;
+    void *data;
+    GameData *gameData;
+}; // size: 0x2c
+
+// The size of the block and its init
+u32 MusicalDist_GetSaveSize(void);
+void MusicalDist_InitBlock(void *block);
+
+#endif // POKEBW2_SAVE_MUSICAL_DIST_SAVE_H

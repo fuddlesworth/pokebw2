@@ -5,7 +5,7 @@
 #include "gfl/key.h"
 #include "gfl/touchpanel.h"
 #include "gfl/ui.h"
-#include "save/pokedex_savedata.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The keys and touches of the Pokédex's list, besides those of the list itself. The ROM doesn't name this file;
 // pokedex_list_ui.c is a guess after the search screen's pokedex_search_ui.c

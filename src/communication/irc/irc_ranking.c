@@ -29,7 +29,6 @@
 #include "nitro/math.h"
 #include "nnsys/g2d.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "save/trainer_log.h"
 #include "system/bmp_oam.h"
 #include "system/game_data.h"
@@ -37,6 +36,7 @@
 #include "system/gf_font.h"
 #include "system/poke_icon.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 #include "text/system/ir_ranking.h"
 

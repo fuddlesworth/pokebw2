@@ -18,9 +18,9 @@
 #include "gfl/ui.h"
 #include "nitro/gx.h"
 #include "nitro/hw.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/palanm.h"
+#include "system/savedata/pokedex_savedata.h"
 
 // The sequences of the Pokédex's list. The ROM doesn't name this file; pokedex_list_seq.c is a guess after the search
 // screen's pokedex_search_seq.c

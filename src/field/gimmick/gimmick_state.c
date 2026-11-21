@@ -1,7 +1,7 @@
 #include "types.h"
 #include "field/gimmick/gimmick_roller_coaster.h"
 #include "field/gimmick/gimmick_state.h"
-#include "field/map/field_map.h"
+#include "field/map/fieldmap.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 

@@ -7,8 +7,8 @@
 #include "field/script/scrcmd_pep_quiz.h"
 #include "gfl/random.h"
 #include "save/adventure.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
+#include "system/savedata/save_control.h"
 
 BOOL Scrcmd_PepQuiz_PepQuizGenerate(VM *vm, FieldScriptEnv *env) {
     GameData *gameData = FieldScriptEnv_GetGameData(env);

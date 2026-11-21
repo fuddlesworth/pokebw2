@@ -3,7 +3,7 @@
 #include "gfl/std.h"
 #include "save/high_link.h"
 #include "save/playtime.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The Entralink's save block: the player's levels, the three pass powers in use, the special pass powers received
 // and the time played while a pass power ran. The ROM has no string for the file, so the name is a guess.

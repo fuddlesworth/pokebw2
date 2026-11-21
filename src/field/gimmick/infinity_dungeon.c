@@ -21,9 +21,9 @@
 #include "gfl/std.h"
 #include "nitro/math.h"
 #include "pml/poke_party.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "tournament/bsubway_scr.h"
 
 // Which side of the target room the current room occupies; equality follows the north branch.

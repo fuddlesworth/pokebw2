@@ -8,9 +8,9 @@
 #include "gfl/std.h"
 #include "nitro/os.h"
 #include "save/player_info.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
+#include "system/savedata/save_control.h"
 #include "system/str_tool.h"
 
 // The chat line of a player who said nothing

@@ -3,8 +3,8 @@
 #include "gfl/heap.h"
 #include "gfl/std.h"
 #include "nitro/os.h"
-#include "save/save_control.h"
-#include "save/symbol_save.h"
+#include "system/savedata/save_control.h"
+#include "system/savedata/symbol_save.h"
 #include <stddef.h>
 
 // The symbol encounters of the Entree Forest: the Pokémon that came from the Dream World, kept encrypted in ranges

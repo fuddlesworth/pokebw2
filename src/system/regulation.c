@@ -7,9 +7,9 @@
 #include "gfl/std.h"
 #include "gfl/str.h"
 #include "pml/poke_party.h"
-#include "save/save_control.h"
 #include "save/tournament_block.h"
 #include "system/regulation.h"
+#include "system/savedata/save_control.h"
 #include <stddef.h>
 
 // The rules of a battle, and the save block of the competitions' regulations and the teams entered in them, which

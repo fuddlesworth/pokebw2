@@ -272,23 +272,23 @@ src/field/script/scrcmd_shop.c:
     .rodata     start:0x021d094c end:0x021d0f8c
     .data       start:0x021d51a0 end:0x021d521c
 
-src/field/map/field_map_chunk_wb.c:
+src/field/map/fieldmap_chunk_wb.c:
     complete
     .text       start:0x0218a838 end:0x0218a938
 
-src/field/map/field_map_chunk_gc.c:
+src/field/map/fieldmap_chunk_gc.c:
     complete
     .text       start:0x0218a938 end:0x0218aabc
 
-src/field/map/field_map_chunk_ng.c:
+src/field/map/fieldmap_chunk_ng.c:
     complete
     .text       start:0x0218aabc end:0x0218aba0
 
-src/field/map/field_map_chunk_rd.c:
+src/field/map/fieldmap_chunk_rd.c:
     complete
     .text       start:0x0218aba0 end:0x0218adec
 
-src/field/map/field_map_chunk_height.c:
+src/field/map/fieldmap_chunk_height.c:
     complete
     .text       start:0x021c7060 end:0x021c720c
     .rodata     start:0x021d2a38 end:0x021d45bc

@@ -8,13 +8,13 @@
 #include "gfl/overlay.h"
 #include "save/bag.h"
 #include "save/high_link.h"
-#include "save/save_control.h"
 #include "system/event_sound.h"
 #include "system/field_event.h"
 #include "system/game_data.h"
 #include "system/game_event.h"
 #include "system/game_system.h"
 #include "system/pass_power.h"
+#include "system/savedata/save_control.h"
 
 // The steps of the event: the field closes for the Pass Power screen and opens again, then what the screen chose
 // follows

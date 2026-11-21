@@ -6,7 +6,7 @@
 #include "gfl/heap.h"
 #include "musical/musical_system.h"
 #include "pml/poke_party.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 
 // The six files within each musical program archive; separate from the sound pointer slots
 enum {

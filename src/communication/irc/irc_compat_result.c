@@ -31,13 +31,13 @@
 #include "save/medal_box.h"
 #include "save/player_info.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trainer_log.h"
 #include "system/bmp_winframe.h"
 #include "system/game_data.h"
 #include "system/game_system.h"
 #include "system/gf_font.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The compatibility result of the infrared link: its graphics, its windows, the three digits of the score, the flash of

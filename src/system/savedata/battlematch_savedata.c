@@ -5,7 +5,7 @@
 #include "nitro/os.h"
 #include "nitro/rtc.h"
 #include "save/records.h"
-#include "save/save_control.h"
+#include "system/savedata/save_control.h"
 #include "wifi/battle_match/livebattlematch_flow.h"
 
 // The save block of the battle competitions: the results of the live competition (livematch_savedata.c) and of the

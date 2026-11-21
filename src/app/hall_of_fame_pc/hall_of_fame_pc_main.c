@@ -15,11 +15,11 @@
 #include "nitro/hw.h"
 #include "nitro/os.h"
 #include "save/hall_of_fame.h"
-#include "save/save_control.h"
 #include "system/game_data.h"
 #include "system/gf_font.h"
 #include "system/palanm.h"
 #include "system/printsys.h"
+#include "system/savedata/save_control.h"
 #include "system/wordset.h"
 
 // The Hall of Fame PC's set-up: the display, the palette fade of the Pokémon, the text and the teams. The ROM doesn't

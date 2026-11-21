@@ -10,9 +10,9 @@
 #include "gfl/msg.h"
 #include "gfl/std.h"
 #include "gfl/str.h"
-#include "save/save_control.h"
 #include "system/pms_data.h"
 #include "system/pms_word.h"
+#include "system/savedata/save_control.h"
 
 // The words that fill sentences, and the save block of sentences
 

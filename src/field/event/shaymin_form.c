@@ -4,9 +4,9 @@
 #include "constants/species.h"
 #include "field/event/shaymin_form.h"
 #include "pml/poke_party.h"
-#include "save/pokedex_savedata.h"
 #include "system/game_data.h"
 #include "system/rtc.h"
+#include "system/savedata/pokedex_savedata.h"
 
 #define SHAYMIN_FORM_SKY 1
 

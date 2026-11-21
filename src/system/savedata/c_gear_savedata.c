@@ -1,10 +1,10 @@
 #include "types.h"
 #include "gfl/std.h"
-#include "save/c_gear_savedata.h"
-#include "save/save_control.h"
 #include "save/shortcut.h"
 #include "system/game_data.h"
 #include "system/pms.h"
+#include "system/savedata/c_gear_savedata.h"
+#include "system/savedata/save_control.h"
 
 // The C-Gear's save block, which the C-Gear's phrases, the shortcuts and a name share, and the C-Gear's own
 // settings in it: the order of its panels, its colors and its downloaded skin. The ROM has no string for the file,

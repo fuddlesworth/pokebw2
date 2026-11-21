@@ -2,8 +2,8 @@
 #include "types.h"
 #include "gfl/heap.h"
 #include "save/records.h"
-#include "save/save_control.h"
 #include "save/trainer_card.h"
+#include "system/savedata/save_control.h"
 
 // The Join Avenue's values that GameData keeps. Our names
 
