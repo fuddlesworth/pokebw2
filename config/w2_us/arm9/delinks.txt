@@ -371,7 +371,7 @@ src/system/wordset.c:
     .text       start:0x02024200 end:0x02024a28
     .data       start:0x0209a468 end:0x0209a474
 
-src/system/pml_species_names.c:
+src/pml/species_names.c:
     complete
     .text       start:0x02024a28 end:0x02024a40
     .data       start:0x0209a474 end:0x0209a478
@@ -444,7 +444,7 @@ src/system/playtime_ctrl.c:
     .text       start:0x02026d0c end:0x02026dec
     .bss        start:0x02141688 end:0x021416a4
 
-src/system/pml_item.c:
+src/pml/item.c:
     complete
     .text       start:0x0202669c end:0x02026d0c
     .rodata     start:0x02090a5c end:0x02091778
@@ -583,52 +583,52 @@ src/system/tr_tool.c:
     .rodata     start:0x020922e4 end:0x02092770
     .data       start:0x0209a708 end:0x0209a714
 
-src/system/iss_city_sys.c:
+src/system/iss/iss_city_sys.c:
     complete
     .text       start:0x02030efc end:0x020312f4
     .data       start:0x0209a714 end:0x0209a724
 
-src/system/iss_dungeon_sys.c:
+src/system/iss/iss_dungeon_sys.c:
     complete
     .text       start:0x020316d4 end:0x020318c4
     .data       start:0x0209a744 end:0x0209a758
 
-src/system/iss_city_unit.c:
+src/system/iss/iss_city_unit.c:
     complete
     .text       start:0x020312f4 end:0x020315b4
     .data       start:0x0209a724 end:0x0209a734
 
-src/system/iss_road_sys.c:
+src/system/iss/iss_road_sys.c:
     complete
     .text       start:0x020315b4 end:0x020316d4
     .data       start:0x0209a734 end:0x0209a744
 
-src/system/iss_3ds_sys.c:
+src/system/iss/iss_3ds_sys.c:
     complete
     .text       start:0x02031c9c end:0x02032270
     .data       start:0x0209a764 end:0x0209a774
 
-src/system/iss_zone_sys.c:
+src/system/iss/iss_zone_sys.c:
     complete
     .text       start:0x02032270 end:0x02032478
     .data       start:0x0209a774 end:0x0209a784
 
-src/system/iss_switch_sys.c:
+src/system/iss/iss_switch_sys.c:
     complete
     .text       start:0x02032478 end:0x020328d0
     .data       start:0x0209a784 end:0x0209a798
 
-src/system/iss_switch_set.c:
+src/system/iss/iss_switch_set.c:
     complete
     .text       start:0x020328d0 end:0x02032c64
     .data       start:0x0209a798 end:0x0209a7ac
 
-src/system/iss_switch.c:
+src/system/iss/iss_switch.c:
     complete
     .text       start:0x02032c64 end:0x02032ec0
     .data       start:0x0209a7ac end:0x0209a7bc
 
-src/system/iss_sys.c:
+src/system/iss/iss_sys.c:
     complete
     .text       start:0x020318c4 end:0x02031c9c
     .rodata     start:0x02092770 end:0x020927dc
@@ -727,15 +727,15 @@ src/system/shooter_item.c:
     .text       start:0x02035914 end:0x02035990
     .rodata     start:0x02092b68 end:0x02092c20
 
-src/system/pml_met_data.c:
+src/pml/met_data.c:
     complete
     .text       start:0x02035990 end:0x0203602c
 
-src/system/pml_hm_check.c:
+src/pml/hm_check.c:
     complete
     .text       start:0x0203602c end:0x02036068
 
-src/system/save_error.c:
+src/system/savedata/save_error.c:
     complete
     .text       start:0x02036068 end:0x02036314
 
@@ -1148,23 +1148,23 @@ src/system/snd_sys.c:
     .data       start:0x02099f3c end:0x02099f54
     .bss        start:0x0209db64 end:0x0213b2b8
 
-src/system/trainer_data_savedata.c:
+src/system/savedata/trainer_data_savedata.c:
     complete
     .text       start:0x02008da0 end:0x02008ec8
 
-src/system/player_savedata.c:
+src/system/savedata/player_savedata.c:
     complete
     .text       start:0x02008ec8 end:0x02009184
 
-src/system/timesig_savedata.c:
+src/system/savedata/timesig_savedata.c:
     complete
     .text       start:0x02009184 end:0x020092c8
 
-src/system/adventure_savedata.c:
+src/system/savedata/adventure_savedata.c:
     complete
     .text       start:0x020092c8 end:0x020093d0
 
-src/system/trainer_card_savedata.c:
+src/system/savedata/trainer_card_savedata.c:
     complete
     .text       start:0x020093d0 end:0x02009414
 
@@ -1184,15 +1184,15 @@ src/system/version.c:
     .text       start:0x02015878 end:0x0201587c
     .rodata     start:0x0208ffa8 end:0x0208ffb0
 
-src/system/c_gear_savedata.c:
+src/system/savedata/c_gear_savedata.c:
     complete
     .text       start:0x02009854 end:0x02009930
 
-src/system/dream_world_savedata.c:
+src/system/savedata/dream_world_savedata.c:
     complete
     .text       start:0x02009930 end:0x02009b5c
 
-src/system/unity_tower_savedata.c:
+src/system/savedata/unity_tower_savedata.c:
     complete
     .text       start:0x02009b5c end:0x02009ed8
 
@@ -1206,24 +1206,24 @@ src/system/mystery_data.c:
     .text       start:0x0200a5f0 end:0x0200ac58
     .data       start:0x0209a1b8 end:0x0209a1c8
 
-src/system/musical_savedata.c:
+src/system/savedata/musical_savedata.c:
     complete
     .text       start:0x0200ac58 end:0x0200af74
 
-src/system/resh_zek_savedata.c:
+src/system/savedata/resh_zek_savedata.c:
     complete
     .text       start:0x0200af74 end:0x0200afbc
 
-src/system/trainer_log_savedata.c:
+src/system/savedata/trainer_log_savedata.c:
     complete
     .text       start:0x0200afbc end:0x0200b488
 
-src/system/high_link_savedata.c:
+src/system/savedata/high_link_savedata.c:
     complete
     .text       start:0x0200c598 end:0x0200c7a0
     .bss        start:0x02140fa8 end:0x02140fb0
 
-src/system/shortcut_savedata.c:
+src/system/savedata/shortcut_savedata.c:
     complete
     .text       start:0x0200cb44 end:0x0200cc94
 
@@ -1231,11 +1231,11 @@ src/system/battle_box.c:
     complete
     .text       start:0x0200c210 end:0x0200c3a8
 
-src/system/daycare_savedata.c:
+src/system/savedata/daycare_savedata.c:
     complete
     .text       start:0x0200c3a8 end:0x0200c598
 
-src/system/trainer_game_info_savedata.c:
+src/system/savedata/trainer_game_info_savedata.c:
     complete
     .text       start:0x0200c7a0 end:0x0200cb44
 
@@ -1255,11 +1255,11 @@ src/system/regulation.c:
     .text       start:0x0200b504 end:0x0200ba84
     .data       start:0x0209a1c8 end:0x0209a1d8
 
-src/system/gimmick_savedata.c:
+src/system/savedata/gimmick_savedata.c:
     complete
     .text       start:0x0200ba84 end:0x0200bb00
 
-src/system/encounter_savedata.c:
+src/system/savedata/encounter_savedata.c:
     complete
     .text       start:0x0200dcec end:0x0200de34
 
@@ -1268,36 +1268,36 @@ src/system/gds_profile.c:
     .text       start:0x0200de34 end:0x0200e0f0
     .data       start:0x0209a1fc end:0x0209a20c
 
-src/system/bsubway_savedata.c:
+src/system/savedata/bsubway_savedata.c:
     complete
     .text       start:0x0200e0f0 end:0x0200e864
     .data       start:0x0209a20c end:0x0209a220
 
-src/system/rndmatch_savedata.c:
+src/system/savedata/rndmatch_savedata.c:
     complete
     .text       start:0x0200e864 end:0x0200e8bc
 
-src/system/musical_dist_save.c:
+src/system/savedata/musical_dist_save.c:
     complete
     .text       start:0x0200cc94 end:0x0200ce50
     .data       start:0x0209a1e8 end:0x0209a1fc
 
-src/system/cgear_picture_save.c:
+src/system/savedata/cgear_picture_save.c:
     complete
     .text       start:0x0200ce50 end:0x0200ce8c
 
-src/system/pokedex_savedata.c:
+src/system/savedata/pokedex_savedata.c:
     complete
     .text       start:0x0200ce8c end:0x0200dcec
     .rodata     start:0x0208f838 end:0x0208f9a0
 
-src/system/symbol_save.c:
+src/system/savedata/symbol_save.c:
     complete
     .text       start:0x0200e8bc end:0x0200ec00
     .rodata     start:0x0208f9a0 end:0x0208f9b0
     .data       start:0x0209a220 end:0x0209a230
 
-src/system/survey_savedata.c:
+src/system/savedata/survey_savedata.c:
     complete
     .text       start:0x0200ec00 end:0x0200ee20
 
@@ -1306,39 +1306,39 @@ src/system/battle_examination.c:
     .text       start:0x0200ee20 end:0x0200ef48
     .data       start:0x0209a230 end:0x0209a248
 
-src/system/c_gear_phrase_savedata.c:
+src/system/savedata/c_gear_phrase_savedata.c:
     complete
     .text       start:0x0200ef48 end:0x0200efc4
 
-src/system/traded_pokemon_savedata.c:
+src/system/savedata/traded_pokemon_savedata.c:
     complete
     .text       start:0x0200efc4 end:0x0200f128
 
-src/system/unity_tower_floor_savedata.c:
+src/system/savedata/unity_tower_floor_savedata.c:
     complete
     .text       start:0x0200f128 end:0x0200f164
 
-src/system/pokedex_skin_save.c:
+src/system/savedata/pokedex_skin_save.c:
     complete
     .text       start:0x0200f164 end:0x0200f19c
 
-src/system/trial_house_savedata.c:
+src/system/savedata/trial_house_savedata.c:
     complete
     .text       start:0x0200f19c end:0x0200f1c4
 
-src/system/livematch_savedata.c:
+src/system/savedata/livematch_savedata.c:
     complete
     .text       start:0x0200f1c4 end:0x0200f29c
 
-src/system/battlematch_savedata.c:
+src/system/savedata/battlematch_savedata.c:
     complete
     .text       start:0x0200f29c end:0x0200f3b8
 
-src/system/hall_of_fame_savedata.c:
+src/system/savedata/hall_of_fame_savedata.c:
     complete
     .text       start:0x0200f3b8 end:0x0200f6e4
 
-src/system/misc_savedata.c:
+src/system/savedata/misc_savedata.c:
     complete
     .text       start:0x0200f6e4 end:0x0200f8f4
     .rodata     start:0x0208f9b0 end:0x0208f9dc
@@ -1347,30 +1347,30 @@ src/system/medal_box.c:
     complete
     .text       start:0x0200f8f4 end:0x0200fb54
 
-src/system/field_actor_savedata.c:
+src/system/savedata/field_actor_savedata.c:
     complete
     .text       start:0x0200fb54 end:0x0200fe80
 
-src/system/wbt_savedata.c:
+src/system/savedata/wbt_savedata.c:
     complete
     .text       start:0x0200fe80 end:0x0200ff40
 
-src/system/hollow_rival_savedata.c:
+src/system/savedata/hollow_rival_savedata.c:
     complete
     .text       start:0x0200ff40 end:0x0200fffc
 
-src/system/join_avenue_savedata.c:
+src/system/savedata/join_avenue_savedata.c:
     complete
     .text       start:0x0200fffc end:0x02010230
     .rodata     start:0x0208f9dc end:0x0208fa18
     .bss        start:0x02140fb0 end:0x02140fb4
 
-src/system/key_data_savedata.c:
+src/system/savedata/key_data_savedata.c:
     complete
     .text       start:0x02010230 end:0x020103f4
     .rodata     start:0x0208fa18 end:0x0208fa24
 
-src/system/extra_block_savedata.c:
+src/system/savedata/extra_block_savedata.c:
     complete
     .text       start:0x020103f4 end:0x02010448
 
@@ -1386,24 +1386,24 @@ src/system/pokewood_rec.c:
     .data       start:0x0209a248 end:0x0209a258
     .bss        start:0x02140fb4 end:0x02140fb8
 
-src/system/memory_link_savedata.c:
+src/system/savedata/memory_link_savedata.c:
     complete
     .text       start:0x020108cc end:0x02010ca0
     .rodata     start:0x0208fa8c end:0x0208faec
 
-src/system/pokedex_habitat_savedata.c:
+src/system/savedata/pokedex_habitat_savedata.c:
     complete
     .text       start:0x02010ca0 end:0x02010dc0
 
-src/system/funfest_savedata.c:
+src/system/savedata/funfest_savedata.c:
     complete
     .text       start:0x02010dc0 end:0x02010ff4
 
-src/system/pokewood_savedata.c:
+src/system/savedata/pokewood_savedata.c:
     complete
     .text       start:0x02010ff4 end:0x020112fc
 
-src/system/cygnus_savedata.c:
+src/system/savedata/cygnus_savedata.c:
     complete
     .text       start:0x020112fc end:0x0201142c
 
@@ -1412,11 +1412,11 @@ src/system/survey_data.c:
     .text       start:0x0201142c end:0x020114a4
     .rodata     start:0x0208faec end:0x0208fd84
 
-src/system/c_gear_name_savedata.c:
+src/system/savedata/c_gear_name_savedata.c:
     complete
     .text       start:0x020114a4 end:0x02011510
 
-src/system/cygnus_save_control.c:
+src/system/savedata/cygnus_save_control.c:
     complete
     .text       start:0x02011510 end:0x020116ac
     .rodata     start:0x0208fd84 end:0x0208fde4
@@ -1449,7 +1449,7 @@ src/system/wih_dwc.c:
     .data       start:0x0209a284 end:0x0209a2f4
     .bss        start:0x021410b8 end:0x021410c0
 
-src/system/net_save.c:
+src/system/savedata/net_save.c:
     complete
     .text       start:0x02012ee0 end:0x020130b4
     .data       start:0x0209a2f4 end:0x0209a300
@@ -1678,17 +1678,17 @@ src/system/snd_strm.c:
     .data       start:0x02099f84 end:0x02099f90
     .bss        start:0x02140f9c end:0x02140fa0
 
-src/system/save_control.c:
+src/system/savedata/save_control.c:
     complete
     .text       start:0x020070f0 end:0x02007710
     .data       start:0x02099f90 end:0x02099fe4
     .bss        start:0x02140fa0 end:0x02140fa4
 
-src/system/save_table.c:
+src/system/savedata/save_table.c:
     complete
     .rodata     start:0x0208eed4 end:0x0208f4f8
 
-src/system/box_savedata.c:
+src/system/savedata/box_savedata.c:
     complete
     .text       start:0x02007710 end:0x02007e20
     .data       start:0x02099fe4 end:0x0209a0b4
@@ -1698,7 +1698,7 @@ src/system/perapvoice.c:
     .text       start:0x02007e20 end:0x02007fd0
     .data       start:0x0209a0b4 end:0x0209a0c4
 
-src/system/myitem_savedata.c:
+src/system/savedata/myitem_savedata.c:
     complete
     .text       start:0x02007fd0 end:0x0200897c
     .rodata     start:0x0208f4f8 end:0x0208f77c
